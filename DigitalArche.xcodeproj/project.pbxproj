@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		043B7B5E278C4C5A00D5648F /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 043B7B5D278C4C5A00D5648F /* main.cpp */; };
+		043B7B66278C745300D5648F /* SampleUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 043B7B65278C745300D5648F /* SampleUtils.cpp */; };
+		043B7B69278C797700D5648F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B68278C797700D5648F /* Cocoa.framework */; };
+		043B7B6B278C798100D5648F /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B6A278C798100D5648F /* CoreFoundation.framework */; };
+		043B7B6D278C798C00D5648F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B6C278C798C00D5648F /* QuartzCore.framework */; };
+		043B7B6F278C811200D5648F /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B6E278C811200D5648F /* Metal.framework */; };
+		043B7B71278C811800D5648F /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B70278C811800D5648F /* IOSurface.framework */; };
+		043B7B73278C812000D5648F /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B72278C812000D5648F /* IOKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,8 +30,17 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		043B7B5A278C4C5A00D5648F /* DigitalArche */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DigitalArche; sourceTree = BUILT_PRODUCTS_DIR; };
+		043B7B5A278C4C5A00D5648F /* apps */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = apps; sourceTree = BUILT_PRODUCTS_DIR; };
 		043B7B5D278C4C5A00D5648F /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		043B7B64278C745300D5648F /* SampleUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SampleUtils.h; sourceTree = "<group>"; };
+		043B7B65278C745300D5648F /* SampleUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SampleUtils.cpp; sourceTree = "<group>"; };
+		043B7B68278C797700D5648F /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		043B7B6A278C798100D5648F /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		043B7B6C278C798C00D5648F /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		043B7B6E278C811200D5648F /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		043B7B70278C811800D5648F /* IOSurface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOSurface.framework; path = System/Library/Frameworks/IOSurface.framework; sourceTree = SDKROOT; };
+		043B7B72278C812000D5648F /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		043B7B74278C841400D5648F /* apps.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = apps.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +48,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				043B7B73278C812000D5648F /* IOKit.framework in Frameworks */,
+				043B7B71278C811800D5648F /* IOSurface.framework in Frameworks */,
+				043B7B6F278C811200D5648F /* Metal.framework in Frameworks */,
+				043B7B6D278C798C00D5648F /* QuartzCore.framework in Frameworks */,
+				043B7B6B278C798100D5648F /* CoreFoundation.framework in Frameworks */,
+				043B7B69278C797700D5648F /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -41,33 +63,50 @@
 		043B7B51278C4C5A00D5648F = {
 			isa = PBXGroup;
 			children = (
-				043B7B5C278C4C5A00D5648F /* DigitalArche */,
+				043B7B5C278C4C5A00D5648F /* apps */,
 				043B7B5B278C4C5A00D5648F /* Products */,
+				043B7B67278C797600D5648F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 		043B7B5B278C4C5A00D5648F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				043B7B5A278C4C5A00D5648F /* DigitalArche */,
+				043B7B5A278C4C5A00D5648F /* apps */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		043B7B5C278C4C5A00D5648F /* DigitalArche */ = {
+		043B7B5C278C4C5A00D5648F /* apps */ = {
 			isa = PBXGroup;
 			children = (
+				043B7B74278C841400D5648F /* apps.entitlements */,
+				043B7B65278C745300D5648F /* SampleUtils.cpp */,
+				043B7B64278C745300D5648F /* SampleUtils.h */,
 				043B7B5D278C4C5A00D5648F /* main.cpp */,
 			);
-			path = DigitalArche;
+			path = apps;
+			sourceTree = "<group>";
+		};
+		043B7B67278C797600D5648F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				043B7B72278C812000D5648F /* IOKit.framework */,
+				043B7B70278C811800D5648F /* IOSurface.framework */,
+				043B7B6E278C811200D5648F /* Metal.framework */,
+				043B7B6C278C798C00D5648F /* QuartzCore.framework */,
+				043B7B6A278C798100D5648F /* CoreFoundation.framework */,
+				043B7B68278C797700D5648F /* Cocoa.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		043B7B59278C4C5A00D5648F /* DigitalArche */ = {
+		043B7B59278C4C5A00D5648F /* apps */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 043B7B61278C4C5A00D5648F /* Build configuration list for PBXNativeTarget "DigitalArche" */;
+			buildConfigurationList = 043B7B61278C4C5A00D5648F /* Build configuration list for PBXNativeTarget "apps" */;
 			buildPhases = (
 				043B7B56278C4C5A00D5648F /* Sources */,
 				043B7B57278C4C5A00D5648F /* Frameworks */,
@@ -77,9 +116,9 @@
 			);
 			dependencies = (
 			);
-			name = DigitalArche;
+			name = apps;
 			productName = DigitalArche;
-			productReference = 043B7B5A278C4C5A00D5648F /* DigitalArche */;
+			productReference = 043B7B5A278C4C5A00D5648F /* apps */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -109,7 +148,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				043B7B59278C4C5A00D5648F /* DigitalArche */,
+				043B7B59278C4C5A00D5648F /* apps */,
 			);
 		};
 /* End PBXProject section */
@@ -120,6 +159,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				043B7B5E278C4C5A00D5648F /* main.cpp in Sources */,
+				043B7B66278C745300D5648F /* SampleUtils.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,20 +280,134 @@
 		043B7B62278C4C5A00D5648F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = apps/apps.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					DAWN_ENABLE_BACKEND_METAL,
+					DAWN_ENABLE_BACKEND_NULL,
+					"$(inherited)",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"./third_party/dawn/cmake-debug/src/common",
+					"./third_party/dawn/cmake-debug/src/dawn",
+					"./third_party/dawn/cmake-debug/src/dawn_native",
+					"./third_party/dawn/cmake-debug/src/dawn_platform",
+					"./third_party/dawn/cmake-debug/src/dawn_wire",
+					"./third_party/dawn/cmake-debug/src/utils",
+					"./third_party/dawn/cmake-debug/third_party/tint/src",
+					"./third_party/dawn/cmake-debug/third_party/spirv-tools/source",
+					"./third_party/dawn/cmake-debug/third_party/spirv-tools/source/opt",
+					"./third_party/dawn/cmake-debug/third_party/abseil/absl/strings",
+					"./third_party/dawn/cmake-debug/third_party/abseil/absl/base",
+					"./third_party/dawn/cmake-debug/third_party/abseil/absl/numeric",
+					"./third_party/dawn/cmake-debug/third_party/glfw/src",
+					"./third_party/dawn/cmake-debug/examples",
+				);
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-Wl,-headerpad_max_install_names",
+					"-lglfw3",
+					"-labsl_str_format_internal",
+					"-labsl_strings_internal",
+					"-labsl_strings",
+					"-labsl_base",
+					"-labsl_spinlock_wait",
+					"-labsl_raw_logging_internal",
+					"-labsl_throw_delegate",
+					"-labsl_log_severity",
+					"-labsl_int128",
+					"-ldawn_common",
+					"-ldawn_headers",
+					"-ldawncpp_headers",
+					"-ldawncpp",
+					"-ldawn_proc",
+					"-ldawn_platform",
+					"-ldawn_wire",
+					"-ldawn_utils",
+					"-ltint",
+					"-lSPIRV-Tools",
+					"-lSPIRV-Tools-opt",
+					"-ldawn_sample_utils",
+					"-ldawn_native",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					./third_party/dawn/src,
+					./third_party/dawn/src/include,
+					./third_party/dawn/third_party/glfw/include,
+					"./third_party/dawn/cmake-debug/gen/src/include",
+				);
+				USE_HEADERMAP = NO;
 			};
 			name = Debug;
 		};
 		043B7B63278C4C5A00D5648F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = apps/apps.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					DAWN_ENABLE_BACKEND_METAL,
+					DAWN_ENABLE_BACKEND_NULL,
+					"$(inherited)",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"./third_party/dawn/cmake-release/src/common",
+					"./third_party/dawn/cmake-release/src/dawn",
+					"./third_party/dawn/cmake-release/src/dawn_native",
+					"./third_party/dawn/cmake-release/src/dawn_platform",
+					"./third_party/dawn/cmake-release/src/dawn_wire",
+					"./third_party/dawn/cmake-release/src/utils",
+					"./third_party/dawn/cmake-release/third_party/tint/src",
+					"./third_party/dawn/cmake-release/third_party/spirv-tools/source",
+					"./third_party/dawn/cmake-release/third_party/spirv-tools/source/opt",
+					"./third_party/dawn/cmake-release/third_party/abseil/absl/strings",
+					"./third_party/dawn/cmake-release/third_party/abseil/absl/base",
+					"./third_party/dawn/cmake-release/third_party/abseil/absl/numeric",
+					"./third_party/dawn/cmake-release/third_party/glfw/src",
+					"./third_party/dawn/cmake-release/examples",
+				);
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-Wl,-headerpad_max_install_names",
+					"-lglfw3",
+					"-labsl_str_format_internal",
+					"-labsl_strings_internal",
+					"-labsl_strings",
+					"-labsl_base",
+					"-labsl_spinlock_wait",
+					"-labsl_raw_logging_internal",
+					"-labsl_throw_delegate",
+					"-labsl_log_severity",
+					"-labsl_int128",
+					"-ldawn_common",
+					"-ldawn_headers",
+					"-ldawncpp_headers",
+					"-ldawncpp",
+					"-ldawn_proc",
+					"-ldawn_platform",
+					"-ldawn_wire",
+					"-ldawn_utils",
+					"-ltint",
+					"-lSPIRV-Tools",
+					"-lSPIRV-Tools-opt",
+					"-ldawn_sample_utils",
+					"-ldawn_native",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					./third_party/dawn/src,
+					./third_party/dawn/src/include,
+					./third_party/dawn/third_party/glfw/include,
+					"./third_party/dawn/cmake-release/gen/src/include",
+				);
+				USE_HEADERMAP = NO;
 			};
 			name = Release;
 		};
@@ -269,7 +423,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		043B7B61278C4C5A00D5648F /* Build configuration list for PBXNativeTarget "DigitalArche" */ = {
+		043B7B61278C4C5A00D5648F /* Build configuration list for PBXNativeTarget "apps" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				043B7B62278C4C5A00D5648F /* Debug */,
