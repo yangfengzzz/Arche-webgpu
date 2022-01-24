@@ -160,6 +160,10 @@
 		0412846E279EEB8B0071BD86 /* raster_state.h in Headers */ = {isa = PBXBuildFile; fileRef = 0412846C279EEB8B0071BD86 /* raster_state.h */; };
 		04128471279EED090071BD86 /* stencil_state.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0412846F279EED090071BD86 /* stencil_state.cpp */; };
 		04128472279EED090071BD86 /* stencil_state.h in Headers */ = {isa = PBXBuildFile; fileRef = 04128470279EED090071BD86 /* stencil_state.h */; };
+		04128475279EEE760071BD86 /* depth_state.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04128473279EEE760071BD86 /* depth_state.cpp */; };
+		04128476279EEE760071BD86 /* depth_state.h in Headers */ = {isa = PBXBuildFile; fileRef = 04128474279EEE760071BD86 /* depth_state.h */; };
+		04128479279EEEEC0071BD86 /* render_state.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04128477279EEEEC0071BD86 /* render_state.cpp */; };
+		0412847A279EEEEC0071BD86 /* render_state.h in Headers */ = {isa = PBXBuildFile; fileRef = 04128478279EEEEC0071BD86 /* render_state.h */; };
 		043B7B5E278C4C5A00D5648F /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 043B7B5D278C4C5A00D5648F /* main.cpp */; };
 		043B7B66278C745300D5648F /* SampleUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 043B7B65278C745300D5648F /* SampleUtils.cpp */; };
 		043B7B69278C797700D5648F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B68278C797700D5648F /* Cocoa.framework */; };
@@ -361,6 +365,10 @@
 		0412846C279EEB8B0071BD86 /* raster_state.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = raster_state.h; sourceTree = "<group>"; };
 		0412846F279EED090071BD86 /* stencil_state.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = stencil_state.cpp; sourceTree = "<group>"; };
 		04128470279EED090071BD86 /* stencil_state.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stencil_state.h; sourceTree = "<group>"; };
+		04128473279EEE760071BD86 /* depth_state.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = depth_state.cpp; sourceTree = "<group>"; };
+		04128474279EEE760071BD86 /* depth_state.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = depth_state.h; sourceTree = "<group>"; };
+		04128477279EEEEC0071BD86 /* render_state.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = render_state.cpp; sourceTree = "<group>"; };
+		04128478279EEEEC0071BD86 /* render_state.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = render_state.h; sourceTree = "<group>"; };
 		043B7B5A278C4C5A00D5648F /* apps */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = apps; sourceTree = BUILT_PRODUCTS_DIR; };
 		043B7B5D278C4C5A00D5648F /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		043B7B64278C745300D5648F /* SampleUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SampleUtils.h; sourceTree = "<group>"; };
@@ -617,6 +625,10 @@
 				0412846B279EEB8B0071BD86 /* raster_state.cpp */,
 				04128470279EED090071BD86 /* stencil_state.h */,
 				0412846F279EED090071BD86 /* stencil_state.cpp */,
+				04128474279EEE760071BD86 /* depth_state.h */,
+				04128473279EEE760071BD86 /* depth_state.cpp */,
+				04128478279EEEEC0071BD86 /* render_state.h */,
+				04128477279EEEEC0071BD86 /* render_state.cpp */,
 			);
 			path = state;
 			sourceTree = "<group>";
@@ -771,6 +783,7 @@
 			files = (
 				0412845A279ED4B10071BD86 /* imgui.h in Headers */,
 				04128447279ED3A60071BD86 /* engine.h in Headers */,
+				04128476279EEE760071BD86 /* depth_state.h in Headers */,
 				0412843E279ED3A60071BD86 /* window.h in Headers */,
 				0412843D279ED3A60071BD86 /* input_events.h in Headers */,
 				0412845B279ED4B10071BD86 /* imgui_impl_glfw.h in Headers */,
@@ -783,6 +796,7 @@
 				0412845C279ED4B10071BD86 /* imstb_truetype.h in Headers */,
 				0412844A279ED3A60071BD86 /* unix_engine.h in Headers */,
 				0412843F279ED3A60071BD86 /* glfw_window.h in Headers */,
+				0412847A279EEEEC0071BD86 /* render_state.h in Headers */,
 				04128444279ED3A60071BD86 /* application.h in Headers */,
 				04128460279ED4B10071BD86 /* imgui_internal.h in Headers */,
 				0412846A279EDB2C0071BD86 /* blend_state.h in Headers */,
@@ -960,9 +974,11 @@
 			files = (
 				04128469279EDB2C0071BD86 /* blend_state.cpp in Sources */,
 				04128442279ED3A60071BD86 /* window.cpp in Sources */,
+				04128479279EEEEC0071BD86 /* render_state.cpp in Sources */,
 				04128471279EED090071BD86 /* stencil_state.cpp in Sources */,
 				0412846D279EEB8B0071BD86 /* raster_state.cpp in Sources */,
 				04128440279ED3A60071BD86 /* application.cpp in Sources */,
+				04128475279EEE760071BD86 /* depth_state.cpp in Sources */,
 				04128449279ED3A60071BD86 /* engine.cpp in Sources */,
 				04128441279ED3A60071BD86 /* unix_engine.cpp in Sources */,
 				04128443279ED3A60071BD86 /* timer.cpp in Sources */,
