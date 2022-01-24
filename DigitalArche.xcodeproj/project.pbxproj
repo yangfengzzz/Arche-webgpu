@@ -154,6 +154,8 @@
 		04128461279ED4B10071BD86 /* imgui_draw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04128455279ED4B10071BD86 /* imgui_draw.cpp */; };
 		04128462279ED4B10071BD86 /* imconfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 04128456279ED4B10071BD86 /* imconfig.h */; };
 		04128463279ED4B10071BD86 /* imgui_impl_glfw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04128457279ED4B10071BD86 /* imgui_impl_glfw.cpp */; };
+		04128469279EDB2C0071BD86 /* blend_state.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04128467279EDB2C0071BD86 /* blend_state.cpp */; };
+		0412846A279EDB2C0071BD86 /* blend_state.h in Headers */ = {isa = PBXBuildFile; fileRef = 04128468279EDB2C0071BD86 /* blend_state.h */; };
 		043B7B5E278C4C5A00D5648F /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 043B7B5D278C4C5A00D5648F /* main.cpp */; };
 		043B7B66278C745300D5648F /* SampleUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 043B7B65278C745300D5648F /* SampleUtils.cpp */; };
 		043B7B69278C797700D5648F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B68278C797700D5648F /* Cocoa.framework */; };
@@ -348,6 +350,9 @@
 		04128455279ED4B10071BD86 /* imgui_draw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_draw.cpp; sourceTree = "<group>"; };
 		04128456279ED4B10071BD86 /* imconfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imconfig.h; sourceTree = "<group>"; };
 		04128457279ED4B10071BD86 /* imgui_impl_glfw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_impl_glfw.cpp; sourceTree = "<group>"; };
+		04128466279EDB1C0071BD86 /* render_target_blend_state.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = render_target_blend_state.h; sourceTree = "<group>"; };
+		04128467279EDB2C0071BD86 /* blend_state.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = blend_state.cpp; sourceTree = "<group>"; };
+		04128468279EDB2C0071BD86 /* blend_state.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = blend_state.h; sourceTree = "<group>"; };
 		043B7B5A278C4C5A00D5648F /* apps */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = apps; sourceTree = BUILT_PRODUCTS_DIR; };
 		043B7B5D278C4C5A00D5648F /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		043B7B64278C745300D5648F /* SampleUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SampleUtils.h; sourceTree = "<group>"; };
@@ -562,6 +567,7 @@
 				04128433279ED3A50071BD86 /* unix_engine.cpp */,
 				04128436279ED3A50071BD86 /* application.h */,
 				04128432279ED3A50071BD86 /* application.cpp */,
+				04128464279EDAF80071BD86 /* shader */,
 			);
 			path = vox.render;
 			sourceTree = "<group>";
@@ -583,6 +589,24 @@
 				04128457279ED4B10071BD86 /* imgui_impl_glfw.cpp */,
 			);
 			path = gui;
+			sourceTree = "<group>";
+		};
+		04128464279EDAF80071BD86 /* shader */ = {
+			isa = PBXGroup;
+			children = (
+				04128465279EDB030071BD86 /* state */,
+			);
+			path = shader;
+			sourceTree = "<group>";
+		};
+		04128465279EDB030071BD86 /* state */ = {
+			isa = PBXGroup;
+			children = (
+				04128466279EDB1C0071BD86 /* render_target_blend_state.h */,
+				04128468279EDB2C0071BD86 /* blend_state.h */,
+				04128467279EDB2C0071BD86 /* blend_state.cpp */,
+			);
+			path = state;
 			sourceTree = "<group>";
 		};
 		043B7B51278C4C5A00D5648F = {
@@ -747,6 +771,7 @@
 				0412843F279ED3A60071BD86 /* glfw_window.h in Headers */,
 				04128444279ED3A60071BD86 /* application.h in Headers */,
 				04128460279ED4B10071BD86 /* imgui_internal.h in Headers */,
+				0412846A279EDB2C0071BD86 /* blend_state.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -919,6 +944,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04128469279EDB2C0071BD86 /* blend_state.cpp in Sources */,
 				04128442279ED3A60071BD86 /* window.cpp in Sources */,
 				04128440279ED3A60071BD86 /* application.cpp in Sources */,
 				04128449279ED3A60071BD86 /* engine.cpp in Sources */,
@@ -1055,6 +1081,10 @@
 					./third_party/glog/build,
 					./third_party/glog/src,
 					./third_party/gflags/builds/include,
+					./third_party/dawn/src,
+					./third_party/dawn/src/include,
+					./third_party/dawn/third_party/glfw/include,
+					"./third_party/dawn/cmake-debug/gen/src/include",
 				);
 			};
 			name = Debug;
@@ -1078,6 +1108,10 @@
 					./third_party/glog/build,
 					./third_party/glog/src,
 					./third_party/gflags/builds/include,
+					./third_party/dawn/src,
+					./third_party/dawn/src/include,
+					./third_party/dawn/third_party/glfw/include,
+					"./third_party/dawn/cmake-release/gen/src/include",
 				);
 			};
 			name = Release;
