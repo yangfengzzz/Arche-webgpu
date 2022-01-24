@@ -294,6 +294,7 @@
 		041283E3279ED0F70071BD86 /* vector2_tests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vector2_tests.cpp; sourceTree = "<group>"; };
 		041283E6279ED0F70071BD86 /* bvh2_tests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bvh2_tests.cpp; sourceTree = "<group>"; };
 		0412841E279ED2130071BD86 /* unit_tests.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = unit_tests.entitlements; sourceTree = "<group>"; };
+		0412841F279ED26A0071BD86 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		043B7B5A278C4C5A00D5648F /* apps */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = apps; sourceTree = BUILT_PRODUCTS_DIR; };
 		043B7B5D278C4C5A00D5648F /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		043B7B64278C745300D5648F /* SampleUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SampleUtils.h; sourceTree = "<group>"; };
@@ -486,6 +487,7 @@
 		043B7B51278C4C5A00D5648F = {
 			isa = PBXGroup;
 			children = (
+				0412841F279ED26A0071BD86 /* README.md */,
 				041282ED279ECF3D0071BD86 /* vox.math */,
 				043B7B5C278C4C5A00D5648F /* apps */,
 				041283B1279ED0D60071BD86 /* unit_tests */,
