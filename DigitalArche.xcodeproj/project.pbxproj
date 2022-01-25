@@ -184,6 +184,9 @@
 		0495464B279F8A8700783C84 /* render_face.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954648279F8A8700783C84 /* render_face.h */; };
 		0495464C279F8A8700783C84 /* render_queue_type.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954649279F8A8700783C84 /* render_queue_type.h */; };
 		0495464D279F8A8700783C84 /* blend_mode.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495464A279F8A8700783C84 /* blend_mode.h */; };
+		04954652279F8AE900783C84 /* base_material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495464E279F8AE900783C84 /* base_material.cpp */; };
+		04954654279F8AE900783C84 /* base_material.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954650279F8AE900783C84 /* base_material.h */; };
+		04954655279F8AE900783C84 /* unlit_material.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954651279F8AE900783C84 /* unlit_material.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -404,6 +407,10 @@
 		04954648279F8A8700783C84 /* render_face.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render_face.h; sourceTree = "<group>"; };
 		04954649279F8A8700783C84 /* render_queue_type.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render_queue_type.h; sourceTree = "<group>"; };
 		0495464A279F8A8700783C84 /* blend_mode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = blend_mode.h; sourceTree = "<group>"; };
+		0495464E279F8AE900783C84 /* base_material.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = base_material.cpp; sourceTree = "<group>"; };
+		0495464F279F8AE900783C84 /* unlit_material.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = unlit_material.cpp; sourceTree = "<group>"; };
+		04954650279F8AE900783C84 /* base_material.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base_material.h; sourceTree = "<group>"; };
+		04954651279F8AE900783C84 /* unlit_material.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unlit_material.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -719,6 +726,10 @@
 				04954643279F8A5000783C84 /* enums */,
 				04954645279F8A7D00783C84 /* material.h */,
 				04954644279F8A7D00783C84 /* material.cpp */,
+				04954650279F8AE900783C84 /* base_material.h */,
+				0495464E279F8AE900783C84 /* base_material.cpp */,
+				04954651279F8AE900783C84 /* unlit_material.h */,
+				0495464F279F8AE900783C84 /* unlit_material.cpp */,
 			);
 			path = material;
 			sourceTree = "<group>";
@@ -847,6 +858,7 @@
 				04954641279F89E500783C84 /* shader.h in Headers */,
 				0412845B279ED4B10071BD86 /* imgui_impl_glfw.h in Headers */,
 				0412845E279ED4B10071BD86 /* imstb_rectpack.h in Headers */,
+				04954654279F8AE900783C84 /* base_material.h in Headers */,
 				04128472279EED090071BD86 /* stencil_state.h in Headers */,
 				04128462279ED4B10071BD86 /* imconfig.h in Headers */,
 				0412846E279EEB8B0071BD86 /* raster_state.h in Headers */,
@@ -858,6 +870,7 @@
 				0412847A279EEEEC0071BD86 /* render_state.h in Headers */,
 				04128444279ED3A60071BD86 /* application.h in Headers */,
 				04128460279ED4B10071BD86 /* imgui_internal.h in Headers */,
+				04954655279F8AE900783C84 /* unlit_material.h in Headers */,
 				0412846A279EDB2C0071BD86 /* blend_state.h in Headers */,
 				0495463B279F89E500783C84 /* shader_data.h in Headers */,
 			);
@@ -1049,6 +1062,7 @@
 				04128461279ED4B10071BD86 /* imgui_draw.cpp in Sources */,
 				0495463D279F89E500783C84 /* shader_data.cpp in Sources */,
 				04128458279ED4B10071BD86 /* imgui_tables.cpp in Sources */,
+				04954652279F8AE900783C84 /* base_material.cpp in Sources */,
 				04128459279ED4B10071BD86 /* imgui_widgets.cpp in Sources */,
 				04128448279ED3A60071BD86 /* input_events.cpp in Sources */,
 				0412845D279ED4B10071BD86 /* imgui.cpp in Sources */,
