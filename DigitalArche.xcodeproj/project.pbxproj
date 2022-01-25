@@ -213,6 +213,23 @@
 		0495468E279F8D3700783C84 /* component.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495468D279F8D3700783C84 /* component.h */; };
 		04954691279F8D5E00783C84 /* render_element.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495468F279F8D5E00783C84 /* render_element.cpp */; };
 		04954692279F8D5E00783C84 /* render_element.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954690279F8D5E00783C84 /* render_element.h */; };
+		049546BF279F948900783C84 /* TestUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495469B279F948700783C84 /* TestUtils.cpp */; };
+		049546C0279F948900783C84 /* EmptyDebugLogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495469D279F948700783C84 /* EmptyDebugLogger.cpp */; };
+		049546C1279F948900783C84 /* BackendBinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495469E279F948700783C84 /* BackendBinding.cpp */; };
+		049546C3279F948900783C84 /* MetalBinding.mm in Sources */ = {isa = PBXBuildFile; fileRef = 049546A0279F948700783C84 /* MetalBinding.mm */; };
+		049546C4279F948900783C84 /* WireHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049546A1279F948700783C84 /* WireHelper.cpp */; };
+		049546C5279F948900783C84 /* NullBinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049546A2279F948700783C84 /* NullBinding.cpp */; };
+		049546C7279F948900783C84 /* TerribleCommandBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049546A5279F948700783C84 /* TerribleCommandBuffer.cpp */; };
+		049546C9279F948900783C84 /* TextureUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049546A8279F948700783C84 /* TextureUtils.cpp */; };
+		049546CA279F948900783C84 /* ComboRenderPipelineDescriptor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049546AA279F948700783C84 /* ComboRenderPipelineDescriptor.cpp */; };
+		049546CB279F948900783C84 /* ComboRenderBundleEncoderDescriptor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049546AB279F948800783C84 /* ComboRenderBundleEncoderDescriptor.cpp */; };
+		049546CC279F948900783C84 /* ScopedAutoreleasePool.mm in Sources */ = {isa = PBXBuildFile; fileRef = 049546AC279F948800783C84 /* ScopedAutoreleasePool.mm */; };
+		049546CD279F948900783C84 /* GLFWUtils_metal.mm in Sources */ = {isa = PBXBuildFile; fileRef = 049546AD279F948800783C84 /* GLFWUtils_metal.mm */; };
+		049546CE279F948900783C84 /* GLFWUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049546AF279F948800783C84 /* GLFWUtils.cpp */; };
+		049546D0279F948900783C84 /* WGPUHelpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049546B4279F948800783C84 /* WGPUHelpers.cpp */; };
+		049546D4279F948900783C84 /* SystemUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049546BD279F948900783C84 /* SystemUtils.cpp */; };
+		049546D5279F948900783C84 /* OSXTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049546BE279F948900783C84 /* OSXTimer.cpp */; };
+		049546D6279F959200783C84 /* ObjCUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 049546A4279F948700783C84 /* ObjCUtils.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -463,6 +480,37 @@
 		0495468D279F8D3700783C84 /* component.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = component.h; sourceTree = "<group>"; };
 		0495468F279F8D5E00783C84 /* render_element.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = render_element.cpp; sourceTree = "<group>"; };
 		04954690279F8D5E00783C84 /* render_element.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render_element.h; sourceTree = "<group>"; };
+		0495469B279F948700783C84 /* TestUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestUtils.cpp; sourceTree = "<group>"; };
+		0495469C279F948700783C84 /* TestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestUtils.h; sourceTree = "<group>"; };
+		0495469D279F948700783C84 /* EmptyDebugLogger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EmptyDebugLogger.cpp; sourceTree = "<group>"; };
+		0495469E279F948700783C84 /* BackendBinding.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BackendBinding.cpp; sourceTree = "<group>"; };
+		049546A0279F948700783C84 /* MetalBinding.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MetalBinding.mm; sourceTree = "<group>"; };
+		049546A1279F948700783C84 /* WireHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WireHelper.cpp; sourceTree = "<group>"; };
+		049546A2279F948700783C84 /* NullBinding.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NullBinding.cpp; sourceTree = "<group>"; };
+		049546A3279F948700783C84 /* PlatformDebugLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlatformDebugLogger.h; sourceTree = "<group>"; };
+		049546A4279F948700783C84 /* ObjCUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ObjCUtils.mm; sourceTree = "<group>"; };
+		049546A5279F948700783C84 /* TerribleCommandBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TerribleCommandBuffer.cpp; sourceTree = "<group>"; };
+		049546A6279F948700783C84 /* ComboRenderPipelineDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComboRenderPipelineDescriptor.h; sourceTree = "<group>"; };
+		049546A8279F948700783C84 /* TextureUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextureUtils.cpp; sourceTree = "<group>"; };
+		049546A9279F948700783C84 /* BackendBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackendBinding.h; sourceTree = "<group>"; };
+		049546AA279F948700783C84 /* ComboRenderPipelineDescriptor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ComboRenderPipelineDescriptor.cpp; sourceTree = "<group>"; };
+		049546AB279F948800783C84 /* ComboRenderBundleEncoderDescriptor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ComboRenderBundleEncoderDescriptor.cpp; sourceTree = "<group>"; };
+		049546AC279F948800783C84 /* ScopedAutoreleasePool.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ScopedAutoreleasePool.mm; sourceTree = "<group>"; };
+		049546AD279F948800783C84 /* GLFWUtils_metal.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLFWUtils_metal.mm; sourceTree = "<group>"; };
+		049546AE279F948800783C84 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
+		049546AF279F948800783C84 /* GLFWUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLFWUtils.cpp; sourceTree = "<group>"; };
+		049546B0279F948800783C84 /* ComboRenderBundleEncoderDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComboRenderBundleEncoderDescriptor.h; sourceTree = "<group>"; };
+		049546B1279F948800783C84 /* TerribleCommandBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TerribleCommandBuffer.h; sourceTree = "<group>"; };
+		049546B2279F948800783C84 /* WGPUHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WGPUHelpers.h; sourceTree = "<group>"; };
+		049546B4279F948800783C84 /* WGPUHelpers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WGPUHelpers.cpp; sourceTree = "<group>"; };
+		049546B8279F948800783C84 /* TextureUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureUtils.h; sourceTree = "<group>"; };
+		049546B9279F948800783C84 /* ScopedAutoreleasePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScopedAutoreleasePool.h; sourceTree = "<group>"; };
+		049546BA279F948800783C84 /* SystemUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemUtils.h; sourceTree = "<group>"; };
+		049546BB279F948800783C84 /* GLFWUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLFWUtils.h; sourceTree = "<group>"; };
+		049546BC279F948800783C84 /* ObjCUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjCUtils.h; sourceTree = "<group>"; };
+		049546BD279F948900783C84 /* SystemUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SystemUtils.cpp; sourceTree = "<group>"; };
+		049546BE279F948900783C84 /* OSXTimer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OSXTimer.cpp; sourceTree = "<group>"; };
+		049546D7279F970E00783C84 /* WireHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WireHelper.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -776,6 +824,37 @@
 		043B7B5C278C4C5A00D5648F /* apps */ = {
 			isa = PBXGroup;
 			children = (
+				049546AE279F948800783C84 /* Timer.h */,
+				049546BE279F948900783C84 /* OSXTimer.cpp */,
+				049546A9279F948700783C84 /* BackendBinding.h */,
+				0495469E279F948700783C84 /* BackendBinding.cpp */,
+				049546A2279F948700783C84 /* NullBinding.cpp */,
+				049546A0279F948700783C84 /* MetalBinding.mm */,
+				0495469D279F948700783C84 /* EmptyDebugLogger.cpp */,
+				049546A3279F948700783C84 /* PlatformDebugLogger.h */,
+				049546B9279F948800783C84 /* ScopedAutoreleasePool.h */,
+				049546AC279F948800783C84 /* ScopedAutoreleasePool.mm */,
+				049546B1279F948800783C84 /* TerribleCommandBuffer.h */,
+				049546A5279F948700783C84 /* TerribleCommandBuffer.cpp */,
+				049546A6279F948700783C84 /* ComboRenderPipelineDescriptor.h */,
+				049546AA279F948700783C84 /* ComboRenderPipelineDescriptor.cpp */,
+				049546B0279F948800783C84 /* ComboRenderBundleEncoderDescriptor.h */,
+				049546AB279F948800783C84 /* ComboRenderBundleEncoderDescriptor.cpp */,
+				049546BB279F948800783C84 /* GLFWUtils.h */,
+				049546AF279F948800783C84 /* GLFWUtils.cpp */,
+				049546AD279F948800783C84 /* GLFWUtils_metal.mm */,
+				0495469B279F948700783C84 /* TestUtils.cpp */,
+				0495469C279F948700783C84 /* TestUtils.h */,
+				049546BC279F948800783C84 /* ObjCUtils.h */,
+				049546A4279F948700783C84 /* ObjCUtils.mm */,
+				049546BA279F948800783C84 /* SystemUtils.h */,
+				049546BD279F948900783C84 /* SystemUtils.cpp */,
+				049546A8279F948700783C84 /* TextureUtils.cpp */,
+				049546B8279F948800783C84 /* TextureUtils.h */,
+				049546D7279F970E00783C84 /* WireHelper.h */,
+				049546A1279F948700783C84 /* WireHelper.cpp */,
+				049546B2279F948800783C84 /* WGPUHelpers.h */,
+				049546B4279F948800783C84 /* WGPUHelpers.cpp */,
 				043B7B74278C841400D5648F /* apps.entitlements */,
 				043B7B65278C745300D5648F /* SampleUtils.cpp */,
 				043B7B64278C745300D5648F /* SampleUtils.h */,
@@ -1186,8 +1265,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				049546BF279F948900783C84 /* TestUtils.cpp in Sources */,
+				049546D0279F948900783C84 /* WGPUHelpers.cpp in Sources */,
+				049546CC279F948900783C84 /* ScopedAutoreleasePool.mm in Sources */,
+				049546C1279F948900783C84 /* BackendBinding.cpp in Sources */,
+				049546C7279F948900783C84 /* TerribleCommandBuffer.cpp in Sources */,
+				049546CE279F948900783C84 /* GLFWUtils.cpp in Sources */,
 				043B7B5E278C4C5A00D5648F /* main.cpp in Sources */,
+				049546D6279F959200783C84 /* ObjCUtils.mm in Sources */,
+				049546CA279F948900783C84 /* ComboRenderPipelineDescriptor.cpp in Sources */,
+				049546CB279F948900783C84 /* ComboRenderBundleEncoderDescriptor.cpp in Sources */,
+				049546CD279F948900783C84 /* GLFWUtils_metal.mm in Sources */,
 				043B7B66278C745300D5648F /* SampleUtils.cpp in Sources */,
+				049546C9279F948900783C84 /* TextureUtils.cpp in Sources */,
+				049546D5279F948900783C84 /* OSXTimer.cpp in Sources */,
+				049546C5279F948900783C84 /* NullBinding.cpp in Sources */,
+				049546C3279F948900783C84 /* MetalBinding.mm in Sources */,
+				049546C4279F948900783C84 /* WireHelper.cpp in Sources */,
+				049546C0279F948900783C84 /* EmptyDebugLogger.cpp in Sources */,
+				049546D4279F948900783C84 /* SystemUtils.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1452,6 +1548,7 @@
 		043B7B62278C4C5A00D5648F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_ENTITLEMENTS = apps/apps.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
@@ -1468,7 +1565,6 @@
 					"./third_party/dawn/cmake-debug/src/dawn_native",
 					"./third_party/dawn/cmake-debug/src/dawn_platform",
 					"./third_party/dawn/cmake-debug/src/dawn_wire",
-					"./third_party/dawn/cmake-debug/src/utils",
 					"./third_party/dawn/cmake-debug/third_party/tint/src",
 					"./third_party/dawn/cmake-debug/third_party/spirv-tools/source",
 					"./third_party/dawn/cmake-debug/third_party/spirv-tools/source/opt",
@@ -1498,7 +1594,6 @@
 					"-ldawn_proc",
 					"-ldawn_platform",
 					"-ldawn_wire",
-					"-ldawn_utils",
 					"-ltint",
 					"-ltint_diagnostic_utils",
 					"-lSPIRV-Tools",
@@ -1511,6 +1606,7 @@
 					./third_party/dawn/src,
 					./third_party/dawn/src/include,
 					./third_party/dawn/third_party/glfw/include,
+					"./third_party/dawn/third_party/vulkan-deps/spirv-tools/src/include",
 					"./third_party/dawn/cmake-debug/gen/src/include",
 				);
 				USE_HEADERMAP = NO;
@@ -1520,6 +1616,7 @@
 		043B7B63278C4C5A00D5648F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_ENTITLEMENTS = apps/apps.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
@@ -1536,7 +1633,6 @@
 					"./third_party/dawn/cmake-release/src/dawn_native",
 					"./third_party/dawn/cmake-release/src/dawn_platform",
 					"./third_party/dawn/cmake-release/src/dawn_wire",
-					"./third_party/dawn/cmake-release/src/utils",
 					"./third_party/dawn/cmake-release/third_party/tint/src",
 					"./third_party/dawn/cmake-release/third_party/spirv-tools/source",
 					"./third_party/dawn/cmake-release/third_party/spirv-tools/source/opt",
@@ -1566,7 +1662,6 @@
 					"-ldawn_proc",
 					"-ldawn_platform",
 					"-ldawn_wire",
-					"-ldawn_utils",
 					"-ltint",
 					"-ltint_diagnostic_utils",
 					"-lSPIRV-Tools",
@@ -1579,6 +1674,7 @@
 					./third_party/dawn/src,
 					./third_party/dawn/src/include,
 					./third_party/dawn/third_party/glfw/include,
+					"./third_party/dawn/third_party/vulkan-deps/spirv-tools/src/include",
 					"./third_party/dawn/cmake-release/gen/src/include",
 				);
 				USE_HEADERMAP = NO;
