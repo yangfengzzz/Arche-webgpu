@@ -179,6 +179,11 @@
 		0495463F279F89E500783C84 /* shader_data_group.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954638279F89E500783C84 /* shader_data_group.h */; };
 		04954640279F89E500783C84 /* shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954639279F89E500783C84 /* shader.cpp */; };
 		04954641279F89E500783C84 /* shader.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495463A279F89E500783C84 /* shader.h */; };
+		04954646279F8A7D00783C84 /* material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954644279F8A7D00783C84 /* material.cpp */; };
+		04954647279F8A7D00783C84 /* material.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954645279F8A7D00783C84 /* material.h */; };
+		0495464B279F8A8700783C84 /* render_face.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954648279F8A8700783C84 /* render_face.h */; };
+		0495464C279F8A8700783C84 /* render_queue_type.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954649279F8A8700783C84 /* render_queue_type.h */; };
+		0495464D279F8A8700783C84 /* blend_mode.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495464A279F8A8700783C84 /* blend_mode.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -394,6 +399,11 @@
 		04954638279F89E500783C84 /* shader_data_group.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_data_group.h; sourceTree = "<group>"; };
 		04954639279F89E500783C84 /* shader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader.cpp; sourceTree = "<group>"; };
 		0495463A279F89E500783C84 /* shader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader.h; sourceTree = "<group>"; };
+		04954644279F8A7D00783C84 /* material.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = material.cpp; sourceTree = "<group>"; };
+		04954645279F8A7D00783C84 /* material.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = material.h; sourceTree = "<group>"; };
+		04954648279F8A8700783C84 /* render_face.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render_face.h; sourceTree = "<group>"; };
+		04954649279F8A8700783C84 /* render_queue_type.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render_queue_type.h; sourceTree = "<group>"; };
+		0495464A279F8A8700783C84 /* blend_mode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = blend_mode.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -598,6 +608,7 @@
 				04128436279ED3A50071BD86 /* application.h */,
 				04128432279ED3A50071BD86 /* application.cpp */,
 				04128464279EDAF80071BD86 /* shader */,
+				04954642279F8A4400783C84 /* material */,
 			);
 			path = vox.render;
 			sourceTree = "<group>";
@@ -702,6 +713,26 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		04954642279F8A4400783C84 /* material */ = {
+			isa = PBXGroup;
+			children = (
+				04954643279F8A5000783C84 /* enums */,
+				04954645279F8A7D00783C84 /* material.h */,
+				04954644279F8A7D00783C84 /* material.cpp */,
+			);
+			path = material;
+			sourceTree = "<group>";
+		};
+		04954643279F8A5000783C84 /* enums */ = {
+			isa = PBXGroup;
+			children = (
+				0495464A279F8A8700783C84 /* blend_mode.h */,
+				04954648279F8A8700783C84 /* render_face.h */,
+				04954649279F8A8700783C84 /* render_queue_type.h */,
+			);
+			path = enums;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -802,13 +833,17 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0495464B279F8A8700783C84 /* render_face.h in Headers */,
 				0412845A279ED4B10071BD86 /* imgui.h in Headers */,
+				0495464C279F8A8700783C84 /* render_queue_type.h in Headers */,
 				04128447279ED3A60071BD86 /* engine.h in Headers */,
 				04128476279EEE760071BD86 /* depth_state.h in Headers */,
 				0495463F279F89E500783C84 /* shader_data_group.h in Headers */,
 				0412843E279ED3A60071BD86 /* window.h in Headers */,
 				0412843D279ED3A60071BD86 /* input_events.h in Headers */,
 				0495463C279F89E500783C84 /* shader_property.h in Headers */,
+				04954647279F8A7D00783C84 /* material.h in Headers */,
+				0495464D279F8A8700783C84 /* blend_mode.h in Headers */,
 				04954641279F89E500783C84 /* shader.h in Headers */,
 				0412845B279ED4B10071BD86 /* imgui_impl_glfw.h in Headers */,
 				0412845E279ED4B10071BD86 /* imstb_rectpack.h in Headers */,
@@ -1006,6 +1041,7 @@
 				04128440279ED3A60071BD86 /* application.cpp in Sources */,
 				04128475279EEE760071BD86 /* depth_state.cpp in Sources */,
 				04128449279ED3A60071BD86 /* engine.cpp in Sources */,
+				04954646279F8A7D00783C84 /* material.cpp in Sources */,
 				04128441279ED3A60071BD86 /* unix_engine.cpp in Sources */,
 				04954640279F89E500783C84 /* shader.cpp in Sources */,
 				04128443279ED3A60071BD86 /* timer.cpp in Sources */,
