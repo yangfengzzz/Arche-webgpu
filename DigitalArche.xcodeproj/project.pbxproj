@@ -187,6 +187,32 @@
 		04954652279F8AE900783C84 /* base_material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495464E279F8AE900783C84 /* base_material.cpp */; };
 		04954654279F8AE900783C84 /* base_material.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954650279F8AE900783C84 /* base_material.h */; };
 		04954655279F8AE900783C84 /* unlit_material.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954651279F8AE900783C84 /* unlit_material.h */; };
+		04954660279F8CBF00783C84 /* background.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495465F279F8CBF00783C84 /* background.h */; };
+		04954677279F8CD600783C84 /* transform.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954661279F8CD500783C84 /* transform.h */; };
+		04954678279F8CD600783C84 /* layer.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954662279F8CD500783C84 /* layer.h */; };
+		04954679279F8CD600783C84 /* transform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954663279F8CD500783C84 /* transform.cpp */; };
+		0495467A279F8CD600783C84 /* components_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954664279F8CD500783C84 /* components_manager.cpp */; };
+		0495467B279F8CD600783C84 /* entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954665279F8CD500783C84 /* entity.cpp */; };
+		0495467C279F8CD600783C84 /* components_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954666279F8CD500783C84 /* components_manager.h */; };
+		0495467D279F8CD600783C84 /* update_flag_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954667279F8CD500783C84 /* update_flag_manager.cpp */; };
+		0495467E279F8CD600783C84 /* update_flag.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954668279F8CD500783C84 /* update_flag.h */; };
+		0495467F279F8CD600783C84 /* entity.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954669279F8CD500783C84 /* entity.h */; };
+		04954680279F8CD600783C84 /* renderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495466A279F8CD500783C84 /* renderer.h */; };
+		04954681279F8CD600783C84 /* script.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495466B279F8CD500783C84 /* script.cpp */; };
+		04954682279F8CD600783C84 /* renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495466C279F8CD500783C84 /* renderer.cpp */; };
+		04954683279F8CD600783C84 /* update_flag.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495466D279F8CD500783C84 /* update_flag.cpp */; };
+		04954684279F8CD600783C84 /* scene_forward.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495466E279F8CD500783C84 /* scene_forward.h */; };
+		04954685279F8CD600783C84 /* scene.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495466F279F8CD500783C84 /* scene.h */; };
+		04954686279F8CD600783C84 /* scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954670279F8CD500783C84 /* scene.cpp */; };
+		04954687279F8CD600783C84 /* camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954671279F8CD500783C84 /* camera.cpp */; };
+		04954688279F8CD600783C84 /* camera.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954672279F8CD500783C84 /* camera.h */; };
+		04954689279F8CD600783C84 /* update_flag_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954673279F8CD600783C84 /* update_flag_manager.h */; };
+		0495468A279F8CD600783C84 /* script.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954674279F8CD600783C84 /* script.h */; };
+		0495468B279F8CD600783C84 /* std_helpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954675279F8CD600783C84 /* std_helpers.h */; };
+		0495468C279F8CD600783C84 /* component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954676279F8CD600783C84 /* component.cpp */; };
+		0495468E279F8D3700783C84 /* component.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495468D279F8D3700783C84 /* component.h */; };
+		04954691279F8D5E00783C84 /* render_element.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495468F279F8D5E00783C84 /* render_element.cpp */; };
+		04954692279F8D5E00783C84 /* render_element.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954690279F8D5E00783C84 /* render_element.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -411,6 +437,32 @@
 		0495464F279F8AE900783C84 /* unlit_material.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = unlit_material.cpp; sourceTree = "<group>"; };
 		04954650279F8AE900783C84 /* base_material.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base_material.h; sourceTree = "<group>"; };
 		04954651279F8AE900783C84 /* unlit_material.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unlit_material.h; sourceTree = "<group>"; };
+		0495465F279F8CBF00783C84 /* background.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = background.h; sourceTree = "<group>"; };
+		04954661279F8CD500783C84 /* transform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = transform.h; sourceTree = "<group>"; };
+		04954662279F8CD500783C84 /* layer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = layer.h; sourceTree = "<group>"; };
+		04954663279F8CD500783C84 /* transform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = transform.cpp; sourceTree = "<group>"; };
+		04954664279F8CD500783C84 /* components_manager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = components_manager.cpp; sourceTree = "<group>"; };
+		04954665279F8CD500783C84 /* entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = entity.cpp; sourceTree = "<group>"; };
+		04954666279F8CD500783C84 /* components_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = components_manager.h; sourceTree = "<group>"; };
+		04954667279F8CD500783C84 /* update_flag_manager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = update_flag_manager.cpp; sourceTree = "<group>"; };
+		04954668279F8CD500783C84 /* update_flag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = update_flag.h; sourceTree = "<group>"; };
+		04954669279F8CD500783C84 /* entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = entity.h; sourceTree = "<group>"; };
+		0495466A279F8CD500783C84 /* renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = renderer.h; sourceTree = "<group>"; };
+		0495466B279F8CD500783C84 /* script.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = script.cpp; sourceTree = "<group>"; };
+		0495466C279F8CD500783C84 /* renderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = renderer.cpp; sourceTree = "<group>"; };
+		0495466D279F8CD500783C84 /* update_flag.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = update_flag.cpp; sourceTree = "<group>"; };
+		0495466E279F8CD500783C84 /* scene_forward.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scene_forward.h; sourceTree = "<group>"; };
+		0495466F279F8CD500783C84 /* scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scene.h; sourceTree = "<group>"; };
+		04954670279F8CD500783C84 /* scene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene.cpp; sourceTree = "<group>"; };
+		04954671279F8CD500783C84 /* camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = camera.cpp; sourceTree = "<group>"; };
+		04954672279F8CD500783C84 /* camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = camera.h; sourceTree = "<group>"; };
+		04954673279F8CD600783C84 /* update_flag_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = update_flag_manager.h; sourceTree = "<group>"; };
+		04954674279F8CD600783C84 /* script.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = script.h; sourceTree = "<group>"; };
+		04954675279F8CD600783C84 /* std_helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = std_helpers.h; sourceTree = "<group>"; };
+		04954676279F8CD600783C84 /* component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = component.cpp; sourceTree = "<group>"; };
+		0495468D279F8D3700783C84 /* component.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = component.h; sourceTree = "<group>"; };
+		0495468F279F8D5E00783C84 /* render_element.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = render_element.cpp; sourceTree = "<group>"; };
+		04954690279F8D5E00783C84 /* render_element.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render_element.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -599,6 +651,7 @@
 		04128425279ED3510071BD86 /* vox.render */ = {
 			isa = PBXGroup;
 			children = (
+				04954675279F8CD600783C84 /* std_helpers.h */,
 				04128438279ED3A50071BD86 /* timer.h */,
 				04128435279ED3A50071BD86 /* timer.cpp */,
 				04128430279ED3A50071BD86 /* window.h */,
@@ -614,8 +667,32 @@
 				04128433279ED3A50071BD86 /* unix_engine.cpp */,
 				04128436279ED3A50071BD86 /* application.h */,
 				04128432279ED3A50071BD86 /* application.cpp */,
+				04954656279F8BDE00783C84 /* rendering */,
 				04128464279EDAF80071BD86 /* shader */,
 				04954642279F8A4400783C84 /* material */,
+				0495465F279F8CBF00783C84 /* background.h */,
+				04954662279F8CD500783C84 /* layer.h */,
+				04954668279F8CD500783C84 /* update_flag.h */,
+				0495466D279F8CD500783C84 /* update_flag.cpp */,
+				04954673279F8CD600783C84 /* update_flag_manager.h */,
+				04954667279F8CD500783C84 /* update_flag_manager.cpp */,
+				0495466E279F8CD500783C84 /* scene_forward.h */,
+				0495466F279F8CD500783C84 /* scene.h */,
+				04954670279F8CD500783C84 /* scene.cpp */,
+				04954669279F8CD500783C84 /* entity.h */,
+				04954665279F8CD500783C84 /* entity.cpp */,
+				04954666279F8CD500783C84 /* components_manager.h */,
+				04954664279F8CD500783C84 /* components_manager.cpp */,
+				0495468D279F8D3700783C84 /* component.h */,
+				04954676279F8CD600783C84 /* component.cpp */,
+				04954661279F8CD500783C84 /* transform.h */,
+				04954663279F8CD500783C84 /* transform.cpp */,
+				04954672279F8CD500783C84 /* camera.h */,
+				04954671279F8CD500783C84 /* camera.cpp */,
+				0495466A279F8CD500783C84 /* renderer.h */,
+				0495466C279F8CD500783C84 /* renderer.cpp */,
+				04954674279F8CD600783C84 /* script.h */,
+				0495466B279F8CD500783C84 /* script.cpp */,
 			);
 			path = vox.render;
 			sourceTree = "<group>";
@@ -744,6 +821,15 @@
 			path = enums;
 			sourceTree = "<group>";
 		};
+		04954656279F8BDE00783C84 /* rendering */ = {
+			isa = PBXGroup;
+			children = (
+				04954690279F8D5E00783C84 /* render_element.h */,
+				0495468F279F8D5E00783C84 /* render_element.cpp */,
+			);
+			path = rendering;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -848,9 +934,12 @@
 				0412845A279ED4B10071BD86 /* imgui.h in Headers */,
 				0495464C279F8A8700783C84 /* render_queue_type.h in Headers */,
 				04128447279ED3A60071BD86 /* engine.h in Headers */,
+				04954677279F8CD600783C84 /* transform.h in Headers */,
+				04954660279F8CBF00783C84 /* background.h in Headers */,
 				04128476279EEE760071BD86 /* depth_state.h in Headers */,
 				0495463F279F89E500783C84 /* shader_data_group.h in Headers */,
 				0412843E279ED3A60071BD86 /* window.h in Headers */,
+				04954689279F8CD600783C84 /* update_flag_manager.h in Headers */,
 				0412843D279ED3A60071BD86 /* input_events.h in Headers */,
 				0495463C279F89E500783C84 /* shader_property.h in Headers */,
 				04954647279F8A7D00783C84 /* material.h in Headers */,
@@ -862,17 +951,29 @@
 				04128472279EED090071BD86 /* stencil_state.h in Headers */,
 				04128462279ED4B10071BD86 /* imconfig.h in Headers */,
 				0412846E279EEB8B0071BD86 /* raster_state.h in Headers */,
+				04954688279F8CD600783C84 /* camera.h in Headers */,
 				04128446279ED3A60071BD86 /* timer.h in Headers */,
 				0412845F279ED4B10071BD86 /* imstb_textedit.h in Headers */,
+				0495468A279F8CD600783C84 /* script.h in Headers */,
 				0412845C279ED4B10071BD86 /* imstb_truetype.h in Headers */,
 				0412844A279ED3A60071BD86 /* unix_engine.h in Headers */,
 				0412843F279ED3A60071BD86 /* glfw_window.h in Headers */,
+				04954684279F8CD600783C84 /* scene_forward.h in Headers */,
+				0495467E279F8CD600783C84 /* update_flag.h in Headers */,
 				0412847A279EEEEC0071BD86 /* render_state.h in Headers */,
+				04954692279F8D5E00783C84 /* render_element.h in Headers */,
+				04954680279F8CD600783C84 /* renderer.h in Headers */,
+				0495468E279F8D3700783C84 /* component.h in Headers */,
+				04954678279F8CD600783C84 /* layer.h in Headers */,
 				04128444279ED3A60071BD86 /* application.h in Headers */,
+				04954685279F8CD600783C84 /* scene.h in Headers */,
 				04128460279ED4B10071BD86 /* imgui_internal.h in Headers */,
+				0495468B279F8CD600783C84 /* std_helpers.h in Headers */,
+				0495467C279F8CD600783C84 /* components_manager.h in Headers */,
 				04954655279F8AE900783C84 /* unlit_material.h in Headers */,
 				0412846A279EDB2C0071BD86 /* blend_state.h in Headers */,
 				0495463B279F89E500783C84 /* shader_data.h in Headers */,
+				0495467F279F8CD600783C84 /* entity.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1046,26 +1147,37 @@
 			buildActionMask = 2147483647;
 			files = (
 				04128469279EDB2C0071BD86 /* blend_state.cpp in Sources */,
+				04954691279F8D5E00783C84 /* render_element.cpp in Sources */,
 				04128442279ED3A60071BD86 /* window.cpp in Sources */,
 				04128479279EEEEC0071BD86 /* render_state.cpp in Sources */,
 				0495463E279F89E500783C84 /* shader_property.cpp in Sources */,
 				04128471279EED090071BD86 /* stencil_state.cpp in Sources */,
+				0495467B279F8CD600783C84 /* entity.cpp in Sources */,
 				0412846D279EEB8B0071BD86 /* raster_state.cpp in Sources */,
 				04128440279ED3A60071BD86 /* application.cpp in Sources */,
 				04128475279EEE760071BD86 /* depth_state.cpp in Sources */,
 				04128449279ED3A60071BD86 /* engine.cpp in Sources */,
+				04954686279F8CD600783C84 /* scene.cpp in Sources */,
 				04954646279F8A7D00783C84 /* material.cpp in Sources */,
 				04128441279ED3A60071BD86 /* unix_engine.cpp in Sources */,
+				04954682279F8CD600783C84 /* renderer.cpp in Sources */,
 				04954640279F89E500783C84 /* shader.cpp in Sources */,
+				04954679279F8CD600783C84 /* transform.cpp in Sources */,
 				04128443279ED3A60071BD86 /* timer.cpp in Sources */,
+				0495468C279F8CD600783C84 /* component.cpp in Sources */,
 				04128445279ED3A60071BD86 /* glfw_window.cpp in Sources */,
+				0495467A279F8CD600783C84 /* components_manager.cpp in Sources */,
 				04128461279ED4B10071BD86 /* imgui_draw.cpp in Sources */,
+				04954681279F8CD600783C84 /* script.cpp in Sources */,
 				0495463D279F89E500783C84 /* shader_data.cpp in Sources */,
 				04128458279ED4B10071BD86 /* imgui_tables.cpp in Sources */,
 				04954652279F8AE900783C84 /* base_material.cpp in Sources */,
 				04128459279ED4B10071BD86 /* imgui_widgets.cpp in Sources */,
+				04954683279F8CD600783C84 /* update_flag.cpp in Sources */,
+				0495467D279F8CD600783C84 /* update_flag_manager.cpp in Sources */,
 				04128448279ED3A60071BD86 /* input_events.cpp in Sources */,
 				0412845D279ED4B10071BD86 /* imgui.cpp in Sources */,
+				04954687279F8CD600783C84 /* camera.cpp in Sources */,
 				04128463279ED4B10071BD86 /* imgui_impl_glfw.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
