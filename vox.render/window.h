@@ -8,6 +8,7 @@
 
 #include <optional>
 #include <string>
+#include "utils/backend_binding.h"
 
 namespace vox {
 /**
@@ -98,6 +99,8 @@ public:
     const Extent &extent() const;
     
     Mode windowMode() const;
+    
+    virtual std::unique_ptr<BackendBinding> createMetalBinding(WGPUDevice device) = 0;
     
 protected:
     Properties _properties;

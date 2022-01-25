@@ -22,7 +22,7 @@
 namespace vox {
 class NullBinding : public BackendBinding {
 public:
-    NullBinding(GLFWwindow* window, wgpu::Device device) : BackendBinding(window, device) {
+    NullBinding(GLFWwindow* window, WGPUDevice device) : BackendBinding(window, device) {
     }
     
     uint64_t swapChainImplementation() override {
@@ -39,7 +39,7 @@ private:
     DawnSwapChainImplementation _swapchainImpl = {};
 };
 
-std::unique_ptr<BackendBinding> createNullBinding(GLFWwindow* window, wgpu::Device device) {
+std::unique_ptr<BackendBinding> createNullBinding(GLFWwindow* window, WGPUDevice device) {
     return std::make_unique<NullBinding>(window, device);
 }
 

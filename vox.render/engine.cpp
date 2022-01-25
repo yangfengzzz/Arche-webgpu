@@ -116,6 +116,11 @@ void Engine::resize(uint32_t win_width, uint32_t win_height,
     }
 }
 
+std::unique_ptr<RenderContext> Engine::createRenderContext(WGPUDevice device) {
+    _binding = _window->createMetalBinding(device);
+    return std::make_unique<RenderContext>(_binding.get(), 10, 10);
+}
+
 //MARK: - Application
 Window &Engine::window() const {
     return *_window;

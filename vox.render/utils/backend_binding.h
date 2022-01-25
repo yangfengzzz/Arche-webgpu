@@ -29,19 +29,19 @@ public:
     
     virtual WGPUTextureFormat preferredSwapChainTextureFormat() = 0;
     
-    wgpu::Device device();
+    WGPUDevice device();
     
 protected:
-    BackendBinding(GLFWwindow* window, wgpu::Device device);
+    BackendBinding(GLFWwindow* window, WGPUDevice device);
     
     GLFWwindow* _window = nullptr;
-    wgpu::Device _device = nullptr;
+    WGPUDevice _device = nullptr;
 };
 
 void discoverAdapter(dawn::native::Instance* instance,
                      GLFWwindow* window,
                      wgpu::BackendType type);
-std::unique_ptr<BackendBinding> createBinding(wgpu::BackendType type, GLFWwindow* window, wgpu::Device device);
+std::unique_ptr<BackendBinding> createBinding(wgpu::BackendType type, GLFWwindow* window, WGPUDevice device);
 
 }  // namespace vox
 

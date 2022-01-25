@@ -289,6 +289,26 @@ GlfwWindow::~GlfwWindow() {
     glfwTerminate();
 }
 
+std::unique_ptr<BackendBinding> GlfwWindow::createMetalBinding(WGPUDevice device) {
+    // Default to D3D12, Metal, Vulkan, OpenGL in that order as D3D12 and Metal are the preferred on
+    // their respective platforms, and Vulkan is preferred to OpenGL
+    #if defined(DAWN_ENABLE_BACKEND_D3D12)
+    static wgpu::BackendType backendType = wgpu::BackendType::D3D12;
+    #elif defined(DAWN_ENABLE_BACKEND_METAL)
+    static wgpu::BackendType backendType = wgpu::BackendType::Metal;
+    #elif defined(DAWN_ENABLE_BACKEND_VULKAN)
+    static wgpu::BackendType backendType = wgpu::BackendType::Vulkan;
+    #elif defined(DAWN_ENABLE_BACKEND_OPENGLES)
+    static wgpu::BackendType backendType = wgpu::BackendType::OpenGLES;
+    #elif defined(DAWN_ENABLE_BACKEND_DESKTOP_GL)
+    static wgpu::BackendType backendType = wgpu::BackendType::OpenGL;
+    #else
+    #    error
+    #endif
+    
+    return createBinding(backendType, _handle, device);
+}
+
 void GlfwWindow::_createGUIContext(const Window::Properties &properties) {
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();

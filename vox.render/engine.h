@@ -12,6 +12,7 @@
 
 #include "application.h"
 #include "window.h"
+#include "rendering/render_context.h"
 
 namespace vox {
 enum class ExitCode {
@@ -60,6 +61,8 @@ public:
                         uint32_t fb_width, uint32_t fb_height);
         
     virtual void inputEvent(const InputEvent &inputEvent);
+    
+    virtual std::unique_ptr<RenderContext> createRenderContext(WGPUDevice device);
         
 public:
     void setFocus(bool focused);
@@ -91,6 +94,8 @@ protected:
     std::unique_ptr<Window> _window{nullptr};
     
     std::unique_ptr<Application> _activeApp{nullptr};
+    
+    std::unique_ptr<BackendBinding> _binding{nullptr};
     
     /**
      * @brief Handles the creation of the window

@@ -32,6 +32,8 @@ public:
     
     float contentScaleFactor() const override;
     
+    std::unique_ptr<BackendBinding> createMetalBinding(WGPUDevice device) override;
+    
 private:
     void _createGUIContext(const Window::Properties &properties);
     
