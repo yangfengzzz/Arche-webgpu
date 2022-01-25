@@ -235,6 +235,12 @@
 		049546E4279FA7D800783C84 /* backend_binding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495469E279F948700783C84 /* backend_binding.cpp */; };
 		049546E5279FA7D800783C84 /* metal_binding.mm in Sources */ = {isa = PBXBuildFile; fileRef = 049546A0279F948700783C84 /* metal_binding.mm */; };
 		049546E6279FA7D800783C84 /* null_binding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049546A2279F948700783C84 /* null_binding.cpp */; };
+		049546ED279FC74800783C84 /* render_pass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049546EB279FC74800783C84 /* render_pass.cpp */; };
+		049546EE279FC74800783C84 /* render_pass.h in Headers */ = {isa = PBXBuildFile; fileRef = 049546EC279FC74800783C84 /* render_pass.h */; };
+		049546F1279FC75900783C84 /* subpass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049546EF279FC75900783C84 /* subpass.cpp */; };
+		049546F2279FC75900783C84 /* subpass.h in Headers */ = {isa = PBXBuildFile; fileRef = 049546F0279FC75900783C84 /* subpass.h */; };
+		049546F6279FC92B00783C84 /* forward_subpass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049546F4279FC92B00783C84 /* forward_subpass.cpp */; };
+		049546F7279FC92B00783C84 /* forward_subpass.h in Headers */ = {isa = PBXBuildFile; fileRef = 049546F5279FC92B00783C84 /* forward_subpass.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -522,6 +528,12 @@
 		049546DE279FA75E00783C84 /* BackendBinding.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BackendBinding.cpp; sourceTree = "<group>"; };
 		049546DF279FA75E00783C84 /* MetalBinding.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MetalBinding.mm; sourceTree = "<group>"; };
 		049546E0279FA75E00783C84 /* BackendBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackendBinding.h; sourceTree = "<group>"; };
+		049546EB279FC74800783C84 /* render_pass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = render_pass.cpp; sourceTree = "<group>"; };
+		049546EC279FC74800783C84 /* render_pass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = render_pass.h; sourceTree = "<group>"; };
+		049546EF279FC75900783C84 /* subpass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = subpass.cpp; sourceTree = "<group>"; };
+		049546F0279FC75900783C84 /* subpass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = subpass.h; sourceTree = "<group>"; };
+		049546F4279FC92B00783C84 /* forward_subpass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = forward_subpass.cpp; sourceTree = "<group>"; };
+		049546F5279FC92B00783C84 /* forward_subpass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = forward_subpass.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -915,6 +927,11 @@
 		04954656279F8BDE00783C84 /* rendering */ = {
 			isa = PBXGroup;
 			children = (
+				049546EC279FC74800783C84 /* render_pass.h */,
+				049546EB279FC74800783C84 /* render_pass.cpp */,
+				049546F0279FC75900783C84 /* subpass.h */,
+				049546EF279FC75900783C84 /* subpass.cpp */,
+				049546F3279FC76500783C84 /* subpasses */,
 				04954690279F8D5E00783C84 /* render_element.h */,
 				0495468F279F8D5E00783C84 /* render_element.cpp */,
 				049546D9279FA0F200783C84 /* render_context.h */,
@@ -932,6 +949,15 @@
 				049546A2279F948700783C84 /* null_binding.cpp */,
 			);
 			path = utils;
+			sourceTree = "<group>";
+		};
+		049546F3279FC76500783C84 /* subpasses */ = {
+			isa = PBXGroup;
+			children = (
+				049546F5279FC92B00783C84 /* forward_subpass.h */,
+				049546F4279FC92B00783C84 /* forward_subpass.cpp */,
+			);
+			path = subpasses;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1048,7 +1074,9 @@
 				0495463C279F89E500783C84 /* shader_property.h in Headers */,
 				04954647279F8A7D00783C84 /* material.h in Headers */,
 				0495464D279F8A8700783C84 /* blend_mode.h in Headers */,
+				049546F7279FC92B00783C84 /* forward_subpass.h in Headers */,
 				04954641279F89E500783C84 /* shader.h in Headers */,
+				049546EE279FC74800783C84 /* render_pass.h in Headers */,
 				0412845B279ED4B10071BD86 /* imgui_impl_glfw.h in Headers */,
 				0412845E279ED4B10071BD86 /* imstb_rectpack.h in Headers */,
 				049546DB279FA0F200783C84 /* render_context.h in Headers */,
@@ -1072,6 +1100,7 @@
 				04954678279F8CD600783C84 /* layer.h in Headers */,
 				04128444279ED3A60071BD86 /* application.h in Headers */,
 				04954685279F8CD600783C84 /* scene.h in Headers */,
+				049546F2279FC75900783C84 /* subpass.h in Headers */,
 				04128460279ED4B10071BD86 /* imgui_internal.h in Headers */,
 				0495468B279F8CD600783C84 /* std_helpers.h in Headers */,
 				0495467C279F8CD600783C84 /* components_manager.h in Headers */,
@@ -1260,6 +1289,7 @@
 				04128471279EED090071BD86 /* stencil_state.cpp in Sources */,
 				049546E4279FA7D800783C84 /* backend_binding.cpp in Sources */,
 				0495467B279F8CD600783C84 /* entity.cpp in Sources */,
+				049546F6279FC92B00783C84 /* forward_subpass.cpp in Sources */,
 				0412846D279EEB8B0071BD86 /* raster_state.cpp in Sources */,
 				04128440279ED3A60071BD86 /* application.cpp in Sources */,
 				04128475279EEE760071BD86 /* depth_state.cpp in Sources */,
@@ -1275,12 +1305,14 @@
 				0495468C279F8CD600783C84 /* component.cpp in Sources */,
 				04128445279ED3A60071BD86 /* glfw_window.cpp in Sources */,
 				0495467A279F8CD600783C84 /* components_manager.cpp in Sources */,
+				049546F1279FC75900783C84 /* subpass.cpp in Sources */,
 				04128461279ED4B10071BD86 /* imgui_draw.cpp in Sources */,
 				04954681279F8CD600783C84 /* script.cpp in Sources */,
 				049546DA279FA0F200783C84 /* render_context.cpp in Sources */,
 				0495463D279F89E500783C84 /* shader_data.cpp in Sources */,
 				04128458279ED4B10071BD86 /* imgui_tables.cpp in Sources */,
 				04954652279F8AE900783C84 /* base_material.cpp in Sources */,
+				049546ED279FC74800783C84 /* render_pass.cpp in Sources */,
 				04128459279ED4B10071BD86 /* imgui_widgets.cpp in Sources */,
 				04954683279F8CD600783C84 /* update_flag.cpp in Sources */,
 				0495467D279F8CD600783C84 /* update_flag_manager.cpp in Sources */,
