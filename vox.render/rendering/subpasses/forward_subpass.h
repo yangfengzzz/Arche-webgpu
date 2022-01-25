@@ -26,6 +26,8 @@ private:
                       const std::vector<RenderElement> &items);
     
     wgpu::RenderPipelineDescriptor _forwardPipelineDescriptor;
+    std::unique_ptr<wgpu::DepthStencilState> _depthStencil{nullptr};
+    std::unique_ptr<wgpu::FragmentState> _fragment{nullptr};
 };
 
 }

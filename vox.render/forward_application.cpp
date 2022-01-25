@@ -22,8 +22,8 @@ bool ForwardApplication::prepare(Engine &engine) {
     auto extent = engine.window().extent();
     loadScene(extent.width, extent.height);
     
-//    _shadowManager = std::make_unique<ShadowManager>(_library, _scene.get(), _mainCamera);
-
+    //    _shadowManager = std::make_unique<ShadowManager>(_library, _scene.get(), _mainCamera);
+    
     // Create a render pass descriptor for thelighting and composition pass
     // Whatever rendered in the final pass needs to be stored so it can be displayed
     _colorAttachments = std::make_unique<wgpu::RenderPassColorAttachment>();
@@ -40,9 +40,9 @@ bool ForwardApplication::prepare(Engine &engine) {
     _depthStencilAttachment->stencilLoadOp = wgpu::LoadOp::Clear;
     _renderPass = std::make_unique<RenderPass>(_renderPassDescriptor);
     _renderPass->addSubpass(std::make_unique<ForwardSubpass>(_renderContext.get(), _scene.get(), _mainCamera));
-//    if (_gui) {
-//        _renderPass->setGUI(_gui.get());
-//    }
+    //    if (_gui) {
+    //        _renderPass->setGUI(_gui.get());
+    //    }
     
     return true;
 }
@@ -51,14 +51,14 @@ void ForwardApplication::update(float delta_time) {
     GraphicsApplication::update(delta_time);
     _scene->update(delta_time);
     _scene->updateShaderData();
-
+    
     wgpu::CommandEncoder commandEncoder = _device.CreateCommandEncoder();
-//    _shadowManager->draw(commandBuffer);
+    //    _shadowManager->draw(commandBuffer);
     
     // Render the lighting and composition pass
     _colorAttachments->view = _renderContext->currentDrawableTexture();
     _depthStencilAttachment->view = _renderContext->depthStencilTexture();
-
+    
     _renderPass->draw(commandEncoder, "Lighting & Composition Pass");
     // Finalize rendering here & push the command buffer to the GPU
     wgpu::CommandBuffer commands = commandEncoder.Finish();
