@@ -100,7 +100,7 @@ public:
     
     Mode windowMode() const;
     
-    virtual std::unique_ptr<BackendBinding> createMetalBinding(WGPUDevice device) = 0;
+    virtual std::unique_ptr<BackendBinding> createMetalBinding(wgpu::Device& device) = 0;
     
 protected:
     Properties _properties;

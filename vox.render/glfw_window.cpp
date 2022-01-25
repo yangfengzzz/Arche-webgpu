@@ -289,7 +289,7 @@ GlfwWindow::~GlfwWindow() {
     glfwTerminate();
 }
 
-std::unique_ptr<BackendBinding> GlfwWindow::createMetalBinding(WGPUDevice device) {
+std::unique_ptr<BackendBinding> GlfwWindow::createMetalBinding(wgpu::Device& device) {
     // Default to D3D12, Metal, Vulkan, OpenGL in that order as D3D12 and Metal are the preferred on
     // their respective platforms, and Vulkan is preferred to OpenGL
     #if defined(DAWN_ENABLE_BACKEND_D3D12)

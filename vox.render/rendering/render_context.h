@@ -13,30 +13,32 @@
 namespace vox {
 class RenderContext {
 public:
-    static constexpr wgpu::TextureFormat DEPTH_STENCIL_TEXTURE_FORMAT = wgpu::TextureFormat::Depth24PlusStencil8;
-    static constexpr wgpu::TextureFormat DRAWBLE_TEXTURE_FORMAT = wgpu::TextureFormat::BGRA8Unorm;
-    
     RenderContext(BackendBinding* binding, uint32_t width, uint32_t height);
     
-    wgpu::Device device();
+    wgpu::Device& device();
     
+    void resize(uint32_t width, uint32_t height);
+
     wgpu::TextureView currentDrawableTexture();
+    
+    wgpu::TextureFormat drawableTextureFormat();
 
     wgpu::TextureView depthStencilTexture();
     
-    void resize(uint32_t width, uint32_t height);
+    wgpu::TextureFormat depthStencilTextureFormat();
         
 private:
     wgpu::TextureView _createDepthStencilView(uint32_t width, uint32_t height);
     
 private:
-    wgpu::Device _device;
+    BackendBinding* _binding{nullptr};
     uint32_t _width;
     uint32_t _height;
     bool _isDirty{false};
     
     wgpu::SwapChain _swapchain;
     wgpu::TextureView _depthStencilTexture;
+    wgpu::TextureFormat _depthStencilTextureFormat = wgpu::TextureFormat::Depth24PlusStencil8;
 };
 
 }

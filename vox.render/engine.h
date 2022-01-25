@@ -62,7 +62,7 @@ public:
         
     virtual void inputEvent(const InputEvent &inputEvent);
     
-    virtual std::unique_ptr<RenderContext> createRenderContext(WGPUDevice device);
+    virtual std::unique_ptr<RenderContext> createRenderContext(wgpu::Device& device);
         
 public:
     void setFocus(bool focused);
