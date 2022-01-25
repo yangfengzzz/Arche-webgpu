@@ -1,6 +1,23 @@
 #!/bin/bash
 set -x
 
+# Dawn #####################################
+cd dawn
+cp scripts/standalone.gclient .gclient
+gclient sync
+
+mkdir cmake-release
+cd cmake-release
+cmake -DCMAKE_BUILD_TYPE=Release .. 
+make -j5
+cd ..
+
+mkdir cmake-debug
+cd cmake-debug
+cmake -DCMAKE_BUILD_TYPE=Debug ..
+make -j5
+cd ../..
+
 # PhysX #################################### 
 # cd physx/physx
 # ./generate_projects.sh linux

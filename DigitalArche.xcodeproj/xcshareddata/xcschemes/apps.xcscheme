@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "043B7B59278C4C5A00D5648F"
-               BuildableName = "DigitalArche"
+               BuildableName = "apps"
                BlueprintName = "apps"
                ReferencedContainer = "container:DigitalArche.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "043B7B59278C4C5A00D5648F"
-            BuildableName = "DigitalArche"
+            BuildableName = "apps"
             BlueprintName = "apps"
             ReferencedContainer = "container:DigitalArche.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "043B7B59278C4C5A00D5648F"
-            BuildableName = "DigitalArche"
+            BuildableName = "apps"
             BlueprintName = "apps"
             ReferencedContainer = "container:DigitalArche.xcodeproj">
          </BuildableReference>
