@@ -241,6 +241,8 @@
 		049546F2279FC75900783C84 /* subpass.h in Headers */ = {isa = PBXBuildFile; fileRef = 049546F0279FC75900783C84 /* subpass.h */; };
 		049546F6279FC92B00783C84 /* forward_subpass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049546F4279FC92B00783C84 /* forward_subpass.cpp */; };
 		049546F7279FC92B00783C84 /* forward_subpass.h in Headers */ = {isa = PBXBuildFile; fileRef = 049546F5279FC92B00783C84 /* forward_subpass.h */; };
+		049546FA279FC9B400783C84 /* graphics_application.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049546F8279FC9B400783C84 /* graphics_application.cpp */; };
+		049546FB279FC9B400783C84 /* graphics_application.h in Headers */ = {isa = PBXBuildFile; fileRef = 049546F9279FC9B400783C84 /* graphics_application.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -534,6 +536,8 @@
 		049546F0279FC75900783C84 /* subpass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = subpass.h; sourceTree = "<group>"; };
 		049546F4279FC92B00783C84 /* forward_subpass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = forward_subpass.cpp; sourceTree = "<group>"; };
 		049546F5279FC92B00783C84 /* forward_subpass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = forward_subpass.h; sourceTree = "<group>"; };
+		049546F8279FC9B400783C84 /* graphics_application.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = graphics_application.cpp; sourceTree = "<group>"; };
+		049546F9279FC9B400783C84 /* graphics_application.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = graphics_application.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -738,6 +742,8 @@
 				04128433279ED3A50071BD86 /* unix_engine.cpp */,
 				04128436279ED3A50071BD86 /* application.h */,
 				04128432279ED3A50071BD86 /* application.cpp */,
+				049546F9279FC9B400783C84 /* graphics_application.h */,
+				049546F8279FC9B400783C84 /* graphics_application.cpp */,
 				049546DC279FA2CC00783C84 /* utils */,
 				04954656279F8BDE00783C84 /* rendering */,
 				04128464279EDAF80071BD86 /* shader */,
@@ -1063,6 +1069,7 @@
 				0495464B279F8A8700783C84 /* render_face.h in Headers */,
 				0412845A279ED4B10071BD86 /* imgui.h in Headers */,
 				0495464C279F8A8700783C84 /* render_queue_type.h in Headers */,
+				049546FB279FC9B400783C84 /* graphics_application.h in Headers */,
 				04128447279ED3A60071BD86 /* engine.h in Headers */,
 				04954677279F8CD600783C84 /* transform.h in Headers */,
 				04954660279F8CBF00783C84 /* background.h in Headers */,
@@ -1301,6 +1308,7 @@
 				04954682279F8CD600783C84 /* renderer.cpp in Sources */,
 				04954640279F89E500783C84 /* shader.cpp in Sources */,
 				04954679279F8CD600783C84 /* transform.cpp in Sources */,
+				049546FA279FC9B400783C84 /* graphics_application.cpp in Sources */,
 				04128443279ED3A60071BD86 /* timer.cpp in Sources */,
 				0495468C279F8CD600783C84 /* component.cpp in Sources */,
 				04128445279ED3A60071BD86 /* glfw_window.cpp in Sources */,

@@ -118,7 +118,9 @@ void Engine::resize(uint32_t win_width, uint32_t win_height,
 
 std::unique_ptr<RenderContext> Engine::createRenderContext(wgpu::Device& device) {
     _binding = _window->createMetalBinding(device);
-    return std::make_unique<RenderContext>(_binding.get(), 10, 10);
+    auto extent = _window->extent();
+    auto scale = _window->contentScaleFactor();
+    return std::make_unique<RenderContext>(_binding.get(), extent.width * scale, extent.height * scale);
 }
 
 //MARK: - Application
