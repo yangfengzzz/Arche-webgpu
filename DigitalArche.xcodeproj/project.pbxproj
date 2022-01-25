@@ -230,6 +230,8 @@
 		049546D4279F948900783C84 /* SystemUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049546BD279F948900783C84 /* SystemUtils.cpp */; };
 		049546D5279F948900783C84 /* OSXTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049546BE279F948900783C84 /* OSXTimer.cpp */; };
 		049546D6279F959200783C84 /* ObjCUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 049546A4279F948700783C84 /* ObjCUtils.mm */; };
+		049546DA279FA0F200783C84 /* render_context.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049546D8279FA0F200783C84 /* render_context.cpp */; };
+		049546DB279FA0F200783C84 /* render_context.h in Headers */ = {isa = PBXBuildFile; fileRef = 049546D9279FA0F200783C84 /* render_context.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -511,6 +513,8 @@
 		049546BD279F948900783C84 /* SystemUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SystemUtils.cpp; sourceTree = "<group>"; };
 		049546BE279F948900783C84 /* OSXTimer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OSXTimer.cpp; sourceTree = "<group>"; };
 		049546D7279F970E00783C84 /* WireHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WireHelper.h; sourceTree = "<group>"; };
+		049546D8279FA0F200783C84 /* render_context.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = render_context.cpp; sourceTree = "<group>"; };
+		049546D9279FA0F200783C84 /* render_context.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = render_context.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -715,6 +719,7 @@
 				04128433279ED3A50071BD86 /* unix_engine.cpp */,
 				04128436279ED3A50071BD86 /* application.h */,
 				04128432279ED3A50071BD86 /* application.cpp */,
+				049546DC279FA2CC00783C84 /* utils */,
 				04954656279F8BDE00783C84 /* rendering */,
 				04128464279EDAF80071BD86 /* shader */,
 				04954642279F8A4400783C84 /* material */,
@@ -905,8 +910,17 @@
 			children = (
 				04954690279F8D5E00783C84 /* render_element.h */,
 				0495468F279F8D5E00783C84 /* render_element.cpp */,
+				049546D9279FA0F200783C84 /* render_context.h */,
+				049546D8279FA0F200783C84 /* render_context.cpp */,
 			);
 			path = rendering;
+			sourceTree = "<group>";
+		};
+		049546DC279FA2CC00783C84 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1026,6 +1040,7 @@
 				04954641279F89E500783C84 /* shader.h in Headers */,
 				0412845B279ED4B10071BD86 /* imgui_impl_glfw.h in Headers */,
 				0412845E279ED4B10071BD86 /* imstb_rectpack.h in Headers */,
+				049546DB279FA0F200783C84 /* render_context.h in Headers */,
 				04954654279F8AE900783C84 /* base_material.h in Headers */,
 				04128472279EED090071BD86 /* stencil_state.h in Headers */,
 				04128462279ED4B10071BD86 /* imconfig.h in Headers */,
@@ -1248,6 +1263,7 @@
 				0495467A279F8CD600783C84 /* components_manager.cpp in Sources */,
 				04128461279ED4B10071BD86 /* imgui_draw.cpp in Sources */,
 				04954681279F8CD600783C84 /* script.cpp in Sources */,
+				049546DA279FA0F200783C84 /* render_context.cpp in Sources */,
 				0495463D279F89E500783C84 /* shader_data.cpp in Sources */,
 				04128458279ED4B10071BD86 /* imgui_tables.cpp in Sources */,
 				04954652279F8AE900783C84 /* base_material.cpp in Sources */,
