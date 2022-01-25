@@ -8,7 +8,7 @@
 #ifndef render_context_hpp
 #define render_context_hpp
 
-#include <dawn/webgpu_cpp.h>
+#include "utils/backend_binding.h"
 
 namespace vox {
 class RenderContext {
@@ -16,9 +16,9 @@ public:
     static constexpr wgpu::TextureFormat DEPTH_STENCIL_TEXTURE_FORMAT = wgpu::TextureFormat::Depth24PlusStencil8;
     static constexpr wgpu::TextureFormat DRAWBLE_TEXTURE_FORMAT = wgpu::TextureFormat::BGRA8Unorm;
     
-    RenderContext(wgpu::Device& device, uint32_t width, uint32_t height);
+    RenderContext(BackendBinding* binding, uint32_t width, uint32_t height);
     
-    wgpu::Device &device();
+    wgpu::Device device();
     
     wgpu::TextureView currentDrawableTexture();
 
@@ -30,7 +30,7 @@ private:
     wgpu::TextureView _createDepthStencilView(uint32_t width, uint32_t height);
     
 private:
-    wgpu::Device& _device;
+    wgpu::Device _device;
     uint32_t _width;
     uint32_t _height;
     bool _isDirty{false};

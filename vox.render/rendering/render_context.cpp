@@ -8,16 +8,19 @@
 #include "render_context.h"
 
 namespace vox {
-RenderContext::RenderContext(wgpu::Device& device, uint32_t width, uint32_t height):
-_device(device),
+RenderContext::RenderContext(BackendBinding* binding, uint32_t width, uint32_t height):
+_device(binding->device()),
 _width(width),
 _height(height) {
+    wgpu::SwapChainDescriptor swapChainDesc;
+    swapChainDesc.implementation = binding->swapChainImplementation();
+    _swapchain = _device.CreateSwapChain(nullptr, &swapChainDesc);
     
     _swapchain.Configure(DRAWBLE_TEXTURE_FORMAT, wgpu::TextureUsage::RenderAttachment, _width, _height);
     _depthStencilTexture = _createDepthStencilView(_width, _height);
 }
 
-wgpu::Device &RenderContext::device() {
+wgpu::Device RenderContext::device() {
     return _device;
 }
 

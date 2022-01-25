@@ -29,17 +29,17 @@ class SwapChainImplMTL {
 public:
     using WSIContext = DawnWSIContextMetal;
     
-    SwapChainImplMTL(id nsWindow) : mNsWindow(nsWindow) {
+    SwapChainImplMTL(id nsWindow) : _nsWindow(nsWindow) {
     }
     
     ~SwapChainImplMTL() {
-        [mCurrentTexture release];
-        [mCurrentDrawable release];
+        [_currentTexture release];
+        [_currentDrawable release];
     }
     
     void Init(DawnWSIContextMetal* ctx) {
-        mMtlDevice = ctx->device;
-        mCommandQueue = ctx->queue;
+        _mtlDevice = ctx->device;
+        _commandQueue = ctx->queue;
     }
     
     DawnSwapChainError Configure(WGPUTextureFormat format,
@@ -52,60 +52,60 @@ public:
         ASSERT(width > 0);
         ASSERT(height > 0);
         
-        NSView* contentView = [mNsWindow contentView];
+        NSView* contentView = [_nsWindow contentView];
         [contentView setWantsLayer:YES];
         
         CGSize size = {};
         size.width = width;
         size.height = height;
         
-        mLayer = [CAMetalLayer layer];
-        [mLayer setDevice:mMtlDevice];
-        [mLayer setPixelFormat:MTLPixelFormatBGRA8Unorm];
-        [mLayer setDrawableSize:size];
+        _layer = [CAMetalLayer layer];
+        [_layer setDevice:_mtlDevice];
+        [_layer setPixelFormat:MTLPixelFormatBGRA8Unorm];
+        [_layer setDrawableSize:size];
         
         constexpr uint32_t kFramebufferOnlyTextureUsages =
         WGPUTextureUsage_RenderAttachment | WGPUTextureUsage_Present;
         bool hasOnlyFramebufferUsages = !(usage & (~kFramebufferOnlyTextureUsages));
         if (hasOnlyFramebufferUsages) {
-            [mLayer setFramebufferOnly:YES];
+            [_layer setFramebufferOnly:YES];
         }
         
-        [contentView setLayer:mLayer];
+        [contentView setLayer:_layer];
         
         return DAWN_SWAP_CHAIN_NO_ERROR;
     }
     
     DawnSwapChainError GetNextTexture(DawnSwapChainNextTexture* nextTexture) {
-        [mCurrentDrawable release];
-        mCurrentDrawable = [mLayer nextDrawable];
-        [mCurrentDrawable retain];
+        [_currentDrawable release];
+        _currentDrawable = [_layer nextDrawable];
+        [_currentDrawable retain];
         
-        [mCurrentTexture release];
-        mCurrentTexture = mCurrentDrawable.texture;
-        [mCurrentTexture retain];
+        [_currentTexture release];
+        _currentTexture = _currentDrawable.texture;
+        [_currentTexture retain];
         
-        nextTexture->texture.ptr = reinterpret_cast<void*>(mCurrentTexture);
+        nextTexture->texture.ptr = reinterpret_cast<void*>(_currentTexture);
         
         return DAWN_SWAP_CHAIN_NO_ERROR;
     }
     
     DawnSwapChainError Present() {
-        id<MTLCommandBuffer> commandBuffer = [mCommandQueue commandBuffer];
-        [commandBuffer presentDrawable:mCurrentDrawable];
+        id<MTLCommandBuffer> commandBuffer = [_commandQueue commandBuffer];
+        [commandBuffer presentDrawable:_currentDrawable];
         [commandBuffer commit];
         
         return DAWN_SWAP_CHAIN_NO_ERROR;
     }
     
 private:
-    id mNsWindow = nil;
-    id<MTLDevice> mMtlDevice = nil;
-    id<MTLCommandQueue> mCommandQueue = nil;
+    id _nsWindow = nil;
+    id<MTLDevice> _mtlDevice = nil;
+    id<MTLCommandQueue> _commandQueue = nil;
     
-    CAMetalLayer* mLayer = nullptr;
-    id<CAMetalDrawable> mCurrentDrawable = nil;
-    id<MTLTexture> mCurrentTexture = nil;
+    CAMetalLayer* _layer = nullptr;
+    id<CAMetalDrawable> _currentDrawable = nil;
+    id<MTLTexture> _currentTexture = nil;
 };
 
 class MetalBinding : public BackendBinding {
@@ -114,10 +114,10 @@ public:
     }
     
     uint64_t swapChainImplementation() override {
-        if (mSwapchainImpl.userData == nullptr) {
-            mSwapchainImpl = CreateSwapChainImplementation(new SwapChainImplMTL(glfwGetCocoaWindow(mWindow)));
+        if (_swapchainImpl.userData == nullptr) {
+            _swapchainImpl = CreateSwapChainImplementation(new SwapChainImplMTL(glfwGetCocoaWindow(_window)));
         }
-        return reinterpret_cast<uint64_t>(&mSwapchainImpl);
+        return reinterpret_cast<uint64_t>(&_swapchainImpl);
     }
     
     WGPUTextureFormat preferredSwapChainTextureFormat() override {
@@ -125,10 +125,10 @@ public:
     }
     
 private:
-    DawnSwapChainImplementation mSwapchainImpl = {};
+    DawnSwapChainImplementation _swapchainImpl = {};
 };
 
-BackendBinding* createMetalBinding(GLFWwindow* window, wgpu::Device device) {
-    return new MetalBinding(window, device);
+std::unique_ptr<BackendBinding> createMetalBinding(GLFWwindow* window, wgpu::Device device) {
+    return std::make_unique<MetalBinding>(window, device);
 }
 }

@@ -26,21 +26,21 @@ public:
     }
     
     uint64_t swapChainImplementation() override {
-        if (mSwapchainImpl.userData == nullptr) {
-            mSwapchainImpl = dawn::native::null::CreateNativeSwapChainImpl();
+        if (_swapchainImpl.userData == nullptr) {
+            _swapchainImpl = dawn::native::null::CreateNativeSwapChainImpl();
         }
-        return reinterpret_cast<uint64_t>(&mSwapchainImpl);
+        return reinterpret_cast<uint64_t>(&_swapchainImpl);
     }
     WGPUTextureFormat preferredSwapChainTextureFormat() override {
         return WGPUTextureFormat_RGBA8Unorm;
     }
     
 private:
-    DawnSwapChainImplementation mSwapchainImpl = {};
+    DawnSwapChainImplementation _swapchainImpl = {};
 };
 
-BackendBinding* CreateNullBinding(GLFWwindow* window, wgpu::Device device) {
-    return new NullBinding(window, device);
+std::unique_ptr<BackendBinding> createNullBinding(GLFWwindow* window, wgpu::Device device) {
+    return std::make_unique<NullBinding>(window, device);
 }
 
 }  // namespace vox

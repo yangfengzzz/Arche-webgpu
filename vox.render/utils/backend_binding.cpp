@@ -24,23 +24,27 @@
 
 namespace vox {
 #if defined(DAWN_ENABLE_BACKEND_D3D12)
-BackendBinding* createD3D12Binding(GLFWwindow* window, wgpu::Device device);
+std::unique_ptr<BackendBinding> createD3D12Binding(GLFWwindow* window, wgpu::Device device);
 #endif
 #if defined(DAWN_ENABLE_BACKEND_METAL)
-BackendBinding* createMetalBinding(GLFWwindow* window, wgpu::Device device);
+std::unique_ptr<BackendBinding> createMetalBinding(GLFWwindow* window, wgpu::Device device);
 #endif
 #if defined(DAWN_ENABLE_BACKEND_NULL)
-BackendBinding* createNullBinding(GLFWwindow* window, wgpu::Device device);
+std::unique_ptr<BackendBinding> createNullBinding(GLFWwindow* window, wgpu::Device device);
 #endif
 #if defined(DAWN_ENABLE_BACKEND_OPENGL)
-BackendBinding* createOpenGLBinding(GLFWwindow* window, wgpu::Device device);
+std::unique_ptr<BackendBinding> createOpenGLBinding(GLFWwindow* window, wgpu::Device device);
 #endif
 #if defined(DAWN_ENABLE_BACKEND_VULKAN)
-BackendBinding* createVulkanBinding(GLFWwindow* window, wgpu::Device device);
+std::unique_ptr<BackendBinding> createVulkanBinding(GLFWwindow* window, wgpu::Device device);
 #endif
 
 BackendBinding::BackendBinding(GLFWwindow* window, wgpu::Device device)
-: mWindow(window), mDevice(device) {
+: _window(window), _device(device) {
+}
+
+wgpu::Device BackendBinding::device() {
+    return _device;
 }
 
 void discoverAdapter(dawn::native::Instance* instance,
@@ -68,7 +72,8 @@ void discoverAdapter(dawn::native::Instance* instance,
     }
 }
 
-BackendBinding* createBinding(wgpu::BackendType type, GLFWwindow* window, wgpu::Device device) {
+std::unique_ptr<BackendBinding> createBinding(wgpu::BackendType type,
+                                              GLFWwindow* window, wgpu::Device device) {
     switch (type) {
 #if defined(DAWN_ENABLE_BACKEND_D3D12)
         case wgpu::BackendType::D3D12:
