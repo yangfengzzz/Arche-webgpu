@@ -26,6 +26,8 @@ public:
     wgpu::TextureView depthStencilTexture();
     
     wgpu::TextureFormat depthStencilTextureFormat();
+    
+    void present();
         
 private:
     wgpu::TextureView _createDepthStencilView(uint32_t width, uint32_t height);

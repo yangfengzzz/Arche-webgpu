@@ -17,7 +17,7 @@
 #include "camera.h"
 
 namespace vox {
-Scene::Scene(wgpu::Device *device) :
+Scene::Scene(wgpu::Device &device) :
 _device(device) {
 //_ambientLight(this) {
 //    _vertexUploader = {
@@ -92,7 +92,7 @@ _device(device) {
 //    _ambientLight.registerUploader(this);
 }
 
-wgpu::Device *Scene::device() {
+wgpu::Device &Scene::device() {
     return _device;
 }
 

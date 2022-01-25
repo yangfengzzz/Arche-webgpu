@@ -54,6 +54,7 @@ bool GraphicsApplication::prepare(Engine &engine) {
     LOG(INFO) << "Initializing Metal Application";
     
     _createCppDawnDevice();
+    _queue = _device.GetQueue();
     _renderContext = engine.createRenderContext(_device);
     return true;
 }

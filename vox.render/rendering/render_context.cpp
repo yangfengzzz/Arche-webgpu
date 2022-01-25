@@ -53,6 +53,10 @@ wgpu::TextureFormat RenderContext::depthStencilTextureFormat() {
     return _depthStencilTextureFormat;
 }
 
+void RenderContext::present() {
+    _swapchain.Present();
+}
+
 wgpu::TextureView RenderContext::_createDepthStencilView(uint32_t width, uint32_t height) {
     wgpu::TextureDescriptor descriptor;
     descriptor.dimension = wgpu::TextureDimension::e2D;

@@ -46,9 +46,9 @@ public:
      * Create scene.
      * @param device - Device
      */
-    Scene(wgpu::Device *device);
+    Scene(wgpu::Device &device);
     
-    wgpu::Device *device();
+    wgpu::Device &device();
     
     /**
      * Ambient light.
@@ -172,7 +172,7 @@ private:
     std::vector<EntityPtr> _rootEntities;
 //    AmbientLight _ambientLight;
     
-    wgpu::Device *_device{nullptr};
+    wgpu::Device &_device;
 };
 
 }        // namespace vox

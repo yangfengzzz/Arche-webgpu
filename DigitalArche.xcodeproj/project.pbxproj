@@ -243,6 +243,14 @@
 		049546F7279FC92B00783C84 /* forward_subpass.h in Headers */ = {isa = PBXBuildFile; fileRef = 049546F5279FC92B00783C84 /* forward_subpass.h */; };
 		049546FA279FC9B400783C84 /* graphics_application.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049546F8279FC9B400783C84 /* graphics_application.cpp */; };
 		049546FB279FC9B400783C84 /* graphics_application.h in Headers */ = {isa = PBXBuildFile; fileRef = 049546F9279FC9B400783C84 /* graphics_application.h */; };
+		049546FF279FCD1100783C84 /* forward_application.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049546FD279FCD1100783C84 /* forward_application.cpp */; };
+		04954700279FCD1100783C84 /* forward_application.h in Headers */ = {isa = PBXBuildFile; fileRef = 049546FE279FCD1100783C84 /* forward_application.h */; };
+		04954707279FCD3C00783C84 /* free_control.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954701279FCD3C00783C84 /* free_control.cpp */; };
+		04954708279FCD3C00783C84 /* orbit_control.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954702279FCD3C00783C84 /* orbit_control.h */; };
+		04954709279FCD3C00783C84 /* orbit_control.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954703279FCD3C00783C84 /* orbit_control.cpp */; };
+		0495470A279FCD3C00783C84 /* spherical.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954704279FCD3C00783C84 /* spherical.h */; };
+		0495470B279FCD3C00783C84 /* spherical.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954705279FCD3C00783C84 /* spherical.cpp */; };
+		0495470C279FCD3C00783C84 /* free_control.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954706279FCD3C00783C84 /* free_control.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -538,6 +546,14 @@
 		049546F5279FC92B00783C84 /* forward_subpass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = forward_subpass.h; sourceTree = "<group>"; };
 		049546F8279FC9B400783C84 /* graphics_application.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = graphics_application.cpp; sourceTree = "<group>"; };
 		049546F9279FC9B400783C84 /* graphics_application.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = graphics_application.h; sourceTree = "<group>"; };
+		049546FD279FCD1100783C84 /* forward_application.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = forward_application.cpp; sourceTree = "<group>"; };
+		049546FE279FCD1100783C84 /* forward_application.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = forward_application.h; sourceTree = "<group>"; };
+		04954701279FCD3C00783C84 /* free_control.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = free_control.cpp; sourceTree = "<group>"; };
+		04954702279FCD3C00783C84 /* orbit_control.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = orbit_control.h; sourceTree = "<group>"; };
+		04954703279FCD3C00783C84 /* orbit_control.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = orbit_control.cpp; sourceTree = "<group>"; };
+		04954704279FCD3C00783C84 /* spherical.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = spherical.h; sourceTree = "<group>"; };
+		04954705279FCD3C00783C84 /* spherical.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = spherical.cpp; sourceTree = "<group>"; };
+		04954706279FCD3C00783C84 /* free_control.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = free_control.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -771,6 +787,9 @@
 				0495466C279F8CD500783C84 /* renderer.cpp */,
 				04954674279F8CD600783C84 /* script.h */,
 				0495466B279F8CD500783C84 /* script.cpp */,
+				049546FC279FCD0600783C84 /* controls */,
+				049546FE279FCD1100783C84 /* forward_application.h */,
+				049546FD279FCD1100783C84 /* forward_application.cpp */,
 			);
 			path = vox.render;
 			sourceTree = "<group>";
@@ -966,6 +985,19 @@
 			path = subpasses;
 			sourceTree = "<group>";
 		};
+		049546FC279FCD0600783C84 /* controls */ = {
+			isa = PBXGroup;
+			children = (
+				04954704279FCD3C00783C84 /* spherical.h */,
+				04954705279FCD3C00783C84 /* spherical.cpp */,
+				04954706279FCD3C00783C84 /* free_control.h */,
+				04954701279FCD3C00783C84 /* free_control.cpp */,
+				04954702279FCD3C00783C84 /* orbit_control.h */,
+				04954703279FCD3C00783C84 /* orbit_control.cpp */,
+			);
+			path = controls;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -1071,6 +1103,8 @@
 				0495464C279F8A8700783C84 /* render_queue_type.h in Headers */,
 				049546FB279FC9B400783C84 /* graphics_application.h in Headers */,
 				04128447279ED3A60071BD86 /* engine.h in Headers */,
+				04954700279FCD1100783C84 /* forward_application.h in Headers */,
+				0495470C279FCD3C00783C84 /* free_control.h in Headers */,
 				04954677279F8CD600783C84 /* transform.h in Headers */,
 				04954660279F8CBF00783C84 /* background.h in Headers */,
 				04128476279EEE760071BD86 /* depth_state.h in Headers */,
@@ -1095,11 +1129,13 @@
 				04128446279ED3A60071BD86 /* timer.h in Headers */,
 				0412845F279ED4B10071BD86 /* imstb_textedit.h in Headers */,
 				0495468A279F8CD600783C84 /* script.h in Headers */,
+				04954708279FCD3C00783C84 /* orbit_control.h in Headers */,
 				0412845C279ED4B10071BD86 /* imstb_truetype.h in Headers */,
 				0412844A279ED3A60071BD86 /* unix_engine.h in Headers */,
 				0412843F279ED3A60071BD86 /* glfw_window.h in Headers */,
 				04954684279F8CD600783C84 /* scene_forward.h in Headers */,
 				0495467E279F8CD600783C84 /* update_flag.h in Headers */,
+				0495470A279FCD3C00783C84 /* spherical.h in Headers */,
 				0412847A279EEEEC0071BD86 /* render_state.h in Headers */,
 				04954692279F8D5E00783C84 /* render_element.h in Headers */,
 				04954680279F8CD600783C84 /* renderer.h in Headers */,
@@ -1288,9 +1324,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				04128469279EDB2C0071BD86 /* blend_state.cpp in Sources */,
+				04954707279FCD3C00783C84 /* free_control.cpp in Sources */,
 				04954691279F8D5E00783C84 /* render_element.cpp in Sources */,
 				04128442279ED3A60071BD86 /* window.cpp in Sources */,
 				04128479279EEEEC0071BD86 /* render_state.cpp in Sources */,
+				049546FF279FCD1100783C84 /* forward_application.cpp in Sources */,
 				0495463E279F89E500783C84 /* shader_property.cpp in Sources */,
 				049546E5279FA7D800783C84 /* metal_binding.mm in Sources */,
 				04128471279EED090071BD86 /* stencil_state.cpp in Sources */,
@@ -1316,6 +1354,7 @@
 				049546F1279FC75900783C84 /* subpass.cpp in Sources */,
 				04128461279ED4B10071BD86 /* imgui_draw.cpp in Sources */,
 				04954681279F8CD600783C84 /* script.cpp in Sources */,
+				0495470B279FCD3C00783C84 /* spherical.cpp in Sources */,
 				049546DA279FA0F200783C84 /* render_context.cpp in Sources */,
 				0495463D279F89E500783C84 /* shader_data.cpp in Sources */,
 				04128458279ED4B10071BD86 /* imgui_tables.cpp in Sources */,
@@ -1323,6 +1362,7 @@
 				049546ED279FC74800783C84 /* render_pass.cpp in Sources */,
 				04128459279ED4B10071BD86 /* imgui_widgets.cpp in Sources */,
 				04954683279F8CD600783C84 /* update_flag.cpp in Sources */,
+				04954709279FCD3C00783C84 /* orbit_control.cpp in Sources */,
 				0495467D279F8CD600783C84 /* update_flag_manager.cpp in Sources */,
 				04128448279ED3A60071BD86 /* input_events.cpp in Sources */,
 				0412845D279ED4B10071BD86 /* imgui.cpp in Sources */,

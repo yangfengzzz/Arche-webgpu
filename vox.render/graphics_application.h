@@ -44,7 +44,9 @@ protected:
     /**
      * @brief The WebGPU device
      */
-    wgpu::Device _device{nullptr};
+    wgpu::Device _device;
+    
+    wgpu::Queue _queue;
 
     /**
      * @brief View used for rendering, it is responsible for managing the frames and their underlying images
