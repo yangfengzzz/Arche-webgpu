@@ -25,13 +25,13 @@
 namespace utils {
 
 #if defined(DAWN_PLATFORM_WINDOWS)
-    void USleep(unsigned int usecs) {
-        Sleep(static_cast<DWORD>(usecs / 1000));
-    }
+void USleep(unsigned int usecs) {
+    Sleep(static_cast<DWORD>(usecs / 1000));
+}
 #elif defined(DAWN_PLATFORM_POSIX)
-    void USleep(unsigned int usecs) {
-        usleep(usecs);
-    }
+void USleep(unsigned int usecs) {
+    usleep(usecs);
+}
 #else
 #    error "Implement USleep for your platform."
 #endif

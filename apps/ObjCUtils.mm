@@ -18,8 +18,8 @@
 
 namespace utils {
 
-    void* CreateDummyCALayer() {
-        return [CALayer layer];
-    }
+void* CreateDummyCALayer() {
+    return [CALayer layer];
+}
 
 }  // namespace utils

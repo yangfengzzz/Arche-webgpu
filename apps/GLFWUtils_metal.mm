@@ -28,27 +28,26 @@
 
 namespace utils {
 
-    std::unique_ptr<wgpu::ChainedStruct> SetupWindowAndGetSurfaceDescriptorForTesting(
-        GLFWwindow* window) {
-        if (@available(macOS 10.11, *)) {
-            NSWindow* nsWindow = glfwGetCocoaWindow(window);
-            NSView* view = [nsWindow contentView];
-
-            // Create a CAMetalLayer that covers the whole window that will be passed to
-            // CreateSurface.
-            [view setWantsLayer:YES];
-            [view setLayer:[CAMetalLayer layer]];
-
-            // Use retina if the window was created with retina support.
-            [[view layer] setContentsScale:[nsWindow backingScaleFactor]];
-
-            std::unique_ptr<wgpu::SurfaceDescriptorFromMetalLayer> desc =
-                std::make_unique<wgpu::SurfaceDescriptorFromMetalLayer>();
-            desc->layer = [view layer];
-            return std::move(desc);
-        }
-
-        return nullptr;
+std::unique_ptr<wgpu::ChainedStruct> SetupWindowAndGetSurfaceDescriptorForTesting(GLFWwindow* window) {
+    if (@available(macOS 10.11, *)) {
+        NSWindow* nsWindow = glfwGetCocoaWindow(window);
+        NSView* view = [nsWindow contentView];
+        
+        // Create a CAMetalLayer that covers the whole window that will be passed to
+        // CreateSurface.
+        [view setWantsLayer:YES];
+        [view setLayer:[CAMetalLayer layer]];
+        
+        // Use retina if the window was created with retina support.
+        [[view layer] setContentsScale:[nsWindow backingScaleFactor]];
+        
+        std::unique_ptr<wgpu::SurfaceDescriptorFromMetalLayer> desc =
+        std::make_unique<wgpu::SurfaceDescriptorFromMetalLayer>();
+        desc->layer = [view layer];
+        return std::move(desc);
     }
+    
+    return nullptr;
+}
 
 }  // namespace utils

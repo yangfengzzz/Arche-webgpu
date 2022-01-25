@@ -18,11 +18,11 @@
 
 namespace utils {
 
-    ComboRenderBundleEncoderDescriptor::ComboRenderBundleEncoderDescriptor() {
-        wgpu::RenderBundleEncoderDescriptor* descriptor = this;
-
-        descriptor->colorFormatsCount = 0;
-        descriptor->colorFormats = &cColorFormats[0];
-    }
+ComboRenderBundleEncoderDescriptor::ComboRenderBundleEncoderDescriptor() {
+    wgpu::RenderBundleEncoderDescriptor* descriptor = this;
+    
+    descriptor->colorFormatsCount = 0;
+    descriptor->colorFormats = &cColorFormats[0];
+}
 
 }  // namespace utils

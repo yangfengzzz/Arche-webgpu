@@ -22,24 +22,24 @@ struct GLFWwindow;
 
 namespace utils {
 
-    class BackendBinding {
-      public:
-        virtual ~BackendBinding() = default;
+class BackendBinding {
+public:
+    virtual ~BackendBinding() = default;
+    
+    virtual uint64_t GetSwapChainImplementation() = 0;
+    virtual WGPUTextureFormat GetPreferredSwapChainTextureFormat() = 0;
+    
+protected:
+    BackendBinding(GLFWwindow* window, WGPUDevice device);
+    
+    GLFWwindow* mWindow = nullptr;
+    WGPUDevice mDevice = nullptr;
+};
 
-        virtual uint64_t GetSwapChainImplementation() = 0;
-        virtual WGPUTextureFormat GetPreferredSwapChainTextureFormat() = 0;
-
-      protected:
-        BackendBinding(GLFWwindow* window, WGPUDevice device);
-
-        GLFWwindow* mWindow = nullptr;
-        WGPUDevice mDevice = nullptr;
-    };
-
-    void DiscoverAdapter(dawn::native::Instance* instance,
-                         GLFWwindow* window,
-                         wgpu::BackendType type);
-    BackendBinding* CreateBinding(wgpu::BackendType type, GLFWwindow* window, WGPUDevice device);
+void DiscoverAdapter(dawn::native::Instance* instance,
+                     GLFWwindow* window,
+                     wgpu::BackendType type);
+BackendBinding* CreateBinding(wgpu::BackendType type, GLFWwindow* window, WGPUDevice device);
 
 }  // namespace utils
 
