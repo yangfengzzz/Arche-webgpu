@@ -9,21 +9,12 @@
 
 namespace vox {
 RenderContext::RenderContext(wgpu::Device& device, uint32_t width, uint32_t height):
-_device(device) {
+_device(device),
+_width(width),
+_height(height) {
     
     _swapchain.Configure(DRAWBLE_TEXTURE_FORMAT, wgpu::TextureUsage::RenderAttachment, _width, _height);
-
-    wgpu::TextureDescriptor descriptor;
-    descriptor.dimension = wgpu::TextureDimension::e2D;
-    descriptor.size.width = width;
-    descriptor.size.height = height;
-    descriptor.size.depthOrArrayLayers = 1;
-    descriptor.sampleCount = 1;
-    descriptor.format = DEPTH_STENCIL_TEXTURE_FORMAT;
-    descriptor.mipLevelCount = 1;
-    descriptor.usage = wgpu::TextureUsage::RenderAttachment;
-    auto depthStencilTexture = device.CreateTexture(&descriptor);
-    _depthStencilTexture = depthStencilTexture.CreateView();
+    _depthStencilTexture = _createDepthStencilView(_width, _height);
 }
 
 wgpu::Device &RenderContext::device() {
@@ -47,6 +38,20 @@ void RenderContext::resize(uint32_t width, uint32_t height) {
     }
     _width = width;
     _height = height;
+}
+
+wgpu::TextureView RenderContext::_createDepthStencilView(uint32_t width, uint32_t height) {
+    wgpu::TextureDescriptor descriptor;
+    descriptor.dimension = wgpu::TextureDimension::e2D;
+    descriptor.size.width = width;
+    descriptor.size.height = height;
+    descriptor.size.depthOrArrayLayers = 1;
+    descriptor.sampleCount = 1;
+    descriptor.format = DEPTH_STENCIL_TEXTURE_FORMAT;
+    descriptor.mipLevelCount = 1;
+    descriptor.usage = wgpu::TextureUsage::RenderAttachment;
+    auto depthStencilTexture = _device.CreateTexture(&descriptor);
+    return depthStencilTexture.CreateView();
 }
 
 }

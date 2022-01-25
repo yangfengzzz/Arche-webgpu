@@ -27,6 +27,9 @@ public:
     void resize(uint32_t width, uint32_t height);
         
 private:
+    wgpu::TextureView _createDepthStencilView(uint32_t width, uint32_t height);
+    
+private:
     wgpu::Device& _device;
     uint32_t _width;
     uint32_t _height;
