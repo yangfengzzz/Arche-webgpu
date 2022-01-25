@@ -1,6 +1,3 @@
-[submodule "third_party/dawm"]
-	path = third_party/dawm
-	url = https://dawn.googlesource.com/dawn
 [submodule "third_party/gflags"]
 	path = third_party/gflags
 	url = https://github.com/gflags/gflags.git
