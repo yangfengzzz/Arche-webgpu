@@ -20,19 +20,18 @@
 #include <memory>
 
 namespace vox {
-
 class NullBinding : public BackendBinding {
 public:
-    NullBinding(GLFWwindow* window, WGPUDevice device) : BackendBinding(window, device) {
+    NullBinding(GLFWwindow* window, wgpu::Device device) : BackendBinding(window, device) {
     }
     
-    uint64_t GetSwapChainImplementation() override {
+    uint64_t swapChainImplementation() override {
         if (mSwapchainImpl.userData == nullptr) {
             mSwapchainImpl = dawn::native::null::CreateNativeSwapChainImpl();
         }
         return reinterpret_cast<uint64_t>(&mSwapchainImpl);
     }
-    WGPUTextureFormat GetPreferredSwapChainTextureFormat() override {
+    WGPUTextureFormat preferredSwapChainTextureFormat() override {
         return WGPUTextureFormat_RGBA8Unorm;
     }
     
@@ -40,7 +39,7 @@ private:
     DawnSwapChainImplementation mSwapchainImpl = {};
 };
 
-BackendBinding* CreateNullBinding(GLFWwindow* window, WGPUDevice device) {
+BackendBinding* CreateNullBinding(GLFWwindow* window, wgpu::Device device) {
     return new NullBinding(window, device);
 }
 

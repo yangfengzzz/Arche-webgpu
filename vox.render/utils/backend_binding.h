@@ -21,25 +21,24 @@
 struct GLFWwindow;
 
 namespace vox {
-
 class BackendBinding {
 public:
     virtual ~BackendBinding() = default;
     
-    virtual uint64_t GetSwapChainImplementation() = 0;
-    virtual WGPUTextureFormat GetPreferredSwapChainTextureFormat() = 0;
+    virtual uint64_t swapChainImplementation() = 0;
+    virtual WGPUTextureFormat preferredSwapChainTextureFormat() = 0;
     
 protected:
-    BackendBinding(GLFWwindow* window, WGPUDevice device);
+    BackendBinding(GLFWwindow* window, wgpu::Device device);
     
     GLFWwindow* mWindow = nullptr;
-    WGPUDevice mDevice = nullptr;
+    wgpu::Device mDevice = nullptr;
 };
 
-void DiscoverAdapter(dawn::native::Instance* instance,
+void discoverAdapter(dawn::native::Instance* instance,
                      GLFWwindow* window,
                      wgpu::BackendType type);
-BackendBinding* CreateBinding(wgpu::BackendType type, GLFWwindow* window, WGPUDevice device);
+BackendBinding* createBinding(wgpu::BackendType type, GLFWwindow* window, wgpu::Device device);
 
 }  // namespace vox
 

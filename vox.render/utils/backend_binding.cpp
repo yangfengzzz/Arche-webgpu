@@ -23,28 +23,27 @@
 #endif  // defined(DAWN_ENABLE_BACKEND_OPENGL)
 
 namespace vox {
-
 #if defined(DAWN_ENABLE_BACKEND_D3D12)
-BackendBinding* CreateD3D12Binding(GLFWwindow* window, WGPUDevice device);
+BackendBinding* createD3D12Binding(GLFWwindow* window, wgpu::Device device);
 #endif
 #if defined(DAWN_ENABLE_BACKEND_METAL)
-BackendBinding* CreateMetalBinding(GLFWwindow* window, WGPUDevice device);
+BackendBinding* createMetalBinding(GLFWwindow* window, wgpu::Device device);
 #endif
 #if defined(DAWN_ENABLE_BACKEND_NULL)
-BackendBinding* CreateNullBinding(GLFWwindow* window, WGPUDevice device);
+BackendBinding* createNullBinding(GLFWwindow* window, wgpu::Device device);
 #endif
 #if defined(DAWN_ENABLE_BACKEND_OPENGL)
-BackendBinding* CreateOpenGLBinding(GLFWwindow* window, WGPUDevice device);
+BackendBinding* createOpenGLBinding(GLFWwindow* window, wgpu::Device device);
 #endif
 #if defined(DAWN_ENABLE_BACKEND_VULKAN)
-BackendBinding* CreateVulkanBinding(GLFWwindow* window, WGPUDevice device);
+BackendBinding* createVulkanBinding(GLFWwindow* window, wgpu::Device device);
 #endif
 
-BackendBinding::BackendBinding(GLFWwindow* window, WGPUDevice device)
+BackendBinding::BackendBinding(GLFWwindow* window, wgpu::Device device)
 : mWindow(window), mDevice(device) {
 }
 
-void DiscoverAdapter(dawn::native::Instance* instance,
+void discoverAdapter(dawn::native::Instance* instance,
                      GLFWwindow* window,
                      wgpu::BackendType type) {
     DAWN_UNUSED(type);
@@ -69,36 +68,36 @@ void DiscoverAdapter(dawn::native::Instance* instance,
     }
 }
 
-BackendBinding* CreateBinding(wgpu::BackendType type, GLFWwindow* window, WGPUDevice device) {
+BackendBinding* createBinding(wgpu::BackendType type, GLFWwindow* window, wgpu::Device device) {
     switch (type) {
 #if defined(DAWN_ENABLE_BACKEND_D3D12)
         case wgpu::BackendType::D3D12:
-            return CreateD3D12Binding(window, device);
+            return createD3D12Binding(window, device);
 #endif
             
 #if defined(DAWN_ENABLE_BACKEND_METAL)
         case wgpu::BackendType::Metal:
-            return CreateMetalBinding(window, device);
+            return createMetalBinding(window, device);
 #endif
             
 #if defined(DAWN_ENABLE_BACKEND_NULL)
         case wgpu::BackendType::Null:
-            return CreateNullBinding(window, device);
+            return createNullBinding(window, device);
 #endif
             
 #if defined(DAWN_ENABLE_BACKEND_DESKTOP_GL)
         case wgpu::BackendType::OpenGL:
-            return CreateOpenGLBinding(window, device);
+            return createOpenGLBinding(window, device);
 #endif
             
 #if defined(DAWN_ENABLE_BACKEND_OPENGLES)
         case wgpu::BackendType::OpenGLES:
-            return CreateOpenGLBinding(window, device);
+            return createOpenGLBinding(window, device);
 #endif
             
 #if defined(DAWN_ENABLE_BACKEND_VULKAN)
         case wgpu::BackendType::Vulkan:
-            return CreateVulkanBinding(window, device);
+            return createVulkanBinding(window, device);
 #endif
             
         default:

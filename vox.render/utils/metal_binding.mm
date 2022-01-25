@@ -110,17 +110,17 @@ private:
 
 class MetalBinding : public BackendBinding {
 public:
-    MetalBinding(GLFWwindow* window, WGPUDevice device) : BackendBinding(window, device) {
+    MetalBinding(GLFWwindow* window, wgpu::Device device) : BackendBinding(window, device) {
     }
     
-    uint64_t GetSwapChainImplementation() override {
+    uint64_t swapChainImplementation() override {
         if (mSwapchainImpl.userData == nullptr) {
             mSwapchainImpl = CreateSwapChainImplementation(new SwapChainImplMTL(glfwGetCocoaWindow(mWindow)));
         }
         return reinterpret_cast<uint64_t>(&mSwapchainImpl);
     }
     
-    WGPUTextureFormat GetPreferredSwapChainTextureFormat() override {
+    WGPUTextureFormat preferredSwapChainTextureFormat() override {
         return WGPUTextureFormat_BGRA8Unorm;
     }
     
@@ -128,7 +128,7 @@ private:
     DawnSwapChainImplementation mSwapchainImpl = {};
 };
 
-BackendBinding* CreateMetalBinding(GLFWwindow* window, WGPUDevice device) {
+BackendBinding* createMetalBinding(GLFWwindow* window, wgpu::Device device) {
     return new MetalBinding(window, device);
 }
 }
