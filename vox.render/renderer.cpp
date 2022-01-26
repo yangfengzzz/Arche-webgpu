@@ -26,6 +26,7 @@ BoundingBox3F Renderer::bounds() {
 
 Renderer::Renderer(Entity *entity) :
 Component(entity),
+shaderData(entity->scene()->device()),
 _transformChangeFlag(entity->transform->registerWorldChangeFlag()),
 _localMatrixProperty(Shader::createProperty("u_localMat", ShaderDataGroup::Renderer)),
 _worldMatrixProperty(Shader::createProperty("u_modelMat", ShaderDataGroup::Renderer)),

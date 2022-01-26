@@ -15,6 +15,14 @@ _device(device) {
     _createProgram(vertexSource, fragmentSource);
 }
 
+wgpu::ShaderModule& ShaderProgram::vertexShader() {
+    return _vertexShader;
+}
+
+wgpu::ShaderModule& ShaderProgram::fragmentShader() {
+    return _fragmentShader;
+}
+
 void ShaderProgram::_createProgram(const std::string& vertexSource,
                                    const std::string& fragmentSource) {
     wgpu::ShaderModuleDescriptor desc;

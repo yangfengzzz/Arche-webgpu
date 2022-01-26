@@ -8,6 +8,10 @@
 #include "shader.h"
 
 namespace vox {
+ShaderData::ShaderData(wgpu::Device& device):
+_device(device) {
+}
+
 std::any ShaderData::getData(const std::string &property_name) {
     auto property = Shader::getPropertyByName(property_name);
     if (property.has_value()) {

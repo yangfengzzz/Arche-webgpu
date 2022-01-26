@@ -7,7 +7,9 @@
 #include "material.h"
 
 namespace vox {
-Material::Material(Shader *shader) : shader(shader) {
+Material::Material(wgpu::Device& device, Shader *shader)
+: shader(shader),
+shaderData(device) {
 }
 
 }

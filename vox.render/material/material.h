@@ -25,7 +25,7 @@ public:
     /** Render queue type. */
     RenderQueueType::Enum renderQueueType = RenderQueueType::Enum::Opaque;
     /** Shader data. */
-    ShaderData shaderData = ShaderData();
+    ShaderData shaderData;
     /** Render state. */
     RenderState renderState = RenderState();
     
@@ -33,7 +33,7 @@ public:
      * Create a material instance.
      * @param shader - Shader used by the material
      */
-    Material(Shader *shader);
+    Material(wgpu::Device& device, Shader *shader);
 };
 using MaterialPtr = std::shared_ptr<Material>;
 

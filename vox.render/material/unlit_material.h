@@ -41,7 +41,7 @@ public:
     /**
      * Create a unlit material instance.
      */
-    explicit UnlitMaterial();
+    explicit UnlitMaterial(wgpu::Device& device);
     
 private:
     ShaderProperty _baseColorProp;

@@ -97,8 +97,8 @@ void BaseMaterial::setBlendMode(const BlendMode &newValue) {
     }
 }
 
-BaseMaterial::BaseMaterial(Shader *shader) :
-Material(shader),
+BaseMaterial::BaseMaterial(wgpu::Device& device, Shader *shader) :
+Material(device, shader),
 _alphaCutoffProp(Shader::createProperty("u_alphaCutoff", ShaderDataGroup::Material)) {
     setBlendMode(BlendMode::Normal);
     shaderData.setData(_alphaCutoffProp, 0.0f);

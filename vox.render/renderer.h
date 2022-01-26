@@ -21,7 +21,7 @@ namespace vox {
 class Renderer : public Component {
 public:
     /** ShaderData related to renderer. */
-    ShaderData shaderData = ShaderData();
+    ShaderData shaderData;
     // @ignoreClone
     /** Whether it is clipped by the frustum, needs to be turned on camera.enableFrustumCulling. */
     bool isCulled = false;

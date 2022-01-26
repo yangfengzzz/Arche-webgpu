@@ -53,7 +53,7 @@ public:
      * Create a BaseMaterial instance.
      * @param shader - Shader used by the material
      */
-    BaseMaterial(Shader *shader);
+    BaseMaterial(wgpu::Device& device, Shader *shader);
     
 private:
     ShaderProperty _alphaCutoffProp;

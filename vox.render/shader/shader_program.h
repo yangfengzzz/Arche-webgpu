@@ -21,6 +21,10 @@ public:
                   const std::string& vertexSource,
                   const std::string& fragmentSource);
     
+    wgpu::ShaderModule& vertexShader();
+    
+    wgpu::ShaderModule& fragmentShader();
+    
 private:
     /**
      * init and link program with shader.

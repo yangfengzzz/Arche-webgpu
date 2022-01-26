@@ -37,8 +37,8 @@ void UnlitMaterial::setTilingOffset(const Vector4F &newValue) {
     shaderData.setData(UnlitMaterial::_tilingOffsetProp, newValue);
 }
 
-UnlitMaterial::UnlitMaterial() :
-BaseMaterial(Shader::find("unlit")),
+UnlitMaterial::UnlitMaterial(wgpu::Device& device) :
+BaseMaterial(device, Shader::find("unlit")),
 _baseColorProp(Shader::createProperty("u_baseColor", ShaderDataGroup::Material)),
 _baseTextureProp(Shader::createProperty("u_baseTexture", ShaderDataGroup::Material)),
 _tilingOffsetProp(Shader::createProperty("u_tilingOffset", ShaderDataGroup::Material)) {

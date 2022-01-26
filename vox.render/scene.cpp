@@ -18,7 +18,8 @@
 
 namespace vox {
 Scene::Scene(wgpu::Device &device) :
-_device(device) {
+_device(device),
+shaderData(device) {
 //_ambientLight(this) {
 //    _vertexUploader = {
 //        toAnyUploader<int>([](const int &x, size_t location, wgpu::RenderPassEncoder& encoder) {

@@ -40,7 +40,7 @@ public:
     Background background = Background();
     
     /** Scene-related shader data. */
-    ShaderData shaderData = ShaderData();
+    ShaderData shaderData;
     
     /**
      * Create scene.

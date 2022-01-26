@@ -13,6 +13,7 @@
 namespace vox {
 Camera::Camera(Entity *entity) :
 Component(entity),
+shaderData(entity->scene()->device()),
 _viewMatrixProperty(Shader::createProperty("u_viewMat", ShaderDataGroup::Camera)),
 _projectionMatrixProperty(Shader::createProperty("u_projMat", ShaderDataGroup::Camera)),
 _vpMatrixProperty(Shader::createProperty("u_VPMat", ShaderDataGroup::Camera)),

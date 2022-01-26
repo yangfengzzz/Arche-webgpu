@@ -12,6 +12,7 @@
 #include "shader_property.h"
 #include <any>
 #include <unordered_map>
+#include <dawn/webgpu_cpp.h>
 
 namespace vox {
 /**
@@ -19,6 +20,8 @@ namespace vox {
  */
 class ShaderData {
 public:
+    ShaderData(wgpu::Device& device);
+    
     std::any getData(const std::string &property_name);
     
     std::any getData(const ShaderProperty &property);
@@ -54,6 +57,8 @@ public:
 //                    ShaderMacroCollection &result) const;
     
 private:
+    wgpu::Device& _device;
+    
     std::unordered_map<int, std::any> _properties;
 //    ShaderMacroCollection _macroCollection;
 };
