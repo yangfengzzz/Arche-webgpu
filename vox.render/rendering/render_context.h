@@ -36,7 +36,6 @@ private:
     BackendBinding* _binding{nullptr};
     uint32_t _width;
     uint32_t _height;
-    bool _isDirty{false};
     
     wgpu::SwapChain _swapchain;
     wgpu::TextureView _depthStencilTexture;

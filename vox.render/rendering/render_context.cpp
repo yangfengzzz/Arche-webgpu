@@ -26,10 +26,6 @@ wgpu::Device& RenderContext::device() {
 }
 
 wgpu::TextureView RenderContext::currentDrawableTexture() {
-    if (_isDirty) {
-        _swapchain.Configure(drawableTextureFormat(),
-                             wgpu::TextureUsage::RenderAttachment, _width, _height);
-    }
     return _swapchain.GetCurrentTextureView();
 }
 
@@ -39,7 +35,9 @@ wgpu::TextureView RenderContext::depthStencilTexture() {
 
 void RenderContext::resize(uint32_t width, uint32_t height) {
     if (width != _width || height != _height) {
-        _isDirty = true;
+        _swapchain.Configure(drawableTextureFormat(),
+                             wgpu::TextureUsage::RenderAttachment, width, height);
+        _createDepthStencilView(width, height);
     }
     _width = width;
     _height = height;
