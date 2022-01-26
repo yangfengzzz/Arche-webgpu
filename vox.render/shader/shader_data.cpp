@@ -12,7 +12,7 @@ ShaderData::ShaderData(wgpu::Device& device):
 _device(device) {
 }
 
-std::any ShaderData::getData(const std::string &property_name) {
+std::optional<wgpu::Buffer> ShaderData::getData(const std::string &property_name) {
     auto property = Shader::getPropertyByName(property_name);
     if (property.has_value()) {
         return getData(property.value());
@@ -21,7 +21,7 @@ std::any ShaderData::getData(const std::string &property_name) {
     }
 }
 
-std::any ShaderData::getData(const ShaderProperty &property) {
+std::optional<wgpu::Buffer> ShaderData::getData(const ShaderProperty &property) {
     auto iter = _properties.find(property.uniqueId);
     if (iter != _properties.end()) {
         return iter->second;
@@ -30,20 +30,7 @@ std::any ShaderData::getData(const ShaderProperty &property) {
     }
 }
 
-void ShaderData::setData(const std::string &property_name, std::any value) {
-    auto property = Shader::getPropertyByName(property_name);
-    if (property.has_value()) {
-        setData(property.value(), value);
-    } else {
-        assert(false && "can't find property");
-    }
-}
-
-void ShaderData::setData(ShaderProperty property, std::any value) {
-    _properties[property.uniqueId] = value;
-}
-
-const std::unordered_map<int, std::any> &ShaderData::properties() const {
+const std::unordered_map<int, wgpu::Buffer> &ShaderData::properties() const {
     return _properties;
 }
 

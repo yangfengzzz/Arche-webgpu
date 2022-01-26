@@ -10,6 +10,8 @@
 #include "shader_data_group.h"
 //#include "shader_macro_collection.h"
 #include "shader_property.h"
+#include "shader.h"
+#include "std_helpers.h"
 #include <any>
 #include <unordered_map>
 #include <dawn/webgpu_cpp.h>
@@ -22,15 +24,35 @@ class ShaderData {
 public:
     ShaderData(wgpu::Device& device);
     
-    std::any getData(const std::string &property_name);
+    std::optional<wgpu::Buffer> getData(const std::string &property_name);
     
-    std::any getData(const ShaderProperty &property);
+    std::optional<wgpu::Buffer> getData(const ShaderProperty &property);
     
-    void setData(const std::string &property, std::any value);
+    template<typename T>
+    void setData(const std::string &property_name, const T& value) {
+        auto property = Shader::getPropertyByName(property_name);
+        if (property.has_value()) {
+            setData(property.value(), value);
+        } else {
+            assert(false && "can't find property");
+        }
+    }
     
-    void setData(ShaderProperty property, std::any value);
+    template<typename T>
+    void setData(ShaderProperty property, const T& value) {
+        auto iter = _properties.find(property.uniqueId);
+        if (iter == _properties.end()) {
+            wgpu::BufferDescriptor desc;
+            desc.size = sizeof(T);
+            desc.usage = wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst;
+            _properties[property.uniqueId] = _device.CreateBuffer(&desc);
+        }
+        
+        std::vector<uint8_t> bytes = to_bytes(value);
+        _device.GetQueue().WriteBuffer(_properties[property.uniqueId], 0, bytes.data(), sizeof(T));
+    }
     
-    const std::unordered_map<int, std::any> &properties() const;
+    const std::unordered_map<int, wgpu::Buffer> &properties() const;
     
 public:
 //    /**
@@ -58,8 +80,8 @@ public:
     
 private:
     wgpu::Device& _device;
+    std::unordered_map<int, wgpu::Buffer> _properties;
     
-    std::unordered_map<int, std::any> _properties;
 //    ShaderMacroCollection _macroCollection;
 };
 
