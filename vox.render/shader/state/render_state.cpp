@@ -6,12 +6,12 @@
 #include "render_state.h"
 
 namespace vox {
-void RenderState::apply(wgpu::FragmentState* fragment,
-                        wgpu::DepthStencilState * depthStencil,
+void RenderState::apply(wgpu::ColorTargetState& colorTargetState,
+                        wgpu::DepthStencilState& depthStencil,
                         wgpu::RenderPipelineDescriptor& pipelineDescriptor,
                         wgpu::RenderPassEncoder &encoder,
                         bool frontFaceInvert) {
-    blendState.apply(fragment, pipelineDescriptor.multisample, encoder);
+    blendState.apply(colorTargetState, pipelineDescriptor.multisample, encoder);
     depthState.apply(depthStencil);
     stencilState.apply(depthStencil, encoder);
     rasterState.apply(pipelineDescriptor.primitive, depthStencil, frontFaceInvert);

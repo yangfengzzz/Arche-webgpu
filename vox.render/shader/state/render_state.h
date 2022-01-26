@@ -26,8 +26,8 @@ struct RenderState {
     /** Raster state. */
     RasterState rasterState = RasterState();
     
-    void apply(wgpu::FragmentState* fragment,
-               wgpu::DepthStencilState * depthStencil,
+    void apply(wgpu::ColorTargetState& colorTargetState,
+               wgpu::DepthStencilState& depthStencil,
                wgpu::RenderPipelineDescriptor& pipelineDescriptor,
                wgpu::RenderPassEncoder &encoder,
                bool frontFaceInvert);

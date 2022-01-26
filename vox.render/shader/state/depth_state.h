@@ -21,11 +21,11 @@ struct DepthState {
     /** Depth comparison function. */
     wgpu::CompareFunction compareFunction = wgpu::CompareFunction::Less;
     
-    void apply(wgpu::DepthStencilState * depthStencil) {
+    void apply(wgpu::DepthStencilState &depthStencil) {
         platformApply(depthStencil);
     }
     
-    void platformApply(wgpu::DepthStencilState * depthStencil);
+    void platformApply(wgpu::DepthStencilState &depthStencil);
 };
 
 }

@@ -7,18 +7,7 @@
 #include "blend_state.h"
 
 namespace vox {
-BlendState::BlendState() {
-    _colorTargetState = std::make_unique<wgpu::ColorTargetState>();
-    _blendState = std::make_unique<wgpu::BlendState>();
-    _colorTargetState->blend = _blendState.get();
-}
-
-BlendState::~BlendState() {
-    _blendState.reset();
-    _colorTargetState.reset();
-}
-
-void BlendState::platformApply(wgpu::FragmentState* fragment,
+void BlendState::platformApply(wgpu::ColorTargetState& colorTargetState,
                                wgpu::MultisampleState& multisample,
                                wgpu::RenderPassEncoder &encoder) {
     const auto enabled = targetBlendState.enabled;
@@ -31,29 +20,27 @@ void BlendState::platformApply(wgpu::FragmentState* fragment,
     const auto colorWriteMask = targetBlendState.colorWriteMask;
     
     if (enabled) {
-        fragment->targets = _colorTargetState.get();
-        fragment->targetCount = 1;
+        colorTargetState.blend = &_blendState;
     } else {
-        fragment->targets = nullptr;
-        fragment->targetCount = 0;
+        colorTargetState.blend = nullptr;
     }
     
     if (enabled) {
         // apply blend factor.
-        _blendState->color.srcFactor = sourceColorBlendFactor;
-        _blendState->color.dstFactor = destinationColorBlendFactor;
-        _blendState->alpha.srcFactor = sourceAlphaBlendFactor;
-        _blendState->alpha.dstFactor = destinationAlphaBlendFactor;
+        _blendState.color.srcFactor = sourceColorBlendFactor;
+        _blendState.color.dstFactor = destinationColorBlendFactor;
+        _blendState.alpha.srcFactor = sourceAlphaBlendFactor;
+        _blendState.alpha.dstFactor = destinationAlphaBlendFactor;
         
         // apply blend operation.
-        _blendState->color.operation = colorBlendOperation;
-        _blendState->alpha.operation = alphaBlendOperation;
+        _blendState.color.operation = colorBlendOperation;
+        _blendState.alpha.operation = alphaBlendOperation;
         
         // apply blend color.
         encoder.SetBlendConstant(reinterpret_cast<wgpu::Color*>(&blendColor));
         
         // apply color mask.
-        _colorTargetState->writeMask = colorWriteMask;
+        colorTargetState.writeMask = colorWriteMask;
     }
     
     multisample.alphaToCoverageEnabled = alphaToCoverage;

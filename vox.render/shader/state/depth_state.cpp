@@ -7,13 +7,13 @@
 #include "depth_state.h"
 
 namespace vox {
-void DepthState::platformApply(wgpu::DepthStencilState * depthStencil) {
+void DepthState::platformApply(wgpu::DepthStencilState &depthStencil) {
     if (enabled) {
         // apply compare func.
-        depthStencil->depthCompare = compareFunction;
+        depthStencil.depthCompare = compareFunction;
         
         // apply write enabled.
-        depthStencil->depthWriteEnabled = writeEnabled;
+        depthStencil.depthWriteEnabled = writeEnabled;
     }
 }
 

@@ -8,7 +8,7 @@
 
 namespace vox {
 void RasterState::platformApply(wgpu::PrimitiveState& primitive,
-                                wgpu::DepthStencilState * depthStencil,
+                                wgpu::DepthStencilState& depthStencil,
                                 bool frontFaceInvert) {
     primitive.cullMode = cullMode;
     if (frontFaceInvert) {
@@ -18,8 +18,8 @@ void RasterState::platformApply(wgpu::PrimitiveState& primitive,
     }
     
     if (depthBias != 0 || slopeScaledDepthBias != 0) {
-        depthStencil->depthBiasSlopeScale = slopeScaledDepthBias;
-        depthStencil->depthBias = depthBias;
+        depthStencil.depthBiasSlopeScale = slopeScaledDepthBias;
+        depthStencil.depthBias = depthBias;
     }
 }
 }

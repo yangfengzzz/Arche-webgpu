@@ -26,8 +26,19 @@ private:
                       const std::vector<RenderElement> &items);
     
     wgpu::RenderPipelineDescriptor _forwardPipelineDescriptor;
-    std::unique_ptr<wgpu::DepthStencilState> _depthStencil{nullptr};
-    std::unique_ptr<wgpu::FragmentState> _fragment{nullptr};
+    wgpu::DepthStencilState _depthStencil;
+    wgpu::FragmentState _fragment;
+    wgpu::ColorTargetState _colorTargetState;
+
+    wgpu::BindGroupLayoutDescriptor _bindGroupLayoutDescriptor;
+    std::vector<wgpu::BindGroupLayoutEntry> _bindGroupLayoutEntries{};
+    wgpu::BindGroupLayout _bindGroupLayout;
+
+    wgpu::BindGroupDescriptor _bindGroupDescriptor;
+    std::vector<wgpu::BindGroupEntry> _bindGroupEntries{};
+
+    wgpu::PipelineLayoutDescriptor _pipelineLayoutDescriptor;
+    wgpu::PipelineLayout _pipelineLayout;
 };
 
 }
