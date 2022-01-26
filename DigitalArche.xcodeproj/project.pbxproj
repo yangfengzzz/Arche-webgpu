@@ -253,6 +253,8 @@
 		0495470C279FCD3C00783C84 /* free_control.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954706279FCD3C00783C84 /* free_control.h */; };
 		0495470F27A14FA800783C84 /* shader_program.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495470D27A14FA800783C84 /* shader_program.cpp */; };
 		0495471027A14FA800783C84 /* shader_program.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495470E27A14FA800783C84 /* shader_program.h */; };
+		0495471327A15BEE00783C84 /* shader_macro_collection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495471127A15BEE00783C84 /* shader_macro_collection.cpp */; };
+		0495471427A15BEE00783C84 /* shader_macro_collection.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495471227A15BEE00783C84 /* shader_macro_collection.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -558,6 +560,8 @@
 		04954706279FCD3C00783C84 /* free_control.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = free_control.h; sourceTree = "<group>"; };
 		0495470D27A14FA800783C84 /* shader_program.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = shader_program.cpp; sourceTree = "<group>"; };
 		0495470E27A14FA800783C84 /* shader_program.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shader_program.h; sourceTree = "<group>"; };
+		0495471127A15BEE00783C84 /* shader_macro_collection.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = shader_macro_collection.cpp; sourceTree = "<group>"; };
+		0495471227A15BEE00783C84 /* shader_macro_collection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shader_macro_collection.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -830,6 +834,8 @@
 				04954637279F89E400783C84 /* shader_property.cpp */,
 				0495470E27A14FA800783C84 /* shader_program.h */,
 				0495470D27A14FA800783C84 /* shader_program.cpp */,
+				0495471227A15BEE00783C84 /* shader_macro_collection.h */,
+				0495471127A15BEE00783C84 /* shader_macro_collection.cpp */,
 			);
 			path = shader;
 			sourceTree = "<group>";
@@ -1127,6 +1133,7 @@
 				049546EE279FC74800783C84 /* render_pass.h in Headers */,
 				0412845B279ED4B10071BD86 /* imgui_impl_glfw.h in Headers */,
 				0412845E279ED4B10071BD86 /* imstb_rectpack.h in Headers */,
+				0495471427A15BEE00783C84 /* shader_macro_collection.h in Headers */,
 				049546DB279FA0F200783C84 /* render_context.h in Headers */,
 				04954654279F8AE900783C84 /* base_material.h in Headers */,
 				04128472279EED090071BD86 /* stencil_state.h in Headers */,
@@ -1349,6 +1356,7 @@
 				04128449279ED3A60071BD86 /* engine.cpp in Sources */,
 				04954686279F8CD600783C84 /* scene.cpp in Sources */,
 				049546E6279FA7D800783C84 /* null_binding.cpp in Sources */,
+				0495471327A15BEE00783C84 /* shader_macro_collection.cpp in Sources */,
 				04954646279F8A7D00783C84 /* material.cpp in Sources */,
 				04128441279ED3A60071BD86 /* unix_engine.cpp in Sources */,
 				04954682279F8CD600783C84 /* renderer.cpp in Sources */,
