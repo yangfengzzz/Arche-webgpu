@@ -1,14 +1,14 @@
+//  Copyright (c) 2022 Feng Yang
 //
-//  sampled_texture2D.hpp
-//  vox.render
-//
-//  Created by 杨丰 on 2022/1/27.
-//
+//  I am making my contributions/submissions to this project solely in my
+//  personal capacity and am not conveying any rights to any intellectual
+//  property of any third parties.
 
 #ifndef sampled_texture2D_hpp
 #define sampled_texture2D_hpp
 
 #include "sampled_texture.h"
+#include <memory>
 
 namespace vox {
 class SampledTexture2D : public SampledTexture {
@@ -32,6 +32,7 @@ public:
 private:
     wgpu::Device& _device;
 };
+using SampledTexture2DPtr = std::shared_ptr<SampledTexture2D>;
 
 }
 

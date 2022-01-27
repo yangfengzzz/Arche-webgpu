@@ -260,8 +260,9 @@
 		0495471F27A2396500783C84 /* shader_pool.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495471D27A2396500783C84 /* shader_pool.h */; };
 		0495472427A23CE100783C84 /* sampled_texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495472227A23CE100783C84 /* sampled_texture.cpp */; };
 		0495472527A23CE100783C84 /* sampled_texture.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495472327A23CE100783C84 /* sampled_texture.h */; };
-		0495472827A2405400783C84 /* sampled_texture2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495472627A2405400783C84 /* sampled_texture2D.cpp */; };
-		0495472927A2405400783C84 /* sampled_texture2D.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495472727A2405400783C84 /* sampled_texture2D.h */; };
+		0495472827A2405400783C84 /* sampled_texture2d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495472627A2405400783C84 /* sampled_texture2d.cpp */; };
+		0495472927A2405400783C84 /* sampled_texture2d.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495472727A2405400783C84 /* sampled_texture2d.h */; };
+		0495472A27A2453200783C84 /* unlit_material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495464F279F8AE900783C84 /* unlit_material.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -576,8 +577,8 @@
 		0495471D27A2396500783C84 /* shader_pool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shader_pool.h; sourceTree = "<group>"; };
 		0495472227A23CE100783C84 /* sampled_texture.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sampled_texture.cpp; sourceTree = "<group>"; };
 		0495472327A23CE100783C84 /* sampled_texture.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sampled_texture.h; sourceTree = "<group>"; };
-		0495472627A2405400783C84 /* sampled_texture2D.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sampled_texture2D.cpp; sourceTree = "<group>"; };
-		0495472727A2405400783C84 /* sampled_texture2D.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sampled_texture2D.h; sourceTree = "<group>"; };
+		0495472627A2405400783C84 /* sampled_texture2d.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sampled_texture2d.cpp; sourceTree = "<group>"; };
+		0495472727A2405400783C84 /* sampled_texture2d.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sampled_texture2d.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1045,8 +1046,8 @@
 			children = (
 				0495472327A23CE100783C84 /* sampled_texture.h */,
 				0495472227A23CE100783C84 /* sampled_texture.cpp */,
-				0495472727A2405400783C84 /* sampled_texture2D.h */,
-				0495472627A2405400783C84 /* sampled_texture2D.cpp */,
+				0495472727A2405400783C84 /* sampled_texture2d.h */,
+				0495472627A2405400783C84 /* sampled_texture2d.cpp */,
 			);
 			path = texture;
 			sourceTree = "<group>";
@@ -1196,7 +1197,7 @@
 				0412847A279EEEEC0071BD86 /* render_state.h in Headers */,
 				04954692279F8D5E00783C84 /* render_element.h in Headers */,
 				04954680279F8CD600783C84 /* renderer.h in Headers */,
-				0495472927A2405400783C84 /* sampled_texture2D.h in Headers */,
+				0495472927A2405400783C84 /* sampled_texture2d.h in Headers */,
 				0495468E279F8D3700783C84 /* component.h in Headers */,
 				0495471B27A2348F00783C84 /* unlit_wgsl.h in Headers */,
 				04954678279F8CD600783C84 /* layer.h in Headers */,
@@ -1394,6 +1395,7 @@
 				049546E4279FA7D800783C84 /* backend_binding.cpp in Sources */,
 				0495467B279F8CD600783C84 /* entity.cpp in Sources */,
 				049546F6279FC92B00783C84 /* forward_subpass.cpp in Sources */,
+				0495472A27A2453200783C84 /* unlit_material.cpp in Sources */,
 				0412846D279EEB8B0071BD86 /* raster_state.cpp in Sources */,
 				04128440279ED3A60071BD86 /* application.cpp in Sources */,
 				04128475279EEE760071BD86 /* depth_state.cpp in Sources */,
@@ -1401,7 +1403,7 @@
 				04954686279F8CD600783C84 /* scene.cpp in Sources */,
 				049546E6279FA7D800783C84 /* null_binding.cpp in Sources */,
 				0495471327A15BEE00783C84 /* shader_macro_collection.cpp in Sources */,
-				0495472827A2405400783C84 /* sampled_texture2D.cpp in Sources */,
+				0495472827A2405400783C84 /* sampled_texture2d.cpp in Sources */,
 				04954646279F8A7D00783C84 /* material.cpp in Sources */,
 				04128441279ED3A60071BD86 /* unix_engine.cpp in Sources */,
 				0495471E27A2396500783C84 /* shader_pool.cpp in Sources */,
