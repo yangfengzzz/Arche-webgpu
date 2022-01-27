@@ -271,6 +271,8 @@
 		0495473627A24BE000783C84 /* pbr_material.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495473427A24BE000783C84 /* pbr_material.h */; };
 		0495473927A2564500783C84 /* pbr_specular_material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495473727A2564500783C84 /* pbr_specular_material.cpp */; };
 		0495473A27A2564500783C84 /* pbr_specular_material.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495473827A2564500783C84 /* pbr_specular_material.h */; };
+		0495473E27A25B1300783C84 /* buffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495473C27A25B1300783C84 /* buffer.cpp */; };
+		0495473F27A25B1300783C84 /* buffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495473D27A25B1300783C84 /* buffer.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -595,6 +597,8 @@
 		0495473427A24BE000783C84 /* pbr_material.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pbr_material.h; sourceTree = "<group>"; };
 		0495473727A2564500783C84 /* pbr_specular_material.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pbr_specular_material.cpp; sourceTree = "<group>"; };
 		0495473827A2564500783C84 /* pbr_specular_material.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pbr_specular_material.h; sourceTree = "<group>"; };
+		0495473C27A25B1300783C84 /* buffer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = buffer.cpp; sourceTree = "<group>"; };
+		0495473D27A25B1300783C84 /* buffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = buffer.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -807,6 +811,7 @@
 				0495471627A231F400783C84 /* shaderlib */,
 				04954642279F8A4400783C84 /* material */,
 				0495472127A23CC800783C84 /* texture */,
+				0495473B27A25A7D00783C84 /* graphics */,
 				0495465F279F8CBF00783C84 /* background.h */,
 				04954662279F8CD500783C84 /* layer.h */,
 				04954668279F8CD500783C84 /* update_flag.h */,
@@ -1076,6 +1081,15 @@
 			path = texture;
 			sourceTree = "<group>";
 		};
+		0495473B27A25A7D00783C84 /* graphics */ = {
+			isa = PBXGroup;
+			children = (
+				0495473D27A25B1300783C84 /* buffer.h */,
+				0495473C27A25B1300783C84 /* buffer.cpp */,
+			);
+			path = graphics;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -1213,6 +1227,7 @@
 				0495473127A24A1300783C84 /* pbr_base_material.h in Headers */,
 				04128446279ED3A60071BD86 /* timer.h in Headers */,
 				0412845F279ED4B10071BD86 /* imstb_textedit.h in Headers */,
+				0495473F27A25B1300783C84 /* buffer.h in Headers */,
 				0495473627A24BE000783C84 /* pbr_material.h in Headers */,
 				0495468A279F8CD600783C84 /* script.h in Headers */,
 				04954708279FCD3C00783C84 /* orbit_control.h in Headers */,
@@ -1452,6 +1467,7 @@
 				04954681279F8CD600783C84 /* script.cpp in Sources */,
 				0495470B279FCD3C00783C84 /* spherical.cpp in Sources */,
 				049546DA279FA0F200783C84 /* render_context.cpp in Sources */,
+				0495473E27A25B1300783C84 /* buffer.cpp in Sources */,
 				0495463D279F89E500783C84 /* shader_data.cpp in Sources */,
 				04128458279ED4B10071BD86 /* imgui_tables.cpp in Sources */,
 				04954652279F8AE900783C84 /* base_material.cpp in Sources */,
