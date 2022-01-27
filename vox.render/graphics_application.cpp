@@ -9,6 +9,10 @@
 #include "shader/shader.h"
 #include <glog/logging.h>
 
+#include <dawn/dawn_proc.h>
+#include <common/Assert.h>
+#include <common/Log.h>
+
 namespace vox {
 // Default to D3D12, Metal, Vulkan, OpenGL in that order as D3D12 and Metal are the preferred on
 // their respective platforms, and Vulkan is preferred to OpenGL
@@ -33,12 +37,12 @@ GraphicsApplication::GraphicsApplication() {
 //    Shader::create("pbr", "vertex_blinn_phong", "fragment_pbr");
 //    Shader::create("pbr-specular", "vertex_blinn_phong", "fragment_pbr");
 //    Shader::create("skybox", "vertex_skybox", "fragment_skybox");
-//    
+//
 //    // MARK: - experimental
 //    Shader::create("shadow-map", "vertex_shadow_map", "fragment_shadow_map");
 //    Shader::create("shadow", "vertex_shadow_map", "fragment_shadow");
 //    Shader::create("background-texture", "vertex_background_texture", "fragment_background_texture");
-//    
+//
 //    Shader::create("experimental", "vertex_experimental", "fragment_experimental");
 }
 
@@ -73,6 +77,28 @@ void GraphicsApplication::inputEvent(const InputEvent &inputEvent) {}
 
 void GraphicsApplication::finish() {}
 
+void PrintDeviceError(WGPUErrorType errorType, const char* message, void*) {
+    const char* errorTypeName = "";
+    switch (errorType) {
+        case WGPUErrorType_Validation:
+            errorTypeName = "Validation";
+            break;
+        case WGPUErrorType_OutOfMemory:
+            errorTypeName = "Out of memory";
+            break;
+        case WGPUErrorType_Unknown:
+            errorTypeName = "Unknown";
+            break;
+        case WGPUErrorType_DeviceLost:
+            errorTypeName = "Device lost";
+            break;
+        default:
+            UNREACHABLE();
+            return;
+    }
+    dawn::ErrorLog() << errorTypeName << " error: " << message;
+}
+
 void GraphicsApplication::_createCppDawnDevice() {
     _instance = std::make_unique<dawn_native::Instance>();
     _instance->DiscoverDefaultAdapters();
@@ -91,6 +117,9 @@ void GraphicsApplication::_createCppDawnDevice() {
         backendAdapter = *adapterIt;
     }
     WGPUDevice backendDevice = backendAdapter.CreateDevice();
+    DawnProcTable backendProcs = dawn_native::GetProcs();
+    dawnProcSetProcs(&backendProcs);
+    backendProcs.deviceSetUncapturedErrorCallback(backendDevice, PrintDeviceError, nullptr);
     _device = wgpu::Device::Acquire(backendDevice);
 }
 
