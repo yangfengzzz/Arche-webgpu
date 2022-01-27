@@ -7,6 +7,8 @@
 
 #include "forward_subpass.h"
 #include "material/material.h"
+#include "camera.h"
+#include "renderer.h"
 
 namespace vox {
 ForwardSubpass::ForwardSubpass(RenderContext* renderContext,
@@ -77,6 +79,13 @@ void ForwardSubpass::_drawMeshes(wgpu::RenderPassEncoder &passEncoder) {
 void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
                                   const std::vector<RenderElement> &items) {
     for (auto &element : items) {
+        auto& renderer = element.renderer;
+        
+        _bindGroupEntries[0].buffer = _camera->shaderData.getData("u_projMat").value();
+        _bindGroupEntries[1].buffer = renderer->shaderData.getData("u_MVMat").value();
+        auto uniformBindGroup = _renderContext->device().CreateBindGroup(&_bindGroupDescriptor);
+        passEncoder.SetBindGroup(0, uniformBindGroup);
+        
         auto material = element.material;
         material->renderState.apply(&_colorTargetState, &_depthStencil,
                                     _forwardPipelineDescriptor, passEncoder, false);
