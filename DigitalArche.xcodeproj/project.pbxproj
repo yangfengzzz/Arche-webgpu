@@ -285,6 +285,8 @@
 		0495475427A2750900783C84 /* model_mesh.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495475227A2750900783C84 /* model_mesh.h */; };
 		0495475827A2868000783C84 /* primitive_mesh.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495475627A2868000783C84 /* primitive_mesh.h */; };
 		0495475927A2868000783C84 /* primitive_mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495475727A2868000783C84 /* primitive_mesh.cpp */; };
+		0495475C27A287CA00783C84 /* mesh_renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495475A27A287CA00783C84 /* mesh_renderer.cpp */; };
+		0495475D27A287CA00783C84 /* mesh_renderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495475B27A287CA00783C84 /* mesh_renderer.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -624,6 +626,8 @@
 		0495475527A2821C00783C84 /* wgsl_common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_common.h; sourceTree = "<group>"; };
 		0495475627A2868000783C84 /* primitive_mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = primitive_mesh.h; sourceTree = "<group>"; };
 		0495475727A2868000783C84 /* primitive_mesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = primitive_mesh.cpp; sourceTree = "<group>"; };
+		0495475A27A287CA00783C84 /* mesh_renderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mesh_renderer.cpp; sourceTree = "<group>"; };
+		0495475B27A287CA00783C84 /* mesh_renderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mesh_renderer.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1132,6 +1136,8 @@
 				0495475127A2750900783C84 /* model_mesh.cpp */,
 				0495475627A2868000783C84 /* primitive_mesh.h */,
 				0495475727A2868000783C84 /* primitive_mesh.cpp */,
+				0495475B27A287CA00783C84 /* mesh_renderer.h */,
+				0495475A27A287CA00783C84 /* mesh_renderer.cpp */,
 			);
 			path = mesh;
 			sourceTree = "<group>";
@@ -1262,6 +1268,7 @@
 				0495464D279F8A8700783C84 /* blend_mode.h in Headers */,
 				049546F7279FC92B00783C84 /* forward_subpass.h in Headers */,
 				0495475827A2868000783C84 /* primitive_mesh.h in Headers */,
+				0495475D27A287CA00783C84 /* mesh_renderer.h in Headers */,
 				04954641279F89E500783C84 /* shader.h in Headers */,
 				049546EE279FC74800783C84 /* render_pass.h in Headers */,
 				0495473A27A2564500783C84 /* pbr_specular_material.h in Headers */,
@@ -1514,6 +1521,7 @@
 				04128443279ED3A60071BD86 /* timer.cpp in Sources */,
 				0495468C279F8CD600783C84 /* component.cpp in Sources */,
 				04128445279ED3A60071BD86 /* glfw_window.cpp in Sources */,
+				0495475C27A287CA00783C84 /* mesh_renderer.cpp in Sources */,
 				0495467A279F8CD600783C84 /* components_manager.cpp in Sources */,
 				0495474227A2640900783C84 /* index_buffer_binding.cpp in Sources */,
 				0495474A27A2669600783C84 /* mesh.cpp in Sources */,

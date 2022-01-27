@@ -64,4 +64,8 @@ void Mesh::_addVertexLayout(const wgpu::VertexBufferLayout& layout) {
     _updateFlagManager.distribute();
 }
 
+const std::vector<wgpu::VertexBufferLayout>& Mesh::vertexBufferLayouts() {
+    return _vertexBufferLayouts;
+}
+
 }

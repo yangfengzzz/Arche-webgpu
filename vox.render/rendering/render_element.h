@@ -20,11 +20,11 @@ struct RenderElement {
     /** Mesh. */
     MeshPtr mesh;
     /** Sub mesh. */
-    const Submesh *subMesh;
+    const SubMesh *subMesh;
     /** Material. */
     MaterialPtr material;
     
-    RenderElement(Renderer *renderer, MeshPtr mesh, const Submesh *subMesh, MaterialPtr material);
+    RenderElement(Renderer *renderer, MeshPtr mesh, const SubMesh *subMesh, MaterialPtr material);
 };
 
 }

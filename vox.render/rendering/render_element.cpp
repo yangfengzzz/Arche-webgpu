@@ -9,7 +9,7 @@
 
 namespace vox {
 RenderElement::RenderElement(Renderer *renderer, MeshPtr mesh,
-                             const Submesh *subMesh, MaterialPtr material):
+                             const SubMesh *subMesh, MaterialPtr material):
 renderer(renderer),
 mesh(mesh),
 subMesh(subMesh),

@@ -24,7 +24,7 @@ class ComponentManager;
 
 class Transform;
 
-class Submesh;
+class SubMesh;
 
 class Mesh;
 

@@ -63,6 +63,8 @@ public:
      */
     std::unique_ptr<UpdateFlag> registerUpdateFlag();
     
+    const std::vector<wgpu::VertexBufferLayout>& vertexBufferLayouts();
+    
 protected:
     void _setVertexLayouts(const std::vector<wgpu::VertexBufferLayout>& layouts);
 
