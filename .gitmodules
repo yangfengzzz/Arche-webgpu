@@ -16,3 +16,6 @@
 [submodule "third_party/dawn"]
 	path = third_party/dawn
 	url = https://dawn.googlesource.com/dawn
+[submodule "assets"]
+	path = assets
+	url = https://github.com/yangfengzzz/Assets.git
