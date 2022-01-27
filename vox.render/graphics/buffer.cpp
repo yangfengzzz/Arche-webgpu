@@ -8,16 +8,14 @@
 #include "buffer.h"
 
 namespace vox {
-Buffer::Buffer(wgpu::Device& device, uint64_t byteLength, wgpu::BufferUsage bufferUsage):
-_device(device) {
+Buffer::Buffer(wgpu::Device& device, uint64_t byteLength, wgpu::BufferUsage bufferUsage) {
     wgpu::BufferDescriptor desc;
     desc.usage = bufferUsage;
     desc.size = byteLength;
     _nativeBuffer = device.CreateBuffer(&desc);
 }
 
-Buffer::Buffer(wgpu::Device& device, std::vector<uint8_t>& data, wgpu::BufferUsage bufferUsage) :
-_device(device) {
+Buffer::Buffer(wgpu::Device& device, std::vector<uint8_t>& data, wgpu::BufferUsage bufferUsage) {
     wgpu::BufferDescriptor desc;
     desc.usage = bufferUsage;
     desc.size = data.size();

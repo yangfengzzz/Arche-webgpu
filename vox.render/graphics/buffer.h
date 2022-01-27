@@ -34,6 +34,10 @@ public:
     
     Buffer(Buffer&& other) = default;
     
+    Buffer& operator=(Buffer const& other) = default;
+    
+    Buffer& operator=(Buffer&& other) = default;
+    
 public:
     wgpu::Buffer& buffer();
     
@@ -58,7 +62,6 @@ public:
                  size_t dataLength = 0, size_t dataOffset = 0);
     
 private:
-    wgpu::Device& _device;
     wgpu::Buffer _nativeBuffer;
 };
 
