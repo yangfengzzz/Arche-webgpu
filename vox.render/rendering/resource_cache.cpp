@@ -149,7 +149,7 @@ struct hash<wgpu::RenderPipelineDescriptor> {
     std::size_t operator()(const wgpu::RenderPipelineDescriptor &descriptor) const {
         std::size_t result = 0;
         
-//        hash_combine(result, descriptor.layout); // internal address
+        hash_combine(result, descriptor.layout.Get()); // internal address
         hash_combine(result, descriptor.primitive);
         hash_combine(result, descriptor.multisample);
         if (descriptor.depthStencil) {
@@ -255,7 +255,40 @@ struct hash<wgpu::BindGroupLayoutDescriptor> {
         hash_combine(result, descriptor.entryCount);
         for (uint32_t i = 0; i < descriptor.entryCount; i++) {
             const wgpu::BindGroupLayoutEntry& entry = descriptor.entries[i];
-            hash_combine(result, entry); // internal address
+            hash_combine(result, entry);
+        }
+        
+        return result;
+    }
+};
+
+//MARK: - BindGroupDescriptor
+template<>
+struct hash<wgpu::BindGroupEntry> {
+    std::size_t operator()(const wgpu::BindGroupEntry &entry) const {
+        std::size_t result = 0;
+        
+        hash_combine(result, entry.size);
+        hash_combine(result, entry.offset);
+        hash_combine(result, entry.buffer.Get());  // internal address
+        hash_combine(result, entry.binding);
+        hash_combine(result, entry.sampler.Get());  // internal address
+        hash_combine(result, entry.textureView.Get());  // internal address
+        
+        return result;
+    }
+};
+
+template<>
+struct hash<wgpu::BindGroupDescriptor> {
+    std::size_t operator()(const wgpu::BindGroupDescriptor &descriptor) const {
+        std::size_t result = 0;
+
+        hash_combine(result, descriptor.layout.Get());  // internal address
+        hash_combine(result, descriptor.entryCount);
+        for (uint32_t i = 0; i < descriptor.entryCount; i++) {
+            const wgpu::BindGroupEntry& entry = descriptor.entries[i];
+            hash_combine(result, entry);
         }
         
         return result;
@@ -270,17 +303,55 @@ ResourceCache::ResourceCache(wgpu::Device &device) :
 _device{device} {
 }
 
-wgpu::RenderPipeline *ResourceCache::requestRenderPipeline(wgpu::RenderPipelineDescriptor &descriptor) {
+wgpu::BindGroupLayout &ResourceCache::requestBindGroupLayout(wgpu::BindGroupLayoutDescriptor &descriptor) {
+    std::hash<wgpu::BindGroupLayoutDescriptor> hasher;
+    size_t hash = hasher(descriptor);
+    
+    auto iter = _state.bindGroupLayouts.find(hash);
+    if (iter == _state.bindGroupLayouts.end()) {
+        _state.bindGroupLayouts[hash] = _device.CreateBindGroupLayout(&descriptor);
+        return _state.bindGroupLayouts[hash];
+    } else {
+        return iter->second;
+    }
+}
+
+wgpu::PipelineLayout &ResourceCache::requestPipelineLayout(wgpu::PipelineLayoutDescriptor &descriptor) {
+    std::hash<wgpu::PipelineLayoutDescriptor> hasher;
+    size_t hash = hasher(descriptor);
+    
+    auto iter = _state.pipelineLayouts.find(hash);
+    if (iter == _state.pipelineLayouts.end()) {
+        _state.pipelineLayouts[hash] = _device.CreatePipelineLayout(&descriptor);
+        return _state.pipelineLayouts[hash];
+    } else {
+        return iter->second;
+    }
+}
+
+wgpu::RenderPipeline &ResourceCache::requestRenderPipeline(wgpu::RenderPipelineDescriptor &descriptor) {
     std::hash<wgpu::RenderPipelineDescriptor> hasher;
     size_t hash = hasher(descriptor);
     
     auto iter = _state.renderPipelines.find(hash);
     if (iter == _state.renderPipelines.end()) {
-        auto pipelineState = std::make_unique<wgpu::RenderPipeline>(_device.CreateRenderPipeline(&descriptor));
-        _state.renderPipelines[hash] = std::move(pipelineState);
-        return _state.renderPipelines[hash].get();
+        _state.renderPipelines[hash] = _device.CreateRenderPipeline(&descriptor);
+        return _state.renderPipelines[hash];
     } else {
-        return iter->second.get();
+        return iter->second;
+    }
+}
+
+wgpu::BindGroup &ResourceCache::requestBindGroup(wgpu::BindGroupDescriptor &descriptor) {
+    std::hash<wgpu::BindGroupDescriptor> hasher;
+    size_t hash = hasher(descriptor);
+    
+    auto iter = _state.bindGroups.find(hash);
+    if (iter == _state.bindGroups.end()) {
+        _state.bindGroups[hash] = _device.CreateBindGroup(&descriptor);
+        return _state.bindGroups[hash];
+    } else {
+        return iter->second;
     }
 }
 

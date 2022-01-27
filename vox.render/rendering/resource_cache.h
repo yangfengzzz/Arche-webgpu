@@ -16,8 +16,11 @@ namespace vox {
  *
  */
 struct ResourceCacheState {
-    std::unordered_map<std::size_t, std::unique_ptr<wgpu::RenderPipeline>> renderPipelines;
-        
+    std::unordered_map<std::size_t, wgpu::BindGroupLayout> bindGroupLayouts;
+    std::unordered_map<std::size_t, wgpu::PipelineLayout> pipelineLayouts;
+    std::unordered_map<std::size_t, wgpu::RenderPipeline> renderPipelines;
+    std::unordered_map<std::size_t, wgpu::BindGroup> bindGroups;
+    
     std::unordered_map<std::size_t, std::unique_ptr<ShaderProgram>> shaders;
 };
 
@@ -46,7 +49,13 @@ public:
     ResourceCache &operator=(ResourceCache &&) = delete;
     
 public:
-    wgpu::RenderPipeline *requestRenderPipeline(wgpu::RenderPipelineDescriptor &descriptor);
+    wgpu::BindGroupLayout &requestBindGroupLayout(wgpu::BindGroupLayoutDescriptor &descriptor);
+
+    wgpu::PipelineLayout &requestPipelineLayout(wgpu::PipelineLayoutDescriptor &descriptor);
+
+    wgpu::RenderPipeline &requestRenderPipeline(wgpu::RenderPipelineDescriptor &descriptor);
+
+    wgpu::BindGroup &requestBindGroup(wgpu::BindGroupDescriptor &descriptor);
 
     ShaderProgram *requestShader(const std::string &vertexSource,
                                  const std::string &fragmentSource);

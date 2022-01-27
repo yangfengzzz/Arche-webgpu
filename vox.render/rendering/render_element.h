@@ -1,9 +1,8 @@
+//  Copyright (c) 2022 Feng Yang
 //
-//  render_element.hpp
-//  vox.render
-//
-//  Created by 杨丰 on 2022/1/15.
-//
+//  I am making my contributions/submissions to this project solely in my
+//  personal capacity and am not conveying any rights to any intellectual
+//  property of any third parties.
 
 #ifndef render_element_hpp
 #define render_element_hpp

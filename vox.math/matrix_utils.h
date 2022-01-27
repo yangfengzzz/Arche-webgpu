@@ -1,9 +1,8 @@
+//  Copyright (c) 2022 Feng Yang
 //
-//  matrix_utils.h
-//  DigitalVox4
-//
-//  Created by 杨丰 on 2022/1/16.
-//
+//  I am making my contributions/submissions to this project solely in my
+//  personal capacity and am not conveying any rights to any intellectual
+//  property of any third parties.
 
 #ifndef matrix_utils_h
 #define matrix_utils_h

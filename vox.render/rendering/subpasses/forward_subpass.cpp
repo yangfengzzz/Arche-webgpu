@@ -1,9 +1,8 @@
+//  Copyright (c) 2022 Feng Yang
 //
-//  forward_subpass.cpp
-//  vox.render
-//
-//  Created by 杨丰 on 2022/1/25.
-//
+//  I am making my contributions/submissions to this project solely in my
+//  personal capacity and am not conveying any rights to any intellectual
+//  property of any third parties.
 
 #include "forward_subpass.h"
 #include "material/material.h"
@@ -11,8 +10,6 @@
 #include "camera.h"
 #include "renderer.h"
 #include "rendering/render_pass.h"
-
-#include "shader/shader_program.h"
 
 namespace vox {
 ForwardSubpass::ForwardSubpass(RenderContext* renderContext,
@@ -32,7 +29,7 @@ void ForwardSubpass::prepare() {
         _bindGroupLayoutEntries[1].buffer.type = wgpu::BufferBindingType::Uniform;
         _bindGroupLayoutDescriptor.entryCount = 2;
         _bindGroupLayoutDescriptor.entries = _bindGroupLayoutEntries.data();
-        _bindGroupLayout = _renderContext->device().CreateBindGroupLayout(&_bindGroupLayoutDescriptor);
+        _bindGroupLayout = _pass->resourceCache().requestBindGroupLayout(_bindGroupLayoutDescriptor);
     }
     {
         _bindGroupEntries.resize(2);
@@ -52,7 +49,7 @@ void ForwardSubpass::prepare() {
     {
         _pipelineLayoutDescriptor.bindGroupLayoutCount = 1;
         _pipelineLayoutDescriptor.bindGroupLayouts = &_bindGroupLayout;
-        _pipelineLayout = _renderContext->device().CreatePipelineLayout(&_pipelineLayoutDescriptor);
+        _pipelineLayout = _pass->resourceCache().requestPipelineLayout(_pipelineLayoutDescriptor);
         _forwardPipelineDescriptor.layout = _pipelineLayout;
         
         _forwardPipelineDescriptor.vertex.entryPoint = "main";
@@ -111,7 +108,7 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
             _forwardPipelineDescriptor.primitive.topology = subMesh->topology();
             
             auto renderPipeline = _pass->resourceCache().requestRenderPipeline(_forwardPipelineDescriptor);
-            passEncoder.SetPipeline(*renderPipeline);
+            passEncoder.SetPipeline(renderPipeline);
         }
         
         // Bind Group
@@ -119,7 +116,7 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
         _bindGroupEntries[0].size = 64;
         _bindGroupEntries[1].buffer = renderer->shaderData.getData("u_MVMat").value();
         _bindGroupEntries[1].size = 64;
-        auto uniformBindGroup = _renderContext->device().CreateBindGroup(&_bindGroupDescriptor);
+        auto uniformBindGroup = _pass->resourceCache().requestBindGroup(_bindGroupDescriptor);        
         passEncoder.SetBindGroup(0, uniformBindGroup);
         
         // Draw Call
