@@ -7,27 +7,27 @@
 #include "stencil_state.h"
 
 namespace vox {
-void StencilState::platformApply(wgpu::DepthStencilState &depthStencil,
+void StencilState::platformApply(wgpu::DepthStencilState *depthStencil,
                                  wgpu::RenderPassEncoder &encoder) {
-    if (enabled) {
+    if (enabled && depthStencil) {
         // apply stencil func.
         encoder.SetStencilReference(referenceValue);
-        depthStencil.stencilReadMask = mask;
-        depthStencil.stencilFront.compare = compareFunctionFront;
-        depthStencil.stencilBack.compare = compareFunctionBack;
+        depthStencil->stencilReadMask = mask;
+        depthStencil->stencilFront.compare = compareFunctionFront;
+        depthStencil->stencilBack.compare = compareFunctionBack;
+        
+        // apply stencil operation.
+        depthStencil->stencilFront.failOp = failOperationFront;
+        depthStencil->stencilFront.depthFailOp = zFailOperationFront;
+        depthStencil->stencilFront.passOp = passOperationFront;
+        
+        depthStencil->stencilBack.failOp = failOperationBack;
+        depthStencil->stencilBack.depthFailOp = zFailOperationBack;
+        depthStencil->stencilBack.passOp = passOperationBack;
+        
+        // apply write mask.
+        depthStencil->stencilWriteMask = writeMask;
     }
-    
-    // apply stencil operation.
-    depthStencil.stencilFront.failOp = failOperationFront;
-    depthStencil.stencilFront.depthFailOp = zFailOperationFront;
-    depthStencil.stencilFront.passOp = passOperationFront;
-    
-    depthStencil.stencilBack.failOp = failOperationBack;
-    depthStencil.stencilBack.depthFailOp = zFailOperationBack;
-    depthStencil.stencilBack.passOp = passOperationBack;
-    
-    // apply write mask.
-    depthStencil.stencilWriteMask = writeMask;
 }
 
 }

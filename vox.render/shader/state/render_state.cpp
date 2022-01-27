@@ -6,8 +6,8 @@
 #include "render_state.h"
 
 namespace vox {
-void RenderState::apply(wgpu::ColorTargetState& colorTargetState,
-                        wgpu::DepthStencilState& depthStencil,
+void RenderState::apply(wgpu::ColorTargetState* colorTargetState,
+                        wgpu::DepthStencilState* depthStencil,
                         wgpu::RenderPipelineDescriptor& pipelineDescriptor,
                         wgpu::RenderPassEncoder &encoder,
                         bool frontFaceInvert) {

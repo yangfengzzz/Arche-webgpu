@@ -78,7 +78,7 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
                                   const std::vector<RenderElement> &items) {
     for (auto &element : items) {
         auto material = element.material;
-        material->renderState.apply(_colorTargetState, _depthStencil,
+        material->renderState.apply(&_colorTargetState, &_depthStencil,
                                     _forwardPipelineDescriptor, passEncoder, false);
 
     }

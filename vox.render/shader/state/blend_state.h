@@ -25,14 +25,14 @@ struct BlendState {
     /**
      * Apply the current blend state by comparing with the last blend state.
      */
-    void apply(wgpu::ColorTargetState& colorTargetState,
-               wgpu::MultisampleState& multisample,
+    void apply(wgpu::ColorTargetState* colorTargetState,
+               wgpu::MultisampleState &multisample,
                wgpu::RenderPassEncoder &encoder) {
         platformApply(colorTargetState, multisample, encoder);
     }
     
-    void platformApply(wgpu::ColorTargetState& colorTargetState,
-                       wgpu::MultisampleState& multisample,
+    void platformApply(wgpu::ColorTargetState* colorTargetState,
+                       wgpu::MultisampleState &multisample,
                        wgpu::RenderPassEncoder &encoder);
     
 private:

@@ -22,13 +22,13 @@ struct RasterState {
     float slopeScaledDepthBias = 0;
     
     void apply(wgpu::PrimitiveState& primitive,
-               wgpu::DepthStencilState& depthStencil,
+               wgpu::DepthStencilState* depthStencil,
                bool frontFaceInvert) {
         platformApply(primitive, depthStencil, frontFaceInvert);
     }
     
     void platformApply(wgpu::PrimitiveState& primitive,
-                       wgpu::DepthStencilState& depthStencil,
+                       wgpu::DepthStencilState* depthStencil,
                        bool frontFaceInvert);
 };
 

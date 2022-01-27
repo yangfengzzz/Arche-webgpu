@@ -7,8 +7,8 @@
 #include "blend_state.h"
 
 namespace vox {
-void BlendState::platformApply(wgpu::ColorTargetState& colorTargetState,
-                               wgpu::MultisampleState& multisample,
+void BlendState::platformApply(wgpu::ColorTargetState* colorTargetState,
+                               wgpu::MultisampleState &multisample,
                                wgpu::RenderPassEncoder &encoder) {
     const auto enabled = targetBlendState.enabled;
     const auto colorBlendOperation = targetBlendState.colorBlendOperation;
@@ -19,10 +19,12 @@ void BlendState::platformApply(wgpu::ColorTargetState& colorTargetState,
     const auto destinationAlphaBlendFactor = targetBlendState.destinationAlphaBlendFactor;
     const auto colorWriteMask = targetBlendState.colorWriteMask;
     
-    if (enabled) {
-        colorTargetState.blend = &_blendState;
+    if (enabled && colorTargetState) {
+        colorTargetState->blend = &_blendState;
     } else {
-        colorTargetState.blend = nullptr;
+        if (colorTargetState) {
+            colorTargetState->blend = nullptr;
+        }
     }
     
     if (enabled) {
@@ -40,7 +42,9 @@ void BlendState::platformApply(wgpu::ColorTargetState& colorTargetState,
         encoder.SetBlendConstant(reinterpret_cast<wgpu::Color*>(&blendColor));
         
         // apply color mask.
-        colorTargetState.writeMask = colorWriteMask;
+        if (colorTargetState) {
+            colorTargetState->writeMask = colorWriteMask;
+        }
     }
     
     multisample.alphaToCoverageEnabled = alphaToCoverage;
