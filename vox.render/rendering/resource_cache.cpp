@@ -10,6 +10,7 @@
 
 namespace std {
 using namespace vox;
+//MARK: - RenderPipelineDescriptor
 template<>
 struct hash<wgpu::PrimitiveState> {
     std::size_t operator()(const wgpu::PrimitiveState &state) const {
@@ -157,6 +158,104 @@ struct hash<wgpu::RenderPipelineDescriptor> {
         hash_combine(result, descriptor.vertex);
         if (descriptor.fragment) {
             hash_combine(result, *descriptor.fragment);
+        }
+        
+        return result;
+    }
+};
+
+// MARK: - PipelineLayoutDescriptor
+template<>
+struct hash<wgpu::PipelineLayoutDescriptor> {
+    std::size_t operator()(const wgpu::PipelineLayoutDescriptor &descriptor) const {
+        std::size_t result = 0;
+        
+        hash_combine(result, descriptor.bindGroupLayoutCount);
+        for (uint32_t i = 0; i < descriptor.bindGroupLayoutCount; i++) {
+            const wgpu::BindGroupLayout& layout = descriptor.bindGroupLayouts[i];
+            hash_combine(result, layout.Get()); // internal address
+        }
+        
+        return result;
+    }
+};
+
+// MARK: - BindGroupLayoutDescriptor
+template<>
+struct hash<wgpu::TextureBindingLayout> {
+    std::size_t operator()(const wgpu::TextureBindingLayout &layout) const {
+        std::size_t result = 0;
+        
+        hash_combine(result, layout.multisampled);
+        hash_combine(result, layout.sampleType);
+        hash_combine(result, layout.viewDimension);
+
+        return result;
+    }
+};
+
+template<>
+struct hash<wgpu::StorageTextureBindingLayout> {
+    std::size_t operator()(const wgpu::StorageTextureBindingLayout &layout) const {
+        std::size_t result = 0;
+        
+        hash_combine(result, layout.format);
+        hash_combine(result, layout.viewDimension);
+        hash_combine(result, layout.access);
+
+        return result;
+    }
+};
+
+template<>
+struct hash<wgpu::SamplerBindingLayout> {
+    std::size_t operator()(const wgpu::SamplerBindingLayout &layout) const {
+        std::size_t result = 0;
+        
+        hash_combine(result, layout.type);
+
+        return result;
+    }
+};
+
+template<>
+struct hash<wgpu::BufferBindingLayout> {
+    std::size_t operator()(const wgpu::BufferBindingLayout &layout) const {
+        std::size_t result = 0;
+        
+        hash_combine(result, layout.type);
+        hash_combine(result, layout.hasDynamicOffset);
+        hash_combine(result, layout.minBindingSize);
+
+        return result;
+    }
+};
+
+template<>
+struct hash<wgpu::BindGroupLayoutEntry> {
+    std::size_t operator()(const wgpu::BindGroupLayoutEntry &entry) const {
+        std::size_t result = 0;
+        
+        hash_combine(result, entry.visibility);
+        hash_combine(result, entry.binding);
+        hash_combine(result, entry.buffer);
+        hash_combine(result, entry.sampler);
+        hash_combine(result, entry.texture);
+        hash_combine(result, entry.storageTexture);
+        
+        return result;
+    }
+};
+
+template<>
+struct hash<wgpu::BindGroupLayoutDescriptor> {
+    std::size_t operator()(const wgpu::BindGroupLayoutDescriptor &descriptor) const {
+        std::size_t result = 0;
+        
+        hash_combine(result, descriptor.entryCount);
+        for (uint32_t i = 0; i < descriptor.entryCount; i++) {
+            const wgpu::BindGroupLayoutEntry& entry = descriptor.entries[i];
+            hash_combine(result, entry); // internal address
         }
         
         return result;
