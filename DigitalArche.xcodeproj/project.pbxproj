@@ -281,6 +281,8 @@
 		0495474B27A2669600783C84 /* mesh.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495474927A2669600783C84 /* mesh.h */; };
 		0495474F27A2714200783C84 /* buffer_mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495474D27A2714200783C84 /* buffer_mesh.cpp */; };
 		0495475027A2714200783C84 /* buffer_mesh.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495474E27A2714200783C84 /* buffer_mesh.h */; };
+		0495475327A2750900783C84 /* model_mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495475127A2750900783C84 /* model_mesh.cpp */; };
+		0495475427A2750900783C84 /* model_mesh.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495475227A2750900783C84 /* model_mesh.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -615,6 +617,9 @@
 		0495474927A2669600783C84 /* mesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mesh.h; sourceTree = "<group>"; };
 		0495474D27A2714200783C84 /* buffer_mesh.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = buffer_mesh.cpp; sourceTree = "<group>"; };
 		0495474E27A2714200783C84 /* buffer_mesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = buffer_mesh.h; sourceTree = "<group>"; };
+		0495475127A2750900783C84 /* model_mesh.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = model_mesh.cpp; sourceTree = "<group>"; };
+		0495475227A2750900783C84 /* model_mesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = model_mesh.h; sourceTree = "<group>"; };
+		0495475527A2821C00783C84 /* wgsl_common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_common.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1080,6 +1085,7 @@
 		0495471627A231F400783C84 /* shaderlib */ = {
 			isa = PBXGroup;
 			children = (
+				0495475527A2821C00783C84 /* wgsl_common.h */,
 				0495471727A2346900783C84 /* wgsl.h */,
 				0495471927A2348F00783C84 /* unlit_wgsl.h */,
 				0495471827A2348F00783C84 /* unlit_wgsl.cpp */,
@@ -1118,6 +1124,8 @@
 			children = (
 				0495474E27A2714200783C84 /* buffer_mesh.h */,
 				0495474D27A2714200783C84 /* buffer_mesh.cpp */,
+				0495475227A2750900783C84 /* model_mesh.h */,
+				0495475127A2750900783C84 /* model_mesh.cpp */,
 			);
 			path = mesh;
 			sourceTree = "<group>";
@@ -1235,6 +1243,7 @@
 				0495470C279FCD3C00783C84 /* free_control.h in Headers */,
 				04954677279F8CD600783C84 /* transform.h in Headers */,
 				04954660279F8CBF00783C84 /* background.h in Headers */,
+				0495475427A2750900783C84 /* model_mesh.h in Headers */,
 				04128476279EEE760071BD86 /* depth_state.h in Headers */,
 				0495463F279F89E500783C84 /* shader_data_group.h in Headers */,
 				0495472D27A2480000783C84 /* blinn_phong_material.h in Headers */,
@@ -1513,6 +1522,7 @@
 				04954652279F8AE900783C84 /* base_material.cpp in Sources */,
 				049546ED279FC74800783C84 /* render_pass.cpp in Sources */,
 				0495471A27A2348F00783C84 /* unlit_wgsl.cpp in Sources */,
+				0495475327A2750900783C84 /* model_mesh.cpp in Sources */,
 				04128459279ED4B10071BD86 /* imgui_widgets.cpp in Sources */,
 				04954683279F8CD600783C84 /* update_flag.cpp in Sources */,
 				04954709279FCD3C00783C84 /* orbit_control.cpp in Sources */,
