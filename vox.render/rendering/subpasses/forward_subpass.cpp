@@ -103,7 +103,7 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
             _forwardPipelineDescriptor.vertex.module = program.vertexShader();
             _fragment.module = program.fragmentShader();
             material->renderState.apply(&_colorTargetState, &_depthStencil,
-                                        _forwardPipelineDescriptor, passEncoder, false);
+                                        _forwardPipelineDescriptor, passEncoder, true);
             
 
             _forwardPipelineDescriptor.vertex.bufferCount = static_cast<uint32_t>(mesh->vertexBufferLayouts().size());

@@ -19,7 +19,7 @@ struct DepthState {
     /** Whether the depth value can be written.*/
     bool writeEnabled = true;
     /** Depth comparison function. */
-    wgpu::CompareFunction compareFunction = wgpu::CompareFunction::Less;
+    wgpu::CompareFunction compareFunction = wgpu::CompareFunction::Greater;
     
     void apply(wgpu::DepthStencilState *depthStencil) {
         platformApply(depthStencil);

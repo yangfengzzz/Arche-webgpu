@@ -15,14 +15,8 @@
 
 namespace vox {
 void PrimitiveApp::loadScene(uint32_t width, uint32_t height) {
+//    _scene->background.solidColor = Color(0.5, 0.2, 0.6, 1.0);
     auto rootEntity = _scene->createRootEntity();
-    auto modelEntity = rootEntity->createChild();
-    
-    auto renderer = modelEntity->addComponent<MeshRenderer>();
-    renderer->setMesh(PrimitiveMesh::createCuboid(_device));
-    auto material = std::make_shared<UnlitMaterial>(_device);
-    material->setBaseColor(Color(0.6, 0.4, 0.7, 1.0));
-    renderer->setMaterial(material);
     
     auto cameraEntity = rootEntity->createChild();
     cameraEntity->transform->setPosition(10, 10, 10);
@@ -30,6 +24,13 @@ void PrimitiveApp::loadScene(uint32_t width, uint32_t height) {
     _mainCamera = cameraEntity->addComponent<Camera>();
     _mainCamera->resize(width, height);
     cameraEntity->addComponent<control::OrbitControl>();
+    
+    auto cubeEntity = rootEntity->createChild();
+    auto renderer = cubeEntity->addComponent<MeshRenderer>();
+    renderer->setMesh(PrimitiveMesh::createCuboid(_device, 1));
+    auto material = std::make_shared<UnlitMaterial>(_device);
+    material->setBaseColor(Color(0.6, 0.4, 0.7, 1.0));
+    renderer->setMaterial(material);
 }
 
 }
