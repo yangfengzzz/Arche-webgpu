@@ -186,7 +186,6 @@
 		0495464D279F8A8700783C84 /* blend_mode.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495464A279F8A8700783C84 /* blend_mode.h */; };
 		04954652279F8AE900783C84 /* base_material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495464E279F8AE900783C84 /* base_material.cpp */; };
 		04954654279F8AE900783C84 /* base_material.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954650279F8AE900783C84 /* base_material.h */; };
-		04954655279F8AE900783C84 /* unlit_material.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954651279F8AE900783C84 /* unlit_material.h */; };
 		04954660279F8CBF00783C84 /* background.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495465F279F8CBF00783C84 /* background.h */; };
 		04954677279F8CD600783C84 /* transform.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954661279F8CD500783C84 /* transform.h */; };
 		04954678279F8CD600783C84 /* layer.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954662279F8CD500783C84 /* layer.h */; };
@@ -259,6 +258,10 @@
 		0495471B27A2348F00783C84 /* unlit_wgsl.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495471927A2348F00783C84 /* unlit_wgsl.h */; };
 		0495471E27A2396500783C84 /* shader_pool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495471C27A2396500783C84 /* shader_pool.cpp */; };
 		0495471F27A2396500783C84 /* shader_pool.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495471D27A2396500783C84 /* shader_pool.h */; };
+		0495472427A23CE100783C84 /* sampled_texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495472227A23CE100783C84 /* sampled_texture.cpp */; };
+		0495472527A23CE100783C84 /* sampled_texture.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495472327A23CE100783C84 /* sampled_texture.h */; };
+		0495472827A2405400783C84 /* sampled_texture2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495472627A2405400783C84 /* sampled_texture2D.cpp */; };
+		0495472927A2405400783C84 /* sampled_texture2D.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495472727A2405400783C84 /* sampled_texture2D.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -571,6 +574,10 @@
 		0495471927A2348F00783C84 /* unlit_wgsl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = unlit_wgsl.h; sourceTree = "<group>"; };
 		0495471C27A2396500783C84 /* shader_pool.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = shader_pool.cpp; sourceTree = "<group>"; };
 		0495471D27A2396500783C84 /* shader_pool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shader_pool.h; sourceTree = "<group>"; };
+		0495472227A23CE100783C84 /* sampled_texture.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sampled_texture.cpp; sourceTree = "<group>"; };
+		0495472327A23CE100783C84 /* sampled_texture.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sampled_texture.h; sourceTree = "<group>"; };
+		0495472627A2405400783C84 /* sampled_texture2D.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sampled_texture2D.cpp; sourceTree = "<group>"; };
+		0495472727A2405400783C84 /* sampled_texture2D.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sampled_texture2D.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -782,6 +789,7 @@
 				04128464279EDAF80071BD86 /* shader */,
 				0495471627A231F400783C84 /* shaderlib */,
 				04954642279F8A4400783C84 /* material */,
+				0495472127A23CC800783C84 /* texture */,
 				0495465F279F8CBF00783C84 /* background.h */,
 				04954662279F8CD500783C84 /* layer.h */,
 				04954668279F8CD500783C84 /* update_flag.h */,
@@ -1032,6 +1040,17 @@
 			path = shaderlib;
 			sourceTree = "<group>";
 		};
+		0495472127A23CC800783C84 /* texture */ = {
+			isa = PBXGroup;
+			children = (
+				0495472327A23CE100783C84 /* sampled_texture.h */,
+				0495472227A23CE100783C84 /* sampled_texture.cpp */,
+				0495472727A2405400783C84 /* sampled_texture2D.h */,
+				0495472627A2405400783C84 /* sampled_texture2D.cpp */,
+			);
+			path = texture;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -1158,6 +1177,7 @@
 				0412845E279ED4B10071BD86 /* imstb_rectpack.h in Headers */,
 				0495471427A15BEE00783C84 /* shader_macro_collection.h in Headers */,
 				049546DB279FA0F200783C84 /* render_context.h in Headers */,
+				0495472527A23CE100783C84 /* sampled_texture.h in Headers */,
 				04954654279F8AE900783C84 /* base_material.h in Headers */,
 				04128472279EED090071BD86 /* stencil_state.h in Headers */,
 				04128462279ED4B10071BD86 /* imconfig.h in Headers */,
@@ -1176,6 +1196,7 @@
 				0412847A279EEEEC0071BD86 /* render_state.h in Headers */,
 				04954692279F8D5E00783C84 /* render_element.h in Headers */,
 				04954680279F8CD600783C84 /* renderer.h in Headers */,
+				0495472927A2405400783C84 /* sampled_texture2D.h in Headers */,
 				0495468E279F8D3700783C84 /* component.h in Headers */,
 				0495471B27A2348F00783C84 /* unlit_wgsl.h in Headers */,
 				04954678279F8CD600783C84 /* layer.h in Headers */,
@@ -1185,7 +1206,6 @@
 				04128460279ED4B10071BD86 /* imgui_internal.h in Headers */,
 				0495468B279F8CD600783C84 /* std_helpers.h in Headers */,
 				0495467C279F8CD600783C84 /* components_manager.h in Headers */,
-				04954655279F8AE900783C84 /* unlit_material.h in Headers */,
 				0412846A279EDB2C0071BD86 /* blend_state.h in Headers */,
 				0495463B279F89E500783C84 /* shader_data.h in Headers */,
 				0495467F279F8CD600783C84 /* entity.h in Headers */,
@@ -1381,6 +1401,7 @@
 				04954686279F8CD600783C84 /* scene.cpp in Sources */,
 				049546E6279FA7D800783C84 /* null_binding.cpp in Sources */,
 				0495471327A15BEE00783C84 /* shader_macro_collection.cpp in Sources */,
+				0495472827A2405400783C84 /* sampled_texture2D.cpp in Sources */,
 				04954646279F8A7D00783C84 /* material.cpp in Sources */,
 				04128441279ED3A60071BD86 /* unix_engine.cpp in Sources */,
 				0495471E27A2396500783C84 /* shader_pool.cpp in Sources */,
@@ -1392,6 +1413,7 @@
 				0495468C279F8CD600783C84 /* component.cpp in Sources */,
 				04128445279ED3A60071BD86 /* glfw_window.cpp in Sources */,
 				0495467A279F8CD600783C84 /* components_manager.cpp in Sources */,
+				0495472427A23CE100783C84 /* sampled_texture.cpp in Sources */,
 				049546F1279FC75900783C84 /* subpass.cpp in Sources */,
 				04128461279ED4B10071BD86 /* imgui_draw.cpp in Sources */,
 				04954681279F8CD600783C84 /* script.cpp in Sources */,
