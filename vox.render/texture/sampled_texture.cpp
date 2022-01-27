@@ -6,6 +6,7 @@
 //
 
 #include "sampled_texture.h"
+#include <math.h>
 
 namespace vox {
 float SampledTexture::width() {
@@ -18,6 +19,14 @@ float SampledTexture::height() {
 
 uint32_t SampledTexture::mipmapCount() {
     return _textureDesc.mipLevelCount;
+}
+
+wgpu::TextureFormat SampledTexture::format() {
+    return _textureDesc.format;
+}
+
+uint32_t SampledTexture::_getMipmapCount(bool mipmap) {
+    return mipmap ? log2(fmax(_textureDesc.size.width, _textureDesc.size.height)) + 1 : 1;
 }
 
 //MARK: - Sampler

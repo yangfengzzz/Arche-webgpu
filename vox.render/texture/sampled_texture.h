@@ -28,6 +28,11 @@ public:
      */
     uint32_t mipmapCount();
     
+    /**
+     * Texture format.
+     */
+    wgpu::TextureFormat format();
+    
 public:
     /**
      * Wrapping mode for texture coordinate S.
@@ -65,6 +70,8 @@ public:
     void setAnisoLevel(uint16_t value);
     
 protected:
+    uint32_t _getMipmapCount(bool mipmap);
+    
     wgpu::Texture _nativeTexture;
     wgpu::Sampler _nativeSampler;
     wgpu::TextureDescriptor _textureDesc;
