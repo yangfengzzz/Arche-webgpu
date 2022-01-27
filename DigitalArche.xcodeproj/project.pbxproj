@@ -283,6 +283,8 @@
 		0495475027A2714200783C84 /* buffer_mesh.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495474E27A2714200783C84 /* buffer_mesh.h */; };
 		0495475327A2750900783C84 /* model_mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495475127A2750900783C84 /* model_mesh.cpp */; };
 		0495475427A2750900783C84 /* model_mesh.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495475227A2750900783C84 /* model_mesh.h */; };
+		0495475827A2868000783C84 /* primitive_mesh.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495475627A2868000783C84 /* primitive_mesh.h */; };
+		0495475927A2868000783C84 /* primitive_mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495475727A2868000783C84 /* primitive_mesh.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -620,6 +622,8 @@
 		0495475127A2750900783C84 /* model_mesh.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = model_mesh.cpp; sourceTree = "<group>"; };
 		0495475227A2750900783C84 /* model_mesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = model_mesh.h; sourceTree = "<group>"; };
 		0495475527A2821C00783C84 /* wgsl_common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_common.h; sourceTree = "<group>"; };
+		0495475627A2868000783C84 /* primitive_mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = primitive_mesh.h; sourceTree = "<group>"; };
+		0495475727A2868000783C84 /* primitive_mesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = primitive_mesh.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1126,6 +1130,8 @@
 				0495474D27A2714200783C84 /* buffer_mesh.cpp */,
 				0495475227A2750900783C84 /* model_mesh.h */,
 				0495475127A2750900783C84 /* model_mesh.cpp */,
+				0495475627A2868000783C84 /* primitive_mesh.h */,
+				0495475727A2868000783C84 /* primitive_mesh.cpp */,
 			);
 			path = mesh;
 			sourceTree = "<group>";
@@ -1255,6 +1261,7 @@
 				04954647279F8A7D00783C84 /* material.h in Headers */,
 				0495464D279F8A8700783C84 /* blend_mode.h in Headers */,
 				049546F7279FC92B00783C84 /* forward_subpass.h in Headers */,
+				0495475827A2868000783C84 /* primitive_mesh.h in Headers */,
 				04954641279F89E500783C84 /* shader.h in Headers */,
 				049546EE279FC74800783C84 /* render_pass.h in Headers */,
 				0495473A27A2564500783C84 /* pbr_specular_material.h in Headers */,
@@ -1519,6 +1526,7 @@
 				0495473E27A25B1300783C84 /* buffer.cpp in Sources */,
 				0495463D279F89E500783C84 /* shader_data.cpp in Sources */,
 				04128458279ED4B10071BD86 /* imgui_tables.cpp in Sources */,
+				0495475927A2868000783C84 /* primitive_mesh.cpp in Sources */,
 				04954652279F8AE900783C84 /* base_material.cpp in Sources */,
 				049546ED279FC74800783C84 /* render_pass.cpp in Sources */,
 				0495471A27A2348F00783C84 /* unlit_wgsl.cpp in Sources */,
