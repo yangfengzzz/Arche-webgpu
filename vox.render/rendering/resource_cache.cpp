@@ -10,32 +10,154 @@
 
 namespace std {
 using namespace vox;
+template<>
+struct hash<wgpu::PrimitiveState> {
+    std::size_t operator()(const wgpu::PrimitiveState &state) const {
+        std::size_t result = 0;
+        
+        hash_combine(result, state.topology);
+        hash_combine(result, state.frontFace);
+        hash_combine(result, state.cullMode);
+        hash_combine(result, state.stripIndexFormat);
+
+        return result;
+    }
+};
+
+template<>
+struct hash<wgpu::MultisampleState> {
+    std::size_t operator()(const wgpu::MultisampleState &state) const {
+        std::size_t result = 0;
+        
+        hash_combine(result, state.count);
+        hash_combine(result, state.mask);
+        hash_combine(result, state.alphaToCoverageEnabled);
+
+        return result;
+    }
+};
+
+template<>
+struct hash<wgpu::StencilFaceState> {
+    std::size_t operator()(const wgpu::StencilFaceState &state) const {
+        std::size_t result = 0;
+        
+        hash_combine(result, state.compare);
+        hash_combine(result, state.depthFailOp);
+        hash_combine(result, state.failOp);
+        hash_combine(result, state.passOp);
+
+        return result;
+    }
+};
+
+template<>
+struct hash<wgpu::DepthStencilState> {
+    std::size_t operator()(const wgpu::DepthStencilState &state) const {
+        std::size_t result = 0;
+        
+        hash_combine(result, state.format);
+        hash_combine(result, state.depthWriteEnabled);
+        hash_combine(result, state.depthCompare);
+        hash_combine(result, state.stencilBack);
+        hash_combine(result, state.stencilFront);
+        hash_combine(result, state.stencilReadMask);
+        hash_combine(result, state.stencilWriteMask);
+        hash_combine(result, state.depthBias);
+        hash_combine(result, state.depthBiasClamp);
+        hash_combine(result, state.depthBiasSlopeScale);
+
+        return result;
+    }
+};
+
+template<>
+struct hash<wgpu::VertexState> {
+    std::size_t operator()(const wgpu::VertexState &state) const {
+        std::size_t result = 0;
+        
+        hash_combine(result, state.module.Get());  // internal address
+        hash_combine(result, state.entryPoint);
+        hash_combine(result, state.bufferCount);
+        hash_combine(result, state.buffers);  // internal address
+
+        return result;
+    }
+};
+
+template<>
+struct hash<wgpu::FragmentState> {
+    std::size_t operator()(const wgpu::FragmentState &state) const {
+        std::size_t result = 0;
+        
+        hash_combine(result, state.module.Get());  // internal address
+        hash_combine(result, state.entryPoint);
+        hash_combine(result, state.targetCount);
+        for (uint32_t i = 0; i < state.targetCount; i++) {
+            const wgpu::ColorTargetState& target = state.targets[i];
+            hash_combine(result, target);
+        }
+
+        return result;
+    }
+};
+
+template<>
+struct hash<wgpu::ColorTargetState> {
+    std::size_t operator()(const wgpu::ColorTargetState &state) const {
+        std::size_t result = 0;
+        
+        hash_combine(result, state.format);
+        hash_combine(result, state.writeMask);
+        if (state.blend) {
+            hash_combine(result, *state.blend);
+        }
+
+        return result;
+    }
+};
+
+template<>
+struct hash<wgpu::BlendState> {
+    std::size_t operator()(const wgpu::BlendState &state) const {
+        std::size_t result = 0;
+        
+        hash_combine(result, state.color);
+        hash_combine(result, state.alpha);
+
+        return result;
+    }
+};
+
+template<>
+struct hash<wgpu::BlendComponent> {
+    std::size_t operator()(const wgpu::BlendComponent &state) const {
+        std::size_t result = 0;
+        
+        hash_combine(result, state.operation);
+        hash_combine(result, state.srcFactor);
+        hash_combine(result, state.dstFactor);
+
+        return result;
+    }
+};
+
 
 template<>
 struct hash<wgpu::RenderPipelineDescriptor> {
     std::size_t operator()(const wgpu::RenderPipelineDescriptor &descriptor) const {
         std::size_t result = 0;
         
-//        hash_combine(result, descriptor.vertexDescriptor()->objCObj()); // internal address
-//        hash_combine(result, descriptor.vertexFunction()->objCObj()); // internal address
-//        if (descriptor.fragmentFunction()) {
-//            hash_combine(result, descriptor.fragmentFunction()->objCObj()); // internal address
-//        }
-//        hash_combine(result, descriptor.sampleCount());
-//        hash_combine(result, descriptor.isAlphaToCoverageEnabled());
-//        hash_combine(result, descriptor.depthAttachmentPixelFormat());
-//        hash_combine(result, descriptor.stencilAttachmentPixelFormat());
-//        if (descriptor.colorAttachments[0].pixelFormat() != MTL::PixelFormatInvalid) {
-//            hash_combine(result, descriptor.colorAttachments[0].pixelFormat());
-//            hash_combine(result, descriptor.colorAttachments[0].isBlendingEnabled());
-//            hash_combine(result, descriptor.colorAttachments[0].sourceRGBBlendFactor());
-//            hash_combine(result, descriptor.colorAttachments[0].destinationRGBBlendFactor());
-//            hash_combine(result, descriptor.colorAttachments[0].rgbBlendOperation());
-//            hash_combine(result, descriptor.colorAttachments[0].sourceAlphaBlendFactor());
-//            hash_combine(result, descriptor.colorAttachments[0].destinationAlphaBlendFactor());
-//            hash_combine(result, descriptor.colorAttachments[0].alphaBlendOperation());
-//            hash_combine(result, descriptor.colorAttachments[0].writeMask());
-//        }
+//        hash_combine(result, descriptor.layout); // internal address
+        hash_combine(result, descriptor.primitive);
+        hash_combine(result, descriptor.multisample);
+        if (descriptor.depthStencil) {
+            hash_combine(result, *descriptor.depthStencil);
+        }
+        hash_combine(result, descriptor.vertex);
+        if (descriptor.fragment) {
+            hash_combine(result, *descriptor.fragment);
+        }
         
         return result;
     }

@@ -100,13 +100,12 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
         {
             const std::string& vertexSource = material->shader->vertexSource(macros);
             const std::string& fragmentSource = material->shader->fragmentSource(macros);
-            ShaderProgram program(_renderContext->device(), vertexSource, fragmentSource);
-            _forwardPipelineDescriptor.vertex.module = program.vertexShader();
-            _fragment.module = program.fragmentShader();
+            ShaderProgram* program = _pass->resourceCache().requestShader(vertexSource, fragmentSource);
+            _forwardPipelineDescriptor.vertex.module = program->vertexShader();
+            _fragment.module = program->fragmentShader();
             material->renderState.apply(&_colorTargetState, &_depthStencil,
                                         _forwardPipelineDescriptor, passEncoder, true);
             
-
             _forwardPipelineDescriptor.vertex.bufferCount = static_cast<uint32_t>(mesh->vertexBufferLayouts().size());
             _forwardPipelineDescriptor.vertex.buffers = mesh->vertexBufferLayouts().data();
             _forwardPipelineDescriptor.primitive.topology = subMesh->topology();
