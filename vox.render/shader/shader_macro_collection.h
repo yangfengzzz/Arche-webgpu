@@ -9,18 +9,13 @@
 
 #include <vector>
 #include <string>
-#include <unordered_map>
-#include <dawn/webgpu_cpp.h>
+#include <map>
 
 namespace vox {
 /**
  * Shader macro collection.
  */
-struct ShaderMacroCollection {
-    static std::unordered_map<std::string, double> defaultValue;
-    
-    static std::vector<wgpu::ConstantEntry> createDefaultFunction();
-    
+struct ShaderMacroCollection {    
     /**
      * Union of two macro collection.
      * @param left - input macro collection
@@ -37,7 +32,7 @@ private:
     
     friend class ShaderData;
     
-    std::unordered_map<std::string, double> _value{};
+    std::map<std::string, double> _value{};
 };
 
 }

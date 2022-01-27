@@ -35,24 +35,24 @@ const std::unordered_map<int, wgpu::Buffer> &ShaderData::properties() const {
 }
 
 //MARK: - Macro
-//void ShaderData::enableMacro(MacroName macroName) {
-//    _macroCollection._value.insert(std::make_pair(macroName, std::make_pair(1, MTL::DataTypeBool)));
-//}
-//
-//void ShaderData::enableMacro(MacroName macroName, std::pair<int, MTL::DataType> value) {
-//    _macroCollection._value.insert(std::make_pair(macroName, value));
-//}
-//
-//void ShaderData::disableMacro(MacroName macroName) {
-//    auto iter = _macroCollection._value.find(macroName);
-//    if (iter != _macroCollection._value.end()) {
-//        _macroCollection._value.erase(iter);
-//    }
-//}
-//
-//void ShaderData::mergeMacro(const ShaderMacroCollection &macros,
-//                            ShaderMacroCollection &result) const {
-//    ShaderMacroCollection::unionCollection(macros, _macroCollection, result);
-//}
+void ShaderData::enableMacro(const std::string& macroName) {
+    _macroCollection._value.insert(std::make_pair(macroName, 1));
+}
+
+void ShaderData::enableMacro(const std::string& macroName, double value) {
+    _macroCollection._value.insert(std::make_pair(macroName, value));
+}
+
+void ShaderData::disableMacro(const std::string& macroName) {
+    auto iter = _macroCollection._value.find(macroName);
+    if (iter != _macroCollection._value.end()) {
+        _macroCollection._value.erase(iter);
+    }
+}
+
+void ShaderData::mergeMacro(const ShaderMacroCollection &macros,
+                            ShaderMacroCollection &result) const {
+    ShaderMacroCollection::unionCollection(macros, _macroCollection, result);
+}
 
 }

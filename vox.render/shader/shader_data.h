@@ -8,7 +8,7 @@
 #define shader_data_hpp
 
 #include "shader_data_group.h"
-//#include "shader_macro_collection.h"
+#include "shader_macro_collection.h"
 #include "shader_property.h"
 #include "shader.h"
 #include "std_helpers.h"
@@ -55,34 +55,34 @@ public:
     const std::unordered_map<int, wgpu::Buffer> &properties() const;
     
 public:
-//    /**
-//     * Enable macro.
-//     * @param macroName - Shader macro
-//     */
-//    void enableMacro(MacroName macroName);
-//
-//    /**
-//     * Enable macro.
-//     * @remarks Name and value will combine one macro, it's equal the macro of "name value".
-//     * @param macroName - Macro name
-//     * @param value - Macro value
-//     */
-//    void enableMacro(MacroName macroName, std::pair<int, MTL::DataType> value);
-//
-//    /**
-//     * Disable macro
-//     * @param macroName - Macro name
-//     */
-//    void disableMacro(MacroName macroName);
-//
-//    void mergeMacro(const ShaderMacroCollection &macros,
-//                    ShaderMacroCollection &result) const;
+    /**
+     * Enable macro.
+     * @param macroName - Shader macro
+     */
+    void enableMacro(const std::string& macroName);
+
+    /**
+     * Enable macro.
+     * @remarks Name and value will combine one macro, it's equal the macro of "name value".
+     * @param macroName - Macro name
+     * @param value - Macro value
+     */
+    void enableMacro(const std::string& macroName, double value);
+
+    /**
+     * Disable macro
+     * @param macroName - Macro name
+     */
+    void disableMacro(const std::string& macroName);
+
+    void mergeMacro(const ShaderMacroCollection &macros,
+                    ShaderMacroCollection &result) const;
     
 private:
     wgpu::Device& _device;
     std::unordered_map<int, wgpu::Buffer> _properties;
     
-//    ShaderMacroCollection _macroCollection;
+    ShaderMacroCollection _macroCollection;
 };
 
 }
