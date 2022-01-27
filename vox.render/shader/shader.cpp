@@ -12,30 +12,30 @@ std::unordered_map<std::string, std::unique_ptr<Shader>> Shader::_shaderMap = {}
 std::unordered_map<std::string, ShaderProperty> Shader::_propertyNameMap = {};
 
 Shader::Shader(const std::string &name,
-               WGSLCreator vertexSource,
-               WGSLCreator fragmentSource) :
+               WGSLCreator vertexCreator,
+               WGSLCreator fragmentCreator) :
 name(name),
-_vertexSource(vertexSource()),
-_fragmentSource(fragmentSource()) {
+_vertexGenerator(vertexCreator()),
+_fragmentGenerator(fragmentCreator()) {
 }
 
 const std::string& Shader::vertexSource(const ShaderMacroCollection& macros) {
-    return _vertexSource->compile(macros);
+    return _vertexGenerator->compile(macros);
 }
 
 const std::string& Shader::fragmentSource(const ShaderMacroCollection& macros) {
-    return _fragmentSource->compile(macros);
+    return _fragmentGenerator->compile(macros);
 }
 
 Shader *Shader::create(const std::string &name,
-                       WGSLCreator vertexSource,
-                       WGSLCreator fragmentSource) {
+                       WGSLCreator vertexCreator,
+                       WGSLCreator fragmentCreator) {
     auto iter = Shader::_shaderMap.find(name);
     
     if (iter != Shader::_shaderMap.end()) {
         LOG(ERROR) << ("Shader named" + name + "already exists.") << std::endl;
     }
-    auto shader = std::make_unique<Shader>(name, vertexSource, fragmentSource);
+    auto shader = std::make_unique<Shader>(name, vertexCreator, fragmentCreator);
     auto shaderPtr = shader.get();
     Shader::_shaderMap.insert(std::make_pair(name, std::move(shader)));
     return shaderPtr;
