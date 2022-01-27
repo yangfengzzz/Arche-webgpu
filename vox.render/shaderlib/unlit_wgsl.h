@@ -18,6 +18,8 @@ public:
     const std::string& compile(const ShaderMacroCollection& macros) override;
     
 private:
+    void _createShaderSource(size_t hash, const ShaderMacroCollection& macros);
+    
     std::unordered_map<size_t, std::string> _cache{};
 };
 
@@ -29,6 +31,8 @@ public:
     const std::string& compile(const ShaderMacroCollection& macros) override;
     
 private:
+    void _createShaderSource(size_t hash, const ShaderMacroCollection& macros);
+    
     std::unordered_map<size_t, std::string> _cache{};
 };
 

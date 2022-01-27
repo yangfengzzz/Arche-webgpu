@@ -23,7 +23,8 @@ private:
     void _drawMeshes(wgpu::RenderPassEncoder &passEncoder);
     
     void _drawElement(wgpu::RenderPassEncoder &passEncoder,
-                      const std::vector<RenderElement> &items);
+                      const std::vector<RenderElement> &items,
+                      const ShaderMacroCollection& compileMacros);
     
     wgpu::RenderPipelineDescriptor _forwardPipelineDescriptor;
     wgpu::DepthStencilState _depthStencil;
