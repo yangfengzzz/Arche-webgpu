@@ -11,7 +11,8 @@
 #include <string>
 #include <optional>
 #include "shader_property.h"
-//#include "shader_macro_collection.h"
+#include "shader_macro_collection.h"
+#include "shaderlib/wgsl.h"
 
 namespace vox {
 /**
@@ -22,11 +23,11 @@ public:
     /** The name of shader. */
     std::string name;
     
-    Shader(const std::string &name, const std::string &vertexSource, const std::string &fragmentSource);
+    Shader(const std::string &name, WGSLCreator vertexSource, WGSLCreator fragmentSource);
     
-    const std::string& vertexSource();
+    const std::string& vertexSource(const ShaderMacroCollection& macros);
     
-    const std::string& fragmentSource();
+    const std::string& fragmentSource(const ShaderMacroCollection& macros);
     
     /**
      * Create a shader.
@@ -34,7 +35,7 @@ public:
      * @param vertexSource - Vertex source code
      * @param fragmentSource - Fragment source code
      */
-    static Shader *create(const std::string &name, const std::string &vertexSource, const std::string &fragmentSource);
+    static Shader *create(const std::string &name, WGSLCreator vertexSource, WGSLCreator fragmentSource);
     
     /**
      * Find a shader by name.
@@ -67,8 +68,8 @@ private:
     
     // object shader data
     int _shaderId = 0;
-    std::string _vertexSource;
-    std::string _fragmentSource;
+    WGSLPtr _vertexSource;
+    WGSLPtr _fragmentSource;
 };
 
 }

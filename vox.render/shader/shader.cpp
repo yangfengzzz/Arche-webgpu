@@ -12,24 +12,24 @@ std::unordered_map<std::string, std::unique_ptr<Shader>> Shader::_shaderMap = {}
 std::unordered_map<std::string, ShaderProperty> Shader::_propertyNameMap = {};
 
 Shader::Shader(const std::string &name,
-               const std::string &vertexSource,
-               const std::string &fragmentSource) :
+               WGSLCreator vertexSource,
+               WGSLCreator fragmentSource) :
 name(name),
-_vertexSource(vertexSource),
-_fragmentSource(fragmentSource) {
+_vertexSource(vertexSource()),
+_fragmentSource(fragmentSource()) {
 }
 
-const std::string& Shader::vertexSource() {
-    return _vertexSource;
+const std::string& Shader::vertexSource(const ShaderMacroCollection& macros) {
+    return _vertexSource->compile(macros);
 }
 
-const std::string& Shader::fragmentSource() {
-    return _fragmentSource;
+const std::string& Shader::fragmentSource(const ShaderMacroCollection& macros) {
+    return _fragmentSource->compile(macros);
 }
 
 Shader *Shader::create(const std::string &name,
-                       const std::string &vertexSource,
-                       const std::string &fragmentSource) {
+                       WGSLCreator vertexSource,
+                       WGSLCreator fragmentSource) {
     auto iter = Shader::_shaderMap.find(name);
     
     if (iter != Shader::_shaderMap.end()) {
