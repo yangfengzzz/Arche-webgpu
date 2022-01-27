@@ -275,6 +275,8 @@
 		0495473F27A25B1300783C84 /* buffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495473D27A25B1300783C84 /* buffer.h */; };
 		0495474227A2640900783C84 /* index_buffer_binding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495474027A2640900783C84 /* index_buffer_binding.cpp */; };
 		0495474327A2640900783C84 /* index_buffer_binding.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495474127A2640900783C84 /* index_buffer_binding.h */; };
+		0495474627A2657700783C84 /* sub_mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495474427A2657700783C84 /* sub_mesh.cpp */; };
+		0495474727A2657700783C84 /* sub_mesh.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495474527A2657700783C84 /* sub_mesh.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -603,6 +605,8 @@
 		0495473D27A25B1300783C84 /* buffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = buffer.h; sourceTree = "<group>"; };
 		0495474027A2640900783C84 /* index_buffer_binding.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = index_buffer_binding.cpp; sourceTree = "<group>"; };
 		0495474127A2640900783C84 /* index_buffer_binding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = index_buffer_binding.h; sourceTree = "<group>"; };
+		0495474427A2657700783C84 /* sub_mesh.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sub_mesh.cpp; sourceTree = "<group>"; };
+		0495474527A2657700783C84 /* sub_mesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sub_mesh.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1092,6 +1096,8 @@
 				0495473C27A25B1300783C84 /* buffer.cpp */,
 				0495474127A2640900783C84 /* index_buffer_binding.h */,
 				0495474027A2640900783C84 /* index_buffer_binding.cpp */,
+				0495474527A2657700783C84 /* sub_mesh.h */,
+				0495474427A2657700783C84 /* sub_mesh.cpp */,
 			);
 			path = graphics;
 			sourceTree = "<group>";
@@ -1198,6 +1204,7 @@
 			files = (
 				0495464B279F8A8700783C84 /* render_face.h in Headers */,
 				0412845A279ED4B10071BD86 /* imgui.h in Headers */,
+				0495474727A2657700783C84 /* sub_mesh.h in Headers */,
 				0495471F27A2396500783C84 /* shader_pool.h in Headers */,
 				0495464C279F8A8700783C84 /* render_queue_type.h in Headers */,
 				049546FB279FC9B400783C84 /* graphics_application.h in Headers */,
@@ -1439,6 +1446,7 @@
 				0495473227A24A1300783C84 /* pbr_base_material.cpp in Sources */,
 				04128479279EEEEC0071BD86 /* render_state.cpp in Sources */,
 				049546FF279FCD1100783C84 /* forward_application.cpp in Sources */,
+				0495474627A2657700783C84 /* sub_mesh.cpp in Sources */,
 				0495463E279F89E500783C84 /* shader_property.cpp in Sources */,
 				0495470F27A14FA800783C84 /* shader_program.cpp in Sources */,
 				049546E5279FA7D800783C84 /* metal_binding.mm in Sources */,
