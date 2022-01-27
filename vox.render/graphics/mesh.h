@@ -1,9 +1,8 @@
+//  Copyright (c) 2022 Feng Yang
 //
-//  mesh.hpp
-//  vox.render
-//
-//  Created by 杨丰 on 2022/1/27.
-//
+//  I am making my contributions/submissions to this project solely in my
+//  personal capacity and am not conveying any rights to any intellectual
+//  property of any third parties.
 
 #ifndef mesh_hpp
 #define mesh_hpp
@@ -73,7 +72,7 @@ protected:
     
 protected:
     size_t _instanceCount = 0;
-    std::vector<Buffer> _vertexBufferBindings{};
+    std::vector<std::optional<Buffer>> _vertexBufferBindings{};
     std::optional<IndexBufferBinding> _indexBufferBinding = std::nullopt;
     std::vector<wgpu::VertexBufferLayout> _vertexBufferLayouts{};
 
