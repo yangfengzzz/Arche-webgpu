@@ -272,6 +272,8 @@
 		0495476227A2954200783C84 /* primitive_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495476027A2954200783C84 /* primitive_app.cpp */; };
 		0495476727A295A600783C84 /* libvox.math.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 041282EC279ECF3D0071BD86 /* libvox.math.a */; };
 		0495476827A295A600783C84 /* libvox.render.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04128424279ED3510071BD86 /* libvox.render.a */; };
+		0495476C27A2C6C500783C84 /* resource_cache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495476A27A2C6C500783C84 /* resource_cache.cpp */; };
+		0495476D27A2C6C500783C84 /* resource_cache.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495476B27A2C6C500783C84 /* resource_cache.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -630,6 +632,8 @@
 		0495475E27A294E600783C84 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		0495476027A2954200783C84 /* primitive_app.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = primitive_app.cpp; sourceTree = "<group>"; };
 		0495476127A2954200783C84 /* primitive_app.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = primitive_app.h; sourceTree = "<group>"; };
+		0495476A27A2C6C500783C84 /* resource_cache.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = resource_cache.cpp; sourceTree = "<group>"; };
+		0495476B27A2C6C500783C84 /* resource_cache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = resource_cache.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1018,6 +1022,8 @@
 		04954656279F8BDE00783C84 /* rendering */ = {
 			isa = PBXGroup;
 			children = (
+				0495476B27A2C6C500783C84 /* resource_cache.h */,
+				0495476A27A2C6C500783C84 /* resource_cache.cpp */,
 				049546EC279FC74800783C84 /* render_pass.h */,
 				049546EB279FC74800783C84 /* render_pass.cpp */,
 				049546F0279FC75900783C84 /* subpass.h */,
@@ -1291,6 +1297,7 @@
 				0412845E279ED4B10071BD86 /* imstb_rectpack.h in Headers */,
 				0495471427A15BEE00783C84 /* shader_macro_collection.h in Headers */,
 				049546DB279FA0F200783C84 /* render_context.h in Headers */,
+				0495476D27A2C6C500783C84 /* resource_cache.h in Headers */,
 				0495472527A23CE100783C84 /* sampled_texture.h in Headers */,
 				04954654279F8AE900783C84 /* base_material.h in Headers */,
 				04128472279EED090071BD86 /* stencil_state.h in Headers */,
@@ -1554,6 +1561,7 @@
 				0495475927A2868000783C84 /* primitive_mesh.cpp in Sources */,
 				04954652279F8AE900783C84 /* base_material.cpp in Sources */,
 				049546ED279FC74800783C84 /* render_pass.cpp in Sources */,
+				0495476C27A2C6C500783C84 /* resource_cache.cpp in Sources */,
 				0495471A27A2348F00783C84 /* unlit_wgsl.cpp in Sources */,
 				0495475327A2750900783C84 /* model_mesh.cpp in Sources */,
 				04128459279ED4B10071BD86 /* imgui_widgets.cpp in Sources */,

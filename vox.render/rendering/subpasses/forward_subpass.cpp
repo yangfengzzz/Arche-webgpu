@@ -10,6 +10,7 @@
 #include "graphics/mesh.h"
 #include "camera.h"
 #include "renderer.h"
+#include "rendering/render_pass.h"
 
 #include "shader/shader_program.h"
 
@@ -110,8 +111,8 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
             _forwardPipelineDescriptor.vertex.buffers = mesh->vertexBufferLayouts().data();
             _forwardPipelineDescriptor.primitive.topology = subMesh->topology();
             
-            auto renderPipeline = _renderContext->device().CreateRenderPipeline(&_forwardPipelineDescriptor);
-            passEncoder.SetPipeline(renderPipeline);
+            auto renderPipeline = _pass->resourceCache().requestRenderPipeline(_forwardPipelineDescriptor);
+            passEncoder.SetPipeline(*renderPipeline);
         }
         
         // Bind Group

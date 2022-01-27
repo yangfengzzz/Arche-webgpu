@@ -8,8 +8,9 @@
 #include <glog/logging.h>
 
 namespace vox {
-RenderPass::RenderPass(wgpu::RenderPassDescriptor& desc):
-_desc(desc) {
+RenderPass::RenderPass(wgpu::Device& device, wgpu::RenderPassDescriptor& desc):
+_desc(desc),
+_resourceCache(device) {
 }
 
 const wgpu::RenderPassDescriptor& RenderPass::renderPassDescriptor() {
@@ -80,6 +81,10 @@ RenderPass* RenderPass::findPass(const std::string& name) {
 
 void RenderPass::clearParentPass() {
     _parentPass.clear();
+}
+
+ResourceCache& RenderPass::resourceCache() {
+    return _resourceCache;
 }
 
 }

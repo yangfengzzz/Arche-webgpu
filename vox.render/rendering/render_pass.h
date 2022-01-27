@@ -8,14 +8,14 @@
 #define render_pass_hpp
 
 #include "subpass.h"
-//#include "resource_cache.h"
+#include "resource_cache.h"
 //#include "gui.h"
 #include <vector>
 
 namespace vox {
 class RenderPass {
 public:
-    RenderPass(wgpu::RenderPassDescriptor& desc);
+    RenderPass(wgpu::Device& device, wgpu::RenderPassDescriptor& desc);
     
     RenderPass(const RenderPass &) = delete;
     
@@ -56,6 +56,9 @@ public:
     
     void clearParentPass();
     
+public:
+    ResourceCache& resourceCache();
+    
 private:
     wgpu::RenderPassDescriptor& _desc;
     
@@ -63,6 +66,8 @@ private:
     size_t _activeSubpassIndex{0};
     
     std::unordered_map<std::string, RenderPass*> _parentPass;
+    
+    ResourceCache _resourceCache;
 };
 
 }
