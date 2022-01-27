@@ -277,6 +277,8 @@
 		0495474327A2640900783C84 /* index_buffer_binding.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495474127A2640900783C84 /* index_buffer_binding.h */; };
 		0495474627A2657700783C84 /* sub_mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495474427A2657700783C84 /* sub_mesh.cpp */; };
 		0495474727A2657700783C84 /* sub_mesh.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495474527A2657700783C84 /* sub_mesh.h */; };
+		0495474A27A2669600783C84 /* mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495474827A2669600783C84 /* mesh.cpp */; };
+		0495474B27A2669600783C84 /* mesh.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495474927A2669600783C84 /* mesh.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -607,6 +609,8 @@
 		0495474127A2640900783C84 /* index_buffer_binding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = index_buffer_binding.h; sourceTree = "<group>"; };
 		0495474427A2657700783C84 /* sub_mesh.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sub_mesh.cpp; sourceTree = "<group>"; };
 		0495474527A2657700783C84 /* sub_mesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sub_mesh.h; sourceTree = "<group>"; };
+		0495474827A2669600783C84 /* mesh.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mesh.cpp; sourceTree = "<group>"; };
+		0495474927A2669600783C84 /* mesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mesh.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1098,6 +1102,8 @@
 				0495474027A2640900783C84 /* index_buffer_binding.cpp */,
 				0495474527A2657700783C84 /* sub_mesh.h */,
 				0495474427A2657700783C84 /* sub_mesh.cpp */,
+				0495474927A2669600783C84 /* mesh.h */,
+				0495474827A2669600783C84 /* mesh.cpp */,
 			);
 			path = graphics;
 			sourceTree = "<group>";
@@ -1211,6 +1217,7 @@
 				0495471027A14FA800783C84 /* shader_program.h in Headers */,
 				04128447279ED3A60071BD86 /* engine.h in Headers */,
 				04954700279FCD1100783C84 /* forward_application.h in Headers */,
+				0495474B27A2669600783C84 /* mesh.h in Headers */,
 				0495470C279FCD3C00783C84 /* free_control.h in Headers */,
 				04954677279F8CD600783C84 /* transform.h in Headers */,
 				04954660279F8CBF00783C84 /* background.h in Headers */,
@@ -1477,6 +1484,7 @@
 				04128445279ED3A60071BD86 /* glfw_window.cpp in Sources */,
 				0495467A279F8CD600783C84 /* components_manager.cpp in Sources */,
 				0495474227A2640900783C84 /* index_buffer_binding.cpp in Sources */,
+				0495474A27A2669600783C84 /* mesh.cpp in Sources */,
 				0495472427A23CE100783C84 /* sampled_texture.cpp in Sources */,
 				049546F1279FC75900783C84 /* subpass.cpp in Sources */,
 				04128461279ED4B10071BD86 /* imgui_draw.cpp in Sources */,

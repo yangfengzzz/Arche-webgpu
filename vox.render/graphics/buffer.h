@@ -30,6 +30,11 @@ public:
      */
     Buffer(wgpu::Device& device, std::vector<uint8_t>& data, wgpu::BufferUsage bufferUsage);
     
+    Buffer(Buffer const& other) = default;
+    
+    Buffer(Buffer&& other) = default;
+    
+public:
     wgpu::Buffer& buffer();
     
     /**

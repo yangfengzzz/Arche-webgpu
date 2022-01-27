@@ -1,0 +1,91 @@
+//
+//  mesh.hpp
+//  vox.render
+//
+//  Created by 杨丰 on 2022/1/27.
+//
+
+#ifndef mesh_hpp
+#define mesh_hpp
+
+#include "sub_mesh.h"
+#include "index_buffer_binding.h"
+#include "bounding_box3.h"
+#include "update_flag_manager.h"
+#include <string>
+#include <optional>
+
+namespace vox {
+class Mesh {
+public:
+    /** Name. */
+    std::string name = "";
+    /** The bounding volume of the mesh. */
+    BoundingBox3F bounds = BoundingBox3F();
+    
+    /**
+     * First sub-mesh. Rendered using the first material.
+     */
+    const SubMesh* subMesh() const;
+    
+    /**
+     * A collection of sub-mesh, each sub-mesh can be rendered with an independent material.
+     */
+    const std::vector<SubMesh>& subMeshes() const;
+    
+    /**
+     * Add sub-mesh, each sub-mesh can correspond to an independent material.
+     * @param subMesh - Start drawing offset, if the index buffer is set,
+     * it means the offset in the index buffer, if not set, it means the offset in the vertex buffer
+     */
+    void addSubMesh(SubMesh subMesh);
+    
+    /**
+     * Add sub-mesh, each sub-mesh can correspond to an independent material.
+     * @param start - Start drawing offset, if the index buffer is set,
+     * it means the offset in the index buffer, if not set,
+     * it means the offset in the vertex buffer
+     * @param count - Drawing count, if the index buffer is set,
+     * it means the count in the index buffer, if not set,
+     * it means the count in the vertex buffer
+     * @param topology - Drawing topology, default is MeshTopology.Triangles
+     */
+    void addSubMesh(uint32_t start = 0, uint32_t count = 0,
+                    wgpu::PrimitiveTopology topology = wgpu::PrimitiveTopology::TriangleList);
+    
+    /**
+     * Clear all sub-mesh.
+     */
+    void clearSubMesh();
+    
+    /**
+     * Register update flag, update flag will be true if the vertex element changes.
+     * @returns Update flag
+     */
+    std::unique_ptr<UpdateFlag> registerUpdateFlag();
+    
+protected:
+    void _setVertexLayouts(const std::vector<wgpu::VertexBufferLayout>& layouts);
+
+    void _setVertexBufferBinding(size_t index, const Buffer& binding);
+
+    void _setIndexBufferBinding(std::optional<IndexBufferBinding> binding);
+    
+protected:
+    size_t _instanceCount = 0;
+    std::vector<Buffer> _vertexBufferBindings{};
+    std::optional<IndexBufferBinding> _indexBufferBinding = std::nullopt;
+    std::vector<wgpu::VertexBufferLayout> _vertexBufferLayouts{};
+
+    std::vector<SubMesh> _subMeshes{};
+    UpdateFlagManager _updateFlagManager;
+    
+private:
+    void _clearVertexLayouts();
+
+    void _addVertexLayout(const wgpu::VertexBufferLayout& layout);
+};
+
+}
+
+#endif /* mesh_hpp */
