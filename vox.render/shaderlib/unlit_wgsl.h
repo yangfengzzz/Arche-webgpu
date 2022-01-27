@@ -9,23 +9,30 @@
 #define unlit_wgsl_hpp
 
 #include "wgsl.h"
+#include <unordered_map>
 
 namespace vox {
+//MARK: - Unlit Vertex Code
 class UnlitVertexWGSL : public WGSL {
 public:
     const std::string& compile(const ShaderMacroCollection& macros) override;
     
 private:
-    std::string cache;
+    std::unordered_map<size_t, std::string> _cache{};
 };
 
+WGSLPtr unlitVertex();
+
+//MARK: - Unlit Fragment Code
 class UnlitFragmentWGSL : public WGSL {
 public:
     const std::string& compile(const ShaderMacroCollection& macros) override;
     
 private:
-    std::string cache;
+    std::unordered_map<size_t, std::string> _cache{};
 };
+
+WGSLPtr unlitFragment();
 
 }
 
