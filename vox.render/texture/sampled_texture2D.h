@@ -26,6 +26,11 @@ public:
                      uint32_t height,
                      wgpu::TextureFormat format = wgpu::TextureFormat::RGBA8Sint,
                      bool mipmap = true);
+    
+    wgpu::Sampler& sampler();
+    
+private:
+    wgpu::Device& _device;
 };
 
 }

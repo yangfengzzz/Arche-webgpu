@@ -29,6 +29,10 @@ uint32_t SampledTexture::_getMipmapCount(bool mipmap) {
     return mipmap ? log2(fmax(_textureDesc.size.width, _textureDesc.size.height)) + 1 : 1;
 }
 
+wgpu::Texture& SampledTexture::texture() {
+    return _nativeTexture;
+}
+
 //MARK: - Sampler
 wgpu::AddressMode SampledTexture::addressModeU() {
     return _samplerDesc.addressModeU;
@@ -36,6 +40,7 @@ wgpu::AddressMode SampledTexture::addressModeU() {
 
 void SampledTexture::setAddressModeU(wgpu::AddressMode value) {
     _samplerDesc.addressModeU = value;
+    _isDirty = true;
 }
 
 wgpu::AddressMode SampledTexture::addressModeV() {
@@ -44,6 +49,7 @@ wgpu::AddressMode SampledTexture::addressModeV() {
 
 void SampledTexture::setAddressModeV(wgpu::AddressMode value) {
     _samplerDesc.addressModeV = value;
+    _isDirty = true;
 }
 
 wgpu::FilterMode SampledTexture::minFilterMode() {
@@ -52,6 +58,7 @@ wgpu::FilterMode SampledTexture::minFilterMode() {
 
 void SampledTexture::setMinFilterMode(wgpu::FilterMode value) {
     _samplerDesc.minFilter = value;
+    _isDirty = true;
 }
 
 wgpu::FilterMode SampledTexture::magFilterMode() {
@@ -60,6 +67,7 @@ wgpu::FilterMode SampledTexture::magFilterMode() {
 
 void SampledTexture::setMagFilterMode(wgpu::FilterMode value) {
     _samplerDesc.magFilter = value;
+    _isDirty = true;
 }
 
 uint16_t SampledTexture::anisoLevel() {
@@ -68,6 +76,7 @@ uint16_t SampledTexture::anisoLevel() {
 
 void SampledTexture::setAnisoLevel(uint16_t value) {
     _samplerDesc.maxAnisotropy = value;
+    _isDirty = true;
 }
 
 }

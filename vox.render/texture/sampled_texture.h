@@ -33,6 +33,8 @@ public:
      */
     wgpu::TextureFormat format();
     
+    wgpu::Texture& texture();
+    
 public:
     /**
      * Wrapping mode for texture coordinate S.
@@ -76,6 +78,7 @@ protected:
     wgpu::Sampler _nativeSampler;
     wgpu::TextureDescriptor _textureDesc;
     wgpu::SamplerDescriptor _samplerDesc;
+    bool _isDirty{false};
 };
 
 }
