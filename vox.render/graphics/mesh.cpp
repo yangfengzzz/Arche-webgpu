@@ -44,7 +44,7 @@ void Mesh::_setVertexLayouts(const std::vector<wgpu::VertexBufferLayout>& layout
 }
 
 void Mesh::_setVertexBufferBinding(size_t index, const Buffer& binding) {
-    _vertexBufferBindings[index] = binding;
+    _vertexBufferBindings.insert(_vertexBufferBindings.begin() + index, binding);
 }
 
 void Mesh::_setIndexBufferBinding(std::optional<IndexBufferBinding> binding) {

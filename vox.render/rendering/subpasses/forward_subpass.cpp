@@ -22,29 +22,32 @@ Subpass(renderContext, scene, camera) {
 
 void ForwardSubpass::prepare() {
     {
-        _bindGroupLayoutDescriptor.entryCount = 2;
-        _bindGroupLayoutDescriptor.entries = _bindGroupLayoutEntries.data();
+        _bindGroupLayoutEntries.resize(2);
         _bindGroupLayoutEntries[0].binding = 0;
         _bindGroupLayoutEntries[0].visibility = wgpu::ShaderStage::Vertex;
         _bindGroupLayoutEntries[0].buffer.type = wgpu::BufferBindingType::Uniform;
         _bindGroupLayoutEntries[1].binding = 1;
         _bindGroupLayoutEntries[1].visibility = wgpu::ShaderStage::Vertex;
         _bindGroupLayoutEntries[1].buffer.type = wgpu::BufferBindingType::Uniform;
+        _bindGroupLayoutDescriptor.entryCount = 2;
+        _bindGroupLayoutDescriptor.entries = _bindGroupLayoutEntries.data();
         _bindGroupLayout = _renderContext->device().CreateBindGroupLayout(&_bindGroupLayoutDescriptor);
     }
     {
+        _bindGroupEntries.resize(2);
+        _bindGroupEntries[0].binding = 0;
+        _bindGroupEntries[1].binding = 1;
         _bindGroupDescriptor.layout = _bindGroupLayout;
         _bindGroupDescriptor.entryCount = 2;
         _bindGroupDescriptor.entries = _bindGroupEntries.data();
-        _bindGroupEntries[0].binding = 0;
-        _bindGroupEntries[1].binding = 1;
     }
-    _forwardPipelineDescriptor.label = "Forward Pipeline";
-    _forwardPipelineDescriptor.depthStencil = &_depthStencil;
     _depthStencil.format = _renderContext->depthStencilTextureFormat();
-    _forwardPipelineDescriptor.fragment = &_fragment;
-    _fragment.targets = &_colorTargetState;
+    _forwardPipelineDescriptor.depthStencil = &_depthStencil;
     _colorTargetState.format = _renderContext->drawableTextureFormat();
+    _fragment.targetCount = 1;
+    _fragment.targets = &_colorTargetState;
+    _forwardPipelineDescriptor.fragment = &_fragment;
+    _forwardPipelineDescriptor.label = "Forward Pipeline";
     {
         _pipelineLayoutDescriptor.bindGroupLayoutCount = 1;
         _pipelineLayoutDescriptor.bindGroupLayouts = &_bindGroupLayout;
@@ -113,7 +116,9 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
         
         // Bind Group
         _bindGroupEntries[0].buffer = _camera->shaderData.getData("u_projMat").value();
+        _bindGroupEntries[0].size = 64;
         _bindGroupEntries[1].buffer = renderer->shaderData.getData("u_MVMat").value();
+        _bindGroupEntries[1].size = 64;
         auto uniformBindGroup = _renderContext->device().CreateBindGroup(&_bindGroupDescriptor);
         passEncoder.SetBindGroup(0, uniformBindGroup);
         

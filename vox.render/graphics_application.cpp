@@ -7,6 +7,7 @@
 #include "graphics_application.h"
 #include "engine.h"
 #include "shader/shader.h"
+#include "shader/shader_pool.h"
 #include <glog/logging.h>
 
 #include <dawn/dawn_proc.h>
@@ -31,19 +32,7 @@ static wgpu::BackendType backendType = wgpu::BackendType::OpenGL;
 #endif
 
 GraphicsApplication::GraphicsApplication() {
-//    Shader::create("unlit", "vertex_unlit", "fragment_unlit");
-//    Shader::create("blinn-phong", "vertex_blinn_phong", "fragment_blinn_phong");
-//    Shader::create("particle-shader", "vertex_particle", "fragment_particle");
-//    Shader::create("pbr", "vertex_blinn_phong", "fragment_pbr");
-//    Shader::create("pbr-specular", "vertex_blinn_phong", "fragment_pbr");
-//    Shader::create("skybox", "vertex_skybox", "fragment_skybox");
-//
-//    // MARK: - experimental
-//    Shader::create("shadow-map", "vertex_shadow_map", "fragment_shadow_map");
-//    Shader::create("shadow", "vertex_shadow_map", "fragment_shadow");
-//    Shader::create("background-texture", "vertex_background_texture", "fragment_background_texture");
-//
-//    Shader::create("experimental", "vertex_experimental", "fragment_experimental");
+    ShaderPool::init();
 }
 
 GraphicsApplication::~GraphicsApplication() {

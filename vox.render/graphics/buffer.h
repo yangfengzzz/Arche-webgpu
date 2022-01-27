@@ -27,7 +27,8 @@ public:
      * @param data - Byte
      * @param bufferUsage - Buffer usage
      */
-    Buffer(wgpu::Device& device, std::vector<uint8_t>& data, wgpu::BufferUsage bufferUsage);
+    Buffer(wgpu::Device& device, const void* data,
+           uint64_t size, wgpu::BufferUsage bufferUsage);
     
     Buffer(Buffer const& other) = default;
     
@@ -37,28 +38,7 @@ public:
     
     Buffer& operator=(Buffer&& other) = default;
     
-public:
     const wgpu::Buffer& buffer() const;
-    
-    /**
-     * Set buffer data.
-     * @param data - Input buffer data
-     * @param bufferByteOffset - Buffer byte offset
-     * @param dataLength - Data length
-     * @param dataOffset - Buffer byte offset
-     */
-    void setData(std::vector<uint8_t>& data, size_t bufferByteOffset = 0,
-                 size_t dataLength = 0, size_t dataOffset = 0);
-    
-    /**
-     * Set buffer data.
-     * @param data - Input buffer data
-     * @param bufferByteOffset - Buffer byte offset
-     * @param dataLength - Data length
-     * @param dataOffset - Buffer byte offset
-     */
-    void getData(std::vector<uint8_t>& data, size_t bufferByteOffset = 0,
-                 size_t dataLength = 0, size_t dataOffset = 0);
     
 private:
     wgpu::Buffer _nativeBuffer;

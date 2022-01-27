@@ -37,8 +37,8 @@ void UnlitVertexWGSL::_createShaderSource(size_t hash, const ShaderMacroCollecti
     "\n"
     "  struct VertexInput {\n"
     "      [[location(0)]] aVertexPosition: vec3<f32>;\n"
-    "      [[location(1)]] aVertexColor: vec3<f32>;\n"
-    "      [[location(4)]] aVertexUV: vec2<f32>;\n"
+    "      [[location(1)]] aVertexNormal: vec3<f32>;\n"
+    "      [[location(2)]] aVertexUV: vec2<f32>;\n"
     "  };\n"
     "\n"
     "  struct Output {\n"
@@ -82,7 +82,7 @@ void UnlitFragmentWGSL::_createShaderSource(size_t hash, const ShaderMacroCollec
     _cache[hash] = std::move(source);
 }
 
-WGSLPtr fragmentVertex() {
+WGSLPtr unlitFragment() {
     return std::make_unique<UnlitFragmentWGSL>();
 }
 

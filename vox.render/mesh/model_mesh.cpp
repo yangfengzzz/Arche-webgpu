@@ -6,7 +6,6 @@
 
 #include "model_mesh.h"
 #include "shaderlib/wgsl_common.h"
-#include "std_helpers.h"
 
 namespace vox {
 bool ModelMesh::accessible() {
@@ -205,19 +204,20 @@ void ModelMesh::uploadData(bool noLongerAccessible) {
     auto vertexFloatCount = _elementCount * _vertexCount;
     auto vertices = std::vector<float>(vertexFloatCount);
     _updateVertices(vertices);
-    auto verticesUint8 = to_bytes(vertices);
     
-    auto newVertexBuffer = Buffer(_device, verticesUint8, wgpu::BufferUsage::Vertex | wgpu::BufferUsage::CopyDst);
+    auto newVertexBuffer = Buffer(_device, vertices.data(), vertices.size() * sizeof(float),
+                                  wgpu::BufferUsage::Vertex | wgpu::BufferUsage::CopyDst);
     _setVertexBufferBinding(0, newVertexBuffer);
-
-    std::vector<uint8_t> indexUint8{};
+    
     if (_indicesFormat == wgpu::IndexFormat::Uint16) {
-        indexUint8 = to_bytes(_indices16);
+        auto newIndexBuffer = Buffer(_device, _indices16.data(), _indices16.size() * sizeof(uint16_t),
+                                     wgpu::BufferUsage::Index | wgpu::BufferUsage::CopyDst);
+        _setIndexBufferBinding(IndexBufferBinding(newIndexBuffer, _indicesFormat));
     } else if (_indicesFormat == wgpu::IndexFormat::Uint32) {
-        indexUint8 = to_bytes(_indices32);
+        auto newIndexBuffer = Buffer(_device, _indices32.data(), _indices32.size() * sizeof(uint32_t),
+                                     wgpu::BufferUsage::Index | wgpu::BufferUsage::CopyDst);
+        _setIndexBufferBinding(IndexBufferBinding(newIndexBuffer, _indicesFormat));
     }
-    auto newIndexBuffer = Buffer(_device, indexUint8, wgpu::BufferUsage::Index | wgpu::BufferUsage::CopyDst);
-    _setIndexBufferBinding(IndexBufferBinding(newIndexBuffer, _indicesFormat));
     
     if (noLongerAccessible) {
         _accessible = false;
@@ -228,7 +228,7 @@ void ModelMesh::uploadData(bool noLongerAccessible) {
 wgpu::VertexBufferLayout ModelMesh::_updateVertexLayouts() {
     _vertexAttribute.resize(1);
     _vertexAttribute[0] = wgpu::VertexAttribute{wgpu::VertexFormat::Float32x3, 0, Attributes::Position};
-
+    
     size_t offset = 12;
     size_t elementCount = 3;
     if (!_normals.empty()) {
