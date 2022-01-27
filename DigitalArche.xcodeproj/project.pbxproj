@@ -273,6 +273,8 @@
 		0495473A27A2564500783C84 /* pbr_specular_material.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495473827A2564500783C84 /* pbr_specular_material.h */; };
 		0495473E27A25B1300783C84 /* buffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495473C27A25B1300783C84 /* buffer.cpp */; };
 		0495473F27A25B1300783C84 /* buffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495473D27A25B1300783C84 /* buffer.h */; };
+		0495474227A2640900783C84 /* index_buffer_binding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495474027A2640900783C84 /* index_buffer_binding.cpp */; };
+		0495474327A2640900783C84 /* index_buffer_binding.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495474127A2640900783C84 /* index_buffer_binding.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -599,6 +601,8 @@
 		0495473827A2564500783C84 /* pbr_specular_material.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pbr_specular_material.h; sourceTree = "<group>"; };
 		0495473C27A25B1300783C84 /* buffer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = buffer.cpp; sourceTree = "<group>"; };
 		0495473D27A25B1300783C84 /* buffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = buffer.h; sourceTree = "<group>"; };
+		0495474027A2640900783C84 /* index_buffer_binding.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = index_buffer_binding.cpp; sourceTree = "<group>"; };
+		0495474127A2640900783C84 /* index_buffer_binding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = index_buffer_binding.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1086,6 +1090,8 @@
 			children = (
 				0495473D27A25B1300783C84 /* buffer.h */,
 				0495473C27A25B1300783C84 /* buffer.cpp */,
+				0495474127A2640900783C84 /* index_buffer_binding.h */,
+				0495474027A2640900783C84 /* index_buffer_binding.cpp */,
 			);
 			path = graphics;
 			sourceTree = "<group>";
@@ -1247,6 +1253,7 @@
 				04128444279ED3A60071BD86 /* application.h in Headers */,
 				04954685279F8CD600783C84 /* scene.h in Headers */,
 				049546F2279FC75900783C84 /* subpass.h in Headers */,
+				0495474327A2640900783C84 /* index_buffer_binding.h in Headers */,
 				04128460279ED4B10071BD86 /* imgui_internal.h in Headers */,
 				0495468B279F8CD600783C84 /* std_helpers.h in Headers */,
 				0495467C279F8CD600783C84 /* components_manager.h in Headers */,
@@ -1461,6 +1468,7 @@
 				0495468C279F8CD600783C84 /* component.cpp in Sources */,
 				04128445279ED3A60071BD86 /* glfw_window.cpp in Sources */,
 				0495467A279F8CD600783C84 /* components_manager.cpp in Sources */,
+				0495474227A2640900783C84 /* index_buffer_binding.cpp in Sources */,
 				0495472427A23CE100783C84 /* sampled_texture.cpp in Sources */,
 				049546F1279FC75900783C84 /* subpass.cpp in Sources */,
 				04128461279ED4B10071BD86 /* imgui_draw.cpp in Sources */,

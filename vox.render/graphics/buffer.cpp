@@ -26,6 +26,10 @@ _device(device) {
     setData(data, 0, data.size());
 }
 
+wgpu::Buffer& Buffer::buffer() {
+    return _nativeBuffer;
+}
+
 void Buffer::setData(std::vector<uint8_t>& data,
                      size_t bufferByteOffset,
                      size_t dataLength,
@@ -64,7 +68,7 @@ void Buffer::getData(std::vector<uint8_t>& data,
     };
     UserData user{this, data.data(), data.size(), bufferByteOffset, dataLength, dataOffset};
     
-    _nativeBuffer.MapAsync(wgpu::MapMode::Write, 0, data.size(), [](WGPUBufferMapAsyncStatus status, void * userdata) {
+    _nativeBuffer.MapAsync(wgpu::MapMode::Read, 0, data.size(), [](WGPUBufferMapAsyncStatus status, void * userdata) {
         if (static_cast<wgpu::BufferMapAsyncStatus>(status) == wgpu::BufferMapAsyncStatus::Success) {
             UserData* user = static_cast<UserData*>(userdata);
             memcpy(user->src_ptr + user->bufferByteOffset,

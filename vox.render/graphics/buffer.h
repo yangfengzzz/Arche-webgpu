@@ -30,6 +30,8 @@ public:
      */
     Buffer(wgpu::Device& device, std::vector<uint8_t>& data, wgpu::BufferUsage bufferUsage);
     
+    wgpu::Buffer& buffer();
+    
     /**
      * Set buffer data.
      * @param data - Input buffer data
