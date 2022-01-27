@@ -36,7 +36,7 @@ void RenderContext::resize(uint32_t width, uint32_t height) {
     if (width != _width || height != _height) {
         _swapchain.Configure(drawableTextureFormat(),
                              wgpu::TextureUsage::RenderAttachment, width, height);
-        _createDepthStencilView(width, height);
+        _depthStencilTexture = _createDepthStencilView(width, height);
     }
     _width = width;
     _height = height;
