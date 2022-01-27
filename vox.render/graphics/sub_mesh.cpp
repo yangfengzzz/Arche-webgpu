@@ -14,15 +14,15 @@ _count(count),
 _topology(topology) {
 }
 
-uint32_t SubMesh::start() {
+uint32_t SubMesh::start() const {
     return _start;
 }
 
-uint32_t SubMesh::count() {
+uint32_t SubMesh::count() const {
     return _count;
 }
 
-wgpu::PrimitiveTopology SubMesh::topology() {
+wgpu::PrimitiveTopology SubMesh::topology() const {
     return _topology;
 }
 

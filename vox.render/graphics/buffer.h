@@ -38,7 +38,7 @@ public:
     Buffer& operator=(Buffer&& other) = default;
     
 public:
-    wgpu::Buffer& buffer();
+    const wgpu::Buffer& buffer() const;
     
     /**
      * Set buffer data.

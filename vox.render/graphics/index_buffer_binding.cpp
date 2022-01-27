@@ -12,11 +12,11 @@ _buffer(buffer),
 _format(format) {
 }
 
-wgpu::Buffer& IndexBufferBinding::buffer() {
+const wgpu::Buffer& IndexBufferBinding::buffer() const {
     return _buffer.buffer();
 }
 
-wgpu::IndexFormat IndexBufferBinding::format() {
+wgpu::IndexFormat IndexBufferBinding::format() const {
     return _format;
     
 }

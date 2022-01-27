@@ -7,6 +7,7 @@
 
 #include "forward_subpass.h"
 #include "material/material.h"
+#include "graphics/mesh.h"
 #include "camera.h"
 #include "renderer.h"
 
@@ -86,10 +87,29 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
         auto uniformBindGroup = _renderContext->device().CreateBindGroup(&_bindGroupDescriptor);
         passEncoder.SetBindGroup(0, uniformBindGroup);
         
+        auto& mesh = element.mesh;
+        auto& subMesh = element.subMesh;
+        _forwardPipelineDescriptor.vertex.bufferCount = static_cast<uint32_t>(mesh->vertexBufferLayouts().size());
+        _forwardPipelineDescriptor.vertex.buffers = mesh->vertexBufferLayouts().data();
+        _forwardPipelineDescriptor.primitive.topology = subMesh->topology();
         auto material = element.material;
         material->renderState.apply(&_colorTargetState, &_depthStencil,
                                     _forwardPipelineDescriptor, passEncoder, false);
-
+        auto renderPipeline = _renderContext->device().CreateRenderPipeline(&_forwardPipelineDescriptor);
+        passEncoder.SetPipeline(renderPipeline);
+        
+        for (uint32_t j = 0; j < mesh->vertexBufferBindings().size(); j++) {
+            auto vertexBufferBinding =  mesh->vertexBufferBindings()[j];
+            if (vertexBufferBinding) {
+                passEncoder.SetVertexBuffer(j, mesh->vertexBufferBindings()[j]->buffer());
+            }
+        }
+        auto indexBufferBinding = mesh->indexBufferBinding();
+        if (indexBufferBinding) {
+            passEncoder.SetIndexBuffer(mesh->indexBufferBinding()->buffer(), mesh->indexBufferBinding()->format());
+        }
+        
+        passEncoder.DrawIndexed(subMesh->count(), 1, subMesh->start(), 0, 0);
     }
 }
 

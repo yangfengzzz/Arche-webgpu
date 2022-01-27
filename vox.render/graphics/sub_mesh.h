@@ -24,11 +24,11 @@ public:
     SubMesh(uint32_t start = 0, uint32_t count = 0,
             wgpu::PrimitiveTopology topology = wgpu::PrimitiveTopology::TriangleList);
     
-    uint32_t start();
+    uint32_t start() const;
     
-    uint32_t count();
+    uint32_t count() const;
     
-    wgpu::PrimitiveTopology topology();
+    wgpu::PrimitiveTopology topology() const;
     
 private:
     /** Start drawing offset. */

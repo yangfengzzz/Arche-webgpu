@@ -25,12 +25,12 @@ public:
     /**
      * Index buffer.
      */
-    wgpu::Buffer& buffer();
+    const wgpu::Buffer& buffer() const;
 
     /**
      * Index buffer format.
      */
-    wgpu::IndexFormat format();
+    wgpu::IndexFormat format() const;
     
 private:
     Buffer _buffer;

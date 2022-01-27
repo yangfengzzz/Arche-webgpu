@@ -23,7 +23,7 @@ Buffer::Buffer(wgpu::Device& device, std::vector<uint8_t>& data, wgpu::BufferUsa
     setData(data, 0, data.size());
 }
 
-wgpu::Buffer& Buffer::buffer() {
+const wgpu::Buffer& Buffer::buffer() const {
     return _nativeBuffer;
 }
 
