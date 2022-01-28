@@ -9,6 +9,8 @@
 
 namespace vox {
 //MARK: - Unlit Vertex Code
+UnlitVertexWGSL::UnlitVertexWGSL() {}
+
 const std::string& UnlitVertexWGSL::compile(const ShaderMacroCollection& macros) {
     size_t hash = macros.hash();
     auto iter = _cache.find(hash);
@@ -28,12 +30,9 @@ void UnlitVertexWGSL::_createShaderSource(size_t hash, const ShaderMacroCollecti
     _cache[hash] = _source;
 }
 
-
-WGSLPtr unlitVertex() {
-    return std::make_unique<UnlitVertexWGSL>();
-}
-
 //MARK: - Unlit Fragment Code
+UnlitFragmentWGSL::UnlitFragmentWGSL(){}
+
 const std::string& UnlitFragmentWGSL::compile(const ShaderMacroCollection& macros) {
     size_t hash = macros.hash();
     auto iter = _cache.find(hash);
@@ -52,10 +51,6 @@ void UnlitFragmentWGSL::_createShaderSource(size_t hash, const ShaderMacroCollec
     "  return vec4<f32>(vColor, 1.0);\n"
     "}\n";
     _cache[hash] = std::move(source);
-}
-
-WGSLPtr unlitFragment() {
-    return std::make_unique<UnlitFragmentWGSL>();
 }
 
 }

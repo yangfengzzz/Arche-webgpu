@@ -23,7 +23,7 @@ public:
     /** The name of shader. */
     std::string name;
     
-    Shader(const std::string &name, WGSLCreator vertexCreator, WGSLCreator fragmentCreator);
+    Shader(const std::string &name, WGSLPtr&& vertexSource, WGSLPtr&& fragmentSource);
     
     const std::string& vertexSource(const ShaderMacroCollection& macros);
     
@@ -32,10 +32,10 @@ public:
     /**
      * Create a shader.
      * @param name - Name of the shader
-     * @param vertexCreator - Vertex source creator
-     * @param fragmentCreator - Fragment source creator
+     * @param vertexSource - Vertex source creator
+     * @param fragmentSource - Fragment source creator
      */
-    static Shader *create(const std::string &name, WGSLCreator vertexCreator, WGSLCreator fragmentCreator);
+    static Shader *create(const std::string &name, WGSLPtr&& vertexSource, WGSLPtr&& fragmentSource);
     
     /**
      * Find a shader by name.
@@ -68,8 +68,8 @@ private:
     
     // object shader data
     int _shaderId = 0;
-    WGSLPtr _vertexGenerator;
-    WGSLPtr _fragmentGenerator;
+    WGSLPtr _vertexSource;
+    WGSLPtr _fragmentSource;
 };
 
 }

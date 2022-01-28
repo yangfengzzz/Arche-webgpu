@@ -11,7 +11,7 @@
 
 namespace vox {
 void ShaderPool::init() {
-    Shader::create("unlit", unlitVertex, unlitFragment);
+    Shader::create("unlit", std::make_unique<UnlitVertexWGSL>(), std::make_unique<UnlitFragmentWGSL>());
 }
 
 }

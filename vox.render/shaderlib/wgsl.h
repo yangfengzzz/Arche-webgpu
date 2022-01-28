@@ -68,9 +68,7 @@ protected:
     std::string _outputTypeName{};
     std::vector<std::string> _inputTypeName{};
 };
-
 using WGSLPtr = std::unique_ptr<WGSL>;
-using WGSLCreator = std::function<WGSLPtr()>;
 
 //MARK: - Builder
 class WGSL::Builder {

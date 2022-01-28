@@ -14,6 +14,8 @@ namespace vox {
 //MARK: - Unlit Vertex Code
 class UnlitVertexWGSL : public WGSL {
 public:
+    UnlitVertexWGSL();
+    
     const std::string& compile(const ShaderMacroCollection& macros) override;
     
 private:
@@ -21,12 +23,12 @@ private:
     
     std::unordered_map<size_t, std::string> _cache{};
 };
-
-WGSLPtr unlitVertex();
 
 //MARK: - Unlit Fragment Code
 class UnlitFragmentWGSL : public WGSL {
 public:
+    UnlitFragmentWGSL();
+    
     const std::string& compile(const ShaderMacroCollection& macros) override;
     
 private:
@@ -34,8 +36,6 @@ private:
     
     std::unordered_map<size_t, std::string> _cache{};
 };
-
-WGSLPtr unlitFragment();
 
 }
 
