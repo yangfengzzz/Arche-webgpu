@@ -276,6 +276,7 @@
 		0495476D27A2C6C500783C84 /* resource_cache.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495476B27A2C6C500783C84 /* resource_cache.h */; };
 		0495477027A3907500783C84 /* wgsl_library.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495476E27A3907500783C84 /* wgsl_library.cpp */; };
 		0495477127A3907500783C84 /* wgsl_library.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495476F27A3907500783C84 /* wgsl_library.h */; };
+		0495478627A403C700783C84 /* wgsl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495478527A403C700783C84 /* wgsl.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -638,6 +639,7 @@
 		0495476B27A2C6C500783C84 /* resource_cache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = resource_cache.h; sourceTree = "<group>"; };
 		0495476E27A3907500783C84 /* wgsl_library.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_library.cpp; sourceTree = "<group>"; };
 		0495476F27A3907500783C84 /* wgsl_library.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_library.h; sourceTree = "<group>"; };
+		0495478527A403C700783C84 /* wgsl.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1081,6 +1083,7 @@
 				0495476F27A3907500783C84 /* wgsl_library.h */,
 				0495476E27A3907500783C84 /* wgsl_library.cpp */,
 				0495471727A2346900783C84 /* wgsl.h */,
+				0495478527A403C700783C84 /* wgsl.cpp */,
 				0495471927A2348F00783C84 /* unlit_wgsl.h */,
 				0495471827A2348F00783C84 /* unlit_wgsl.cpp */,
 			);
@@ -1539,6 +1542,7 @@
 				04954686279F8CD600783C84 /* scene.cpp in Sources */,
 				049546E6279FA7D800783C84 /* null_binding.cpp in Sources */,
 				0495471327A15BEE00783C84 /* shader_macro_collection.cpp in Sources */,
+				0495478627A403C700783C84 /* wgsl.cpp in Sources */,
 				0495472827A2405400783C84 /* sampled_texture2d.cpp in Sources */,
 				04954646279F8A7D00783C84 /* material.cpp in Sources */,
 				04128441279ED3A60071BD86 /* unix_engine.cpp in Sources */,

@@ -6,7 +6,6 @@
 
 #include "unlit_wgsl.h"
 #include "wgsl_library.h"
-#include <fmt/core.h>
 
 namespace vox {
 //MARK: - Unlit Vertex Code
@@ -22,52 +21,11 @@ const std::string& UnlitVertexWGSL::compile(const ShaderMacroCollection& macros)
 }
 
 void UnlitVertexWGSL::_createShaderSource(size_t hash, const ShaderMacroCollection& macros) {
-    std::vector<std::string> uniform{};
-    std::vector<std::string> input{};
-    std::vector<std::string> output{};
-    std::vector<std::string> entry{};
-    std::vector<std::string> function{};
-    auto patch = WGSLPatchTest(uniform, input, output, entry, function);
-    patch();
-    
-    std::string uniformString{};
-    for (const auto& string : uniform) {
-        uniformString += string;
-    }
-    std::string inputString{};
-    for (const auto& string : input) {
-        inputString += string;
-    }
-    std::string outputString{};
-    for (const auto& string : output) {
-        outputString += string;
-    }
-    std::string entryString{};
-    for (const auto& string : entry) {
-        entryString += string;
-    }
-    std::string functionString{};
-    for (const auto& string : function) {
-        functionString += string;
-    }
-    
-    const std::string sourceTemplate =
-    "{0}\n "
-    "\n "
-    "struct VertexInput {{\n "
-    "{1}\n "
-    "}};\n "
-    "\n "
-    "struct Output {{\n "
-    "{2}\n "
-    "}};\n "
-    "\n "
-    "@stage(vertex)\n"
-    "fn main(vertexInput: VertexInput) -> Output {{\n"
-    "{3}\n"
-    "}}\n";
-    _cache[hash] = fmt::format(sourceTemplate, uniformString,
-                               inputString, outputString, entryString, functionString);
+    _source = "";
+    auto patch = WGSLPatchTest(this);
+    patch(macros);
+
+    _cache[hash] = _source;
 }
 
 

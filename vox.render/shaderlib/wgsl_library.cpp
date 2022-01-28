@@ -90,53 +90,47 @@ std::string uniformTypeToString(UniformType type) {
 }
 
 //MARK: - WGSLUniformBinding
-WGSLUniformBinding::WGSLUniformBinding(const std::string& name, UniformType type, uint32_t group):
+WGSLUniformBinding::WGSLUniformBinding(WGSL* source, const std::string& name,
+                                       UniformType type, uint32_t group):
+_source(source),
 _name(name),
 _type(type),
 _group(group) {
-    auto property = Shader::getPropertyByName(name);
-    if (property.has_value()) {
-        _binding = property.value().uniqueId;
-    } else {
-        assert(false);
-    }
 }
 
-std::string WGSLUniformBinding::operator()() {
-    const std::string formatTemplate = "@group({}) @binding({})\n "
-    "var<uniform> {}: {};\n ";
-    
-    return fmt::format(formatTemplate, _group, _binding, _name, uniformTypeToString(_type));
+void WGSLUniformBinding::operator()() {
+    _source->addUniformBinding(_name, _type, _group);
 }
 
 //MARK: -
-WGSLPatchTest::WGSLPatchTest(std::vector<std::string>& uniform,
-                             std::vector<std::string>& input,
-                             std::vector<std::string>& output,
-                             std::vector<std::string>& entry,
-                             std::vector<std::string>& function):
-_uniform(uniform),
-_input(input),
-_output(output),
-_entry(entry),
-_function(function),
-_uPMatirx("u_projMat", UniformType::Mat4x4f32),
-_uMVMatrix("u_MVMat", UniformType::Mat4x4f32) {
+WGSLPatchTest::WGSLPatchTest(WGSL* source):
+_source(source),
+_uPMatirx(source, "u_projMat", UniformType::Mat4x4f32),
+_uMVMatrix(source, "u_MVMat", UniformType::Mat4x4f32) {
 }
 
-void WGSLPatchTest::operator()() {
-    _uniform.push_back(_uPMatirx());
-    _uniform.push_back(_uMVMatrix());
+void WGSLPatchTest::operator()(const ShaderMacroCollection& macros) {
+    _source->begin(wgpu::ShaderStage::Vertex);
+    _uPMatirx();
+    _uMVMatrix();
     
-    _input.push_back("@location(0) aVertexPosition: vec3<f32>;\n "
-                     "@location(1) aVertexNormal: vec3<f32>;\n "
-                     "@location(2) aVertexUV: vec2<f32>;\n ");
-    _output.push_back("@location(0) vColor: vec3<f32>;\n "
-                      "@builtin(position) Position: vec4<f32>;\n ");
-    _entry.push_back("var output: Output;\n "
-                     "output.Position = u_projMat * u_MVMat * vec4<f32>(vertexInput.aVertexPosition, 1.0);\n "
-                     "output.vColor = vertexInput.aVertexPosition;\n "
-                     "return output;\n ");
+    _source->beginInputStruct("VertexInput");
+    _source->addInputType("@location(0) aVertexPosition: vec3<f32>;");
+    _source->addInputType("@location(1) aVertexNormal: vec3<f32>;");
+    _source->addInputType("@location(2) aVertexUV: vec2<f32>;\n");
+    _source->endInputStruct();
+    
+    _source->beginOutputStruct("Output");
+    _source->addOutputType("@location(0) vColor: vec3<f32>;");
+    _source->addOutputType("@builtin(position) Position: vec4<f32>;");
+    _source->endOutputStruct();
+    
+    _source->beginEntry({"vertexInput"});
+    _source->addEntry("var output: Output;\n "
+                      "output.Position = u_projMat * u_MVMat * vec4<f32>(vertexInput.aVertexPosition, 1.0);\n "
+                      "output.vColor = vertexInput.aVertexPosition;\n "
+                      "return output;\n ");
+    _source->endEntry();
 }
 
 
