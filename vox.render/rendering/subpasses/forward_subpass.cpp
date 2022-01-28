@@ -22,10 +22,10 @@ Subpass(renderContext, scene, camera) {
 void ForwardSubpass::prepare() {
     {
         _bindGroupLayoutEntries.resize(2);
-        _bindGroupLayoutEntries[0].binding = 0;
+        _bindGroupLayoutEntries[0].binding = 1;
         _bindGroupLayoutEntries[0].visibility = wgpu::ShaderStage::Vertex;
         _bindGroupLayoutEntries[0].buffer.type = wgpu::BufferBindingType::Uniform;
-        _bindGroupLayoutEntries[1].binding = 1;
+        _bindGroupLayoutEntries[1].binding = 8;
         _bindGroupLayoutEntries[1].visibility = wgpu::ShaderStage::Vertex;
         _bindGroupLayoutEntries[1].buffer.type = wgpu::BufferBindingType::Uniform;
         _bindGroupLayoutDescriptor.entryCount = 2;
@@ -34,8 +34,8 @@ void ForwardSubpass::prepare() {
     }
     {
         _bindGroupEntries.resize(2);
-        _bindGroupEntries[0].binding = 0;
-        _bindGroupEntries[1].binding = 1;
+        _bindGroupEntries[0].binding = 1;
+        _bindGroupEntries[1].binding = 8;
         _bindGroupDescriptor.layout = _bindGroupLayout;
         _bindGroupDescriptor.entryCount = 2;
         _bindGroupDescriptor.entries = _bindGroupEntries.data();

@@ -51,21 +51,21 @@ void UnlitVertexWGSL::_createShaderSource(size_t hash, const ShaderMacroCollecti
         functionString += string;
     }
     
-    const std::string sourceTemplate = "\n"
-    "{:}"
-    "\n"
-    "  struct VertexInput {\n"
-    "{:}"
-    "  };\n"
-    "\n"
-    "  struct Output {\n"
-    "{:}"
-    "  };\n"
-    "\n"
-    "  @stage(vertex)\n"
-    "  fn main(vertexInput: VertexInput) -> Output {\n"
-    "{:}"
-    "  } \n";
+    const std::string sourceTemplate =
+    "{0}\n "
+    "\n "
+    "struct VertexInput {{\n "
+    "{1}\n "
+    "}};\n "
+    "\n "
+    "struct Output {{\n "
+    "{2}\n "
+    "}};\n "
+    "\n "
+    "@stage(vertex)\n"
+    "fn main(vertexInput: VertexInput) -> Output {{\n"
+    "{3}\n"
+    "}}\n";
     _cache[hash] = fmt::format(sourceTemplate, uniformString,
                                inputString, outputString, entryString, functionString);
 }

@@ -49,39 +49,39 @@ std::string uniformTypeToString(UniformType type) {
             break;
             
         case UniformType::Mat2x2f32:
-            return "Mat2x2<f32>";
+            return "mat2x2<f32>";
             break;
             
         case UniformType::Mat3x2f32:
-            return "Mat3x2<f32>";
+            return "mat3x2<f32>";
             break;
             
         case UniformType::Mat4x2f32:
-            return "Mat4x2<f32>";
+            return "mat4x2<f32>";
             break;
             
         case UniformType::Mat2x3f32:
-            return "Mat2x3<f32>";
+            return "mat2x3<f32>";
             break;
             
         case UniformType::Mat3x3f32:
-            return "Mat3x3<f32>";
+            return "mat3x3<f32>";
             break;
             
         case UniformType::Mat4x3f32:
-            return "Mat4x3<f32>";
+            return "mat4x3<f32>";
             break;
             
         case UniformType::Mat2x4f32:
-            return "Mat2x4<f32>";
+            return "mat2x4<f32>";
             break;
             
         case UniformType::Mat3x4f32:
-            return "Mat3x4<f32>";
+            return "mat3x4<f32>";
             break;
             
         case UniformType::Mat4x4f32:
-            return "Mat4x4<f32>";
+            return "mat4x4<f32>";
             break;
             
         default:
@@ -133,10 +133,10 @@ void WGSLPatchTest::operator()() {
                      "@location(2) aVertexUV: vec2<f32>;\n ");
     _output.push_back("@location(0) vColor: vec3<f32>;\n "
                       "@builtin(position) Position: vec4<f32>;\n ");
-    _entry.push_back("var output: Output;\n"
-                     "output.Position = uPMatrix * uMVMatrix * vec4<f32>(vertexInput.aVertexPosition, 1.0);\n"
-                     "output.vColor = vertexInput.aVertexPosition;\n"
-                     "return output;\n");
+    _entry.push_back("var output: Output;\n "
+                     "output.Position = u_projMat * u_MVMat * vec4<f32>(vertexInput.aVertexPosition, 1.0);\n "
+                     "output.vColor = vertexInput.aVertexPosition;\n "
+                     "return output;\n ");
 }
 
 
