@@ -38,7 +38,8 @@ std::string uniformTypeToString(UniformType type);
 
 class WGSLUniformBinding {
 public:
-    WGSLUniformBinding(const std::string& name, UniformType type, uint32_t group);
+    WGSLUniformBinding(const std::string& name, UniformType type,
+                       uint32_t group = 0);
     
     std::string operator()();
     
@@ -47,6 +48,27 @@ private:
     UniformType _type;
     uint32_t _group;
     uint32_t _binding;
+};
+
+class WGSLPatchTest {
+public:
+    WGSLPatchTest(std::vector<std::string>& uniform,
+                  std::vector<std::string>& input,
+                  std::vector<std::string>& output,
+                  std::vector<std::string>& entry,
+                  std::vector<std::string>& function);
+    
+    void operator()();
+    
+private:
+    WGSLUniformBinding _uPMatirx;
+    WGSLUniformBinding _uMVMatrix;
+    
+    std::vector<std::string> &_uniform;
+    std::vector<std::string> &_input;
+    std::vector<std::string> &_output;
+    std::vector<std::string> &_entry;
+    std::vector<std::string> &_function;
 };
 
 

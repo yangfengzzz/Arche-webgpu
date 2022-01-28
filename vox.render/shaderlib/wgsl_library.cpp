@@ -15,7 +15,7 @@ std::string uniformTypeToString(UniformType type) {
         case UniformType::Vec2f32:
             return "vec2<f32>";
             break;
-
+            
         case UniformType::Vec2i32:
             return "vec2<i32>";
             break;
@@ -105,10 +105,39 @@ _group(group) {
 std::string WGSLUniformBinding::operator()() {
     const std::string formatTemplate = "@group({}) @binding({})\n "
     "var<uniform> {}: {};\n ";
-        
+    
     return fmt::format(formatTemplate, _group, _binding, _name, uniformTypeToString(_type));
 }
 
 //MARK: -
+WGSLPatchTest::WGSLPatchTest(std::vector<std::string>& uniform,
+                             std::vector<std::string>& input,
+                             std::vector<std::string>& output,
+                             std::vector<std::string>& entry,
+                             std::vector<std::string>& function):
+_uniform(uniform),
+_input(input),
+_output(output),
+_entry(entry),
+_function(function),
+_uPMatirx("u_projMat", UniformType::Mat4x4f32),
+_uMVMatrix("u_MVMat", UniformType::Mat4x4f32) {
+}
+
+void WGSLPatchTest::operator()() {
+    _uniform.push_back(_uPMatirx());
+    _uniform.push_back(_uMVMatrix());
+    
+    _input.push_back("@location(0) aVertexPosition: vec3<f32>;\n "
+                     "@location(1) aVertexNormal: vec3<f32>;\n "
+                     "@location(2) aVertexUV: vec2<f32>;\n ");
+    _output.push_back("@location(0) vColor: vec3<f32>;\n "
+                      "@builtin(position) Position: vec4<f32>;\n ");
+    _entry.push_back("var output: Output;\n"
+                     "output.Position = uPMatrix * uMVMatrix * vec4<f32>(vertexInput.aVertexPosition, 1.0);\n"
+                     "output.vColor = vertexInput.aVertexPosition;\n"
+                     "return output;\n");
+}
+
 
 }
