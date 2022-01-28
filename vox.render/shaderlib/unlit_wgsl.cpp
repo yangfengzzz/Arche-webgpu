@@ -11,46 +11,59 @@ namespace vox {
 //MARK: - Unlit Vertex Code
 UnlitVertexWGSL::UnlitVertexWGSL() {}
 
-const std::string& UnlitVertexWGSL::compile(const ShaderMacroCollection& macros) {
+std::pair<const std::string&, const WGSL::BindGroupInfo&> UnlitVertexWGSL::compile(const ShaderMacroCollection& macros) {
     size_t hash = macros.hash();
-    auto iter = _cache.find(hash);
-    if (iter != _cache.end()) {
-        return iter->second;
-    } else {
+    auto iter = _sourceCache.find(hash);
+    if (iter == _sourceCache.end()) {
         _createShaderSource(hash, macros);
-        return _cache[hash];
     }
+    return {_sourceCache[hash], _infoCache[hash]};
 }
 
 void UnlitVertexWGSL::_createShaderSource(size_t hash, const ShaderMacroCollection& macros) {
     _source = "";
+    _bindGroupInfo.clear();
     auto patch = WGSLPatchTest(this);
     patch(macros);
 
-    _cache[hash] = _source;
+    _sourceCache[hash] = _source;
+    _infoCache[hash] = _bindGroupInfo;
 }
 
 //MARK: - Unlit Fragment Code
 UnlitFragmentWGSL::UnlitFragmentWGSL(){}
 
-const std::string& UnlitFragmentWGSL::compile(const ShaderMacroCollection& macros) {
+std::pair<const std::string&, const WGSL::BindGroupInfo&> UnlitFragmentWGSL::compile(const ShaderMacroCollection& macros) {
     size_t hash = macros.hash();
-    auto iter = _cache.find(hash);
-    if (iter != _cache.end()) {
-        return iter->second;
-    } else {
+    auto iter = _sourceCache.find(hash);
+    if (iter == _sourceCache.end()) {
         _createShaderSource(hash, macros);
-        return _cache[hash];
     }
+    return {_sourceCache[hash], _infoCache[hash]};
 }
 
 void UnlitFragmentWGSL::_createShaderSource(size_t hash, const ShaderMacroCollection& macros) {
-    std::string source = "\n"
-    "@stage(fragment)\n"
-    "fn main(@location(0) vColor: vec3<f32>) ->  @location(0) vec4<f32> {\n"
-    "  return vec4<f32>(vColor, 1.0);\n"
-    "}\n";
-    _cache[hash] = std::move(source);
+    _source = "";
+    _bindGroupInfo.clear();
+    
+    begin(wgpu::ShaderStage::Fragment);
+    beginInputStruct("FragmentInput");
+    addInputType("@location(0) vColor: vec3<f32>;");
+    endInputStruct();
+    
+    beginOutputStruct("Output");
+    addOutputType("@location(0) finalColor: vec4<f32>;");
+    endOutputStruct();
+    
+    beginEntry({"fragmentInput"});
+    addEntry("var output: Output;\n "
+             "output.finalColor = vec4<f32>(fragmentInput.vColor, 1.0);"
+             "return output;\n ");
+    endEntry();
+    end();
+    
+    _sourceCache[hash] = _source;
+    _infoCache[hash] = _bindGroupInfo;
 }
 
 }

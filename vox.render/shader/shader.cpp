@@ -20,11 +20,74 @@ _fragmentSource(std::move(fragmentSource)) {
 }
 
 const std::string& Shader::vertexSource(const ShaderMacroCollection& macros) {
-    return _vertexSource->compile(macros);
+    auto result = _vertexSource->compile(macros);
+    for (const auto& info : result.second) {
+        _bindGroupInfo[info.first].insert(info.second.begin(), info.second.end());
+    }
+    _updateFlag.first = true;
+    
+    return result.first;
 }
 
 const std::string& Shader::fragmentSource(const ShaderMacroCollection& macros) {
-    return _fragmentSource->compile(macros);
+    auto result = _fragmentSource->compile(macros);
+    for (const auto& info : result.second) {
+        _bindGroupInfo[info.first].insert(info.second.begin(), info.second.end());
+    }
+    _updateFlag.second = true;
+    
+    return result.first;
+}
+
+const Shader::BindGroupLayoutDescriptorMap& Shader::bindGroupLayoutDescriptors(const ShaderMacroCollection& macros) {
+    if (!_updateFlag.first && _vertexSource) {
+        vertexSource(macros);
+    }
+    if (!_updateFlag.second && _fragmentSource) {
+        fragmentSource(macros);
+    }
+    _updateFlag = {false, false};
+    
+    _bindGroupLayoutEntryVecMap.clear();
+    for (const auto& info : _bindGroupInfo) {
+        _bindGroupLayoutEntryVecMap[info.first].reserve(info.second.size());
+        for (const auto& entry : info.second) {
+            _bindGroupLayoutEntryVecMap[info.first].push_back(_findEntry(info.first, entry));
+        }
+    }
+    
+    _bindGroupLayoutDescriptorMap.clear();
+    for (const auto& entryVec : _bindGroupLayoutEntryVecMap) {
+        wgpu::BindGroupLayoutDescriptor desc;
+        desc.entryCount = static_cast<uint32_t>(entryVec.second.size());
+        desc.entries = entryVec.second.data();
+        _bindGroupLayoutDescriptorMap[entryVec.first] = desc;
+    }
+    return _bindGroupLayoutDescriptorMap;
+}
+
+wgpu::BindGroupLayoutEntry Shader::_findEntry(uint32_t group, uint32_t binding) {
+    const auto& entryMap = _vertexSource->bindGroupLayoutEntryMap();
+    auto iter = entryMap.find(group);
+    if (iter != entryMap.end()) {
+        auto entryIter = iter->second.find(binding);
+        if (entryIter != iter->second.end()) {
+            return entryIter->second;
+        }
+    }
+    
+    if (_fragmentSource) {
+        const auto& entryMap = _fragmentSource->bindGroupLayoutEntryMap();
+        auto iter = entryMap.find(group);
+        if (iter != entryMap.end()) {
+            auto entryIter = iter->second.find(binding);
+            if (entryIter != iter->second.end()) {
+                return entryIter->second;
+            }
+        }
+    }
+    
+    assert(false && "can't find entry");
 }
 
 Shader *Shader::create(const std::string &name,

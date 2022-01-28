@@ -16,12 +16,13 @@ class UnlitVertexWGSL : public WGSL {
 public:
     UnlitVertexWGSL();
     
-    const std::string& compile(const ShaderMacroCollection& macros) override;
+    std::pair<const std::string&, const BindGroupInfo&> compile(const ShaderMacroCollection& macros) override;
     
 private:
     void _createShaderSource(size_t hash, const ShaderMacroCollection& macros);
     
-    std::unordered_map<size_t, std::string> _cache{};
+    std::unordered_map<size_t, std::string> _sourceCache{};
+    std::unordered_map<size_t, BindGroupInfo> _infoCache{};
 };
 
 //MARK: - Unlit Fragment Code
@@ -29,12 +30,13 @@ class UnlitFragmentWGSL : public WGSL {
 public:
     UnlitFragmentWGSL();
     
-    const std::string& compile(const ShaderMacroCollection& macros) override;
+    std::pair<const std::string&, const BindGroupInfo&> compile(const ShaderMacroCollection& macros) override;
     
 private:
     void _createShaderSource(size_t hash, const ShaderMacroCollection& macros);
     
-    std::unordered_map<size_t, std::string> _cache{};
+    std::unordered_map<size_t, std::string> _sourceCache{};
+    std::unordered_map<size_t, BindGroupInfo> _infoCache{};
 };
 
 }

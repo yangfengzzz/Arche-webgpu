@@ -11,29 +11,19 @@
 
 namespace vox {
 WGSL::WGSL(const std::string& source,
-           const BindGroupLayoutEntryVecMap& vecMap):
+           const BindGroupInfo& info,
+           const BindGroupLayoutEntryMap& entryMap):
 _source(source),
-_bindGroupLayoutEntryVecMap(vecMap){
+_bindGroupInfo(info),
+_bindGroupLayoutEntryMap(entryMap){
 }
 
-const std::string& WGSL::compile(const ShaderMacroCollection& macros) {
-    return _source;
+std::pair<const std::string&, const WGSL::BindGroupInfo&> WGSL::compile(const ShaderMacroCollection& macros) {
+    return std::make_pair(_source, _bindGroupInfo);
 }
 
-const WGSL::BindGroupLayoutDescriptorMap& WGSL::bindGroupLayoutDescriptors() {
-    for (const auto& entryVec : _bindGroupLayoutEntryVecMap) {
-        auto iter = _bindGroupLayoutDescriptorMap.find(entryVec.first);
-        if (iter != _bindGroupLayoutDescriptorMap.end()) {
-            iter->second.entryCount = static_cast<uint32_t>(entryVec.second.size());
-            iter->second.entries = entryVec.second.data();
-        } else {
-            wgpu::BindGroupLayoutDescriptor desc;
-            desc.entryCount = static_cast<uint32_t>(entryVec.second.size());
-            desc.entries = entryVec.second.data();
-            _bindGroupLayoutDescriptorMap[entryVec.first] = desc;
-        }
-    }
-    return _bindGroupLayoutDescriptorMap;
+const WGSL::BindGroupLayoutEntryMap& WGSL::bindGroupLayoutEntryMap() {
+    return _bindGroupLayoutEntryMap;
 }
 
 void WGSL::begin(wgpu::ShaderStage stage) {
@@ -62,12 +52,16 @@ void WGSL::addUniformBinding(const std::string& name, const std::string& type, u
         entry.binding = binding;
         entry.visibility = _currentStage;
         entry.buffer.type = wgpu::BufferBindingType::Uniform;
-        auto iter = _bindGroupLayoutEntryVecMap.find(group);
-        if (iter == _bindGroupLayoutEntryVecMap.end()) {
-            _bindGroupLayoutEntryVecMap[group] = {entry};
+        auto iter = _bindGroupLayoutEntryMap.find(group);
+        if (iter == _bindGroupLayoutEntryMap.end()) {
+            _bindGroupLayoutEntryMap[group][binding] = entry;
         } else {
-            iter->second.push_back(entry);
+            auto entryIter = _bindGroupLayoutEntryMap[group].find(binding);
+            if (entryIter == _bindGroupLayoutEntryMap[group].end()) {
+                _bindGroupLayoutEntryMap[group][binding] = entry;
+            }
         }
+        _bindGroupInfo[group].insert(binding);
     } else {
         assert(false && "Unknown Uniform Name");
     }
@@ -174,12 +168,16 @@ WGSL::Builder& WGSL::Builder::addUniformBinding(const std::string& name, const s
         entry.binding = binding;
         entry.visibility = _currentStage;
         entry.buffer.type = wgpu::BufferBindingType::Uniform;
-        auto iter = _bindGroupLayoutEntryVecMap.find(group);
-        if (iter == _bindGroupLayoutEntryVecMap.end()) {
-            _bindGroupLayoutEntryVecMap[group] = {entry};
+        auto iter = _bindGroupLayoutEntryMap.find(group);
+        if (iter == _bindGroupLayoutEntryMap.end()) {
+            _bindGroupLayoutEntryMap[group][binding] = entry;
         } else {
-            iter->second.push_back(entry);
+            auto entryIter = _bindGroupLayoutEntryMap[group].find(binding);
+            if (entryIter == _bindGroupLayoutEntryMap[group].end()) {
+                _bindGroupLayoutEntryMap[group][binding] = entry;
+            }
         }
+        _bindGroupInfo[group].insert(binding);
     } else {
         assert(false && "Unknown Uniform Name");
     }
@@ -273,12 +271,12 @@ WGSL::Builder& WGSL::Builder::end() {
 WGSLPtr WGSL::Builder::build() {
     WGSLPtr source;
     if (_currentStage == wgpu::ShaderStage::None) {
-        source = std::make_unique<WGSL>(_source, _bindGroupLayoutEntryVecMap);
+        source = std::make_unique<WGSL>(_source, _bindGroupInfo, _bindGroupLayoutEntryMap);
     } else {
         source = nullptr;
     }
     _source = "";
-    _bindGroupLayoutEntryVecMap.clear();
+    _bindGroupLayoutEntryMap.clear();
     
     return source;
 }

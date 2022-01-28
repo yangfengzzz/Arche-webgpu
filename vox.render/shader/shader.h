@@ -20,6 +20,9 @@ namespace vox {
  */
 class Shader {
 public:
+    using BindGroupLayoutEntryVecMap = std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>>;
+    using BindGroupLayoutDescriptorMap = std::unordered_map<uint32_t, wgpu::BindGroupLayoutDescriptor>;
+
     /** The name of shader. */
     std::string name;
     
@@ -28,6 +31,8 @@ public:
     const std::string& vertexSource(const ShaderMacroCollection& macros);
     
     const std::string& fragmentSource(const ShaderMacroCollection& macros);
+    
+    const BindGroupLayoutDescriptorMap& bindGroupLayoutDescriptors(const ShaderMacroCollection& macros);
     
     /**
      * Create a shader.
@@ -70,6 +75,12 @@ private:
     int _shaderId = 0;
     WGSLPtr _vertexSource;
     WGSLPtr _fragmentSource;
+    WGSL::BindGroupInfo _bindGroupInfo{};
+    BindGroupLayoutEntryVecMap _bindGroupLayoutEntryVecMap{};
+    BindGroupLayoutDescriptorMap _bindGroupLayoutDescriptorMap{};
+    std::pair<bool, bool> _updateFlag = {false, false};
+    
+    wgpu::BindGroupLayoutEntry _findEntry(uint32_t group, uint32_t binding);
 };
 
 }

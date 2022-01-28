@@ -9,26 +9,28 @@
 
 #include "wgsl_library.h"
 #include <unordered_map>
+#include <unordered_set>
 #include <dawn/webgpu_cpp.h>
 
 namespace vox {
 class WGSL {
 public:
-    using BindGroupLayoutDescriptorMap = std::unordered_map<uint32_t, wgpu::BindGroupLayoutDescriptor>;
-    using BindGroupLayoutEntryVecMap = std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>>;
+    using BindGroupLayoutEntryMap = std::unordered_map<uint32_t, std::unordered_map<uint32_t, wgpu::BindGroupLayoutEntry>>;
+    using BindGroupInfo = std::unordered_map<uint32_t, std::unordered_set<uint32_t>>;
     
     class Builder;
     
     WGSL() = default;
     
     WGSL(const std::string& source,
-         const BindGroupLayoutEntryVecMap& vecMap);
+         const BindGroupInfo& info,
+         const BindGroupLayoutEntryMap& entryMap);
     
     virtual ~WGSL() = default;
     
-    virtual const std::string& compile(const ShaderMacroCollection& macros);
+    virtual std::pair<const std::string&, const BindGroupInfo&> compile(const ShaderMacroCollection& macros);
     
-    const BindGroupLayoutDescriptorMap& bindGroupLayoutDescriptors();
+    const BindGroupLayoutEntryMap& bindGroupLayoutEntryMap();
     
 public:
     void begin(wgpu::ShaderStage stage);
@@ -61,8 +63,8 @@ public:
     
 protected:
     std::string _source{};
-    BindGroupLayoutEntryVecMap _bindGroupLayoutEntryVecMap{};
-    BindGroupLayoutDescriptorMap _bindGroupLayoutDescriptorMap{};
+    BindGroupInfo _bindGroupInfo{};
+    BindGroupLayoutEntryMap _bindGroupLayoutEntryMap{};
     
     wgpu::ShaderStage _currentStage = wgpu::ShaderStage::None;
     std::string _outputTypeName{};
@@ -105,7 +107,8 @@ public:
     
 private:
     std::string _source{};
-    WGSL::BindGroupLayoutEntryVecMap _bindGroupLayoutEntryVecMap{};
+    WGSL::BindGroupInfo _bindGroupInfo{};
+    WGSL::BindGroupLayoutEntryMap _bindGroupLayoutEntryMap{};
     
     wgpu::ShaderStage _currentStage = wgpu::ShaderStage::None;
     std::string _outputTypeName{};
