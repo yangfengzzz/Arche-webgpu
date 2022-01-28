@@ -274,6 +274,8 @@
 		0495476827A295A600783C84 /* libvox.render.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04128424279ED3510071BD86 /* libvox.render.a */; };
 		0495476C27A2C6C500783C84 /* resource_cache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495476A27A2C6C500783C84 /* resource_cache.cpp */; };
 		0495476D27A2C6C500783C84 /* resource_cache.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495476B27A2C6C500783C84 /* resource_cache.h */; };
+		0495477027A3907500783C84 /* wgsl_library.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495476E27A3907500783C84 /* wgsl_library.cpp */; };
+		0495477127A3907500783C84 /* wgsl_library.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495476F27A3907500783C84 /* wgsl_library.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -634,6 +636,8 @@
 		0495476127A2954200783C84 /* primitive_app.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = primitive_app.h; sourceTree = "<group>"; };
 		0495476A27A2C6C500783C84 /* resource_cache.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = resource_cache.cpp; sourceTree = "<group>"; };
 		0495476B27A2C6C500783C84 /* resource_cache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = resource_cache.h; sourceTree = "<group>"; };
+		0495476E27A3907500783C84 /* wgsl_library.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_library.cpp; sourceTree = "<group>"; };
+		0495476F27A3907500783C84 /* wgsl_library.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_library.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1074,6 +1078,8 @@
 			isa = PBXGroup;
 			children = (
 				0495475527A2821C00783C84 /* wgsl_common.h */,
+				0495476F27A3907500783C84 /* wgsl_library.h */,
+				0495476E27A3907500783C84 /* wgsl_library.cpp */,
 				0495471727A2346900783C84 /* wgsl.h */,
 				0495471927A2348F00783C84 /* unlit_wgsl.h */,
 				0495471827A2348F00783C84 /* unlit_wgsl.cpp */,
@@ -1310,6 +1316,7 @@
 				0495473F27A25B1300783C84 /* buffer.h in Headers */,
 				0495473627A24BE000783C84 /* pbr_material.h in Headers */,
 				0495468A279F8CD600783C84 /* script.h in Headers */,
+				0495477127A3907500783C84 /* wgsl_library.h in Headers */,
 				04954708279FCD3C00783C84 /* orbit_control.h in Headers */,
 				0412845C279ED4B10071BD86 /* imstb_truetype.h in Headers */,
 				0412844A279ED3A60071BD86 /* unix_engine.h in Headers */,
@@ -1542,6 +1549,7 @@
 				04954679279F8CD600783C84 /* transform.cpp in Sources */,
 				049546FA279FC9B400783C84 /* graphics_application.cpp in Sources */,
 				0495472E27A2480000783C84 /* blinn_phong_material.cpp in Sources */,
+				0495477027A3907500783C84 /* wgsl_library.cpp in Sources */,
 				04128443279ED3A60071BD86 /* timer.cpp in Sources */,
 				0495468C279F8CD600783C84 /* component.cpp in Sources */,
 				04128445279ED3A60071BD86 /* glfw_window.cpp in Sources */,
@@ -1702,6 +1710,7 @@
 					DAWN_ENABLE_BACKEND_METAL,
 					DAWN_ENABLE_BACKEND_NULL,
 					"$(inherited)",
+					TINT_BUILD_WGSL_READER,
 				);
 				HEADER_SEARCH_PATHS = (
 					./vox.math,
@@ -1718,6 +1727,8 @@
 					./third_party/dawn/src/include,
 					./third_party/dawn/third_party/glfw/include,
 					"./third_party/dawn/cmake-debug/gen/src/include",
+					./third_party/dawn/third_party/tint/include,
+					./third_party/dawn/third_party/tint,
 				);
 			};
 			name = Debug;
@@ -1752,6 +1763,8 @@
 					./third_party/dawn/src/include,
 					./third_party/dawn/third_party/glfw/include,
 					"./third_party/dawn/cmake-release/gen/src/include",
+					./third_party/dawn/third_party/tint/include,
+					./third_party/dawn/third_party/tint,
 				);
 			};
 			name = Release;
@@ -1880,6 +1893,7 @@
 					DAWN_ENABLE_BACKEND_METAL,
 					DAWN_ENABLE_BACKEND_NULL,
 					"$(inherited)",
+					TINT_BUILD_WGSL_READER,
 				);
 				HEADER_SEARCH_PATHS = (
 					./vox.render,
@@ -1937,6 +1951,8 @@
 					./third_party/dawn/third_party/glfw/include,
 					"./third_party/dawn/third_party/vulkan-deps/spirv-tools/src/include",
 					"./third_party/dawn/cmake-debug/gen/src/include",
+					./third_party/dawn/third_party/tint/include,
+					./third_party/dawn/third_party/tint,
 				);
 				USE_HEADERMAP = NO;
 			};
@@ -2012,6 +2028,8 @@
 					./third_party/dawn/third_party/glfw/include,
 					"./third_party/dawn/third_party/vulkan-deps/spirv-tools/src/include",
 					"./third_party/dawn/cmake-release/gen/src/include",
+					./third_party/dawn/third_party/tint/include,
+					./third_party/dawn/third_party/tint,
 				);
 				USE_HEADERMAP = NO;
 			};
