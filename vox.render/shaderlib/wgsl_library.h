@@ -12,14 +12,39 @@
 #include "shader/shader_macro_collection.h"
 
 namespace vox {
+enum class UniformType {
+    Vec2f32,
+    Vec2i32,
+    Vec2u32,
+    Vec3f32,
+    Vec3i32,
+    Vec3u32,
+    Vec4f32,
+    Vec4i32,
+    Vec4u32,
+    Mat2x2f32,
+    Mat3x2f32,
+    Mat4x2f32,
+    Mat2x3f32,
+    Mat3x3f32,
+    Mat4x3f32,
+    Mat2x4f32,
+    Mat3x4f32,
+    Mat4x4f32,
+};
+
+std::string uniformTypeToString(UniformType type);
+
+
 class WGSLUniformBinding {
 public:
-    WGSLUniformBinding(const std::string& name, uint32_t group);
+    WGSLUniformBinding(const std::string& name, UniformType type, uint32_t group);
     
     std::string operator()();
     
 private:
     std::string _name;
+    UniformType _type;
     uint32_t _group;
     uint32_t _binding;
 };

@@ -1729,6 +1729,7 @@
 					"./third_party/dawn/cmake-debug/gen/src/include",
 					./third_party/dawn/third_party/tint/include,
 					./third_party/dawn/third_party/tint,
+					./third_party/fmt/include,
 				);
 			};
 			name = Debug;
@@ -1765,6 +1766,7 @@
 					"./third_party/dawn/cmake-release/gen/src/include",
 					./third_party/dawn/third_party/tint/include,
 					./third_party/dawn/third_party/tint,
+					./third_party/fmt/include,
 				);
 			};
 			name = Release;
@@ -1915,6 +1917,7 @@
 					"./third_party/dawn/cmake-debug/third_party/glfw/src",
 					"./third_party/dawn/cmake-debug/examples",
 					./third_party/glog/build,
+					./third_party/fmt/build,
 				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
@@ -1943,6 +1946,7 @@
 					"-ldawn_sample_utils",
 					"-ldawn_native",
 					"-lglog",
+					"-lfmt",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SYSTEM_HEADER_SEARCH_PATHS = (
@@ -1953,6 +1957,7 @@
 					"./third_party/dawn/cmake-debug/gen/src/include",
 					./third_party/dawn/third_party/tint/include,
 					./third_party/dawn/third_party/tint,
+					./third_party/fmt/include,
 				);
 				USE_HEADERMAP = NO;
 			};
@@ -1992,6 +1997,7 @@
 					"./third_party/dawn/cmake-release/third_party/glfw/src",
 					"./third_party/dawn/cmake-release/examples",
 					./third_party/glog/build,
+					./third_party/fmt/build,
 				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
@@ -2020,6 +2026,7 @@
 					"-ldawn_sample_utils",
 					"-ldawn_native",
 					"-lglog",
+					"-lfmt",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SYSTEM_HEADER_SEARCH_PATHS = (
@@ -2030,6 +2037,7 @@
 					"./third_party/dawn/cmake-release/gen/src/include",
 					./third_party/dawn/third_party/tint/include,
 					./third_party/dawn/third_party/tint,
+					./third_party/fmt/include,
 				);
 				USE_HEADERMAP = NO;
 			};
