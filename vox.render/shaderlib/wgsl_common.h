@@ -32,6 +32,9 @@ enum class Attributes : uint32_t {
 std::string attributesToString(Attributes type);
 
 enum class UniformType {
+    F32,
+    I32,
+    U32,
     Vec2f32,
     Vec2i32,
     Vec2u32,

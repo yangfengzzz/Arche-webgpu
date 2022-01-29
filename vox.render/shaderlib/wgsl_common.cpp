@@ -62,6 +62,18 @@ std::string attributesToString(Attributes type) {
 
 std::string uniformTypeToString(UniformType type) {
     switch (type) {
+        case UniformType::F32:
+            return "f32";
+            break;
+            
+        case UniformType::I32:
+            return "i32";
+            break;
+            
+        case UniformType::U32:
+            return "u32";
+            break;
+            
         case UniformType::Vec2f32:
             return "vec2<f32>";
             break;
