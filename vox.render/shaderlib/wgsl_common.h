@@ -30,7 +30,6 @@ enum class Attributes : uint32_t {
 };
 std::string attributesToString(Attributes type);
 
-//MARK: - UniformType
 enum class UniformType {
     Vec2f32,
     Vec2i32,
@@ -52,6 +51,22 @@ enum class UniformType {
     Mat4x4f32,
 };
 std::string uniformTypeToString(UniformType type);
+
+enum class BuiltInType {
+    VertexIndex,
+    InstanceIndex,
+    Position,
+    FrontFacing,
+    FragDepth,
+    LocalInvocationID,
+    LocalInvocationIndex,
+    GlobalInvocationID,
+    WorkgroupID,
+    NumWorkgroups,
+    SampleIndex,
+    SampleMask,
+};
+std::string builtInTypeToString(BuiltInType type);
 
 }
 #endif /* wgsl_common_h */

@@ -32,22 +32,32 @@ public:
     
     ~WGSLEncoder();
     
+public:
     void addStruct(const std::string& code);
     
     void addFunction(const std::string& code);
 
+public:
     void addUniformBinding(const std::string& uniformName, const std::string& type, uint32_t group = 0);
     
     void addUniformBinding(const std::string& uniformName, UniformType type, uint32_t group = 0);
 
-    void addInputType(const std::string& structName, uint32_t location, const std::string& attributes, const std::string& type);
+public:
+    void addInoutType(const std::string& structName, Attributes attributes, UniformType type);
+
+    void addInoutType(const std::string& structName, uint32_t location, const std::string& attributes, UniformType type);
     
-    void addInputType(const std::string& structName, Attributes attributes, UniformType type);
-            
-    void addOutputType(const std::string& structName, const std::string& code);
-        
-    void addEntry(const std::initializer_list<std::string>& parameter, std::function<std::string()> code);
+    void addInoutType(const std::string& structName, uint32_t location, const std::string& attributes, const std::string& type);
     
+    void addInoutType(const std::string& structName, BuiltInType builtin, const std::string& attributes, UniformType type);
+    
+    void addInoutType(const std::string& structName, BuiltInType builtin, const std::string& attributes, const std::string& type);
+    
+public:
+    void addEntry(const std::initializer_list<std::pair<std::string, std::string>>& inParam,
+                  const std::string& outType, std::function<std::string()> code);
+    
+public:
     void flush();
     
     void clearCache();
@@ -69,8 +79,7 @@ private:
     std::string _structBlock{};
     std::string _uniformBlock{};
     std::string _functionBlock{};
-    std::pair<std::string, std::vector<std::string>> _outputType{};
-    std::unordered_map<std::string, std::vector<std::string>> _inputType{};
+    std::unordered_map<std::string, std::vector<std::string>> _inoutType{};
     std::string _entryBlock{};
 };
 

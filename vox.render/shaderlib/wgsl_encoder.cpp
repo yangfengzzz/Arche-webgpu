@@ -64,29 +64,39 @@ void WGSLEncoder::addUniformBinding(const std::string& uniformName,
     _needFlush = true;
 }
 
-void WGSLEncoder::addInputType(const std::string& structName, uint32_t location,
+void WGSLEncoder::addInoutType(const std::string& structName,
+                               Attributes attributes, UniformType type) {
+    addInoutType(structName, (uint32_t)attributes, attributesToString(attributes), uniformTypeToString(type));
+}
+
+void WGSLEncoder::addInoutType(const std::string& structName, uint32_t location,
+                               const std::string& attributes, UniformType type) {
+    addInoutType(structName, location, attributes, uniformTypeToString(type));
+}
+
+void WGSLEncoder::addInoutType(const std::string& structName, uint32_t location,
                                const std::string& attributes, const std::string& type) {
     const std::string formatTemplate = "@location({}) {}: {};";
-    _inputType[structName].push_back(fmt::format(formatTemplate, location,
+    _inoutType[structName].push_back(fmt::format(formatTemplate, location,
                                                  attributes,  type));
     _needFlush = true;
 }
 
-void WGSLEncoder::addInputType(const std::string& structName, Attributes attributes, UniformType type) {
-    addInputType(structName, (uint32_t)attributes, attributesToString(attributes), uniformTypeToString(type));
+void WGSLEncoder::addInoutType(const std::string& structName, BuiltInType builtin,
+                               const std::string& attributes, UniformType type) {
+    addInoutType(structName, builtin, attributes, uniformTypeToString(type));
 }
 
-void WGSLEncoder::addOutputType(const std::string& structName, const std::string& code) {
-    if (!_outputType.first.empty() && _outputType.first != structName) {
-        assert(false && "Output Type should be unique!");
-    }
-    _outputType.first = structName;
-    _outputType.second.push_back(code);
+void WGSLEncoder::addInoutType(const std::string& structName, BuiltInType builtin,
+                               const std::string& attributes, const std::string& type) {
+    const std::string formatTemplate = "@builtin({}) {}: {};";
+    _inoutType[structName].push_back(fmt::format(formatTemplate, builtInTypeToString(builtin),
+                                                 attributes,  type));
     _needFlush = true;
 }
 
-void WGSLEncoder::addEntry(const std::initializer_list<std::string>& parameter,
-                           std::function<std::string()> code) {
+void WGSLEncoder::addEntry(const std::initializer_list<std::pair<std::string, std::string>>& inParam,
+                           const std::string& outType, std::function<std::string()> code) {
     if (_currentStage == wgpu::ShaderStage::Vertex) {
         _entryBlock += "@stage(vertex)\n";
     } else if (_currentStage == wgpu::ShaderStage::Fragment) {
@@ -95,19 +105,15 @@ void WGSLEncoder::addEntry(const std::initializer_list<std::string>& parameter,
         assert(false && "Use Begin at first");
     }
     
-    auto inputIter = _inputType.begin();
     _entryBlock += "fn main(";
-    for (const auto& name : parameter) {
-        if (inputIter != _inputType.end()) {
-            _entryBlock += name;
-            _entryBlock += ": ";
-            _entryBlock += inputIter->first;
-            _entryBlock += ", ";
-            inputIter++;
-        }
+    for (const auto& param : inParam) {
+        _entryBlock += param.first;
+        _entryBlock += ": ";
+        _entryBlock += param.second;
+        _entryBlock += ", ";
     }
     _entryBlock += ") -> ";
-    _entryBlock += _outputType.first;
+    _entryBlock += outType;
     _entryBlock += " {\n";
     _entryBlock += code();
     _entryBlock += "}\n";
@@ -129,9 +135,7 @@ void WGSLEncoder::clearCache() {
     _structBlock.clear();
     _uniformBlock.clear();
     _functionBlock.clear();
-    _outputType.first.clear();
-    _outputType.second.clear();
-    _inputType.clear();
+    _inoutType.clear();
     _entryBlock.clear();
     _needFlush = false;
 }
@@ -141,20 +145,9 @@ void WGSLEncoder::_buildSource() {
     _source += _structBlock;
     _source += _uniformBlock;
     _source += _functionBlock;
-    // Output
+    // Inout
     {
-        _source += "struct ";
-        _source += _outputType.first;
-        _source += " {\n";
-        for (const auto& typeInfo : _outputType.second) {
-            _source += typeInfo;
-            _source += "\n";
-        }
-        _source += "}\n";
-    }
-    // Output
-    {
-        for (const auto& structInfo : _inputType) {
+        for (const auto& structInfo : _inoutType) {
             _source += "struct ";
             _source += structInfo.first;
             _source += " {\n";

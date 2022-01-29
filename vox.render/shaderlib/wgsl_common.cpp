@@ -139,4 +139,47 @@ std::string uniformTypeToString(UniformType type) {
     }
 }
 
+std::string builtInTypeToString(BuiltInType type) {
+    switch (type) {
+        case BuiltInType::VertexIndex:
+            return "vertex_index";
+            break;
+        case BuiltInType::InstanceIndex:
+            return "instance_index";
+            break;
+        case BuiltInType::Position:
+            return "position";
+            break;
+        case BuiltInType::FrontFacing:
+            return "front_facing";
+            break;
+        case BuiltInType::FragDepth:
+            return "frag_depth";
+            break;
+        case BuiltInType::LocalInvocationID:
+            return "local_invocation_id";
+            break;
+        case BuiltInType::LocalInvocationIndex:
+            return "local_invocation_index";
+            break;
+        case BuiltInType::GlobalInvocationID:
+            return "global_invocation_id";
+            break;
+        case BuiltInType::WorkgroupID:
+            return "workgroup_id";
+            break;
+        case BuiltInType::NumWorkgroups:
+            return "num_workgroups";
+            break;
+        case BuiltInType::SampleIndex:
+            return "sample_index";
+            break;
+        case BuiltInType::SampleMask:
+            return "sample_mask";
+            break;
+        default:
+            break;
+    }
+}
+
 }

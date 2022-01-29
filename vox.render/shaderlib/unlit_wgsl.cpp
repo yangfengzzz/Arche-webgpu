@@ -26,12 +26,12 @@ void UnlitVertexWGSL::_createShaderSource(size_t hash, const ShaderMacroCollecti
     auto encoder = createSourceEncoder(wgpu::ShaderStage::Vertex);
     encoder.addUniformBinding("u_projMat", UniformType::Mat4x4f32);
     encoder.addUniformBinding("u_MVMat", UniformType::Mat4x4f32);
-    encoder.addInputType("VertexInput", Attributes::Position, UniformType::Vec3f32);
-    encoder.addInputType("VertexInput", Attributes::Normal, UniformType::Vec3f32);
-    encoder.addInputType("VertexInput", Attributes::UV_0, UniformType::Vec2f32);
-    encoder.addOutputType("Output", "@location(0) vColor: vec3<f32>;\n");
-    encoder.addOutputType("Output", "@builtin(position) Position: vec4<f32>;");
-    encoder.addEntry({"vertexInput"}, []()->auto{
+    encoder.addInoutType("VertexInput", Attributes::Position, UniformType::Vec3f32);
+    encoder.addInoutType("VertexInput", Attributes::Normal, UniformType::Vec3f32);
+    encoder.addInoutType("VertexInput", Attributes::UV_0, UniformType::Vec2f32);
+    encoder.addInoutType("Output", 0, "vColor", UniformType::Vec3f32);
+    encoder.addInoutType("Output", BuiltInType::Position, "Position", UniformType::Vec4f32);
+    encoder.addEntry({{"vertexInput", "VertexInput"}}, "Output",  []()->auto{
         return
         "var output: Output;\n "
         "output.Position = u_projMat * u_MVMat * vec4<f32>(vertexInput.Position, 1.0);\n "
@@ -61,9 +61,9 @@ void UnlitFragmentWGSL::_createShaderSource(size_t hash, const ShaderMacroCollec
     _bindGroupInfo.clear();
     
     auto encoder = createSourceEncoder(wgpu::ShaderStage::Fragment);
-    encoder.addInputType("FragmentInput", 0, "vColor", "vec3<f32>");
-    encoder.addOutputType("Output", "@location(0) finalColor: vec4<f32>;");
-    encoder.addEntry({"fragmentInput"}, []()->auto{
+    encoder.addInoutType("FragmentInput", 0, "vColor", UniformType::Vec3f32);
+    encoder.addInoutType("Output", 0, "finalColor", UniformType::Vec4f32);
+    encoder.addEntry({{"fragmentInput", "FragmentInput"}}, "Output", []()->auto{
         return
         "var output: Output;\n "
         "output.finalColor = vec4<f32>(fragmentInput.vColor, 1.0);"
