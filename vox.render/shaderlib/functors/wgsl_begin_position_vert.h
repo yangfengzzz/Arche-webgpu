@@ -12,7 +12,15 @@
 namespace vox {
 class WGSLBeginPositionVert {
 public:
+    WGSLBeginPositionVert(const std::string& input, const std::string& output);
+    
     void operator()(std::string& source, const ShaderMacroCollection& macros);
+    
+private:
+    const std::string _input;
+    const std::string _output;
+    
+    std::string _formatTemplate;
 };
 
 }

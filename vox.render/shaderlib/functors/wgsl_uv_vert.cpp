@@ -5,18 +5,27 @@
 //  property of any third parties.
 
 #include "wgsl_uv_vert.h"
+#include <fmt/core.h>
 
 namespace vox {
+WGSLUVVert::WGSLUVVert(const std::string& input, const std::string& output):
+_input(input),
+_output(output) {
+}
+
 void WGSLUVVert::operator()(std::string& source, const ShaderMacroCollection& macros) {
     if (macros.contains(HAS_UV)) {
-        source += "v_uv = TEXCOORD_0;\n";
+        std::string formatTemplate = "{}.v_uv = {}.UV_0;\n";
+        source += fmt::format(formatTemplate, _output, _input);
     } else {
         // may need this calculate normal
-        source += "v_uv = vec2<f32>( 0., 0. );\n";
+        std::string formatTemplate = "{}.v_uv = vec2<f32>( 0., 0. );\n";
+        source += fmt::format(formatTemplate, _output);
     }
     
     if (macros.contains(NEED_TILINGOFFSET)) {
-        source += "v_uv = v_uv * u_tilingOffset.xy + u_tilingOffset.zw;\n";
+        std::string formatTemplate = "{}.v_uv = {}.v_uv * u_tilingOffset.xy + u_tilingOffset.zw;\n";
+        source += fmt::format(formatTemplate, _output, _output);
     }
 }
 

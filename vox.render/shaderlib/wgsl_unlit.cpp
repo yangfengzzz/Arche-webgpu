@@ -12,11 +12,11 @@ WGSLUnlitVertex::WGSLUnlitVertex():
 _commonVert("VertexIn"),
 _blendShapeInput("VertexIn", WGSLEncoder::startCounter()),
 _uvShare("VertexOut", WGSLEncoder::startCounter()),
-_beginPositionVert(),
-_blendShapeVert(),
-_skinningVert(),
-_uvVert(),
-_positionVert() {
+_beginPositionVert("in", "out"),
+_blendShapeVert("in", "out"),
+_skinningVert("in", "out"),
+_uvVert("in", "out"),
+_positionVert("in", "out") {
 }
 
 void WGSLUnlitVertex::_createShaderSource(size_t hash, const ShaderMacroCollection& macros) {
@@ -27,7 +27,9 @@ void WGSLUnlitVertex::_createShaderSource(size_t hash, const ShaderMacroCollecti
     _commonVert(encoder, macros);
     _blendShapeInput(encoder, macros);
     _uvShare(encoder, macros);
-    encoder.addEntry({{"in", "VertexIn"}}, "VertexOut", [&](std::string &source){
+    encoder.addInoutType("VertexOut", BuiltInType::Position, "position", UniformType::Vec4f32);
+
+    encoder.addEntry({{"in", "VertexIn"}}, {"out", "VertexOut"}, [&](std::string &source){
         _beginPositionVert(source, macros);
         _blendShapeVert(source, macros);
         _skinningVert(source, macros);
@@ -36,6 +38,8 @@ void WGSLUnlitVertex::_createShaderSource(size_t hash, const ShaderMacroCollecti
     });
     encoder.flush();
     
+    WGSLEncoder::endCounter(0);
+    WGSLEncoder::endCounter(1);
     _sourceCache[hash] = _source;
     _infoCache[hash] = _bindGroupInfo;
 }
@@ -57,7 +61,7 @@ void WGSLUnlitFragment::_createShaderSource(size_t hash, const ShaderMacroCollec
     if (macros.contains(HAS_BASE_TEXTURE)) {
         // TODO
     }
-    encoder.addEntry({{"in", "VertexOut"}}, "FragmentOut",  [&](std::string &source){
+    encoder.addEntry({{"in", "VertexOut"}}, {"out", "FragmentOut"},  [&](std::string &source){
         source += "vec4 baseColor = u_baseColor;\n";
         if (macros.contains(HAS_BASE_TEXTURE)) {
             source += "vec4 textureColor = texture2D(u_baseTexture, v_uv);\n";
@@ -73,6 +77,7 @@ void WGSLUnlitFragment::_createShaderSource(size_t hash, const ShaderMacroCollec
     });
     encoder.flush();
     
+    WGSLEncoder::endCounter(0);
     _sourceCache[hash] = _source;
     _infoCache[hash] = _bindGroupInfo;
     

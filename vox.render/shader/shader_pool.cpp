@@ -7,11 +7,11 @@
 #include "shader_pool.h"
 #include "shader.h"
 
-#include "shaderlib/unlit_wgsl.h"
+#include "shaderlib/wgsl_unlit.h"
 
 namespace vox {
 void ShaderPool::init() {
-    Shader::create("unlit", std::make_unique<UnlitVertexWGSL>(), std::make_unique<UnlitFragmentWGSL>());
+    Shader::create("unlit", std::make_unique<WGSLUnlitVertex>(), std::make_unique<WGSLUnlitFragment>());
 }
 
 }

@@ -7,6 +7,11 @@
 #include "wgsl_skinning_vert.h"
 
 namespace vox {
+WGSLSkinningVert::WGSLSkinningVert(const std::string& input, const std::string& output):
+_input(input),
+_output(output) {
+}
+
 void WGSLSkinningVert::operator()(std::string& source, const ShaderMacroCollection& macros) {
     if (macros.contains(HAS_SKIN)) {
         if (macros.contains(HAS_JOINT_TEXTURE)) {

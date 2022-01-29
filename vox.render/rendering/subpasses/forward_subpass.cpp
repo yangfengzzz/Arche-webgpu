@@ -96,7 +96,10 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
         // PSO
         {
             const std::string& vertexSource = material->shader->vertexSource(macros);
+            std::cout<<vertexSource<<std::endl;
             const std::string& fragmentSource = material->shader->fragmentSource(macros);
+//            std::cout<<fragmentSource<<std::endl;
+
             
             ShaderProgram* program = _pass->resourceCache().requestShader(vertexSource, fragmentSource);
             _forwardPipelineDescriptor.vertex.module = program->vertexShader();

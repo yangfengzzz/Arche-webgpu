@@ -7,6 +7,11 @@
 #include "wgsl_blend_shape_vert.h"
 
 namespace vox {
+WGSLBlendShapeVert::WGSLBlendShapeVert(const std::string& input, const std::string& output):
+_input(input),
+_output(output) {
+}
+
 void WGSLBlendShapeVert::operator()(std::string& source, const ShaderMacroCollection& macros) {
     if (macros.contains(HAS_BLENDSHAPE)) {
         if (macros.contains(HAS_BASE_TEXTURE)) {

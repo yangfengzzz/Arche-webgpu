@@ -260,7 +260,6 @@
 		0495471027A14FA800783C84 /* shader_program.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495470E27A14FA800783C84 /* shader_program.h */; };
 		0495471327A15BEE00783C84 /* shader_macro_collection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495471127A15BEE00783C84 /* shader_macro_collection.cpp */; };
 		0495471427A15BEE00783C84 /* shader_macro_collection.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495471227A15BEE00783C84 /* shader_macro_collection.h */; };
-		0495471A27A2348F00783C84 /* unlit_wgsl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495471827A2348F00783C84 /* unlit_wgsl.cpp */; };
 		0495471B27A2348F00783C84 /* unlit_wgsl.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495471927A2348F00783C84 /* unlit_wgsl.h */; };
 		0495471E27A2396500783C84 /* shader_pool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495471C27A2396500783C84 /* shader_pool.cpp */; };
 		0495471F27A2396500783C84 /* shader_pool.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495471D27A2396500783C84 /* shader_pool.h */; };
@@ -1684,7 +1683,6 @@
 				049546ED279FC74800783C84 /* render_pass.cpp in Sources */,
 				047BEFFB27A56187003F3599 /* wgsl_uv_vert.cpp in Sources */,
 				0495476C27A2C6C500783C84 /* resource_cache.cpp in Sources */,
-				0495471A27A2348F00783C84 /* unlit_wgsl.cpp in Sources */,
 				0495475327A2750900783C84 /* model_mesh.cpp in Sources */,
 				04128459279ED4B10071BD86 /* imgui_widgets.cpp in Sources */,
 				04954683279F8CD600783C84 /* update_flag.cpp in Sources */,

@@ -14,6 +14,7 @@ _inputStructName(inputStructName) {
 }
 
 void WGSLCommonVert::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros) {
+    encoder.addInoutType(_inputStructName, Attributes::Position, UniformType::Vec3f32);
     if (macros.contains(HAS_UV)) {
         encoder.addInoutType(_inputStructName, Attributes::UV_0, UniformType::Vec2f32);
     }

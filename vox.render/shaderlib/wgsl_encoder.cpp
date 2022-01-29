@@ -19,7 +19,7 @@ size_t WGSLEncoder::startCounter(uint32_t initVal) {
         }
     }
     _counters.push_back(initVal);
-    return _counters.size();
+    return _counters.size()-1;
 }
 
 uint32_t WGSLEncoder::getCounterNumber(size_t index) {
@@ -115,7 +115,7 @@ void WGSLEncoder::addInoutType(const std::string& structName, BuiltInType builti
 }
 
 void WGSLEncoder::addEntry(const std::initializer_list<std::pair<std::string, std::string>>& inParam,
-                           const std::string& outType, std::function<void(std::string&)> code) {
+                           const std::pair<std::string, std::string>& outType, std::function<void(std::string&)> code) {
     if (_currentStage == wgpu::ShaderStage::Vertex) {
         _entryBlock += "@stage(vertex)\n";
     } else if (_currentStage == wgpu::ShaderStage::Fragment) {
@@ -132,9 +132,16 @@ void WGSLEncoder::addEntry(const std::initializer_list<std::pair<std::string, st
         _entryBlock += ", ";
     }
     _entryBlock += ") -> ";
-    _entryBlock += outType;
+    _entryBlock += outType.second;
     _entryBlock += " {\n";
+    
+    std::string formatTemplate = "var {}:{};\n";
+    _entryBlock += fmt::format(formatTemplate, outType.first, outType.second);
+    
     code(_entryBlock);
+    
+    formatTemplate = "return {};\n";
+    _entryBlock += fmt::format(formatTemplate, outType.first);
     _entryBlock += "}\n";
     
     _needFlush = true;
