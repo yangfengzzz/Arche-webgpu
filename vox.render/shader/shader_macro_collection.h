@@ -10,12 +10,17 @@
 #include <vector>
 #include <string>
 #include <map>
+#include "internal_macro_name.h"
 
 namespace vox {
 /**
  * Shader macro collection.
  */
-struct ShaderMacroCollection {    
+struct ShaderMacroCollection {
+    ShaderMacroCollection() = default;
+    
+    ~ShaderMacroCollection() = default;
+    
     /**
      * Union of two macro collection.
      * @param left - input macro collection
@@ -27,11 +32,11 @@ struct ShaderMacroCollection {
     
     size_t hash() const;
     
+public:
     bool contains(const std::string& macro) const;
     
     std::optional<double> macroConstant(const std::string& macro) const;
     
-public:
     /**
      * Enable macro.
      * @param macroName - Shader macro
@@ -52,8 +57,34 @@ public:
      */
     void disableMacro(const std::string& macroName);
     
+public:
+    bool contains(MacroName macro) const;
+    
+    std::optional<double> macroConstant(MacroName macro) const;
+    
+    /**
+     * Enable macro.
+     * @param macroName - Shader macro
+     */
+    void enableMacro(MacroName macroName);
+
+    /**
+     * Enable macro.
+     * @remarks Name and value will combine one macro, it's equal the macro of "name value".
+     * @param macroName - Macro name
+     * @param value - Macro value
+     */
+    void enableMacro(MacroName macroName, double value);
+
+    /**
+     * Disable macro
+     * @param macroName - Macro name
+     */
+    void disableMacro(MacroName macroName);
+    
 private:    
-    std::map<std::string, double> _value{};
+    std::map<size_t, double> _value{};
+    static std::vector<size_t> _internalMacroHashValue;
 };
 
 }

@@ -15,17 +15,17 @@ _inputStructName(inputStructName) {
 }
 
 void WGSLCommonVert::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros) {
-    if (macros.contains("HAS_UV")) {
+    if (macros.contains(HAS_UV)) {
         encoder.addInoutType(_inputStructName, Attributes::UV_0, UniformType::Vec2f32);
     }
     
-    if (macros.contains("HAS_SKIN")) {
+    if (macros.contains(HAS_SKIN)) {
         encoder.addInoutType(_inputStructName, Attributes::Joints_0, UniformType::Vec4f32);
         encoder.addInoutType(_inputStructName, Attributes::Weights_0, UniformType::Vec4f32);
-        if (macros.contains("USE_JOINT_TEXTURE")) {
+        if (macros.contains(HAS_JOINT_TEXTURE)) {
             // TODO
         } else {
-            auto num = macros.macroConstant("JOINTS_NUM");
+            auto num = macros.macroConstant(JOINTS_COUNT);
             if (num.has_value()) {
                 auto formatTemplate = "array<mat4x4<f32>, {}>";
                 encoder.addUniformBinding("u_jointMatrix", fmt::format(formatTemplate, (int)*num));
@@ -33,7 +33,7 @@ void WGSLCommonVert::operator()(WGSLEncoder& encoder, const ShaderMacroCollectio
         }
     }
     
-    if (macros.contains("HAS_VERTEXCOLOR")) {
+    if (macros.contains(HAS_VERTEXCOLOR)) {
         encoder.addInoutType(_inputStructName, Attributes::Color_0, UniformType::Vec4f32);
     }
     
@@ -47,11 +47,11 @@ void WGSLCommonVert::operator()(WGSLEncoder& encoder, const ShaderMacroCollectio
     encoder.addUniformBinding("u_cameraPos", UniformType::Vec3f32);
     encoder.addUniformBinding("u_tilingOffset", UniformType::Vec4f32);
     
-    if (!macros.contains("OMIT_NORMAL")) {
-        if (macros.contains("HAS_NORMAL")) {
+    if (!macros.contains(OMIT_NORMAL)) {
+        if (macros.contains(HAS_NORMAL)) {
             encoder.addInoutType(_inputStructName, Attributes::Normal, UniformType::Vec3f32);
         }
-        if (macros.contains("HAS_TANGENT")) {
+        if (macros.contains(HAS_TANGENT)) {
             encoder.addInoutType(_inputStructName, Attributes::Tangent, UniformType::Vec4f32);
         }
     }

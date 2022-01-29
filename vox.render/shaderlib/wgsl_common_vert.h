@@ -13,7 +13,7 @@
 namespace vox {
 class WGSLCommonVert {
 public:
-    WGSLCommonVert(const string& inputStructName);
+    WGSLCommonVert(const std::string& inputStructName);
     
     void operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros);
     

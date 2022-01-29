@@ -24,7 +24,7 @@ size_t ShaderMacroCollection::hash() const {
 }
 
 bool ShaderMacroCollection::contains(const std::string& macro) const {
-    auto iter = _value.find(macro);
+    auto iter = _value.find(std::hash<std::string>{}(macro));
     if (iter != _value.end()) {
         return true;
     } else {
@@ -33,7 +33,7 @@ bool ShaderMacroCollection::contains(const std::string& macro) const {
 }
 
 std::optional<double> ShaderMacroCollection::macroConstant(const std::string& macro) const {
-    auto iter = _value.find(macro);
+    auto iter = _value.find(std::hash<std::string>{}(macro));
     if (iter != _value.end()) {
         return iter->second;
     } else {
@@ -42,15 +42,106 @@ std::optional<double> ShaderMacroCollection::macroConstant(const std::string& ma
 }
 
 void ShaderMacroCollection::enableMacro(const std::string& macroName) {
-    _value.insert(std::make_pair(macroName, 1));
+    _value.insert(std::make_pair(std::hash<std::string>{}(macroName), 1));
 }
 
 void ShaderMacroCollection::enableMacro(const std::string& macroName, double value) {
-    _value.insert(std::make_pair(macroName, value));
+    _value.insert(std::make_pair(std::hash<std::string>{}(macroName), value));
 }
 
 void ShaderMacroCollection::disableMacro(const std::string& macroName) {
-    auto iter = _value.find(macroName);
+    auto iter = _value.find(std::hash<std::string>{}(macroName));
+    if (iter != _value.end()) {
+        _value.erase(iter);
+    }
+}
+
+//MARK: - Internal Macro
+std::vector<size_t> ShaderMacroCollection::_internalMacroHashValue = {
+    std::hash<std::string>{}("HAS_UV"),
+    std::hash<std::string>{}("HAS_NORMAL"),
+    std::hash<std::string>{}("HAS_TANGENT"),
+    std::hash<std::string>{}("HAS_VERTEXCOLOR"),
+    
+    // Blend Shape
+    std::hash<std::string>{}("HAS_BLENDSHAPE"),
+    std::hash<std::string>{}("HAS_BLENDSHAPE_NORMAL"),
+    std::hash<std::string>{}("HAS_BLENDSHAPE_TANGENT"),
+    
+    // Skin
+    std::hash<std::string>{}("HAS_SKIN"),
+    std::hash<std::string>{}("HAS_JOINT_TEXTURE"),
+    std::hash<std::string>{}("JOINTS_COUNT"),
+    
+    // Material
+    std::hash<std::string>{}("NEED_ALPHA_CUTOFF"),
+    std::hash<std::string>{}("NEED_WORLDPOS"),
+    std::hash<std::string>{}("NEED_TILINGOFFSET"),
+    std::hash<std::string>{}("HAS_DIFFUSE_TEXTURE"),
+    std::hash<std::string>{}("HAS_SPECULAR_TEXTURE"),
+    std::hash<std::string>{}("HAS_EMISSIVE_TEXTURE"),
+    std::hash<std::string>{}("HAS_NORMAL_TEXTURE"),
+    std::hash<std::string>{}("OMIT_NORMAL"),
+    std::hash<std::string>{}("HAS_BASE_TEXTURE"),
+    std::hash<std::string>{}("HAS_BASE_COLORMAP"),
+    std::hash<std::string>{}("HAS_EMISSIVEMAP"),
+    std::hash<std::string>{}("HAS_OCCLUSIONMAP"),
+    std::hash<std::string>{}("HAS_SPECULARGLOSSINESSMAP"),
+    std::hash<std::string>{}("HAS_METALROUGHNESSMAP"),
+    std::hash<std::string>{}("IS_METALLIC_WORKFLOW"),
+    
+    // Light
+    std::hash<std::string>{}("DIRECT_LIGHT_COUNT"),
+    std::hash<std::string>{}("POINT_LIGHT_COUNT"),
+    std::hash<std::string>{}("SPOT_LIGHT_COUNT"),
+    
+    // Enviroment
+    std::hash<std::string>{}("HAS_SH"),
+    std::hash<std::string>{}("HAS_SPECULAR_ENV"),
+    std::hash<std::string>{}("HAS_DIFFUSE_ENV"),
+    
+    // Particle Render
+    std::hash<std::string>{}("HAS_PARTICLE_TEXTURE"),
+    std::hash<std::string>{}("NEED_ROTATE_TO_VELOCITY"),
+    std::hash<std::string>{}("NEED_USE_ORIGIN_COLOR"),
+    std::hash<std::string>{}("NEED_SCALE_BY_LIFE_TIME"),
+    std::hash<std::string>{}("NEED_FADE_IN"),
+    std::hash<std::string>{}("NEED_FADE_OUT"),
+    std::hash<std::string>{}("IS_2D"),
+    
+    // Shadow
+    std::hash<std::string>{}("SHADOW_MAP_COUNT"),
+    std::hash<std::string>{}("CUBE_SHADOW_MAP_COUNT"),
+};
+
+bool ShaderMacroCollection::contains(MacroName macro) const {
+    auto iter = _value.find(_internalMacroHashValue[macro]);
+    if (iter != _value.end()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+std::optional<double> ShaderMacroCollection::macroConstant(MacroName macro) const {
+    auto iter = _value.find(_internalMacroHashValue[macro]);
+    if (iter != _value.end()) {
+        return iter->second;
+    } else {
+        return std::nullopt;
+    }
+}
+
+void ShaderMacroCollection::enableMacro(MacroName macroName) {
+    _value.insert(std::make_pair(_internalMacroHashValue[macroName], 1));
+}
+
+void ShaderMacroCollection::enableMacro(MacroName macroName, double value) {
+    _value.insert(std::make_pair(_internalMacroHashValue[macroName], value));
+}
+
+void ShaderMacroCollection::disableMacro(MacroName macroName) {
+    auto iter = _value.find(_internalMacroHashValue[macroName]);
     if (iter != _value.end()) {
         _value.erase(iter);
     }

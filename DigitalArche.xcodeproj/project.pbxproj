@@ -507,6 +507,7 @@
 		047BEFD827A4DB63003F3599 /* wgsl_encoder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_encoder.cpp; sourceTree = "<group>"; };
 		047BEFD927A4DB63003F3599 /* wgsl_encoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_encoder.h; sourceTree = "<group>"; };
 		047BEFDC27A4E762003F3599 /* wgsl_common.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_common.cpp; sourceTree = "<group>"; };
+		047BEFE227A53AFF003F3599 /* internal_macro_name.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = internal_macro_name.h; sourceTree = "<group>"; };
 		04954634279F89E400783C84 /* shader_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_data.h; sourceTree = "<group>"; };
 		04954635279F89E400783C84 /* shader_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_property.h; sourceTree = "<group>"; };
 		04954636279F89E400783C84 /* shader_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader_data.cpp; sourceTree = "<group>"; };
@@ -928,6 +929,7 @@
 				0495470D27A14FA800783C84 /* shader_program.cpp */,
 				0495471227A15BEE00783C84 /* shader_macro_collection.h */,
 				0495471127A15BEE00783C84 /* shader_macro_collection.cpp */,
+				047BEFE227A53AFF003F3599 /* internal_macro_name.h */,
 			);
 			path = shader;
 			sourceTree = "<group>";
