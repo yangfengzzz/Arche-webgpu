@@ -38,7 +38,7 @@ void UnlitVertexWGSL::_createShaderSource(size_t hash, const ShaderMacroCollecti
         "output.vColor = vertexInput.aVertexPosition;\n "
         "return output;\n ";
     });
-    
+    encoder.flush();
     
     _sourceCache[hash] = _source;
     _infoCache[hash] = _bindGroupInfo;

@@ -102,7 +102,7 @@ void WGSLEncoder::addEntry(const std::initializer_list<std::string>& parameter,
     _entryBlock += ") -> ";
     _entryBlock += _outputType.first;
     _entryBlock += " {\n";
-    code();
+    _entryBlock += code();
     _entryBlock += "}\n";
     
     _needFlush = true;
