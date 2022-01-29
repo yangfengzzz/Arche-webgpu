@@ -175,6 +175,8 @@
 		047BEFDA27A4DB63003F3599 /* wgsl_encoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BEFD827A4DB63003F3599 /* wgsl_encoder.cpp */; };
 		047BEFDB27A4DB63003F3599 /* wgsl_encoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BEFD927A4DB63003F3599 /* wgsl_encoder.h */; };
 		047BEFDD27A4E762003F3599 /* wgsl_common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BEFDC27A4E762003F3599 /* wgsl_common.cpp */; };
+		047BEFE527A53FB8003F3599 /* blend_shape_input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BEFE327A53FB8003F3599 /* blend_shape_input.cpp */; };
+		047BEFE627A53FB8003F3599 /* blend_shape_input.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BEFE427A53FB8003F3599 /* blend_shape_input.h */; };
 		0495463B279F89E500783C84 /* shader_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954634279F89E400783C84 /* shader_data.h */; };
 		0495463C279F89E500783C84 /* shader_property.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954635279F89E400783C84 /* shader_property.h */; };
 		0495463D279F89E500783C84 /* shader_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954636279F89E400783C84 /* shader_data.cpp */; };
@@ -508,6 +510,8 @@
 		047BEFD927A4DB63003F3599 /* wgsl_encoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_encoder.h; sourceTree = "<group>"; };
 		047BEFDC27A4E762003F3599 /* wgsl_common.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_common.cpp; sourceTree = "<group>"; };
 		047BEFE227A53AFF003F3599 /* internal_macro_name.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = internal_macro_name.h; sourceTree = "<group>"; };
+		047BEFE327A53FB8003F3599 /* blend_shape_input.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = blend_shape_input.cpp; sourceTree = "<group>"; };
+		047BEFE427A53FB8003F3599 /* blend_shape_input.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = blend_shape_input.h; sourceTree = "<group>"; };
 		04954634279F89E400783C84 /* shader_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_data.h; sourceTree = "<group>"; };
 		04954635279F89E400783C84 /* shader_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_property.h; sourceTree = "<group>"; };
 		04954636279F89E400783C84 /* shader_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader_data.cpp; sourceTree = "<group>"; };
@@ -1001,6 +1005,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		047BEFE727A53FC2003F3599 /* functors */ = {
+			isa = PBXGroup;
+			children = (
+				047BEFD527A4BFD9003F3599 /* wgsl_common_vert.h */,
+				047BEFD427A4BFD9003F3599 /* wgsl_common_vert.cpp */,
+				047BEFE427A53FB8003F3599 /* blend_shape_input.h */,
+				047BEFE327A53FB8003F3599 /* blend_shape_input.cpp */,
+			);
+			path = functors;
+			sourceTree = "<group>";
+		};
 		04954642279F8A4400783C84 /* material */ = {
 			isa = PBXGroup;
 			children = (
@@ -1093,10 +1108,9 @@
 				0495478527A403C700783C84 /* wgsl.cpp */,
 				047BEFD927A4DB63003F3599 /* wgsl_encoder.h */,
 				047BEFD827A4DB63003F3599 /* wgsl_encoder.cpp */,
+				047BEFE727A53FC2003F3599 /* functors */,
 				0495471927A2348F00783C84 /* unlit_wgsl.h */,
 				0495471827A2348F00783C84 /* unlit_wgsl.cpp */,
-				047BEFD527A4BFD9003F3599 /* wgsl_common_vert.h */,
-				047BEFD427A4BFD9003F3599 /* wgsl_common_vert.cpp */,
 			);
 			path = shaderlib;
 			sourceTree = "<group>";
@@ -1328,6 +1342,7 @@
 				04128446279ED3A60071BD86 /* timer.h in Headers */,
 				0412845F279ED4B10071BD86 /* imstb_textedit.h in Headers */,
 				0495473F27A25B1300783C84 /* buffer.h in Headers */,
+				047BEFE627A53FB8003F3599 /* blend_shape_input.h in Headers */,
 				0495473627A24BE000783C84 /* pbr_material.h in Headers */,
 				0495468A279F8CD600783C84 /* script.h in Headers */,
 				04954708279FCD3C00783C84 /* orbit_control.h in Headers */,
@@ -1546,6 +1561,7 @@
 				04128471279EED090071BD86 /* stencil_state.cpp in Sources */,
 				049546E4279FA7D800783C84 /* backend_binding.cpp in Sources */,
 				0495467B279F8CD600783C84 /* entity.cpp in Sources */,
+				047BEFE527A53FB8003F3599 /* blend_shape_input.cpp in Sources */,
 				049546F6279FC92B00783C84 /* forward_subpass.cpp in Sources */,
 				0495472A27A2453200783C84 /* unlit_material.cpp in Sources */,
 				0412846D279EEB8B0071BD86 /* raster_state.cpp in Sources */,

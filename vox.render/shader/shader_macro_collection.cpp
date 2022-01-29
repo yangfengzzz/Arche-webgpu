@@ -65,6 +65,7 @@ std::vector<size_t> ShaderMacroCollection::_internalMacroHashValue = {
     
     // Blend Shape
     std::hash<std::string>{}("HAS_BLENDSHAPE"),
+    std::hash<std::string>{}("HAS_BLENDSHAPE_TEXTURE"),
     std::hash<std::string>{}("HAS_BLENDSHAPE_NORMAL"),
     std::hash<std::string>{}("HAS_BLENDSHAPE_TANGENT"),
     
