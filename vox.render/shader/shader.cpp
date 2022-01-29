@@ -10,6 +10,7 @@
 namespace vox {
 std::unordered_map<std::string, std::unique_ptr<Shader>> Shader::_shaderMap = {};
 std::unordered_map<std::string, ShaderProperty> Shader::_propertyNameMap = {};
+std::unordered_map<uint32_t, ShaderDataGroup> Shader::_propertyGroupMap = {};
 
 Shader::Shader(const std::string &name,
                WGSLPtr&& vertexSource,
@@ -123,6 +124,24 @@ std::optional<ShaderProperty> Shader::getPropertyByName(const std::string &name)
     }
 }
 
+std::optional<ShaderDataGroup> Shader::getShaderPropertyGroup(const std::string &propertyName) {
+    auto iter = Shader::_propertyNameMap.find(propertyName);
+    if (iter != Shader::_propertyNameMap.end()) {
+        return iter->second.group;
+    } else {
+        return std::nullopt;
+    }
+}
+
+std::optional<ShaderDataGroup> Shader::getShaderPropertyGroup(uint32_t uniqueID) {
+    auto iter = Shader::_propertyGroupMap.find(uniqueID);
+    if (iter != Shader::_propertyGroupMap.end()) {
+        return iter->second;
+    } else {
+        return std::nullopt;
+    }
+}
+
 ShaderProperty Shader::createProperty(const std::string &name, ShaderDataGroup group) {
     auto iter = Shader::_propertyNameMap.find(name);
     if (iter != Shader::_propertyNameMap.end()) {
@@ -130,16 +149,8 @@ ShaderProperty Shader::createProperty(const std::string &name, ShaderDataGroup g
     } else {
         auto property = ShaderProperty(name, group);
         Shader::_propertyNameMap.insert(std::make_pair(name, property));
+        Shader::_propertyGroupMap[property.uniqueId] = group;
         return property;
-    }
-}
-
-std::optional<ShaderDataGroup> Shader::getShaderPropertyGroup(const std::string &propertyName) {
-    auto iter = Shader::_propertyNameMap.find(propertyName);
-    if (iter != Shader::_propertyNameMap.end()) {
-        return iter->second.group;
-    } else {
-        return std::nullopt;
     }
 }
 

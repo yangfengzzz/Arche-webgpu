@@ -11,6 +11,7 @@
 #include "shader_macro_collection.h"
 #include "shader_property.h"
 #include "shader.h"
+#include "graphics/buffer.h"
 #include "std_helpers.h"
 #include <any>
 #include <unordered_map>
@@ -24,9 +25,11 @@ class ShaderData {
 public:
     ShaderData(wgpu::Device& device);
     
-    std::optional<wgpu::Buffer> getData(const std::string &property_name);
+    std::optional<Buffer> getData(const std::string &property_name);
     
-    std::optional<wgpu::Buffer> getData(const ShaderProperty &property);
+    std::optional<Buffer> getData(const ShaderProperty &property);
+
+    std::optional<Buffer> getData(uint32_t uniqueID);
     
     template<typename T>
     void setData(const std::string &property_name, const T& value) {
@@ -42,17 +45,16 @@ public:
     void setData(ShaderProperty property, const T& value) {
         auto iter = _properties.find(property.uniqueId);
         if (iter == _properties.end()) {
-            wgpu::BufferDescriptor desc;
-            desc.size = sizeof(T);
-            desc.usage = wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst;
-            _properties[property.uniqueId] = _device.CreateBuffer(&desc);
+            _properties.insert(std::make_pair(property.uniqueId, Buffer(_device, sizeof(T),
+                                                                        wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst)));
         }
-        
+        iter = _properties.find(property.uniqueId);
+
         std::vector<uint8_t> bytes = to_bytes(value);
-        _device.GetQueue().WriteBuffer(_properties[property.uniqueId], 0, bytes.data(), sizeof(T));
+        _device.GetQueue().WriteBuffer(iter->second.handle(), 0, bytes.data(), sizeof(T));
     }
     
-    const std::unordered_map<int, wgpu::Buffer> &properties() const;
+    const std::unordered_map<uint32_t, Buffer> &properties() const;
     
 public:
     /**
@@ -86,7 +88,7 @@ public:
     
 private:
     wgpu::Device& _device;
-    std::unordered_map<int, wgpu::Buffer> _properties;
+    std::unordered_map<uint32_t, Buffer> _properties;
     
     ShaderMacroCollection _macroCollection;
 };

@@ -19,30 +19,6 @@ Subpass(renderContext, scene, camera) {
 }
 
 void ForwardSubpass::prepare() {
-    {
-        _bindGroupLayoutEntries.resize(3);
-        _bindGroupLayoutEntries[0].binding = 13;
-        _bindGroupLayoutEntries[0].visibility = wgpu::ShaderStage::Fragment;
-        _bindGroupLayoutEntries[0].buffer.type = wgpu::BufferBindingType::Uniform;
-        _bindGroupLayoutEntries[1].binding = 15;
-        _bindGroupLayoutEntries[1].visibility = wgpu::ShaderStage::Vertex;
-        _bindGroupLayoutEntries[1].buffer.type = wgpu::BufferBindingType::Uniform;
-        _bindGroupLayoutEntries[2].binding = 9;
-        _bindGroupLayoutEntries[2].visibility = wgpu::ShaderStage::Vertex;
-        _bindGroupLayoutEntries[2].buffer.type = wgpu::BufferBindingType::Uniform;
-        _bindGroupLayoutDescriptor.entryCount = 3;
-        _bindGroupLayoutDescriptor.entries = _bindGroupLayoutEntries.data();
-        _bindGroupLayout = _pass->resourceCache().requestBindGroupLayout(_bindGroupLayoutDescriptor);
-    }
-    {
-        _bindGroupEntries.resize(3);
-        _bindGroupEntries[0].binding = 13;
-        _bindGroupEntries[1].binding = 15;
-        _bindGroupEntries[2].binding = 9;
-        _bindGroupDescriptor.layout = _bindGroupLayout;
-        _bindGroupDescriptor.entryCount = 3;
-        _bindGroupDescriptor.entries = _bindGroupEntries.data();
-    }
     _depthStencil.format = _renderContext->depthStencilTextureFormat();
     _forwardPipelineDescriptor.depthStencil = &_depthStencil;
     _colorTargetState.format = _renderContext->drawableTextureFormat();
@@ -51,11 +27,6 @@ void ForwardSubpass::prepare() {
     _forwardPipelineDescriptor.fragment = &_fragment;
     _forwardPipelineDescriptor.label = "Forward Pipeline";
     {
-        _pipelineLayoutDescriptor.bindGroupLayoutCount = 1;
-        _pipelineLayoutDescriptor.bindGroupLayouts = &_bindGroupLayout;
-        _pipelineLayout = _pass->resourceCache().requestPipelineLayout(_pipelineLayoutDescriptor);
-        _forwardPipelineDescriptor.layout = _pipelineLayout;
-        
         _forwardPipelineDescriptor.vertex.entryPoint = "main";
         _fragment.entryPoint = "main";
     }
@@ -103,10 +74,34 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
             // std::cout<<vertexSource<<std::endl;
             const std::string& fragmentSource = material->shader->fragmentSource(macros);
             // std::cout<<fragmentSource<<std::endl;
-            
             ShaderProgram* program = _pass->resourceCache().requestShader(vertexSource, fragmentSource);
             _forwardPipelineDescriptor.vertex.module = program->vertexShader();
             _fragment.module = program->fragmentShader();
+            
+            auto bindGroupLayoutDescriptors = material->shader->bindGroupLayoutDescriptors(macros);
+            std::vector<wgpu::BindGroupLayout> bindGroupLayouts;
+            std::vector<wgpu::BindGroup> bindGroups;
+            for (auto& layoutDesc : bindGroupLayoutDescriptors) {
+                wgpu::BindGroupLayout bindGroupLayout = _pass->resourceCache().requestBindGroupLayout(layoutDesc.second);
+                _bindGroupEntries.clear();
+                _bindGroupEntries.resize(layoutDesc.second.entryCount);
+                for (uint32_t i = 0; i < layoutDesc.second.entryCount; i++) {
+                    auto& entry = layoutDesc.second.entries[i];
+                    _bindGroupEntries[i].binding = entry.binding;
+                    _bindingData(_bindGroupEntries[i], material, renderer);
+                }
+                _bindGroupDescriptor.layout = bindGroupLayout;
+                _bindGroupDescriptor.entryCount = layoutDesc.second.entryCount;
+                _bindGroupDescriptor.entries = _bindGroupEntries.data();
+                auto uniformBindGroup = _pass->resourceCache().requestBindGroup(_bindGroupDescriptor);
+                passEncoder.SetBindGroup(layoutDesc.first, uniformBindGroup);
+                bindGroupLayouts.emplace_back(std::move(bindGroupLayout));
+            }
+            _pipelineLayoutDescriptor.bindGroupLayoutCount = static_cast<uint32_t>(bindGroupLayouts.size());
+            _pipelineLayoutDescriptor.bindGroupLayouts = bindGroupLayouts.data();
+            _pipelineLayout = _pass->resourceCache().requestPipelineLayout(_pipelineLayoutDescriptor);
+            _forwardPipelineDescriptor.layout = _pipelineLayout;
+
             material->renderState.apply(&_colorTargetState, &_depthStencil,
                                         _forwardPipelineDescriptor, passEncoder, true);
             
@@ -118,21 +113,11 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
             passEncoder.SetPipeline(renderPipeline);
         }
         
-        // Bind Group
-        _bindGroupEntries[0].buffer = material->shaderData.getData("u_baseColor").value();
-        _bindGroupEntries[0].size = 16;
-        _bindGroupEntries[1].buffer = material->shaderData.getData("u_tilingOffset").value();
-        _bindGroupEntries[1].size = 16;
-        _bindGroupEntries[2].buffer = renderer->shaderData.getData("u_MVPMat").value();
-        _bindGroupEntries[2].size = 64;
-        auto uniformBindGroup = _pass->resourceCache().requestBindGroup(_bindGroupDescriptor);
-        passEncoder.SetBindGroup(0, uniformBindGroup);
-        
         // Draw Call
         for (uint32_t j = 0; j < mesh->vertexBufferBindings().size(); j++) {
             auto vertexBufferBinding =  mesh->vertexBufferBindings()[j];
             if (vertexBufferBinding) {
-                passEncoder.SetVertexBuffer(j, mesh->vertexBufferBindings()[j]->buffer());
+                passEncoder.SetVertexBuffer(j, mesh->vertexBufferBindings()[j]->handle());
             }
         }
         auto indexBufferBinding = mesh->indexBufferBinding();
@@ -143,5 +128,35 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
     }
 }
 
+void ForwardSubpass::_bindingData(wgpu::BindGroupEntry& entry,
+                                  MaterialPtr mat, Renderer* renderer) {
+    auto group = Shader::getShaderPropertyGroup(entry.binding);
+    if (group.has_value()) {
+        switch (*group) {
+            case ShaderDataGroup::Scene:
+                entry.buffer = _scene->shaderData.getData(entry.binding)->handle();
+                entry.size = _scene->shaderData.getData(entry.binding)->size();
+                break;
+                
+            case ShaderDataGroup::Camera:
+                entry.buffer = _camera->shaderData.getData(entry.binding)->handle();
+                entry.size = _camera->shaderData.getData(entry.binding)->size();
+                break;
+                
+            case ShaderDataGroup::Renderer:
+                entry.buffer = renderer->shaderData.getData(entry.binding)->handle();
+                entry.size = renderer->shaderData.getData(entry.binding)->size();
+                break;
+                
+            case ShaderDataGroup::Material:
+                entry.buffer = mat->shaderData.getData(entry.binding)->handle();
+                entry.size = mat->shaderData.getData(entry.binding)->size();
+                break;
+                
+            default:
+                break;
+        }
+    }
+}
 
 }

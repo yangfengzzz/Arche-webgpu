@@ -66,10 +66,13 @@ public:
      */
     static ShaderProperty createProperty(const std::string &name, ShaderDataGroup group);
     
+    static std::optional<ShaderDataGroup> getShaderPropertyGroup(uint32_t uniqueID);
+    
 private:
     // common shader map
     static std::unordered_map<std::string, std::unique_ptr<Shader>> _shaderMap;
     static std::unordered_map<std::string, ShaderProperty> _propertyNameMap;
+    static std::unordered_map<uint32_t, ShaderDataGroup> _propertyGroupMap;
     
     // object shader data
     int _shaderId = 0;

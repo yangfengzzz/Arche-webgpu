@@ -38,10 +38,13 @@ public:
     
     Buffer& operator=(Buffer&& other) = default;
     
-    const wgpu::Buffer& buffer() const;
+    const wgpu::Buffer& handle() const;
     
+    uint64_t size() const;
+
 private:
     wgpu::Buffer _nativeBuffer;
+    uint64_t _size{};
 };
 
 }

@@ -20,12 +20,12 @@ struct ShaderProperty {
     
     const ShaderDataGroup group;
     
-    const int uniqueId;
+    const uint32_t uniqueId;
     
     ShaderProperty(const std::string &name, ShaderDataGroup group);
     
 private:
-    static int _propertyNameCounter;
+    static uint32_t _propertyNameCounter;
 };
 
 }

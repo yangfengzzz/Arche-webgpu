@@ -13,7 +13,7 @@ _format(format) {
 }
 
 const wgpu::Buffer& IndexBufferBinding::buffer() const {
-    return _buffer.buffer();
+    return _buffer.handle();
 }
 
 wgpu::IndexFormat IndexBufferBinding::format() const {

@@ -26,14 +26,13 @@ private:
                       const std::vector<RenderElement> &items,
                       const ShaderMacroCollection& compileMacros);
     
+    void _bindingData(wgpu::BindGroupEntry& entry,
+                      MaterialPtr mat, Renderer* renderer);
+    
     wgpu::RenderPipelineDescriptor _forwardPipelineDescriptor;
     wgpu::DepthStencilState _depthStencil;
     wgpu::FragmentState _fragment;
     wgpu::ColorTargetState _colorTargetState;
-
-    wgpu::BindGroupLayoutDescriptor _bindGroupLayoutDescriptor;
-    std::vector<wgpu::BindGroupLayoutEntry> _bindGroupLayoutEntries{};
-    wgpu::BindGroupLayout _bindGroupLayout;
 
     wgpu::BindGroupDescriptor _bindGroupDescriptor;
     std::vector<wgpu::BindGroupEntry> _bindGroupEntries{};

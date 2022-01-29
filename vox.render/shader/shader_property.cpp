@@ -7,7 +7,7 @@
 #include "shader_property.h"
 
 namespace vox {
-int ShaderProperty::_propertyNameCounter = 0;
+uint32_t ShaderProperty::_propertyNameCounter = 0;
 
 ShaderProperty::ShaderProperty(const std::string &name, ShaderDataGroup group) :
 name(name),
