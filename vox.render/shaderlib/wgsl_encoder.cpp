@@ -115,7 +115,7 @@ void WGSLEncoder::addInoutType(const std::string& structName, BuiltInType builti
 }
 
 void WGSLEncoder::addEntry(const std::initializer_list<std::pair<std::string, std::string>>& inParam,
-                           const std::string& outType, std::function<std::string()> code) {
+                           const std::string& outType, std::function<void(std::string&)> code) {
     if (_currentStage == wgpu::ShaderStage::Vertex) {
         _entryBlock += "@stage(vertex)\n";
     } else if (_currentStage == wgpu::ShaderStage::Fragment) {
@@ -134,7 +134,7 @@ void WGSLEncoder::addEntry(const std::initializer_list<std::pair<std::string, st
     _entryBlock += ") -> ";
     _entryBlock += outType;
     _entryBlock += " {\n";
-    _entryBlock += code();
+    code(_entryBlock);
     _entryBlock += "}\n";
     
     _needFlush = true;

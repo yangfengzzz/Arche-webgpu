@@ -7,8 +7,8 @@
 #include "wgsl_begin_position_vert.h"
 
 namespace vox {
-void WGSLBeginPositionVert::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros) {
-    
+void WGSLBeginPositionVert::operator()(std::string& source, const ShaderMacroCollection& macros) {
+    source += "var position = vec4<f32>( POSITION , 1.0 );\n";
 }
 
 }

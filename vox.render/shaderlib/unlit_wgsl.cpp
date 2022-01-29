@@ -31,8 +31,8 @@ void UnlitVertexWGSL::_createShaderSource(size_t hash, const ShaderMacroCollecti
     encoder.addInoutType("VertexInput", Attributes::UV_0, UniformType::Vec2f32);
     encoder.addInoutType("Output", 0, "vColor", UniformType::Vec3f32);
     encoder.addInoutType("Output", BuiltInType::Position, "Position", UniformType::Vec4f32);
-    encoder.addEntry({{"vertexInput", "VertexInput"}}, "Output",  []()->auto{
-        return
+    encoder.addEntry({{"vertexInput", "VertexInput"}}, "Output",  [](std::string& source) {
+        source +=
         "var output: Output;\n "
         "output.Position = u_projMat * u_MVMat * vec4<f32>(vertexInput.Position, 1.0);\n "
         "output.vColor = vertexInput.Position;\n "
@@ -63,8 +63,8 @@ void UnlitFragmentWGSL::_createShaderSource(size_t hash, const ShaderMacroCollec
     auto encoder = createSourceEncoder(wgpu::ShaderStage::Fragment);
     encoder.addInoutType("FragmentInput", 0, "vColor", UniformType::Vec3f32);
     encoder.addInoutType("Output", 0, "finalColor", UniformType::Vec4f32);
-    encoder.addEntry({{"fragmentInput", "FragmentInput"}}, "Output", []()->auto{
-        return
+    encoder.addEntry({{"fragmentInput", "FragmentInput"}}, "Output", [](std::string& source) {
+        source +=
         "var output: Output;\n "
         "output.finalColor = vec4<f32>(fragmentInput.vColor, 1.0);"
         "return output;\n ";
