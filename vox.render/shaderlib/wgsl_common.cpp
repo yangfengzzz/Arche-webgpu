@@ -8,6 +8,58 @@
 #include "wgsl_common.h"
 
 namespace vox {
+std::string attributesToString(Attributes type) {
+    switch (type) {
+        case Attributes::Position:
+            return "Position";
+            break;
+        case Attributes::Normal:
+            return "Normal";
+            break;
+        case Attributes::UV_0:
+            return "UV_0";
+            break;
+        case Attributes::Tangent:
+            return "Tangent";
+            break;
+        case Attributes::Bitangent:
+            return "Bitangent";
+            break;
+        case Attributes::Color_0:
+            return "Color_0";
+            break;
+        case Attributes::Weights_0:
+            return "Weights_0";
+            break;
+        case Attributes::Joints_0:
+            return "Joints_0";
+            break;
+        case Attributes::UV_1:
+            return "UV_1";
+            break;
+        case Attributes::UV_2:
+            return "UV_2";
+            break;
+        case Attributes::UV_3:
+            return "UV_3";
+            break;
+        case Attributes::UV_4:
+            return "UV_4";
+            break;
+        case Attributes::UV_5:
+            return "UV_5";
+            break;
+        case Attributes::UV_6:
+            return "UV_6";
+            break;
+        case Attributes::UV_7:
+            return "UV_7";
+            break;
+        default:
+            break;
+    }
+}
+
 std::string uniformTypeToString(UniformType type) {
     switch (type) {
         case UniformType::Vec2f32:

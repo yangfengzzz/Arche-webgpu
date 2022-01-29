@@ -64,9 +64,16 @@ void WGSLEncoder::addUniformBinding(const std::string& uniformName,
     _needFlush = true;
 }
 
-void WGSLEncoder::addInputType(const std::string& structName, const std::string& code) {
-    _inputType[structName].push_back(code);
+void WGSLEncoder::addInputType(const std::string& structName, uint32_t location,
+                               const std::string& attributes, const std::string& type) {
+    const std::string formatTemplate = "@location({}) {}: {};";
+    _inputType[structName].push_back(fmt::format(formatTemplate, location,
+                                                 attributes,  type));
     _needFlush = true;
+}
+
+void WGSLEncoder::addInputType(const std::string& structName, Attributes attributes, UniformType type) {
+    addInputType(structName, (uint32_t)attributes, attributesToString(attributes), uniformTypeToString(type));
 }
 
 void WGSLEncoder::addOutputType(const std::string& structName, const std::string& code) {

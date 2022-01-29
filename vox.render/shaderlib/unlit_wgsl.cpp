@@ -26,16 +26,16 @@ void UnlitVertexWGSL::_createShaderSource(size_t hash, const ShaderMacroCollecti
     auto encoder = createSourceEncoder(wgpu::ShaderStage::Vertex);
     encoder.addUniformBinding("u_projMat", UniformType::Mat4x4f32);
     encoder.addUniformBinding("u_MVMat", UniformType::Mat4x4f32);
-    encoder.addInputType("VertexInput", "@location(0) aVertexPosition: vec3<f32>;\n");
-    encoder.addInputType("VertexInput", "@location(1) aVertexNormal: vec3<f32>;\n");
-    encoder.addInputType("VertexInput", "@location(2) aVertexUV: vec2<f32>;\n");
+    encoder.addInputType("VertexInput", Attributes::Position, UniformType::Vec3f32);
+    encoder.addInputType("VertexInput", Attributes::Normal, UniformType::Vec3f32);
+    encoder.addInputType("VertexInput", Attributes::UV_0, UniformType::Vec2f32);
     encoder.addOutputType("Output", "@location(0) vColor: vec3<f32>;\n");
     encoder.addOutputType("Output", "@builtin(position) Position: vec4<f32>;");
     encoder.addEntry({"vertexInput"}, []()->auto{
         return
         "var output: Output;\n "
-        "output.Position = u_projMat * u_MVMat * vec4<f32>(vertexInput.aVertexPosition, 1.0);\n "
-        "output.vColor = vertexInput.aVertexPosition;\n "
+        "output.Position = u_projMat * u_MVMat * vec4<f32>(vertexInput.Position, 1.0);\n "
+        "output.vColor = vertexInput.Position;\n "
         "return output;\n ";
     });
     encoder.flush();
@@ -61,7 +61,7 @@ void UnlitFragmentWGSL::_createShaderSource(size_t hash, const ShaderMacroCollec
     _bindGroupInfo.clear();
     
     auto encoder = createSourceEncoder(wgpu::ShaderStage::Fragment);
-    encoder.addInputType("FragmentInput", "@location(0) vColor: vec3<f32>;");
+    encoder.addInputType("FragmentInput", 0, "vColor", "vec3<f32>");
     encoder.addOutputType("Output", "@location(0) finalColor: vec4<f32>;");
     encoder.addEntry({"fragmentInput"}, []()->auto{
         return

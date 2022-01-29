@@ -11,7 +11,7 @@
 #include <vector>
 
 namespace vox {
-typedef enum {
+enum class Attributes : uint32_t {
     Position = 0,
     Normal = 1,
     UV_0 = 2,
@@ -27,8 +27,10 @@ typedef enum {
     UV_5 = 12,
     UV_6 = 13,
     UV_7 = 14,
-} Attributes;
+};
+std::string attributesToString(Attributes type);
 
+//MARK: - UniformType
 enum class UniformType {
     Vec2f32,
     Vec2i32,
@@ -49,7 +51,6 @@ enum class UniformType {
     Mat3x4f32,
     Mat4x4f32,
 };
-
 std::string uniformTypeToString(UniformType type);
 
 }

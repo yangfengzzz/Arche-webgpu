@@ -46,16 +46,16 @@ void MeshRenderer::_render(std::vector<RenderElement> &opaqueQueue,
             
             for (size_t i = 0, n = vertexLayouts.size(); i < n; i++) {
                 for (uint32_t j = 0, m = vertexLayouts[i].attributeCount; j < m; j++) {
-                    if (vertexLayouts[i].attributes[j].shaderLocation == Attributes::UV_0) {
+                    if (vertexLayouts[i].attributes[j].shaderLocation == (uint32_t)Attributes::UV_0) {
                         shaderData.enableMacro("HAS_UV");
                     }
-                    if (vertexLayouts[i].attributes[j].shaderLocation == Attributes::Normal) {
+                    if (vertexLayouts[i].attributes[j].shaderLocation == (uint32_t)Attributes::Normal) {
                         shaderData.enableMacro("HAS_NORMAL");
                     }
-                    if (vertexLayouts[i].attributes[j].shaderLocation == Attributes::Tangent) {
+                    if (vertexLayouts[i].attributes[j].shaderLocation == (uint32_t)Attributes::Tangent) {
                         shaderData.enableMacro("HAS_TANGENT");
                     }
-                    if (vertexLayouts[i].attributes[j].shaderLocation == Attributes::Color_0) {
+                    if (vertexLayouts[i].attributes[j].shaderLocation == (uint32_t)Attributes::Color_0) {
                         shaderData.enableMacro("HAS_VERTEXCOLOR");
                     }
                 }

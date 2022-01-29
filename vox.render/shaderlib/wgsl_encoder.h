@@ -39,8 +39,10 @@ public:
     void addUniformBinding(const std::string& uniformName, const std::string& type, uint32_t group = 0);
     
     void addUniformBinding(const std::string& uniformName, UniformType type, uint32_t group = 0);
-            
-    void addInputType(const std::string& structName, const std::string& code);
+
+    void addInputType(const std::string& structName, uint32_t location, const std::string& attributes, const std::string& type);
+    
+    void addInputType(const std::string& structName, Attributes attributes, UniformType type);
             
     void addOutputType(const std::string& structName, const std::string& code);
         

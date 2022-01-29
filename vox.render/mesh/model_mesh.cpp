@@ -227,62 +227,62 @@ void ModelMesh::uploadData(bool noLongerAccessible) {
 
 wgpu::VertexBufferLayout ModelMesh::_updateVertexLayouts() {
     _vertexAttribute.resize(1);
-    _vertexAttribute[0] = wgpu::VertexAttribute{wgpu::VertexFormat::Float32x3, 0, Attributes::Position};
+    _vertexAttribute[0] = wgpu::VertexAttribute{wgpu::VertexFormat::Float32x3, 0, (uint32_t)Attributes::Position};
     
     size_t offset = 12;
     size_t elementCount = 3;
     if (!_normals.empty()) {
-        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x3, offset, Attributes::Normal});
+        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x3, offset, (uint32_t)Attributes::Normal});
         offset += 12;
         elementCount += 3;
     }
     if (!_colors.empty()) {
-        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x4, offset, Attributes::Color_0});
+        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x4, offset, (uint32_t)Attributes::Color_0});
         offset += 16;
         elementCount += 4;
     }
     if (!_tangents.empty()) {
-        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x4, offset, Attributes::Tangent});
+        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x4, offset, (uint32_t)Attributes::Tangent});
         offset += 16;
         elementCount += 4;
     }
     if (!_uv.empty()) {
-        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, Attributes::UV_0});
+        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, (uint32_t)Attributes::UV_0});
         offset += 8;
         elementCount += 2;
     }
     if (!_uv1.empty()) {
-        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, Attributes::UV_1});
+        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, (uint32_t)Attributes::UV_1});
         offset += 8;
         elementCount += 2;
     }
     if (!_uv2.empty()) {
-        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, Attributes::UV_2});
+        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, (uint32_t)Attributes::UV_2});
         offset += 8;
         elementCount += 2;
     }
     if (!_uv3.empty()) {
-        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, Attributes::UV_3});
+        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, (uint32_t)Attributes::UV_3});
         offset += 8;
         elementCount += 2;
     }
     if (!_uv4.empty()) {
-        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, Attributes::UV_4});
+        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, (uint32_t)Attributes::UV_4});
         offset += 8;
         elementCount += 2;
     }
     if (!_uv5.empty()) {
-        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, Attributes::UV_5});
+        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, (uint32_t)Attributes::UV_5});
         offset += 8;
         elementCount += 2;
     }
     if (!_uv6.empty()) {
-        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, Attributes::UV_6});
+        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, (uint32_t)Attributes::UV_6});
         offset += 8;
         elementCount += 2;
     }
     if (!_uv7.empty()) {
-        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, Attributes::UV_7});
+        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, (uint32_t)Attributes::UV_7});
         offset += 8;
         elementCount += 2;
     }

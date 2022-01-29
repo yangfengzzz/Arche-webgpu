@@ -11,7 +11,12 @@
 namespace vox {
 void WGSLCommonVert::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros) {
     if (macros.contains("HAS_UV")) {
-        encoder.addInputType("Input", "@location(0) TEXCOORD_0: vec2<f32>;");        
+        encoder.addInputType("Input", Attributes::UV_0, UniformType::Vec2f32);
+    }
+    
+    if (macros.contains("HAS_SKIN")) {
+        encoder.addInputType("Input", Attributes::Joints_0, UniformType::Vec4f32);
+        encoder.addInputType("Input", Attributes::Weights_0, UniformType::Vec4f32);
     }
 }
 
