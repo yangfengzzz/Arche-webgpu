@@ -4,22 +4,16 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef wgsl_common_vert_hpp
-#define wgsl_common_vert_hpp
+#ifndef wgsl_begin_position_vert_hpp
+#define wgsl_begin_position_vert_hpp
 
 #include "wgsl_encoder.h"
 
 namespace vox {
-class WGSLCommonVert {
+class WGSLBeginPositionVert {
 public:
-    WGSLCommonVert(const std::string& inputStructName);
-    
     void operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros);
-    
-private:
-    std::string _inputStructName{};
 };
 
 }
-
-#endif /* wgsl_common_vert_hpp */
+#endif /* wgsl_begin_position_vert_hpp */

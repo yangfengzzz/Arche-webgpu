@@ -1,9 +1,8 @@
+//  Copyright (c) 2022 Feng Yang
 //
-//  wgsl_common_vert.cpp
-//  vox.render
-//
-//  Created by 杨丰 on 2022/1/29.
-//
+//  I am making my contributions/submissions to this project solely in my
+//  personal capacity and am not conveying any rights to any intellectual
+//  property of any third parties.
 
 #include "wgsl_common_vert.h"
 #include "wgsl.h"
