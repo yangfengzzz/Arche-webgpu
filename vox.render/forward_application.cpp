@@ -37,7 +37,10 @@ bool ForwardApplication::prepare(Engine &engine) {
     auto& color = _scene->background.solidColor;
     _colorAttachments->clearColor = wgpu::Color{color.r, color.g, color.b, color.a};
     _depthStencilAttachment->depthLoadOp = wgpu::LoadOp::Clear;
+    _depthStencilAttachment->clearDepth = 1.0;
+    _depthStencilAttachment->depthStoreOp = wgpu::StoreOp::Discard;
     _depthStencilAttachment->stencilLoadOp = wgpu::LoadOp::Clear;
+    _depthStencilAttachment->stencilStoreOp = wgpu::StoreOp::Discard;
     _renderPass = std::make_unique<RenderPass>(_device, _renderPassDescriptor);
     _renderPass->addSubpass(std::make_unique<ForwardSubpass>(_renderContext.get(), _scene.get(), _mainCamera));
     //    if (_gui) {

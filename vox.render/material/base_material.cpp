@@ -27,23 +27,23 @@ void BaseMaterial::setIsTransparent(bool newValue) {
     } else {
         targetBlendState.enabled = false;
         depthState.writeEnabled = true;
-        renderQueueType = (shaderData.getData(BaseMaterial::_alphaCutoffProp).has_value())
-        ? RenderQueueType::AlphaTest : RenderQueueType::Opaque;
+        renderQueueType = _alphaCutoff? RenderQueueType::AlphaTest : RenderQueueType::Opaque;
     }
 }
 
 float BaseMaterial::alphaCutoff() {
-    return std::any_cast<float>(shaderData.getData(BaseMaterial::_alphaCutoffProp));
+    return _alphaCutoff;
 }
 
 void BaseMaterial::setAlphaCutoff(float newValue) {
+    _alphaCutoff = newValue;
     shaderData.setData(BaseMaterial::_alphaCutoffProp, newValue);
     
     if (newValue > 0) {
-//        shaderData.enableMacro(NEED_ALPHA_CUTOFF);
+        shaderData.enableMacro("NEED_ALPHA_CUTOFF");
         renderQueueType = _isTransparent ? RenderQueueType::Transparent : RenderQueueType::AlphaTest;
     } else {
-//        shaderData.disableMacro(NEED_ALPHA_CUTOFF);
+        shaderData.disableMacro("NEED_ALPHA_CUTOFF");
         renderQueueType = _isTransparent ? RenderQueueType::Transparent : RenderQueueType::Opaque;
     }
 }

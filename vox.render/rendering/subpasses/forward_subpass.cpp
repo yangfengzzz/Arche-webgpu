@@ -117,7 +117,7 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
         _bindGroupEntries[0].size = 64;
         _bindGroupEntries[1].buffer = renderer->shaderData.getData("u_MVMat").value();
         _bindGroupEntries[1].size = 64;
-        auto uniformBindGroup = _pass->resourceCache().requestBindGroup(_bindGroupDescriptor);        
+        auto uniformBindGroup = _pass->resourceCache().requestBindGroup(_bindGroupDescriptor);
         passEncoder.SetBindGroup(0, uniformBindGroup);
         
         // Draw Call

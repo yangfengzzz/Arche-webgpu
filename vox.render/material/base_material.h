@@ -61,6 +61,8 @@ private:
     RenderFace _renderFace = RenderFace::Back;
     BlendMode _blendMode = BlendMode::Normal;
     bool _isTransparent = false;
+    
+    float _alphaCutoff = 0.0;
 };
 
 }
