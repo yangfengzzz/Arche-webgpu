@@ -25,9 +25,9 @@ void UnlitMaterial::setBaseTexture(SampledTexture2DPtr newValue) {
     shaderData.setData(UnlitMaterial::_baseTextureProp, newValue);
     
     if (newValue) {
-        shaderData.enableMacro("HAS_BASE_TEXTURE");
+        shaderData.enableMacro(HAS_BASE_TEXTURE);
     } else {
-        shaderData.disableMacro("HAS_BASE_TEXTURE");
+        shaderData.disableMacro(HAS_BASE_TEXTURE);
     }
 }
 
@@ -45,8 +45,8 @@ BaseMaterial(device, Shader::find("unlit")),
 _baseColorProp(Shader::createProperty("u_baseColor", ShaderDataGroup::Material)),
 _baseTextureProp(Shader::createProperty("u_baseTexture", ShaderDataGroup::Material)),
 _tilingOffsetProp(Shader::createProperty("u_tilingOffset", ShaderDataGroup::Material)) {
-    shaderData.enableMacro("OMIT_NORMAL");
-    shaderData.enableMacro("NEED_TILINGOFFSET");
+    shaderData.enableMacro(OMIT_NORMAL);
+    shaderData.enableMacro(NEED_TILINGOFFSET);
     
     shaderData.setData(_baseColorProp, _baseColor);
     shaderData.setData(_tilingOffsetProp, _tilingOffset);

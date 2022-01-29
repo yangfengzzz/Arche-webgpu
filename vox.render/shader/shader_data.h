@@ -61,6 +61,8 @@ public:
      */
     void enableMacro(const std::string& macroName);
 
+    void enableMacro(MacroName macroName);
+
     /**
      * Enable macro.
      * @remarks Name and value will combine one macro, it's equal the macro of "name value".
@@ -69,11 +71,15 @@ public:
      */
     void enableMacro(const std::string& macroName, double value);
 
+    void enableMacro(MacroName macroName, double value);
+
     /**
      * Disable macro
      * @param macroName - Macro name
      */
     void disableMacro(const std::string& macroName);
+
+    void disableMacro(MacroName macroName);
 
     void mergeMacro(const ShaderMacroCollection &macros,
                     ShaderMacroCollection &result) const;

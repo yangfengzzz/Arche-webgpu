@@ -47,6 +47,18 @@ void ShaderData::disableMacro(const std::string& macroName) {
     _macroCollection.disableMacro(macroName);
 }
 
+void ShaderData::enableMacro(MacroName macroName) {
+    _macroCollection.enableMacro(macroName);
+}
+
+void ShaderData::enableMacro(MacroName macroName, double value) {
+    _macroCollection.enableMacro(macroName, value);
+}
+
+void ShaderData::disableMacro(MacroName macroName) {
+    _macroCollection.disableMacro(macroName);
+}
+
 void ShaderData::mergeMacro(const ShaderMacroCollection &macros,
                             ShaderMacroCollection &result) const {
     ShaderMacroCollection::unionCollection(macros, _macroCollection, result);

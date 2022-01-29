@@ -40,10 +40,10 @@ void BaseMaterial::setAlphaCutoff(float newValue) {
     shaderData.setData(BaseMaterial::_alphaCutoffProp, newValue);
     
     if (newValue > 0) {
-        shaderData.enableMacro("NEED_ALPHA_CUTOFF");
+        shaderData.enableMacro(NEED_ALPHA_CUTOFF);
         renderQueueType = _isTransparent ? RenderQueueType::Transparent : RenderQueueType::AlphaTest;
     } else {
-        shaderData.disableMacro("NEED_ALPHA_CUTOFF");
+        shaderData.disableMacro(NEED_ALPHA_CUTOFF);
         renderQueueType = _isTransparent ? RenderQueueType::Transparent : RenderQueueType::Opaque;
     }
 }

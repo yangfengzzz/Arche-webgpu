@@ -24,9 +24,9 @@ void PBRBaseMaterial::setBaseTexture(SampledTexture2DPtr newValue) {
     _baseTexture = newValue;
     shaderData.setData(PBRBaseMaterial::_baseTextureProp, newValue);
     if (newValue) {
-        shaderData.enableMacro("HAS_BASE_COLORMAP");
+        shaderData.enableMacro(HAS_BASE_COLORMAP);
     } else {
-        shaderData.disableMacro("HAS_BASE_COLORMAP");
+        shaderData.disableMacro(HAS_BASE_COLORMAP);
     }
 }
 
@@ -38,9 +38,9 @@ void PBRBaseMaterial::setNormalTexture(SampledTexture2DPtr newValue) {
     _normalTexture = newValue;
     shaderData.setData(PBRBaseMaterial::_normalTextureProp, newValue);
     if (newValue) {
-        shaderData.enableMacro("HAS_NORMAL_TEXTURE");
+        shaderData.enableMacro(HAS_NORMAL_TEXTURE);
     } else {
-        shaderData.disableMacro("HAS_NORMAL_TEXTURE");
+        shaderData.disableMacro(HAS_NORMAL_TEXTURE);
     }
 }
 
@@ -70,9 +70,9 @@ void PBRBaseMaterial::setEmissiveTexture(SampledTexture2DPtr newValue) {
     _emissiveTexture = newValue;
     shaderData.setData(PBRBaseMaterial::_emissiveTextureProp, newValue);
     if (newValue) {
-        shaderData.enableMacro("HAS_EMISSIVEMAP");
+        shaderData.enableMacro(HAS_EMISSIVEMAP);
     } else {
-        shaderData.disableMacro("HAS_EMISSIVEMAP");
+        shaderData.disableMacro(HAS_EMISSIVEMAP);
     }
 }
 
@@ -84,9 +84,9 @@ void PBRBaseMaterial::setOcclusionTexture(SampledTexture2DPtr newValue) {
     _occlusionTexture = newValue;
     shaderData.setData(PBRBaseMaterial::_occlusionTextureProp, newValue);
     if (newValue) {
-        shaderData.enableMacro("HAS_OCCLUSIONMAP");
+        shaderData.enableMacro(HAS_OCCLUSIONMAP);
     } else {
-        shaderData.disableMacro("HAS_OCCLUSIONMAP");
+        shaderData.disableMacro(HAS_OCCLUSIONMAP);
     }
 }
 
@@ -119,8 +119,8 @@ _baseTextureProp(Shader::createProperty("u_baseColorTexture", ShaderDataGroup::M
 _normalTextureProp(Shader::createProperty("u_normalTexture", ShaderDataGroup::Material)),
 _emissiveTextureProp(Shader::createProperty("u_emissiveTexture", ShaderDataGroup::Material)),
 _occlusionTextureProp(Shader::createProperty("u_occlusionTexture", ShaderDataGroup::Material)) {
-    shaderData.enableMacro("NEED_WORLDPOS");
-    shaderData.enableMacro("NEED_TILINGOFFSET");
+    shaderData.enableMacro(NEED_WORLDPOS);
+    shaderData.enableMacro(NEED_TILINGOFFSET);
     
     shaderData.setData(PBRBaseMaterial::_baseColorProp, _baseColor);
     shaderData.setData(PBRBaseMaterial::_emissiveColorProp, _emissiveColor);

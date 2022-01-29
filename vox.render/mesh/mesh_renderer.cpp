@@ -39,24 +39,24 @@ void MeshRenderer::_render(std::vector<RenderElement> &opaqueQueue,
         if (_meshUpdateFlag->flag) {
             const auto &vertexLayouts = _mesh->vertexBufferLayouts();
             
-            shaderData.disableMacro("HAS_UV");
-            shaderData.disableMacro("HAS_NORMAL");
-            shaderData.disableMacro("HAS_TANGENT");
-            shaderData.disableMacro("HAS_VERTEXCOLOR");
+            shaderData.disableMacro(HAS_UV);
+            shaderData.disableMacro(HAS_NORMAL);
+            shaderData.disableMacro(HAS_TANGENT);
+            shaderData.disableMacro(HAS_VERTEXCOLOR);
             
             for (size_t i = 0, n = vertexLayouts.size(); i < n; i++) {
                 for (uint32_t j = 0, m = vertexLayouts[i].attributeCount; j < m; j++) {
                     if (vertexLayouts[i].attributes[j].shaderLocation == (uint32_t)Attributes::UV_0) {
-                        shaderData.enableMacro("HAS_UV");
+                        shaderData.enableMacro(HAS_UV);
                     }
                     if (vertexLayouts[i].attributes[j].shaderLocation == (uint32_t)Attributes::Normal) {
-                        shaderData.enableMacro("HAS_NORMAL");
+                        shaderData.enableMacro(HAS_NORMAL);
                     }
                     if (vertexLayouts[i].attributes[j].shaderLocation == (uint32_t)Attributes::Tangent) {
-                        shaderData.enableMacro("HAS_TANGENT");
+                        shaderData.enableMacro(HAS_TANGENT);
                     }
                     if (vertexLayouts[i].attributes[j].shaderLocation == (uint32_t)Attributes::Color_0) {
-                        shaderData.enableMacro("HAS_VERTEXCOLOR");
+                        shaderData.enableMacro(HAS_VERTEXCOLOR);
                     }
                 }
             }

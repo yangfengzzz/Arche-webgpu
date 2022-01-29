@@ -32,9 +32,9 @@ void PBRSpecularMaterial::setSpecularGlossinessTexture(SampledTexture2DPtr newVa
     _specularGlossinessTexture = newValue;
     shaderData.setData(PBRSpecularMaterial::_specularGlossinessTextureProp, newValue);
     if (newValue) {
-        shaderData.enableMacro("HAS_SPECULARGLOSSINESSMAP");
+        shaderData.enableMacro(HAS_SPECULARGLOSSINESSMAP);
     } else {
-        shaderData.disableMacro("HAS_SPECULARGLOSSINESSMAP");
+        shaderData.disableMacro(HAS_SPECULARGLOSSINESSMAP);
     }
 }
 
