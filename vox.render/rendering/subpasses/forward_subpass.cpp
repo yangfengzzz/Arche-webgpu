@@ -20,23 +20,27 @@ Subpass(renderContext, scene, camera) {
 
 void ForwardSubpass::prepare() {
     {
-        _bindGroupLayoutEntries.resize(2);
-        _bindGroupLayoutEntries[0].binding = 1;
-        _bindGroupLayoutEntries[0].visibility = wgpu::ShaderStage::Vertex;
+        _bindGroupLayoutEntries.resize(3);
+        _bindGroupLayoutEntries[0].binding = 13;
+        _bindGroupLayoutEntries[0].visibility = wgpu::ShaderStage::Fragment;
         _bindGroupLayoutEntries[0].buffer.type = wgpu::BufferBindingType::Uniform;
-        _bindGroupLayoutEntries[1].binding = 8;
+        _bindGroupLayoutEntries[1].binding = 15;
         _bindGroupLayoutEntries[1].visibility = wgpu::ShaderStage::Vertex;
         _bindGroupLayoutEntries[1].buffer.type = wgpu::BufferBindingType::Uniform;
-        _bindGroupLayoutDescriptor.entryCount = 2;
+        _bindGroupLayoutEntries[2].binding = 9;
+        _bindGroupLayoutEntries[2].visibility = wgpu::ShaderStage::Vertex;
+        _bindGroupLayoutEntries[2].buffer.type = wgpu::BufferBindingType::Uniform;
+        _bindGroupLayoutDescriptor.entryCount = 3;
         _bindGroupLayoutDescriptor.entries = _bindGroupLayoutEntries.data();
         _bindGroupLayout = _pass->resourceCache().requestBindGroupLayout(_bindGroupLayoutDescriptor);
     }
     {
-        _bindGroupEntries.resize(2);
-        _bindGroupEntries[0].binding = 1;
-        _bindGroupEntries[1].binding = 8;
+        _bindGroupEntries.resize(3);
+        _bindGroupEntries[0].binding = 13;
+        _bindGroupEntries[1].binding = 15;
+        _bindGroupEntries[2].binding = 9;
         _bindGroupDescriptor.layout = _bindGroupLayout;
-        _bindGroupDescriptor.entryCount = 2;
+        _bindGroupDescriptor.entryCount = 3;
         _bindGroupDescriptor.entries = _bindGroupEntries.data();
     }
     _depthStencil.format = _renderContext->depthStencilTextureFormat();
@@ -96,10 +100,10 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
         // PSO
         {
             const std::string& vertexSource = material->shader->vertexSource(macros);
-            std::cout<<vertexSource<<std::endl;
+            // std::cout<<vertexSource<<std::endl;
             const std::string& fragmentSource = material->shader->fragmentSource(macros);
-            std::cout<<fragmentSource<<std::endl;
-
+            // std::cout<<fragmentSource<<std::endl;
+            
             ShaderProgram* program = _pass->resourceCache().requestShader(vertexSource, fragmentSource);
             _forwardPipelineDescriptor.vertex.module = program->vertexShader();
             _fragment.module = program->fragmentShader();
@@ -115,10 +119,12 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
         }
         
         // Bind Group
-        _bindGroupEntries[0].buffer = _camera->shaderData.getData("u_projMat").value();
-        _bindGroupEntries[0].size = 64;
-        _bindGroupEntries[1].buffer = renderer->shaderData.getData("u_MVMat").value();
-        _bindGroupEntries[1].size = 64;
+        _bindGroupEntries[0].buffer = material->shaderData.getData("u_baseColor").value();
+        _bindGroupEntries[0].size = 16;
+        _bindGroupEntries[1].buffer = material->shaderData.getData("u_tilingOffset").value();
+        _bindGroupEntries[1].size = 16;
+        _bindGroupEntries[2].buffer = renderer->shaderData.getData("u_MVPMat").value();
+        _bindGroupEntries[2].size = 64;
         auto uniformBindGroup = _pass->resourceCache().requestBindGroup(_bindGroupDescriptor);
         passEncoder.SetBindGroup(0, uniformBindGroup);
         

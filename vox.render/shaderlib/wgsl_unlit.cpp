@@ -11,7 +11,7 @@ namespace vox {
 WGSLUnlitVertex::WGSLUnlitVertex():
 _commonVert("VertexIn"),
 _blendShapeInput("VertexIn", WGSLEncoder::startCounter()),
-_uvShare("VertexOut", WGSLEncoder::startCounter()),
+_uvShare("VertexOut", WGSLEncoder::startCounter(0)),
 _beginPositionVert("in", "out"),
 _blendShapeVert("in", "out"),
 _skinningVert("in", "out"),
@@ -46,7 +46,7 @@ void WGSLUnlitVertex::_createShaderSource(size_t hash, const ShaderMacroCollecti
 
 WGSLUnlitFragment::WGSLUnlitFragment():
 _common(),
-_uvShare("VertexOut", WGSLEncoder::startCounter()) {
+_uvShare("VertexOut", WGSLEncoder::startCounter(0)) {
 }
 
 void WGSLUnlitFragment::_createShaderSource(size_t hash, const ShaderMacroCollection& macros) {
