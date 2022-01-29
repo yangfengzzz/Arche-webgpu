@@ -187,6 +187,8 @@
 		047BEFF727A552B9003F3599 /* wgsl_skinning_vert.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BEFF527A552B9003F3599 /* wgsl_skinning_vert.h */; };
 		047BEFFB27A56187003F3599 /* wgsl_uv_vert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BEFF927A56187003F3599 /* wgsl_uv_vert.cpp */; };
 		047BEFFC27A56187003F3599 /* wgsl_uv_vert.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BEFFA27A56187003F3599 /* wgsl_uv_vert.h */; };
+		047BEFFF27A56250003F3599 /* wgsl_position_vert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BEFFD27A56250003F3599 /* wgsl_position_vert.cpp */; };
+		047BF00027A56250003F3599 /* wgsl_position_vert.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BEFFE27A56250003F3599 /* wgsl_position_vert.h */; };
 		0495463B279F89E500783C84 /* shader_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954634279F89E400783C84 /* shader_data.h */; };
 		0495463C279F89E500783C84 /* shader_property.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954635279F89E400783C84 /* shader_property.h */; };
 		0495463D279F89E500783C84 /* shader_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954636279F89E400783C84 /* shader_data.cpp */; };
@@ -532,6 +534,8 @@
 		047BEFF527A552B9003F3599 /* wgsl_skinning_vert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_skinning_vert.h; sourceTree = "<group>"; };
 		047BEFF927A56187003F3599 /* wgsl_uv_vert.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_uv_vert.cpp; sourceTree = "<group>"; };
 		047BEFFA27A56187003F3599 /* wgsl_uv_vert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_uv_vert.h; sourceTree = "<group>"; };
+		047BEFFD27A56250003F3599 /* wgsl_position_vert.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_position_vert.cpp; sourceTree = "<group>"; };
+		047BEFFE27A56250003F3599 /* wgsl_position_vert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_position_vert.h; sourceTree = "<group>"; };
 		04954634279F89E400783C84 /* shader_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_data.h; sourceTree = "<group>"; };
 		04954635279F89E400783C84 /* shader_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_property.h; sourceTree = "<group>"; };
 		04954636279F89E400783C84 /* shader_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader_data.cpp; sourceTree = "<group>"; };
@@ -1043,6 +1047,8 @@
 				047BEFF427A552B9003F3599 /* wgsl_skinning_vert.cpp */,
 				047BEFFA27A56187003F3599 /* wgsl_uv_vert.h */,
 				047BEFF927A56187003F3599 /* wgsl_uv_vert.cpp */,
+				047BEFFE27A56250003F3599 /* wgsl_position_vert.h */,
+				047BEFFD27A56250003F3599 /* wgsl_position_vert.cpp */,
 			);
 			path = functors;
 			sourceTree = "<group>";
@@ -1380,6 +1386,7 @@
 				0412846E279EEB8B0071BD86 /* raster_state.h in Headers */,
 				04954688279F8CD600783C84 /* camera.h in Headers */,
 				0495473127A24A1300783C84 /* pbr_base_material.h in Headers */,
+				047BF00027A56250003F3599 /* wgsl_position_vert.h in Headers */,
 				04128446279ED3A60071BD86 /* timer.h in Headers */,
 				0412845F279ED4B10071BD86 /* imstb_textedit.h in Headers */,
 				0495473F27A25B1300783C84 /* buffer.h in Headers */,
@@ -1588,6 +1595,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				047BEFFF27A56250003F3599 /* wgsl_position_vert.cpp in Sources */,
 				04128469279EDB2C0071BD86 /* blend_state.cpp in Sources */,
 				0495474F27A2714200783C84 /* buffer_mesh.cpp in Sources */,
 				04954707279FCD3C00783C84 /* free_control.cpp in Sources */,
