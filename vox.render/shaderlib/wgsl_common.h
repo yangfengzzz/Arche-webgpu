@@ -13,20 +13,21 @@
 namespace vox {
 enum class Attributes : uint32_t {
     Position = 0,
-    Normal = 1,
-    UV_0 = 2,
-    Tangent = 3,
-    Bitangent = 4,
-    Color_0 = 5,
-    Weights_0 = 6,
-    Joints_0 = 7,
-    UV_1 = 8,
-    UV_2 = 9,
-    UV_3 = 10,
-    UV_4 = 11,
-    UV_5 = 12,
-    UV_6 = 13,
-    UV_7 = 14,
+    Normal,
+    UV_0,
+    Tangent,
+    Bitangent,
+    Color_0,
+    Weights_0,
+    Joints_0,
+    UV_1,
+    UV_2,
+    UV_3,
+    UV_4,
+    UV_5,
+    UV_6,
+    UV_7,
+    TOTAL_COUNT
 };
 std::string attributesToString(Attributes type);
 

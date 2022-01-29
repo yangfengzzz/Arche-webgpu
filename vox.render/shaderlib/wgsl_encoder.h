@@ -33,6 +33,13 @@ public:
     ~WGSLEncoder();
     
 public:
+    static size_t startCounter(uint32_t initVal = (uint32_t)Attributes::TOTAL_COUNT);
+    
+    static uint32_t getCounterNumber(size_t index);
+    
+    static void endCounter(size_t index);
+    
+public:
     void addStruct(const std::string& code);
     
     void addFunction(const std::string& code);
@@ -81,6 +88,8 @@ private:
     std::string _functionBlock{};
     std::unordered_map<std::string, std::vector<std::string>> _inoutType{};
     std::string _entryBlock{};
+    
+    static std::vector<uint32_t> _counters;
 };
 
 }

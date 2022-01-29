@@ -56,6 +56,7 @@ std::string attributesToString(Attributes type) {
             return "UV_7";
             break;
         default:
+            assert(false && "Unknown attribute");
             break;
     }
 }

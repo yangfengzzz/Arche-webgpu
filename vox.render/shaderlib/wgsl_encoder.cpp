@@ -11,6 +11,26 @@
 #include <fmt/core.h>
 
 namespace vox {
+std::vector<uint32_t> WGSLEncoder::_counters{};
+size_t WGSLEncoder::startCounter(uint32_t initVal) {
+    for (size_t i = 0; i < _counters.size(); i++) {
+        if (_counters[i] == static_cast<uint32_t>(-1)) {
+            _counters[i] = initVal;
+            return i;
+        }
+    }
+    _counters.push_back(initVal);
+    return _counters.size();
+}
+
+uint32_t WGSLEncoder::getCounterNumber(size_t index) {
+    return _counters[index]++;
+}
+
+void WGSLEncoder::endCounter(size_t index) {
+    _counters[index] = static_cast<uint32_t>(-1);
+}
+
 WGSLEncoder::~WGSLEncoder() {
     if (_needFlush) {
         flush();
