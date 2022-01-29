@@ -8,20 +8,12 @@
 #ifndef wgsl_common_vert_hpp
 #define wgsl_common_vert_hpp
 
-#include "wgsl_library.h"
+#include "wgsl_encoder.h"
 
 namespace vox {
 class WGSLCommonVert {
 public:
-    WGSLCommonVert(WGSL* source);
-    
-    void operator()(const ShaderMacroCollection& macros);
-    
-private:
-    WGSLUniformBinding _uPMatirx;
-    WGSLUniformBinding _uMVMatrix;
-    
-    WGSL* _source{nullptr};
+    void operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros);
 };
 
 }

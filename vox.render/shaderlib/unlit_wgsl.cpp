@@ -5,7 +5,6 @@
 //  property of any third parties.
 
 #include "unlit_wgsl.h"
-#include "wgsl_library.h"
 
 namespace vox {
 //MARK: - Unlit Vertex Code
@@ -23,9 +22,24 @@ std::pair<const std::string&, const WGSL::BindGroupInfo&> UnlitVertexWGSL::compi
 void UnlitVertexWGSL::_createShaderSource(size_t hash, const ShaderMacroCollection& macros) {
     _source = "";
     _bindGroupInfo.clear();
-    auto patch = WGSLPatchTest(this);
-    patch(macros);
-
+    
+    auto encoder = createSourceEncoder(wgpu::ShaderStage::Vertex);
+    encoder.addUniformBinding("u_projMat", UniformType::Mat4x4f32);
+    encoder.addUniformBinding("u_MVMat", UniformType::Mat4x4f32);
+    encoder.addInputType("VertexInput", "@location(0) aVertexPosition: vec3<f32>;\n");
+    encoder.addInputType("VertexInput", "@location(1) aVertexNormal: vec3<f32>;\n");
+    encoder.addInputType("VertexInput", "@location(2) aVertexUV: vec2<f32>;\n");
+    encoder.addOutputType("Output", "@location(0) vColor: vec3<f32>;\n");
+    encoder.addOutputType("Output", "@builtin(position) Position: vec4<f32>;");
+    encoder.addEntry({"vertexInput"}, []()->auto{
+        return
+        "var output: Output;\n "
+        "output.Position = u_projMat * u_MVMat * vec4<f32>(vertexInput.aVertexPosition, 1.0);\n "
+        "output.vColor = vertexInput.aVertexPosition;\n "
+        "return output;\n ";
+    });
+    
+    
     _sourceCache[hash] = _source;
     _infoCache[hash] = _bindGroupInfo;
 }
@@ -46,21 +60,16 @@ void UnlitFragmentWGSL::_createShaderSource(size_t hash, const ShaderMacroCollec
     _source = "";
     _bindGroupInfo.clear();
     
-    begin(wgpu::ShaderStage::Fragment);
-    beginInputStruct("FragmentInput");
-    addInputType("@location(0) vColor: vec3<f32>;");
-    endInputStruct();
-    
-    beginOutputStruct("Output");
-    addOutputType("@location(0) finalColor: vec4<f32>;");
-    endOutputStruct();
-    
-    beginEntry({"fragmentInput"});
-    addEntry("var output: Output;\n "
-             "output.finalColor = vec4<f32>(fragmentInput.vColor, 1.0);"
-             "return output;\n ");
-    endEntry();
-    end();
+    auto encoder = createSourceEncoder(wgpu::ShaderStage::Fragment);
+    encoder.addInputType("FragmentInput", "@location(0) vColor: vec3<f32>;");
+    encoder.addOutputType("Output", "@location(0) finalColor: vec4<f32>;");
+    encoder.addEntry({"fragmentInput"}, []()->auto{
+        return
+        "var output: Output;\n "
+        "output.finalColor = vec4<f32>(fragmentInput.vColor, 1.0);"
+        "return output;\n ";
+    });
+    encoder.flush();
     
     _sourceCache[hash] = _source;
     _infoCache[hash] = _bindGroupInfo;

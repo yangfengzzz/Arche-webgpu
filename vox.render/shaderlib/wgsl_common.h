@@ -7,6 +7,10 @@
 #ifndef wgsl_common_h
 #define wgsl_common_h
 
+#include <string>
+#include <vector>
+
+namespace vox {
 typedef enum {
     Position = 0,
     Normal = 1,
@@ -25,4 +29,28 @@ typedef enum {
     UV_7 = 14,
 } Attributes;
 
+enum class UniformType {
+    Vec2f32,
+    Vec2i32,
+    Vec2u32,
+    Vec3f32,
+    Vec3i32,
+    Vec3u32,
+    Vec4f32,
+    Vec4i32,
+    Vec4u32,
+    Mat2x2f32,
+    Mat3x2f32,
+    Mat4x2f32,
+    Mat2x3f32,
+    Mat3x3f32,
+    Mat4x3f32,
+    Mat2x4f32,
+    Mat3x4f32,
+    Mat4x4f32,
+};
+
+std::string uniformTypeToString(UniformType type);
+
+}
 #endif /* wgsl_common_h */
