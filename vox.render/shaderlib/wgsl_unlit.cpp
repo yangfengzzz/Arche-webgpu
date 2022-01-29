@@ -58,13 +58,14 @@ void WGSLUnlitFragment::_createShaderSource(size_t hash, const ShaderMacroCollec
     _uvShare(encoder, macros);
     encoder.addUniformBinding("u_baseColor", UniformType::Vec4f32);
     encoder.addUniformBinding("u_alphaCutoff", UniformType::F32);
+    encoder.addInoutType("Output", 0, "finalColor", UniformType::Vec4f32);
     if (macros.contains(HAS_BASE_TEXTURE)) {
         // TODO
     }
-    encoder.addEntry({{"in", "VertexOut"}}, {"out", "FragmentOut"},  [&](std::string &source){
-        source += "vec4 baseColor = u_baseColor;\n";
+    encoder.addEntry({{"in", "VertexOut"}}, {"out", "Output"},  [&](std::string &source){
+        source += "var baseColor = u_baseColor;\n";
         if (macros.contains(HAS_BASE_TEXTURE)) {
-            source += "vec4 textureColor = texture2D(u_baseTexture, v_uv);\n";
+            source += "var textureColor = texture2D(u_baseTexture, v_uv);\n";
             source += "baseColor *= textureColor;\n";
         }
         if (macros.contains(NEED_ALPHA_CUTOFF)) {
@@ -72,8 +73,7 @@ void WGSLUnlitFragment::_createShaderSource(size_t hash, const ShaderMacroCollec
             source += "    discard;\n";
             source += "}\n";
         }
-        
-        source += "return output;\n ";;
+        source += "out.finalColor = baseColor;\n";
     });
     encoder.flush();
     
