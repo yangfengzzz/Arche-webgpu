@@ -23,5 +23,37 @@ size_t ShaderMacroCollection::hash() const {
     return hash;
 }
 
+bool ShaderMacroCollection::contains(const std::string& macro) const {
+    auto iter = _value.find(macro);
+    if (iter != _value.end()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+std::optional<double> ShaderMacroCollection::macroConstant(const std::string& macro) const {
+    auto iter = _value.find(macro);
+    if (iter != _value.end()) {
+        return iter->second;
+    } else {
+        return std::nullopt;
+    }
+}
+
+void ShaderMacroCollection::enableMacro(const std::string& macroName) {
+    _value.insert(std::make_pair(macroName, 1));
+}
+
+void ShaderMacroCollection::enableMacro(const std::string& macroName, double value) {
+    _value.insert(std::make_pair(macroName, value));
+}
+
+void ShaderMacroCollection::disableMacro(const std::string& macroName) {
+    auto iter = _value.find(macroName);
+    if (iter != _value.end()) {
+        _value.erase(iter);
+    }
+}
 
 }

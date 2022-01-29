@@ -27,11 +27,32 @@ struct ShaderMacroCollection {
     
     size_t hash() const;
     
-private:
-    friend class ShaderProgram;
+    bool contains(const std::string& macro) const;
     
-    friend class ShaderData;
+    std::optional<double> macroConstant(const std::string& macro) const;
     
+public:
+    /**
+     * Enable macro.
+     * @param macroName - Shader macro
+     */
+    void enableMacro(const std::string& macroName);
+
+    /**
+     * Enable macro.
+     * @remarks Name and value will combine one macro, it's equal the macro of "name value".
+     * @param macroName - Macro name
+     * @param value - Macro value
+     */
+    void enableMacro(const std::string& macroName, double value);
+
+    /**
+     * Disable macro
+     * @param macroName - Macro name
+     */
+    void disableMacro(const std::string& macroName);
+    
+private:    
     std::map<std::string, double> _value{};
 };
 
