@@ -177,6 +177,8 @@
 		047BEFDD27A4E762003F3599 /* wgsl_common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BEFDC27A4E762003F3599 /* wgsl_common.cpp */; };
 		047BEFE527A53FB8003F3599 /* blend_shape_input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BEFE327A53FB8003F3599 /* blend_shape_input.cpp */; };
 		047BEFE627A53FB8003F3599 /* blend_shape_input.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BEFE427A53FB8003F3599 /* blend_shape_input.h */; };
+		047BEFEA27A54561003F3599 /* uv_share.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BEFE827A54561003F3599 /* uv_share.cpp */; };
+		047BEFEB27A54561003F3599 /* uv_share.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BEFE927A54561003F3599 /* uv_share.h */; };
 		0495463B279F89E500783C84 /* shader_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954634279F89E400783C84 /* shader_data.h */; };
 		0495463C279F89E500783C84 /* shader_property.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954635279F89E400783C84 /* shader_property.h */; };
 		0495463D279F89E500783C84 /* shader_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954636279F89E400783C84 /* shader_data.cpp */; };
@@ -512,6 +514,8 @@
 		047BEFE227A53AFF003F3599 /* internal_macro_name.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = internal_macro_name.h; sourceTree = "<group>"; };
 		047BEFE327A53FB8003F3599 /* blend_shape_input.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = blend_shape_input.cpp; sourceTree = "<group>"; };
 		047BEFE427A53FB8003F3599 /* blend_shape_input.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = blend_shape_input.h; sourceTree = "<group>"; };
+		047BEFE827A54561003F3599 /* uv_share.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = uv_share.cpp; sourceTree = "<group>"; };
+		047BEFE927A54561003F3599 /* uv_share.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = uv_share.h; sourceTree = "<group>"; };
 		04954634279F89E400783C84 /* shader_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_data.h; sourceTree = "<group>"; };
 		04954635279F89E400783C84 /* shader_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_property.h; sourceTree = "<group>"; };
 		04954636279F89E400783C84 /* shader_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader_data.cpp; sourceTree = "<group>"; };
@@ -1012,6 +1016,8 @@
 				047BEFD427A4BFD9003F3599 /* wgsl_common_vert.cpp */,
 				047BEFE427A53FB8003F3599 /* blend_shape_input.h */,
 				047BEFE327A53FB8003F3599 /* blend_shape_input.cpp */,
+				047BEFE927A54561003F3599 /* uv_share.h */,
+				047BEFE827A54561003F3599 /* uv_share.cpp */,
 			);
 			path = functors;
 			sourceTree = "<group>";
@@ -1324,6 +1330,7 @@
 				049546F7279FC92B00783C84 /* forward_subpass.h in Headers */,
 				0495475827A2868000783C84 /* primitive_mesh.h in Headers */,
 				0495475D27A287CA00783C84 /* mesh_renderer.h in Headers */,
+				047BEFEB27A54561003F3599 /* uv_share.h in Headers */,
 				04954641279F89E500783C84 /* shader.h in Headers */,
 				049546EE279FC74800783C84 /* render_pass.h in Headers */,
 				0495473A27A2564500783C84 /* pbr_specular_material.h in Headers */,
@@ -1556,6 +1563,7 @@
 				0495474627A2657700783C84 /* sub_mesh.cpp in Sources */,
 				0495463E279F89E500783C84 /* shader_property.cpp in Sources */,
 				0495470F27A14FA800783C84 /* shader_program.cpp in Sources */,
+				047BEFEA27A54561003F3599 /* uv_share.cpp in Sources */,
 				047BEFDD27A4E762003F3599 /* wgsl_common.cpp in Sources */,
 				049546E5279FA7D800783C84 /* metal_binding.mm in Sources */,
 				04128471279EED090071BD86 /* stencil_state.cpp in Sources */,
