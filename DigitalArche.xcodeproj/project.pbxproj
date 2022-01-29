@@ -183,6 +183,8 @@
 		047BEFEF27A54663003F3599 /* wgsl_begin_position_vert.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BEFED27A54663003F3599 /* wgsl_begin_position_vert.h */; };
 		047BEFF227A5519C003F3599 /* wgsl_blend_shape_vert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BEFF027A5519C003F3599 /* wgsl_blend_shape_vert.cpp */; };
 		047BEFF327A5519C003F3599 /* wgsl_blend_shape_vert.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BEFF127A5519C003F3599 /* wgsl_blend_shape_vert.h */; };
+		047BEFF627A552B9003F3599 /* wgsl_skinning_vert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BEFF427A552B9003F3599 /* wgsl_skinning_vert.cpp */; };
+		047BEFF727A552B9003F3599 /* wgsl_skinning_vert.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BEFF527A552B9003F3599 /* wgsl_skinning_vert.h */; };
 		0495463B279F89E500783C84 /* shader_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954634279F89E400783C84 /* shader_data.h */; };
 		0495463C279F89E500783C84 /* shader_property.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954635279F89E400783C84 /* shader_property.h */; };
 		0495463D279F89E500783C84 /* shader_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954636279F89E400783C84 /* shader_data.cpp */; };
@@ -524,6 +526,8 @@
 		047BEFED27A54663003F3599 /* wgsl_begin_position_vert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_begin_position_vert.h; sourceTree = "<group>"; };
 		047BEFF027A5519C003F3599 /* wgsl_blend_shape_vert.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_blend_shape_vert.cpp; sourceTree = "<group>"; };
 		047BEFF127A5519C003F3599 /* wgsl_blend_shape_vert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_blend_shape_vert.h; sourceTree = "<group>"; };
+		047BEFF427A552B9003F3599 /* wgsl_skinning_vert.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_skinning_vert.cpp; sourceTree = "<group>"; };
+		047BEFF527A552B9003F3599 /* wgsl_skinning_vert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_skinning_vert.h; sourceTree = "<group>"; };
 		04954634279F89E400783C84 /* shader_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_data.h; sourceTree = "<group>"; };
 		04954635279F89E400783C84 /* shader_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_property.h; sourceTree = "<group>"; };
 		04954636279F89E400783C84 /* shader_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader_data.cpp; sourceTree = "<group>"; };
@@ -1026,12 +1030,22 @@
 				047BEFE327A53FB8003F3599 /* wgsl_blend_shape_input.cpp */,
 				047BEFE927A54561003F3599 /* wgsl_uv_share.h */,
 				047BEFE827A54561003F3599 /* wgsl_uv_share.cpp */,
+				047BEFF827A552C3003F3599 /* define */,
 				047BEFED27A54663003F3599 /* wgsl_begin_position_vert.h */,
 				047BEFEC27A54663003F3599 /* wgsl_begin_position_vert.cpp */,
 				047BEFF127A5519C003F3599 /* wgsl_blend_shape_vert.h */,
 				047BEFF027A5519C003F3599 /* wgsl_blend_shape_vert.cpp */,
+				047BEFF527A552B9003F3599 /* wgsl_skinning_vert.h */,
+				047BEFF427A552B9003F3599 /* wgsl_skinning_vert.cpp */,
 			);
 			path = functors;
+			sourceTree = "<group>";
+		};
+		047BEFF827A552C3003F3599 /* define */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = define;
 			sourceTree = "<group>";
 		};
 		04954642279F8A4400783C84 /* material */ = {
@@ -1388,6 +1402,7 @@
 				0495474327A2640900783C84 /* index_buffer_binding.h in Headers */,
 				04128460279ED4B10071BD86 /* imgui_internal.h in Headers */,
 				0495468B279F8CD600783C84 /* std_helpers.h in Headers */,
+				047BEFF727A552B9003F3599 /* wgsl_skinning_vert.h in Headers */,
 				0495467C279F8CD600783C84 /* components_manager.h in Headers */,
 				0412846A279EDB2C0071BD86 /* blend_state.h in Headers */,
 				0495463B279F89E500783C84 /* shader_data.h in Headers */,
@@ -1598,6 +1613,7 @@
 				0495478627A403C700783C84 /* wgsl.cpp in Sources */,
 				0495472827A2405400783C84 /* sampled_texture2d.cpp in Sources */,
 				04954646279F8A7D00783C84 /* material.cpp in Sources */,
+				047BEFF627A552B9003F3599 /* wgsl_skinning_vert.cpp in Sources */,
 				04128441279ED3A60071BD86 /* unix_engine.cpp in Sources */,
 				0495471E27A2396500783C84 /* shader_pool.cpp in Sources */,
 				04954682279F8CD600783C84 /* renderer.cpp in Sources */,

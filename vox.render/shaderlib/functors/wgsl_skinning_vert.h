@@ -4,17 +4,17 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef wgsl_blend_shape_vert_hpp
-#define wgsl_blend_shape_vert_hpp
+#ifndef wgsl_skinning_vert_hpp
+#define wgsl_skinning_vert_hpp
 
 #include "wgsl_encoder.h"
 
 namespace vox {
-class WGSLBlendShapeVert {
+class WGSLSkinningVert {
 public:
     void operator()(std::string& source, const ShaderMacroCollection& macros);
 };
 
 }
 
-#endif /* wgsl_blend_shape_vert_hpp */
+#endif /* wgsl_skinning_vert_hpp */
