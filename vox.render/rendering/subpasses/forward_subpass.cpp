@@ -104,6 +104,8 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
                 passEncoder.SetBindGroup(layoutDesc.first, uniformBindGroup);
                 bindGroupLayouts.emplace_back(std::move(bindGroupLayout));
             }
+            material->shader->flush();
+            
             _pipelineLayoutDescriptor.bindGroupLayoutCount = static_cast<uint32_t>(bindGroupLayouts.size());
             _pipelineLayoutDescriptor.bindGroupLayouts = bindGroupLayouts.data();
             _pipelineLayout = _pass->resourceCache().requestPipelineLayout(_pipelineLayoutDescriptor);

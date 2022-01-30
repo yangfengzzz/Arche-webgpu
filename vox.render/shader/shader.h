@@ -34,6 +34,8 @@ public:
     
     const BindGroupLayoutDescriptorMap& bindGroupLayoutDescriptors(const ShaderMacroCollection& macros);
     
+    void flush();
+    
     /**
      * Create a shader.
      * @param name - Name of the shader

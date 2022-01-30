@@ -49,15 +49,13 @@ const Shader::BindGroupLayoutDescriptorMap& Shader::bindGroupLayoutDescriptors(c
     }
     _updateFlag = {false, false};
     
-    _bindGroupLayoutEntryVecMap.clear();
     for (const auto& info : _bindGroupInfo) {
         _bindGroupLayoutEntryVecMap[info.first].reserve(info.second.size());
         for (const auto& entry : info.second) {
             _bindGroupLayoutEntryVecMap[info.first].push_back(_findEntry(info.first, entry));
         }
     }
-    
-    _bindGroupLayoutDescriptorMap.clear();
+
     for (const auto& entryVec : _bindGroupLayoutEntryVecMap) {
         wgpu::BindGroupLayoutDescriptor desc;
         desc.entryCount = static_cast<uint32_t>(entryVec.second.size());
@@ -65,6 +63,12 @@ const Shader::BindGroupLayoutDescriptorMap& Shader::bindGroupLayoutDescriptors(c
         _bindGroupLayoutDescriptorMap[entryVec.first] = desc;
     }
     return _bindGroupLayoutDescriptorMap;
+}
+
+void Shader::flush() {
+    _bindGroupInfo.clear();
+    _bindGroupLayoutEntryVecMap.clear();
+    _bindGroupLayoutDescriptorMap.clear();
 }
 
 wgpu::BindGroupLayoutEntry Shader::_findEntry(uint32_t group, uint32_t binding) {
