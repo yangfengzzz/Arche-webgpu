@@ -29,7 +29,9 @@ public:
     
     void setPixelBuffer(std::vector<uint8_t>& data,
                         uint32_t width,
-                        uint32_t height);
+                        uint32_t height,
+                        uint32_t mipLevel = 0, uint32_t offset = 0,
+                        uint32_t x = 0, uint32_t y = 0);
 };
 using SampledTexture2DPtr = std::shared_ptr<SampledTexture2D>;
 

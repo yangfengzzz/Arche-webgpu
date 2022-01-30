@@ -11,6 +11,8 @@
 #include <memory>
 
 namespace vox {
+uint32_t bytesPerPixel(wgpu::TextureFormat format);
+
 class SampledTexture {
 public:
     SampledTexture(wgpu::Device& device);

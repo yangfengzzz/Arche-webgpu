@@ -125,4 +125,56 @@ wgpu::TextureDataLayout SampledTexture::_createTextureDataLayout(uint64_t offset
     return textureDataLayout;
 }
 
+uint32_t bytesPerPixel(wgpu::TextureFormat format) {
+    switch (format) {
+        case wgpu::TextureFormat::R8Unorm:
+        case wgpu::TextureFormat::R8Snorm:
+        case wgpu::TextureFormat::R8Uint:
+        case wgpu::TextureFormat::R8Sint:
+            return 1;
+            break;
+            
+        case wgpu::TextureFormat::R16Uint:
+        case wgpu::TextureFormat::R16Sint:
+        case wgpu::TextureFormat::R16Float:
+        case wgpu::TextureFormat::RG8Unorm:
+        case wgpu::TextureFormat::RG8Snorm:
+            return 2;
+            break;
+            
+        case wgpu::TextureFormat::R32Float:
+        case wgpu::TextureFormat::R32Uint:
+        case wgpu::TextureFormat::R32Sint:
+        case wgpu::TextureFormat::RG16Uint:
+        case wgpu::TextureFormat::RG16Sint:
+        case wgpu::TextureFormat::RG16Float:
+        case wgpu::TextureFormat::RGBA8Unorm:
+        case wgpu::TextureFormat::RGBA8UnormSrgb:
+        case wgpu::TextureFormat::RGBA8Snorm:
+        case wgpu::TextureFormat::RGBA8Uint:
+        case wgpu::TextureFormat::RGBA8Sint:
+        case wgpu::TextureFormat::BGRA8Unorm:
+        case wgpu::TextureFormat::BGRA8UnormSrgb:
+            return 4;
+            break;
+            
+        case wgpu::TextureFormat::RG32Float:
+        case wgpu::TextureFormat::RG32Uint:
+        case wgpu::TextureFormat::RG32Sint:
+        case wgpu::TextureFormat::RGBA16Uint:
+        case wgpu::TextureFormat::RGBA16Sint:
+            return 8;
+            break;
+            
+        case wgpu::TextureFormat::RGBA32Float:
+        case wgpu::TextureFormat::RGBA32Sint:
+            return 16;
+            break;
+            
+        default:
+            assert(false && "undefined");
+            break;
+    }
+}
+
 }

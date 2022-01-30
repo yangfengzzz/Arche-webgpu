@@ -29,16 +29,16 @@ SampledTexture(device) {
 }
 
 void SampledTexture2D::setPixelBuffer(std::vector<uint8_t>& data,
-                                      uint32_t width,
-                                      uint32_t height) {
+                                      uint32_t width, uint32_t height, uint32_t offset,
+                                      uint32_t mipLevel, uint32_t x, uint32_t y) {
     wgpu::BufferDescriptor descriptor;
     descriptor.size = data.size();
     descriptor.usage = wgpu::BufferUsage::CopySrc | wgpu::BufferUsage::CopyDst;
     wgpu::Buffer stagingBuffer = _device.CreateBuffer(&descriptor);
     _device.GetQueue().WriteBuffer(stagingBuffer, 0, data.data(), data.size());
     
-    wgpu::ImageCopyBuffer imageCopyBuffer = _createImageCopyBuffer(stagingBuffer, 0, 4 * 1024);
-    wgpu::ImageCopyTexture imageCopyTexture = _createImageCopyTexture(0, {0, 0, 0});
+    wgpu::ImageCopyBuffer imageCopyBuffer = _createImageCopyBuffer(stagingBuffer, offset, bytesPerPixel(_textureDesc.format) * width);
+    wgpu::ImageCopyTexture imageCopyTexture = _createImageCopyTexture(mipLevel, {x, y, 0});
     wgpu::Extent3D copySize = {width, height, 1};
     
     wgpu::CommandEncoder encoder = _device.CreateCommandEncoder();

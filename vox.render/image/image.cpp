@@ -57,7 +57,11 @@ std::shared_ptr<SampledTexture2D> Image::createSampledTexture(wgpu::Device &devi
     auto sampledTex = std::make_shared<SampledTexture2D>(device, _mipmaps.at(0).extent.width,
                                                          _mipmaps.at(0).extent.height, _format, usage,
                                                          _mipmaps.size() > 1? true:false);
-    sampledTex->setPixelBuffer(data(), _mipmaps.at(0).extent.width, _mipmaps.at(0).extent.height);
+    for (const auto& mipmap : _mipmaps) {
+        sampledTex->setPixelBuffer(data(), mipmap.extent.width, mipmap.extent.height, mipmap.level, mipmap.offset);
+    }
+    
+    
     return sampledTex;
 }
 
