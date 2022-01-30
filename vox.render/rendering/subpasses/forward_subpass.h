@@ -29,14 +29,20 @@ private:
     void _bindingData(wgpu::BindGroupEntry& entry,
                       MaterialPtr mat, Renderer* renderer);
     
+    void _bindingTexture(wgpu::BindGroupEntry& entry,
+                         MaterialPtr mat, Renderer* renderer);
+    
+    void _bindingSampler(wgpu::BindGroupEntry& entry,
+                         MaterialPtr mat, Renderer* renderer);
+    
     wgpu::RenderPipelineDescriptor _forwardPipelineDescriptor;
     wgpu::DepthStencilState _depthStencil;
     wgpu::FragmentState _fragment;
     wgpu::ColorTargetState _colorTargetState;
-
+    
     wgpu::BindGroupDescriptor _bindGroupDescriptor;
     std::vector<wgpu::BindGroupEntry> _bindGroupEntries{};
-
+    
     wgpu::PipelineLayoutDescriptor _pipelineLayoutDescriptor;
     wgpu::PipelineLayout _pipelineLayout;
 };

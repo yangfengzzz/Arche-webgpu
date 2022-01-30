@@ -88,7 +88,14 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
                 for (uint32_t i = 0; i < layoutDesc.second.entryCount; i++) {
                     auto& entry = layoutDesc.second.entries[i];
                     _bindGroupEntries[i].binding = entry.binding;
-                    _bindingData(_bindGroupEntries[i], material, renderer);
+                    if (entry.buffer.type != wgpu::BufferBindingType::Undefined) {
+                        _bindingData(_bindGroupEntries[i], material, renderer);
+                    } else if (entry.texture.sampleType != wgpu::TextureSampleType::Undefined ||
+                               entry.storageTexture.access != wgpu::StorageTextureAccess::Undefined) {
+                        _bindingTexture(_bindGroupEntries[i], material, renderer);
+                    } else if (entry.sampler.type != wgpu::SamplerBindingType::Undefined) {
+                        _bindingSampler(_bindGroupEntries[i], material, renderer);
+                    }
                 }
                 _bindGroupDescriptor.layout = bindGroupLayout;
                 _bindGroupDescriptor.entryCount = layoutDesc.second.entryCount;
@@ -151,6 +158,60 @@ void ForwardSubpass::_bindingData(wgpu::BindGroupEntry& entry,
             case ShaderDataGroup::Material:
                 entry.buffer = mat->shaderData.getData(entry.binding)->handle();
                 entry.size = mat->shaderData.getData(entry.binding)->size();
+                break;
+                
+            default:
+                break;
+        }
+    }
+}
+
+void ForwardSubpass::_bindingTexture(wgpu::BindGroupEntry& entry,
+                                  MaterialPtr mat, Renderer* renderer) {
+    auto group = Shader::getShaderPropertyGroup(entry.binding);
+    if (group.has_value()) {
+        switch (*group) {
+            case ShaderDataGroup::Scene:
+                entry.textureView = _scene->shaderData.getTexture(entry.binding).CreateView();
+                break;
+                
+            case ShaderDataGroup::Camera:
+                entry.textureView = _camera->shaderData.getTexture(entry.binding).CreateView();
+                break;
+                
+            case ShaderDataGroup::Renderer:
+                entry.textureView = renderer->shaderData.getTexture(entry.binding).CreateView();
+                break;
+                
+            case ShaderDataGroup::Material:
+                entry.textureView = mat->shaderData.getTexture(entry.binding).CreateView();
+                break;
+                
+            default:
+                break;
+        }
+    }
+}
+
+void ForwardSubpass::_bindingSampler(wgpu::BindGroupEntry& entry,
+                                  MaterialPtr mat, Renderer* renderer) {
+    auto group = Shader::getShaderPropertyGroup(entry.binding);
+    if (group.has_value()) {
+        switch (*group) {
+            case ShaderDataGroup::Scene:
+                entry.sampler = _scene->shaderData.getSampler(entry.binding);
+                break;
+                
+            case ShaderDataGroup::Camera:
+                entry.sampler = _camera->shaderData.getSampler(entry.binding);
+                break;
+                
+            case ShaderDataGroup::Renderer:
+                entry.sampler = renderer->shaderData.getSampler(entry.binding);
+                break;
+                
+            case ShaderDataGroup::Material:
+                entry.sampler = mat->shaderData.getSampler(entry.binding);
                 break;
                 
             default:
