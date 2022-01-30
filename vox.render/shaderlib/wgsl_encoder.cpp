@@ -48,7 +48,7 @@ void WGSLEncoder::addFunction(const std::string& code) {
 
 void WGSLEncoder::addUniformBinding(const std::string& uniformName,
                                     UniformType type, uint32_t group) {
-    addUniformBinding(uniformName, uniformTypeToString(type), group);
+    addUniformBinding(uniformName, toString(type), group);
     _needFlush = true;
 }
 
@@ -83,14 +83,103 @@ void WGSLEncoder::addUniformBinding(const std::string& uniformName,
     _needFlush = true;
 }
 
+
+void WGSLEncoder::addSampledTextureBinding(const std::string& texName, TextureType texType,
+                                           const std::string& samplerName, SamplerType samplerType,
+                                           uint32_t group) {
+    const std::string formatTemplate = "@group({}) @binding({}) var {}: {};\n "
+    "@group({}) @binding({}) var {}: {};\n ";
+    auto texProperty = Shader::getPropertyByName(texName);
+    auto samplerProperty = Shader::getPropertyByName(samplerName);
+    if (texProperty.has_value() && samplerProperty.has_value()) {
+        uint32_t texBinding = texProperty.value().uniqueId;
+        uint32_t samplerBinding = samplerProperty.value().uniqueId;
+        
+        _uniformBlock += fmt::format(formatTemplate, group, texBinding, texName, toString(texType),
+                                     group, samplerBinding, samplerName, toString(samplerType));
+        // Texture
+        {
+            wgpu::BindGroupLayoutEntry entry;
+            entry.binding = texBinding;
+            entry.visibility = _currentStage;
+            entry.texture.multisampled = isMultisampled(texType);
+            entry.texture.viewDimension = viewDimension(texType);
+            entry.texture.sampleType = sampleType(texType);
+            auto iter = _bindGroupLayoutEntryMap.find(group);
+            if (iter == _bindGroupLayoutEntryMap.end()) {
+                _bindGroupLayoutEntryMap[group][texBinding] = entry;
+            } else {
+                auto entryIter = _bindGroupLayoutEntryMap[group].find(texBinding);
+                if (entryIter == _bindGroupLayoutEntryMap[group].end()) {
+                    _bindGroupLayoutEntryMap[group][texBinding] = entry;
+                }
+            }
+            _bindGroupInfo[group].insert(texBinding);
+        }
+        // Sampler
+        {
+            wgpu::BindGroupLayoutEntry entry;
+            entry.binding = samplerBinding;
+            entry.visibility = _currentStage;
+            entry.sampler.type = bindingType(samplerType);
+            auto iter = _bindGroupLayoutEntryMap.find(group);
+            if (iter == _bindGroupLayoutEntryMap.end()) {
+                _bindGroupLayoutEntryMap[group][samplerBinding] = entry;
+            } else {
+                auto entryIter = _bindGroupLayoutEntryMap[group].find(samplerBinding);
+                if (entryIter == _bindGroupLayoutEntryMap[group].end()) {
+                    _bindGroupLayoutEntryMap[group][samplerBinding] = entry;
+                }
+            }
+            _bindGroupInfo[group].insert(samplerBinding);
+        }
+    } else {
+        assert(false && "Unknown Uniform Name");
+    }
+    _needFlush = true;
+}
+
+void WGSLEncoder::addStorageTextureBinding(const std::string& texName, StorageTextureType texType,
+                                           wgpu::TextureFormat texelFormat, uint32_t group) {
+    const std::string formatTemplate = "@group({}) @binding({})\n "
+    "var {}: {}<{}, write>;\n ";
+    
+    auto property = Shader::getPropertyByName(texName);
+    if (property.has_value()) {
+        uint32_t binding = property.value().uniqueId;
+        _uniformBlock += fmt::format(formatTemplate, group, binding, texName,
+                                     toString(texType), toString(texelFormat));
+        
+        wgpu::BindGroupLayoutEntry entry;
+        entry.binding = binding;
+        entry.visibility = _currentStage;
+        entry.storageTexture.format = texelFormat;
+        entry.storageTexture.viewDimension = viewDimension(texType);
+        entry.storageTexture.access = wgpu::StorageTextureAccess::WriteOnly;
+        auto iter = _bindGroupLayoutEntryMap.find(group);
+        if (iter == _bindGroupLayoutEntryMap.end()) {
+            _bindGroupLayoutEntryMap[group][binding] = entry;
+        } else {
+            auto entryIter = _bindGroupLayoutEntryMap[group].find(binding);
+            if (entryIter == _bindGroupLayoutEntryMap[group].end()) {
+                _bindGroupLayoutEntryMap[group][binding] = entry;
+            }
+        }
+        _bindGroupInfo[group].insert(binding);
+    } else {
+        assert(false && "Unknown Uniform Name");
+    }
+    _needFlush = true;
+}
+
 void WGSLEncoder::addInoutType(const std::string& structName,
                                Attributes attributes, UniformType type) {
-    addInoutType(structName, (uint32_t)attributes, attributesToString(attributes), uniformTypeToString(type));
+    addInoutType(structName, (uint32_t)attributes, toString(attributes), toString(type));
 }
 
 void WGSLEncoder::addInoutType(const std::string& structName, uint32_t location,
                                const std::string& attributes, UniformType type) {
-    addInoutType(structName, location, attributes, uniformTypeToString(type));
+    addInoutType(structName, location, attributes, toString(type));
 }
 
 void WGSLEncoder::addInoutType(const std::string& structName, uint32_t location,
@@ -103,13 +192,13 @@ void WGSLEncoder::addInoutType(const std::string& structName, uint32_t location,
 
 void WGSLEncoder::addInoutType(const std::string& structName, BuiltInType builtin,
                                const std::string& attributes, UniformType type) {
-    addInoutType(structName, builtin, attributes, uniformTypeToString(type));
+    addInoutType(structName, builtin, attributes, toString(type));
 }
 
 void WGSLEncoder::addInoutType(const std::string& structName, BuiltInType builtin,
                                const std::string& attributes, const std::string& type) {
     const std::string formatTemplate = "@builtin({}) {}: {};";
-    _inoutType[structName].push_back(fmt::format(formatTemplate, builtInTypeToString(builtin),
+    _inoutType[structName].push_back(fmt::format(formatTemplate, toString(builtin),
                                                  attributes,  type));
     _needFlush = true;
 }

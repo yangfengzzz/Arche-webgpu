@@ -9,7 +9,6 @@
 
 #include "wgsl_common.h"
 #include "shader/shader_macro_collection.h"
-#include <dawn/webgpu_cpp.h>
 #include <unordered_map>
 #include <unordered_set>
 
@@ -47,6 +46,13 @@ public:
     void addUniformBinding(const std::string& uniformName, const std::string& type, uint32_t group = 0);
     
     void addUniformBinding(const std::string& uniformName, UniformType type, uint32_t group = 0);
+    
+    void addSampledTextureBinding(const std::string& texName, TextureType texType,
+                                  const std::string& samplerName, SamplerType samplerType,
+                                  uint32_t group = 0);
+    
+    void addStorageTextureBinding(const std::string& texName, StorageTextureType texType,
+                                  wgpu::TextureFormat texelFormat, uint32_t group = 0);
 
 public:
     void addInoutType(const std::string& structName, Attributes attributes, UniformType type);
