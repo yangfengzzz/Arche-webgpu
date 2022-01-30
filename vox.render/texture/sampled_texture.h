@@ -78,6 +78,22 @@ public:
 protected:
     uint32_t _getMipmapCount(bool mipmap);
     
+    wgpu::ImageCopyBuffer
+    _createImageCopyBuffer(wgpu::Buffer buffer,
+                           uint64_t offset,
+                           uint32_t bytesPerRow,
+                           uint32_t rowsPerImage = wgpu::kCopyStrideUndefined);
+    
+    wgpu::ImageCopyTexture
+    _createImageCopyTexture(uint32_t level,
+                            wgpu::Origin3D origin,
+                            wgpu::TextureAspect aspect = wgpu::TextureAspect::All);
+    
+    wgpu::TextureDataLayout
+    _createTextureDataLayout(uint64_t offset,
+                             uint32_t bytesPerRow,
+                             uint32_t rowsPerImage = wgpu::kCopyStrideUndefined);
+    
     wgpu::Device& _device;
     wgpu::Texture _nativeTexture;
     wgpu::Sampler _nativeSampler;

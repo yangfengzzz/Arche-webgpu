@@ -5,17 +5,20 @@
 //  property of any third parties.
 
 #include "sampled_texture2d.h"
+#include <vector>
 
 namespace vox {
 SampledTexture2D::SampledTexture2D(wgpu::Device& device,
                                    uint32_t width,
                                    uint32_t height,
                                    wgpu::TextureFormat format,
+                                   wgpu::TextureUsage usage,
                                    bool mipmap):
 SampledTexture(device) {
     _textureDesc.size.width = width;
     _textureDesc.size.height = height;
     _textureDesc.format = format;
+    _textureDesc.usage = usage;
     _textureDesc.mipLevelCount = _getMipmapCount(mipmap);
     _nativeTexture = device.CreateTexture(&_textureDesc);
     
@@ -24,5 +27,26 @@ SampledTexture(device) {
     setAddressModeU(wgpu::AddressMode::Repeat);
     setAddressModeV(wgpu::AddressMode::Repeat);
 }
+
+void SampledTexture2D::setPixelBuffer(std::vector<uint8_t>& data,
+                                      uint32_t width,
+                                      uint32_t height) {
+    wgpu::BufferDescriptor descriptor;
+    descriptor.size = data.size();
+    descriptor.usage = wgpu::BufferUsage::CopySrc | wgpu::BufferUsage::CopyDst;
+    wgpu::Buffer stagingBuffer = _device.CreateBuffer(&descriptor);
+    _device.GetQueue().WriteBuffer(stagingBuffer, 0, data.data(), data.size());
+    
+    wgpu::ImageCopyBuffer imageCopyBuffer = _createImageCopyBuffer(stagingBuffer, 0, 4 * 1024);
+    wgpu::ImageCopyTexture imageCopyTexture = _createImageCopyTexture(0, {0, 0, 0});
+    wgpu::Extent3D copySize = {width, height, 1};
+    
+    wgpu::CommandEncoder encoder = _device.CreateCommandEncoder();
+    encoder.CopyBufferToTexture(&imageCopyBuffer, &imageCopyTexture, &copySize);
+    
+    wgpu::CommandBuffer copy = encoder.Finish();
+    _device.GetQueue().Submit(1, &copy);
+}
+
 
 }

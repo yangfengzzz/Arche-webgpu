@@ -15,6 +15,8 @@
 #include "image/astc.h"
 #include "image/ktx_image.h"
 
+#include "texture/sampled_texture2d.h"
+
 namespace vox {
 Image::Image(std::vector<uint8_t> &&d, std::vector<Mipmap> &&m) :
 _data{std::move(d)},
@@ -50,6 +52,15 @@ const std::vector<Mipmap> &Image::mipmaps() const {
 const std::vector<std::vector<uint64_t>> &Image::offsets() const {
     return _offsets;
 }
+
+std::shared_ptr<SampledTexture2D> Image::createSampledTexture(wgpu::Device &device, wgpu::TextureUsage usage) {
+    auto sampledTex = std::make_shared<SampledTexture2D>(device, _mipmaps.at(0).extent.width,
+                                                         _mipmaps.at(0).extent.height, _format, usage,
+                                                         _mipmaps.size() > 1? true:false);
+    sampledTex->setPixelBuffer(data(), _mipmaps.at(0).extent.width, _mipmaps.at(0).extent.height);
+    return sampledTex;
+}
+
 
 Mipmap &Image::mipmap(const size_t index) {
     return _mipmaps.at(index);

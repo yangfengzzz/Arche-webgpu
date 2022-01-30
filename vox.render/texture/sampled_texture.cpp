@@ -90,4 +90,39 @@ void SampledTexture::setAnisoLevel(uint16_t value) {
     _isDirty = true;
 }
 
+//MARK: - Helper
+wgpu::ImageCopyBuffer SampledTexture::_createImageCopyBuffer(wgpu::Buffer buffer,
+                                                             uint64_t offset,
+                                                             uint32_t bytesPerRow,
+                                                             uint32_t rowsPerImage) {
+    wgpu::ImageCopyBuffer imageCopyBuffer = {};
+    imageCopyBuffer.buffer = buffer;
+    imageCopyBuffer.layout = _createTextureDataLayout(offset, bytesPerRow, rowsPerImage);
+    
+    return imageCopyBuffer;
+}
+
+wgpu::ImageCopyTexture SampledTexture::_createImageCopyTexture(uint32_t mipLevel,
+                                                               wgpu::Origin3D origin,
+                                                               wgpu::TextureAspect aspect) {
+    wgpu::ImageCopyTexture imageCopyTexture;
+    imageCopyTexture.texture = _nativeTexture;
+    imageCopyTexture.mipLevel = mipLevel;
+    imageCopyTexture.origin = origin;
+    imageCopyTexture.aspect = aspect;
+    
+    return imageCopyTexture;
+}
+
+wgpu::TextureDataLayout SampledTexture::_createTextureDataLayout(uint64_t offset,
+                                                                 uint32_t bytesPerRow,
+                                                                 uint32_t rowsPerImage) {
+    wgpu::TextureDataLayout textureDataLayout;
+    textureDataLayout.offset = offset;
+    textureDataLayout.bytesPerRow = bytesPerRow;
+    textureDataLayout.rowsPerImage = rowsPerImage;
+    
+    return textureDataLayout;
+}
+
 }
