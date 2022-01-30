@@ -13,6 +13,8 @@
 #include <stb_image_resize.h>
 
 #include "image/stb.h"
+#include "image/astc.h"
+#include "image/ktx_image.h"
 
 namespace vox {
 Image::Image(std::vector<uint8_t> &&d, std::vector<Mipmap> &&m) :
@@ -142,6 +144,12 @@ std::unique_ptr<Image> Image::load(const std::string &uri) {
     auto extension = fs::extraExtension(uri);
     if (extension == "png" || extension == "jpg") {
         image = std::make_unique<Stb>(data);
+    } else if (extension == "astc") {
+        image = std::make_unique<Astc>(data);
+    } else if (extension == "ktx") {
+        image = std::make_unique<Ktx>(data);
+    } else if (extension == "ktx2") {
+        image = std::make_unique<Ktx>(data);
     }
     return image;
 }

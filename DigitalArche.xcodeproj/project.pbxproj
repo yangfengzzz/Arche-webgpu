@@ -203,6 +203,10 @@
 		047BF01D27A65E7F003F3599 /* stb.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF01B27A65E7F003F3599 /* stb.h */; };
 		047BF02027A66084003F3599 /* filesystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF01E27A66084003F3599 /* filesystem.cpp */; };
 		047BF02127A66084003F3599 /* filesystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF01F27A66084003F3599 /* filesystem.h */; };
+		047BF02427A66590003F3599 /* ktx_image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF02227A66590003F3599 /* ktx_image.cpp */; };
+		047BF02527A66590003F3599 /* ktx_image.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF02327A66590003F3599 /* ktx_image.h */; };
+		047BF02827A6659E003F3599 /* astc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF02627A6659E003F3599 /* astc.cpp */; };
+		047BF02927A6659E003F3599 /* astc.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF02727A6659E003F3599 /* astc.h */; };
 		0495463B279F89E500783C84 /* shader_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954634279F89E400783C84 /* shader_data.h */; };
 		0495463C279F89E500783C84 /* shader_property.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954635279F89E400783C84 /* shader_property.h */; };
 		0495463D279F89E500783C84 /* shader_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954636279F89E400783C84 /* shader_data.cpp */; };
@@ -562,6 +566,10 @@
 		047BF01B27A65E7F003F3599 /* stb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stb.h; sourceTree = "<group>"; };
 		047BF01E27A66084003F3599 /* filesystem.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = filesystem.cpp; sourceTree = "<group>"; };
 		047BF01F27A66084003F3599 /* filesystem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = filesystem.h; sourceTree = "<group>"; };
+		047BF02227A66590003F3599 /* ktx_image.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ktx_image.cpp; sourceTree = "<group>"; };
+		047BF02327A66590003F3599 /* ktx_image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ktx_image.h; sourceTree = "<group>"; };
+		047BF02627A6659E003F3599 /* astc.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = astc.cpp; sourceTree = "<group>"; };
+		047BF02727A6659E003F3599 /* astc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = astc.h; sourceTree = "<group>"; };
 		04954634279F89E400783C84 /* shader_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_data.h; sourceTree = "<group>"; };
 		04954635279F89E400783C84 /* shader_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_property.h; sourceTree = "<group>"; };
 		04954636279F89E400783C84 /* shader_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader_data.cpp; sourceTree = "<group>"; };
@@ -1096,6 +1104,10 @@
 				047BF01627A640A3003F3599 /* image.cpp */,
 				047BF01B27A65E7F003F3599 /* stb.h */,
 				047BF01A27A65E7F003F3599 /* stb.cpp */,
+				047BF02727A6659E003F3599 /* astc.h */,
+				047BF02627A6659E003F3599 /* astc.cpp */,
+				047BF02327A66590003F3599 /* ktx_image.h */,
+				047BF02227A66590003F3599 /* ktx_image.cpp */,
 			);
 			path = image;
 			sourceTree = "<group>";
@@ -1393,6 +1405,7 @@
 				0495464C279F8A8700783C84 /* render_queue_type.h in Headers */,
 				049546FB279FC9B400783C84 /* graphics_application.h in Headers */,
 				0495471027A14FA800783C84 /* shader_program.h in Headers */,
+				047BF02527A66590003F3599 /* ktx_image.h in Headers */,
 				04128447279ED3A60071BD86 /* engine.h in Headers */,
 				04954700279FCD1100783C84 /* forward_application.h in Headers */,
 				0495474B27A2669600783C84 /* mesh.h in Headers */,
@@ -1417,6 +1430,7 @@
 				047BEFEB27A54561003F3599 /* wgsl_uv_share.h in Headers */,
 				047BF00827A56434003F3599 /* wgsl_unlit.h in Headers */,
 				04954641279F89E500783C84 /* shader.h in Headers */,
+				047BF02927A6659E003F3599 /* astc.h in Headers */,
 				049546EE279FC74800783C84 /* render_pass.h in Headers */,
 				0495473A27A2564500783C84 /* pbr_specular_material.h in Headers */,
 				0412845B279ED4B10071BD86 /* imgui_impl_glfw.h in Headers */,
@@ -1695,6 +1709,7 @@
 				04128443279ED3A60071BD86 /* timer.cpp in Sources */,
 				0495468C279F8CD600783C84 /* component.cpp in Sources */,
 				04128445279ED3A60071BD86 /* glfw_window.cpp in Sources */,
+				047BF02427A66590003F3599 /* ktx_image.cpp in Sources */,
 				0495475C27A287CA00783C84 /* mesh_renderer.cpp in Sources */,
 				0495467A279F8CD600783C84 /* components_manager.cpp in Sources */,
 				0495474227A2640900783C84 /* index_buffer_binding.cpp in Sources */,
@@ -1712,6 +1727,7 @@
 				0495463D279F89E500783C84 /* shader_data.cpp in Sources */,
 				04128458279ED4B10071BD86 /* imgui_tables.cpp in Sources */,
 				0495475927A2868000783C84 /* primitive_mesh.cpp in Sources */,
+				047BF02827A6659E003F3599 /* astc.cpp in Sources */,
 				04954652279F8AE900783C84 /* base_material.cpp in Sources */,
 				049546ED279FC74800783C84 /* render_pass.cpp in Sources */,
 				047BEFFB27A56187003F3599 /* wgsl_uv_vert.cpp in Sources */,
@@ -1877,8 +1893,10 @@
 					./third_party/dawn/third_party/tint,
 					./third_party/fmt/include,
 					./third_party/stb,
-					third_party/tinyobj,
-					third_party/tinygltf,
+					./third_party/tinyobj,
+					./third_party/tinygltf,
+					./third_party/ktx/include,
+					./third_party/astc/Source,
 				);
 			};
 			name = Debug;
@@ -1919,6 +1937,8 @@
 					./third_party/stb,
 					./third_party/tinyobj,
 					./third_party/tinygltf,
+					./third_party/ktx/include,
+					./third_party/astc/Source,
 				);
 			};
 			name = Release;
@@ -2113,6 +2133,8 @@
 					./third_party/stb,
 					./third_party/tinyobj,
 					./third_party/tinygltf,
+					./third_party/ktx/include,
+					./third_party/astc/Source,
 				);
 				USE_HEADERMAP = NO;
 			};
@@ -2196,6 +2218,8 @@
 					./third_party/stb,
 					./third_party/tinyobj,
 					./third_party/tinygltf,
+					./third_party/ktx/include,
+					./third_party/astc/Source,
 				);
 				USE_HEADERMAP = NO;
 			};
