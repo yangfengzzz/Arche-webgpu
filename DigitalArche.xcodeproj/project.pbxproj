@@ -197,6 +197,10 @@
 		047BF00C27A56500003F3599 /* wgsl_cache.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF00A27A56500003F3599 /* wgsl_cache.h */; };
 		047BF01327A58872003F3599 /* wgsl_reflect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF01127A58872003F3599 /* wgsl_reflect.cpp */; };
 		047BF01427A58872003F3599 /* wgsl_reflect.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF01227A58872003F3599 /* wgsl_reflect.h */; };
+		047BF01827A640A3003F3599 /* image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF01627A640A3003F3599 /* image.cpp */; };
+		047BF01927A640A3003F3599 /* image.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF01727A640A3003F3599 /* image.h */; };
+		047BF01C27A65E7F003F3599 /* stb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF01A27A65E7F003F3599 /* stb.cpp */; };
+		047BF01D27A65E7F003F3599 /* stb.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF01B27A65E7F003F3599 /* stb.h */; };
 		0495463B279F89E500783C84 /* shader_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954634279F89E400783C84 /* shader_data.h */; };
 		0495463C279F89E500783C84 /* shader_property.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954635279F89E400783C84 /* shader_property.h */; };
 		0495463D279F89E500783C84 /* shader_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954636279F89E400783C84 /* shader_data.cpp */; };
@@ -550,6 +554,10 @@
 		047BF00A27A56500003F3599 /* wgsl_cache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_cache.h; sourceTree = "<group>"; };
 		047BF01127A58872003F3599 /* wgsl_reflect.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_reflect.cpp; sourceTree = "<group>"; };
 		047BF01227A58872003F3599 /* wgsl_reflect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_reflect.h; sourceTree = "<group>"; };
+		047BF01627A640A3003F3599 /* image.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = image.cpp; sourceTree = "<group>"; };
+		047BF01727A640A3003F3599 /* image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = image.h; sourceTree = "<group>"; };
+		047BF01A27A65E7F003F3599 /* stb.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = stb.cpp; sourceTree = "<group>"; };
+		047BF01B27A65E7F003F3599 /* stb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stb.h; sourceTree = "<group>"; };
 		04954634279F89E400783C84 /* shader_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_data.h; sourceTree = "<group>"; };
 		04954635279F89E400783C84 /* shader_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_property.h; sourceTree = "<group>"; };
 		04954636279F89E400783C84 /* shader_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader_data.cpp; sourceTree = "<group>"; };
@@ -901,6 +909,7 @@
 				0495471627A231F400783C84 /* shaderlib */,
 				04954642279F8A4400783C84 /* material */,
 				0495472127A23CC800783C84 /* texture */,
+				047BF01527A6407D003F3599 /* image */,
 				0495473B27A25A7D00783C84 /* graphics */,
 				0495474C27A2712F00783C84 /* mesh */,
 				0495465F279F8CBF00783C84 /* background.h */,
@@ -1072,6 +1081,17 @@
 			children = (
 			);
 			name = define;
+			sourceTree = "<group>";
+		};
+		047BF01527A6407D003F3599 /* image */ = {
+			isa = PBXGroup;
+			children = (
+				047BF01727A640A3003F3599 /* image.h */,
+				047BF01627A640A3003F3599 /* image.cpp */,
+				047BF01B27A65E7F003F3599 /* stb.h */,
+				047BF01A27A65E7F003F3599 /* stb.cpp */,
+			);
+			path = image;
 			sourceTree = "<group>";
 		};
 		04954642279F8A4400783C84 /* material */ = {
@@ -1414,6 +1434,7 @@
 				047BEFE627A53FB8003F3599 /* wgsl_blend_shape_input.h in Headers */,
 				0495473627A24BE000783C84 /* pbr_material.h in Headers */,
 				0495468A279F8CD600783C84 /* script.h in Headers */,
+				047BF01D27A65E7F003F3599 /* stb.h in Headers */,
 				04954708279FCD3C00783C84 /* orbit_control.h in Headers */,
 				0412845C279ED4B10071BD86 /* imstb_truetype.h in Headers */,
 				0412844A279ED3A60071BD86 /* unix_engine.h in Headers */,
@@ -1421,6 +1442,7 @@
 				047BEFDB27A4DB63003F3599 /* wgsl_encoder.h in Headers */,
 				04954684279F8CD600783C84 /* scene_forward.h in Headers */,
 				0495467E279F8CD600783C84 /* update_flag.h in Headers */,
+				047BF01927A640A3003F3599 /* image.h in Headers */,
 				0495470A279FCD3C00783C84 /* spherical.h in Headers */,
 				0412847A279EEEEC0071BD86 /* render_state.h in Headers */,
 				04954692279F8D5E00783C84 /* render_element.h in Headers */,
@@ -1634,6 +1656,7 @@
 				04128471279EED090071BD86 /* stencil_state.cpp in Sources */,
 				047BF00B27A56500003F3599 /* wgsl_cache.cpp in Sources */,
 				047BEFF227A5519C003F3599 /* wgsl_blend_shape_vert.cpp in Sources */,
+				047BF01C27A65E7F003F3599 /* stb.cpp in Sources */,
 				049546E4279FA7D800783C84 /* backend_binding.cpp in Sources */,
 				0495467B279F8CD600783C84 /* entity.cpp in Sources */,
 				047BEFE527A53FB8003F3599 /* wgsl_blend_shape_input.cpp in Sources */,
@@ -1693,6 +1716,7 @@
 				0495467D279F8CD600783C84 /* update_flag_manager.cpp in Sources */,
 				04128448279ED3A60071BD86 /* input_events.cpp in Sources */,
 				0412845D279ED4B10071BD86 /* imgui.cpp in Sources */,
+				047BF01827A640A3003F3599 /* image.cpp in Sources */,
 				04954687279F8CD600783C84 /* camera.cpp in Sources */,
 				04128463279ED4B10071BD86 /* imgui_impl_glfw.cpp in Sources */,
 			);
@@ -1844,6 +1868,7 @@
 					./third_party/dawn/third_party/tint/include,
 					./third_party/dawn/third_party/tint,
 					./third_party/fmt/include,
+					./third_party/stb,
 				);
 			};
 			name = Debug;
@@ -1881,6 +1906,7 @@
 					./third_party/dawn/third_party/tint/include,
 					./third_party/dawn/third_party/tint,
 					./third_party/fmt/include,
+					./third_party/stb,
 				);
 			};
 			name = Release;
@@ -2072,6 +2098,7 @@
 					./third_party/dawn/third_party/tint/include,
 					./third_party/dawn/third_party/tint,
 					./third_party/fmt/include,
+					./third_party/stb,
 				);
 				USE_HEADERMAP = NO;
 			};
@@ -2152,6 +2179,7 @@
 					./third_party/dawn/third_party/tint/include,
 					./third_party/dawn/third_party/tint,
 					./third_party/fmt/include,
+					./third_party/stb,
 				);
 				USE_HEADERMAP = NO;
 			};
