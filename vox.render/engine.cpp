@@ -16,6 +16,9 @@
 namespace vox {
 const uint32_t Engine::MIN_WINDOW_WIDTH = 420;
 const uint32_t Engine::MIN_WINDOW_HEIGHT = 320;
+std::vector<std::string> Engine::_arguments = {};
+std::string Engine::_externalStorageDirectory = "";
+std::string Engine::_tempDirectory = "";
 
 ExitCode Engine::initialize() {
     google::InitGoogleLogging("DigitalVox");
@@ -191,8 +194,25 @@ void Engine::setWindowProperties(const Window::OptionalProperties &properties) {
     _windowProperties.extent.height = properties.extent.height.has_value() ? properties.extent.height.value() : _windowProperties.extent.height;
 }
 
+const std::string &Engine::externalStorageDirectory() {
+    return _externalStorageDirectory;
+}
 
+const std::string &Engine::tempDirectory() {
+    return _tempDirectory;
+}
 
+void Engine::setArguments(const std::vector<std::string> &args) {
+    _arguments = args;
+}
+
+void Engine::setExternalStorageDirectory(const std::string &dir) {
+    _externalStorageDirectory = dir;
+}
+
+void Engine::setTempDirectory(const std::string &dir) {
+    _tempDirectory = dir;
+}
 
 
 }        // namespace vox

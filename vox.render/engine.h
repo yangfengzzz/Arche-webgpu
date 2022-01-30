@@ -85,9 +85,26 @@ public:
 public:
     void setWindowProperties(const Window::OptionalProperties &properties);
     
-    //    void on_post_draw(RenderView &view) const;
+    /**
+     * @brief Returns the working directory of the application set by the platform
+     * @returns The path to the working directory
+     */
+    static const std::string &externalStorageDirectory();
+    
+    /**
+     * @brief Returns the suitable directory for temporary files from the environment variables set in the system
+     * @returns The path to the temp folder on the system
+     */
+    static const std::string &tempDirectory();
+    
+    static void setArguments(const std::vector<std::string> &args);
+    
+    static void setExternalStorageDirectory(const std::string &dir);
+    
+    static void setTempDirectory(const std::string &dir);
     
     static const uint32_t MIN_WINDOW_WIDTH;
+    
     static const uint32_t MIN_WINDOW_HEIGHT;
     
 protected:
@@ -117,6 +134,13 @@ protected:
     
 private:
     Timer _timer;
+    
+    /// Static so can be set via JNI code in android_platform.cpp
+    static std::vector<std::string> _arguments;
+    
+    static std::string _externalStorageDirectory;
+    
+    static std::string _tempDirectory;
 };
 
 }        // namespace vox
