@@ -59,12 +59,12 @@ void WGSLUnlitFragment::_createShaderSource(size_t hash, const ShaderMacroCollec
     encoder.addUniformBinding("u_alphaCutoff", UniformType::F32);
     encoder.addInoutType("Output", 0, "finalColor", UniformType::Vec4f32);
     if (macros.contains(HAS_BASE_TEXTURE)) {
-        // TODO
+        encoder.addSampledTextureBinding("u_baseTexture", TextureType::Texture2Df32, "u_baseSampler", SamplerType::Sampler);
     }
     encoder.addEntry({{"in", "VertexOut"}}, {"out", "Output"},  [&](std::string &source){
         source += "var baseColor = u_baseColor;\n";
         if (macros.contains(HAS_BASE_TEXTURE)) {
-            source += "var textureColor = texture2D(u_baseTexture, v_uv);\n";
+            source += "var textureColor = textureSample(u_baseTexture, u_baseSampler, in.v_uv);\n";
             source += "baseColor *= textureColor;\n";
         }
         if (macros.contains(NEED_ALPHA_CUTOFF)) {

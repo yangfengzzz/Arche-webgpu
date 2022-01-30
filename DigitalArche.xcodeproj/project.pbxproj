@@ -207,6 +207,31 @@
 		047BF02527A66590003F3599 /* ktx_image.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF02327A66590003F3599 /* ktx_image.h */; };
 		047BF02827A6659E003F3599 /* astc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF02627A6659E003F3599 /* astc.cpp */; };
 		047BF02927A6659E003F3599 /* astc.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF02727A6659E003F3599 /* astc.h */; };
+		047BF06227A680C3003F3599 /* astc_image_load_store.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF03627A6801A003F3599 /* astc_image_load_store.cpp */; };
+		047BF06327A680CD003F3599 /* softfloat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF03127A6801A003F3599 /* softfloat.cpp */; };
+		047BF06627A68168003F3599 /* astc_stb_tga.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF06427A6815C003F3599 /* astc_stb_tga.cpp */; };
+		047BF06727A68190003F3599 /* astc_toplevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF03F27A6801B003F3599 /* astc_toplevel.cpp */; };
+		047BF06827A6819C003F3599 /* astc_color_unquantize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF04027A6801B003F3599 /* astc_color_unquantize.cpp */; };
+		047BF06927A6819C003F3599 /* astc_integer_sequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF04127A6801B003F3599 /* astc_integer_sequence.cpp */; };
+		047BF06A27A6819C003F3599 /* astc_pick_best_endpoint_format.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF04527A6801B003F3599 /* astc_pick_best_endpoint_format.cpp */; };
+		047BF06B27A6819C003F3599 /* astc_find_best_partitioning.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF02D27A6801A003F3599 /* astc_find_best_partitioning.cpp */; };
+		047BF06C27A6819C003F3599 /* astc_weight_align.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF02C27A6801A003F3599 /* astc_weight_align.cpp */; };
+		047BF06D27A6819C003F3599 /* astc_encoding_choice_error.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF04227A6801B003F3599 /* astc_encoding_choice_error.cpp */; };
+		047BF06E27A6819C003F3599 /* astc_ideal_endpoints_and_weights.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF02F27A6801A003F3599 /* astc_ideal_endpoints_and_weights.cpp */; };
+		047BF06F27A6819C003F3599 /* astc_quantization.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF03727A6801A003F3599 /* astc_quantization.cpp */; };
+		047BF07027A6819C003F3599 /* astc_partition_tables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF03D27A6801B003F3599 /* astc_partition_tables.cpp */; };
+		047BF07127A6819C003F3599 /* astc_color_quantize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF03B27A6801A003F3599 /* astc_color_quantize.cpp */; };
+		047BF07227A6819C003F3599 /* astc_symbolic_physical.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF03C27A6801B003F3599 /* astc_symbolic_physical.cpp */; };
+		047BF07327A6819C003F3599 /* astc_compress_symbolic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF03927A6801A003F3599 /* astc_compress_symbolic.cpp */; };
+		047BF07427A6819C003F3599 /* astc_ktx_dds.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF04327A6801B003F3599 /* astc_ktx_dds.cpp */; };
+		047BF07527A6819C003F3599 /* astc_compute_variance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF03227A6801A003F3599 /* astc_compute_variance.cpp */; };
+		047BF07627A6819C003F3599 /* astc_kmeans_partitioning.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF02E27A6801A003F3599 /* astc_kmeans_partitioning.cpp */; };
+		047BF07727A6819C003F3599 /* astc_block_sizes2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF03E27A6801B003F3599 /* astc_block_sizes2.cpp */; };
+		047BF07827A6819C003F3599 /* mathlib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF03327A6801A003F3599 /* mathlib.cpp */; };
+		047BF07927A6819C003F3599 /* astc_percentile_tables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF03527A6801A003F3599 /* astc_percentile_tables.cpp */; };
+		047BF07A27A6819C003F3599 /* astc_weight_quant_xfer_tables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF03427A6801A003F3599 /* astc_weight_quant_xfer_tables.cpp */; };
+		047BF07B27A6819C003F3599 /* astc_decompress_symbolic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF03827A6801A003F3599 /* astc_decompress_symbolic.cpp */; };
+		047BF07C27A6819C003F3599 /* astc_averages_and_directions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF03A27A6801A003F3599 /* astc_averages_and_directions.cpp */; };
 		0495463B279F89E500783C84 /* shader_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954634279F89E400783C84 /* shader_data.h */; };
 		0495463C279F89E500783C84 /* shader_property.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954635279F89E400783C84 /* shader_property.h */; };
 		0495463D279F89E500783C84 /* shader_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954636279F89E400783C84 /* shader_data.cpp */; };
@@ -570,6 +595,31 @@
 		047BF02327A66590003F3599 /* ktx_image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ktx_image.h; sourceTree = "<group>"; };
 		047BF02627A6659E003F3599 /* astc.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = astc.cpp; sourceTree = "<group>"; };
 		047BF02727A6659E003F3599 /* astc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = astc.h; sourceTree = "<group>"; };
+		047BF02C27A6801A003F3599 /* astc_weight_align.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = astc_weight_align.cpp; sourceTree = "<group>"; };
+		047BF02D27A6801A003F3599 /* astc_find_best_partitioning.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = astc_find_best_partitioning.cpp; sourceTree = "<group>"; };
+		047BF02E27A6801A003F3599 /* astc_kmeans_partitioning.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = astc_kmeans_partitioning.cpp; sourceTree = "<group>"; };
+		047BF02F27A6801A003F3599 /* astc_ideal_endpoints_and_weights.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = astc_ideal_endpoints_and_weights.cpp; sourceTree = "<group>"; };
+		047BF03127A6801A003F3599 /* softfloat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = softfloat.cpp; sourceTree = "<group>"; };
+		047BF03227A6801A003F3599 /* astc_compute_variance.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = astc_compute_variance.cpp; sourceTree = "<group>"; };
+		047BF03327A6801A003F3599 /* mathlib.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mathlib.cpp; sourceTree = "<group>"; };
+		047BF03427A6801A003F3599 /* astc_weight_quant_xfer_tables.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = astc_weight_quant_xfer_tables.cpp; sourceTree = "<group>"; };
+		047BF03527A6801A003F3599 /* astc_percentile_tables.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = astc_percentile_tables.cpp; sourceTree = "<group>"; };
+		047BF03627A6801A003F3599 /* astc_image_load_store.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = astc_image_load_store.cpp; sourceTree = "<group>"; };
+		047BF03727A6801A003F3599 /* astc_quantization.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = astc_quantization.cpp; sourceTree = "<group>"; };
+		047BF03827A6801A003F3599 /* astc_decompress_symbolic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = astc_decompress_symbolic.cpp; sourceTree = "<group>"; };
+		047BF03927A6801A003F3599 /* astc_compress_symbolic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = astc_compress_symbolic.cpp; sourceTree = "<group>"; };
+		047BF03A27A6801A003F3599 /* astc_averages_and_directions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = astc_averages_and_directions.cpp; sourceTree = "<group>"; };
+		047BF03B27A6801A003F3599 /* astc_color_quantize.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = astc_color_quantize.cpp; sourceTree = "<group>"; };
+		047BF03C27A6801B003F3599 /* astc_symbolic_physical.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = astc_symbolic_physical.cpp; sourceTree = "<group>"; };
+		047BF03D27A6801B003F3599 /* astc_partition_tables.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = astc_partition_tables.cpp; sourceTree = "<group>"; };
+		047BF03E27A6801B003F3599 /* astc_block_sizes2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = astc_block_sizes2.cpp; sourceTree = "<group>"; };
+		047BF03F27A6801B003F3599 /* astc_toplevel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = astc_toplevel.cpp; sourceTree = "<group>"; };
+		047BF04027A6801B003F3599 /* astc_color_unquantize.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = astc_color_unquantize.cpp; sourceTree = "<group>"; };
+		047BF04127A6801B003F3599 /* astc_integer_sequence.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = astc_integer_sequence.cpp; sourceTree = "<group>"; };
+		047BF04227A6801B003F3599 /* astc_encoding_choice_error.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = astc_encoding_choice_error.cpp; sourceTree = "<group>"; };
+		047BF04327A6801B003F3599 /* astc_ktx_dds.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = astc_ktx_dds.cpp; sourceTree = "<group>"; };
+		047BF04527A6801B003F3599 /* astc_pick_best_endpoint_format.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = astc_pick_best_endpoint_format.cpp; sourceTree = "<group>"; };
+		047BF06427A6815C003F3599 /* astc_stb_tga.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = astc_stb_tga.cpp; sourceTree = "<group>"; };
 		04954634279F89E400783C84 /* shader_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_data.h; sourceTree = "<group>"; };
 		04954635279F89E400783C84 /* shader_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_property.h; sourceTree = "<group>"; };
 		04954636279F89E400783C84 /* shader_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader_data.cpp; sourceTree = "<group>"; };
@@ -1106,10 +1156,43 @@
 				047BF01A27A65E7F003F3599 /* stb.cpp */,
 				047BF02727A6659E003F3599 /* astc.h */,
 				047BF02627A6659E003F3599 /* astc.cpp */,
+				047BF02B27A67FF9003F3599 /* astc */,
 				047BF02327A66590003F3599 /* ktx_image.h */,
 				047BF02227A66590003F3599 /* ktx_image.cpp */,
 			);
 			path = image;
+			sourceTree = "<group>";
+		};
+		047BF02B27A67FF9003F3599 /* astc */ = {
+			isa = PBXGroup;
+			children = (
+				047BF06427A6815C003F3599 /* astc_stb_tga.cpp */,
+				047BF03A27A6801A003F3599 /* astc_averages_and_directions.cpp */,
+				047BF03E27A6801B003F3599 /* astc_block_sizes2.cpp */,
+				047BF03B27A6801A003F3599 /* astc_color_quantize.cpp */,
+				047BF04027A6801B003F3599 /* astc_color_unquantize.cpp */,
+				047BF03927A6801A003F3599 /* astc_compress_symbolic.cpp */,
+				047BF03227A6801A003F3599 /* astc_compute_variance.cpp */,
+				047BF03827A6801A003F3599 /* astc_decompress_symbolic.cpp */,
+				047BF04227A6801B003F3599 /* astc_encoding_choice_error.cpp */,
+				047BF02D27A6801A003F3599 /* astc_find_best_partitioning.cpp */,
+				047BF02F27A6801A003F3599 /* astc_ideal_endpoints_and_weights.cpp */,
+				047BF03627A6801A003F3599 /* astc_image_load_store.cpp */,
+				047BF04127A6801B003F3599 /* astc_integer_sequence.cpp */,
+				047BF02E27A6801A003F3599 /* astc_kmeans_partitioning.cpp */,
+				047BF04327A6801B003F3599 /* astc_ktx_dds.cpp */,
+				047BF03D27A6801B003F3599 /* astc_partition_tables.cpp */,
+				047BF03527A6801A003F3599 /* astc_percentile_tables.cpp */,
+				047BF04527A6801B003F3599 /* astc_pick_best_endpoint_format.cpp */,
+				047BF03727A6801A003F3599 /* astc_quantization.cpp */,
+				047BF03C27A6801B003F3599 /* astc_symbolic_physical.cpp */,
+				047BF03F27A6801B003F3599 /* astc_toplevel.cpp */,
+				047BF02C27A6801A003F3599 /* astc_weight_align.cpp */,
+				047BF03427A6801A003F3599 /* astc_weight_quant_xfer_tables.cpp */,
+				047BF03327A6801A003F3599 /* mathlib.cpp */,
+				047BF03127A6801A003F3599 /* softfloat.cpp */,
+			);
+			path = astc;
 			sourceTree = "<group>";
 		};
 		04954642279F8A4400783C84 /* material */ = {
@@ -1661,10 +1744,12 @@
 			files = (
 				047BEFFF27A56250003F3599 /* wgsl_position_vert.cpp in Sources */,
 				04128469279EDB2C0071BD86 /* blend_state.cpp in Sources */,
+				047BF07827A6819C003F3599 /* mathlib.cpp in Sources */,
 				0495474F27A2714200783C84 /* buffer_mesh.cpp in Sources */,
 				04954707279FCD3C00783C84 /* free_control.cpp in Sources */,
 				04954691279F8D5E00783C84 /* render_element.cpp in Sources */,
 				04128442279ED3A60071BD86 /* window.cpp in Sources */,
+				047BF06327A680CD003F3599 /* softfloat.cpp in Sources */,
 				0495473227A24A1300783C84 /* pbr_base_material.cpp in Sources */,
 				04128479279EEEEC0071BD86 /* render_state.cpp in Sources */,
 				049546FF279FCD1100783C84 /* forward_application.cpp in Sources */,
@@ -1675,17 +1760,25 @@
 				047BEFDD27A4E762003F3599 /* wgsl_common.cpp in Sources */,
 				049546E5279FA7D800783C84 /* metal_binding.mm in Sources */,
 				04128471279EED090071BD86 /* stencil_state.cpp in Sources */,
+				047BF07127A6819C003F3599 /* astc_color_quantize.cpp in Sources */,
+				047BF06D27A6819C003F3599 /* astc_encoding_choice_error.cpp in Sources */,
 				047BF00B27A56500003F3599 /* wgsl_cache.cpp in Sources */,
+				047BF07C27A6819C003F3599 /* astc_averages_and_directions.cpp in Sources */,
 				047BEFF227A5519C003F3599 /* wgsl_blend_shape_vert.cpp in Sources */,
+				047BF06E27A6819C003F3599 /* astc_ideal_endpoints_and_weights.cpp in Sources */,
 				047BF01C27A65E7F003F3599 /* stb.cpp in Sources */,
+				047BF07427A6819C003F3599 /* astc_ktx_dds.cpp in Sources */,
 				049546E4279FA7D800783C84 /* backend_binding.cpp in Sources */,
 				0495467B279F8CD600783C84 /* entity.cpp in Sources */,
+				047BF06227A680C3003F3599 /* astc_image_load_store.cpp in Sources */,
 				047BEFE527A53FB8003F3599 /* wgsl_blend_shape_input.cpp in Sources */,
 				049546F6279FC92B00783C84 /* forward_subpass.cpp in Sources */,
 				047BF00727A56434003F3599 /* wgsl_unlit.cpp in Sources */,
 				0495472A27A2453200783C84 /* unlit_material.cpp in Sources */,
 				0412846D279EEB8B0071BD86 /* raster_state.cpp in Sources */,
 				04128440279ED3A60071BD86 /* application.cpp in Sources */,
+				047BF06627A68168003F3599 /* astc_stb_tga.cpp in Sources */,
+				047BF06927A6819C003F3599 /* astc_integer_sequence.cpp in Sources */,
 				04128475279EEE760071BD86 /* depth_state.cpp in Sources */,
 				04128449279ED3A60071BD86 /* engine.cpp in Sources */,
 				04954686279F8CD600783C84 /* scene.cpp in Sources */,
@@ -1695,27 +1788,38 @@
 				0495478627A403C700783C84 /* wgsl.cpp in Sources */,
 				0495472827A2405400783C84 /* sampled_texture2d.cpp in Sources */,
 				047BF00327A562F4003F3599 /* wgsl_common.cpp in Sources */,
+				047BF07227A6819C003F3599 /* astc_symbolic_physical.cpp in Sources */,
 				04954646279F8A7D00783C84 /* material.cpp in Sources */,
 				047BEFF627A552B9003F3599 /* wgsl_skinning_vert.cpp in Sources */,
 				047BF02027A66084003F3599 /* filesystem.cpp in Sources */,
 				04128441279ED3A60071BD86 /* unix_engine.cpp in Sources */,
 				0495471E27A2396500783C84 /* shader_pool.cpp in Sources */,
 				04954682279F8CD600783C84 /* renderer.cpp in Sources */,
+				047BF07A27A6819C003F3599 /* astc_weight_quant_xfer_tables.cpp in Sources */,
 				0495473527A24BE000783C84 /* pbr_material.cpp in Sources */,
 				04954640279F89E500783C84 /* shader.cpp in Sources */,
+				047BF06727A68190003F3599 /* astc_toplevel.cpp in Sources */,
 				04954679279F8CD600783C84 /* transform.cpp in Sources */,
 				049546FA279FC9B400783C84 /* graphics_application.cpp in Sources */,
+				047BF06C27A6819C003F3599 /* astc_weight_align.cpp in Sources */,
 				0495472E27A2480000783C84 /* blinn_phong_material.cpp in Sources */,
+				047BF07727A6819C003F3599 /* astc_block_sizes2.cpp in Sources */,
+				047BF06F27A6819C003F3599 /* astc_quantization.cpp in Sources */,
 				04128443279ED3A60071BD86 /* timer.cpp in Sources */,
 				0495468C279F8CD600783C84 /* component.cpp in Sources */,
+				047BF07027A6819C003F3599 /* astc_partition_tables.cpp in Sources */,
+				047BF07B27A6819C003F3599 /* astc_decompress_symbolic.cpp in Sources */,
 				04128445279ED3A60071BD86 /* glfw_window.cpp in Sources */,
 				047BF02427A66590003F3599 /* ktx_image.cpp in Sources */,
 				0495475C27A287CA00783C84 /* mesh_renderer.cpp in Sources */,
 				0495467A279F8CD600783C84 /* components_manager.cpp in Sources */,
 				0495474227A2640900783C84 /* index_buffer_binding.cpp in Sources */,
+				047BF07327A6819C003F3599 /* astc_compress_symbolic.cpp in Sources */,
+				047BF06B27A6819C003F3599 /* astc_find_best_partitioning.cpp in Sources */,
 				047BF01327A58872003F3599 /* wgsl_reflect.cpp in Sources */,
 				0495474A27A2669600783C84 /* mesh.cpp in Sources */,
 				0495472427A23CE100783C84 /* sampled_texture.cpp in Sources */,
+				047BF07927A6819C003F3599 /* astc_percentile_tables.cpp in Sources */,
 				049546F1279FC75900783C84 /* subpass.cpp in Sources */,
 				04128461279ED4B10071BD86 /* imgui_draw.cpp in Sources */,
 				047BEFDA27A4DB63003F3599 /* wgsl_encoder.cpp in Sources */,
@@ -1727,16 +1831,20 @@
 				0495463D279F89E500783C84 /* shader_data.cpp in Sources */,
 				04128458279ED4B10071BD86 /* imgui_tables.cpp in Sources */,
 				0495475927A2868000783C84 /* primitive_mesh.cpp in Sources */,
+				047BF07627A6819C003F3599 /* astc_kmeans_partitioning.cpp in Sources */,
+				047BF06827A6819C003F3599 /* astc_color_unquantize.cpp in Sources */,
 				047BF02827A6659E003F3599 /* astc.cpp in Sources */,
 				04954652279F8AE900783C84 /* base_material.cpp in Sources */,
 				049546ED279FC74800783C84 /* render_pass.cpp in Sources */,
 				047BEFFB27A56187003F3599 /* wgsl_uv_vert.cpp in Sources */,
 				0495476C27A2C6C500783C84 /* resource_cache.cpp in Sources */,
+				047BF06A27A6819C003F3599 /* astc_pick_best_endpoint_format.cpp in Sources */,
 				0495475327A2750900783C84 /* model_mesh.cpp in Sources */,
 				04128459279ED4B10071BD86 /* imgui_widgets.cpp in Sources */,
 				04954683279F8CD600783C84 /* update_flag.cpp in Sources */,
 				04954709279FCD3C00783C84 /* orbit_control.cpp in Sources */,
 				0495473927A2564500783C84 /* pbr_specular_material.cpp in Sources */,
+				047BF07527A6819C003F3599 /* astc_compute_variance.cpp in Sources */,
 				0495467D279F8CD600783C84 /* update_flag_manager.cpp in Sources */,
 				04128448279ED3A60071BD86 /* input_events.cpp in Sources */,
 				0412845D279ED4B10071BD86 /* imgui.cpp in Sources */,
@@ -2073,7 +2181,10 @@
 					./vox.render,
 					./vox.math,
 				);
-				LD_RUNPATH_SEARCH_PATHS = ../third_party/glog/build;
+				LD_RUNPATH_SEARCH_PATHS = (
+					../third_party/glog/build,
+					../third_party/ktx/build,
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"./third_party/dawn/cmake-debug/src/common",
 					"./third_party/dawn/cmake-debug/src/dawn",
@@ -2090,6 +2201,7 @@
 					"./third_party/dawn/cmake-debug/examples",
 					./third_party/glog/build,
 					./third_party/fmt/build,
+					./third_party/ktx/build,
 				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
@@ -2119,6 +2231,7 @@
 					"-ldawn_native",
 					"-lglog",
 					"-lfmt",
+					"-lktx",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SYSTEM_HEADER_SEARCH_PATHS = (
@@ -2158,7 +2271,10 @@
 					./vox.render,
 					./vox.math,
 				);
-				LD_RUNPATH_SEARCH_PATHS = ../third_party/glog/build;
+				LD_RUNPATH_SEARCH_PATHS = (
+					../third_party/glog/build,
+					../third_party/ktx/build,
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"./third_party/dawn/cmake-release/src/common",
 					"./third_party/dawn/cmake-release/src/dawn",
@@ -2175,6 +2291,7 @@
 					"./third_party/dawn/cmake-release/examples",
 					./third_party/glog/build,
 					./third_party/fmt/build,
+					./third_party/ktx/build,
 				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
@@ -2204,6 +2321,7 @@
 					"-ldawn_native",
 					"-lglog",
 					"-lfmt",
+					"-lktx",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SYSTEM_HEADER_SEARCH_PATHS = (
