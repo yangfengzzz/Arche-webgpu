@@ -12,9 +12,10 @@
 namespace vox {
 class WGSLBlendShapeInput {
 public:
-    WGSLBlendShapeInput(const std::string& inputStructName, size_t counterIndex);
+    WGSLBlendShapeInput(const std::string& inputStructName);
     
-    void operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros);
+    void operator()(WGSLEncoder& encoder,
+                    const ShaderMacroCollection& macros, size_t counterIndex);
     
 private:
     std::string _inputStructName{};

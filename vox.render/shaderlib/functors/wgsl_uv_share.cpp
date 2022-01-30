@@ -9,13 +9,13 @@
 #include <fmt/core.h>
 
 namespace vox {
-WGSLUVShare::WGSLUVShare(const std::string& outputStructName, size_t counterIndex) :
-_outputStructName(outputStructName),
-_counterIndex(counterIndex) {
+WGSLUVShare::WGSLUVShare(const std::string& outputStructName) :
+_outputStructName(outputStructName) {
 }
 
-void WGSLUVShare::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros) {
-    encoder.addInoutType(_outputStructName, WGSLEncoder::getCounterNumber(_counterIndex),
+void WGSLUVShare::operator()(WGSLEncoder& encoder,
+                             const ShaderMacroCollection& macros, size_t counterIndex) {
+    encoder.addInoutType(_outputStructName, WGSLEncoder::getCounterNumber(counterIndex),
                          "v_uv", UniformType::Vec2f32);
 }
 
