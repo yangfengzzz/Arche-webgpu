@@ -11,6 +11,7 @@
 #include "material/unlit_material.h"
 #include "camera.h"
 #include "controls/orbit_control.h"
+#include "image/stb.h"
 
 namespace vox {
 namespace {
@@ -46,12 +47,15 @@ void PrimitiveApp::loadScene(uint32_t width, uint32_t height) {
     auto material = std::make_shared<UnlitMaterial>(_device);
     renderer->setMaterial(material);
     
-    auto sphereEntity = rootEntity->createChild();
-    sphereEntity->transform->setPosition(0, 5, 0);
-    sphereEntity->addComponent<MoveScript>();
-    auto sphereRenderer = sphereEntity->addComponent<MeshRenderer>();
-    sphereRenderer->setMesh(PrimitiveMesh::createSphere(_device, 1));
-    sphereRenderer->setMaterial(material);
+    auto planeEntity = rootEntity->createChild();
+    planeEntity->transform->setPosition(0, 5, 0);
+    auto planeRenderer = planeEntity->addComponent<MeshRenderer>();
+    planeRenderer->setMesh(PrimitiveMesh::createSphere(_device, 1));
+    auto texturedMaterial = std::make_shared<UnlitMaterial>(_device);
+    planeRenderer->setMaterial(texturedMaterial);
+    
+    auto texture = Image::load("../../wood.png")->createSampledTexture(_device);
+    texturedMaterial->setBaseTexture(texture);
 }
 
 }
