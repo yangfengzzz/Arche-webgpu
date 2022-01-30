@@ -45,8 +45,10 @@ public:
 private:
     ShaderProperty _metallicProp;
     ShaderProperty _roughnessProp;
-    ShaderProperty _metallicRoughnessTextureProp;
     
+    ShaderProperty _metallicRoughnessTextureProp;
+    ShaderProperty _metallicRoughnessSamplerProp;
+
     float _metallic = 1.f;
     float _roughness = 1.f;
     SampledTexture2DPtr _metallicRoughnessTexture{nullptr};

@@ -96,10 +96,17 @@ private:
     ShaderProperty _emissiveColorProp;
     
     ShaderProperty _baseTextureProp;
-    ShaderProperty _normalTextureProp;
-    ShaderProperty _emissiveTextureProp;
-    ShaderProperty _occlusionTextureProp;
+    ShaderProperty _baseSamplerProp;
     
+    ShaderProperty _normalTextureProp;
+    ShaderProperty _normalSamplerProp;
+
+    ShaderProperty _emissiveTextureProp;
+    ShaderProperty _emissiveSamplerProp;
+
+    ShaderProperty _occlusionTextureProp;
+    ShaderProperty _occlusionSamplerProp;
+
     Color _baseColor = Color(1, 1, 1, 1);
     SampledTexture2DPtr _baseTexture{nullptr};
     SampledTexture2DPtr _normalTexture{nullptr};

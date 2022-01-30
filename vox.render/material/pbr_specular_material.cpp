@@ -30,7 +30,8 @@ SampledTexture2DPtr PBRSpecularMaterial::specularGlossinessTexture() {
 
 void PBRSpecularMaterial::setSpecularGlossinessTexture(SampledTexture2DPtr newValue) {
     _specularGlossinessTexture = newValue;
-    shaderData.setData(PBRSpecularMaterial::_specularGlossinessTextureProp, newValue);
+    shaderData.setSampledTexture(PBRSpecularMaterial::_specularGlossinessTextureProp,
+                                 PBRSpecularMaterial::_specularGlossinessSamplerProp, newValue);
     if (newValue) {
         shaderData.enableMacro(HAS_SPECULARGLOSSINESSMAP);
     } else {
@@ -42,7 +43,8 @@ PBRSpecularMaterial::PBRSpecularMaterial(wgpu::Device& device) :
 PBRBaseMaterial(device),
 _glossinessProp(Shader::createProperty("u_glossiness", ShaderDataGroup::Material)),
 _specularColorProp(Shader::createProperty("u_specularColor", ShaderDataGroup::Material)),
-_specularGlossinessTextureProp(Shader::createProperty("_specularGlossinessTexture", ShaderDataGroup::Material)) {
+_specularGlossinessTextureProp(Shader::createProperty("_specularGlossinessTexture", ShaderDataGroup::Material)),
+_specularGlossinessSamplerProp(Shader::createProperty("_specularGlossinessSampler", ShaderDataGroup::Material)) {
     shaderData.setData(PBRSpecularMaterial::_specularColorProp, _specularColor);
     shaderData.setData(PBRSpecularMaterial::_glossinessProp, _glossiness);
 }

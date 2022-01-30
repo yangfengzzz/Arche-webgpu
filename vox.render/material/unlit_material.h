@@ -47,6 +47,7 @@ public:
 private:
     ShaderProperty _baseColorProp;
     ShaderProperty _baseTextureProp;
+    ShaderProperty _baseSamplerProp;
     ShaderProperty _tilingOffsetProp;
     
     Color _baseColor = Color(1, 1, 1, 1);

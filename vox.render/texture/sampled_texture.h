@@ -8,10 +8,13 @@
 #define sampled_texture_hpp
 
 #include <dawn/webgpu_cpp.h>
+#include <memory>
 
 namespace vox {
 class SampledTexture {
 public:
+    SampledTexture(wgpu::Device& device);
+    
     /**
      * The width of the texture.
      */
@@ -33,6 +36,8 @@ public:
     wgpu::TextureFormat format();
     
     wgpu::Texture& texture();
+    
+    wgpu::Sampler& sampler();
     
 public:
     /**
@@ -73,12 +78,14 @@ public:
 protected:
     uint32_t _getMipmapCount(bool mipmap);
     
+    wgpu::Device& _device;
     wgpu::Texture _nativeTexture;
     wgpu::Sampler _nativeSampler;
     wgpu::TextureDescriptor _textureDesc;
     wgpu::SamplerDescriptor _samplerDesc;
     bool _isDirty{false};
 };
+using SampledTexturePtr = std::shared_ptr<SampledTexture>;
 
 }
 

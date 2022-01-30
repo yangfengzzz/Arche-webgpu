@@ -46,7 +46,8 @@ private:
     ShaderProperty _glossinessProp;
     ShaderProperty _specularColorProp;
     ShaderProperty _specularGlossinessTextureProp;
-    
+    ShaderProperty _specularGlossinessSamplerProp;
+
     Color _specularColor = Color(1, 1, 1, 1);
     float _glossiness = 1.f;;
     SampledTexture2DPtr _specularGlossinessTexture{nullptr};

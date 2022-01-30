@@ -22,7 +22,8 @@ SampledTexture2DPtr PBRBaseMaterial::baseTexture() {
 
 void PBRBaseMaterial::setBaseTexture(SampledTexture2DPtr newValue) {
     _baseTexture = newValue;
-    shaderData.setData(PBRBaseMaterial::_baseTextureProp, newValue);
+    shaderData.setSampledTexture(PBRBaseMaterial::_baseTextureProp,
+                                 PBRBaseMaterial::_baseSamplerProp, newValue);
     if (newValue) {
         shaderData.enableMacro(HAS_BASE_COLORMAP);
     } else {
@@ -36,7 +37,8 @@ SampledTexture2DPtr PBRBaseMaterial::normalTexture() {
 
 void PBRBaseMaterial::setNormalTexture(SampledTexture2DPtr newValue) {
     _normalTexture = newValue;
-    shaderData.setData(PBRBaseMaterial::_normalTextureProp, newValue);
+    shaderData.setSampledTexture(PBRBaseMaterial::_normalTextureProp,
+                                 PBRBaseMaterial::_normalSamplerProp, newValue);
     if (newValue) {
         shaderData.enableMacro(HAS_NORMAL_TEXTURE);
     } else {
@@ -68,7 +70,8 @@ SampledTexture2DPtr PBRBaseMaterial::emissiveTexture() {
 
 void PBRBaseMaterial::setEmissiveTexture(SampledTexture2DPtr newValue) {
     _emissiveTexture = newValue;
-    shaderData.setData(PBRBaseMaterial::_emissiveTextureProp, newValue);
+    shaderData.setSampledTexture(PBRBaseMaterial::_emissiveTextureProp,
+                                 PBRBaseMaterial::_emissiveSamplerProp, newValue);
     if (newValue) {
         shaderData.enableMacro(HAS_EMISSIVEMAP);
     } else {
@@ -82,7 +85,8 @@ SampledTexture2DPtr PBRBaseMaterial::occlusionTexture() {
 
 void PBRBaseMaterial::setOcclusionTexture(SampledTexture2DPtr newValue) {
     _occlusionTexture = newValue;
-    shaderData.setData(PBRBaseMaterial::_occlusionTextureProp, newValue);
+    shaderData.setSampledTexture(PBRBaseMaterial::_occlusionTextureProp,
+                                 PBRBaseMaterial::_occlusionSamplerProp, newValue);
     if (newValue) {
         shaderData.enableMacro(HAS_OCCLUSIONMAP);
     } else {
@@ -115,10 +119,18 @@ _normalTextureIntensityProp(Shader::createProperty("u_normalIntensity", ShaderDa
 _occlusionTextureIntensityProp(Shader::createProperty("u_occlusionStrength", ShaderDataGroup::Material)),
 _baseColorProp(Shader::createProperty("u_baseColor", ShaderDataGroup::Material)),
 _emissiveColorProp(Shader::createProperty("u_emissiveColor", ShaderDataGroup::Material)),
+
 _baseTextureProp(Shader::createProperty("u_baseColorTexture", ShaderDataGroup::Material)),
+_baseSamplerProp(Shader::createProperty("u_baseColorSampler", ShaderDataGroup::Material)),
+
 _normalTextureProp(Shader::createProperty("u_normalTexture", ShaderDataGroup::Material)),
+_normalSamplerProp(Shader::createProperty("u_normalSampler", ShaderDataGroup::Material)),
+
 _emissiveTextureProp(Shader::createProperty("u_emissiveTexture", ShaderDataGroup::Material)),
-_occlusionTextureProp(Shader::createProperty("u_occlusionTexture", ShaderDataGroup::Material)) {
+_emissiveSamplerProp(Shader::createProperty("u_emissiveSampler", ShaderDataGroup::Material)),
+
+_occlusionTextureProp(Shader::createProperty("u_occlusionTexture", ShaderDataGroup::Material)),
+_occlusionSamplerProp(Shader::createProperty("u_occlusionSampler", ShaderDataGroup::Material)) {
     shaderData.enableMacro(NEED_WORLDPOS);
     shaderData.enableMacro(NEED_TILINGOFFSET);
     

@@ -8,7 +8,6 @@
 #define sampled_texture2D_hpp
 
 #include "sampled_texture.h"
-#include <memory>
 
 namespace vox {
 class SampledTexture2D : public SampledTexture {
@@ -26,11 +25,6 @@ public:
                      uint32_t height,
                      wgpu::TextureFormat format = wgpu::TextureFormat::RGBA8Sint,
                      bool mipmap = true);
-    
-    wgpu::Sampler& sampler();
-    
-private:
-    wgpu::Device& _device;
 };
 using SampledTexture2DPtr = std::shared_ptr<SampledTexture2D>;
 

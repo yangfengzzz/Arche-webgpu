@@ -31,7 +31,8 @@ SampledTexture2DPtr PBRMaterial::metallicRoughnessTexture() {
 
 void PBRMaterial::setMetallicRoughnessTexture(SampledTexture2DPtr newValue) {
     _metallicRoughnessTexture = newValue;
-    shaderData.setData(PBRMaterial::_metallicRoughnessTextureProp, newValue);
+    shaderData.setSampledTexture(PBRMaterial::_metallicRoughnessTextureProp,
+                                 PBRMaterial::_metallicRoughnessSamplerProp, newValue);
     if (newValue) {
         shaderData.enableMacro(HAS_METALROUGHNESSMAP);
     } else {
@@ -43,7 +44,8 @@ PBRMaterial::PBRMaterial(wgpu::Device& device) :
 PBRBaseMaterial(device),
 _metallicProp(Shader::createProperty("u_metal", ShaderDataGroup::Material)),
 _roughnessProp(Shader::createProperty("u_roughness", ShaderDataGroup::Material)),
-_metallicRoughnessTextureProp(Shader::createProperty("u_metallicRoughnessTexture", ShaderDataGroup::Material)) {
+_metallicRoughnessTextureProp(Shader::createProperty("u_metallicRoughnessTexture", ShaderDataGroup::Material)),
+_metallicRoughnessSamplerProp(Shader::createProperty("u_metallicRoughnessSampler", ShaderDataGroup::Material)) {
     shaderData.enableMacro(IS_METALLIC_WORKFLOW);
     shaderData.setData(PBRMaterial::_metallicProp, _metallic);
     shaderData.setData(PBRMaterial::_roughnessProp, _roughness);

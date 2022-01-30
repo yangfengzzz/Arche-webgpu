@@ -26,16 +26,65 @@ std::optional<Buffer> ShaderData::getData(const ShaderProperty &property) {
 }
 
 std::optional<Buffer> ShaderData::getData(uint32_t uniqueID) {
-    auto iter = _properties.find(uniqueID);
-    if (iter != _properties.end()) {
+    auto iter = _shaderBuffers.find(uniqueID);
+    if (iter != _shaderBuffers.end()) {
         return iter->second;
     } else {
         return std::nullopt;
     }
 }
 
-const std::unordered_map<uint32_t, Buffer> &ShaderData::properties() const {
-    return _properties;
+const std::unordered_map<uint32_t, Buffer> &ShaderData::shaderBuffers() const {
+    return _shaderBuffers;
+}
+
+//MARK: - Sampler&&Texture
+void ShaderData::setSampledTexture(const std::string &texture_name,
+                                   const std::string &sample_name,
+                                   const SampledTexturePtr& value) {
+    // Texture
+    {
+        auto property = Shader::getPropertyByName(texture_name);
+        if (property.has_value()) {
+            _shaderTextures[property->uniqueId] = value;
+        } else {
+            assert(false && "can't find property");
+        }
+    }
+    // Sampler
+    {
+        auto property = Shader::getPropertyByName(sample_name);
+        if (property.has_value()) {
+            _shaderSamplers[property->uniqueId] = value;
+        } else {
+            assert(false && "can't find property");
+        }
+    }
+}
+
+void ShaderData::setSampledTexture(const ShaderProperty &texture_prop,
+                                   const ShaderProperty &sample_prop,
+                                   const SampledTexturePtr& value) {
+    _shaderTextures[texture_prop.uniqueId] = value;
+    _shaderSamplers[sample_prop.uniqueId] = value;
+}
+
+wgpu::Texture& ShaderData::getTexture(uint32_t uniqueID) {
+    auto iter = _shaderTextures.find(uniqueID);
+    if (iter != _shaderTextures.end()) {
+        return iter->second->texture();
+    } else {
+        assert(false && "unkonwn uniqueID for texture");
+    }
+}
+
+wgpu::Sampler& ShaderData::getSampler(uint32_t uniqueID) {
+    auto iter = _shaderSamplers.find(uniqueID);
+    if (iter != _shaderSamplers.end()) {
+        return iter->second->sampler();
+    } else {
+        assert(false && "unkonwn uniqueID for sampler");
+    }
 }
 
 //MARK: - Macro

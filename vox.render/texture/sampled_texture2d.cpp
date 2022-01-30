@@ -12,7 +12,7 @@ SampledTexture2D::SampledTexture2D(wgpu::Device& device,
                                    uint32_t height,
                                    wgpu::TextureFormat format,
                                    bool mipmap):
-_device(device) {
+SampledTexture(device) {
     _textureDesc.size.width = width;
     _textureDesc.size.height = height;
     _textureDesc.format = format;
@@ -23,14 +23,6 @@ _device(device) {
     setMagFilterMode(wgpu::FilterMode::Linear);
     setAddressModeU(wgpu::AddressMode::Repeat);
     setAddressModeV(wgpu::AddressMode::Repeat);
-}
-
-wgpu::Sampler& SampledTexture2D::sampler() {
-    if (_isDirty) {
-        _nativeSampler = _device.CreateSampler(&_samplerDesc);
-        _isDirty = false;
-    }
-    return _nativeSampler;
 }
 
 }

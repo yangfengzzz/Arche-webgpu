@@ -99,9 +99,16 @@ private:
     ShaderProperty _normalIntensityProp;
     
     ShaderProperty _baseTextureProp;
+    ShaderProperty _baseSamplerProp;
+    
     ShaderProperty _specularTextureProp;
+    ShaderProperty _specularSamplerProp;
+    
     ShaderProperty _emissiveTextureProp;
+    ShaderProperty _emissiveSamplerProp;
+    
     ShaderProperty _normalTextureProp;
+    ShaderProperty _normalSamplerProp;
     
     Color _baseColor = Color(1, 1, 1, 1);
     SampledTexture2DPtr _baseTexture{nullptr};

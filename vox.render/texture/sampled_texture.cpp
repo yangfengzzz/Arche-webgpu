@@ -8,6 +8,10 @@
 #include <math.h>
 
 namespace vox {
+SampledTexture::SampledTexture(wgpu::Device& device):
+_device(device) {
+}
+
 float SampledTexture::width() {
     return _textureDesc.size.width;
 }
@@ -30,6 +34,14 @@ uint32_t SampledTexture::_getMipmapCount(bool mipmap) {
 
 wgpu::Texture& SampledTexture::texture() {
     return _nativeTexture;
+}
+
+wgpu::Sampler& SampledTexture::sampler() {
+    if (_isDirty) {
+        _nativeSampler = _device.CreateSampler(&_samplerDesc);
+        _isDirty = false;
+    }
+    return _nativeSampler;
 }
 
 //MARK: - Sampler
