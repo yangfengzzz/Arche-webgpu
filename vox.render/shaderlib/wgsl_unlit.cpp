@@ -65,7 +65,7 @@ void WGSLUnlitFragment::_createShaderSource(size_t hash, const ShaderMacroCollec
         source += "var baseColor = u_baseColor;\n";
         if (macros.contains(HAS_BASE_TEXTURE)) {
             source += "var textureColor = textureSample(u_baseTexture, u_baseSampler, in.v_uv);\n";
-            source += "baseColor *= textureColor;\n";
+            source += "baseColor = baseColor * textureColor;\n";
         }
         if (macros.contains(NEED_ALPHA_CUTOFF)) {
             source += "if( baseColor.a < u_alphaCutoff ) {\n";

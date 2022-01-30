@@ -24,7 +24,7 @@ public:
                      uint32_t width,
                      uint32_t height,
                      wgpu::TextureFormat format = wgpu::TextureFormat::RGBA8Sint,
-                     wgpu::TextureUsage usage = wgpu::TextureUsage::TextureBinding,
+                     wgpu::TextureUsage usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst,
                      bool mipmap = true);
     
     void setPixelBuffer(std::vector<uint8_t>& data,

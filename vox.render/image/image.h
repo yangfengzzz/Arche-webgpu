@@ -55,7 +55,7 @@ public:
 public:
     std::shared_ptr<SampledTexture2D>
     createSampledTexture(wgpu::Device &device,
-                         wgpu::TextureUsage usage = wgpu::TextureUsage::TextureBinding);
+                         wgpu::TextureUsage usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst);
     
 protected:
     std::vector<uint8_t> &data();

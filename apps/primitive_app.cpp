@@ -54,7 +54,7 @@ void PrimitiveApp::loadScene(uint32_t width, uint32_t height) {
     auto texturedMaterial = std::make_shared<UnlitMaterial>(_device);
     planeRenderer->setMaterial(texturedMaterial);
     
-    auto texture = Image::load("../../wood.png")->createSampledTexture(_device);
+    auto texture = Image::load("Textures/wood.png")->createSampledTexture(_device);
     texturedMaterial->setBaseTexture(texture);
 }
 
