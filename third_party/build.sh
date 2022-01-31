@@ -76,5 +76,20 @@ cmake ..
 make -j5
 cd ../..
 
+# fmt #####################################
+cd fmt
+mkdir build
+cd build
+cmake ..
+make -j5
+cd ../..
+
+# ktx #####################################
+cd ktx
+mkdir build
+cd build
+cmake ..
+make -j5
+cd ../..
 
 set +x
