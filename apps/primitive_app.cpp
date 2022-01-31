@@ -45,6 +45,7 @@ void PrimitiveApp::loadScene(uint32_t width, uint32_t height) {
     auto renderer = cubeEntity->addComponent<MeshRenderer>();
     renderer->setMesh(PrimitiveMesh::createCuboid(_device, 1));
     auto material = std::make_shared<UnlitMaterial>(_device);
+    material->setBaseColor(Color(0.4, 0.6, 0.6));
     renderer->setMaterial(material);
     
     auto planeEntity = rootEntity->createChild();

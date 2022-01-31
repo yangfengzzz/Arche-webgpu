@@ -80,7 +80,6 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
             
             auto bindGroupLayoutDescriptors = material->shader->bindGroupLayoutDescriptors(macros);
             std::vector<wgpu::BindGroupLayout> bindGroupLayouts;
-            std::vector<wgpu::BindGroup> bindGroups;
             for (auto& layoutDesc : bindGroupLayoutDescriptors) {
                 wgpu::BindGroupLayout bindGroupLayout = _pass->resourceCache().requestBindGroupLayout(layoutDesc.second);
                 _bindGroupEntries.clear();
