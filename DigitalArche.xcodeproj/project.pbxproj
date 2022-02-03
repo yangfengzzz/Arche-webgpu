@@ -240,6 +240,8 @@
 		047BF08827ABB8F7003F3599 /* wgsl_worldpos_share.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF08627ABB8F7003F3599 /* wgsl_worldpos_share.h */; };
 		047BF08B27ABB9AD003F3599 /* wgsl_begin_normal_vert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF08927ABB9AD003F3599 /* wgsl_begin_normal_vert.cpp */; };
 		047BF08C27ABB9AD003F3599 /* wgsl_begin_normal_vert.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF08A27ABB9AD003F3599 /* wgsl_begin_normal_vert.h */; };
+		047BF08F27ABBAF0003F3599 /* wgsl_color_vert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF08D27ABBAF0003F3599 /* wgsl_color_vert.cpp */; };
+		047BF09027ABBAF0003F3599 /* wgsl_color_vert.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF08E27ABBAF0003F3599 /* wgsl_color_vert.h */; };
 		0495463B279F89E500783C84 /* shader_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954634279F89E400783C84 /* shader_data.h */; };
 		0495463C279F89E500783C84 /* shader_property.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954635279F89E400783C84 /* shader_property.h */; };
 		0495463D279F89E500783C84 /* shader_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954636279F89E400783C84 /* shader_data.cpp */; };
@@ -636,6 +638,8 @@
 		047BF08627ABB8F7003F3599 /* wgsl_worldpos_share.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_worldpos_share.h; sourceTree = "<group>"; };
 		047BF08927ABB9AD003F3599 /* wgsl_begin_normal_vert.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_begin_normal_vert.cpp; sourceTree = "<group>"; };
 		047BF08A27ABB9AD003F3599 /* wgsl_begin_normal_vert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_begin_normal_vert.h; sourceTree = "<group>"; };
+		047BF08D27ABBAF0003F3599 /* wgsl_color_vert.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_color_vert.cpp; sourceTree = "<group>"; };
+		047BF08E27ABBAF0003F3599 /* wgsl_color_vert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_color_vert.h; sourceTree = "<group>"; };
 		04954634279F89E400783C84 /* shader_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_data.h; sourceTree = "<group>"; };
 		04954635279F89E400783C84 /* shader_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_property.h; sourceTree = "<group>"; };
 		04954636279F89E400783C84 /* shader_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader_data.cpp; sourceTree = "<group>"; };
@@ -1158,6 +1162,8 @@
 				047BEFF427A552B9003F3599 /* wgsl_skinning_vert.cpp */,
 				047BEFFA27A56187003F3599 /* wgsl_uv_vert.h */,
 				047BEFF927A56187003F3599 /* wgsl_uv_vert.cpp */,
+				047BF08E27ABBAF0003F3599 /* wgsl_color_vert.h */,
+				047BF08D27ABBAF0003F3599 /* wgsl_color_vert.cpp */,
 				047BEFFE27A56250003F3599 /* wgsl_position_vert.h */,
 				047BEFFD27A56250003F3599 /* wgsl_position_vert.cpp */,
 			);
@@ -1524,6 +1530,7 @@
 				0495475427A2750900783C84 /* model_mesh.h in Headers */,
 				04128476279EEE760071BD86 /* depth_state.h in Headers */,
 				0495463F279F89E500783C84 /* shader_data_group.h in Headers */,
+				047BF09027ABBAF0003F3599 /* wgsl_color_vert.h in Headers */,
 				0495472D27A2480000783C84 /* blinn_phong_material.h in Headers */,
 				0412843E279ED3A60071BD86 /* window.h in Headers */,
 				047BEFF327A5519C003F3599 /* wgsl_blend_shape_vert.h in Headers */,
@@ -1835,6 +1842,7 @@
 				047BF06C27A6819C003F3599 /* astc_weight_align.cpp in Sources */,
 				0495472E27A2480000783C84 /* blinn_phong_material.cpp in Sources */,
 				047BF07727A6819C003F3599 /* astc_block_sizes2.cpp in Sources */,
+				047BF08F27ABBAF0003F3599 /* wgsl_color_vert.cpp in Sources */,
 				047BF06F27A6819C003F3599 /* astc_quantization.cpp in Sources */,
 				04128443279ED3A60071BD86 /* timer.cpp in Sources */,
 				0495468C279F8CD600783C84 /* component.cpp in Sources */,
