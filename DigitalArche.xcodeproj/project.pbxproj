@@ -252,6 +252,8 @@
 		047BF0A027ABDA3A003F3599 /* wgsl_mobile_material_frag.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF09E27ABDA3A003F3599 /* wgsl_mobile_material_frag.h */; };
 		047BF0A327ABDD09003F3599 /* wgsl_light_frag_define.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF0A127ABDD09003F3599 /* wgsl_light_frag_define.cpp */; };
 		047BF0A427ABDD09003F3599 /* wgsl_light_frag_define.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF0A227ABDD09003F3599 /* wgsl_light_frag_define.h */; };
+		047BF0A727ABDFC8003F3599 /* wgsl_begin_mobile_frag.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF0A527ABDFC8003F3599 /* wgsl_begin_mobile_frag.cpp */; };
+		047BF0A827ABDFC8003F3599 /* wgsl_begin_mobile_frag.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF0A627ABDFC8003F3599 /* wgsl_begin_mobile_frag.h */; };
 		0495463B279F89E500783C84 /* shader_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954634279F89E400783C84 /* shader_data.h */; };
 		0495463C279F89E500783C84 /* shader_property.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954635279F89E400783C84 /* shader_property.h */; };
 		0495463D279F89E500783C84 /* shader_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954636279F89E400783C84 /* shader_data.cpp */; };
@@ -660,6 +662,8 @@
 		047BF09E27ABDA3A003F3599 /* wgsl_mobile_material_frag.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_mobile_material_frag.h; sourceTree = "<group>"; };
 		047BF0A127ABDD09003F3599 /* wgsl_light_frag_define.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_light_frag_define.cpp; sourceTree = "<group>"; };
 		047BF0A227ABDD09003F3599 /* wgsl_light_frag_define.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_light_frag_define.h; sourceTree = "<group>"; };
+		047BF0A527ABDFC8003F3599 /* wgsl_begin_mobile_frag.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_begin_mobile_frag.cpp; sourceTree = "<group>"; };
+		047BF0A627ABDFC8003F3599 /* wgsl_begin_mobile_frag.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_begin_mobile_frag.h; sourceTree = "<group>"; };
 		04954634279F89E400783C84 /* shader_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_data.h; sourceTree = "<group>"; };
 		04954635279F89E400783C84 /* shader_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_property.h; sourceTree = "<group>"; };
 		04954636279F89E400783C84 /* shader_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader_data.cpp; sourceTree = "<group>"; };
@@ -1196,6 +1200,8 @@
 				047BEFFD27A56250003F3599 /* wgsl_position_vert.cpp */,
 				047BF09627ABBEEA003F3599 /* wgsl_worldpos_vert.h */,
 				047BF09527ABBEEA003F3599 /* wgsl_worldpos_vert.cpp */,
+				047BF0A627ABDFC8003F3599 /* wgsl_begin_mobile_frag.h */,
+				047BF0A527ABDFC8003F3599 /* wgsl_begin_mobile_frag.cpp */,
 			);
 			path = functors;
 			sourceTree = "<group>";
@@ -1577,6 +1583,7 @@
 				047BF08827ABB8F7003F3599 /* wgsl_worldpos_share.h in Headers */,
 				049546F7279FC92B00783C84 /* forward_subpass.h in Headers */,
 				0495475827A2868000783C84 /* primitive_mesh.h in Headers */,
+				047BF0A827ABDFC8003F3599 /* wgsl_begin_mobile_frag.h in Headers */,
 				0495475D27A287CA00783C84 /* mesh_renderer.h in Headers */,
 				047BEFEB27A54561003F3599 /* wgsl_uv_share.h in Headers */,
 				047BF00827A56434003F3599 /* wgsl_unlit.h in Headers */,
@@ -1830,6 +1837,7 @@
 				0495470F27A14FA800783C84 /* shader_program.cpp in Sources */,
 				047BEFEA27A54561003F3599 /* wgsl_uv_share.cpp in Sources */,
 				047BEFDD27A4E762003F3599 /* wgsl_common.cpp in Sources */,
+				047BF0A727ABDFC8003F3599 /* wgsl_begin_mobile_frag.cpp in Sources */,
 				049546E5279FA7D800783C84 /* metal_binding.mm in Sources */,
 				04128471279EED090071BD86 /* stencil_state.cpp in Sources */,
 				047BF07127A6819C003F3599 /* astc_color_quantize.cpp in Sources */,
