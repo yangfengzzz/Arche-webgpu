@@ -17,8 +17,8 @@
 #include "scene_forward.h"
 #include "components_manager.h"
 //#include "physics/physics_manager.h"
-//#include "lighting/light_manager.h"
-//#include "lighting/ambient_light.h"
+#include "lighting/light_manager.h"
+#include "lighting/ambient_light.h"
 #include "shader/shader_data.h"
 #include "background.h"
 
@@ -34,7 +34,7 @@ public:
 //    physics::PhysicsManager _physicsManager;
     
     /** Light Manager */
-//    LightManager light_manager;
+    LightManager light_manager;
     
     /** The background of the scene. */
     Background background = Background();
@@ -53,7 +53,7 @@ public:
     /**
      * Ambient light.
      */
-//    AmbientLight &ambientLight();
+    AmbientLight &ambientLight();
     
     /**
      * Count of root entities.
@@ -122,45 +122,6 @@ public:
     
     void updateShaderData();
     
-public:
-    template<class T, class F>
-    inline void registerVertexUploader(F const &f) {
-        std::cout << "Register uploader for type "
-        << std::quoted(typeid(T).name()) << '\n';
-        _vertexUploader.insert(toAnyUploader<T>(f));
-    }
-    
-    template<class T, class F>
-    inline void registerFragmentUploader(F const &f) {
-        std::cout << "Register uploader for type "
-        << std::quoted(typeid(T).name()) << '\n';
-        _fragmentUploader.insert(toAnyUploader<T>(f));
-    }
-    
-    const std::unordered_map<std::type_index, std::function<void(std::any const &, size_t, wgpu::RenderPassEncoder&)>>&
-    vertexUploader();
-    
-    const std::unordered_map<std::type_index, std::function<void(std::any const &, size_t, wgpu::RenderPassEncoder&)>>&
-    fragmentUploader();
-    
-private:
-    template<class T, class F>
-    inline std::pair<const std::type_index, std::function<void(std::any const &, size_t, wgpu::RenderPassEncoder&)>>
-    toAnyUploader(F const &f) {
-        return {
-            std::type_index(typeid(T)),
-            [g = f](std::any const &a, size_t location, wgpu::RenderPassEncoder& encoder) {
-                if constexpr (std::is_void_v<T>)
-                    g();
-                else
-                    g(std::any_cast<T const &>(a), location, encoder);
-            }
-        };
-    }
-    
-    std::unordered_map<std::type_index, std::function<void(std::any const &, size_t, wgpu::RenderPassEncoder&)>> _vertexUploader{};
-    std::unordered_map<std::type_index, std::function<void(std::any const &, size_t, wgpu::RenderPassEncoder&)>> _fragmentUploader{};
-    
 private:
     void _processActive(bool active);
         
@@ -170,7 +131,7 @@ private:
     
     bool _destroyed = false;
     std::vector<EntityPtr> _rootEntities;
-//    AmbientLight _ambientLight;
+    AmbientLight _ambientLight;
     
     wgpu::Device &_device;
 };

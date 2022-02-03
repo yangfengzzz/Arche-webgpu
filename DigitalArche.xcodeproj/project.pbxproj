@@ -264,6 +264,15 @@
 		047BF0B827ABFE2F003F3599 /* wgsl_normal_get.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF0B627ABFE2F003F3599 /* wgsl_normal_get.h */; };
 		047BF0BC27AC086B003F3599 /* light.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF0BA27AC086B003F3599 /* light.cpp */; };
 		047BF0BD27AC086B003F3599 /* light.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF0BB27AC086B003F3599 /* light.h */; };
+		047BF0C027AC0D19003F3599 /* point_light.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF0BE27AC0D19003F3599 /* point_light.h */; };
+		047BF0C127AC0D19003F3599 /* point_light.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF0BF27AC0D19003F3599 /* point_light.cpp */; };
+		047BF0CB27AC0D59003F3599 /* ambient_light.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF0C327AC0D59003F3599 /* ambient_light.h */; };
+		047BF0CC27AC0D59003F3599 /* spot_light.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF0C427AC0D59003F3599 /* spot_light.h */; };
+		047BF0CD27AC0D59003F3599 /* direct_light.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF0C527AC0D59003F3599 /* direct_light.cpp */; };
+		047BF0CE27AC0D59003F3599 /* ambient_light.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF0C627AC0D59003F3599 /* ambient_light.cpp */; };
+		047BF0CF27AC0D59003F3599 /* direct_light.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF0C727AC0D59003F3599 /* direct_light.h */; };
+		047BF0D027AC0D59003F3599 /* light_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF0C827AC0D59003F3599 /* light_manager.h */; };
+		047BF0D127AC0D59003F3599 /* spot_light.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF0C927AC0D59003F3599 /* spot_light.cpp */; };
 		0495463B279F89E500783C84 /* shader_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954634279F89E400783C84 /* shader_data.h */; };
 		0495463C279F89E500783C84 /* shader_property.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954635279F89E400783C84 /* shader_property.h */; };
 		0495463D279F89E500783C84 /* shader_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954636279F89E400783C84 /* shader_data.cpp */; };
@@ -684,6 +693,16 @@
 		047BF0B627ABFE2F003F3599 /* wgsl_normal_get.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_normal_get.h; sourceTree = "<group>"; };
 		047BF0BA27AC086B003F3599 /* light.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = light.cpp; sourceTree = "<group>"; };
 		047BF0BB27AC086B003F3599 /* light.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = light.h; sourceTree = "<group>"; };
+		047BF0BE27AC0D19003F3599 /* point_light.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = point_light.h; sourceTree = "<group>"; };
+		047BF0BF27AC0D19003F3599 /* point_light.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = point_light.cpp; sourceTree = "<group>"; };
+		047BF0C227AC0D59003F3599 /* light_manager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = light_manager.cpp; sourceTree = "<group>"; };
+		047BF0C327AC0D59003F3599 /* ambient_light.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ambient_light.h; sourceTree = "<group>"; };
+		047BF0C427AC0D59003F3599 /* spot_light.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = spot_light.h; sourceTree = "<group>"; };
+		047BF0C527AC0D59003F3599 /* direct_light.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = direct_light.cpp; sourceTree = "<group>"; };
+		047BF0C627AC0D59003F3599 /* ambient_light.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ambient_light.cpp; sourceTree = "<group>"; };
+		047BF0C727AC0D59003F3599 /* direct_light.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = direct_light.h; sourceTree = "<group>"; };
+		047BF0C827AC0D59003F3599 /* light_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = light_manager.h; sourceTree = "<group>"; };
+		047BF0C927AC0D59003F3599 /* spot_light.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = spot_light.cpp; sourceTree = "<group>"; };
 		04954634279F89E400783C84 /* shader_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_data.h; sourceTree = "<group>"; };
 		04954635279F89E400783C84 /* shader_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_property.h; sourceTree = "<group>"; };
 		04954636279F89E400783C84 /* shader_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader_data.cpp; sourceTree = "<group>"; };
@@ -1291,8 +1310,18 @@
 		047BF0B927AC07FF003F3599 /* lighting */ = {
 			isa = PBXGroup;
 			children = (
+				047BF0C827AC0D59003F3599 /* light_manager.h */,
+				047BF0C227AC0D59003F3599 /* light_manager.cpp */,
 				047BF0BB27AC086B003F3599 /* light.h */,
 				047BF0BA27AC086B003F3599 /* light.cpp */,
+				047BF0C427AC0D59003F3599 /* spot_light.h */,
+				047BF0C927AC0D59003F3599 /* spot_light.cpp */,
+				047BF0BE27AC0D19003F3599 /* point_light.h */,
+				047BF0BF27AC0D19003F3599 /* point_light.cpp */,
+				047BF0C727AC0D59003F3599 /* direct_light.h */,
+				047BF0C527AC0D59003F3599 /* direct_light.cpp */,
+				047BF0C327AC0D59003F3599 /* ambient_light.h */,
+				047BF0C627AC0D59003F3599 /* ambient_light.cpp */,
 			);
 			path = lighting;
 			sourceTree = "<group>";
@@ -1600,6 +1629,7 @@
 				04128447279ED3A60071BD86 /* engine.h in Headers */,
 				047BF09827ABBEEA003F3599 /* wgsl_worldpos_vert.h in Headers */,
 				04954700279FCD1100783C84 /* forward_application.h in Headers */,
+				047BF0CC27AC0D59003F3599 /* spot_light.h in Headers */,
 				047BF09C27ABC04D003F3599 /* wgsl_common_frag.h in Headers */,
 				0495474B27A2669600783C84 /* mesh.h in Headers */,
 				0495470C279FCD3C00783C84 /* free_control.h in Headers */,
@@ -1609,6 +1639,7 @@
 				04128476279EEE760071BD86 /* depth_state.h in Headers */,
 				0495463F279F89E500783C84 /* shader_data_group.h in Headers */,
 				047BF09027ABBAF0003F3599 /* wgsl_color_vert.h in Headers */,
+				047BF0CF27AC0D59003F3599 /* direct_light.h in Headers */,
 				0495472D27A2480000783C84 /* blinn_phong_material.h in Headers */,
 				0412843E279ED3A60071BD86 /* window.h in Headers */,
 				047BEFF327A5519C003F3599 /* wgsl_blend_shape_vert.h in Headers */,
@@ -1636,6 +1667,7 @@
 				0495471427A15BEE00783C84 /* shader_macro_collection.h in Headers */,
 				049546DB279FA0F200783C84 /* render_context.h in Headers */,
 				0495476D27A2C6C500783C84 /* resource_cache.h in Headers */,
+				047BF0CB27AC0D59003F3599 /* ambient_light.h in Headers */,
 				0495472527A23CE100783C84 /* sampled_texture.h in Headers */,
 				04954654279F8AE900783C84 /* base_material.h in Headers */,
 				04128472279EED090071BD86 /* stencil_state.h in Headers */,
@@ -1647,12 +1679,14 @@
 				047BF00027A56250003F3599 /* wgsl_position_vert.h in Headers */,
 				047BF0BD27AC086B003F3599 /* light.h in Headers */,
 				04128446279ED3A60071BD86 /* timer.h in Headers */,
+				047BF0C027AC0D19003F3599 /* point_light.h in Headers */,
 				047BF00427A562F4003F3599 /* wgsl_common.h in Headers */,
 				047BF0AC27ABF9A3003F3599 /* wgsl_begin_viewdir_frag.h in Headers */,
 				0412845F279ED4B10071BD86 /* imstb_textedit.h in Headers */,
 				047BF0B427ABFCDC003F3599 /* wgsl_blinn_phong.h in Headers */,
 				0495473F27A25B1300783C84 /* buffer.h in Headers */,
 				047BF09427ABBBA3003F3599 /* wgsl_normal_vert.h in Headers */,
+				047BF0D027AC0D59003F3599 /* light_manager.h in Headers */,
 				047BEFE627A53FB8003F3599 /* wgsl_blend_shape_input.h in Headers */,
 				047BF02127A66084003F3599 /* filesystem.h in Headers */,
 				0495473627A24BE000783C84 /* pbr_material.h in Headers */,
@@ -1915,6 +1949,7 @@
 				0495478627A403C700783C84 /* wgsl.cpp in Sources */,
 				0495472827A2405400783C84 /* sampled_texture2d.cpp in Sources */,
 				047BF00327A562F4003F3599 /* wgsl_common.cpp in Sources */,
+				047BF0CE27AC0D59003F3599 /* ambient_light.cpp in Sources */,
 				047BF08727ABB8F7003F3599 /* wgsl_worldpos_share.cpp in Sources */,
 				047BF07227A6819C003F3599 /* astc_symbolic_physical.cpp in Sources */,
 				04954646279F8A7D00783C84 /* material.cpp in Sources */,
@@ -1927,6 +1962,7 @@
 				0495473527A24BE000783C84 /* pbr_material.cpp in Sources */,
 				04954640279F89E500783C84 /* shader.cpp in Sources */,
 				047BF06727A68190003F3599 /* astc_toplevel.cpp in Sources */,
+				047BF0C127AC0D19003F3599 /* point_light.cpp in Sources */,
 				04954679279F8CD600783C84 /* transform.cpp in Sources */,
 				049546FA279FC9B400783C84 /* graphics_application.cpp in Sources */,
 				047BF06C27A6819C003F3599 /* astc_weight_align.cpp in Sources */,
@@ -1940,6 +1976,7 @@
 				047BF07B27A6819C003F3599 /* astc_decompress_symbolic.cpp in Sources */,
 				04128445279ED3A60071BD86 /* glfw_window.cpp in Sources */,
 				047BF02427A66590003F3599 /* ktx_image.cpp in Sources */,
+				047BF0D127AC0D59003F3599 /* spot_light.cpp in Sources */,
 				0495475C27A287CA00783C84 /* mesh_renderer.cpp in Sources */,
 				0495467A279F8CD600783C84 /* components_manager.cpp in Sources */,
 				0495474227A2640900783C84 /* index_buffer_binding.cpp in Sources */,
@@ -1976,6 +2013,7 @@
 				0495475327A2750900783C84 /* model_mesh.cpp in Sources */,
 				04128459279ED4B10071BD86 /* imgui_widgets.cpp in Sources */,
 				04954683279F8CD600783C84 /* update_flag.cpp in Sources */,
+				047BF0CD27AC0D59003F3599 /* direct_light.cpp in Sources */,
 				04954709279FCD3C00783C84 /* orbit_control.cpp in Sources */,
 				0495473927A2564500783C84 /* pbr_specular_material.cpp in Sources */,
 				047BF07527A6819C003F3599 /* astc_compute_variance.cpp in Sources */,

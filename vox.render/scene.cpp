@@ -19,97 +19,17 @@
 namespace vox {
 Scene::Scene(wgpu::Device &device) :
 _device(device),
-shaderData(device) {
-//_ambientLight(this) {
-//    _vertexUploader = {
-//        toAnyUploader<int>([](const int &x, size_t location, wgpu::RenderPassEncoder& encoder) {
-//            encoder.setVertexBytes(&x, sizeof(int), location);
-//        }),
-//        toAnyUploader<float>([](const float &x, size_t location, wgpu::RenderPassEncoder& encoder) {
-//            encoder.setVertexBytes(&x, sizeof(float), location);
-//        }),
-//        toAnyUploader<Vector2F>([](const Vector2F &x, size_t location, wgpu::RenderPassEncoder& encoder) {
-//            encoder.setVertexBytes(&x, sizeof(Vector2F), location);
-//        }),
-//        toAnyUploader<Vector3F>([](const Vector3F &x, size_t location, wgpu::RenderPassEncoder& encoder) {
-//            encoder.setVertexBytes(&x, sizeof(Vector4F), location); // float3 simd is extented from float4
-//        }),
-//        toAnyUploader<Point3F>([](const Point3F &x, size_t location, wgpu::RenderPassEncoder& encoder) {
-//            encoder.setVertexBytes(&x, sizeof(Vector4F), location); // float3 simd is extented from float4
-//        }),
-//        toAnyUploader<Vector4F>([](const Vector4F &x, size_t location, wgpu::RenderPassEncoder& encoder) {
-//            encoder.setVertexBytes(&x, sizeof(Vector4F), location);
-//        }),
-//        toAnyUploader<Color>([](const Color &x, size_t location, wgpu::RenderPassEncoder& encoder) {
-//            encoder.setVertexBytes(&x, sizeof(Color), location);
-//        }),
-//        toAnyUploader<Matrix4x4F>([](const Matrix4x4F &x, size_t location, wgpu::RenderPassEncoder& encoder) {
-//            encoder.setVertexBytes(&x, sizeof(Matrix4x4F), location);
-//        }),
-//        toAnyUploader<std::shared_ptr<wgpu::Buffer>> ([](const std::shared_ptr<wgpu::Buffer> &x, size_t location,
-//                                                        wgpu::RenderPassEncoder& encoder) {
-//            encoder.setVertexBuffer(location, *x);
-//        }),
-//        toAnyUploader<std::shared_ptr<wgpu::Texture>>([](const std::shared_ptr<wgpu::Texture> &x, size_t location,
-//                                                        wgpu::RenderPassEncoder& encoder) {
-//            encoder.setVertexTexture(location, *x);
-//        }),
-//    };
-//
-//    _fragmentUploader = {
-//        toAnyUploader<int>([](const int &x, size_t location, wgpu::RenderPassEncoder& encoder) {
-//            encoder.setFragmentBytes(&x, sizeof(int), location);
-//        }),
-//        toAnyUploader<float>([](const float &x, size_t location, wgpu::RenderPassEncoder& encoder) {
-//            encoder.setFragmentBytes(&x, sizeof(float), location);
-//        }),
-//        toAnyUploader<Vector2F>([](const Vector2F &x, size_t location, wgpu::RenderPassEncoder& encoder) {
-//            encoder.setFragmentBytes(&x, sizeof(Vector2F), location);
-//        }),
-//        toAnyUploader<Vector3F>([](const Vector3F &x, size_t location, wgpu::RenderPassEncoder& encoder) {
-//            encoder.setFragmentBytes(&x, sizeof(Vector4F), location); // float3 simd is extented from float4
-//        }),
-//        toAnyUploader<Point3F>([](const Point3F &x, size_t location, wgpu::RenderPassEncoder& encoder) {
-//            encoder.setFragmentBytes(&x, sizeof(Vector4F), location); // float3 simd is extented from float4
-//        }),
-//        toAnyUploader<Vector4F>([](const Vector4F &x, size_t location, wgpu::RenderPassEncoder& encoder) {
-//            encoder.setFragmentBytes(&x, sizeof(Vector4F), location);
-//        }),
-//        toAnyUploader<Color>([](const Color &x, size_t location, wgpu::RenderPassEncoder& encoder) {
-//            encoder.setFragmentBytes(&x, sizeof(Color), location);
-//        }),
-//        toAnyUploader<Matrix4x4F>([](const Matrix4x4F &x, size_t location, wgpu::RenderPassEncoder& encoder) {
-//            encoder.setFragmentBytes(&x, sizeof(Matrix4x4F), location);
-//        }),
-//        toAnyUploader<std::shared_ptr<wgpu::Buffer>> ([](const std::shared_ptr<wgpu::Buffer> &x, size_t location,
-//                                                        wgpu::RenderPassEncoder& encoder) {
-//            encoder.setFragmentBuffer(*x, 0, location);
-//        }),
-//        toAnyUploader<std::shared_ptr<wgpu::Texture>>([](const std::shared_ptr<wgpu::Texture> &x, size_t location,
-//                                                        wgpu::RenderPassEncoder& encoder) {
-//            encoder.setFragmentTexture(*x, location);
-//        }),
-//    };
-//    _ambientLight.registerUploader(this);
+shaderData(device),
+_ambientLight(this) {
 }
 
 wgpu::Device &Scene::device() {
     return _device;
 }
 
-const std::unordered_map<std::type_index, std::function<void(std::any const &, size_t, wgpu::RenderPassEncoder&)>>&
-Scene::vertexUploader() {
-    return _vertexUploader;
+AmbientLight &Scene::ambientLight() {
+    return _ambientLight;
 }
-
-const std::unordered_map<std::type_index, std::function<void(std::any const &, size_t, wgpu::RenderPassEncoder&)>>&
-Scene::fragmentUploader() {
-    return _fragmentUploader;
-}
-
-//AmbientLight &Scene::ambientLight() {
-//    return _ambientLight;
-//}
 
 size_t Scene::rootEntitiesCount() {
     return _rootEntities.size();
@@ -233,7 +153,7 @@ void Scene::_removeEntity(EntityPtr entity) {
 //MARK: - Update Loop
 void Scene::updateShaderData() {
     // union scene and camera macro.
-//    light_manager.updateShaderData(_device, shaderData);
+    light_manager.updateShaderData(_device, shaderData);
     for (auto& camera : _activeCameras) {
         camera->updateShaderData();
     }
