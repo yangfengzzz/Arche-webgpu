@@ -258,6 +258,10 @@
 		047BF0AC27ABF9A3003F3599 /* wgsl_begin_viewdir_frag.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF0AA27ABF9A3003F3599 /* wgsl_begin_viewdir_frag.h */; };
 		047BF0AF27ABFA2A003F3599 /* wgsl_mobile_blinnphong_frag.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF0AD27ABFA2A003F3599 /* wgsl_mobile_blinnphong_frag.cpp */; };
 		047BF0B027ABFA2A003F3599 /* wgsl_mobile_blinnphong_frag.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF0AE27ABFA2A003F3599 /* wgsl_mobile_blinnphong_frag.h */; };
+		047BF0B327ABFCDC003F3599 /* wgsl_blinn_phong.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF0B127ABFCDC003F3599 /* wgsl_blinn_phong.cpp */; };
+		047BF0B427ABFCDC003F3599 /* wgsl_blinn_phong.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF0B227ABFCDC003F3599 /* wgsl_blinn_phong.h */; };
+		047BF0B727ABFE2F003F3599 /* wgsl_normal_get.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF0B527ABFE2F003F3599 /* wgsl_normal_get.cpp */; };
+		047BF0B827ABFE2F003F3599 /* wgsl_normal_get.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF0B627ABFE2F003F3599 /* wgsl_normal_get.h */; };
 		0495463B279F89E500783C84 /* shader_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954634279F89E400783C84 /* shader_data.h */; };
 		0495463C279F89E500783C84 /* shader_property.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954635279F89E400783C84 /* shader_property.h */; };
 		0495463D279F89E500783C84 /* shader_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954636279F89E400783C84 /* shader_data.cpp */; };
@@ -672,6 +676,10 @@
 		047BF0AA27ABF9A3003F3599 /* wgsl_begin_viewdir_frag.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_begin_viewdir_frag.h; sourceTree = "<group>"; };
 		047BF0AD27ABFA2A003F3599 /* wgsl_mobile_blinnphong_frag.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_mobile_blinnphong_frag.cpp; sourceTree = "<group>"; };
 		047BF0AE27ABFA2A003F3599 /* wgsl_mobile_blinnphong_frag.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_mobile_blinnphong_frag.h; sourceTree = "<group>"; };
+		047BF0B127ABFCDC003F3599 /* wgsl_blinn_phong.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_blinn_phong.cpp; sourceTree = "<group>"; };
+		047BF0B227ABFCDC003F3599 /* wgsl_blinn_phong.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_blinn_phong.h; sourceTree = "<group>"; };
+		047BF0B527ABFE2F003F3599 /* wgsl_normal_get.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_normal_get.cpp; sourceTree = "<group>"; };
+		047BF0B627ABFE2F003F3599 /* wgsl_normal_get.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_normal_get.h; sourceTree = "<group>"; };
 		04954634279F89E400783C84 /* shader_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_data.h; sourceTree = "<group>"; };
 		04954635279F89E400783C84 /* shader_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_property.h; sourceTree = "<group>"; };
 		04954636279F89E400783C84 /* shader_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader_data.cpp; sourceTree = "<group>"; };
@@ -1189,6 +1197,8 @@
 				047BF0A127ABDD09003F3599 /* wgsl_light_frag_define.cpp */,
 				047BF09E27ABDA3A003F3599 /* wgsl_mobile_material_frag.h */,
 				047BF09D27ABDA3A003F3599 /* wgsl_mobile_material_frag.cpp */,
+				047BF0B627ABFE2F003F3599 /* wgsl_normal_get.h */,
+				047BF0B527ABFE2F003F3599 /* wgsl_normal_get.cpp */,
 				047BEFF827A552C3003F3599 /* define */,
 				047BEFED27A54663003F3599 /* wgsl_begin_position_vert.h */,
 				047BEFEC27A54663003F3599 /* wgsl_begin_position_vert.cpp */,
@@ -1372,6 +1382,8 @@
 				047BF00927A56500003F3599 /* wgsl_cache.cpp */,
 				047BF00627A56434003F3599 /* wgsl_unlit.h */,
 				047BF00527A56434003F3599 /* wgsl_unlit.cpp */,
+				047BF0B227ABFCDC003F3599 /* wgsl_blinn_phong.h */,
+				047BF0B127ABFCDC003F3599 /* wgsl_blinn_phong.cpp */,
 			);
 			path = shaderlib;
 			sourceTree = "<group>";
@@ -1560,6 +1572,7 @@
 			files = (
 				0495464B279F8A8700783C84 /* render_face.h in Headers */,
 				047BF08027ABB6F3003F3599 /* wgsl_color_share.h in Headers */,
+				047BF0B827ABFE2F003F3599 /* wgsl_normal_get.h in Headers */,
 				0412845A279ED4B10071BD86 /* imgui.h in Headers */,
 				0495474727A2657700783C84 /* sub_mesh.h in Headers */,
 				047BF0A027ABDA3A003F3599 /* wgsl_mobile_material_frag.h in Headers */,
@@ -1622,6 +1635,7 @@
 				047BF00427A562F4003F3599 /* wgsl_common.h in Headers */,
 				047BF0AC27ABF9A3003F3599 /* wgsl_begin_viewdir_frag.h in Headers */,
 				0412845F279ED4B10071BD86 /* imstb_textedit.h in Headers */,
+				047BF0B427ABFCDC003F3599 /* wgsl_blinn_phong.h in Headers */,
 				0495473F27A25B1300783C84 /* buffer.h in Headers */,
 				047BF09427ABBBA3003F3599 /* wgsl_normal_vert.h in Headers */,
 				047BEFE627A53FB8003F3599 /* wgsl_blend_shape_input.h in Headers */,
@@ -1929,6 +1943,7 @@
 				047BF09F27ABDA3A003F3599 /* wgsl_mobile_material_frag.cpp in Sources */,
 				0495470B279FCD3C00783C84 /* spherical.cpp in Sources */,
 				049546DA279FA0F200783C84 /* render_context.cpp in Sources */,
+				047BF0B327ABFCDC003F3599 /* wgsl_blinn_phong.cpp in Sources */,
 				0495473E27A25B1300783C84 /* buffer.cpp in Sources */,
 				0495463D279F89E500783C84 /* shader_data.cpp in Sources */,
 				04128458279ED4B10071BD86 /* imgui_tables.cpp in Sources */,
@@ -1948,6 +1963,7 @@
 				04954709279FCD3C00783C84 /* orbit_control.cpp in Sources */,
 				0495473927A2564500783C84 /* pbr_specular_material.cpp in Sources */,
 				047BF07527A6819C003F3599 /* astc_compute_variance.cpp in Sources */,
+				047BF0B727ABFE2F003F3599 /* wgsl_normal_get.cpp in Sources */,
 				0495467D279F8CD600783C84 /* update_flag_manager.cpp in Sources */,
 				04128448279ED3A60071BD86 /* input_events.cpp in Sources */,
 				0412845D279ED4B10071BD86 /* imgui.cpp in Sources */,
