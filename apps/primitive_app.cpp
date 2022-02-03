@@ -9,6 +9,7 @@
 #include "mesh/primitive_mesh.h"
 #include "mesh/mesh_renderer.h"
 #include "material/unlit_material.h"
+#include "material/blinn_phong_material.h"
 #include "camera.h"
 #include "controls/orbit_control.h"
 #include "image/stb.h"
@@ -44,19 +45,19 @@ void PrimitiveApp::loadScene(uint32_t width, uint32_t height) {
     cubeEntity->addComponent<MoveScript>();
     auto renderer = cubeEntity->addComponent<MeshRenderer>();
     renderer->setMesh(PrimitiveMesh::createCuboid(_device, 1));
-    auto material = std::make_shared<UnlitMaterial>(_device);
+    auto material = std::make_shared<BlinnPhongMaterial>(_device);
     material->setBaseColor(Color(0.4, 0.6, 0.6));
     renderer->setMaterial(material);
     
-    auto planeEntity = rootEntity->createChild();
-    planeEntity->transform->setPosition(0, 5, 0);
-    auto planeRenderer = planeEntity->addComponent<MeshRenderer>();
-    planeRenderer->setMesh(PrimitiveMesh::createSphere(_device, 1));
-    auto texturedMaterial = std::make_shared<UnlitMaterial>(_device);
-    planeRenderer->setMaterial(texturedMaterial);
-    
-    auto texture = Image::load("Textures/wood.png")->createSampledTexture(_device);
-    texturedMaterial->setBaseTexture(texture);
+//    auto planeEntity = rootEntity->createChild();
+//    planeEntity->transform->setPosition(0, 5, 0);
+//    auto planeRenderer = planeEntity->addComponent<MeshRenderer>();
+//    planeRenderer->setMesh(PrimitiveMesh::createSphere(_device, 1));
+//    auto texturedMaterial = std::make_shared<UnlitMaterial>(_device);
+//    planeRenderer->setMaterial(texturedMaterial);
+//
+//    auto texture = Image::load("Textures/wood.png")->createSampledTexture(_device);
+//    texturedMaterial->setBaseTexture(texture);
 }
 
 }

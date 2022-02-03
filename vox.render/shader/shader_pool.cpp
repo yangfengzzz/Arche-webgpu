@@ -8,10 +8,12 @@
 #include "shader.h"
 
 #include "shaderlib/wgsl_unlit.h"
+#include "shaderlib/wgsl_blinn_phong.h"
 
 namespace vox {
 void ShaderPool::init() {
     Shader::create("unlit", std::make_unique<WGSLUnlitVertex>(), std::make_unique<WGSLUnlitFragment>());
+    Shader::create("blinn-phong", std::make_unique<WGSLBlinnPhongVertex>(), std::make_unique<WGSLBlinnPhongFragment>());
 }
 
 }
