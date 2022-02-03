@@ -244,6 +244,8 @@
 		047BF09027ABBAF0003F3599 /* wgsl_color_vert.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF08E27ABBAF0003F3599 /* wgsl_color_vert.h */; };
 		047BF09327ABBBA3003F3599 /* wgsl_normal_vert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF09127ABBBA3003F3599 /* wgsl_normal_vert.cpp */; };
 		047BF09427ABBBA3003F3599 /* wgsl_normal_vert.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF09227ABBBA3003F3599 /* wgsl_normal_vert.h */; };
+		047BF09727ABBEEA003F3599 /* wgsl_worldpos_vert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF09527ABBEEA003F3599 /* wgsl_worldpos_vert.cpp */; };
+		047BF09827ABBEEA003F3599 /* wgsl_worldpos_vert.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF09627ABBEEA003F3599 /* wgsl_worldpos_vert.h */; };
 		0495463B279F89E500783C84 /* shader_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954634279F89E400783C84 /* shader_data.h */; };
 		0495463C279F89E500783C84 /* shader_property.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954635279F89E400783C84 /* shader_property.h */; };
 		0495463D279F89E500783C84 /* shader_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954636279F89E400783C84 /* shader_data.cpp */; };
@@ -644,6 +646,8 @@
 		047BF08E27ABBAF0003F3599 /* wgsl_color_vert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_color_vert.h; sourceTree = "<group>"; };
 		047BF09127ABBBA3003F3599 /* wgsl_normal_vert.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_normal_vert.cpp; sourceTree = "<group>"; };
 		047BF09227ABBBA3003F3599 /* wgsl_normal_vert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_normal_vert.h; sourceTree = "<group>"; };
+		047BF09527ABBEEA003F3599 /* wgsl_worldpos_vert.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_worldpos_vert.cpp; sourceTree = "<group>"; };
+		047BF09627ABBEEA003F3599 /* wgsl_worldpos_vert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_worldpos_vert.h; sourceTree = "<group>"; };
 		04954634279F89E400783C84 /* shader_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_data.h; sourceTree = "<group>"; };
 		04954635279F89E400783C84 /* shader_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_property.h; sourceTree = "<group>"; };
 		04954636279F89E400783C84 /* shader_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader_data.cpp; sourceTree = "<group>"; };
@@ -1172,6 +1176,8 @@
 				047BF09127ABBBA3003F3599 /* wgsl_normal_vert.cpp */,
 				047BEFFE27A56250003F3599 /* wgsl_position_vert.h */,
 				047BEFFD27A56250003F3599 /* wgsl_position_vert.cpp */,
+				047BF09627ABBEEA003F3599 /* wgsl_worldpos_vert.h */,
+				047BF09527ABBEEA003F3599 /* wgsl_worldpos_vert.cpp */,
 			);
 			path = functors;
 			sourceTree = "<group>";
@@ -1528,6 +1534,7 @@
 				0495471027A14FA800783C84 /* shader_program.h in Headers */,
 				047BF02527A66590003F3599 /* ktx_image.h in Headers */,
 				04128447279ED3A60071BD86 /* engine.h in Headers */,
+				047BF09827ABBEEA003F3599 /* wgsl_worldpos_vert.h in Headers */,
 				04954700279FCD1100783C84 /* forward_application.h in Headers */,
 				0495474B27A2669600783C84 /* mesh.h in Headers */,
 				0495470C279FCD3C00783C84 /* free_control.h in Headers */,
@@ -1897,6 +1904,7 @@
 				04128448279ED3A60071BD86 /* input_events.cpp in Sources */,
 				0412845D279ED4B10071BD86 /* imgui.cpp in Sources */,
 				047BF01827A640A3003F3599 /* image.cpp in Sources */,
+				047BF09727ABBEEA003F3599 /* wgsl_worldpos_vert.cpp in Sources */,
 				04954687279F8CD600783C84 /* camera.cpp in Sources */,
 				04128463279ED4B10071BD86 /* imgui_impl_glfw.cpp in Sources */,
 			);
