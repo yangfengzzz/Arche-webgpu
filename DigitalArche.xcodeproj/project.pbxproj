@@ -254,6 +254,10 @@
 		047BF0A427ABDD09003F3599 /* wgsl_light_frag_define.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF0A227ABDD09003F3599 /* wgsl_light_frag_define.h */; };
 		047BF0A727ABDFC8003F3599 /* wgsl_begin_mobile_frag.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF0A527ABDFC8003F3599 /* wgsl_begin_mobile_frag.cpp */; };
 		047BF0A827ABDFC8003F3599 /* wgsl_begin_mobile_frag.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF0A627ABDFC8003F3599 /* wgsl_begin_mobile_frag.h */; };
+		047BF0AB27ABF9A3003F3599 /* wgsl_begin_viewdir_frag.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF0A927ABF9A3003F3599 /* wgsl_begin_viewdir_frag.cpp */; };
+		047BF0AC27ABF9A3003F3599 /* wgsl_begin_viewdir_frag.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF0AA27ABF9A3003F3599 /* wgsl_begin_viewdir_frag.h */; };
+		047BF0AF27ABFA2A003F3599 /* wgsl_mobile_blinnphong_frag.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF0AD27ABFA2A003F3599 /* wgsl_mobile_blinnphong_frag.cpp */; };
+		047BF0B027ABFA2A003F3599 /* wgsl_mobile_blinnphong_frag.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF0AE27ABFA2A003F3599 /* wgsl_mobile_blinnphong_frag.h */; };
 		0495463B279F89E500783C84 /* shader_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954634279F89E400783C84 /* shader_data.h */; };
 		0495463C279F89E500783C84 /* shader_property.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954635279F89E400783C84 /* shader_property.h */; };
 		0495463D279F89E500783C84 /* shader_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954636279F89E400783C84 /* shader_data.cpp */; };
@@ -664,6 +668,10 @@
 		047BF0A227ABDD09003F3599 /* wgsl_light_frag_define.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_light_frag_define.h; sourceTree = "<group>"; };
 		047BF0A527ABDFC8003F3599 /* wgsl_begin_mobile_frag.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_begin_mobile_frag.cpp; sourceTree = "<group>"; };
 		047BF0A627ABDFC8003F3599 /* wgsl_begin_mobile_frag.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_begin_mobile_frag.h; sourceTree = "<group>"; };
+		047BF0A927ABF9A3003F3599 /* wgsl_begin_viewdir_frag.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_begin_viewdir_frag.cpp; sourceTree = "<group>"; };
+		047BF0AA27ABF9A3003F3599 /* wgsl_begin_viewdir_frag.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_begin_viewdir_frag.h; sourceTree = "<group>"; };
+		047BF0AD27ABFA2A003F3599 /* wgsl_mobile_blinnphong_frag.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_mobile_blinnphong_frag.cpp; sourceTree = "<group>"; };
+		047BF0AE27ABFA2A003F3599 /* wgsl_mobile_blinnphong_frag.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_mobile_blinnphong_frag.h; sourceTree = "<group>"; };
 		04954634279F89E400783C84 /* shader_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_data.h; sourceTree = "<group>"; };
 		04954635279F89E400783C84 /* shader_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_property.h; sourceTree = "<group>"; };
 		04954636279F89E400783C84 /* shader_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader_data.cpp; sourceTree = "<group>"; };
@@ -1202,6 +1210,10 @@
 				047BF09527ABBEEA003F3599 /* wgsl_worldpos_vert.cpp */,
 				047BF0A627ABDFC8003F3599 /* wgsl_begin_mobile_frag.h */,
 				047BF0A527ABDFC8003F3599 /* wgsl_begin_mobile_frag.cpp */,
+				047BF0AA27ABF9A3003F3599 /* wgsl_begin_viewdir_frag.h */,
+				047BF0A927ABF9A3003F3599 /* wgsl_begin_viewdir_frag.cpp */,
+				047BF0AE27ABFA2A003F3599 /* wgsl_mobile_blinnphong_frag.h */,
+				047BF0AD27ABFA2A003F3599 /* wgsl_mobile_blinnphong_frag.cpp */,
 			);
 			path = functors;
 			sourceTree = "<group>";
@@ -1608,6 +1620,7 @@
 				047BF00027A56250003F3599 /* wgsl_position_vert.h in Headers */,
 				04128446279ED3A60071BD86 /* timer.h in Headers */,
 				047BF00427A562F4003F3599 /* wgsl_common.h in Headers */,
+				047BF0AC27ABF9A3003F3599 /* wgsl_begin_viewdir_frag.h in Headers */,
 				0412845F279ED4B10071BD86 /* imstb_textedit.h in Headers */,
 				0495473F27A25B1300783C84 /* buffer.h in Headers */,
 				047BF09427ABBBA3003F3599 /* wgsl_normal_vert.h in Headers */,
@@ -1631,6 +1644,7 @@
 				0495472927A2405400783C84 /* sampled_texture2d.h in Headers */,
 				0495468E279F8D3700783C84 /* component.h in Headers */,
 				04954678279F8CD600783C84 /* layer.h in Headers */,
+				047BF0B027ABFA2A003F3599 /* wgsl_mobile_blinnphong_frag.h in Headers */,
 				047BF01427A58872003F3599 /* wgsl_reflect.h in Headers */,
 				04128444279ED3A60071BD86 /* application.h in Headers */,
 				04954685279F8CD600783C84 /* scene.h in Headers */,
@@ -1829,6 +1843,7 @@
 				04128442279ED3A60071BD86 /* window.cpp in Sources */,
 				047BF06327A680CD003F3599 /* softfloat.cpp in Sources */,
 				0495473227A24A1300783C84 /* pbr_base_material.cpp in Sources */,
+				047BF0AB27ABF9A3003F3599 /* wgsl_begin_viewdir_frag.cpp in Sources */,
 				04128479279EEEEC0071BD86 /* render_state.cpp in Sources */,
 				047BF07F27ABB6F3003F3599 /* wgsl_color_share.cpp in Sources */,
 				049546FF279FCD1100783C84 /* forward_application.cpp in Sources */,
@@ -1901,6 +1916,7 @@
 				047BF07327A6819C003F3599 /* astc_compress_symbolic.cpp in Sources */,
 				047BF08B27ABB9AD003F3599 /* wgsl_begin_normal_vert.cpp in Sources */,
 				047BF06B27A6819C003F3599 /* astc_find_best_partitioning.cpp in Sources */,
+				047BF0AF27ABFA2A003F3599 /* wgsl_mobile_blinnphong_frag.cpp in Sources */,
 				047BF01327A58872003F3599 /* wgsl_reflect.cpp in Sources */,
 				0495474A27A2669600783C84 /* mesh.cpp in Sources */,
 				0495472427A23CE100783C84 /* sampled_texture.cpp in Sources */,
