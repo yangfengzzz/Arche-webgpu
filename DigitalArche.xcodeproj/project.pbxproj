@@ -232,6 +232,12 @@
 		047BF07A27A6819C003F3599 /* astc_weight_quant_xfer_tables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF03427A6801A003F3599 /* astc_weight_quant_xfer_tables.cpp */; };
 		047BF07B27A6819C003F3599 /* astc_decompress_symbolic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF03827A6801A003F3599 /* astc_decompress_symbolic.cpp */; };
 		047BF07C27A6819C003F3599 /* astc_averages_and_directions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF03A27A6801A003F3599 /* astc_averages_and_directions.cpp */; };
+		047BF07F27ABB6F3003F3599 /* wgsl_color_share.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF07D27ABB6F3003F3599 /* wgsl_color_share.cpp */; };
+		047BF08027ABB6F3003F3599 /* wgsl_color_share.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF07E27ABB6F3003F3599 /* wgsl_color_share.h */; };
+		047BF08327ABB82B003F3599 /* wgsl_normal_share.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF08127ABB82B003F3599 /* wgsl_normal_share.cpp */; };
+		047BF08427ABB82B003F3599 /* wgsl_normal_share.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF08227ABB82B003F3599 /* wgsl_normal_share.h */; };
+		047BF08727ABB8F7003F3599 /* wgsl_worldpos_share.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF08527ABB8F7003F3599 /* wgsl_worldpos_share.cpp */; };
+		047BF08827ABB8F7003F3599 /* wgsl_worldpos_share.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF08627ABB8F7003F3599 /* wgsl_worldpos_share.h */; };
 		0495463B279F89E500783C84 /* shader_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954634279F89E400783C84 /* shader_data.h */; };
 		0495463C279F89E500783C84 /* shader_property.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954635279F89E400783C84 /* shader_property.h */; };
 		0495463D279F89E500783C84 /* shader_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954636279F89E400783C84 /* shader_data.cpp */; };
@@ -620,6 +626,12 @@
 		047BF04327A6801B003F3599 /* astc_ktx_dds.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = astc_ktx_dds.cpp; sourceTree = "<group>"; };
 		047BF04527A6801B003F3599 /* astc_pick_best_endpoint_format.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = astc_pick_best_endpoint_format.cpp; sourceTree = "<group>"; };
 		047BF06427A6815C003F3599 /* astc_stb_tga.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = astc_stb_tga.cpp; sourceTree = "<group>"; };
+		047BF07D27ABB6F3003F3599 /* wgsl_color_share.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_color_share.cpp; sourceTree = "<group>"; };
+		047BF07E27ABB6F3003F3599 /* wgsl_color_share.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_color_share.h; sourceTree = "<group>"; };
+		047BF08127ABB82B003F3599 /* wgsl_normal_share.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_normal_share.cpp; sourceTree = "<group>"; };
+		047BF08227ABB82B003F3599 /* wgsl_normal_share.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_normal_share.h; sourceTree = "<group>"; };
+		047BF08527ABB8F7003F3599 /* wgsl_worldpos_share.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_worldpos_share.cpp; sourceTree = "<group>"; };
+		047BF08627ABB8F7003F3599 /* wgsl_worldpos_share.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_worldpos_share.h; sourceTree = "<group>"; };
 		04954634279F89E400783C84 /* shader_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_data.h; sourceTree = "<group>"; };
 		04954635279F89E400783C84 /* shader_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_property.h; sourceTree = "<group>"; };
 		04954636279F89E400783C84 /* shader_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader_data.cpp; sourceTree = "<group>"; };
@@ -1125,6 +1137,12 @@
 				047BEFE327A53FB8003F3599 /* wgsl_blend_shape_input.cpp */,
 				047BEFE927A54561003F3599 /* wgsl_uv_share.h */,
 				047BEFE827A54561003F3599 /* wgsl_uv_share.cpp */,
+				047BF07E27ABB6F3003F3599 /* wgsl_color_share.h */,
+				047BF07D27ABB6F3003F3599 /* wgsl_color_share.cpp */,
+				047BF08227ABB82B003F3599 /* wgsl_normal_share.h */,
+				047BF08127ABB82B003F3599 /* wgsl_normal_share.cpp */,
+				047BF08627ABB8F7003F3599 /* wgsl_worldpos_share.h */,
+				047BF08527ABB8F7003F3599 /* wgsl_worldpos_share.cpp */,
 				047BEFF827A552C3003F3599 /* define */,
 				047BEFED27A54663003F3599 /* wgsl_begin_position_vert.h */,
 				047BEFEC27A54663003F3599 /* wgsl_begin_position_vert.cpp */,
@@ -1481,12 +1499,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				0495464B279F8A8700783C84 /* render_face.h in Headers */,
+				047BF08027ABB6F3003F3599 /* wgsl_color_share.h in Headers */,
 				0412845A279ED4B10071BD86 /* imgui.h in Headers */,
 				0495474727A2657700783C84 /* sub_mesh.h in Headers */,
 				047BEFEF27A54663003F3599 /* wgsl_begin_position_vert.h in Headers */,
 				0495471F27A2396500783C84 /* shader_pool.h in Headers */,
 				0495464C279F8A8700783C84 /* render_queue_type.h in Headers */,
 				049546FB279FC9B400783C84 /* graphics_application.h in Headers */,
+				047BF08427ABB82B003F3599 /* wgsl_normal_share.h in Headers */,
 				0495471027A14FA800783C84 /* shader_program.h in Headers */,
 				047BF02527A66590003F3599 /* ktx_image.h in Headers */,
 				04128447279ED3A60071BD86 /* engine.h in Headers */,
@@ -1507,6 +1527,7 @@
 				0495463C279F89E500783C84 /* shader_property.h in Headers */,
 				04954647279F8A7D00783C84 /* material.h in Headers */,
 				0495464D279F8A8700783C84 /* blend_mode.h in Headers */,
+				047BF08827ABB8F7003F3599 /* wgsl_worldpos_share.h in Headers */,
 				049546F7279FC92B00783C84 /* forward_subpass.h in Headers */,
 				0495475827A2868000783C84 /* primitive_mesh.h in Headers */,
 				0495475D27A287CA00783C84 /* mesh_renderer.h in Headers */,
@@ -1744,6 +1765,7 @@
 			files = (
 				047BEFFF27A56250003F3599 /* wgsl_position_vert.cpp in Sources */,
 				04128469279EDB2C0071BD86 /* blend_state.cpp in Sources */,
+				047BF08327ABB82B003F3599 /* wgsl_normal_share.cpp in Sources */,
 				047BF07827A6819C003F3599 /* mathlib.cpp in Sources */,
 				0495474F27A2714200783C84 /* buffer_mesh.cpp in Sources */,
 				04954707279FCD3C00783C84 /* free_control.cpp in Sources */,
@@ -1752,6 +1774,7 @@
 				047BF06327A680CD003F3599 /* softfloat.cpp in Sources */,
 				0495473227A24A1300783C84 /* pbr_base_material.cpp in Sources */,
 				04128479279EEEEC0071BD86 /* render_state.cpp in Sources */,
+				047BF07F27ABB6F3003F3599 /* wgsl_color_share.cpp in Sources */,
 				049546FF279FCD1100783C84 /* forward_application.cpp in Sources */,
 				0495474627A2657700783C84 /* sub_mesh.cpp in Sources */,
 				0495463E279F89E500783C84 /* shader_property.cpp in Sources */,
@@ -1788,6 +1811,7 @@
 				0495478627A403C700783C84 /* wgsl.cpp in Sources */,
 				0495472827A2405400783C84 /* sampled_texture2d.cpp in Sources */,
 				047BF00327A562F4003F3599 /* wgsl_common.cpp in Sources */,
+				047BF08727ABB8F7003F3599 /* wgsl_worldpos_share.cpp in Sources */,
 				047BF07227A6819C003F3599 /* astc_symbolic_physical.cpp in Sources */,
 				04954646279F8A7D00783C84 /* material.cpp in Sources */,
 				047BEFF627A552B9003F3599 /* wgsl_skinning_vert.cpp in Sources */,
