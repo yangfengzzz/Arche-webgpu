@@ -250,6 +250,8 @@
 		047BF09C27ABC04D003F3599 /* wgsl_common_frag.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF09A27ABC04D003F3599 /* wgsl_common_frag.h */; };
 		047BF09F27ABDA3A003F3599 /* wgsl_mobile_material_frag.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF09D27ABDA3A003F3599 /* wgsl_mobile_material_frag.cpp */; };
 		047BF0A027ABDA3A003F3599 /* wgsl_mobile_material_frag.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF09E27ABDA3A003F3599 /* wgsl_mobile_material_frag.h */; };
+		047BF0A327ABDD09003F3599 /* wgsl_light_frag_define.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF0A127ABDD09003F3599 /* wgsl_light_frag_define.cpp */; };
+		047BF0A427ABDD09003F3599 /* wgsl_light_frag_define.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF0A227ABDD09003F3599 /* wgsl_light_frag_define.h */; };
 		0495463B279F89E500783C84 /* shader_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954634279F89E400783C84 /* shader_data.h */; };
 		0495463C279F89E500783C84 /* shader_property.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954635279F89E400783C84 /* shader_property.h */; };
 		0495463D279F89E500783C84 /* shader_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954636279F89E400783C84 /* shader_data.cpp */; };
@@ -656,6 +658,8 @@
 		047BF09A27ABC04D003F3599 /* wgsl_common_frag.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_common_frag.h; sourceTree = "<group>"; };
 		047BF09D27ABDA3A003F3599 /* wgsl_mobile_material_frag.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_mobile_material_frag.cpp; sourceTree = "<group>"; };
 		047BF09E27ABDA3A003F3599 /* wgsl_mobile_material_frag.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_mobile_material_frag.h; sourceTree = "<group>"; };
+		047BF0A127ABDD09003F3599 /* wgsl_light_frag_define.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_light_frag_define.cpp; sourceTree = "<group>"; };
+		047BF0A227ABDD09003F3599 /* wgsl_light_frag_define.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_light_frag_define.h; sourceTree = "<group>"; };
 		04954634279F89E400783C84 /* shader_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_data.h; sourceTree = "<group>"; };
 		04954635279F89E400783C84 /* shader_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_property.h; sourceTree = "<group>"; };
 		04954636279F89E400783C84 /* shader_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader_data.cpp; sourceTree = "<group>"; };
@@ -1169,6 +1173,8 @@
 				047BF08127ABB82B003F3599 /* wgsl_normal_share.cpp */,
 				047BF08627ABB8F7003F3599 /* wgsl_worldpos_share.h */,
 				047BF08527ABB8F7003F3599 /* wgsl_worldpos_share.cpp */,
+				047BF0A227ABDD09003F3599 /* wgsl_light_frag_define.h */,
+				047BF0A127ABDD09003F3599 /* wgsl_light_frag_define.cpp */,
 				047BF09E27ABDA3A003F3599 /* wgsl_mobile_material_frag.h */,
 				047BF09D27ABDA3A003F3599 /* wgsl_mobile_material_frag.cpp */,
 				047BEFF827A552C3003F3599 /* define */,
@@ -1561,6 +1567,7 @@
 				0495472D27A2480000783C84 /* blinn_phong_material.h in Headers */,
 				0412843E279ED3A60071BD86 /* window.h in Headers */,
 				047BEFF327A5519C003F3599 /* wgsl_blend_shape_vert.h in Headers */,
+				047BF0A427ABDD09003F3599 /* wgsl_light_frag_define.h in Headers */,
 				0495475027A2714200783C84 /* buffer_mesh.h in Headers */,
 				04954689279F8CD600783C84 /* update_flag_manager.h in Headers */,
 				0412843D279ED3A60071BD86 /* input_events.h in Headers */,
@@ -1851,6 +1858,7 @@
 				049546E6279FA7D800783C84 /* null_binding.cpp in Sources */,
 				047BEFEE27A54663003F3599 /* wgsl_begin_position_vert.cpp in Sources */,
 				0495471327A15BEE00783C84 /* shader_macro_collection.cpp in Sources */,
+				047BF0A327ABDD09003F3599 /* wgsl_light_frag_define.cpp in Sources */,
 				0495478627A403C700783C84 /* wgsl.cpp in Sources */,
 				0495472827A2405400783C84 /* sampled_texture2d.cpp in Sources */,
 				047BF00327A562F4003F3599 /* wgsl_common.cpp in Sources */,
