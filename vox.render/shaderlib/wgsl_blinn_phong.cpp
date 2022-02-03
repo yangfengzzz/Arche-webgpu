@@ -29,7 +29,38 @@ _positionVert("in", "out") {
 }
 
 void WGSLBlinnPhongVertex::_createShaderSource(size_t hash, const ShaderMacroCollection& macros) {
-    
+    _source.clear();
+    _bindGroupInfo.clear();
+    auto inputStructCounter = WGSLEncoder::startCounter();
+    auto outputStructCounter = WGSLEncoder::startCounter(0);
+    {
+        auto encoder = createSourceEncoder(wgpu::ShaderStage::Vertex);
+        _common(encoder, macros);
+        _commonVert(encoder, macros);
+        _blendShapeInput(encoder, macros, inputStructCounter);
+        _uvShare(encoder, macros, outputStructCounter);
+        _colorShare(encoder, macros, outputStructCounter);
+        _normalShare(encoder, macros, outputStructCounter);
+        _worldPosShare(encoder, macros, outputStructCounter);
+        encoder.addInoutType("VertexOut", BuiltInType::Position, "position", UniformType::Vec4f32);
+
+        encoder.addEntry({{"in", "VertexIn"}}, {"out", "VertexOut"}, [&](std::string &source){
+            _beginPositionVert(source, macros);
+            _beginNormalVert(source, macros);
+            _blendShapeVert(source, macros);
+            _skinningVert(source, macros);
+            _uvVert(source, macros);
+            _colorVert(source, macros);
+            _normalVert(source, macros);
+            _worldPosVert(source, macros);
+            _positionVert(source, macros);
+        });
+        encoder.flush();
+    }
+    WGSLEncoder::endCounter(inputStructCounter);
+    WGSLEncoder::endCounter(outputStructCounter);
+    _sourceCache[hash] = _source;
+    _infoCache[hash] = _bindGroupInfo;
 }
 
 //MARK: - Frag
@@ -51,7 +82,33 @@ _mobileBlinnphoneFrag("in", "out") {
 }
 
 void WGSLBlinnPhongFragment::_createShaderSource(size_t hash, const ShaderMacroCollection& macros) {
-    
+    _source.clear();
+    _bindGroupInfo.clear();
+    auto inputStructCounter = WGSLEncoder::startCounter(0);
+    {
+        auto encoder = createSourceEncoder(wgpu::ShaderStage::Fragment);
+        _common(encoder, macros);
+        _commonFrag(encoder, macros);
+        _uvShare(encoder, macros, inputStructCounter);
+        _colorShare(encoder, macros, inputStructCounter);
+        _normalShare(encoder, macros, inputStructCounter);
+        _worldPosShare(encoder, macros, inputStructCounter);
+        _lightFragDefine(encoder, macros, inputStructCounter);
+        _mobileMaterialShare(encoder, macros, inputStructCounter);
+        _normalGet(encoder, macros, inputStructCounter);
+        encoder.addInoutType("Output", 0, "finalColor", UniformType::Vec4f32);
+        encoder.addEntry({{"in", "VertexIn"}}, {"out", "VertexOut"}, [&](std::string &source){
+            _beginMobileFrag(source, macros);
+            _beginViewDirFrag(source, macros);
+            _mobileBlinnphoneFrag(source, macros);
+            source += "out.finalColor = emission + ambient + diffuse + specular;\n";
+            source += "out.finalColor.a = diffuse.a;\n";
+        });
+        encoder.flush();
+    }
+    WGSLEncoder::endCounter(inputStructCounter);
+    _sourceCache[hash] = _source;
+    _infoCache[hash] = _bindGroupInfo;
 }
 
 }
