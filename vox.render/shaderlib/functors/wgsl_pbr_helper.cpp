@@ -37,7 +37,7 @@ void WGSLPbrHelper::operator()(WGSLEncoder& encoder,
     encoder.addFunction("fn computeSpecularOcclusion(ambientOcclusion: f32, roughness: f32, dotNV: f32)->f32 {\n"
                         "    return saturate( pow( dotNV + ambientOcclusion, exp2( - 16.0 * roughness - 1.0 ) ) - 1.0 + ambientOcclusion );\n"
                         "}\n");
-
+    
     
     std::string getPhysicalMaterial = "fn getPhysicalMaterial(\n";
     getPhysicalMaterial += "     diffuseColor: vec4<f32>,\n";

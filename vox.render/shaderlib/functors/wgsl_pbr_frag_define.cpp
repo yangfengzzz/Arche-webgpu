@@ -51,7 +51,7 @@ void WGSLPbrFragDefine::operator()(WGSLEncoder& encoder,
         encoder.addSampledTextureBinding("u_emissiveTexture", TextureType::Texture2Df32,
                                          "u_emissiveSampler", SamplerType::Sampler);
     }
-
+    
     if (macros.contains(HAS_METALROUGHNESSMAP) && _is_metallic_workflow) {
         encoder.addSampledTextureBinding("u_metallicRoughnessTexture", TextureType::Texture2Df32,
                                          "u_metallicRoughnessSampler", SamplerType::Sampler);
@@ -66,7 +66,7 @@ void WGSLPbrFragDefine::operator()(WGSLEncoder& encoder,
         encoder.addSampledTextureBinding("u_occlusionTexture", TextureType::Texture2Df32,
                                          "u_occlusionSampler", SamplerType::Sampler);
     }
-
+    
     std::string structType = "struct ReflectedLight {\n";
     structType += "    directDiffuse: vec3<f32>;\n";
     structType += "    directSpecular: vec3<f32>;\n";
@@ -81,7 +81,7 @@ void WGSLPbrFragDefine::operator()(WGSLEncoder& encoder,
     structType += "    viewDir: vec3<f32>;\n";
     structType += "};\n";
     encoder.addStruct(structType);
-
+    
     structType = "struct PhysicalMaterial {\n";
     structType += "    diffuseColor: vec3<f32>;\n";
     structType += "    roughness: f32;\n";
