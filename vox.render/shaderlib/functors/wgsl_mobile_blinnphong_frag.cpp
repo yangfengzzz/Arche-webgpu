@@ -14,7 +14,7 @@ _output(output) {
 }
 
 void WGSLMobileBlinnphongFrag::operator()(std::string& source, const ShaderMacroCollection& macros) {
-    source += "var N = getNormal();\n";
+    source += fmt::format("var N = getNormal({});\n", _input);
     source += "var lightDiffuse = vec3<f32>( 0.0, 0.0, 0.0 );\n";
     source += "var lightSpecular = vec3<f32>( 0.0, 0.0, 0.0 );\n";
     

@@ -11,10 +11,10 @@ WGSLBlinnPhongVertex::WGSLBlinnPhongVertex():
 _common(),
 _commonVert("VertexIn"),
 _blendShapeInput("VertexIn"),
-_uvShare("VertexIn"),
-_colorShare("VertexIn"),
-_normalShare("VertexIn"),
-_worldPosShare("VertexIn"),
+_uvShare("VertexOut"),
+_colorShare("VertexOut"),
+_normalShare("VertexOut"),
+_worldPosShare("VertexOut"),
 
 _beginPositionVert("in", "out"),
 _beginNormalVert("in", "out"),
@@ -97,7 +97,7 @@ void WGSLBlinnPhongFragment::_createShaderSource(size_t hash, const ShaderMacroC
         _mobileMaterialShare(encoder, macros, inputStructCounter);
         _normalGet(encoder, macros, inputStructCounter);
         encoder.addInoutType("Output", 0, "finalColor", UniformType::Vec4f32);
-        encoder.addEntry({{"in", "VertexIn"}}, {"out", "VertexOut"}, [&](std::string &source){
+        encoder.addEntry({{"in", "VertexOut"}}, {"out", "Output"}, [&](std::string &source){
             _beginMobileFrag(source, macros);
             _beginViewDirFrag(source, macros);
             _mobileBlinnphoneFrag(source, macros);

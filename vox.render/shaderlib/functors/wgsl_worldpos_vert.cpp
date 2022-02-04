@@ -15,8 +15,8 @@ _output(output) {
 
 void WGSLWorldPosVert::operator()(std::string& source, const ShaderMacroCollection& macros) {
     if (macros.contains(NEED_WORLDPOS)) {
-        source += "var temp_pos = u_modelMat * position;";
-        source += fmt::format("{}.v_pos = temp_pos.xyz / temp_pos.w;", _output);
+        source += "var temp_pos = u_modelMat * position;\n";
+        source += fmt::format("{}.v_pos = temp_pos.xyz / temp_pos.w;\n", _output);
     }
 }
 

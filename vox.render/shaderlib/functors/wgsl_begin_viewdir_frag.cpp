@@ -15,7 +15,7 @@ _output(output) {
 
 void WGSLBeginViewDirFrag::operator()(std::string& source, const ShaderMacroCollection& macros) {
     if (macros.contains(NEED_WORLDPOS)) {
-        source += "var V = normalize(u_cameraPos - v_pos);\n";
+        source += fmt::format("var V = normalize(u_cameraPos - {}.v_pos);\n", _input);
     }
 }
 

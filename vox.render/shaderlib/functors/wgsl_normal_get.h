@@ -17,7 +17,12 @@ public:
     void operator()(WGSLEncoder& encoder,
                     const ShaderMacroCollection& macros, size_t counterIndex);
     
+    void setParamName(const std::string& name);
+    
+    const std::string& paramName() const;
+    
 private:
+    std::string _paramName{};
     std::string _outputStructName{};
 };
 
