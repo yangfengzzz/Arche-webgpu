@@ -14,8 +14,11 @@ AmbientLight::AmbientLight(Scene *value):
 _envMapProperty(Shader::createProperty("u_envMapLight", ShaderDataGroup::Scene)),
 _diffuseSHProperty(Shader::createProperty("u_env_sh", ShaderDataGroup::Scene)),
 _diffuseTextureProperty(Shader::createProperty("u_env_diffuseTexture", ShaderDataGroup::Scene)),
+_diffuseSamplerProperty(Shader::createProperty("u_env_diffuseSampler", ShaderDataGroup::Scene)),
 _specularTextureProperty(Shader::createProperty("u_env_specularTexture", ShaderDataGroup::Scene)),
-_brdfTextureProperty(Shader::createProperty("u_env_brdfTexture", ShaderDataGroup::Scene)) {
+_specularSamplerProperty(Shader::createProperty("u_env_specularSampler", ShaderDataGroup::Scene)),
+_brdfTextureProperty(Shader::createProperty("u_env_brdfTexture", ShaderDataGroup::Scene)),
+_brdfSamplerProperty(Shader::createProperty("u_env_brdfSampler", ShaderDataGroup::Scene)) {
     _scene = value;
     if (!value) return;
     
@@ -82,7 +85,8 @@ void AmbientLight::setDiffuseTexture(std::shared_ptr<SampledTexture> value) {
     auto &shaderData = _scene->shaderData;
     
     if (value) {
-        shaderData.setData(AmbientLight::_diffuseTextureProperty, _diffuseTexture);
+        shaderData.setSampledTexture(AmbientLight::_diffuseTextureProperty,
+                                     AmbientLight::_diffuseSamplerProperty, _diffuseTexture);
         shaderData.enableMacro(HAS_DIFFUSE_ENV);
     } else {
         shaderData.disableMacro(HAS_DIFFUSE_ENV);
@@ -120,7 +124,8 @@ void AmbientLight::setSpecularTexture(std::shared_ptr<SampledTexture> value) {
     auto &shaderData = _scene->shaderData;
     
     if (value) {
-        shaderData.setData(AmbientLight::_specularTextureProperty, _specularReflection);
+        shaderData.setSampledTexture(AmbientLight::_specularTextureProperty,
+                                     AmbientLight::_specularSamplerProperty, _specularReflection);
         _envMapLight.mipMapLevel = static_cast<int>(value->mipmapCount() - 1);
         _scene->shaderData.setData(AmbientLight::_envMapProperty, _envMapLight);
         shaderData.enableMacro(HAS_SPECULAR_ENV);

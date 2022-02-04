@@ -19,7 +19,9 @@ class PointLight : public Light {
 public:
     struct PointLightData {
         Vector3F color;
+        float _colorAlign;
         Vector3F position;
+        float _positionAlign;
         float distance;
     };
     

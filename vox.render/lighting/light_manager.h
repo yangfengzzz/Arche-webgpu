@@ -71,17 +71,14 @@ public:
 private:
     std::vector<PointLight *> _pointLights;
     std::vector<PointLight::PointLightData> _pointLightDatas;
-//    std::shared_ptr<MTL::Buffer> _pointLightBuffer;
     ShaderProperty _pointLightProperty;
     
     std::vector<SpotLight *> _spotLights;
     std::vector<SpotLight::SpotLightData> _spotLightDatas;
-//    std::shared_ptr<MTL::Buffer> _spotLightBuffer;
     ShaderProperty _spotLightProperty;
     
     std::vector<DirectLight *> _directLights;
     std::vector<DirectLight::DirectLightData> _directLightDatas;
-//    std::shared_ptr<MTL::Buffer> _directLightBuffer;
     ShaderProperty _directLightProperty;
 };
 

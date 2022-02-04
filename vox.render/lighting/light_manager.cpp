@@ -102,43 +102,22 @@ void LightManager::updateShaderData(wgpu::Device& device, ShaderData &shaderData
     }
     
     if (directLightCount) {
-        if (_directLightBuffer == nullptr || _directLightBuffer->length() != sizeof(DirectLightData) * _directLightDatas.size()) {
-            _directLightBuffer = std::shared_ptr<MTL::Buffer>(device->newBufferWithBytes(_directLightDatas.data(),
-                                                                                         _directLightDatas.size() * sizeof(DirectLightData)));
-        } else {
-            memcpy(_directLightBuffer->contents(), _directLightDatas.data(), _directLightDatas.size() * sizeof(DirectLightData));
-        }
-        
-        shaderData.enableMacro(DIRECT_LIGHT_COUNT, std::make_pair(directLightCount, MTL::DataTypeInt));
-        shaderData.setData(LightManager::_directLightProperty, _directLightBuffer);
+        shaderData.enableMacro(DIRECT_LIGHT_COUNT, directLightCount);
+        shaderData.setData(LightManager::_directLightProperty, _directLightDatas);
     } else {
         shaderData.disableMacro(DIRECT_LIGHT_COUNT);
     }
     
     if (pointLightCount) {
-        if (_pointLightBuffer == nullptr || _pointLightBuffer->length() != sizeof(PointLightData) * _pointLightDatas.size()) {
-            _pointLightBuffer = std::shared_ptr<MTL::Buffer>(device->newBufferWithBytes(_pointLightDatas.data(),
-                                                                                        _pointLightDatas.size() * sizeof(PointLightData)));
-        } else {
-            memcpy(_pointLightBuffer->contents(), _pointLightDatas.data(), _pointLightDatas.size() * sizeof(PointLightData));
-        }
-        
-        shaderData.enableMacro(POINT_LIGHT_COUNT, std::make_pair(pointLightCount, MTL::DataTypeInt));
-        shaderData.setData(LightManager::_pointLightProperty, _pointLightBuffer);
+        shaderData.enableMacro(POINT_LIGHT_COUNT, pointLightCount);
+        shaderData.setData(LightManager::_pointLightProperty, _pointLightDatas);
     } else {
         shaderData.disableMacro(POINT_LIGHT_COUNT);
     }
     
     if (spotLightCount) {
-        if (_spotLightBuffer == nullptr || _spotLightBuffer->length() != sizeof(SpotLightData) * _spotLightDatas.size()) {
-            _spotLightBuffer = std::shared_ptr<MTL::Buffer>(device->newBufferWithBytes(_spotLightDatas.data(),
-                                                                                       _spotLightDatas.size() * sizeof(SpotLightData)));
-        } else {
-            memcpy(_spotLightBuffer->contents(), _spotLightDatas.data(), _spotLightDatas.size() * sizeof(SpotLightData));
-        }
-        
-        shaderData.enableMacro(SPOT_LIGHT_COUNT, std::make_pair(spotLightCount, MTL::DataTypeInt));
-        shaderData.setData(LightManager::_spotLightProperty, _spotLightBuffer);
+        shaderData.enableMacro(SPOT_LIGHT_COUNT, spotLightCount);
+        shaderData.setData(LightManager::_spotLightProperty, _spotLightDatas);
     } else {
         shaderData.disableMacro(SPOT_LIGHT_COUNT);
     }

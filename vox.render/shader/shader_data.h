@@ -58,6 +58,19 @@ public:
         _device.GetQueue().WriteBuffer(iter->second.handle(), 0, bytes.data(), sizeof(T));
     }
     
+    template<typename T>
+    void setData(ShaderProperty property, const std::vector<T>& value) {
+        auto iter = _shaderBuffers.find(property.uniqueId);
+        if (iter == _shaderBuffers.end()) {
+            _shaderBuffers.insert(std::make_pair(property.uniqueId,
+                                                 Buffer(_device, sizeof(T) * value.size(),
+                                                        wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst)));
+        }
+        iter = _shaderBuffers.find(property.uniqueId);
+        
+        _device.GetQueue().WriteBuffer(iter->second.handle(), 0, value.data(), sizeof(T) * value.size());
+    }
+    
 public:
     void setSampledTexture(const std::string &texture_name,
                            const std::string &sample_name,

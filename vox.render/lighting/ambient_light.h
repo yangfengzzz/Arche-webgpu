@@ -40,6 +40,7 @@ class AmbientLight {
 public:
     struct EnvMapLight {
         Vector3F diffuse;
+        float _diffuseAlign;
         float diffuseIntensity;
         float specularIntensity;
         int mipMapLevel;
@@ -121,24 +122,28 @@ public:
 private:
     std::array<float, 27> _preComputeSH(const SphericalHarmonics3 &sh);
     
-    ShaderProperty _envMapProperty;
-    ShaderProperty _diffuseSHProperty;
-    ShaderProperty _diffuseTextureProperty;
-    ShaderProperty _specularTextureProperty;
-    ShaderProperty _brdfTextureProperty;
-    
-    Scene *_scene;
     EnvMapLight _envMapLight;
+    ShaderProperty _envMapProperty;
     
-    DiffuseMode _diffuseMode = DiffuseMode::SolidColor;
     SphericalHarmonics3 _diffuseSphericalHarmonics;
-    std::array<float, 27> _shArray;
-    std::shared_ptr<SampledTexture> _diffuseTexture = nullptr;
+    std::array<float, 27> _shArray{};
+    ShaderProperty _diffuseSHProperty;
     
-    bool _specularTextureDecodeRGBM = false;
-    std::shared_ptr<SampledTexture> _specularReflection = nullptr;
+    std::shared_ptr<SampledTexture> _diffuseTexture{nullptr};
+    ShaderProperty _diffuseTextureProperty;
+    ShaderProperty _diffuseSamplerProperty;
     
-    std::shared_ptr<SampledTexture> _brdfLutTexture = nullptr;
+    bool _specularTextureDecodeRGBM{false};
+    std::shared_ptr<SampledTexture> _specularReflection{nullptr};
+    ShaderProperty _specularTextureProperty;
+    ShaderProperty _specularSamplerProperty;
+
+    std::shared_ptr<SampledTexture> _brdfLutTexture{nullptr};
+    ShaderProperty _brdfTextureProperty;
+    ShaderProperty _brdfSamplerProperty;
+
+    Scene *_scene;
+    DiffuseMode _diffuseMode = DiffuseMode::SolidColor;
 };
 
 }
