@@ -19,11 +19,10 @@ class SpotLight : public Light {
 public:
     struct SpotLightData {
         Vector3F color;
-        float _colorAlign;
+        float _colorPad; // for align
         Vector3F position;
-        float _positionAlign;
+        float _positionPad; // for align
         Vector3F direction;
-        float _directionAlign;
         float distance;
         float angleCos;
         float penumbraCos;

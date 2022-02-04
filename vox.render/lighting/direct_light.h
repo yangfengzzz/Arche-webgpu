@@ -19,9 +19,9 @@ class DirectLight : public Light {
 public:
     struct DirectLightData {
         Vector3F color;
-        float _colorAlign;
+        float _colorPad; // for align
         Vector3F direction;
-        float _directionAlign;
+        float _directionPad; // for align
     };
     
     /** Light color. */

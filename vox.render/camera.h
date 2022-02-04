@@ -40,7 +40,7 @@ public:
         Matrix4x4F u_viewInvMat;
         Matrix4x4F u_projInvMat;
         Point3F u_cameraPos;
-        float _cameraPosAlign;
+        float _cameraPosPad; // for align
     };
     
     /** Shader data. */

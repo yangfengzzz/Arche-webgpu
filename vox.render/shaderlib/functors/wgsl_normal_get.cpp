@@ -54,7 +54,7 @@ void WGSLNormalGet::operator()(WGSLEncoder& encoder,
             source += "var n = normalize( cross(pos_dx, pos_dy) );\n";
         }
     }
-    source += "n = -1.0 * n;\n";
+//    source += "n = -1.0 * n;\n";
     source += "return n;\n";
     source += "}\n";
     
