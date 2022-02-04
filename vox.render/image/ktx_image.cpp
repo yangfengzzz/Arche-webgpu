@@ -38,7 +38,7 @@ static ktx_error_code_e KTX_APIENTRY optimal_tiling_callback(int mip_level,
     return KTX_SUCCESS;
 }
 
-Ktx::Ktx(const std::vector<uint8_t> &data) :
+Ktx::Ktx(const std::vector<uint8_t> &data, bool flipY) :
 Image{} {
     auto data_buffer = reinterpret_cast<const ktx_uint8_t *>(data.data());
     auto data_size = static_cast<ktx_size_t>(data.size());

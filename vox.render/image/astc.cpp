@@ -140,13 +140,13 @@ void Astc::decode(BlockDim blockdim, wgpu::Extent3D extent, const uint8_t *data_
     destroy_image(astc_image);
 }
 
-Astc::Astc(const Image &image) :
+Astc::Astc(const Image &image, bool flipY) :
 Image{} {
     init();
     decode(toBlockdim(image.format()), image.extent(), image.data().data());
 }
 
-Astc::Astc(const std::vector<uint8_t> &data) :
+Astc::Astc(const std::vector<uint8_t> &data, bool flipY) :
 Image{} {
     init();
     

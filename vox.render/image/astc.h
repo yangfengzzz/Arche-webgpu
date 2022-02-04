@@ -22,13 +22,13 @@ public:
      * @brief Decodes an ASTC image
      * @param image Image to decode
      */
-    Astc(const Image &image);
+    Astc(const Image &image, bool flipY);
     
     /**
      * @brief Decodes ASTC data with an ASTC header
      * @param data ASTC data with header
      */
-    Astc(const std::vector<uint8_t> &data);
+    Astc(const std::vector<uint8_t> &data, bool flipY);
     
     virtual ~Astc() = default;
     

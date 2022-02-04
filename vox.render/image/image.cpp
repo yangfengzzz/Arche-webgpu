@@ -149,7 +149,7 @@ void Image::setOffsets(const std::vector<std::vector<uint64_t>> &o) {
     _offsets = o;
 }
 
-std::unique_ptr<Image> Image::load(const std::string &uri) {
+std::unique_ptr<Image> Image::load(const std::string &uri, bool flipY) {
     std::unique_ptr<Image> image{nullptr};
     
     auto data = fs::readAsset(uri);
@@ -157,13 +157,13 @@ std::unique_ptr<Image> Image::load(const std::string &uri) {
     // Get extension
     auto extension = fs::extraExtension(uri);
     if (extension == "png" || extension == "jpg") {
-        image = std::make_unique<Stb>(data);
+        image = std::make_unique<Stb>(data, flipY);
     } else if (extension == "astc") {
-        image = std::make_unique<Astc>(data);
+        image = std::make_unique<Astc>(data, flipY);
     } else if (extension == "ktx") {
-        image = std::make_unique<Ktx>(data);
+        image = std::make_unique<Ktx>(data, flipY);
     } else if (extension == "ktx2") {
-        image = std::make_unique<Ktx>(data);
+        image = std::make_unique<Ktx>(data, flipY);
     }
     return image;
 }

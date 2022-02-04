@@ -47,7 +47,7 @@ void AnimationApp::loadScene(uint32_t width, uint32_t height) {
     directLight->setEnableShadow(true);
     
     auto characterMtl = std::make_shared<BlinnPhongMaterial>(_device);
-    characterMtl->setBaseTexture(Image::load("Models/Doggy/T_Doggy_1_diffuse.png")->createSampledTexture(_device));
+    characterMtl->setBaseTexture(Image::load("Models/Doggy/T_Doggy_1_diffuse.png", true)->createSampledTexture(_device));
 //    characterMtl->setBaseTexture(resourceLoader.loadTexture("../assets/models/Doggy", "T_Doggy_1_diffuse.png", false));
 //    characterMtl->setOcclusionTexture(resourceLoader.loadTexture("../assets/models/Doggy", "T_Doggy_1_ao.png", false));
 //    characterMtl->setNormalTexture(resourceLoader.loadTexture("../assets/models/Doggy", "T_Doggy_normal.png", false));

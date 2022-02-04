@@ -32,7 +32,7 @@ class Image {
 public:
     Image(std::vector<uint8_t> &&data = {}, std::vector<Mipmap> &&mipmaps = {{}});
     
-    static std::unique_ptr<Image> load(const std::string &uri);
+    static std::unique_ptr<Image> load(const std::string &uri, bool flipY = false);
     
     virtual ~Image() = default;
     

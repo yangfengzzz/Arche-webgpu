@@ -11,7 +11,7 @@
 #include "std_helpers.h"
 
 namespace vox {
-Stb::Stb(const std::vector<uint8_t> &data) :
+Stb::Stb(const std::vector<uint8_t> &data, bool flipY) :
 Image{} {
     int width;
     int height;
@@ -21,6 +21,9 @@ Image{} {
     auto data_buffer = reinterpret_cast<const stbi_uc *>(data.data());
     auto data_size = static_cast<int>(data.size());
     
+    if (flipY) {
+        stbi_set_flip_vertically_on_load(flipY);
+    }
     auto raw_data = stbi_load_from_memory(data_buffer, data_size, &width, &height, &comp, req_comp);
     
     if (!raw_data) {
