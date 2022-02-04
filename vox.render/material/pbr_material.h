@@ -15,6 +15,14 @@ namespace vox {
  */
 class PBRMaterial : public PBRBaseMaterial {
 public:
+    struct PBRData {
+        Color baseColor;
+        Color emissiveColor;
+        float metallic;
+        float roughness;
+        float normalTextureIntensity;
+        float occlusionTextureIntensity;
+    };
     /**
      * Metallic.
      */

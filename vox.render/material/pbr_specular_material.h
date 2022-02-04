@@ -15,6 +15,15 @@ namespace vox {
  */
 class PBRSpecularMaterial : public PBRBaseMaterial {
 public:
+    struct PBRSpecularData {
+        Color baseColor;
+        Color emissiveColor;
+        Color specularColor;
+        float glossiness;
+        float normalTextureIntensity;
+        float occlusionTextureIntensity;
+    };
+    
     /**
      * Specular color.
      */
