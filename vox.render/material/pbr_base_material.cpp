@@ -8,12 +8,12 @@
 
 namespace vox {
 const Color& PBRBaseMaterial::baseColor() {
-    return _baseColor;
+    return _pbrBaseData.baseColor;
 }
 
 void PBRBaseMaterial::setBaseColor(const Color &newValue) {
-    _baseColor = newValue;
-    shaderData.setData(PBRBaseMaterial::_baseColorProp, newValue);
+    _pbrBaseData.baseColor = newValue;
+    shaderData.setData(PBRBaseMaterial::_pbrBaseProp, _pbrBaseData);
 }
 
 SampledTexture2DPtr PBRBaseMaterial::baseTexture() {
@@ -47,21 +47,21 @@ void PBRBaseMaterial::setNormalTexture(SampledTexture2DPtr newValue) {
 }
 
 float PBRBaseMaterial::normalTextureIntensity() {
-    return _normalTextureIntensity;
+    return _pbrBaseData.normalTextureIntensity;
 }
 
 void PBRBaseMaterial::setNormalTextureIntensity(float newValue) {
-    _normalTextureIntensity = newValue;
-    shaderData.setData(PBRBaseMaterial::_normalTextureIntensityProp, newValue);
+    _pbrBaseData.normalTextureIntensity = newValue;
+    shaderData.setData(PBRBaseMaterial::_pbrBaseProp, _pbrBaseData);
 }
 
 const Color& PBRBaseMaterial::emissiveColor() {
-    return _emissiveColor;
+    return _pbrBaseData.emissiveColor;
 }
 
 void PBRBaseMaterial::setEmissiveColor(const Color &newValue) {
-    _emissiveColor = newValue;
-    shaderData.setData(PBRBaseMaterial::_emissiveColorProp, newValue);
+    _pbrBaseData.emissiveColor = newValue;
+    shaderData.setData(PBRBaseMaterial::_pbrBaseProp, _pbrBaseData);
 }
 
 SampledTexture2DPtr PBRBaseMaterial::emissiveTexture() {
@@ -95,12 +95,12 @@ void PBRBaseMaterial::setOcclusionTexture(SampledTexture2DPtr newValue) {
 }
 
 float PBRBaseMaterial::occlusionTextureIntensity() {
-    return _occlusionTextureIntensity;
+    return _pbrBaseData.occlusionTextureIntensity;
 }
 
 void PBRBaseMaterial::setOcclusionTextureIntensity(float newValue) {
-    _occlusionTextureIntensity = newValue;
-    shaderData.setData(PBRBaseMaterial::_occlusionTextureIntensityProp, newValue);
+    _pbrBaseData.occlusionTextureIntensity = newValue;
+    shaderData.setData(PBRBaseMaterial::_pbrBaseProp, _pbrBaseData);
 }
 
 const Vector4F& PBRBaseMaterial::tilingOffset() {
@@ -112,13 +112,10 @@ void PBRBaseMaterial::setTilingOffset(const Vector4F &newValue) {
     shaderData.setData(PBRBaseMaterial::_tilingOffsetProp, newValue);
 }
 
-PBRBaseMaterial::PBRBaseMaterial(wgpu::Device& device) :
-BaseMaterial(device, Shader::find("pbr")),
+PBRBaseMaterial::PBRBaseMaterial(wgpu::Device& device, Shader *shader) :
+BaseMaterial(device, shader),
 _tilingOffsetProp(Shader::createProperty("u_tilingOffset", ShaderDataGroup::Material)),
-_normalTextureIntensityProp(Shader::createProperty("u_normalIntensity", ShaderDataGroup::Material)),
-_occlusionTextureIntensityProp(Shader::createProperty("u_occlusionStrength", ShaderDataGroup::Material)),
-_baseColorProp(Shader::createProperty("u_baseColor", ShaderDataGroup::Material)),
-_emissiveColorProp(Shader::createProperty("u_emissiveColor", ShaderDataGroup::Material)),
+_pbrBaseProp(Shader::createProperty("u_pbrBaseData", ShaderDataGroup::Material)),
 
 _baseTextureProp(Shader::createProperty("u_baseColorTexture", ShaderDataGroup::Material)),
 _baseSamplerProp(Shader::createProperty("u_baseColorSampler", ShaderDataGroup::Material)),
@@ -134,12 +131,8 @@ _occlusionSamplerProp(Shader::createProperty("u_occlusionSampler", ShaderDataGro
     shaderData.enableMacro(NEED_WORLDPOS);
     shaderData.enableMacro(NEED_TILINGOFFSET);
     
-    shaderData.setData(PBRBaseMaterial::_baseColorProp, _baseColor);
-    shaderData.setData(PBRBaseMaterial::_emissiveColorProp, _emissiveColor);
     shaderData.setData(PBRBaseMaterial::_tilingOffsetProp, _tilingOffset);
-    
-    shaderData.setData(PBRBaseMaterial::_normalTextureIntensityProp, _normalTextureIntensity);
-    shaderData.setData(PBRBaseMaterial::_occlusionTextureIntensityProp, _occlusionTextureIntensity);
+    shaderData.setData(PBRBaseMaterial::_pbrBaseProp, _pbrBaseData);
 }
 
 }

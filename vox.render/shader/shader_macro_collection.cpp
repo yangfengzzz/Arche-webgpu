@@ -89,7 +89,6 @@ std::vector<size_t> ShaderMacroCollection::_internalMacroHashValue = {
     std::hash<std::string>{}("HAS_OCCLUSIONMAP"),
     std::hash<std::string>{}("HAS_SPECULARGLOSSINESSMAP"),
     std::hash<std::string>{}("HAS_METALROUGHNESSMAP"),
-    std::hash<std::string>{}("IS_METALLIC_WORKFLOW"),
     
     // Light
     std::hash<std::string>{}("DIRECT_LIGHT_COUNT"),

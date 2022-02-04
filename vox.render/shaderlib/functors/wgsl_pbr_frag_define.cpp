@@ -12,23 +12,22 @@ namespace vox {
 WGSLPbrFragDefine::WGSLPbrFragDefine(const std::string& outputStructName, bool is_metallic_workflow) :
 _is_metallic_workflow(is_metallic_workflow),
 _outputStructName(outputStructName) {
+    _pbrStruct = "struct PbrBaseData {\n";
+    _pbrStruct += "  baseColor : vec4<f32>;\n";
+    _pbrStruct += "  emissiveColor : vec4<f32>;\n";
+    _pbrStruct += "  normalTextureIntensity : f32;\n";
+    _pbrStruct += "  occlusionTextureIntensity : f32;\n";
+    _pbrStruct += "};\n";
+    
     if (_is_metallic_workflow) {
-        _pbrStruct = "struct PbrData {\n";
-        _pbrStruct += "  baseColor : vec4<f32>;\n";
-        _pbrStruct += "  emissiveColor : vec4<f32>;\n";
+        _pbrStruct += "struct PbrData {\n";
         _pbrStruct += "  metallic : f32;\n";
         _pbrStruct += "  roughness : f32;\n";
-        _pbrStruct += "  normalTextureIntensity : f32;\n";
-        _pbrStruct += "  occlusionTextureIntensity : f32;\n";
         _pbrStruct += "};\n";
     } else {
-        _pbrStruct = "struct PbrData {\n";
-        _pbrStruct += "  baseColor : vec4<f32>;\n";
-        _pbrStruct += "  emissiveColor : vec4<f32>;\n";
+        _pbrStruct += "struct PbrSpecularData {\n";
         _pbrStruct += "  specularColor : vec4<f32>;\n";
         _pbrStruct += "  glossiness : f32;\n";
-        _pbrStruct += "  normalTextureIntensity : f32;\n";
-        _pbrStruct += "  occlusionTextureIntensity : f32;\n";
         _pbrStruct += "};\n";
     }
 }
@@ -36,7 +35,13 @@ _outputStructName(outputStructName) {
 void WGSLPbrFragDefine::operator()(WGSLEncoder& encoder,
                                    const ShaderMacroCollection& macros, size_t counterIndex) {
     encoder.addUniformBinding("u_alphaCutoff", UniformType::F32);
-    encoder.addUniformBinding("u_pbrData", "PbrData");
+    encoder.addUniformBinding("u_pbrBaseData", "PbrBaseData");
+    if (_is_metallic_workflow) {
+        encoder.addUniformBinding("u_pbrData", "PbrData");
+    } else {
+        encoder.addUniformBinding("u_pbrSpecularData", "PbrSpecularData");
+    }
+    
     if (macros.contains(HAS_BASE_COLORMAP)) {
         encoder.addSampledTextureBinding("u_baseColorTexture", TextureType::Texture2Df32,
                                          "u_baseColorSampler", SamplerType::Sampler);

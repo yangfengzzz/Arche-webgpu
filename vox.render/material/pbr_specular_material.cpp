@@ -7,21 +7,21 @@
 
 namespace vox {
 const Color& PBRSpecularMaterial::specularColor() {
-    return _specularColor;
+    return _pbrSpecularData.specularColor;
 }
 
 void PBRSpecularMaterial::setSpecularColor(const Color &newValue) {
-    _specularColor = newValue;
-    shaderData.setData(PBRSpecularMaterial::_specularColorProp, newValue);
+    _pbrSpecularData.specularColor = newValue;
+    shaderData.setData(PBRSpecularMaterial::_pbrSpecularProp, _pbrSpecularData);
 }
 
 float PBRSpecularMaterial::glossiness() {
-    return _glossiness;
+    return _pbrSpecularData.glossiness;
 }
 
 void PBRSpecularMaterial::setGlossiness(float newValue) {
-    _glossiness = newValue;
-    shaderData.setData(PBRSpecularMaterial::_glossinessProp, newValue);
+    _pbrSpecularData.glossiness = newValue;
+    shaderData.setData(PBRSpecularMaterial::_pbrSpecularProp, _pbrSpecularData);
 }
 
 SampledTexture2DPtr PBRSpecularMaterial::specularGlossinessTexture() {
@@ -40,13 +40,11 @@ void PBRSpecularMaterial::setSpecularGlossinessTexture(SampledTexture2DPtr newVa
 }
 
 PBRSpecularMaterial::PBRSpecularMaterial(wgpu::Device& device) :
-PBRBaseMaterial(device),
-_glossinessProp(Shader::createProperty("u_glossiness", ShaderDataGroup::Material)),
-_specularColorProp(Shader::createProperty("u_specularColor", ShaderDataGroup::Material)),
+PBRBaseMaterial(device, Shader::find("pbr-specular")),
+_pbrSpecularProp(Shader::createProperty("u_pbrSpecularData", ShaderDataGroup::Material)),
 _specularGlossinessTextureProp(Shader::createProperty("_specularGlossinessTexture", ShaderDataGroup::Material)),
 _specularGlossinessSamplerProp(Shader::createProperty("_specularGlossinessSampler", ShaderDataGroup::Material)) {
-    shaderData.setData(PBRSpecularMaterial::_specularColorProp, _specularColor);
-    shaderData.setData(PBRSpecularMaterial::_glossinessProp, _glossiness);
+    shaderData.setData(PBRSpecularMaterial::_pbrSpecularProp, _pbrSpecularData);
 }
 
 }

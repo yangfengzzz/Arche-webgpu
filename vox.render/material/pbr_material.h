@@ -16,12 +16,9 @@ namespace vox {
 class PBRMaterial : public PBRBaseMaterial {
 public:
     struct PBRData {
-        Color baseColor;
-        Color emissiveColor;
-        float metallic;
-        float roughness;
-        float normalTextureIntensity;
-        float occlusionTextureIntensity;
+        float metallic = 1.f;
+        float roughness = 1.f;
+        float _pad1, _pad2;
     };
     /**
      * Metallic.
@@ -51,15 +48,12 @@ public:
     explicit PBRMaterial(wgpu::Device& device);
     
 private:
-    ShaderProperty _metallicProp;
-    ShaderProperty _roughnessProp;
+    PBRData _pbrData;
+    ShaderProperty _pbrProp;
     
+    SampledTexture2DPtr _metallicRoughnessTexture{nullptr};
     ShaderProperty _metallicRoughnessTextureProp;
     ShaderProperty _metallicRoughnessSamplerProp;
-
-    float _metallic = 1.f;
-    float _roughness = 1.f;
-    SampledTexture2DPtr _metallicRoughnessTexture{nullptr};
 };
 
 }

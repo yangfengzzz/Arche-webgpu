@@ -18,6 +18,14 @@ namespace vox {
  */
 class PBRBaseMaterial : public BaseMaterial {
 public:
+    struct PBRBaseData {
+        Color baseColor = Color(1, 1, 1, 1);
+        Color emissiveColor = Color(0, 0, 0, 1);
+        float normalTextureIntensity = 1.f;
+        float occlusionTextureIntensity = 1.f;
+        float _pad1, _pad2;
+    };
+    
     /**
      * Base color.
      */
@@ -85,37 +93,30 @@ protected:
     /**
      * Create a pbr base material instance.
      */
-    explicit PBRBaseMaterial(wgpu::Device& device);
+    explicit PBRBaseMaterial(wgpu::Device& device, Shader *shader);
     
 private:
+    Vector4F _tilingOffset = Vector4F(1, 1, 0, 0);
     ShaderProperty _tilingOffsetProp;
-    ShaderProperty _normalTextureIntensityProp;
-    ShaderProperty _occlusionTextureIntensityProp;
     
-    ShaderProperty _baseColorProp;
-    ShaderProperty _emissiveColorProp;
+    PBRBaseData _pbrBaseData;
+    ShaderProperty _pbrBaseProp;
     
+    SampledTexture2DPtr _baseTexture{nullptr};
     ShaderProperty _baseTextureProp;
     ShaderProperty _baseSamplerProp;
     
+    SampledTexture2DPtr _normalTexture{nullptr};
     ShaderProperty _normalTextureProp;
     ShaderProperty _normalSamplerProp;
 
+    SampledTexture2DPtr _emissiveTexture{nullptr};
     ShaderProperty _emissiveTextureProp;
     ShaderProperty _emissiveSamplerProp;
 
+    SampledTexture2DPtr _occlusionTexture{nullptr};
     ShaderProperty _occlusionTextureProp;
     ShaderProperty _occlusionSamplerProp;
-
-    Color _baseColor = Color(1, 1, 1, 1);
-    SampledTexture2DPtr _baseTexture{nullptr};
-    SampledTexture2DPtr _normalTexture{nullptr};
-    float _normalTextureIntensity = 1.f;
-    Color _emissiveColor = Color(0, 0, 0, 1);
-    SampledTexture2DPtr _emissiveTexture{nullptr};
-    SampledTexture2DPtr _occlusionTexture{nullptr};
-    float _occlusionTextureIntensity = 1.f;
-    Vector4F _tilingOffset = Vector4F(1, 1, 0, 0);
 };
 
 }

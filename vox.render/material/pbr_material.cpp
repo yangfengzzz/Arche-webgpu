@@ -8,21 +8,21 @@
 
 namespace vox {
 float PBRMaterial::metallic() {
-    return _metallic;
+    return _pbrData.metallic;
 }
 
 void PBRMaterial::setMetallic(float newValue) {
-    _metallic = newValue;
-    shaderData.setData(PBRMaterial::_metallicProp, newValue);
+    _pbrData.metallic = newValue;
+    shaderData.setData(PBRMaterial::_pbrProp, _pbrData);
 }
 
 float PBRMaterial::roughness() {
-    return _roughness;
+    return _pbrData.roughness;
 }
 
 void PBRMaterial::setRoughness(float newValue) {
-    _roughness = newValue;
-    shaderData.setData(PBRMaterial::_roughnessProp, newValue);
+    _pbrData.roughness = newValue;
+    shaderData.setData(PBRMaterial::_pbrProp, _pbrData);
 }
 
 SampledTexture2DPtr PBRMaterial::metallicRoughnessTexture() {
@@ -41,14 +41,11 @@ void PBRMaterial::setMetallicRoughnessTexture(SampledTexture2DPtr newValue) {
 }
 
 PBRMaterial::PBRMaterial(wgpu::Device& device) :
-PBRBaseMaterial(device),
-_metallicProp(Shader::createProperty("u_metal", ShaderDataGroup::Material)),
-_roughnessProp(Shader::createProperty("u_roughness", ShaderDataGroup::Material)),
+PBRBaseMaterial(device, Shader::find("pbr")),
+_pbrProp(Shader::createProperty("u_pbrData", ShaderDataGroup::Material)),
 _metallicRoughnessTextureProp(Shader::createProperty("u_metallicRoughnessTexture", ShaderDataGroup::Material)),
 _metallicRoughnessSamplerProp(Shader::createProperty("u_metallicRoughnessSampler", ShaderDataGroup::Material)) {
-    shaderData.enableMacro(IS_METALLIC_WORKFLOW);
-    shaderData.setData(PBRMaterial::_metallicProp, _metallic);
-    shaderData.setData(PBRMaterial::_roughnessProp, _roughness);
+    shaderData.setData(PBRMaterial::_pbrProp, _pbrData);
 }
 
 }
