@@ -76,7 +76,7 @@ void WGSLPbrHelper::operator()(WGSLEncoder& encoder,
     
     if (_is_metallic_workflow) {
         getPhysicalMaterial += "material.diffuseColor = diffuseColor.rgb * ( 1.0 - metal );\n";
-        getPhysicalMaterial += "material.specularColor = mix( vec3( 0.04), diffuseColor.rgb, metal );\n";
+        getPhysicalMaterial += "material.specularColor = mix( vec3<f32>( 0.04), diffuseColor.rgb, metal );\n";
         getPhysicalMaterial += "material.roughness = clamp( roughness, 0.04, 1.0 );\n";
     } else {
         getPhysicalMaterial += "var specularStrength = max( max( specularColor.r, specularColor.g ), specularColor.b );\n";
@@ -87,6 +87,7 @@ void WGSLPbrHelper::operator()(WGSLEncoder& encoder,
     
     getPhysicalMaterial += "material.opacity = diffuseColor.a;\n";
     getPhysicalMaterial += "return material;\n";
+    getPhysicalMaterial += "}\n";
     encoder.addFunction(getPhysicalMaterial);
     
     _brdf(encoder, macros, counterIndex);

@@ -39,7 +39,7 @@ void WGSLIBLFragDefine::operator()(WGSLEncoder& encoder,
     function += "           sh[7] * (normal.z * normal.x) +\n";
     function += "           sh[8] * (normal.x * normal.x - normal.y * normal.y);\n";
     function += "\n";
-    function += "   return max(result, vec3(0.0));\n";
+    function += "   return max(result, vec3<f32>(0.0));\n";
     function += "}\n";
     encoder.addFunction(function);
     
@@ -60,7 +60,7 @@ void WGSLIBLFragDefine::operator()(WGSLEncoder& encoder,
     encoder.addFunction(function);
     
     function = "fn getSpecularMIPLevel(roughness:f32, maxMIPLevel:i32)->f32 {\n";
-    function += "    return roughness * float(maxMIPLevel);\n";
+    function += "    return roughness * f32(maxMIPLevel);\n";
     function += "}\n";
     encoder.addFunction(function);
     

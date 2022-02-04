@@ -35,6 +35,7 @@ _outputStructName(outputStructName) {
 void WGSLPbrFragDefine::operator()(WGSLEncoder& encoder,
                                    const ShaderMacroCollection& macros, size_t counterIndex) {
     encoder.addUniformBinding("u_alphaCutoff", UniformType::F32);
+    encoder.addStruct(_pbrStruct);
     encoder.addUniformBinding("u_pbrBaseData", "PbrBaseData");
     if (_is_metallic_workflow) {
         encoder.addUniformBinding("u_pbrData", "PbrData");
