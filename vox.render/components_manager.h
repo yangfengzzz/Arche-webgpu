@@ -62,18 +62,18 @@ public:
                     std::vector<RenderElement> &alphaTestQueue,
                     std::vector<RenderElement> &transparentQueue);
     
-//public:
-//    void addOnUpdateAnimators(Animator *animator);
-//    
-//    void removeOnUpdateAnimators(Animator *animator);
-//
-//    void callAnimatorUpdate(float deltaTime);
-//
-//    void addOnUpdateSceneAnimators(SceneAnimator *animator);
-//
-//    void removeOnUpdateSceneAnimators(SceneAnimator *animator);
-//
-//    void callSceneAnimatorUpdate(float deltaTime);
+public:
+    void addOnUpdateAnimators(Animator *animator);
+    
+    void removeOnUpdateAnimators(Animator *animator);
+
+    void callAnimatorUpdate(float deltaTime);
+
+    void addOnUpdateSceneAnimators(SceneAnimator *animator);
+
+    void removeOnUpdateSceneAnimators(SceneAnimator *animator);
+
+    void callSceneAnimatorUpdate(float deltaTime);
     
 public:
     void callCameraOnBeginRender(Camera *camera);
