@@ -26,6 +26,8 @@ public:
         float distance;
         float angleCos;
         float penumbraCos;
+        float _pad; // for align
+        float _pad2; // for align
     };
     
     /** Light color. */

@@ -425,9 +425,15 @@ std::shared_ptr<Mesh> SkinnedMeshRenderer::drawSkinnedMesh(size_t index,
         _uvBuffers[index]->uploadData(_entity->scene()->device(), uv_map, uvs_size);
     }
     
+    // temp solution
+    auto indics = _mesh.triangle_indices;
     size_t indexCount = _mesh.triangle_indices.size();
+    for (int i = 0; i < 4 - indexCount%4; i++) {
+        indics.push_back(*(indics.end()-1));
+    }
+    indexCount = indics.size();
     if (_indexBuffers[index] == std::nullopt) {
-        _indexBuffers[index] = Buffer(_entity->scene()->device(), _mesh.triangle_indices.data(),
+        _indexBuffers[index] = Buffer(_entity->scene()->device(), indics.data(),
                                       indexCount * sizeof(ozz::loader::Mesh::TriangleIndices::value_type),
                                       wgpu::BufferUsage::Index | wgpu::BufferUsage::CopyDst);
     }
