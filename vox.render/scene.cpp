@@ -168,7 +168,7 @@ void Scene::update(float deltaTime) {
     _physicsManager.callCharacterControllerOnLateUpdate();
     
     _componentsManager.callScriptOnUpdate(deltaTime);
-//    _componentsManager.callAnimatorUpdate(deltaTime);
+    _componentsManager.callAnimatorUpdate(deltaTime);
 //    _componentsManager.callSceneAnimatorUpdate(deltaTime);
     _componentsManager.callScriptOnLateUpdate(deltaTime);
     
