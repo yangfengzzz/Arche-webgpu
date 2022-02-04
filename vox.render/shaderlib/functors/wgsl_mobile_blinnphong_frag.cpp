@@ -28,7 +28,7 @@ void WGSLMobileBlinnphongFrag::operator()(std::string& source, const ShaderMacro
         source += "    lightDiffuse = lightDiffuse + u_directLight[i].color * d;\n";
         source += "\n";
         source += "    var halfDir:vec3<f32> = normalize( V - u_directLight[i].direction );\n";
-        source += "    var s:f32 = pow( clamp( dot( N, halfDir ), 0.0, 1.0 ), u_shininess );\n";
+        source += "    var s:f32 = pow( clamp( dot( N, halfDir ), 0.0, 1.0 ), u_blinnPhongData.shininess );\n";
         source += "    lightSpecular = lightSpecular + u_directLight[i].color * s;\n";
         
         source += "i = i + 1;\n";
@@ -51,7 +51,7 @@ void WGSLMobileBlinnphongFrag::operator()(std::string& source, const ShaderMacro
         source += "    lightDiffuse = lightDiffuse + u_pointLight[i].color * d;\n";
         source += "\n";
         source += "    var halfDir = normalize( V - direction );\n";
-        source += "    var s = pow( clamp( dot( N, halfDir ), 0.0, 1.0 ), u_shininess )  * decay;\n";
+        source += "    var s = pow( clamp( dot( N, halfDir ), 0.0, 1.0 ), u_blinnPhongData.shininess )  * decay;\n";
         source += "    lightSpecular = lightSpecular + u_pointLight[i].color * s;\n";
 
         source += "i = i + 1;\n";
@@ -76,7 +76,7 @@ void WGSLMobileBlinnphongFrag::operator()(std::string& source, const ShaderMacro
         source += "    lightDiffuse = lightDiffuse + u_spotLight[i].color * d;\n";
         source += "\n";
         source += "    var halfDir = normalize( V + direction );\n";
-        source += "    var s = pow( clamp( dot( N, halfDir ), 0.0, 1.0 ), u_shininess ) * decayTotal;\n";
+        source += "    var s = pow( clamp( dot( N, halfDir ), 0.0, 1.0 ), u_blinnPhongData.shininess ) * decayTotal;\n";
         source += "    lightSpecular = lightSpecular + u_spotLight[i].color * s;\n";
 
         source += "i = i + 1;\n";

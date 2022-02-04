@@ -15,9 +15,9 @@ _output(output) {
 
 void WGSLBeginMobileFrag::operator()(std::string& source, const ShaderMacroCollection& macros) {
     source += "var ambient = vec4<f32>(0.0);\n";
-    source += "var emission = u_emissiveColor;\n";
-    source += "var diffuse = u_diffuseColor;\n";
-    source += "var specular = u_specularColor;\n";
+    source += "var emission = u_blinnPhongData.emissiveColor;\n";
+    source += "var diffuse = u_blinnPhongData.baseColor;\n";
+    source += "var specular = u_blinnPhongData.specularColor;\n";
     if (macros.contains(HAS_EMISSIVE_TEXTURE)) {
         source += fmt::format("var emissiveTextureColor = textureSample(u_emissiveTexture, u_emissiveSampler, {}.v_uv);\n", _input);
         source += "emission = emission * emissiveTextureColor;\n";

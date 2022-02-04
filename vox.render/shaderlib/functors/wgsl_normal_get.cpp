@@ -44,7 +44,7 @@ void WGSLNormalGet::operator()(WGSLEncoder& encoder,
             source += fmt::format("var tbn = {}.v_TBN;\n", _paramName);
         }
         source += fmt::format("var n = textureSample(u_normalTexture, u_normalSampler, {}.v_uv ).rgb;\n", _paramName);
-        source += "n = normalize(tbn * ((2.0 * n - 1.0) * vec3<f32>(u_normalIntensity, u_normalIntensity, 1.0)));\n";
+        source += "n = normalize(tbn * ((2.0 * n - 1.0) * vec3<f32>(u_blinnPhongData.normalIntensity, u_blinnPhongData.normalIntensity, 1.0)));\n";
     } else {
         if (macros.contains(HAS_NORMAL)) {
             source += fmt::format("var n = normalize({}.v_normal);\n", _paramName);

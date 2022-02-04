@@ -19,6 +19,8 @@ public:
     
 private:
     std::string _outputStructName{};
+    std::string _blinnPhongStruct;
+
 };
 
 }

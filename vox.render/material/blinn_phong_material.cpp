@@ -8,12 +8,12 @@
 
 namespace vox {
 const Color& BlinnPhongMaterial::baseColor() {
-    return _baseColor;
+    return _blinnPhongData.baseColor;
 }
 
 void BlinnPhongMaterial::setBaseColor(const Color &newValue) {
-    _baseColor = newValue;
-    shaderData.setData(BlinnPhongMaterial::_diffuseColorProp, newValue);
+    _blinnPhongData.baseColor = newValue;
+    shaderData.setData(BlinnPhongMaterial::_blinnPhongProp, _blinnPhongData);
 }
 
 SampledTexture2DPtr BlinnPhongMaterial::baseTexture() {
@@ -33,12 +33,12 @@ void BlinnPhongMaterial::setBaseTexture(SampledTexture2DPtr newValue) {
 }
 
 const Color& BlinnPhongMaterial::specularColor() {
-    return _specularColor;
+    return _blinnPhongData.specularColor;
 }
 
 void BlinnPhongMaterial::setSpecularColor(const Color &newValue) {
-    _specularColor = newValue;
-    shaderData.setData(BlinnPhongMaterial::_specularColorProp, newValue);
+    _blinnPhongData.specularColor = newValue;
+    shaderData.setData(BlinnPhongMaterial::_blinnPhongProp, _blinnPhongData);
 }
 
 SampledTexture2DPtr BlinnPhongMaterial::specularTexture() {
@@ -57,12 +57,12 @@ void BlinnPhongMaterial::setSpecularTexture(SampledTexture2DPtr newValue) {
 }
 
 const Color& BlinnPhongMaterial::emissiveColor() {
-    return _emissiveColor;
+    return _blinnPhongData.emissiveColor;
 }
 
 void BlinnPhongMaterial::setEmissiveColor(const Color &newValue) {
-    _emissiveColor = newValue;
-    shaderData.setData(BlinnPhongMaterial::_emissiveColorProp, newValue);
+    _blinnPhongData.emissiveColor = newValue;
+    shaderData.setData(BlinnPhongMaterial::_blinnPhongProp, _blinnPhongData);
 }
 
 SampledTexture2DPtr BlinnPhongMaterial::emissiveTexture() {
@@ -96,21 +96,21 @@ void BlinnPhongMaterial::setNormalTexture(SampledTexture2DPtr newValue) {
 }
 
 float BlinnPhongMaterial::normalIntensity() {
-    return _normalIntensity;
+    return _blinnPhongData.normalIntensity;
 }
 
 void BlinnPhongMaterial::setNormalIntensity(float newValue) {
-    _normalIntensity = newValue;
-    shaderData.setData(BlinnPhongMaterial::_normalIntensityProp, newValue);
+    _blinnPhongData.normalIntensity = newValue;
+    shaderData.setData(BlinnPhongMaterial::_blinnPhongProp, _blinnPhongData);
 }
 
 float BlinnPhongMaterial::shininess() {
-    return _shininess;
+    return _blinnPhongData.shininess;
 }
 
 void BlinnPhongMaterial::setShininess(float newValue) {
-    _shininess = newValue;
-    shaderData.setData(BlinnPhongMaterial::_shininessProp, newValue);
+    _blinnPhongData.shininess = newValue;
+    shaderData.setData(BlinnPhongMaterial::_blinnPhongProp, _blinnPhongData);
 }
 
 const Vector4F& BlinnPhongMaterial::tilingOffset() {
@@ -124,12 +124,8 @@ void BlinnPhongMaterial::setTilingOffset(const Vector4F &newValue) {
 
 BlinnPhongMaterial::BlinnPhongMaterial(wgpu::Device& device) :
 BaseMaterial(device, Shader::find("blinn-phong")),
-_diffuseColorProp(Shader::createProperty("u_diffuseColor", ShaderDataGroup::Material)),
-_specularColorProp(Shader::createProperty("u_specularColor", ShaderDataGroup::Material)),
-_emissiveColorProp(Shader::createProperty("u_emissiveColor", ShaderDataGroup::Material)),
 _tilingOffsetProp(Shader::createProperty("u_tilingOffset", ShaderDataGroup::Material)),
-_shininessProp(Shader::createProperty("u_shininess", ShaderDataGroup::Material)),
-_normalIntensityProp(Shader::createProperty("u_normalIntensity", ShaderDataGroup::Material)),
+_blinnPhongProp(Shader::createProperty("u_blinnPhongData", ShaderDataGroup::Material)),
 
 _baseTextureProp(Shader::createProperty("u_diffuseTexture", ShaderDataGroup::Material)),
 _baseSamplerProp(Shader::createProperty("u_diffuseSampler", ShaderDataGroup::Material)),
@@ -142,16 +138,11 @@ _emissiveSamplerProp(Shader::createProperty("u_emissiveSampler", ShaderDataGroup
 
 _normalTextureProp(Shader::createProperty("u_normalTexture", ShaderDataGroup::Material)),
 _normalSamplerProp(Shader::createProperty("u_normalSampler", ShaderDataGroup::Material)){
-
     shaderData.enableMacro(NEED_WORLDPOS);
     shaderData.enableMacro(NEED_TILINGOFFSET);
     
-    shaderData.setData(_diffuseColorProp, _baseColor);
-    shaderData.setData(_specularColorProp, _specularColor);
-    shaderData.setData(_emissiveColorProp, _emissiveColor);
     shaderData.setData(_tilingOffsetProp, _tilingOffset);
-    shaderData.setData(_shininessProp, _shininess);
-    shaderData.setData(_normalIntensityProp, _normalIntensity);
+    shaderData.setData(_blinnPhongProp, _blinnPhongData);
 }
 
 }

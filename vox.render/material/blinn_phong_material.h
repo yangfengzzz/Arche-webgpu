@@ -18,6 +18,15 @@ namespace vox {
  */
 class BlinnPhongMaterial : public BaseMaterial {
 public:
+    struct BlinnPhongData {
+        Color baseColor = Color(1, 1, 1, 1);
+        Color specularColor = Color(1, 1, 1, 1);
+        Color emissiveColor = Color(0, 0, 0, 1);
+        float normalIntensity = 1.f;
+        float shininess = 16.f;
+        float _pad1, _pad2; // align
+    };
+    
     /**
      * Base color.
      */
@@ -91,35 +100,27 @@ public:
     explicit BlinnPhongMaterial(wgpu::Device& device);
     
 private:
-    ShaderProperty _diffuseColorProp;
-    ShaderProperty _specularColorProp;
-    ShaderProperty _emissiveColorProp;
+    Vector4F _tilingOffset = Vector4F(1, 1, 0, 0);
     ShaderProperty _tilingOffsetProp;
-    ShaderProperty _shininessProp;
-    ShaderProperty _normalIntensityProp;
+
+    BlinnPhongData _blinnPhongData;
+    ShaderProperty _blinnPhongProp;
     
+    SampledTexture2DPtr _baseTexture{nullptr};
     ShaderProperty _baseTextureProp;
     ShaderProperty _baseSamplerProp;
     
+    SampledTexture2DPtr _specularTexture{nullptr};
     ShaderProperty _specularTextureProp;
     ShaderProperty _specularSamplerProp;
     
+    SampledTexture2DPtr _emissiveTexture{nullptr};
     ShaderProperty _emissiveTextureProp;
     ShaderProperty _emissiveSamplerProp;
     
+    SampledTexture2DPtr _normalTexture{nullptr};
     ShaderProperty _normalTextureProp;
     ShaderProperty _normalSamplerProp;
-    
-    Color _baseColor = Color(1, 1, 1, 1);
-    SampledTexture2DPtr _baseTexture{nullptr};
-    Color _specularColor = Color(1, 1, 1, 1);
-    SampledTexture2DPtr _specularTexture{nullptr};
-    Color _emissiveColor = Color(0, 0, 0, 1);
-    SampledTexture2DPtr _emissiveTexture{nullptr};
-    SampledTexture2DPtr _normalTexture{nullptr};
-    float _normalIntensity = 1.f;
-    float _shininess = 16.f;
-    Vector4F _tilingOffset = Vector4F(1, 1, 0, 0);
 };
 
 

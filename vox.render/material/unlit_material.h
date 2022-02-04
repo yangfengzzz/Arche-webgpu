@@ -45,14 +45,15 @@ public:
     explicit UnlitMaterial(wgpu::Device& device);
     
 private:
+    Color _baseColor = Color(1, 1, 1, 1);
     ShaderProperty _baseColorProp;
+    
+    SampledTexture2DPtr _baseTexture = nullptr;
     ShaderProperty _baseTextureProp;
     ShaderProperty _baseSamplerProp;
-    ShaderProperty _tilingOffsetProp;
     
-    Color _baseColor = Color(1, 1, 1, 1);
-    SampledTexture2DPtr _baseTexture = nullptr;
     Vector4F _tilingOffset = Vector4F(1, 1, 0, 0);
+    ShaderProperty _tilingOffsetProp;
 };
 
 }

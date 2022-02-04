@@ -11,15 +11,20 @@
 namespace vox {
 WGSLMobileMaterialShare::WGSLMobileMaterialShare(const std::string& outputStructName) :
 _outputStructName(outputStructName) {
+    _blinnPhongStruct = "struct BlinnPhongData {\n";
+    _blinnPhongStruct += "  baseColor : vec4<f32>;\n";
+    _blinnPhongStruct += "  specularColor : vec4<f32>;\n";
+    _blinnPhongStruct += "  emissiveColor : vec4<f32>;\n";
+    _blinnPhongStruct += "  normalIntensity : f32;\n";
+    _blinnPhongStruct += "  shininess : f32;\n";
+    _blinnPhongStruct += "};\n";
 }
 
 void WGSLMobileMaterialShare::operator()(WGSLEncoder& encoder,
                                          const ShaderMacroCollection& macros, size_t counterIndex) {
-    encoder.addUniformBinding("u_emissiveColor", UniformType::Vec4f32);
-    encoder.addUniformBinding("u_diffuseColor", UniformType::Vec4f32);
-    encoder.addUniformBinding("u_specularColor", UniformType::Vec4f32);
-    encoder.addUniformBinding("u_shininess", UniformType::F32);
-    encoder.addUniformBinding("u_normalIntensity", UniformType::F32);
+    encoder.addStruct(_blinnPhongStruct);
+    encoder.addUniformBinding("u_blinnPhongData", "BlinnPhongData");
+    
     encoder.addUniformBinding("u_alphaCutoff", UniformType::F32);
     
     if (macros.contains(HAS_EMISSIVE_TEXTURE)) {
