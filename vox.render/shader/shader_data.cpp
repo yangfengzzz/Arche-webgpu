@@ -69,10 +69,10 @@ void ShaderData::setSampledTexture(const ShaderProperty &texture_prop,
     _shaderSamplers[sample_prop.uniqueId] = value;
 }
 
-wgpu::Texture& ShaderData::getTexture(uint32_t uniqueID) {
+wgpu::TextureView ShaderData::getTextureView(uint32_t uniqueID) {
     auto iter = _shaderTextures.find(uniqueID);
     if (iter != _shaderTextures.end()) {
-        return iter->second->texture();
+        return iter->second->textureView();
     } else {
         assert(false && "unkonwn uniqueID for texture");
     }

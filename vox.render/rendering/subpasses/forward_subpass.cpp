@@ -173,19 +173,19 @@ void ForwardSubpass::_bindingTexture(wgpu::BindGroupEntry& entry,
     if (group.has_value()) {
         switch (*group) {
             case ShaderDataGroup::Scene:
-                entry.textureView = _scene->shaderData.getTexture(entry.binding).CreateView();
+                entry.textureView = _scene->shaderData.getTextureView(entry.binding);
                 break;
                 
             case ShaderDataGroup::Camera:
-                entry.textureView = _camera->shaderData.getTexture(entry.binding).CreateView();
+                entry.textureView = _camera->shaderData.getTextureView(entry.binding);
                 break;
                 
             case ShaderDataGroup::Renderer:
-                entry.textureView = renderer->shaderData.getTexture(entry.binding).CreateView();
+                entry.textureView = renderer->shaderData.getTextureView(entry.binding);
                 break;
                 
             case ShaderDataGroup::Material:
-                entry.textureView = mat->shaderData.getTexture(entry.binding).CreateView();
+                entry.textureView = mat->shaderData.getTextureView(entry.binding);
                 break;
                 
             default:

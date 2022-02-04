@@ -80,7 +80,7 @@ public:
                            const ShaderProperty &sample_prop,
                            const SampledTexturePtr& value);
     
-    wgpu::Texture& getTexture(uint32_t uniqueID);
+    wgpu::TextureView getTextureView(uint32_t uniqueID);
     
     wgpu::Sampler& getSampler(uint32_t uniqueID);
     

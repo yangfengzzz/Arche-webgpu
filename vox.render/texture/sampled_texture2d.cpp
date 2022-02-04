@@ -28,6 +28,16 @@ SampledTexture(device) {
     setAddressModeV(wgpu::AddressMode::Repeat);
 }
 
+wgpu::TextureView SampledTexture2D::textureView() {
+    wgpu::TextureViewDescriptor desc;
+    desc.format = _textureDesc.format;
+    desc.dimension = wgpu::TextureViewDimension::e2D;
+    desc.mipLevelCount = _textureDesc.mipLevelCount;
+    desc.arrayLayerCount = _textureDesc.size.depthOrArrayLayers;
+    desc.aspect = wgpu::TextureAspect::All;
+    return _nativeTexture.CreateView(&desc);
+}
+
 void SampledTexture2D::setPixelBuffer(std::vector<uint8_t>& data,
                                       uint32_t width, uint32_t height, uint32_t offset,
                                       uint32_t mipLevel, uint32_t x, uint32_t y) {

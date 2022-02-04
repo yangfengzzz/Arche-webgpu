@@ -39,6 +39,8 @@ public:
     
     wgpu::Texture& texture();
     
+    virtual wgpu::TextureView textureView() = 0;
+    
     wgpu::Sampler& sampler();
     
 public:
