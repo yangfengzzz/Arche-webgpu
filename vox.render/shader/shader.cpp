@@ -72,12 +72,15 @@ void Shader::flush() {
 }
 
 wgpu::BindGroupLayoutEntry Shader::_findEntry(uint32_t group, uint32_t binding) {
+    wgpu::BindGroupLayoutEntry entry;
+    entry.visibility = wgpu::ShaderStage::None;
+    
     const auto& entryMap = _vertexSource->bindGroupLayoutEntryMap();
     auto iter = entryMap.find(group);
     if (iter != entryMap.end()) {
         auto entryIter = iter->second.find(binding);
         if (entryIter != iter->second.end()) {
-            return entryIter->second;
+            entry = entryIter->second;
         }
     }
     
@@ -87,12 +90,20 @@ wgpu::BindGroupLayoutEntry Shader::_findEntry(uint32_t group, uint32_t binding) 
         if (iter != entryMap.end()) {
             auto entryIter = iter->second.find(binding);
             if (entryIter != iter->second.end()) {
-                return entryIter->second;
+                if (entry.visibility != wgpu::ShaderStage::None) {
+                    entry.visibility |= wgpu::ShaderStage::Fragment;
+                } else {
+                    entry = entryIter->second;
+                }
             }
         }
     }
     
-    assert(false && "can't find entry");
+    if (entry.visibility != wgpu::ShaderStage::None) {
+        return entry;
+    } else {
+        assert(false);
+    }
 }
 
 Shader *Shader::create(const std::string &name,

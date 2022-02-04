@@ -63,8 +63,8 @@ void WGSLMobileBlinnphongFrag::operator()(std::string& source, const ShaderMacro
         source += "}\n";
     }
     
-    source += "diffuse = diffuse * vec4<f32>(lightDiffuse, 1.0);";
-    source += "specular = specular * vec4<f32>(lightSpecular, 1.0);";
+    source += "diffuse = diffuse * vec4<f32>(lightDiffuse, 1.0);\n";
+    source += "specular = specular * vec4<f32>(lightSpecular, 1.0);\n";
     if (macros.contains(NEED_ALPHA_CUTOFF)) {
         source += "if( diffuse.a < u_alphaCutoff ) {\n";
         source += "    discard;\n";
