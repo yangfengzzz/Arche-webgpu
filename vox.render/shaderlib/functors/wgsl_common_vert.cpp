@@ -43,7 +43,7 @@ void WGSLCommonVert::operator()(WGSLEncoder& encoder, const ShaderMacroCollectio
     encoder.addUniformBinding("u_projMat", UniformType::Mat4x4f32);
     encoder.addUniformBinding("u_MVMat", UniformType::Mat4x4f32);
     encoder.addUniformBinding("u_MVPMat", UniformType::Mat4x4f32);
-    encoder.addUniformBinding("u_normalMat", UniformType::Mat4x4f32);
+    encoder.addUniformBinding("u_normalMat", UniformType::Mat3x3f32);
     encoder.addUniformBinding("u_cameraPos", UniformType::Vec3f32);
     encoder.addUniformBinding("u_tilingOffset", UniformType::Vec4f32);
     

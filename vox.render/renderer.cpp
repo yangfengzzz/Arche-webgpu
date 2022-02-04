@@ -180,7 +180,7 @@ void Renderer::updateShaderData(const Matrix4x4F& viewMat,
     shaderData.setData(Renderer::_mvMatrixProperty, _mvMatrix);
     shaderData.setData(Renderer::_mvpMatrixProperty, _mvpMatrix);
     shaderData.setData(Renderer::_mvInvMatrixProperty, _mvInvMatrix);
-    shaderData.setData(Renderer::_normalMatrixProperty, _normalMatrix);
+    shaderData.setData(Renderer::_normalMatrixProperty, _normalMatrix.matrix3());
 }
 
 MaterialPtr Renderer::_createInstanceMaterial(const MaterialPtr &material, size_t index) {

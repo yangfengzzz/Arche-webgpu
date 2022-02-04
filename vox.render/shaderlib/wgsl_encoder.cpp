@@ -259,7 +259,6 @@ void WGSLEncoder::_buildSource() {
     _source.clear();
     _source += _structBlock;
     _source += _uniformBlock;
-    _source += _functionBlock;
     // Inout
     {
         for (const auto& structInfo : _inoutType) {
@@ -273,6 +272,7 @@ void WGSLEncoder::_buildSource() {
             _source += "}\n";
         }
     }
+    _source += _functionBlock;
     _source += _entryBlock;
 }
 
