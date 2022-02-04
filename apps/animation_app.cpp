@@ -56,11 +56,11 @@ void AnimationApp::loadScene(uint32_t width, uint32_t height) {
     characterEntity->transform->setScale(3, 3, 3);
     auto characterRenderer = characterEntity->addComponent<SkinnedMeshRenderer>();
     characterRenderer->castShadow = true;
-    characterRenderer->addSkinnedMesh("models/Doggy/Doggy.fbx",
-                                      "models/Doggy/doggy_skeleton.ozz");
+    characterRenderer->addSkinnedMesh("../assets/Models/Doggy/Doggy.fbx",
+                                      "../assets/Models/Doggy/doggy_skeleton.ozz");
     characterRenderer->setMaterial(characterMtl);
     auto characterAnim = characterEntity->addComponent<Animator>();
-    characterAnim->addAnimationClip("models/Doggy/Run.ozz");
+    characterAnim->addAnimationClip("../assets/Models/Doggy/Run.ozz");
     
     auto planeEntity = rootEntity->createChild("PlaneEntity");
     auto planeMtl = std::make_shared<BlinnPhongMaterial>(_device);

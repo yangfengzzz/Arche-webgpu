@@ -19,6 +19,7 @@ void WGSLMobileBlinnphongFrag::operator()(std::string& source, const ShaderMacro
     source += "var lightSpecular = vec3<f32>( 0.0, 0.0, 0.0 );\n";
     
     if (macros.contains(DIRECT_LIGHT_COUNT)) {
+        source += "{\n";
         source += "var i:i32 = 0;\n";
         source += "loop {\n";
         source += fmt::format("if (i >= {}) {{ break; }}\n", (int)*macros.macroConstant(DIRECT_LIGHT_COUNT));
@@ -32,9 +33,11 @@ void WGSLMobileBlinnphongFrag::operator()(std::string& source, const ShaderMacro
         
         source += "i = i + 1;\n";
         source += "}\n";
+        source += "}\n";
     }
     
     if (macros.contains(POINT_LIGHT_COUNT)) {
+        source += "{\n";
         source += "var i:i32 = 0;\n";
         source += "loop {\n";
         source += fmt::format("if (i >= {}) {{ break; }}\n", (int)*macros.macroConstant(POINT_LIGHT_COUNT));
@@ -53,28 +56,31 @@ void WGSLMobileBlinnphongFrag::operator()(std::string& source, const ShaderMacro
 
         source += "i = i + 1;\n";
         source += "}\n";
+        source += "}\n";
     }
     
     if (macros.contains(SPOT_LIGHT_COUNT)) {
+        source += "{\n";
         source += "var i:i32 = 0;\n";
         source += "loop {\n";
         source += fmt::format("if (i >= {}) {{ break; }}\n", (int)*macros.macroConstant(SPOT_LIGHT_COUNT));
         
-        source += fmt::format("    var direction = spotLight.position - {}.v_pos;\n", _input);
+        source += fmt::format("    var direction = u_spotLight[i].position - {}.v_pos;\n", _input);
         source += "    var lightDistance = length( direction );\n";
         source += "    direction = direction / lightDistance;\n";
-        source += "    var angleCos = dot( direction, -spotLight.direction );\n";
-        source += "    var decay = clamp(1.0 - pow(lightDistance/spotLight.distance, 4.0), 0.0, 1.0);\n";
-        source += "    var spotEffect = smoothstep( spotLight.penumbraCos, spotLight.angleCos, angleCos );\n";
+        source += "    var angleCos = dot( direction, -u_spotLight[i].direction );\n";
+        source += "    var decay = clamp(1.0 - pow(lightDistance/u_spotLight[i].distance, 4.0), 0.0, 1.0);\n";
+        source += "    var spotEffect = smoothStep( u_spotLight[i].penumbraCos, u_spotLight[i].angleCos, angleCos );\n";
         source += "    var decayTotal = decay * spotEffect;\n";
         source += "    var d = max( dot( N, direction ), 0.0 )  * decayTotal;\n";
-        source += "    lightDiffuse = lightDiffuse + spotLight.color * d;\n";
+        source += "    lightDiffuse = lightDiffuse + u_spotLight[i].color * d;\n";
         source += "\n";
         source += "    var halfDir = normalize( V + direction );\n";
         source += "    var s = pow( clamp( dot( N, halfDir ), 0.0, 1.0 ), u_shininess ) * decayTotal;\n";
-        source += "    lightSpecular = lightSpecular + spotLight.color * s;\n";
+        source += "    lightSpecular = lightSpecular + u_spotLight[i].color * s;\n";
 
         source += "i = i + 1;\n";
+        source += "}\n";
         source += "}\n";
     }
     
