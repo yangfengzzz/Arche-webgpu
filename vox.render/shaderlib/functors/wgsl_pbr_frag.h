@@ -12,13 +12,14 @@
 namespace vox {
 class WGSLPbrFrag {
 public:
-    WGSLPbrFrag(const std::string& input, const std::string& output);
+    WGSLPbrFrag(const std::string& input, const std::string& output, bool is_metallic_workflow);
 
     void operator()(std::string& source, const ShaderMacroCollection& macros);
     
 private:
     const std::string _input;
     const std::string _output;
+    bool _is_metallic_workflow;
 };
 
 }

@@ -74,7 +74,7 @@ _worldPosShare("VertexOut"),
 _lightFragDefine("VertexOut"),
 _pbrFragDefine("VertexOut", is_metallic_workflow),
 _pbrHelper("VertexOut", is_metallic_workflow),
-_pbrFrag("in", "out"){
+_pbrFrag("in", "out", is_metallic_workflow){
     
 }
 

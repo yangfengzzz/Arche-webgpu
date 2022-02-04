@@ -44,10 +44,13 @@ void WGSLPbrHelper::operator()(WGSLEncoder& encoder,
     
     std::string getPhysicalMaterial = "fn getPhysicalMaterial(\n";
     getPhysicalMaterial += "     diffuseColor: vec4<f32>,\n";
-    getPhysicalMaterial += "     metal: f32,\n";
-    getPhysicalMaterial += "     roughness: f32,\n";
-    getPhysicalMaterial += "     specularColor: vec3<f32>,\n";
-    getPhysicalMaterial += "     glossiness: f32,\n";
+    if (_is_metallic_workflow) {
+        getPhysicalMaterial += "     metal: f32,\n";
+        getPhysicalMaterial += "     roughness: f32,\n";
+    } else {
+        getPhysicalMaterial += "     specularColor: vec3<f32>,\n";
+        getPhysicalMaterial += "     glossiness: f32,\n";
+    }
     getPhysicalMaterial += "     alphaCutoff: f32\n";
     getPhysicalMaterial += "    )-> PhysicalMaterial {\n";
     getPhysicalMaterial += "        var material: PhysicalMaterial;\n";
@@ -70,8 +73,8 @@ void WGSLPbrHelper::operator()(WGSLEncoder& encoder,
     }
     if (macros.contains(HAS_SPECULARGLOSSINESSMAP) && !_is_metallic_workflow) {
         getPhysicalMaterial += fmt::format("var specularGlossinessColor = textureSample(u_specularGlossinessTexture, u_specularGlossinessSampler, {}.v_uv );\n", _paramName);
-        getPhysicalMaterial += "specularColor *= specularGlossinessColor.rgb;\n";
-        getPhysicalMaterial += "glossiness *= specularGlossinessColor.a;\n";
+        getPhysicalMaterial += "specularColor = specularColor * specularGlossinessColor.rgb;\n";
+        getPhysicalMaterial += "glossiness = glossiness * specularGlossinessColor.a;\n";
     }
     
     if (_is_metallic_workflow) {

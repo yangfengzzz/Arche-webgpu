@@ -19,7 +19,7 @@ int main(int argc, char * argv[]) {
         
     auto code = engine.initialize();
     if (code == vox::ExitCode::Success) {
-        engine.setApp(std::make_unique<vox::AnimationApp>());
+        engine.setApp(std::make_unique<vox::PBRApp>());
         utils::ScopedAutoreleasePool pool;
         code = engine.mainLoop();
     }
