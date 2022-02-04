@@ -37,3 +37,9 @@
 [submodule "third_party/ktx"]
 	path = third_party/ktx
 	url = https://github.com/KhronosGroup/KTX-Software
+[submodule "third_party/physx"]
+	path = third_party/physx
+	url = https://github.com/NVIDIAGameWorks/PhysX.git
+[submodule "third_party/ozz"]
+	path = third_party/ozz
+	url = https://github.com/guillaumeblanc/ozz-animation.git

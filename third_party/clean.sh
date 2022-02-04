@@ -12,7 +12,13 @@ set -x
 # make clean
 # cd ../../../../
 
-# GoogleTest ###############################
+# OZZ #####################################
+cd ozz
+rm -rf build_release
+rm -rf build_debug
+cd ..
+
+# GoogleTest ##############################
 cd googletest
 rm -rf build
 cd ..
