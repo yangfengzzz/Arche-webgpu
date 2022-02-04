@@ -4,6 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
+#include "scoped_autorelease_pool.h"
 #include "unix_engine.h"
 #include "engine.h"
 #include "primitive_app.h"
@@ -14,6 +15,7 @@ int main(int argc, char * argv[]) {
     auto code = engine.initialize();
     if (code == vox::ExitCode::Success) {
         engine.setApp(std::make_unique<vox::PrimitiveApp>());
+        utils::ScopedAutoreleasePool pool;
         code = engine.mainLoop();
     }
     
