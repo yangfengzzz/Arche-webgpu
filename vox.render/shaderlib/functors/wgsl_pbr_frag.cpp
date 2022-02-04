@@ -35,11 +35,11 @@ void WGSLPbrFrag::operator()(std::string& source, const ShaderMacroCollection& m
         source += "var irradiance = u_envMapLight.diffuse * u_envMapLight.diffuseIntensity;\n";
         source += "irradiance = irradiance * PI;\n";
     }
-    source += "reflectedLight.indirectDiffuse += irradiance * BRDF_Diffuse_Lambert( material.diffuseColor );\n";
+    source += "reflectedLight.indirectDiffuse = reflectedLight.indirectDiffuse + irradiance * BRDF_Diffuse_Lambert( material.diffuseColor );\n";
     
     // IBL specular
     source += "var radiance = getLightProbeRadiance( geometry, material.roughness, i32(u_envMapLight.mipMapLevel), u_envMapLight.specularIntensity);\n";
-    source += "reflectedLight.indirectSpecular += radiance * envBRDFApprox(material.specularColor, material.roughness, dotNV );\n";
+    source += "reflectedLight.indirectSpecular = reflectedLight.indirectSpecular + radiance * envBRDFApprox(material.specularColor, material.roughness, dotNV );\n";
 
     // Occlusion
     if (macros.contains(HAS_OCCLUSIONMAP)) {
@@ -51,7 +51,7 @@ void WGSLPbrFrag::operator()(std::string& source, const ShaderMacroCollection& m
     }
     
     // Emissive
-    source += "var emissiveRadiance = vec3<f32>(u_pbrBaseData.emissiveColor);\n";
+    source += "var emissiveRadiance = u_pbrBaseData.emissiveColor.rgb;\n";
     if (macros.contains(HAS_EMISSIVEMAP)) {
         source += fmt::format("var emissiveColor = textureSample(u_emissiveTexture, u_emissiveSampler, {}.v_uv);\n", _input);
         source += "emissiveRadiance = emissiveRadiance * emissiveColor.rgb;\n";

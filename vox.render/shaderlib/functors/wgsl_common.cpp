@@ -14,8 +14,8 @@ void WGSLCommon::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& m
     encoder.addStruct("let LOG2:f32 = 1.442695;\n");
     
     std::string source;
-    source += "fn saturate(a:f32)->f32 {clamp( a, 0.0, 1.0 )}\n";
-    source += "fn whiteCompliment(a:f32)->f32 {( 1.0 - saturate( a ) )}\n";
+    source += "fn saturate(a:f32)->f32 { return clamp( a, 0.0, 1.0 );}\n";
+    source += "fn whiteCompliment(a:f32)->f32 { return 1.0 - saturate( a );}\n";
     
     source += "fn RGBMToLinear(value: vec4<f32>, maxRange: f32)-> vec4<f32> {\n";
     source += "    return vec4<f32>( value.rgb * value.a * maxRange, 1.0 );\n";

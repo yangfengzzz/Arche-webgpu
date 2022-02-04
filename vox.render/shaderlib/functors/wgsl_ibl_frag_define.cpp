@@ -45,9 +45,9 @@ void WGSLIBLFragDefine::operator()(WGSLEncoder& encoder,
     
     // ref: https://www.unrealengine.com/blog/physically-based-shading-on-mobile - environmentBRDF for GGX on mobile
     function = "fn envBRDFApprox(specularColor:vec3<f32>, roughness:f32, dotNV:f32 )->vec3<f32>{\n";
-    function += "   let c0 = vec4<f32>( - 1, - 0.0275, - 0.572, 0.022 );\n";
+    function += "   let c0 = vec4<f32>( -1.0, -0.0275, -0.572, 0.022 );\n";
     function += "\n";
-    function += "   let c1 = vec4<f32>( 1, 0.0425, 1.04, - 0.04 );\n";
+    function += "   let c1 = vec4<f32>( 1.0, 0.0425, 1.04, -0.04 );\n";
     function += "\n";
     function += "   var r = roughness * c0 + c1;\n";
     function += "\n";
