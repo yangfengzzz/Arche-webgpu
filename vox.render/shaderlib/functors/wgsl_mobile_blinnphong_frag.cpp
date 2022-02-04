@@ -19,7 +19,7 @@ void WGSLMobileBlinnphongFrag::operator()(std::string& source, const ShaderMacro
     source += "var lightSpecular = vec3<f32>( 0.0, 0.0, 0.0 );\n";
     
     if (macros.contains(DIRECT_LIGHT_COUNT)) {
-        source += fmt::format("for( int i = 0; i < {}; i++ ) {\n", (int)*macros.macroConstant(DIRECT_LIGHT_COUNT));
+        source += fmt::format("for( var i:i32 = 0; i < {}; i++ ) {{\n", (int)*macros.macroConstant(DIRECT_LIGHT_COUNT));
         source += "    var d:f32 = max(dot(N, -u_directLight[i].direction), 0.0);\n";
         source += "    lightDiffuse += u_directLight[i].color * d;\n";
         source += "\n";
@@ -30,8 +30,8 @@ void WGSLMobileBlinnphongFrag::operator()(std::string& source, const ShaderMacro
     }
     
     if (macros.contains(POINT_LIGHT_COUNT)) {
-        source += fmt::format("for( int i = 0; i < {}; i++ ) {\n", (int)*macros.macroConstant(POINT_LIGHT_COUNT));
-        source += "    var direction = v_pos - u_pointLight[i].position;\n";
+        source += fmt::format("for( var i:i32 = 0; i < {}; i++ ) {{\n", (int)*macros.macroConstant(POINT_LIGHT_COUNT));
+        source += fmt::format("    var direction = {}.v_pos - u_pointLight[i].position;\n", _input);
         source += "    var dist = length( direction );\n";
         source += "    direction /= dist;\n";
         source += "    var decay = clamp(1.0 - pow(dist / u_pointLight[i].distance, 4.0), 0.0, 1.0);\n";
@@ -46,8 +46,8 @@ void WGSLMobileBlinnphongFrag::operator()(std::string& source, const ShaderMacro
     }
     
     if (macros.contains(SPOT_LIGHT_COUNT)) {
-        source += fmt::format("for( int i = 0; i < {}; i++) {\n", (int)*macros.macroConstant(SPOT_LIGHT_COUNT));
-        source += "    var direction = spotLight.position - v_pos;\n";
+        source += fmt::format("for( var i:i32 = 0; i < {}; i++) {{\n", (int)*macros.macroConstant(SPOT_LIGHT_COUNT));
+        source += fmt::format("    var direction = spotLight.position - {}.v_pos;\n", _input);
         source += "    var lightDistance = length( direction );\n";
         source += "    direction/ = lightDistance;\n";
         source += "    var angleCos = dot( direction, -spotLight.direction );\n";

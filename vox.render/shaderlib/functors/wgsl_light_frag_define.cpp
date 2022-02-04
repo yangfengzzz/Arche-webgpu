@@ -20,7 +20,7 @@ void WGSLLightFragDefine::operator()(WGSLEncoder& encoder,
                           "  color : vec3<f32>;\n"
                           "  direction : vec3<f32>;\n"
                           "};\n");
-        encoder.addUniformBinding("u_directLight", "DirectLight");
+        encoder.addUniformBinding("u_directLight", fmt::format("array<DirectLight, {}>", (int)*macros.macroConstant(DIRECT_LIGHT_COUNT)) );
     }
     
     if (macros.contains(POINT_LIGHT_COUNT)) {
@@ -29,7 +29,7 @@ void WGSLLightFragDefine::operator()(WGSLEncoder& encoder,
                           "  position : vec3<f32>;\n"
                           "  distance : f32;\n"
                           "};\n");
-        encoder.addUniformBinding("u_pointLight", "PointLight");
+        encoder.addUniformBinding("u_pointLight", fmt::format("array<PointLight, {}>", (int)*macros.macroConstant(POINT_LIGHT_COUNT)) );
     }
     
     if (macros.contains(SPOT_LIGHT_COUNT)) {
@@ -41,7 +41,7 @@ void WGSLLightFragDefine::operator()(WGSLEncoder& encoder,
                           "  angleCos : f32;\n"
                           "  penumbraCos : f32;\n"
                           "};\n");
-        encoder.addUniformBinding("u_spotLight", "SpotLight");
+        encoder.addUniformBinding("u_spotLight", fmt::format("array<SpotLight, {}>", (int)*macros.macroConstant(SPOT_LIGHT_COUNT)) );
     }
     
     encoder.addStruct("struct EnvMapLight {\n"

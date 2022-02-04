@@ -32,6 +32,7 @@ private:
 }
 
 void PrimitiveApp::loadScene(uint32_t width, uint32_t height) {
+    _scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
     auto rootEntity = _scene->createRootEntity();
     
     auto cameraEntity = rootEntity->createChild();
@@ -40,6 +41,12 @@ void PrimitiveApp::loadScene(uint32_t width, uint32_t height) {
     _mainCamera = cameraEntity->addComponent<Camera>();
     _mainCamera->resize(width, height);
     cameraEntity->addComponent<control::OrbitControl>();
+    
+    // init point light
+    auto light = rootEntity->createChild("light");
+    light->transform->setPosition(0, 3, 0);
+    auto pointLight = light->addComponent<PointLight>();
+    pointLight->intensity = 0.3;
     
     auto cubeEntity = rootEntity->createChild();
     cubeEntity->addComponent<MoveScript>();
