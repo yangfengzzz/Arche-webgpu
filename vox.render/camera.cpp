@@ -14,12 +14,7 @@ namespace vox {
 Camera::Camera(Entity *entity) :
 Component(entity),
 shaderData(entity->scene()->device()),
-_viewMatrixProperty(Shader::createProperty("u_viewMat", ShaderDataGroup::Camera)),
-_projectionMatrixProperty(Shader::createProperty("u_projMat", ShaderDataGroup::Camera)),
-_vpMatrixProperty(Shader::createProperty("u_VPMat", ShaderDataGroup::Camera)),
-_inverseViewMatrixProperty(Shader::createProperty("u_viewInvMat", ShaderDataGroup::Camera)),
-_inverseProjectionMatrixProperty(Shader::createProperty("u_projInvMat", ShaderDataGroup::Camera)),
-_cameraPositionProperty(Shader::createProperty("u_cameraPos", ShaderDataGroup::Camera)) {
+_cameraProperty(Shader::createProperty("u_cameraData", ShaderDataGroup::Camera)) {
     auto transform = entity->transform;
     _transform = transform;
     _isViewMatrixDirty = transform->registerWorldChangeFlag();
@@ -256,12 +251,14 @@ Point3F Camera::_innerViewportToWorldPoint(const Vector3F &point, const Matrix4x
 }
 
 void Camera::updateShaderData() {
-    shaderData.setData(Camera::_viewMatrixProperty, viewMatrix());
-    shaderData.setData(Camera::_projectionMatrixProperty, projectionMatrix());
-    shaderData.setData(Camera::_vpMatrixProperty, projectionMatrix() * viewMatrix());
-    shaderData.setData(Camera::_inverseViewMatrixProperty, _transform->worldMatrix());
-    shaderData.setData(Camera::_inverseProjectionMatrixProperty, inverseProjectionMatrix());
-    shaderData.setData(Camera::_cameraPositionProperty, _transform->worldPosition());
+    _cameraData.u_viewMat = viewMatrix();
+    _cameraData.u_projMat = projectionMatrix();
+    _cameraData.u_VPMat = projectionMatrix() * viewMatrix();
+    _cameraData.u_viewInvMat = _transform->worldMatrix();
+    _cameraData.u_projInvMat = inverseProjectionMatrix();
+    _cameraData.u_cameraPos = _transform->worldPosition();
+    
+    shaderData.setData(Camera::_cameraProperty, _cameraData);
 }
 
 Matrix4x4F Camera::invViewProjMat() {

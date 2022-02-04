@@ -11,7 +11,7 @@ namespace vox {
 WGSLPositionVert::WGSLPositionVert(const std::string& input, const std::string& output):
 _input(input),
 _output(output) {
-    _formatTemplate = "{}.position = u_MVPMat * position;\n";
+    _formatTemplate = "{}.position = u_rendererData.u_MVPMat * position;\n";
     _formatTemplate = fmt::format(_formatTemplate, _output);
 }
 

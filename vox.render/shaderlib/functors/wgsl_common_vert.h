@@ -18,6 +18,9 @@ public:
     
 private:
     std::string _inputStructName{};
+    
+    std::string _cameraStruct{};
+    std::string _rendererStruct{};
 };
 
 }

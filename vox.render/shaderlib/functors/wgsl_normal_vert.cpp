@@ -16,12 +16,15 @@ _output(output) {
 void WGSLNormalVert::operator()(std::string& source, const ShaderMacroCollection& macros) {
     if (macros.contains(HAS_NORMAL)) {
         if (macros.contains(HAS_TANGENT) && macros.contains(HAS_NORMAL_TEXTURE)) {
-            source += "var normalW = normalize( u_normalMat * normal.xyz );";
-            source += "var tangentW = normalize( u_normalMat * tangent.xyz );";
+            source += "var normalW = normalize( mat3x3<f32>(u_rendererData.u_normalMat[0].xyz, "
+            "u_rendererData.u_normalMat[1].xyz, u_rendererData.u_normalMat[2].xyz) * normal.xyz );";
+            source += "var tangentW = normalize( mat3x3<f32>(u_rendererData.u_normalMat[0].xyz, "
+            "u_rendererData.u_normalMat[1].xyz, u_rendererData.u_normalMat[2].xyz) * tangent.xyz );";
             source += "var bitangentW = cross( normalW, tangentW ) * tangent.w;";
             source += "v_TBN = mat3x3<f32>( tangentW, bitangentW, normalW );";
         } else {
-            source += fmt::format("{}.v_normal = normalize(u_normalMat * normal);\n", _output);
+            source += fmt::format("{}.v_normal = normalize(mat3x3<f32>(u_rendererData.u_normalMat[0].xyz, "
+                                  "u_rendererData.u_normalMat[1].xyz, u_rendererData.u_normalMat[2].xyz) * normal);\n", _output);
         }
     }
 }

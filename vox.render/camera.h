@@ -33,6 +33,16 @@ enum class CameraClearFlags {
  */
 class Camera : public Component {
 public:
+    struct CameraData {
+        Matrix4x4F u_viewMat;
+        Matrix4x4F u_projMat;
+        Matrix4x4F u_VPMat;
+        Matrix4x4F u_viewInvMat;
+        Matrix4x4F u_projInvMat;
+        Point3F u_cameraPos;
+        float _cameraPosAlign;
+    };
+    
     /** Shader data. */
     ShaderData shaderData;
     
@@ -239,12 +249,8 @@ private:
      */
     Matrix4x4F inverseProjectionMatrix();
     
-    ShaderProperty _viewMatrixProperty;
-    ShaderProperty _projectionMatrixProperty;
-    ShaderProperty _vpMatrixProperty;
-    ShaderProperty _inverseViewMatrixProperty;
-    ShaderProperty _inverseProjectionMatrixProperty;
-    ShaderProperty _cameraPositionProperty;
+    CameraData _cameraData;
+    ShaderProperty _cameraProperty;
     
     BoundingFrustum _frustum = BoundingFrustum();
     

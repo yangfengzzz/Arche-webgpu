@@ -11,6 +11,23 @@
 namespace vox {
 WGSLCommonVert::WGSLCommonVert(const std::string& inputStructName) :
 _inputStructName(inputStructName) {
+    _cameraStruct = "struct CameraData {\n";
+    _cameraStruct += " u_viewMat: mat4x4<f32>;\n";
+    _cameraStruct += " u_projMat: mat4x4<f32>;\n";
+    _cameraStruct += " u_VPMat: mat4x4<f32>;\n";
+    _cameraStruct += " u_viewInvMat: mat4x4<f32>;\n";
+    _cameraStruct += " u_projInvMat: mat4x4<f32>;\n";
+    _cameraStruct += " u_cameraPos: vec3<f32>;\n";
+    _cameraStruct += "}\n";
+    
+    _rendererStruct = "struct RendererData {\n";
+    _rendererStruct += " u_localMat: mat4x4<f32>;\n";
+    _rendererStruct += " u_modelMat: mat4x4<f32>;\n";
+    _rendererStruct += " u_MVMat: mat4x4<f32>;\n";
+    _rendererStruct += " u_MVPMat: mat4x4<f32>;\n";
+    _rendererStruct += " u_MVInvMat: mat4x4<f32>;\n";
+    _rendererStruct += " u_normalMat: mat4x4<f32>;\n";
+    _rendererStruct += "}\n";
 }
 
 void WGSLCommonVert::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros) {
@@ -37,14 +54,11 @@ void WGSLCommonVert::operator()(WGSLEncoder& encoder, const ShaderMacroCollectio
         encoder.addInoutType(_inputStructName, Attributes::Color_0, UniformType::Vec4f32);
     }
     
-    encoder.addUniformBinding("u_localMat", UniformType::Mat4x4f32);
-    encoder.addUniformBinding("u_modelMat", UniformType::Mat4x4f32);
-    encoder.addUniformBinding("u_viewMat", UniformType::Mat4x4f32);
-    encoder.addUniformBinding("u_projMat", UniformType::Mat4x4f32);
-    encoder.addUniformBinding("u_MVMat", UniformType::Mat4x4f32);
-    encoder.addUniformBinding("u_MVPMat", UniformType::Mat4x4f32);
-    encoder.addUniformBinding("u_normalMat", UniformType::Mat3x3f32);
-    encoder.addUniformBinding("u_cameraPos", UniformType::Vec3f32);
+    encoder.addStruct(_cameraStruct);
+    encoder.addUniformBinding("u_cameraData", "CameraData");
+    encoder.addStruct(_rendererStruct);
+    encoder.addUniformBinding("u_rendererData", "RendererData");
+    
     encoder.addUniformBinding("u_tilingOffset", UniformType::Vec4f32);
     
     if (!macros.contains(OMIT_NORMAL)) {

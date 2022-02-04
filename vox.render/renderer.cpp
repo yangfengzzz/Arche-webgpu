@@ -28,12 +28,7 @@ Renderer::Renderer(Entity *entity) :
 Component(entity),
 shaderData(entity->scene()->device()),
 _transformChangeFlag(entity->transform->registerWorldChangeFlag()),
-_localMatrixProperty(Shader::createProperty("u_localMat", ShaderDataGroup::Renderer)),
-_worldMatrixProperty(Shader::createProperty("u_modelMat", ShaderDataGroup::Renderer)),
-_mvMatrixProperty(Shader::createProperty("u_MVMat", ShaderDataGroup::Renderer)),
-_mvpMatrixProperty(Shader::createProperty("u_MVPMat", ShaderDataGroup::Renderer)),
-_mvInvMatrixProperty(Shader::createProperty("u_MVInvMat", ShaderDataGroup::Renderer)),
-_normalMatrixProperty(Shader::createProperty("u_normalMat", ShaderDataGroup::Renderer)) {
+_rendererProperty(Shader::createProperty("u_rendererData", ShaderDataGroup::Renderer)) {
 }
 
 void Renderer::_onEnable() {
@@ -175,12 +170,13 @@ void Renderer::updateShaderData(const Matrix4x4F& viewMat,
     _normalMatrix = worldMatrix.inverse();
     _normalMatrix = _normalMatrix.transposed();
     
-    shaderData.setData(Renderer::_localMatrixProperty, entity()->transform->localMatrix());
-    shaderData.setData(Renderer::_worldMatrixProperty, worldMatrix);
-    shaderData.setData(Renderer::_mvMatrixProperty, _mvMatrix);
-    shaderData.setData(Renderer::_mvpMatrixProperty, _mvpMatrix);
-    shaderData.setData(Renderer::_mvInvMatrixProperty, _mvInvMatrix);
-    shaderData.setData(Renderer::_normalMatrixProperty, _normalMatrix.matrix3());
+    _rendererData.u_localMat = entity()->transform->localMatrix();
+    _rendererData.u_modelMat = worldMatrix;
+    _rendererData.u_MVMat = _mvMatrix;
+    _rendererData.u_MVPMat = _mvpMatrix;
+    _rendererData.u_MVInvMat = _mvInvMatrix;
+    _rendererData.u_normalMat = _normalMatrix;
+    shaderData.setData(Renderer::_rendererProperty, _rendererData);
 }
 
 MaterialPtr Renderer::_createInstanceMaterial(const MaterialPtr &material, size_t index) {

@@ -20,6 +20,15 @@ namespace vox {
  */
 class Renderer : public Component {
 public:
+    struct RendererData {
+        Matrix4x4F u_localMat;
+        Matrix4x4F u_modelMat;
+        Matrix4x4F u_MVMat;
+        Matrix4x4F u_MVPMat;
+        Matrix4x4F u_MVInvMat;
+        Matrix4x4F u_normalMat;
+    };
+    
     /** ShaderData related to renderer. */
     ShaderData shaderData;
     // @ignoreClone
@@ -131,12 +140,8 @@ private:
     float _distanceForSort = 0;
     ssize_t _rendererIndex = -1;
     
-    ShaderProperty _localMatrixProperty;
-    ShaderProperty _worldMatrixProperty;
-    ShaderProperty _mvMatrixProperty;
-    ShaderProperty _mvpMatrixProperty;
-    ShaderProperty _mvInvMatrixProperty;
-    ShaderProperty _normalMatrixProperty;
+    RendererData _rendererData;
+    ShaderProperty _rendererProperty;
     
     std::unique_ptr<UpdateFlag> _transformChangeFlag;
     // @deepClone
