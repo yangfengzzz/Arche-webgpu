@@ -22,7 +22,11 @@ Buffer::Buffer(wgpu::Device& device, const void* data,
     desc.size = size;
     _nativeBuffer = device.CreateBuffer(&desc);
     
-    device.GetQueue().WriteBuffer(_nativeBuffer, 0, data, size);
+    uploadData(device, data, size);    
+}
+
+void Buffer::uploadData(wgpu::Device& device, const void* data, uint64_t size, uint64_t bufferOffset) {
+    device.GetQueue().WriteBuffer(_nativeBuffer, bufferOffset, data, size);
 }
 
 const wgpu::Buffer& Buffer::handle() const {

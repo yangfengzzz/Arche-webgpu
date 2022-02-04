@@ -331,6 +331,7 @@
 		047BF14927ACF275003F3599 /* animator.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF14527ACF274003F3599 /* animator.h */; };
 		047BF14A27ACF275003F3599 /* animator_controller.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF14627ACF275003F3599 /* animator_controller.h */; };
 		047BF14E27ACF29C003F3599 /* skinned_mesh_renderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF14C27ACF29C003F3599 /* skinned_mesh_renderer.h */; };
+		047BF14F27ACF3A8003F3599 /* skinned_mesh_renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF14B27ACF29C003F3599 /* skinned_mesh_renderer.cpp */; };
 		0495463B279F89E500783C84 /* shader_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954634279F89E400783C84 /* shader_data.h */; };
 		0495463C279F89E500783C84 /* shader_property.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954635279F89E400783C84 /* shader_property.h */; };
 		0495463D279F89E500783C84 /* shader_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954636279F89E400783C84 /* shader_data.cpp */; };
@@ -2239,6 +2240,7 @@
 				047BF02427A66590003F3599 /* ktx_image.cpp in Sources */,
 				047BF11227ACEBBF003F3599 /* box_character_controller.cpp in Sources */,
 				047BF0D127AC0D59003F3599 /* spot_light.cpp in Sources */,
+				047BF14F27ACF3A8003F3599 /* skinned_mesh_renderer.cpp in Sources */,
 				0495475C27A287CA00783C84 /* mesh_renderer.cpp in Sources */,
 				0495467A279F8CD600783C84 /* components_manager.cpp in Sources */,
 				0495474227A2640900783C84 /* index_buffer_binding.cpp in Sources */,

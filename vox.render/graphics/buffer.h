@@ -30,6 +30,9 @@ public:
     Buffer(wgpu::Device& device, const void* data,
            uint64_t size, wgpu::BufferUsage bufferUsage);
     
+    void uploadData(wgpu::Device& device, const void* data,
+                    uint64_t size, uint64_t bufferOffset = 0);
+    
     Buffer(Buffer const& other) = default;
     
     Buffer(Buffer&& other) = default;

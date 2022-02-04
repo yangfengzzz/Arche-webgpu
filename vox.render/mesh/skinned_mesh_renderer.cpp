@@ -11,7 +11,7 @@
 #include <glog/logging.h>
 #include "loader/animator_loader.h"
 #include "loader/fbx_loader.h"
-#include "graphics/mesh.h"
+#include "buffer_mesh.h"
 #include "entity.h"
 #include "scene.h"
 #include "animator.h"
@@ -25,17 +25,16 @@ Renderer(entity) {
     const int32_t normals_offset = sizeof(float) * 3;
     const int32_t tangents_offset = sizeof(float) * 6;
     const int32_t positions_stride = sizeof(float) * 9;
-    _vertexDescriptor.attributes[Position].format(MTL::VertexFormatFloat3);
-    _vertexDescriptor.attributes[Position].offset(positions_offset);
-    _vertexDescriptor.attributes[Position].bufferIndex(0);
-    
-    _vertexDescriptor.attributes[Normal].format(MTL::VertexFormatFloat3);
-    _vertexDescriptor.attributes[Normal].offset(normals_offset);
-    _vertexDescriptor.attributes[Normal].bufferIndex(0);
-    
-    _vertexDescriptor.attributes[Tangent].format(MTL::VertexFormatFloat3);
-    _vertexDescriptor.attributes[Tangent].offset(tangents_offset);
-    _vertexDescriptor.attributes[Tangent].bufferIndex(0);
+    _vertexAttribute.resize(3);
+    _vertexAttribute[0].format = wgpu::VertexFormat::Float32x3;
+    _vertexAttribute[0].offset = positions_offset;
+    _vertexAttribute[0].shaderLocation = (uint32_t)Attributes::Position;
+    _vertexAttribute[1].format = wgpu::VertexFormat::Float32x3;
+    _vertexAttribute[1].offset = normals_offset;
+    _vertexAttribute[1].shaderLocation = (uint32_t)Attributes::Normal;
+    _vertexAttribute[2].format = wgpu::VertexFormat::Float32x3;
+    _vertexAttribute[2].offset = tangents_offset;
+    _vertexAttribute[2].shaderLocation = (uint32_t)Attributes::Tangent;
     
     // Colors and uvs are contiguous. They aren't transformed, so they can be
     // directly copied from source mesh which is non-interleaved as-well.
@@ -43,12 +42,20 @@ Renderer(entity) {
     // UVs will be skipped if _options.textured is false.
     const int32_t uvs_offset = 0;
     const int32_t uvs_stride = sizeof(float) * 2;
-    _vertexDescriptor.attributes[UV_0].format(MTL::VertexFormatFloat2);
-    _vertexDescriptor.attributes[UV_0].offset(uvs_offset);
-    _vertexDescriptor.attributes[UV_0].bufferIndex(1);
+    _uvAttribute.resize(1);
+    _uvAttribute[0].format = wgpu::VertexFormat::Float32x2;
+    _uvAttribute[0].offset = uvs_offset;
+    _uvAttribute[0].shaderLocation = (uint32_t)Attributes::UV_0;
     
-    _vertexDescriptor.layouts[0].stride(positions_stride);
-    _vertexDescriptor.layouts[1].stride(uvs_stride);
+    _vertexBufferLayouts.resize(2);
+    _vertexBufferLayouts[0].attributes = _vertexAttribute.data();
+    _vertexBufferLayouts[0].attributeCount = static_cast<uint32_t>(_vertexAttribute.size());
+    _vertexBufferLayouts[0].arrayStride = positions_stride;
+    _vertexBufferLayouts[0].stepMode = wgpu::VertexStepMode::Vertex;
+    _vertexBufferLayouts[1].attributes = _uvAttribute.data();
+    _vertexBufferLayouts[1].attributeCount = static_cast<uint32_t>(_uvAttribute.size());
+    _vertexBufferLayouts[1].arrayStride = uvs_stride;
+    _vertexBufferLayouts[1].stepMode = wgpu::VertexStepMode::Vertex;
 }
 
 bool SkinnedMeshRenderer::loadSkeleton(const std::string &filename) {
@@ -109,9 +116,9 @@ bool SkinnedMeshRenderer::addSkinnedMesh(const std::string &skin_filename,
     _skinningMatrices.resize(num_skinning_matrices);
     
     const size_t bufferLength = _meshes.size();
-    _vertexBuffers.resize(bufferLength, nullptr);
-    _uvBuffers.resize(bufferLength, nullptr);
-    _indexBuffers.resize(bufferLength, nullptr);
+    _vertexBuffers.resize(bufferLength, std::nullopt);
+    _uvBuffers.resize(bufferLength, std::nullopt);
+    _indexBuffers.resize(bufferLength, std::nullopt);
     
     return true;
 }
@@ -165,27 +172,31 @@ void SkinnedMeshRenderer::_render(std::vector<RenderElement> &opaqueQueue,
         // Renders skin.
         auto render_mesh = drawSkinnedMesh(index, mesh, make_span(_skinningMatrices),
                                            ozz::math::Float4x4::identity());
-        const auto &vertexDescriptor = render_mesh->vertexDescriptor();
+        const auto &vertexLayouts = render_mesh->vertexBufferLayouts();
         
         shaderData.disableMacro(HAS_UV);
         shaderData.disableMacro(HAS_NORMAL);
         shaderData.disableMacro(HAS_TANGENT);
         shaderData.disableMacro(HAS_VERTEXCOLOR);
         
-        if (vertexDescriptor.attributes[Attributes::UV_0].format() != MTL::VertexFormatInvalid) {
-            shaderData.enableMacro(HAS_UV);
-        }
-        if (vertexDescriptor.attributes[Attributes::Normal].format() != MTL::VertexFormatInvalid) {
-            shaderData.enableMacro(HAS_NORMAL);
-        }
-        if (vertexDescriptor.attributes[Attributes::Tangent].format() != MTL::VertexFormatInvalid) {
-            shaderData.enableMacro(HAS_TANGENT);
-        }
-        if (vertexDescriptor.attributes[Attributes::Color_0].format() != MTL::VertexFormatInvalid) {
-            shaderData.enableMacro(HAS_VERTEXCOLOR);
+        for (size_t i = 0, n = vertexLayouts.size(); i < n; i++) {
+            for (uint32_t j = 0, m = vertexLayouts[i].attributeCount; j < m; j++) {
+                if (vertexLayouts[i].attributes[j].shaderLocation == (uint32_t)Attributes::UV_0) {
+                    shaderData.enableMacro(HAS_UV);
+                }
+                if (vertexLayouts[i].attributes[j].shaderLocation == (uint32_t)Attributes::Normal) {
+                    shaderData.enableMacro(HAS_NORMAL);
+                }
+                if (vertexLayouts[i].attributes[j].shaderLocation == (uint32_t)Attributes::Tangent) {
+                    shaderData.enableMacro(HAS_TANGENT);
+                }
+                if (vertexLayouts[i].attributes[j].shaderLocation == (uint32_t)Attributes::Color_0) {
+                    shaderData.enableMacro(HAS_VERTEXCOLOR);
+                }
+            }
         }
         
-        auto &subMeshes = render_mesh->submeshes();
+        auto &subMeshes = render_mesh->subMeshes();
         for (size_t i = 0; i < subMeshes.size(); i++) {
             MaterialPtr material;
             if (i < _materials.size()) {
@@ -400,30 +411,33 @@ std::shared_ptr<Mesh> SkinnedMeshRenderer::drawSkinnedMesh(size_t index,
         processed_vertex_count += part_vertex_count;
     }
     
-    if (_vertexBuffers[index] == nullptr) {
-        _vertexBuffers[index] = _entity->scene()->device()->newBufferWithBytes(vbo_map, skinned_data_size);
+    if (_vertexBuffers[index] == std::nullopt) {
+        _vertexBuffers[index] = Buffer(_entity->scene()->device(), vbo_map, skinned_data_size,
+                                       wgpu::BufferUsage::Vertex | wgpu::BufferUsage::CopyDst);
     } else {
-        memcpy(_vertexBuffers[index]->contents(), vbo_map, skinned_data_size);
+        _vertexBuffers[index]->uploadData(_entity->scene()->device(), vbo_map, skinned_data_size);
     }
     
-    if (_uvBuffers[index] == nullptr) {
-        _uvBuffers[index] = _entity->scene()->device()->newBufferWithBytes(uv_map, uvs_size);
+    if (_uvBuffers[index] == std::nullopt) {
+        _uvBuffers[index] = Buffer(_entity->scene()->device(), uv_map, uvs_size,
+                                   wgpu::BufferUsage::Vertex | wgpu::BufferUsage::CopyDst);
     } else {
-        memcpy(_uvBuffers[index]->contents(), uv_map, uvs_size);
+        _uvBuffers[index]->uploadData(_entity->scene()->device(), uv_map, uvs_size);
     }
     
     size_t indexCount = _mesh.triangle_indices.size();
-    if (_indexBuffers[index] == nullptr) {
-        _indexBuffers[index] =
-        _entity->scene()->device()->newBufferWithBytes(_mesh.triangle_indices.data(),
-                                                       indexCount * sizeof(ozz::loader::Mesh::TriangleIndices::value_type));
+    if (_indexBuffers[index] == std::nullopt) {
+        _indexBuffers[index] = Buffer(_entity->scene()->device(), _mesh.triangle_indices.data(),
+                                      indexCount * sizeof(ozz::loader::Mesh::TriangleIndices::value_type),
+                                      wgpu::BufferUsage::Index | wgpu::BufferUsage::CopyDst);
     }
     
-    auto submesh = Submesh(MTL::PrimitiveTypeTriangle, MTL::IndexTypeUInt16, indexCount,
-                           MeshBuffer(*_indexBuffers[index], 0, indexCount * sizeof(ozz::loader::Mesh::TriangleIndices::value_type)));
-    std::vector<MeshBuffer> buffer = {MeshBuffer(*_vertexBuffers[index], 0, skinned_data_size, 0), MeshBuffer(*_uvBuffers[index], 0, uvs_size, 1)};
-    auto mesh = std::make_shared<Mesh>(submesh, buffer, _vertexDescriptor);
-    
+    auto mesh = std::make_shared<BufferMesh>();
+    mesh->setIndexBufferBinding(*_indexBuffers[index], wgpu::IndexFormat::Uint16);
+    mesh->setVertexBufferBinding(*_vertexBuffers[index], 0);
+    mesh->setVertexBufferBinding(*_uvBuffers[index], 1);
+    mesh->addSubMesh(0, static_cast<uint32_t>(indexCount), wgpu::PrimitiveTopology::TriangleList);
+    mesh->setVertexLayouts(_vertexBufferLayouts);
     return mesh;
 }
 

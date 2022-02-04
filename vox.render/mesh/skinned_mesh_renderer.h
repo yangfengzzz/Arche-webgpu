@@ -77,11 +77,13 @@ private:
     
     // The mesh used by the sample.
     ozz::vector<ozz::loader::Mesh> _meshes;
-    ozz::vector<Buffer> _vertexBuffers;
-    ozz::vector<Buffer> _uvBuffers;
-    ozz::vector<Buffer> _indexBuffers;
+    ozz::vector<std::optional<Buffer>> _vertexBuffers;
+    ozz::vector<std::optional<Buffer>> _uvBuffers;
+    ozz::vector<std::optional<Buffer>> _indexBuffers;
     
-//    MTL::VertexDescriptor _vertexDescriptor;
+    std::vector<wgpu::VertexAttribute> _vertexAttribute{};
+    std::vector<wgpu::VertexAttribute> _uvAttribute{};
+    std::vector<wgpu::VertexBufferLayout> _vertexBufferLayouts{};
 };
 
 }
