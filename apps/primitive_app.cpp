@@ -56,15 +56,15 @@ void PrimitiveApp::loadScene(uint32_t width, uint32_t height) {
     material->setBaseColor(Color(0.4, 0.6, 0.6));
     renderer->setMaterial(material);
     
-//    auto planeEntity = rootEntity->createChild();
-//    planeEntity->transform->setPosition(0, 5, 0);
-//    auto planeRenderer = planeEntity->addComponent<MeshRenderer>();
-//    planeRenderer->setMesh(PrimitiveMesh::createSphere(_device, 1));
-//    auto texturedMaterial = std::make_shared<UnlitMaterial>(_device);
-//    planeRenderer->setMaterial(texturedMaterial);
-//
-//    auto texture = Image::load("Textures/wood.png")->createSampledTexture(_device);
-//    texturedMaterial->setBaseTexture(texture);
+    auto planeEntity = rootEntity->createChild();
+    planeEntity->transform->setPosition(0, 5, 0);
+    auto planeRenderer = planeEntity->addComponent<MeshRenderer>();
+    planeRenderer->setMesh(PrimitiveMesh::createSphere(_device, 1));
+    auto texturedMaterial = std::make_shared<UnlitMaterial>(_device);
+    planeRenderer->setMaterial(texturedMaterial);
+
+    auto texture = Image::load("Textures/wood.png")->createSampledTexture(_device);
+    texturedMaterial->setBaseTexture(texture);
 }
 
 }
