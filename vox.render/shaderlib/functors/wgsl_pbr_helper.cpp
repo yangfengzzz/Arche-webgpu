@@ -12,7 +12,10 @@ namespace vox {
 WGSLPbrHelper::WGSLPbrHelper(const std::string& outputStructName, bool is_metallic_workflow) :
 _outputStructName(outputStructName),
 _is_metallic_workflow(is_metallic_workflow),
-_normalGet(outputStructName) {
+_normalGet(outputStructName),
+_brdf(outputStructName),
+_directIrradianceFragDefine(outputStructName),
+_iblFragDefine(outputStructName){
     _paramName = "in";
 }
 
@@ -85,6 +88,10 @@ void WGSLPbrHelper::operator()(WGSLEncoder& encoder,
     getPhysicalMaterial += "material.opacity = diffuseColor.a;\n";
     getPhysicalMaterial += "return material;\n";
     encoder.addFunction(getPhysicalMaterial);
+    
+    _brdf(encoder, macros, counterIndex);
+    _directIrradianceFragDefine(encoder, macros, counterIndex);
+    _iblFragDefine(encoder, macros, counterIndex);
 }
 
 }
