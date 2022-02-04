@@ -162,10 +162,10 @@ void Scene::updateShaderData() {
 void Scene::update(float deltaTime) {
     _componentsManager.callScriptOnStart();
     
-//    _physicsManager.callColliderOnUpdate();
-//    _physicsManager.update(deltaTime);
-//    _physicsManager.callColliderOnLateUpdate();
-//    _physicsManager.callCharacterControllerOnLateUpdate();
+    _physicsManager.callColliderOnUpdate();
+    _physicsManager.update(deltaTime);
+    _physicsManager.callColliderOnLateUpdate();
+    _physicsManager.callCharacterControllerOnLateUpdate();
     
     _componentsManager.callScriptOnUpdate(deltaTime);
 //    _componentsManager.callAnimatorUpdate(deltaTime);
