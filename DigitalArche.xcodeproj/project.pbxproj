@@ -347,6 +347,7 @@
 		047BF16A27AD4339003F3599 /* wgsl_pbr_frag.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF16827AD4339003F3599 /* wgsl_pbr_frag.h */; };
 		047BF16D27AD45A6003F3599 /* wgsl_pbr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF16B27AD45A6003F3599 /* wgsl_pbr.cpp */; };
 		047BF16E27AD45A6003F3599 /* wgsl_pbr.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF16C27AD45A6003F3599 /* wgsl_pbr.h */; };
+		047BF17127AD51B2003F3599 /* pbr_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF16F27AD51B2003F3599 /* pbr_app.cpp */; };
 		0495463B279F89E500783C84 /* shader_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954634279F89E400783C84 /* shader_data.h */; };
 		0495463C279F89E500783C84 /* shader_property.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954635279F89E400783C84 /* shader_property.h */; };
 		0495463D279F89E500783C84 /* shader_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954636279F89E400783C84 /* shader_data.cpp */; };
@@ -853,6 +854,8 @@
 		047BF16827AD4339003F3599 /* wgsl_pbr_frag.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_pbr_frag.h; sourceTree = "<group>"; };
 		047BF16B27AD45A6003F3599 /* wgsl_pbr.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_pbr.cpp; sourceTree = "<group>"; };
 		047BF16C27AD45A6003F3599 /* wgsl_pbr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_pbr.h; sourceTree = "<group>"; };
+		047BF16F27AD51B2003F3599 /* pbr_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pbr_app.cpp; sourceTree = "<group>"; };
+		047BF17027AD51B2003F3599 /* pbr_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pbr_app.h; sourceTree = "<group>"; };
 		04954634279F89E400783C84 /* shader_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_data.h; sourceTree = "<group>"; };
 		04954635279F89E400783C84 /* shader_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_property.h; sourceTree = "<group>"; };
 		04954636279F89E400783C84 /* shader_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader_data.cpp; sourceTree = "<group>"; };
@@ -1346,6 +1349,8 @@
 				047BF12A27ACEEED003F3599 /* physx_dynamic_app.cpp */,
 				047BF15127ACFA86003F3599 /* animation_app.h */,
 				047BF15027ACFA85003F3599 /* animation_app.cpp */,
+				047BF17027AD51B2003F3599 /* pbr_app.h */,
+				047BF16F27AD51B2003F3599 /* pbr_app.cpp */,
 			);
 			path = apps;
 			sourceTree = "<group>";
@@ -2372,6 +2377,7 @@
 				047BF12D27ACEEEE003F3599 /* physx_dynamic_app.cpp in Sources */,
 				047BF15227ACFA86003F3599 /* animation_app.cpp in Sources */,
 				047BF12E27ACEEEE003F3599 /* physx_app.cpp in Sources */,
+				047BF17127AD51B2003F3599 /* pbr_app.cpp in Sources */,
 				0495476227A2954200783C84 /* primitive_app.cpp in Sources */,
 				047BF12F27ACEFFA003F3599 /* scoped_autorelease_pool.mm in Sources */,
 			);
