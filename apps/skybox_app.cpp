@@ -28,7 +28,7 @@ bool SkyboxApp::prepare(Engine &engine) {
     auto cubeMap = std::make_shared<SampledTextureCube>(_device, images[0]->extent().width, images[0]->extent().height);
     cubeMap->setPixelBuffer(imagePtr);
     
-    auto skybox = std::make_unique<SkyboxSubpass>(_renderPass.get(), _scene.get(), _mainCamera);
+    auto skybox = std::make_unique<SkyboxSubpass>(_renderContext.get(), _scene.get(), _mainCamera);
     skybox->createCuboid();
     skybox->setTextureCubeMap(cubeMap);
     _renderPass->addSubpass(std::move(skybox));

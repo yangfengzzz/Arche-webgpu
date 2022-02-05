@@ -43,13 +43,19 @@ public:
     void addFunction(const std::string& code);
 
 public:
+    void addUniformBinding(const std::string& uniformName, UniformType type, uint32_t group = 0);
+
     void addUniformBinding(const std::string& uniformName, const std::string& type, uint32_t group = 0);
     
-    void addUniformBinding(const std::string& uniformName, UniformType type, uint32_t group = 0);
-    
+    void addUniformBinding(const std::string& uniformName, const std::string& type, uint32_t binding, uint32_t group);
+
     void addSampledTextureBinding(const std::string& texName, TextureType texType,
                                   const std::string& samplerName, SamplerType samplerType,
                                   uint32_t group = 0);
+    
+    void addSampledTextureBinding(const std::string& texName, TextureType texType, uint32_t texBinding,
+                                  const std::string& samplerName, SamplerType samplerType, uint32_t samplerBinding,
+                                  uint32_t group);
     
     void addStorageTextureBinding(const std::string& texName, StorageTextureType texType,
                                   wgpu::TextureFormat texelFormat, uint32_t group = 0);

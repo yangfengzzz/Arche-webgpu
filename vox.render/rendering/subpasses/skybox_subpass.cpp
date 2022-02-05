@@ -50,7 +50,11 @@ void SkyboxSubpass::prepare() {
     // Shader
     {
         ShaderMacroCollection macros;
-        ShaderProgram* program = _pass->resourceCache().requestShader(_vertexSource->compile(macros).first, _fragmentSource->compile(macros).first);
+        const std::string& vertexSource = _vertexSource->compile(macros).first;
+        // std::cout<<vertexSource<<std::endl;
+        const std::string& fragmentSource = _fragmentSource->compile(macros).first;
+        // std::cout<<fragmentSource<<std::endl;
+        ShaderProgram* program = _pass->resourceCache().requestShader(vertexSource, fragmentSource);
         _forwardPipelineDescriptor.vertex.entryPoint = "main";
         _forwardPipelineDescriptor.vertex.module = program->vertexShader();
         _fragment.entryPoint = "main";

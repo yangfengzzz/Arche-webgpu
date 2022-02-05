@@ -17,7 +17,7 @@ void WGSLSkyboxVertex::_createShaderSource(size_t hash, const ShaderMacroCollect
     {
         auto encoder = createSourceEncoder(wgpu::ShaderStage::Vertex);
         _commonVert(encoder, macros);
-        encoder.addUniformBinding("u_mvpNoscale", UniformType::Mat4x4f32);
+        encoder.addUniformBinding("u_mvpNoscale", "mat4x4<f32>", 10, 0);
         
         encoder.addInoutType("VertexOut", 0, "v_cubeUV", UniformType::Vec3f32);
         encoder.addInoutType("VertexOut", BuiltInType::Position, "position", UniformType::Vec4f32);
@@ -43,7 +43,8 @@ void WGSLSkyboxFragment::_createShaderSource(size_t hash, const ShaderMacroColle
     {
         auto encoder = createSourceEncoder(wgpu::ShaderStage::Fragment);
         _common(encoder, macros);
-        encoder.addSampledTextureBinding("u_cubeTexture", TextureType::Texture2Df32, "u_cubeSampler", SamplerType::Sampler);
+        encoder.addSampledTextureBinding("u_cubeTexture", TextureType::TextureCubef32, 0,
+                                         "u_cubeSampler", SamplerType::Sampler, 1, 0);
         encoder.addInoutType("VertexOut", 0, "v_cubeUV", UniformType::Vec3f32);
         encoder.addInoutType("Output", 0, "finalColor", UniformType::Vec4f32);
 
