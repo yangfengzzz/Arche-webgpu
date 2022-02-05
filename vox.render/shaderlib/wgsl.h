@@ -8,7 +8,7 @@
 #define wgsl_h
 
 #include "wgsl_common.h"
-#include "wgsl_encoder.h"
+#include "shaderlib/wgsl_encoder.h"
 #include "shader/shader_macro_collection.h"
 #include <unordered_map>
 #include <unordered_set>

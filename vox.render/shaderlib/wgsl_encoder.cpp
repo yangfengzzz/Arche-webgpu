@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "wgsl_encoder.h"
+#include "shaderlib/wgsl_encoder.h"
 #include "wgsl.h"
 #include "shader/shader.h"
 #include <fmt/core.h>

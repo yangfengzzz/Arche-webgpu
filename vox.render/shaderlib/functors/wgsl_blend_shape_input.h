@@ -7,7 +7,7 @@
 #ifndef blend_shape_input_hpp
 #define blend_shape_input_hpp
 
-#include "wgsl_encoder.h"
+#include "shaderlib/wgsl_encoder.h"
 
 namespace vox {
 class WGSLBlendShapeInput {

@@ -7,7 +7,7 @@
 #ifndef wgsl_direct_irradiance_frag_define_hpp
 #define wgsl_direct_irradiance_frag_define_hpp
 
-#include "wgsl_encoder.h"
+#include "shaderlib/wgsl_encoder.h"
 
 namespace vox {
 class WGSLDirectIrradianceFragDefine {

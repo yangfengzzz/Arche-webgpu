@@ -7,7 +7,7 @@
 #ifndef wgsl_pbr_helper_hpp
 #define wgsl_pbr_helper_hpp
 
-#include "wgsl_encoder.h"
+#include "shaderlib/wgsl_encoder.h"
 #include "wgsl_normal_get.h"
 #include "wgsl_brdf.h"
 #include "wgsl_direct_irradiance_frag_define.h"

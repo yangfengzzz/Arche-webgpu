@@ -7,7 +7,7 @@
 #ifndef wgsl_normal_get_hpp
 #define wgsl_normal_get_hpp
 
-#include "wgsl_encoder.h"
+#include "shaderlib/wgsl_encoder.h"
 
 namespace vox {
 class WGSLNormalGet {

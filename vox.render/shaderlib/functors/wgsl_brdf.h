@@ -7,7 +7,7 @@
 #ifndef wgsl_brdf_hpp
 #define wgsl_brdf_hpp
 
-#include "wgsl_encoder.h"
+#include "shaderlib/wgsl_encoder.h"
 
 namespace vox {
 class WGSLBRDF {

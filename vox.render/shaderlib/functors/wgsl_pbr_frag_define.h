@@ -7,7 +7,7 @@
 #ifndef wgsl_pbr_frag_define_hpp
 #define wgsl_pbr_frag_define_hpp
 
-#include "wgsl_encoder.h"
+#include "shaderlib/wgsl_encoder.h"
 
 namespace vox {
 class WGSLPbrFragDefine {

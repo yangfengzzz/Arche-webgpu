@@ -7,7 +7,7 @@
 #ifndef wgsl_begin_mobile_frag_hpp
 #define wgsl_begin_mobile_frag_hpp
 
-#include "wgsl_encoder.h"
+#include "shaderlib/wgsl_encoder.h"
 
 namespace vox {
 class WGSLBeginMobileFrag {

@@ -7,7 +7,7 @@
 #ifndef wgsl_skinning_vert_hpp
 #define wgsl_skinning_vert_hpp
 
-#include "wgsl_encoder.h"
+#include "shaderlib/wgsl_encoder.h"
 
 namespace vox {
 class WGSLSkinningVert {

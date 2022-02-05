@@ -357,6 +357,9 @@
 		047BF18027AE1A40003F3599 /* wgsl_skybox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF17E27AE1A40003F3599 /* wgsl_skybox.cpp */; };
 		047BF18127AE1A40003F3599 /* wgsl_skybox.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF17F27AE1A40003F3599 /* wgsl_skybox.h */; };
 		047BF18427AE1DF7003F3599 /* skybox_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF18227AE1DF7003F3599 /* skybox_app.cpp */; };
+		047BF18727AE48FE003F3599 /* Irradiance_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF18627AE48FE003F3599 /* Irradiance_app.cpp */; };
+		047BF18A27AE4ADD003F3599 /* wgsl_skybox_debugger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF18827AE4ADD003F3599 /* wgsl_skybox_debugger.cpp */; };
+		047BF18B27AE4ADD003F3599 /* wgsl_skybox_debugger.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF18927AE4ADD003F3599 /* wgsl_skybox_debugger.h */; };
 		0495463B279F89E500783C84 /* shader_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954634279F89E400783C84 /* shader_data.h */; };
 		0495463C279F89E500783C84 /* shader_property.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954635279F89E400783C84 /* shader_property.h */; };
 		0495463D279F89E500783C84 /* shader_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954636279F89E400783C84 /* shader_data.cpp */; };
@@ -875,6 +878,10 @@
 		047BF17F27AE1A40003F3599 /* wgsl_skybox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_skybox.h; sourceTree = "<group>"; };
 		047BF18227AE1DF7003F3599 /* skybox_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = skybox_app.cpp; sourceTree = "<group>"; };
 		047BF18327AE1DF7003F3599 /* skybox_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = skybox_app.h; sourceTree = "<group>"; };
+		047BF18527AE48FE003F3599 /* Irradiance_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Irradiance_app.h; sourceTree = "<group>"; };
+		047BF18627AE48FE003F3599 /* Irradiance_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Irradiance_app.cpp; sourceTree = "<group>"; };
+		047BF18827AE4ADD003F3599 /* wgsl_skybox_debugger.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_skybox_debugger.cpp; sourceTree = "<group>"; };
+		047BF18927AE4ADD003F3599 /* wgsl_skybox_debugger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_skybox_debugger.h; sourceTree = "<group>"; };
 		04954634279F89E400783C84 /* shader_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_data.h; sourceTree = "<group>"; };
 		04954635279F89E400783C84 /* shader_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_property.h; sourceTree = "<group>"; };
 		04954636279F89E400783C84 /* shader_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader_data.cpp; sourceTree = "<group>"; };
@@ -1372,6 +1379,8 @@
 				047BF16F27AD51B2003F3599 /* pbr_app.cpp */,
 				047BF18327AE1DF7003F3599 /* skybox_app.h */,
 				047BF18227AE1DF7003F3599 /* skybox_app.cpp */,
+				047BF18527AE48FE003F3599 /* Irradiance_app.h */,
+				047BF18627AE48FE003F3599 /* Irradiance_app.cpp */,
 			);
 			path = apps;
 			sourceTree = "<group>";
@@ -1723,6 +1732,8 @@
 				047BF16B27AD45A6003F3599 /* wgsl_pbr.cpp */,
 				047BF17F27AE1A40003F3599 /* wgsl_skybox.h */,
 				047BF17E27AE1A40003F3599 /* wgsl_skybox.cpp */,
+				047BF18927AE4ADD003F3599 /* wgsl_skybox_debugger.h */,
+				047BF18827AE4ADD003F3599 /* wgsl_skybox_debugger.cpp */,
 			);
 			path = shaderlib;
 			sourceTree = "<group>";
@@ -1974,6 +1985,7 @@
 				047BF00827A56434003F3599 /* wgsl_unlit.h in Headers */,
 				04954641279F89E500783C84 /* shader.h in Headers */,
 				047BF02927A6659E003F3599 /* astc.h in Headers */,
+				047BF18B27AE4ADD003F3599 /* wgsl_skybox_debugger.h in Headers */,
 				047BF08C27ABB9AD003F3599 /* wgsl_begin_normal_vert.h in Headers */,
 				049546EE279FC74800783C84 /* render_pass.h in Headers */,
 				047BF0E627ACEBAE003F3599 /* dynamic_collider.h in Headers */,
@@ -2266,6 +2278,7 @@
 				049546E5279FA7D800783C84 /* metal_binding.mm in Sources */,
 				04128471279EED090071BD86 /* stencil_state.cpp in Sources */,
 				047BF07127A6819C003F3599 /* astc_color_quantize.cpp in Sources */,
+				047BF18A27AE4ADD003F3599 /* wgsl_skybox_debugger.cpp in Sources */,
 				047BF0BC27AC086B003F3599 /* light.cpp in Sources */,
 				047BF11427ACEBBF003F3599 /* character_controller.cpp in Sources */,
 				047BF06D27A6819C003F3599 /* astc_encoding_choice_error.cpp in Sources */,
@@ -2416,6 +2429,7 @@
 				047BF12E27ACEEEE003F3599 /* physx_app.cpp in Sources */,
 				047BF17127AD51B2003F3599 /* pbr_app.cpp in Sources */,
 				0495476227A2954200783C84 /* primitive_app.cpp in Sources */,
+				047BF18727AE48FE003F3599 /* Irradiance_app.cpp in Sources */,
 				047BF12F27ACEFFA003F3599 /* scoped_autorelease_pool.mm in Sources */,
 				047BF18427AE1DF7003F3599 /* skybox_app.cpp in Sources */,
 			);

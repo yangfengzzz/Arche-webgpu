@@ -7,7 +7,7 @@
 #ifndef wgsl_light_frag_define_hpp
 #define wgsl_light_frag_define_hpp
 
-#include "wgsl_encoder.h"
+#include "shaderlib/wgsl_encoder.h"
 
 namespace vox {
 class WGSLLightFragDefine {

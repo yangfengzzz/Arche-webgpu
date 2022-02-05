@@ -7,7 +7,7 @@
 #ifndef wgsl_worldpos_share_hpp
 #define wgsl_worldpos_share_hpp
 
-#include "wgsl_encoder.h"
+#include "shaderlib/wgsl_encoder.h"
 
 namespace vox {
 class WGSLWorldPosShare {

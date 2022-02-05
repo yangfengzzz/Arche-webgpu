@@ -7,7 +7,7 @@
 #ifndef wgsl_blend_shape_vert_hpp
 #define wgsl_blend_shape_vert_hpp
 
-#include "wgsl_encoder.h"
+#include "shaderlib/wgsl_encoder.h"
 
 namespace vox {
 class WGSLBlendShapeVert {

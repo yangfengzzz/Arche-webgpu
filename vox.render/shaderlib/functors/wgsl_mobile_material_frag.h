@@ -7,7 +7,7 @@
 #ifndef wgsl_mobile_material_frag_hpp
 #define wgsl_mobile_material_frag_hpp
 
-#include "wgsl_encoder.h"
+#include "shaderlib/wgsl_encoder.h"
 
 namespace vox {
 class WGSLMobileMaterialShare {

@@ -7,7 +7,7 @@
 #ifndef uv_share_hpp
 #define uv_share_hpp
 
-#include "wgsl_encoder.h"
+#include "shaderlib/wgsl_encoder.h"
 
 namespace vox {
 class WGSLUVShare {
