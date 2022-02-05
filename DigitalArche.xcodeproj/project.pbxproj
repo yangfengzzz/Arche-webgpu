@@ -369,6 +369,7 @@
 		047BF19A27AE7004003F3599 /* gpu_skinned_mesh_renderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF19827AE7004003F3599 /* gpu_skinned_mesh_renderer.h */; };
 		047BF19D27AE718E003F3599 /* gltf_loader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF19B27AE718E003F3599 /* gltf_loader.cpp */; };
 		047BF19E27AE718E003F3599 /* gltf_loader.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF19C27AE718E003F3599 /* gltf_loader.h */; };
+		047BF1A127AEB941003F3599 /* gltf_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1A027AEB941003F3599 /* gltf_app.cpp */; };
 		0495463B279F89E500783C84 /* shader_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954634279F89E400783C84 /* shader_data.h */; };
 		0495463C279F89E500783C84 /* shader_property.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954635279F89E400783C84 /* shader_property.h */; };
 		0495463D279F89E500783C84 /* shader_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954636279F89E400783C84 /* shader_data.cpp */; };
@@ -901,6 +902,8 @@
 		047BF19827AE7004003F3599 /* gpu_skinned_mesh_renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gpu_skinned_mesh_renderer.h; sourceTree = "<group>"; };
 		047BF19B27AE718E003F3599 /* gltf_loader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gltf_loader.cpp; sourceTree = "<group>"; };
 		047BF19C27AE718E003F3599 /* gltf_loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gltf_loader.h; sourceTree = "<group>"; };
+		047BF19F27AEB941003F3599 /* gltf_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gltf_app.h; sourceTree = "<group>"; };
+		047BF1A027AEB941003F3599 /* gltf_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gltf_app.cpp; sourceTree = "<group>"; };
 		04954634279F89E400783C84 /* shader_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_data.h; sourceTree = "<group>"; };
 		04954635279F89E400783C84 /* shader_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_property.h; sourceTree = "<group>"; };
 		04954636279F89E400783C84 /* shader_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader_data.cpp; sourceTree = "<group>"; };
@@ -1406,6 +1409,8 @@
 				047BF18627AE48FE003F3599 /* Irradiance_app.cpp */,
 				047BF18D27AE6AEF003F3599 /* ibl_app.h */,
 				047BF18C27AE6AEF003F3599 /* ibl_app.cpp */,
+				047BF19F27AEB941003F3599 /* gltf_app.h */,
+				047BF1A027AEB941003F3599 /* gltf_app.cpp */,
 			);
 			path = apps;
 			sourceTree = "<group>";
@@ -2463,6 +2468,7 @@
 				0495475F27A294E600783C84 /* main.cpp in Sources */,
 				047BF12D27ACEEEE003F3599 /* physx_dynamic_app.cpp in Sources */,
 				047BF15227ACFA86003F3599 /* animation_app.cpp in Sources */,
+				047BF1A127AEB941003F3599 /* gltf_app.cpp in Sources */,
 				047BF12E27ACEEEE003F3599 /* physx_app.cpp in Sources */,
 				047BF17127AD51B2003F3599 /* pbr_app.cpp in Sources */,
 				047BF18E27AE6AF0003F3599 /* ibl_app.cpp in Sources */,
