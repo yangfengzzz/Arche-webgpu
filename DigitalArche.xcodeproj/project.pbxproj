@@ -367,6 +367,8 @@
 		047BF19627AE6F74003F3599 /* scene_animation_clip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF19227AE6F74003F3599 /* scene_animation_clip.cpp */; };
 		047BF19927AE7004003F3599 /* gpu_skinned_mesh_renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF19727AE7004003F3599 /* gpu_skinned_mesh_renderer.cpp */; };
 		047BF19A27AE7004003F3599 /* gpu_skinned_mesh_renderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF19827AE7004003F3599 /* gpu_skinned_mesh_renderer.h */; };
+		047BF19D27AE718E003F3599 /* gltf_loader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF19B27AE718E003F3599 /* gltf_loader.cpp */; };
+		047BF19E27AE718E003F3599 /* gltf_loader.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF19C27AE718E003F3599 /* gltf_loader.h */; };
 		0495463B279F89E500783C84 /* shader_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954634279F89E400783C84 /* shader_data.h */; };
 		0495463C279F89E500783C84 /* shader_property.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954635279F89E400783C84 /* shader_property.h */; };
 		0495463D279F89E500783C84 /* shader_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954636279F89E400783C84 /* shader_data.cpp */; };
@@ -897,6 +899,8 @@
 		047BF19227AE6F74003F3599 /* scene_animation_clip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene_animation_clip.cpp; sourceTree = "<group>"; };
 		047BF19727AE7004003F3599 /* gpu_skinned_mesh_renderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gpu_skinned_mesh_renderer.cpp; sourceTree = "<group>"; };
 		047BF19827AE7004003F3599 /* gpu_skinned_mesh_renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gpu_skinned_mesh_renderer.h; sourceTree = "<group>"; };
+		047BF19B27AE718E003F3599 /* gltf_loader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gltf_loader.cpp; sourceTree = "<group>"; };
+		047BF19C27AE718E003F3599 /* gltf_loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gltf_loader.h; sourceTree = "<group>"; };
 		04954634279F89E400783C84 /* shader_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_data.h; sourceTree = "<group>"; };
 		04954635279F89E400783C84 /* shader_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_property.h; sourceTree = "<group>"; };
 		04954636279F89E400783C84 /* shader_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader_data.cpp; sourceTree = "<group>"; };
@@ -1640,8 +1644,10 @@
 				047BF13727ACF245003F3599 /* fbx_mesh.cpp */,
 				047BF13A27ACF245003F3599 /* fbx_loader.h */,
 				047BF13827ACF245003F3599 /* fbx_loader.cpp */,
-				047BF13927ACF245003F3599 /* animator_loader.cpp */,
 				047BF13627ACF245003F3599 /* animator_loader.h */,
+				047BF13927ACF245003F3599 /* animator_loader.cpp */,
+				047BF19C27AE718E003F3599 /* gltf_loader.h */,
+				047BF19B27AE718E003F3599 /* gltf_loader.cpp */,
 			);
 			path = loader;
 			sourceTree = "<group>";
@@ -2022,6 +2028,7 @@
 				047BF16227AD1996003F3599 /* wgsl_direct_irradiance_frag_define.h in Headers */,
 				047BF0CB27AC0D59003F3599 /* ambient_light.h in Headers */,
 				047BF11F27ACEBC7003F3599 /* plane_collider_shape.h in Headers */,
+				047BF19E27AE718E003F3599 /* gltf_loader.h in Headers */,
 				047BF15A27AD0FF4003F3599 /* wgsl_pbr_helper.h in Headers */,
 				0495472527A23CE100783C84 /* sampled_texture.h in Headers */,
 				047BF14227ACF245003F3599 /* fbx_loader.h in Headers */,
@@ -2325,6 +2332,7 @@
 				047BF0E327ACEBAE003F3599 /* physics_manager.cpp in Sources */,
 				047BF10727ACEBB7003F3599 /* spring_joint.cpp in Sources */,
 				047BF00727A56434003F3599 /* wgsl_unlit.cpp in Sources */,
+				047BF19D27AE718E003F3599 /* gltf_loader.cpp in Sources */,
 				047BF0E227ACEBAE003F3599 /* collider.cpp in Sources */,
 				0495472A27A2453200783C84 /* unlit_material.cpp in Sources */,
 				0412846D279EEB8B0071BD86 /* raster_state.cpp in Sources */,

@@ -11,82 +11,192 @@
 #include "gltf_loader.h"
 #include "scene_animator.h"
 #include "material/pbr_material.h"
-#include "graphics/mesh.h"
-#include "shader_common.h"
-#include <iostream>
+#include "mesh/buffer_mesh.h"
+#include "filesystem.h"
+#include <glog/logging.h>
+
+#define KHR_LIGHTS_PUNCTUAL_EXTENSION "KHR_lights_punctual"
 
 namespace vox {
 namespace loader {
 namespace {
-bool loadImageDataFuncEmpty(tinygltf::Image* image, const int imageIndex,
-                            std::string* error, std::string* warning, int req_width, int req_height,
-                            const unsigned char* bytes, int size, void* userData) {
-    // This function will be used for samples that don't require images to be loaded
-    return true;
-}
+inline wgpu::FilterMode find_min_filter(int min_filter) {
+    switch (min_filter) {
+        case TINYGLTF_TEXTURE_FILTER_NEAREST:
+        case TINYGLTF_TEXTURE_FILTER_NEAREST_MIPMAP_NEAREST:
+        case TINYGLTF_TEXTURE_FILTER_NEAREST_MIPMAP_LINEAR:
+            return wgpu::FilterMode::Nearest;
+        case TINYGLTF_TEXTURE_FILTER_LINEAR:
+        case TINYGLTF_TEXTURE_FILTER_LINEAR_MIPMAP_NEAREST:
+        case TINYGLTF_TEXTURE_FILTER_LINEAR_MIPMAP_LINEAR:
+            return wgpu::FilterMode::Linear;
+        default:
+            return wgpu::FilterMode::Linear;
+    }
+};
+
+inline wgpu::FilterMode find_mipmap_mode(int min_filter) {
+    switch (min_filter) {
+        case TINYGLTF_TEXTURE_FILTER_NEAREST_MIPMAP_NEAREST:
+        case TINYGLTF_TEXTURE_FILTER_LINEAR_MIPMAP_NEAREST:
+            return wgpu::FilterMode::Nearest;
+        case TINYGLTF_TEXTURE_FILTER_NEAREST_MIPMAP_LINEAR:
+        case TINYGLTF_TEXTURE_FILTER_LINEAR_MIPMAP_LINEAR:
+            return wgpu::FilterMode::Linear;
+        default:
+            return wgpu::FilterMode::Linear;
+    }
+};
+
+inline wgpu::FilterMode find_mag_filter(int mag_filter) {
+    switch (mag_filter) {
+        case TINYGLTF_TEXTURE_FILTER_NEAREST:
+            return wgpu::FilterMode::Nearest;
+        case TINYGLTF_TEXTURE_FILTER_LINEAR:
+            return wgpu::FilterMode::Linear;
+        default:
+            return wgpu::FilterMode::Linear;
+    }
+};
+
+inline wgpu::AddressMode find_wrap_mode(int wrap) {
+    switch (wrap) {
+        case TINYGLTF_TEXTURE_WRAP_REPEAT:
+            return wgpu::AddressMode::Repeat;
+        case TINYGLTF_TEXTURE_WRAP_CLAMP_TO_EDGE:
+            return wgpu::AddressMode::ClampToEdge;
+        case TINYGLTF_TEXTURE_WRAP_MIRRORED_REPEAT:
+            return wgpu::AddressMode::MirrorRepeat;
+        default:
+            return wgpu::AddressMode::Repeat;
+    }
+};
+
+}        // namespace
+std::unordered_map<std::string, bool> GLTFLoader::_supportedExtensions = {
+    {KHR_LIGHTS_PUNCTUAL_EXTENSION, false}};
+
+bool GLTFLoader::isExtensionEnabled(const std::string &requested_extension) {
+    auto it = _supportedExtensions.find(requested_extension);
+    if (it != _supportedExtensions.end()) {
+        return it->second;
+    } else {
+        return false;
+    }
 }
 
-GLTFLoader::GLTFLoader(MTL::Device* device):
-_device(device),
-_resourceLoader(TextureLoader(*device)) {
+tinygltf::Value *GLTFLoader::getExtension(tinygltf::ExtensionMap &tinygltf_extensions, const std::string &extension) {
+    auto it = tinygltf_extensions.find(extension);
+    if (it != tinygltf_extensions.end()) {
+        return &it->second;
+    } else {
+        return nullptr;
+    }
+}
+
+GLTFLoader::GLTFLoader(wgpu::Device& device):
+_device(device) {
     
 }
 
 void GLTFLoader::loadFromFile(std::string filename, EntityPtr defaultSceneRoot, float scale) {
-    _defaultSceneRoot = defaultSceneRoot;
-
-    size_t pos = filename.find_last_of('/');
-    _path = filename.substr(0, pos);
-    
-    tinygltf::Model gltfModel;
     tinygltf::TinyGLTF gltfContext;
-    gltfContext.SetImageLoader(loadImageDataFuncEmpty, nullptr);
+    std::string gltf_file = vox::fs::path::get(vox::fs::path::Type::Assets) + filename;
     
     std::string error, warning;
-    
+    tinygltf::Model gltfModel;
     bool fileLoaded = gltfContext.LoadASCIIFromFile(&gltfModel, &error, &warning, filename);
-    if (fileLoaded) {
-        loadImages(gltfModel);
-        loadMaterials(gltfModel);
-        
-        const tinygltf::Scene &scene = gltfModel.scenes[gltfModel.defaultScene > -1 ? gltfModel.defaultScene : 0];
-        for (size_t i = 0; i < scene.nodes.size(); i++) {
-            const tinygltf::Node node = gltfModel.nodes[scene.nodes[i]];
-            loadNode(nullptr, node, scene.nodes[i], gltfModel, scale);
-        }
-        
-        if (gltfModel.animations.size() > 0) {
-            loadAnimations(gltfModel);
-        }
-        loadSkins(gltfModel);
-        for (auto node : _linearNodes) {
-            // Assign skins
-            if (node.second.second > -1) {
-                node.second.first->getComponent<GPUSkinnedMeshRenderer>()->setSkin(skins[node.second.second]);
-            }
-            // Initial pose
-            auto mesh = node.second.first->getComponent<GPUSkinnedMeshRenderer>();
-            if (mesh) {
-                mesh->update(0);
-            }
-        }
-    }
-    else {
-        // TODO: throw
-        std::cerr << "Could not load glTF file \"" + filename + "\": " + error << std::endl;
+    
+    if (!fileLoaded) {
+        LOG(ERROR) << "Failed to load gltf file " << filename.c_str() << std::endl;
         return;
     }
     
-    for (auto extension : gltfModel.extensionsUsed) {
-        if (extension == "KHR_materials_pbrSpecularGlossiness") {
-            std::cout << "Required extension: " << extension;
+    if (!error.empty()) {
+        LOG(ERROR) << "Error loading gltf model: " << error.c_str() << std::endl;
+        return;
+    }
+    
+    if (!warning.empty()) {
+        LOG(WARNING) << warning.c_str() << std::endl;
+    }
+    
+    _defaultSceneRoot = defaultSceneRoot;
+    size_t pos = filename.find_last_of('/');
+    _path = filename.substr(0, pos);
+    
+    loadScene(gltfModel);
+}
+
+void GLTFLoader::loadScene(tinygltf::Model& gltfModel) {
+    // Check extensions
+    for (auto &used_extension: gltfModel.extensionsUsed) {
+        if (used_extension == "KHR_materials_pbrSpecularGlossiness") {
             _metallicRoughnessWorkflow = false;
+        }
+        
+        auto it = _supportedExtensions.find(used_extension);
+        
+        // Check if extension isn't supported by the GLTFLoader
+        if (it == _supportedExtensions.end()) {
+            // If extension is required then we shouldn't allow the scene to be loaded
+            if (std::find(gltfModel.extensionsRequired.begin(), gltfModel.extensionsRequired.end(), used_extension) != gltfModel.extensionsRequired.end()) {
+                throw std::runtime_error("Cannot load glTF file. Contains a required unsupported extension: " + used_extension);
+            } else {
+                // Otherwise, if extension isn't required (but is in the file) then print a warning to the user
+                LOG(WARNING) << "glTF file contains an unsupported extension, unexpected results may occur: " << used_extension << std::endl;;
+            }
+        } else {
+            // Extension is supported, so enable it
+            LOG(INFO) << "glTF file contains extension: " << used_extension << std::endl;;
+            it->second = true;
+        }
+    }
+    
+    // Load lights
+    
+    // Load images
+    loadImages(gltfModel);
+    
+    // Load textures && samplers
+    loadTextures(gltfModel);
+    
+    // Load materials
+    loadMaterials(gltfModel);
+    
+    // Load meshes
+    loadMeshes(gltfModel);
+    
+    // Load cameras
+    
+    // Load nodes && scenes
+    const tinygltf::Scene &scene = gltfModel.scenes[gltfModel.defaultScene > -1 ? gltfModel.defaultScene : 0];
+    for (size_t i = 0; i < scene.nodes.size(); i++) {
+        const tinygltf::Node node = gltfModel.nodes[scene.nodes[i]];
+        loadNode(nullptr, node, scene.nodes[i], gltfModel);
+    }
+    
+    // Load animations
+    if (gltfModel.animations.size() > 0) {
+        loadAnimations(gltfModel);
+    }
+    loadSkins(gltfModel);
+    for (auto node : _linearNodes) {
+        // Assign skins
+        if (node.second.second > -1) {
+            node.second.first->getComponent<GPUSkinnedMeshRenderer>()->setSkin(skins[node.second.second]);
+        }
+        // Initial pose
+        auto mesh = node.second.first->getComponent<GPUSkinnedMeshRenderer>();
+        if (mesh) {
+            mesh->update(0);
         }
     }
 }
 
+
 void GLTFLoader::loadNode(EntityPtr parent, const tinygltf::Node& node, uint32_t nodeIndex,
-                          const tinygltf::Model& model, float globalscale) {
+                          const tinygltf::Model& model) {
     EntityPtr newNode = nullptr;
     if (parent) {
         newNode = parent->createChild(node.name);
@@ -114,32 +224,128 @@ void GLTFLoader::loadNode(EntityPtr parent, const tinygltf::Node& node, uint32_t
         newNode->transform->setLocalMatrix(m);
     }
     
+    if (node.mesh > 0) {
+        const auto& meshMats = renderers[node.mesh];
+        for (const auto& meshMat : meshMats) {
+            auto renderer = newNode->addComponent<GPUSkinnedMeshRenderer>();
+            renderer->setMesh(meshMat.first);
+            renderer->setMaterial(meshMat.second);
+        }
+    }
+    
     // Node with children
     if (node.children.size() > 0) {
         for (auto i = 0; i < node.children.size(); i++) {
             loadNode(newNode, model.nodes[node.children[i]],
-                     node.children[i], model, globalscale);
+                     node.children[i], model);
         }
     }
+}
+
+void GLTFLoader::loadImages(tinygltf::Model& gltfModel) {
+    for (tinygltf::Image &gltf_image : gltfModel.images) {
+        std::unique_ptr<Image> image{nullptr};
+        
+        if (!gltf_image.image.empty()) {
+            // Image embedded in gltf file
+            auto mipmap = Mipmap{
+                /* .level = */ 0,
+                /* .offset = */ 0,
+                /* .extent = */ {/* .width = */ static_cast<uint32_t>(gltf_image.width),
+                    /* .height = */ static_cast<uint32_t>(gltf_image.height),
+                    /* .depth = */ 1u}};
+            std::vector<Mipmap> mipmaps{mipmap};
+            image = std::make_unique<Image>(std::move(gltf_image.image), std::move(mipmaps));
+        } else {
+            // Load image from uri
+            auto image_uri = _path + "/" + gltf_image.uri;
+            image = Image::load(image_uri);
+        }
+        images.emplace_back(std::move(image));
+    }
+}
+
+void GLTFLoader::loadSampler(const tinygltf::Sampler &gltf_sampler, SampledTexture2DPtr texture) const {
+    texture->setAddressModeU(find_wrap_mode(gltf_sampler.wrapS));
+    texture->setAddressModeV(find_wrap_mode(gltf_sampler.wrapT));
     
-    // Node contains mesh data
-    if (node.mesh > -1) {
-        size_t vertexStart = 0;
-        size_t currentNum = 0;
-        std::vector<float> vertexBuffer{};
+    texture->setMipmapFilter(find_mipmap_mode(gltf_sampler.minFilter));
+    texture->setMinFilterMode(find_min_filter(gltf_sampler.minFilter));
+    texture->setMagFilterMode(find_mag_filter(gltf_sampler.magFilter));
+}
+
+void GLTFLoader::loadTextures(tinygltf::Model& gltfModel) {
+    for (auto &gltf_texture: gltfModel.textures) {
+        auto image = images.at(gltf_texture.source).get();
+        SampledTexture2DPtr texture = image->createSampledTexture(_device);
+        if (gltf_texture.sampler >= 0) {
+            loadSampler(gltfModel.samplers.at(gltf_texture.sampler), texture);
+        }
+        textures.emplace_back(std::move(texture));
+    }
+}
+
+void GLTFLoader::loadMaterials(tinygltf::Model& gltfModel) {
+    for (tinygltf::Material &mat : gltfModel.materials) {
+        auto material = std::make_shared<PBRMaterial>(_device);
+        if (mat.values.find("baseColorTexture") != mat.values.end()) {
+            material->setBaseTexture(textures[gltfModel.textures[mat.values["baseColorTexture"].TextureIndex()].source]);
+        }
+        // Metallic roughness workflow
+        if (mat.values.find("metallicRoughnessTexture") != mat.values.end()) {
+            material->setMetallicRoughnessTexture(textures[gltfModel.textures[mat.values["metallicRoughnessTexture"].TextureIndex()].source]);
+        }
+        if (mat.values.find("roughnessFactor") != mat.values.end()) {
+            material->setRoughness(static_cast<float>(mat.values["roughnessFactor"].Factor()));
+        }
+        if (mat.values.find("metallicFactor") != mat.values.end()) {
+            material->setMetallic(static_cast<float>(mat.values["metallicFactor"].Factor()));
+        }
+        if (mat.values.find("baseColorFactor") != mat.values.end()) {
+            auto color = mat.values["baseColorFactor"].ColorFactor();
+            material->setBaseColor(Color(color[0], color[1], color[2], color[3]));
+        }
+        if (mat.additionalValues.find("normalTexture") != mat.additionalValues.end()) {
+            material->setNormalTexture(textures[gltfModel.textures[mat.additionalValues["normalTexture"].TextureIndex()].source]);
+        }
+        if (mat.additionalValues.find("emissiveTexture") != mat.additionalValues.end()) {
+            material->setEmissiveTexture(textures[gltfModel.textures[mat.additionalValues["emissiveTexture"].TextureIndex()].source]);
+        }
+        if (mat.additionalValues.find("occlusionTexture") != mat.additionalValues.end()) {
+            material->setOcclusionTexture(textures[gltfModel.textures[mat.additionalValues["occlusionTexture"].TextureIndex()].source]);
+        }
+        if (mat.additionalValues.find("alphaMode") != mat.additionalValues.end()) {
+            tinygltf::Parameter param = mat.additionalValues["alphaMode"];
+            if (param.string_value == "BLEND") {
+                material->setBlendMode(BlendMode::Normal);
+            }
+            if (param.string_value == "MASK") {
+                material->setBlendMode(BlendMode::Additive);
+            }
+        }
+        if (mat.additionalValues.find("alphaCutoff") != mat.additionalValues.end()) {
+            material->setAlphaCutoff(static_cast<float>(mat.additionalValues["alphaCutoff"].Factor()));
+        }
         
-        auto bound = BoundingBox3F();
-        MTL::VertexDescriptor vertexDescriptor;
-        std::vector<Submesh> submeshes{};
-        
-        const tinygltf::Mesh mesh = model.meshes[node.mesh];
-        auto renderer = newNode->addComponent<GPUSkinnedMeshRenderer>();
-        for (size_t j = 0; j < mesh.primitives.size(); j++) {
-            const tinygltf::Primitive &primitive = mesh.primitives[j];
+        materials.push_back(material);
+    }
+    // Push a default material at the end of the list for meshes with no material assigned
+    materials.push_back(std::make_shared<PBRMaterial>(_device));
+}
+
+void GLTFLoader::loadMeshes(tinygltf::Model& model) {
+    for (auto &gltf_mesh: model.meshes) {
+        std::vector<std::pair<MeshPtr, MaterialPtr>> renderer{};
+        for (auto &primitive: gltf_mesh.primitives) {
             if (primitive.indices < 0) {
                 continue;
             }
             
+            auto bound = BoundingBox3F();
+            std::vector<float> vertexBuffer{};
+            std::vector<uint32_t> indexBuffer{};
+            std::vector<wgpu::VertexAttribute> vertexAttributes{};
+            wgpu::VertexBufferLayout vertexBufferLayout;
             // Vertices
             {
                 const float *bufferPos = nullptr;
@@ -202,63 +408,78 @@ void GLTFLoader::loadNode(EntityPtr parent, const tinygltf::Node& node, uint32_t
                     bufferWeights = reinterpret_cast<const float *>(&(model.buffers[uvView.buffer].data[uvAccessor.byteOffset + uvView.byteOffset]));
                 }
                 
-                vertexDescriptor.attributes[Attributes::Position].format(MTL::VertexFormatFloat3);
-                vertexDescriptor.attributes[Attributes::Position].offset(0);
-                vertexDescriptor.attributes[Attributes::Position].bufferIndex(0);
-
+                wgpu::VertexAttribute attr;
+                attr.offset = 0;
+                attr.format = wgpu::VertexFormat::Float32x3;
+                attr.shaderLocation = (uint32_t)Attributes::Position;
+                vertexAttributes.push_back(attr);
+                
                 size_t offset = 12;
                 size_t elementCount = 3;
                 if (bufferNormals) {
-                    vertexDescriptor.attributes[Attributes::Normal].format(MTL::VertexFormatFloat3);
-                    vertexDescriptor.attributes[Attributes::Normal].offset(offset);
-                    vertexDescriptor.attributes[Attributes::Normal].bufferIndex(0);
+                    attr.offset = offset;
+                    attr.format = wgpu::VertexFormat::Float32x3;
+                    attr.shaderLocation = (uint32_t)Attributes::Normal;
+                    vertexAttributes.push_back(attr);
+                    
                     offset += sizeof(float) * 3;
                     elementCount += 3;
                 }
                 
                 if (bufferTexCoords) {
-                    vertexDescriptor.attributes[Attributes::UV_0].format(MTL::VertexFormatFloat2);
-                    vertexDescriptor.attributes[Attributes::UV_0].offset(offset);
-                    vertexDescriptor.attributes[Attributes::UV_0].bufferIndex(0);
+                    attr.offset = offset;
+                    attr.format = wgpu::VertexFormat::Float32x2;
+                    attr.shaderLocation = (uint32_t)Attributes::UV_0;
+                    vertexAttributes.push_back(attr);
+                    
                     offset += sizeof(float) * 2;
                     elementCount += 2;
                 }
                 
                 if (bufferColors) {
-                    vertexDescriptor.attributes[Attributes::Color_0].format(MTL::VertexFormatFloat4);
-                    vertexDescriptor.attributes[Attributes::Color_0].offset(offset);
-                    vertexDescriptor.attributes[Attributes::Color_0].bufferIndex(0);
+                    attr.offset = offset;
+                    attr.format = wgpu::VertexFormat::Float32x4;
+                    attr.shaderLocation = (uint32_t)Attributes::Color_0;
+                    vertexAttributes.push_back(attr);
+                    
                     offset += sizeof(float) * 4;
                     elementCount += 4;
                 }
                 
                 if (bufferTangents) {
-                    vertexDescriptor.attributes[Attributes::Tangent].format(MTL::VertexFormatFloat4);
-                    vertexDescriptor.attributes[Attributes::Tangent].offset(offset);
-                    vertexDescriptor.attributes[Attributes::Tangent].bufferIndex(0);
+                    attr.offset = offset;
+                    attr.format = wgpu::VertexFormat::Float32x4;
+                    attr.shaderLocation = (uint32_t)Attributes::Tangent;
+                    vertexAttributes.push_back(attr);
+                    
                     offset += sizeof(float) * 4;
                     elementCount += 4;
                 }
                 
                 if (bufferJoints) {
-                    vertexDescriptor.attributes[Attributes::Joints_0].format(MTL::VertexFormatFloat4);
-                    vertexDescriptor.attributes[Attributes::Joints_0].offset(offset);
-                    vertexDescriptor.attributes[Attributes::Joints_0].bufferIndex(0);
+                    attr.offset = offset;
+                    attr.format = wgpu::VertexFormat::Float32x4;
+                    attr.shaderLocation = (uint32_t)Attributes::Joints_0;
+                    vertexAttributes.push_back(attr);
+                    
                     offset += sizeof(float) * 4;
                     elementCount += 4;
                 }
                 
                 if (bufferWeights) {
-                    vertexDescriptor.attributes[Attributes::Weights_0].format(MTL::VertexFormatFloat4);
-                    vertexDescriptor.attributes[Attributes::Weights_0].offset(offset);
-                    vertexDescriptor.attributes[Attributes::Weights_0].bufferIndex(0);
+                    attr.offset = offset;
+                    attr.format = wgpu::VertexFormat::Float32x4;
+                    attr.shaderLocation = (uint32_t)Attributes::Weights_0;
+                    vertexAttributes.push_back(attr);
+                    
                     offset += sizeof(float) * 4;
                     elementCount += 4;
                 }
-                vertexDescriptor.layouts[0].stride(offset);
+                vertexBufferLayout.attributes = vertexAttributes.data();
+                vertexBufferLayout.attributeCount = static_cast<uint32_t>(vertexAttributes.size());
+                vertexBufferLayout.arrayStride = offset;
                 
-                currentNum = posAccessor.count;
-                vertexBuffer.reserve(vertexBuffer.size() + posAccessor.count * elementCount);
+                vertexBuffer.reserve(posAccessor.count * elementCount);
                 for (size_t v = 0; v < posAccessor.count; v++) {
                     vertexBuffer.insert(vertexBuffer.end(), &bufferPos[v * 3], &bufferPos[v * 3 + 3]);
                     if (bufferNormals) {
@@ -275,7 +496,7 @@ void GLTFLoader::loadNode(EntityPtr parent, const tinygltf::Node& node, uint32_t
                             case 4:
                                 vertexBuffer.insert(vertexBuffer.end(), &bufferColors[v * 4], &bufferColors[v * 4 + 4]);
                             default:
-                                std::cerr << "numColorComponents has problem" <<std::endl;
+                                LOG(ERROR) << "numColorComponents has problem" <<std::endl;
                         }
                     }
                     if (bufferTangents) {
@@ -295,106 +516,49 @@ void GLTFLoader::loadNode(EntityPtr parent, const tinygltf::Node& node, uint32_t
                 const tinygltf::BufferView &bufferView = model.bufferViews[accessor.bufferView];
                 const tinygltf::Buffer &buffer = model.buffers[bufferView.buffer];
                 
-                std::vector<uint32_t> buf;
-                buf.reserve(accessor.count);
+                indexBuffer.reserve(accessor.count);
                 switch (accessor.componentType) {
                     case TINYGLTF_PARAMETER_TYPE_UNSIGNED_INT: {
-                        uint32_t *buf32 = new uint32_t[accessor.count];
-                        memcpy(buf32, &buffer.data[accessor.byteOffset + bufferView.byteOffset], accessor.count * sizeof(uint32_t));
+                        std::vector<uint32_t> buf32(accessor.count);
+                        memcpy(buf32.data(), &buffer.data[accessor.byteOffset + bufferView.byteOffset], accessor.count * sizeof(uint32_t));
                         for (size_t index = 0; index < accessor.count; index++) {
-                            buf.push_back(buf32[index] + static_cast<uint32_t>(vertexStart));
+                            indexBuffer.push_back(buf32[index]);
                         }
                         break;
                     }
                     case TINYGLTF_PARAMETER_TYPE_UNSIGNED_SHORT: {
-                        uint16_t *buf16 = new uint16_t[accessor.count];
-                        memcpy(buf16, &buffer.data[accessor.byteOffset + bufferView.byteOffset], accessor.count * sizeof(uint16_t));
+                        std::vector<uint16_t> buf16(accessor.count);
+                        memcpy(buf16.data(), &buffer.data[accessor.byteOffset + bufferView.byteOffset], accessor.count * sizeof(uint16_t));
                         for (size_t index = 0; index < accessor.count; index++) {
-                            buf.push_back(buf16[index] + static_cast<uint32_t>(vertexStart));
+                            indexBuffer.push_back(buf16[index]);
                         }
                         break;
                     }
                     case TINYGLTF_PARAMETER_TYPE_UNSIGNED_BYTE: {
-                        uint8_t *buf8 = new uint8_t[accessor.count];
-                        memcpy(buf8, &buffer.data[accessor.byteOffset + bufferView.byteOffset], accessor.count * sizeof(uint8_t));
+                        std::vector<uint8_t> buf8(accessor.count);
+                        memcpy(buf8.data(), &buffer.data[accessor.byteOffset + bufferView.byteOffset], accessor.count * sizeof(uint8_t));
                         for (size_t index = 0; index < accessor.count; index++) {
-                            buf.push_back(buf8[index] + static_cast<uint32_t>(vertexStart));
+                            indexBuffer.push_back(buf8[index]);
                         }
                         break;
                     }
                     default:
-                        std::cerr << "Index component type " << accessor.componentType << " not supported!" << std::endl;
+                        LOG(ERROR) << "Index component type " << accessor.componentType << " not supported!" << std::endl;
                         return;
                 }
-                auto iBuffer = MeshBuffer(_device->makeBuffer(buf.data(), buf.size() * sizeof(uint32_t)), 0, buf.size() * sizeof(uint32_t));
-                submeshes.push_back(Submesh(MTL::PrimitiveTypeTriangle, MTL::IndexTypeUInt32, buf.size(), iBuffer));
             }
-            
-            vertexStart += currentNum;
-            auto mat = primitive.material > -1 ? materials[primitive.material] : materials.back();
-            renderer->setMaterial(j, mat);
+            auto bufferMesh = std::make_shared<BufferMesh>();
+            auto iBuffer = Buffer(_device, indexBuffer.data(), indexBuffer.size() * sizeof(uint32_t), wgpu::BufferUsage::Index);
+            auto vBuffer = Buffer(_device, vertexBuffer.data(), vertexBuffer.size() * sizeof(float), wgpu::BufferUsage::Vertex);
+            bufferMesh->setVertexBufferBinding(vBuffer);
+            bufferMesh->setIndexBufferBinding(iBuffer, wgpu::IndexFormat::Uint32);
+            bufferMesh->setVertexLayouts({vertexBufferLayout});
+            bufferMesh->addSubMesh(0, static_cast<uint32_t>(indexBuffer.size()), wgpu::PrimitiveTopology::TriangleList);
+            bufferMesh->bounds = bound;
+            renderer.emplace_back(std::make_pair(bufferMesh, primitive.material > -1 ? materials[primitive.material] : materials.back()));
         }
-        std::vector<MeshBuffer> vBuffer;
-        vBuffer.emplace_back(MeshBuffer(_device->makeBuffer(vertexBuffer.data(), vertexBuffer.size() * sizeof(float)),
-                                        0, vertexBuffer.size() * sizeof(float), 0));
-        auto newMesh = std::make_shared<Mesh>(submeshes, vBuffer, vertexDescriptor);
-        newMesh->bounds = bound;
-        renderer->setMesh(newMesh);
+        renderers.push_back(renderer);
     }
-}
-
-void GLTFLoader::loadImages(tinygltf::Model& gltfModel) {
-    for (tinygltf::Image &image : gltfModel.images) {
-        textures.push_back(_resourceLoader.loadTexture(_path, image.uri));
-    }
-}
-
-void GLTFLoader::loadMaterials(tinygltf::Model& gltfModel) {
-    for (tinygltf::Material &mat : gltfModel.materials) {
-        auto material = std::make_shared<PBRMaterial>();
-        if (mat.values.find("baseColorTexture") != mat.values.end()) {
-            material->setBaseTexture(textures[gltfModel.textures[mat.values["baseColorTexture"].TextureIndex()].source]);
-        }
-        // Metallic roughness workflow
-        if (mat.values.find("metallicRoughnessTexture") != mat.values.end()) {
-            material->setMetallicRoughnessTexture(textures[gltfModel.textures[mat.values["metallicRoughnessTexture"].TextureIndex()].source]);
-        }
-        if (mat.values.find("roughnessFactor") != mat.values.end()) {
-            material->setRoughness(static_cast<float>(mat.values["roughnessFactor"].Factor()));
-        }
-        if (mat.values.find("metallicFactor") != mat.values.end()) {
-            material->setMetallic(static_cast<float>(mat.values["metallicFactor"].Factor()));
-        }
-        if (mat.values.find("baseColorFactor") != mat.values.end()) {
-            auto color = mat.values["baseColorFactor"].ColorFactor();
-            material->setBaseColor(Color(color[0], color[1], color[2], color[3]));
-        }
-        if (mat.additionalValues.find("normalTexture") != mat.additionalValues.end()) {
-            material->setNormalTexture(textures[gltfModel.textures[mat.additionalValues["normalTexture"].TextureIndex()].source]);
-        }
-        if (mat.additionalValues.find("emissiveTexture") != mat.additionalValues.end()) {
-            material->setEmissiveTexture(textures[gltfModel.textures[mat.additionalValues["emissiveTexture"].TextureIndex()].source]);
-        }
-        if (mat.additionalValues.find("occlusionTexture") != mat.additionalValues.end()) {
-            material->setOcclusionTexture(textures[gltfModel.textures[mat.additionalValues["occlusionTexture"].TextureIndex()].source]);
-        }
-        if (mat.additionalValues.find("alphaMode") != mat.additionalValues.end()) {
-            tinygltf::Parameter param = mat.additionalValues["alphaMode"];
-            if (param.string_value == "BLEND") {
-                material->setBlendMode(BlendMode::Normal);
-            }
-            if (param.string_value == "MASK") {
-                material->setBlendMode(BlendMode::Additive);
-            }
-        }
-        if (mat.additionalValues.find("alphaCutoff") != mat.additionalValues.end()) {
-            material->setAlphaCutoff(static_cast<float>(mat.additionalValues["alphaCutoff"].Factor()));
-        }
-        
-        materials.push_back(material);
-    }
-    // Push a default material at the end of the list for meshes with no material assigned
-    materials.push_back(std::make_shared<PBRMaterial>());
 }
 
 void GLTFLoader::loadSkins(tinygltf::Model& gltfModel) {
@@ -493,7 +657,7 @@ void GLTFLoader::loadAnimations(tinygltf::Model& gltfModel) {
                         break;
                     }
                     default: {
-                        std::cout << "unknown type" << std::endl;
+                        LOG(ERROR) << "unknown type" << std::endl;
                         break;
                     }
                 }
@@ -516,7 +680,7 @@ void GLTFLoader::loadAnimations(tinygltf::Model& gltfModel) {
                 channel.path = SceneAnimationClip::AnimationChannel::PathType::SCALE;
             }
             if (source.target_path == "weights") {
-                std::cout << "weights not yet supported, skipping channel" << std::endl;
+                LOG(WARNING) << "weights not yet supported, skipping channel" << std::endl;
                 continue;
             }
             channel.samplerIndex = source.sampler;
