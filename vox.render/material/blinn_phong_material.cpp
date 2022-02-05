@@ -113,18 +113,8 @@ void BlinnPhongMaterial::setShininess(float newValue) {
     shaderData.setData(BlinnPhongMaterial::_blinnPhongProp, _blinnPhongData);
 }
 
-const Vector4F& BlinnPhongMaterial::tilingOffset() {
-    return _tilingOffset;
-}
-
-void BlinnPhongMaterial::setTilingOffset(const Vector4F &newValue) {
-    _tilingOffset = newValue;
-    shaderData.setData(BlinnPhongMaterial::_tilingOffsetProp, newValue);
-}
-
 BlinnPhongMaterial::BlinnPhongMaterial(wgpu::Device& device) :
 BaseMaterial(device, Shader::find("blinn-phong")),
-_tilingOffsetProp(Shader::createProperty("u_tilingOffset", ShaderDataGroup::Material)),
 _blinnPhongProp(Shader::createProperty("u_blinnPhongData", ShaderDataGroup::Material)),
 
 _baseTextureProp(Shader::createProperty("u_diffuseTexture", ShaderDataGroup::Material)),
@@ -141,7 +131,6 @@ _normalSamplerProp(Shader::createProperty("u_normalSampler", ShaderDataGroup::Ma
     shaderData.enableMacro(NEED_WORLDPOS);
     shaderData.enableMacro(NEED_TILINGOFFSET);
     
-    shaderData.setData(_tilingOffsetProp, _tilingOffset);
     shaderData.setData(_blinnPhongProp, _blinnPhongData);
 }
 

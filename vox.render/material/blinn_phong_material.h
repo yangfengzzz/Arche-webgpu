@@ -90,19 +90,9 @@ public:
     
     void setShininess(float newValue);
     
-    /**
-     * Tiling and offset of main textures.
-     */
-    const Vector4F& tilingOffset();
-    
-    void setTilingOffset(const Vector4F &newValue);
-    
     explicit BlinnPhongMaterial(wgpu::Device& device);
     
 private:
-    Vector4F _tilingOffset = Vector4F(1, 1, 0, 0);
-    ShaderProperty _tilingOffsetProp;
-
     BlinnPhongData _blinnPhongData;
     ShaderProperty _blinnPhongProp;
     

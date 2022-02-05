@@ -48,6 +48,15 @@ void BaseMaterial::setAlphaCutoff(float newValue) {
     }
 }
 
+const Vector4F& BaseMaterial::tilingOffset() {
+    return _tilingOffset;
+}
+
+void BaseMaterial::setTilingOffset(const Vector4F &newValue) {
+    _tilingOffset = newValue;
+    shaderData.setData(BaseMaterial::_tilingOffsetProp, newValue);
+}
+
 const RenderFace &BaseMaterial::renderFace() {
     return _renderFace;
 }
@@ -99,9 +108,11 @@ void BaseMaterial::setBlendMode(const BlendMode &newValue) {
 
 BaseMaterial::BaseMaterial(wgpu::Device& device, Shader *shader) :
 Material(device, shader),
-_alphaCutoffProp(Shader::createProperty("u_alphaCutoff", ShaderDataGroup::Material)) {
+_alphaCutoffProp(Shader::createProperty("u_alphaCutoff", ShaderDataGroup::Material)),
+_tilingOffsetProp(Shader::createProperty("u_tilingOffset", ShaderDataGroup::Material)) {
     setBlendMode(BlendMode::Normal);
     shaderData.setData(_alphaCutoffProp, 0.0f);
+    shaderData.setData(_tilingOffsetProp, _tilingOffset);
 }
 
 }

@@ -10,6 +10,7 @@
 #include "material.h"
 #include "enums/render_face.h"
 #include "enums/blend_mode.h"
+#include "vector4.h"
 
 namespace vox {
 class BaseMaterial : public Material {
@@ -32,6 +33,13 @@ public:
     float alphaCutoff();
     
     void setAlphaCutoff(float newValue);
+    
+    /**
+     * Tiling and offset of main textures.
+     */
+    const Vector4F& tilingOffset();
+    
+    void setTilingOffset(const Vector4F &newValue);
     
     /**
      * Set which face for render.
@@ -58,6 +66,9 @@ public:
 private:
     float _alphaCutoff = 0.0;
     ShaderProperty _alphaCutoffProp;
+    
+    Vector4F _tilingOffset = Vector4F(1, 1, 0, 0);
+    ShaderProperty _tilingOffsetProp;
     
     RenderFace _renderFace = RenderFace::Back;
     BlendMode _blendMode = BlendMode::Normal;

@@ -40,14 +40,16 @@ wgpu::TextureView SampledTextureCube::textureView() {
 }
 
 SampledTexture2DViewPtr SampledTextureCube::textureView2D(uint32_t layer) {
-    wgpu::TextureViewDescriptor desc;
-    desc.format = _textureDesc.format;
-    desc.dimension = wgpu::TextureViewDimension::e2D;
-    desc.mipLevelCount = _textureDesc.mipLevelCount;
-    desc.baseArrayLayer = layer;
-    desc.arrayLayerCount = 1;
-    desc.aspect = wgpu::TextureAspect::All;
-    return std::make_shared<SampledTexture2DView>(_device, _nativeTexture.CreateView(&desc));
+    return std::make_shared<SampledTexture2DView>(_device, [layer, this]()->auto {
+        wgpu::TextureViewDescriptor desc;
+        desc.format = _textureDesc.format;
+        desc.dimension = wgpu::TextureViewDimension::e2D;
+        desc.mipLevelCount = _textureDesc.mipLevelCount;
+        desc.baseArrayLayer = layer;
+        desc.arrayLayerCount = 1;
+        desc.aspect = wgpu::TextureAspect::All;
+        return _nativeTexture.CreateView(&desc);
+    });
 }
 
 void SampledTextureCube::setPixelBuffer(std::array<Image*, 6> images) {

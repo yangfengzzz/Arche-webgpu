@@ -42,7 +42,7 @@ private:
     SampledTexture2DPtr _texture{nullptr};
     ShaderProperty _baseTextureProp = Shader::createProperty("u_baseTexture", ShaderDataGroup::Material);
     ShaderProperty _baseSamplerProp = Shader::createProperty("u_baseSampler", ShaderDataGroup::Material);
-
+    
     uint32_t _faceIndex;
     ShaderProperty _faceIndexProp = Shader::createProperty("u_faceIndex", ShaderDataGroup::Material);
 };
@@ -50,7 +50,7 @@ private:
 void IrradianceApp::loadScene(uint32_t width, uint32_t height) {
     auto rootEntity = _scene->createRootEntity();
     Shader::create("cubemapDebugger", std::make_unique<WGSLSkyboxDebuggerVertex>(), std::make_unique<WGSLSkyboxDebuggerFragment>());
-
+    
     auto cameraEntity = rootEntity->createChild();
     cameraEntity->transform->setPosition(0, 0, 10);
     cameraEntity->transform->lookAt(Point3F(0, 0, 0));
@@ -89,7 +89,7 @@ void IrradianceApp::loadScene(uint32_t width, uint32_t height) {
     planes[3]->transform->setPosition(1, -2, 0); // NY
     planes[4]->transform->setPosition(-1, 0, 0); // PZ
     planes[5]->transform->setPosition(3, 0, 0); // NZ
-
+    
     const std::string path = "SkyMap/country/";
     const std::array<std::string, 6> imageNames = {"posx.png", "negx.png", "posy.png", "negy.png", "posz.png", "negz.png"};
     std::array<std::unique_ptr<Image>, 6> images;
@@ -99,7 +99,7 @@ void IrradianceApp::loadScene(uint32_t width, uint32_t height) {
         imagePtr[i] = images[i].get();
     }
     _cubeMap = std::make_shared<SampledTextureCube>(_device, images[0]->extent().width, images[0]->extent().height,
-                                                        images[0]->format());
+                                                    images[0]->format());
     _cubeMap->setPixelBuffer(imagePtr);
     _scene->ambientLight().setSpecularTexture(_cubeMap);
     

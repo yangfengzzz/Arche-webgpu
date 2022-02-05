@@ -9,7 +9,6 @@
 
 #include "base_material.h"
 #include "color.h"
-#include "vector4.h"
 #include "texture/sampled_texture2d.h"
 
 namespace vox {
@@ -33,13 +32,6 @@ public:
     void setBaseTexture(SampledTexture2DPtr newValue);
     
     /**
-     * Tiling and offset of main textures.
-     */
-    const Vector4F& tilingOffset();
-    
-    void setTilingOffset(const Vector4F &newValue);
-    
-    /**
      * Create a unlit material instance.
      */
     explicit UnlitMaterial(wgpu::Device& device);
@@ -51,9 +43,6 @@ private:
     SampledTexture2DPtr _baseTexture = nullptr;
     ShaderProperty _baseTextureProp;
     ShaderProperty _baseSamplerProp;
-    
-    Vector4F _tilingOffset = Vector4F(1, 1, 0, 0);
-    ShaderProperty _tilingOffsetProp;
 };
 
 }

@@ -103,18 +103,8 @@ void PBRBaseMaterial::setOcclusionTextureIntensity(float newValue) {
     shaderData.setData(PBRBaseMaterial::_pbrBaseProp, _pbrBaseData);
 }
 
-const Vector4F& PBRBaseMaterial::tilingOffset() {
-    return _tilingOffset;
-}
-
-void PBRBaseMaterial::setTilingOffset(const Vector4F &newValue) {
-    _tilingOffset = newValue;
-    shaderData.setData(PBRBaseMaterial::_tilingOffsetProp, newValue);
-}
-
 PBRBaseMaterial::PBRBaseMaterial(wgpu::Device& device, Shader *shader) :
 BaseMaterial(device, shader),
-_tilingOffsetProp(Shader::createProperty("u_tilingOffset", ShaderDataGroup::Material)),
 _pbrBaseProp(Shader::createProperty("u_pbrBaseData", ShaderDataGroup::Material)),
 
 _baseTextureProp(Shader::createProperty("u_baseColorTexture", ShaderDataGroup::Material)),
@@ -131,7 +121,6 @@ _occlusionSamplerProp(Shader::createProperty("u_occlusionSampler", ShaderDataGro
     shaderData.enableMacro(NEED_WORLDPOS);
     shaderData.enableMacro(NEED_TILINGOFFSET);
     
-    shaderData.setData(PBRBaseMaterial::_tilingOffsetProp, _tilingOffset);
     shaderData.setData(PBRBaseMaterial::_pbrBaseProp, _pbrBaseData);
 }
 

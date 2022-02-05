@@ -82,23 +82,13 @@ public:
     
     void setOcclusionTextureIntensity(float newValue);
     
-    /**
-     * Tiling and offset of main textures.
-     */
-    const Vector4F& tilingOffset();
-    
-    void setTilingOffset(const Vector4F &newValue);
-    
 protected:
     /**
      * Create a pbr base material instance.
      */
     explicit PBRBaseMaterial(wgpu::Device& device, Shader *shader);
     
-private:
-    Vector4F _tilingOffset = Vector4F(1, 1, 0, 0);
-    ShaderProperty _tilingOffsetProp;
-    
+private:    
     PBRBaseData _pbrBaseData;
     ShaderProperty _pbrBaseProp;
     
