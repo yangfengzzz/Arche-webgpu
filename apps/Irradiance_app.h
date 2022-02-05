@@ -9,11 +9,15 @@
 
 #include "forward_application.h"
 #include "controls/orbit_control.h"
+#include "texture/sampled_texturecube.h"
 
 namespace vox {
 class IrradianceApp : public ForwardApplication {
 public:
     void loadScene(uint32_t width, uint32_t height) override;
+    
+private:
+    SampledTextureCubePtr _cubeMap{nullptr};
 };
 }
 

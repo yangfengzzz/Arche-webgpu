@@ -39,10 +39,10 @@ wgpu::TextureView SampledTextureCube::textureView() {
     return _nativeTexture.CreateView(&desc);
 }
 
-SampledTexture2DViewPtr SampledTextureCube::createView(uint32_t layer) {
+SampledTexture2DViewPtr SampledTextureCube::textureView2D(uint32_t layer) {
     wgpu::TextureViewDescriptor desc;
     desc.format = _textureDesc.format;
-    desc.dimension = wgpu::TextureViewDimension::Cube;
+    desc.dimension = wgpu::TextureViewDimension::e2D;
     desc.mipLevelCount = _textureDesc.mipLevelCount;
     desc.baseArrayLayer = layer;
     desc.arrayLayerCount = 1;

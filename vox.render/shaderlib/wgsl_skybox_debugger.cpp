@@ -60,11 +60,11 @@ void WGSLSkyboxDebuggerFragment::_createShaderSource(size_t hash, const ShaderMa
         encoder.addEntry({{"in", "VertexOut"}}, {"out", "Output"},  [&](std::string &source){
             source += "var uv = in.v_uv;\n";
             source += "if (u_faceIndex == 2 || u_faceIndex == 3) {\n";
-            source += "    uv.y = 1 - uv.y;\n";
+            source += "    uv.y = 1.0 - uv.y;\n";
             source += "}\n";
             
             source += "var baseColor = textureSample(u_baseTexture, u_baseSampler, in.v_uv);\n";
-            source += "out.finalColor = vec4<f32>(baseColor.z, baseColor.y, baseColor.x, 1);\n";
+            source += "out.finalColor = vec4<f32>(baseColor.z, baseColor.y, baseColor.x, 1.0);\n";
         });
         encoder.flush();
     }

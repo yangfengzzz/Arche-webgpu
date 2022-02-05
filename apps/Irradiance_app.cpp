@@ -10,7 +10,6 @@
 #include "material/pbr_material.h"
 #include "camera.h"
 #include "image/stb.h"
-#include "texture/sampled_texturecube.h"
 #include "shaderlib/wgsl_skybox_debugger.h"
 
 namespace vox {
@@ -99,15 +98,15 @@ void IrradianceApp::loadScene(uint32_t width, uint32_t height) {
         images[i] = Image::load(path + imageNames[i]);
         imagePtr[i] = images[i].get();
     }
-    auto cubeMap = std::make_shared<SampledTextureCube>(_device, images[0]->extent().width, images[0]->extent().height,
+    _cubeMap = std::make_shared<SampledTextureCube>(_device, images[0]->extent().width, images[0]->extent().height,
                                                         images[0]->format());
-    cubeMap->setPixelBuffer(imagePtr);
-    _scene->ambientLight().setSpecularTexture(cubeMap);
+    _cubeMap->setPixelBuffer(imagePtr);
+    _scene->ambientLight().setSpecularTexture(_cubeMap);
     
     auto changeMip = [&](uint32_t mipLevel) {
         for (uint32_t i = 0; i < 6; i++) {
             auto material = planeMaterials[i];
-            material->setBaseTexture(cubeMap->createView(i));
+            material->setBaseTexture(_cubeMap->textureView2D(i));
             material->setFaceInex(i);
         }
     };

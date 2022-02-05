@@ -70,7 +70,7 @@ void WGSLIBLFragDefine::operator()(WGSLEncoder& encoder,
     } else {
         function += "var reflectVec = reflect( -geometry.viewDir, geometry.normal );\n";
         function += "var specularMIPLevel = getSpecularMIPLevel(roughness, maxMIPLevel );\n";
-        function += "var envMapColor =  textureSample(u_env_specularTexture, u_env_specularSampler, reflectVec, specularMIPLevel );\n";
+        function += "var envMapColor =  textureSampleLevel(u_env_specularTexture, u_env_specularSampler, reflectVec, specularMIPLevel );\n";
         function += "return envMapColor.rgb * specularIntensity;\n";
     }
     function += "}\n";

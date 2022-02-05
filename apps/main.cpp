@@ -21,7 +21,7 @@ int main(int argc, char * argv[]) {
         
     auto code = engine.initialize();
     if (code == vox::ExitCode::Success) {
-        engine.setApp(std::make_unique<vox::SkyboxApp>());
+        engine.setApp(std::make_unique<vox::IrradianceApp>());
         utils::ScopedAutoreleasePool pool;
         code = engine.mainLoop();
     }
