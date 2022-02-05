@@ -554,8 +554,8 @@ void GLTFLoader::loadMeshes(tinygltf::Model& model) {
                         return;
                 }
             }
-            auto iBuffer = Buffer(_device, indexBuffer.data(), indexBuffer.size() * sizeof(uint32_t), wgpu::BufferUsage::Index);
-            auto vBuffer = Buffer(_device, vertexBuffer.data(), vertexBuffer.size() * sizeof(float), wgpu::BufferUsage::Vertex);
+            auto iBuffer = Buffer(_device, indexBuffer.data(), indexBuffer.size() * sizeof(uint32_t), wgpu::BufferUsage::Index | wgpu::BufferUsage::CopyDst);
+            auto vBuffer = Buffer(_device, vertexBuffer.data(), vertexBuffer.size() * sizeof(float), wgpu::BufferUsage::Vertex | wgpu::BufferUsage::CopyDst);
             bufferMesh->setVertexBufferBinding(vBuffer);
             bufferMesh->setIndexBufferBinding(iBuffer, wgpu::IndexFormat::Uint32);
             bufferMesh->addSubMesh(0, static_cast<uint32_t>(indexBuffer.size()), wgpu::PrimitiveTopology::TriangleList);

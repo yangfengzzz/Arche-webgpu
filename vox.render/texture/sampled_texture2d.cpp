@@ -38,8 +38,8 @@ wgpu::TextureView SampledTexture2D::textureView() {
 }
 
 void SampledTexture2D::setPixelBuffer(const std::vector<uint8_t>& data,
-                                      uint32_t width, uint32_t height, uint32_t offset,
-                                      uint32_t mipLevel, uint32_t x, uint32_t y) {
+                                      uint32_t width, uint32_t height, uint32_t mipLevel,
+                                      uint32_t offset, uint32_t x, uint32_t y) {
     wgpu::BufferDescriptor descriptor;
     descriptor.size = data.size();
     descriptor.usage = wgpu::BufferUsage::CopySrc | wgpu::BufferUsage::CopyDst;
@@ -57,9 +57,12 @@ void SampledTexture2D::setPixelBuffer(const std::vector<uint8_t>& data,
     _device.GetQueue().Submit(1, &copy);
 }
 
-void SampledTexture2D::setPixelBuffer(const Image* image) {
+void SampledTexture2D::setImageSource(const Image* image) {
     for (const auto& mipmap : image->mipmaps()) {
-        setPixelBuffer(image->data(), mipmap.extent.width, mipmap.extent.height, mipmap.level, mipmap.offset);
+        wgpu::ImageCopyTexture imageCopyTexture = _createImageCopyTexture(mipmap.level, {0, 0, 0});
+        wgpu::TextureDataLayout textureLayout = _createTextureDataLayout(0, bytesPerPixel(image->format()) * mipmap.extent.width, wgpu::kCopyStrideUndefined);
+        wgpu::Extent3D copySize = {mipmap.extent.width, mipmap.extent.height, 1};
+        _device.GetQueue().WriteTexture(&imageCopyTexture, image->data().data(), image->data().size(), &textureLayout, &copySize);
     }
 }
 
