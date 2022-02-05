@@ -13,6 +13,7 @@
 #include "physx_dynamic_app.h"
 #include "animation_app.h"
 #include "pbr_app.h"
+#include "skybox_app.h"
 
 int main(int argc, char * argv[]) {
     vox::UnixEngine engine{vox::UnixType::Mac, argc, argv};
