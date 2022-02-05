@@ -40,9 +40,10 @@ class AmbientLight {
 public:
     struct EnvMapLight {
         Vector3F diffuse;
+        uint32_t mipMapLevel;
         float diffuseIntensity;
         float specularIntensity;
-        uint32_t mipMapLevel;
+        float _pad1, _pad2;
     };
     
     AmbientLight(Scene *value);
