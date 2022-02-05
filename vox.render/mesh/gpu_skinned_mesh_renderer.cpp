@@ -40,14 +40,12 @@ void GPUSkinnedMeshRenderer::update(float deltaTime) {
             jointMat = inverseTransform * jointMat;
             std::copy(jointMat.data(), jointMat.data() + 16, jointMatrix.data() + i * 16);
         }
-        memcpy(matrixPalette->contents(), jointMatrix.data(), jointMatrix.size() * sizeof(float));
-        shaderData.setData(_jointMatrixProperty, matrixPalette);
+        shaderData.setData(_jointMatrixProperty, jointMatrix);
     }
 }
 
 void GPUSkinnedMeshRenderer::_initJoints() {
     jointMatrix.resize(_skin->joints.size() * 16);
-    matrixPalette = std::shared_ptr<MTL::Buffer>(scene()->device()->newBufferWithLength(jointMatrix.size() * sizeof(float)));
     shaderData.enableMacro(HAS_SKIN);
 }
 

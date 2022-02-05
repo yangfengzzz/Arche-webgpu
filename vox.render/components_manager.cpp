@@ -10,7 +10,7 @@
 #include "entity.h"
 #include "camera.h"
 #include "animator.h"
-//#include "scene_animator.h"
+#include "scene_animator.h"
 
 namespace vox {
 void ComponentsManager::addOnStartScript(Script *script) {
@@ -213,20 +213,20 @@ void ComponentsManager::callAnimatorUpdate(float deltaTime) {
     }
 }
 
-//void ComponentsManager::addOnUpdateSceneAnimators(SceneAnimator *animator) {
-//    animator->_onUpdateIndex = _onUpdateSceneAnimators.size();
-//    _onUpdateSceneAnimators.push_back(animator);
-//}
-//
-//void ComponentsManager::removeOnUpdateSceneAnimators(SceneAnimator *animator) {
-//    _onUpdateSceneAnimators.erase(_onUpdateSceneAnimators.begin() + animator->_onUpdateIndex);
-//    animator->_onUpdateIndex = -1;
-//}
-//void ComponentsManager::callSceneAnimatorUpdate(float deltaTime) {
-//    const auto &elements = _onUpdateSceneAnimators;
-//    for (size_t i = 0; i < _onUpdateSceneAnimators.size(); i++) {
-//        elements[i]->update(deltaTime);
-//    }
-//}
+void ComponentsManager::addOnUpdateSceneAnimators(SceneAnimator *animator) {
+    animator->_onUpdateIndex = _onUpdateSceneAnimators.size();
+    _onUpdateSceneAnimators.push_back(animator);
+}
+
+void ComponentsManager::removeOnUpdateSceneAnimators(SceneAnimator *animator) {
+    _onUpdateSceneAnimators.erase(_onUpdateSceneAnimators.begin() + animator->_onUpdateIndex);
+    animator->_onUpdateIndex = -1;
+}
+void ComponentsManager::callSceneAnimatorUpdate(float deltaTime) {
+    const auto &elements = _onUpdateSceneAnimators;
+    for (size_t i = 0; i < _onUpdateSceneAnimators.size(); i++) {
+        elements[i]->update(deltaTime);
+    }
+}
 
 }        // namespace vox
