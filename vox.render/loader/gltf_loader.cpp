@@ -72,6 +72,13 @@ inline wgpu::AddressMode find_wrap_mode(int wrap) {
     }
 };
 
+bool loadImageDataFuncEmpty(tinygltf::Image* image, const int imageIndex,
+                            std::string* error, std::string* warning, int req_width, int req_height,
+                            const unsigned char* bytes, int size, void* userData) {
+    // This function will be used for samples that don't require images to be loaded
+    return true;
+}
+
 }        // namespace
 std::unordered_map<std::string, bool> GLTFLoader::_supportedExtensions = {
     {KHR_LIGHTS_PUNCTUAL_EXTENSION, false}};
@@ -101,14 +108,16 @@ _device(device) {
 
 void GLTFLoader::loadFromFile(std::string filename, EntityPtr defaultSceneRoot, float scale) {
     tinygltf::TinyGLTF gltfContext;
+    gltfContext.SetImageLoader(loadImageDataFuncEmpty, nullptr);
+
     std::string gltf_file = vox::fs::path::get(vox::fs::path::Type::Assets) + filename;
     
     std::string error, warning;
     tinygltf::Model gltfModel;
-    bool fileLoaded = gltfContext.LoadASCIIFromFile(&gltfModel, &error, &warning, filename);
+    bool fileLoaded = gltfContext.LoadASCIIFromFile(&gltfModel, &error, &warning, gltf_file);
     
     if (!fileLoaded) {
-        LOG(ERROR) << "Failed to load gltf file " << filename.c_str() << std::endl;
+        LOG(ERROR) << "Failed to load gltf file " << gltf_file.c_str() << std::endl;
         return;
     }
     
