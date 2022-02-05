@@ -42,6 +42,10 @@ void SkyboxSubpass::setTextureCubeMap(SampledTextureCubePtr v) {
 
 //MARK: - Render
 void SkyboxSubpass::prepare() {
+    _depthStencil.format = _renderContext->depthStencilTextureFormat();
+    _depthStencil.depthWriteEnabled = false;
+    _depthStencil.depthCompare = wgpu::CompareFunction::LessEqual;
+    _forwardPipelineDescriptor.depthStencil = &_depthStencil;
     _colorTargetState.format = _renderContext->drawableTextureFormat();
     _fragment.targetCount = 1;
     _fragment.targets = &_colorTargetState;
@@ -89,7 +93,6 @@ void SkyboxSubpass::prepare() {
         _bindGroupDescriptor.entryCount = static_cast<uint32_t>(_bindGroupEntries.size());
         _bindGroupDescriptor.entries = _bindGroupEntries.data();
         _bindGroupDescriptor.layout = _bindGroupLayout;
-        _bindGroup = _pass->resourceCache().requestBindGroup(_bindGroupDescriptor);
     }
     // PipelineLayout
     {
@@ -100,6 +103,8 @@ void SkyboxSubpass::prepare() {
     }
     // RenderPipeline
     {
+        _forwardPipelineDescriptor.primitive.cullMode = wgpu::CullMode::Back;
+        _forwardPipelineDescriptor.primitive.topology = wgpu::PrimitiveTopology::TriangleList;
         _forwardPipelineDescriptor.vertex.bufferCount = static_cast<uint32_t>(_mesh->vertexBufferLayouts().size());
         _forwardPipelineDescriptor.vertex.buffers = _mesh->vertexBufferLayouts().data();
         _renderPipeline = _pass->resourceCache().requestRenderPipeline(_forwardPipelineDescriptor);
@@ -123,7 +128,7 @@ void SkyboxSubpass::draw(wgpu::RenderPassEncoder& passEncoder) {
     
     _bindGroupEntries[1].textureView = _cubeMap->textureView();
     _bindGroupEntries[2].sampler = _cubeMap->sampler();
-    
+    passEncoder.SetBindGroup(0, _pass->resourceCache().requestBindGroup(_bindGroupDescriptor));
     passEncoder.SetPipeline(_renderPipeline);
     
     // Draw Call

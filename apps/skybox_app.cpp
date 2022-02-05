@@ -25,7 +25,8 @@ bool SkyboxApp::prepare(Engine &engine) {
         images[i] = Image::load(path + imageNames[i]);
         imagePtr[i] = images[i].get();
     }
-    auto cubeMap = std::make_shared<SampledTextureCube>(_device, images[0]->extent().width, images[0]->extent().height);
+    auto cubeMap = std::make_shared<SampledTextureCube>(_device, images[0]->extent().width, images[0]->extent().height,
+                                                        images[0]->format());
     cubeMap->setPixelBuffer(imagePtr);
     
     auto skybox = std::make_unique<SkyboxSubpass>(_renderContext.get(), _scene.get(), _mainCamera);

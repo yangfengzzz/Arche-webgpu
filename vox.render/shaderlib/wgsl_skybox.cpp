@@ -49,7 +49,7 @@ void WGSLSkyboxFragment::_createShaderSource(size_t hash, const ShaderMacroColle
         encoder.addInoutType("Output", 0, "finalColor", UniformType::Vec4f32);
 
         encoder.addEntry({{"in", "VertexOut"}}, {"out", "Output"},  [&](std::string &source){
-            source += "var textureColor = textureSample( u_cubeTexture, u_cubeSampler, v_cubeUV );\n";
+            source += "var textureColor = textureSample( u_cubeTexture, u_cubeSampler, in.v_cubeUV );\n";
             source += "out.finalColor = textureColor;\n";
         });
         encoder.flush();

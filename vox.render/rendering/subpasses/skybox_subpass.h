@@ -46,6 +46,7 @@ private:
     WGSLPtr _fragmentSource{nullptr};
     
     wgpu::RenderPipelineDescriptor _forwardPipelineDescriptor;
+    wgpu::DepthStencilState _depthStencil;
     wgpu::FragmentState _fragment;
     wgpu::ColorTargetState _colorTargetState;
     
@@ -55,7 +56,6 @@ private:
     
     std::vector<wgpu::BindGroupEntry> _bindGroupEntries{};
     wgpu::BindGroupDescriptor _bindGroupDescriptor;
-    wgpu::BindGroup _bindGroup;
 
     wgpu::PipelineLayoutDescriptor _pipelineLayoutDescriptor;
     wgpu::PipelineLayout _pipelineLayout;
