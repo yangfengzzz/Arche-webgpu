@@ -10,6 +10,11 @@
 namespace vox {
 SampledTexture::SampledTexture(wgpu::Device& device):
 _device(device) {
+    setMinFilterMode(wgpu::FilterMode::Linear);
+    setMagFilterMode(wgpu::FilterMode::Linear);
+    setMipmapFilter(wgpu::FilterMode::Linear);
+    setAddressModeU(wgpu::AddressMode::Repeat);
+    setAddressModeV(wgpu::AddressMode::Repeat);
 }
 
 float SampledTexture::width() {
@@ -81,12 +86,30 @@ void SampledTexture::setMagFilterMode(wgpu::FilterMode value) {
     _isDirty = true;
 }
 
+wgpu::FilterMode SampledTexture::mipmapFilter() {
+    return _samplerDesc.mipmapFilter;
+}
+
+void SampledTexture::setMipmapFilter(wgpu::FilterMode value) {
+    _samplerDesc.mipmapFilter = value;
+    _isDirty = true;
+}
+
 uint16_t SampledTexture::anisoLevel() {
     return _samplerDesc.maxAnisotropy;
 }
 
 void SampledTexture::setAnisoLevel(uint16_t value) {
     _samplerDesc.maxAnisotropy = value;
+    _isDirty = true;
+}
+
+wgpu::CompareFunction SampledTexture::compareFunction() {
+    return _samplerDesc.compare;
+}
+
+void SampledTexture::setCompareFunction(wgpu::CompareFunction function) {
+    _samplerDesc.compare = function;
     _isDirty = true;
 }
 

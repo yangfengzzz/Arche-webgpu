@@ -63,8 +63,8 @@ void WGSLSkyboxDebuggerFragment::_createShaderSource(size_t hash, const ShaderMa
             source += "    uv.y = 1.0 - uv.y;\n";
             source += "}\n";
             
-            source += "var baseColor = textureSample(u_baseTexture, u_baseSampler, in.v_uv);\n";
-            source += "out.finalColor = vec4<f32>(baseColor.z, baseColor.y, baseColor.x, 1.0);\n";
+            source += "var baseColor = textureSample(u_baseTexture, u_baseSampler, uv);\n";
+            source += "out.finalColor = vec4<f32>(baseColor.rgb, 1.0);\n";
         });
         encoder.flush();
     }

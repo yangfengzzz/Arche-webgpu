@@ -128,9 +128,7 @@ _emissiveSamplerProp(Shader::createProperty("u_emissiveSampler", ShaderDataGroup
 
 _normalTextureProp(Shader::createProperty("u_normalTexture", ShaderDataGroup::Material)),
 _normalSamplerProp(Shader::createProperty("u_normalSampler", ShaderDataGroup::Material)){
-    shaderData.enableMacro(NEED_WORLDPOS);
-    shaderData.enableMacro(NEED_TILINGOFFSET);
-    
+    shaderData.enableMacro(NEED_WORLDPOS);    
     shaderData.setData(_blinnPhongProp, _blinnPhongData);
 }
 

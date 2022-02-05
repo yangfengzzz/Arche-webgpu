@@ -38,7 +38,6 @@ _baseColorProp(Shader::createProperty("u_baseColor", ShaderDataGroup::Material))
 _baseTextureProp(Shader::createProperty("u_baseTexture", ShaderDataGroup::Material)),
 _baseSamplerProp(Shader::createProperty("u_baseSampler", ShaderDataGroup::Material)) {
     shaderData.enableMacro(OMIT_NORMAL);
-    shaderData.enableMacro(NEED_TILINGOFFSET);
     
     shaderData.setData(_baseColorProp, _baseColor);
 }

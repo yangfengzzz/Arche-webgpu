@@ -73,11 +73,22 @@ public:
     void setMagFilterMode(wgpu::FilterMode value);
     
     /**
+     * Filter mode for texture.
+     */
+    wgpu::FilterMode mipmapFilter();
+    
+    void setMipmapFilter(wgpu::FilterMode value);
+    
+    /**
      * Anisotropic level for texture.
      */
     uint16_t anisoLevel();
     
     void setAnisoLevel(uint16_t value);
+    
+    wgpu::CompareFunction compareFunction();
+    
+    void setCompareFunction(wgpu::CompareFunction function);
     
 protected:
     uint32_t _getMipmapCount(bool mipmap);

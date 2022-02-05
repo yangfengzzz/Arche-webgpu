@@ -21,19 +21,10 @@ SampledTexture(device) {
     _textureDesc.usage = usage;
     _textureDesc.mipLevelCount = _getMipmapCount(mipmap);
     _nativeTexture = device.CreateTexture(&_textureDesc);
-    
-    setMinFilterMode(wgpu::FilterMode::Linear);
-    setMagFilterMode(wgpu::FilterMode::Linear);
-    setAddressModeU(wgpu::AddressMode::Repeat);
-    setAddressModeV(wgpu::AddressMode::Repeat);
 }
 
 SampledTexture2D::SampledTexture2D(wgpu::Device& device):
 SampledTexture(device) {
-    setMinFilterMode(wgpu::FilterMode::Linear);
-    setMagFilterMode(wgpu::FilterMode::Linear);
-    setAddressModeU(wgpu::AddressMode::Repeat);
-    setAddressModeV(wgpu::AddressMode::Repeat);
 }
 
 wgpu::TextureView SampledTexture2D::textureView() {

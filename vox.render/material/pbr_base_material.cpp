@@ -118,9 +118,7 @@ _emissiveSamplerProp(Shader::createProperty("u_emissiveSampler", ShaderDataGroup
 
 _occlusionTextureProp(Shader::createProperty("u_occlusionTexture", ShaderDataGroup::Material)),
 _occlusionSamplerProp(Shader::createProperty("u_occlusionSampler", ShaderDataGroup::Material)) {
-    shaderData.enableMacro(NEED_WORLDPOS);
-    shaderData.enableMacro(NEED_TILINGOFFSET);
-    
+    shaderData.enableMacro(NEED_WORLDPOS);    
     shaderData.setData(PBRBaseMaterial::_pbrBaseProp, _pbrBaseData);
 }
 

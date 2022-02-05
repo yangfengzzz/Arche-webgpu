@@ -106,7 +106,7 @@ void IrradianceApp::loadScene(uint32_t width, uint32_t height) {
     auto changeMip = [&](uint32_t mipLevel) {
         for (uint32_t i = 0; i < 6; i++) {
             auto material = planeMaterials[i];
-            material->setBaseTexture(_cubeMap->textureView2D(i));
+            material->setBaseTexture(_cubeMap->textureView2D(mipLevel, i));
             material->setFaceInex(i);
         }
     };

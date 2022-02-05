@@ -30,7 +30,7 @@ public:
     
     wgpu::TextureView textureView() override;
     
-    SampledTexture2DViewPtr textureView2D(uint32_t layer);
+    SampledTexture2DViewPtr textureView2D(uint32_t mipmapLevel, uint32_t layer);
     
     void setPixelBuffer(std::array<Image*, 6> images);
 };

@@ -113,6 +113,7 @@ _tilingOffsetProp(Shader::createProperty("u_tilingOffset", ShaderDataGroup::Mate
     setBlendMode(BlendMode::Normal);
     shaderData.setData(_alphaCutoffProp, 0.0f);
     shaderData.setData(_tilingOffsetProp, _tilingOffset);
+    shaderData.enableMacro(NEED_TILINGOFFSET);
 }
 
 }

@@ -22,11 +22,6 @@ SampledTexture(device) {
     _textureDesc.usage = usage;
     _textureDesc.mipLevelCount = _getMipmapCount(mipmap);
     _nativeTexture = device.CreateTexture(&_textureDesc);
-    
-    setMinFilterMode(wgpu::FilterMode::Linear);
-    setMagFilterMode(wgpu::FilterMode::Linear);
-    setAddressModeU(wgpu::AddressMode::Repeat);
-    setAddressModeV(wgpu::AddressMode::Repeat);
 }
 
 wgpu::TextureView SampledTextureCube::textureView() {
@@ -39,12 +34,13 @@ wgpu::TextureView SampledTextureCube::textureView() {
     return _nativeTexture.CreateView(&desc);
 }
 
-SampledTexture2DViewPtr SampledTextureCube::textureView2D(uint32_t layer) {
-    return std::make_shared<SampledTexture2DView>(_device, [layer, this]()->auto {
+SampledTexture2DViewPtr SampledTextureCube::textureView2D(uint32_t mipmapLevel, uint32_t layer) {
+    return std::make_shared<SampledTexture2DView>(_device, [mipmapLevel, layer, this]()->auto {
         wgpu::TextureViewDescriptor desc;
         desc.format = _textureDesc.format;
         desc.dimension = wgpu::TextureViewDimension::e2D;
-        desc.mipLevelCount = _textureDesc.mipLevelCount;
+        desc.baseMipLevel = mipmapLevel;
+        desc.mipLevelCount = 1;
         desc.baseArrayLayer = layer;
         desc.arrayLayerCount = 1;
         desc.aspect = wgpu::TextureAspect::All;
