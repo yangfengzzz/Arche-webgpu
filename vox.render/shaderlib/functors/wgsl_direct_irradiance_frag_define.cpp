@@ -48,7 +48,7 @@ void WGSLDirectIrradianceFragDefine::operator()(WGSLEncoder& encoder,
         encoder.addFunction(function);
     }
     if (macros.contains(POINT_LIGHT_COUNT)) {
-        function = "void addPointDirectLightRadiance(pointLight:PointLight, geometry:GeometricContext, material:PhysicalMaterial, reflectedLight:ptr<function, ReflectedLight>) {\n";
+        function = "fn addPointDirectLightRadiance(pointLight:PointLight, geometry:GeometricContext, material:PhysicalMaterial, reflectedLight:ptr<function, ReflectedLight>) {\n";
         function += "    var lVector = pointLight.position - geometry.position;\n";
         function += "    var direction = normalize( lVector );\n";
         function += "\n";

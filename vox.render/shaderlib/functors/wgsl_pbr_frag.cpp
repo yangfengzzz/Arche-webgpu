@@ -15,12 +15,31 @@ _output(output) {
 }
 
 void WGSLPbrFrag::operator()(std::string& source, const ShaderMacroCollection& macros) {
-    source += fmt::format("var geometry = GeometricContext({}.v_pos, getNormal({}), normalize(u_cameraData.u_cameraPos - {}.v_pos));\n", _input, _input, _input);
-    if (_is_metallic_workflow) {
-        source += "var material = getPhysicalMaterial(u_pbrBaseData.baseColor, u_pbrData.metallic, u_pbrData.roughness, u_alphaCutoff);\n";
-    } else {
-        source += "var material = getPhysicalMaterial(u_pbrBaseData.baseColor, u_pbrSpecularData.specularColor, u_pbrSpecularData.glossiness, u_alphaCutoff);\n";
+    source += fmt::format("var geometry = GeometricContext({}.v_pos, getNormal({}, \n", _input, _input);
+    if (macros.contains(HAS_NORMAL_TEXTURE)) {
+        source += "u_normalTexture, u_normalSampler, u_pbrBaseData.normalTextureIntensity";
     }
+    source += fmt::format("), normalize(u_cameraData.u_cameraPos - {}.v_pos));\n", _input);
+    
+    if (_is_metallic_workflow) {
+        source += "var material = getPhysicalMaterial(u_pbrBaseData.baseColor, u_pbrData.metallic, u_pbrData.roughness, u_alphaCutoff, \n";
+    } else {
+        source += "var material = getPhysicalMaterial(u_pbrBaseData.baseColor, u_pbrSpecularData.specularColor, u_pbrSpecularData.glossiness, u_alphaCutoff, \n";
+    }
+    if (macros.contains(HAS_BASE_COLORMAP)) {
+        source += fmt::format("{}.v_uv, u_baseColorTexture, u_baseColorSampler,\n", _input);
+    }
+    if (macros.contains(HAS_VERTEXCOLOR)) {
+        source += fmt::format("{}.v_color,\n", _input);
+    }
+    if (macros.contains(HAS_METALROUGHNESSMAP) && _is_metallic_workflow) {
+        source += "u_metallicRoughnessTexture, u_metallicRoughnessSampler\n";
+    }
+    if (macros.contains(HAS_SPECULARGLOSSINESSMAP) && !_is_metallic_workflow) {
+        source += "u_specularGlossinessTexture, u_specularGlossinessSampler,\n";
+    }
+    source += ");\n";
+    
     source += "var reflectedLight = ReflectedLight( vec3<f32>(0.0, 0.0, 0.0), vec3<f32>(0.0, 0.0, 0.0), vec3<f32>(0.0, 0.0, 0.0), vec3<f32>(0.0, 0.0, 0.0) );\n";
     source += "var dotNV = saturate( dot( geometry.normal, geometry.viewDir ) );\n";
     

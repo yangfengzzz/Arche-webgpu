@@ -51,44 +51,61 @@ void WGSLPbrHelper::operator()(WGSLEncoder& encoder,
         getPhysicalMaterial += "     specularColor: vec3<f32>,\n";
         getPhysicalMaterial += "     glossiness: f32,\n";
     }
-    getPhysicalMaterial += "     alphaCutoff: f32\n";
-    getPhysicalMaterial += "    )-> PhysicalMaterial {\n";
-    getPhysicalMaterial += "        var material: PhysicalMaterial;\n";
+    getPhysicalMaterial += "     alphaCutoff: f32,\n";
     if (macros.contains(HAS_BASE_COLORMAP)) {
-        getPhysicalMaterial += fmt::format("var baseColor = textureSample(u_baseColorTexture, u_baseColorSampler, {}.v_uv);\n", _paramName);
-        getPhysicalMaterial += "diffuseColor = diffuseColor * baseColor;\n";
+        getPhysicalMaterial += "     v_uv: vec2<f32>,\n";
+        getPhysicalMaterial += "     u_baseColorTexture: texture_2d<f32>,\n";
+        getPhysicalMaterial += "     u_baseColorSampler: sampler,\n";
     }
     if (macros.contains(HAS_VERTEXCOLOR)) {
-        getPhysicalMaterial += "diffuseColor = diffuseColor * v_color;\n";
+        getPhysicalMaterial += "     v_color: vec4<f32>,\n";
+    }
+    if (macros.contains(HAS_METALROUGHNESSMAP) && _is_metallic_workflow) {
+        getPhysicalMaterial += "     u_metallicRoughnessTexture: texture_2d<f32>,\n";
+        getPhysicalMaterial += "     u_metallicRoughnessSampler: sampler,\n";
+    }
+    if (macros.contains(HAS_SPECULARGLOSSINESSMAP) && !_is_metallic_workflow) {
+        getPhysicalMaterial += "     u_specularGlossinessTexture: texture_2d<f32>,\n";
+        getPhysicalMaterial += "     u_specularGlossinessSampler: sampler,\n";
+    }
+    getPhysicalMaterial += "    )-> PhysicalMaterial {\n";
+    getPhysicalMaterial += "        var material: PhysicalMaterial;\n";
+    getPhysicalMaterial += "        var diffuseColorUpdate = diffuseColor;\n";
+    if (macros.contains(HAS_BASE_COLORMAP)) {
+        getPhysicalMaterial += "var baseColor = textureSample(u_baseColorTexture, u_baseColorSampler, v_uv);\n";
+        getPhysicalMaterial += "diffuseColorUpdate = diffuseColorUpdate * baseColor;\n";
+    }
+    if (macros.contains(HAS_VERTEXCOLOR)) {
+        getPhysicalMaterial += "diffuseColorUpdate = diffuseColorUpdate * v_color;\n";
     }
     if (macros.contains(NEED_ALPHA_CUTOFF)) {
-        getPhysicalMaterial += "if( diffuseColor.a < alphaCutoff ) {\n";
+        getPhysicalMaterial += "if( diffuseColorUpdate.a < alphaCutoff ) {\n";
         getPhysicalMaterial += "    discard;\n";
         getPhysicalMaterial += "}\n";
     }
     if (macros.contains(HAS_METALROUGHNESSMAP) && _is_metallic_workflow) {
-        getPhysicalMaterial += fmt::format("var metalRoughMapColor = textureSample(u_metallicRoughnessTexture, u_metallicRoughnessSampler, {}.v_uv );\n", _paramName);
+        getPhysicalMaterial += "var metalRoughMapColor = textureSample(u_metallicRoughnessTexture, u_metallicRoughnessSampler, v_uv );\n";
         getPhysicalMaterial += "roughness = roughness * metalRoughMapColor.g;\n";
         getPhysicalMaterial += "metal = metal * metalRoughMapColor.b;\n";
     }
     if (macros.contains(HAS_SPECULARGLOSSINESSMAP) && !_is_metallic_workflow) {
-        getPhysicalMaterial += fmt::format("var specularGlossinessColor = textureSample(u_specularGlossinessTexture, u_specularGlossinessSampler, {}.v_uv );\n", _paramName);
+        getPhysicalMaterial += "var specularGlossinessColor = textureSample(u_specularGlossinessTexture, u_specularGlossinessSampler, v_uv );\n";
         getPhysicalMaterial += "specularColor = specularColor * specularGlossinessColor.rgb;\n";
         getPhysicalMaterial += "glossiness = glossiness * specularGlossinessColor.a;\n";
     }
     
     if (_is_metallic_workflow) {
-        getPhysicalMaterial += "material.diffuseColor = diffuseColor.rgb * ( 1.0 - metal );\n";
-        getPhysicalMaterial += "material.specularColor = mix( vec3<f32>( 0.04), diffuseColor.rgb, metal );\n";
+        getPhysicalMaterial += "material.diffuseColor = diffuseColorUpdate.rgb * ( 1.0 - metal );\n";
+        getPhysicalMaterial += "material.specularColor = mix( vec3<f32>( 0.04), diffuseColorUpdate.rgb, metal );\n";
         getPhysicalMaterial += "material.roughness = clamp( roughness, 0.04, 1.0 );\n";
     } else {
         getPhysicalMaterial += "var specularStrength = max( max( specularColor.r, specularColor.g ), specularColor.b );\n";
-        getPhysicalMaterial += "material.diffuseColor = diffuseColor.rgb * ( 1.0 - specularStrength );\n";
+        getPhysicalMaterial += "material.diffuseColor = diffuseColorUpdate.rgb * ( 1.0 - specularStrength );\n";
         getPhysicalMaterial += "material.specularColor = specularColor;\n";
         getPhysicalMaterial += "material.roughness = clamp( 1.0 - glossiness, 0.04, 1.0 );\n";
     }
     
-    getPhysicalMaterial += "material.opacity = diffuseColor.a;\n";
+    getPhysicalMaterial += "material.opacity = diffuseColorUpdate.a;\n";
     getPhysicalMaterial += "return material;\n";
     getPhysicalMaterial += "}\n";
     encoder.addFunction(getPhysicalMaterial);

@@ -18,7 +18,11 @@ void WGSLNormalShare::operator()(WGSLEncoder& encoder,
     if (macros.contains(HAS_NORMAL)) {
         if (macros.contains(HAS_TANGENT) && macros.contains(HAS_NORMAL_TEXTURE)) {
             encoder.addInoutType(_outputStructName, WGSLEncoder::getCounterNumber(counterIndex),
-                                 "v_TBN", UniformType::Mat3x3f32);
+                                 "v_normalW", UniformType::Vec3f32);
+            encoder.addInoutType(_outputStructName, WGSLEncoder::getCounterNumber(counterIndex),
+                                 "v_tangentW", UniformType::Vec3f32);
+            encoder.addInoutType(_outputStructName, WGSLEncoder::getCounterNumber(counterIndex),
+                                 "v_bitangentW", UniformType::Vec3f32);
         } else {
             encoder.addInoutType(_outputStructName, WGSLEncoder::getCounterNumber(counterIndex),
                                  "v_normal", UniformType::Vec3f32);

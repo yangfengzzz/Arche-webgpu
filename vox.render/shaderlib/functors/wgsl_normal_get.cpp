@@ -24,7 +24,14 @@ const std::string& WGSLNormalGet::paramName() const {
 
 void WGSLNormalGet::operator()(WGSLEncoder& encoder,
                                const ShaderMacroCollection& macros, size_t counterIndex) {
-    std::string source = fmt::format("fn getNormal({}:{})->vec3<f32> {{\n", _paramName, _outputStructName);
+    std::string source = fmt::format("fn getNormal({}:{}, \n", _paramName, _outputStructName);
+    if (macros.contains(HAS_NORMAL_TEXTURE)) {
+        source += "     u_normalTexture: texture_2d<f32>,\n";
+        source += "     u_normalSampler: sampler,\n";
+        source += "     normalIntensity: f32,\n";
+    }
+    source += ")->vec3<f32> {\n";
+
     if (macros.contains(HAS_NORMAL_TEXTURE)) {
         if (!macros.contains(HAS_TANGENT)) {
             source += fmt::format("var pos_dx = dfdx({}.v_pos);\n", _paramName);
@@ -41,10 +48,10 @@ void WGSLNormalGet::operator()(WGSLEncoder& encoder,
             source += "var b = normalize(cross(ng, t));\n";
             source += "var tbn = mat3x3<f32>(t, b, ng);\n";
         } else {
-            source += fmt::format("var tbn = {}.v_TBN;\n", _paramName);
+            source += fmt::format("var tbn =  mat3x3<f32>({}.v_tangentW, {}.v_bitangentW, {}.v_normalW );\n", _paramName, _paramName, _paramName);
         }
         source += fmt::format("var n = textureSample(u_normalTexture, u_normalSampler, {}.v_uv ).rgb;\n", _paramName);
-        source += "n = normalize(tbn * ((2.0 * n - 1.0) * vec3<f32>(u_blinnPhongData.normalIntensity, u_blinnPhongData.normalIntensity, 1.0)));\n";
+        source += "n = normalize(tbn * ((2.0 * n - 1.0) * vec3<f32>(normalIntensity, normalIntensity, 1.0)));\n";
     } else {
         if (macros.contains(HAS_NORMAL)) {
             source += fmt::format("var n = normalize({}.v_normal);\n", _paramName);

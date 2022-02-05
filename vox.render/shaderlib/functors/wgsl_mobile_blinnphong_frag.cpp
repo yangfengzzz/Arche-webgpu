@@ -14,7 +14,12 @@ _output(output) {
 }
 
 void WGSLMobileBlinnphongFrag::operator()(std::string& source, const ShaderMacroCollection& macros) {
-    source += fmt::format("var N = getNormal({});\n", _input);
+    source += fmt::format("var N = getNormal({}", _input);
+    if (macros.contains(HAS_NORMAL_TEXTURE)) {
+        source += "u_normalTexture, u_normalSampler, u_blinnPhongData.normalIntensity";
+    }
+    source += ")\n";
+
     source += "var lightDiffuse = vec3<f32>( 0.0, 0.0, 0.0 );\n";
     source += "var lightSpecular = vec3<f32>( 0.0, 0.0, 0.0 );\n";
     
