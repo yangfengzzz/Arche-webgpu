@@ -350,6 +350,8 @@
 		047BF17127AD51B2003F3599 /* pbr_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF16F27AD51B2003F3599 /* pbr_app.cpp */; };
 		047BF17427AD6E33003F3599 /* sampled_texturecube.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF17227AD6E33003F3599 /* sampled_texturecube.cpp */; };
 		047BF17527AD6E33003F3599 /* sampled_texturecube.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF17327AD6E33003F3599 /* sampled_texturecube.h */; };
+		047BF17827AE0623003F3599 /* sampled_texture2d_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF17627AE0623003F3599 /* sampled_texture2d_view.cpp */; };
+		047BF17927AE0623003F3599 /* sampled_texture2d_view.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF17727AE0623003F3599 /* sampled_texture2d_view.h */; };
 		0495463B279F89E500783C84 /* shader_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954634279F89E400783C84 /* shader_data.h */; };
 		0495463C279F89E500783C84 /* shader_property.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954635279F89E400783C84 /* shader_property.h */; };
 		0495463D279F89E500783C84 /* shader_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954636279F89E400783C84 /* shader_data.cpp */; };
@@ -860,6 +862,8 @@
 		047BF17027AD51B2003F3599 /* pbr_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pbr_app.h; sourceTree = "<group>"; };
 		047BF17227AD6E33003F3599 /* sampled_texturecube.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sampled_texturecube.cpp; sourceTree = "<group>"; };
 		047BF17327AD6E33003F3599 /* sampled_texturecube.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sampled_texturecube.h; sourceTree = "<group>"; };
+		047BF17627AE0623003F3599 /* sampled_texture2d_view.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sampled_texture2d_view.cpp; sourceTree = "<group>"; };
+		047BF17727AE0623003F3599 /* sampled_texture2d_view.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sampled_texture2d_view.h; sourceTree = "<group>"; };
 		04954634279F89E400783C84 /* shader_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_data.h; sourceTree = "<group>"; };
 		04954635279F89E400783C84 /* shader_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_property.h; sourceTree = "<group>"; };
 		04954636279F89E400783C84 /* shader_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader_data.cpp; sourceTree = "<group>"; };
@@ -1713,6 +1717,8 @@
 				0495472227A23CE100783C84 /* sampled_texture.cpp */,
 				0495472727A2405400783C84 /* sampled_texture2d.h */,
 				0495472627A2405400783C84 /* sampled_texture2d.cpp */,
+				047BF17727AE0623003F3599 /* sampled_texture2d_view.h */,
+				047BF17627AE0623003F3599 /* sampled_texture2d_view.cpp */,
 				047BF17327AD6E33003F3599 /* sampled_texturecube.h */,
 				047BF17227AD6E33003F3599 /* sampled_texturecube.cpp */,
 			);
@@ -2026,6 +2032,7 @@
 				047BEFD727A4BFD9003F3599 /* wgsl_common_vert.h in Headers */,
 				0495474327A2640900783C84 /* index_buffer_binding.h in Headers */,
 				04128460279ED4B10071BD86 /* imgui_internal.h in Headers */,
+				047BF17927AE0623003F3599 /* sampled_texture2d_view.h in Headers */,
 				0495468B279F8CD600783C84 /* std_helpers.h in Headers */,
 				047BF14927ACF275003F3599 /* animator.h in Headers */,
 				047BEFF727A552B9003F3599 /* wgsl_skinning_vert.h in Headers */,
@@ -2274,6 +2281,7 @@
 				047BF0A327ABDD09003F3599 /* wgsl_light_frag_define.cpp in Sources */,
 				0495478627A403C700783C84 /* wgsl.cpp in Sources */,
 				0495472827A2405400783C84 /* sampled_texture2d.cpp in Sources */,
+				047BF17827AE0623003F3599 /* sampled_texture2d_view.cpp in Sources */,
 				047BF00327A562F4003F3599 /* wgsl_common.cpp in Sources */,
 				047BF0CE27AC0D59003F3599 /* ambient_light.cpp in Sources */,
 				047BF08727ABB8F7003F3599 /* wgsl_worldpos_share.cpp in Sources */,

@@ -37,6 +37,9 @@ public:
                         uint32_t x = 0, uint32_t y = 0);
     
     void setPixelBuffer(const Image* data);
+    
+protected:
+    SampledTexture2D(wgpu::Device& device);
 };
 using SampledTexture2DPtr = std::shared_ptr<SampledTexture2D>;
 

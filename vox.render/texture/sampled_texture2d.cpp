@@ -28,6 +28,14 @@ SampledTexture(device) {
     setAddressModeV(wgpu::AddressMode::Repeat);
 }
 
+SampledTexture2D::SampledTexture2D(wgpu::Device& device):
+SampledTexture(device) {
+    setMinFilterMode(wgpu::FilterMode::Linear);
+    setMagFilterMode(wgpu::FilterMode::Linear);
+    setAddressModeU(wgpu::AddressMode::Repeat);
+    setAddressModeV(wgpu::AddressMode::Repeat);
+}
+
 wgpu::TextureView SampledTexture2D::textureView() {
     wgpu::TextureViewDescriptor desc;
     desc.format = _textureDesc.format;
