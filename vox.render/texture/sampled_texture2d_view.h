@@ -12,12 +12,12 @@
 namespace vox {
 class SampledTexture2DView final : public SampledTexture2D {
 public:
-    SampledTexture2DView(wgpu::Device& device, wgpu::TextureView& view);
+    SampledTexture2DView(wgpu::Device& device, wgpu::TextureView&& view);
     
     wgpu::TextureView textureView() override;
     
 private:
-    wgpu::TextureView& _view;
+    wgpu::TextureView _view;
 };
 using SampledTexture2DViewPtr = std::shared_ptr<SampledTexture2DView>;
 

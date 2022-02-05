@@ -39,6 +39,17 @@ wgpu::TextureView SampledTextureCube::textureView() {
     return _nativeTexture.CreateView(&desc);
 }
 
+SampledTexture2DViewPtr SampledTextureCube::createView(uint32_t layer) {
+    wgpu::TextureViewDescriptor desc;
+    desc.format = _textureDesc.format;
+    desc.dimension = wgpu::TextureViewDimension::Cube;
+    desc.mipLevelCount = _textureDesc.mipLevelCount;
+    desc.baseArrayLayer = layer;
+    desc.arrayLayerCount = 1;
+    desc.aspect = wgpu::TextureAspect::All;
+    return std::make_shared<SampledTexture2DView>(_device, _nativeTexture.CreateView(&desc));
+}
+
 void SampledTextureCube::setPixelBuffer(std::array<Image*, 6> images) {
     for (uint32_t i = 0; i < 6; i++) {
         const Image* image = images[i];

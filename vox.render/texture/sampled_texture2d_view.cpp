@@ -7,7 +7,7 @@
 #include "sampled_texture2d_view.h"
 
 namespace vox {
-SampledTexture2DView::SampledTexture2DView(wgpu::Device& device, wgpu::TextureView& view):
+SampledTexture2DView::SampledTexture2DView(wgpu::Device& device, wgpu::TextureView&& view):
 SampledTexture2D(device),
 _view(view) {
     

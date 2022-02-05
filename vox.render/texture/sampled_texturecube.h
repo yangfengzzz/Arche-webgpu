@@ -7,7 +7,7 @@
 #ifndef sampled_texturecube_hpp
 #define sampled_texturecube_hpp
 
-#include "sampled_texture.h"
+#include "sampled_texture2d_view.h"
 #include "image/image.h"
 
 namespace vox {
@@ -29,6 +29,8 @@ public:
                        bool mipmap = true);
     
     wgpu::TextureView textureView() override;
+    
+    SampledTexture2DViewPtr createView(uint32_t layer);
     
     void setPixelBuffer(std::array<Image*, 6> images);
 };
