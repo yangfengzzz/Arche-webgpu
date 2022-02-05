@@ -38,7 +38,7 @@ wgpu::TextureView SampledTexture2D::textureView() {
     return _nativeTexture.CreateView(&desc);
 }
 
-void SampledTexture2D::setPixelBuffer(std::vector<uint8_t>& data,
+void SampledTexture2D::setPixelBuffer(const std::vector<uint8_t>& data,
                                       uint32_t width, uint32_t height, uint32_t offset,
                                       uint32_t mipLevel, uint32_t x, uint32_t y) {
     wgpu::BufferDescriptor descriptor;
@@ -56,6 +56,12 @@ void SampledTexture2D::setPixelBuffer(std::vector<uint8_t>& data,
     
     wgpu::CommandBuffer copy = encoder.Finish();
     _device.GetQueue().Submit(1, &copy);
+}
+
+void SampledTexture2D::setPixelBuffer(const Image* image) {
+    for (const auto& mipmap : image->mipmaps()) {
+        setPixelBuffer(image->data(), mipmap.extent.width, mipmap.extent.height, mipmap.level, mipmap.offset);
+    }
 }
 
 

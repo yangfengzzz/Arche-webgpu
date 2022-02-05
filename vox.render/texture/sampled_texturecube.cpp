@@ -5,6 +5,7 @@
 //  property of any third parties.
 
 #include "sampled_texturecube.h"
+#include <array>
 
 namespace vox {
 SampledTextureCube::SampledTextureCube(wgpu::Device& device,
@@ -38,8 +39,30 @@ wgpu::TextureView SampledTextureCube::textureView() {
     return _nativeTexture.CreateView(&desc);
 }
 
-void SampledTextureCube::setPixelBuffer(std::vector<Image*> images) {
-    
+void SampledTextureCube::setPixelBuffer(std::array<Image*, 6> images) {
+    for (uint32_t i = 0; i < 6; i++) {
+        const Image* image = images[i];
+        const std::vector<uint8_t> &data = image->data();
+        
+        wgpu::BufferDescriptor descriptor;
+        descriptor.size = data.size();
+        descriptor.usage = wgpu::BufferUsage::CopySrc | wgpu::BufferUsage::CopyDst;
+        wgpu::Buffer stagingBuffer = _device.CreateBuffer(&descriptor);
+        _device.GetQueue().WriteBuffer(stagingBuffer, 0, data.data(), data.size());
+        
+        auto width = image->mipmaps().at(0).extent.width;
+        auto height = image->mipmaps().at(0).extent.height;
+        auto offset = image->mipmaps().at(0).offset;
+        wgpu::ImageCopyBuffer imageCopyBuffer = _createImageCopyBuffer(stagingBuffer, offset, bytesPerPixel(_textureDesc.format) * width);
+        wgpu::ImageCopyTexture imageCopyTexture = _createImageCopyTexture(0, {0, 0, i});
+        wgpu::Extent3D copySize = {width, height, 1};
+        
+        wgpu::CommandEncoder encoder = _device.CreateCommandEncoder();
+        encoder.CopyBufferToTexture(&imageCopyBuffer, &imageCopyTexture, &copySize);
+        
+        wgpu::CommandBuffer copy = encoder.Finish();
+        _device.GetQueue().Submit(1, &copy);
+    }
 }
 
 }

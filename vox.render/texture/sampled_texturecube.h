@@ -30,7 +30,7 @@ public:
     
     wgpu::TextureView textureView() override;
     
-    void setPixelBuffer(std::vector<Image*> images);
+    void setPixelBuffer(std::array<Image*, 6> images);
 };
 using SampledTextureCubePtr = std::shared_ptr<SampledTextureCube>;
 
