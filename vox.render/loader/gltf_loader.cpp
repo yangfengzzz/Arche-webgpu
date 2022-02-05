@@ -341,11 +341,11 @@ void GLTFLoader::loadMeshes(tinygltf::Model& model) {
                 continue;
             }
             
+            auto bufferMesh = std::make_shared<BufferMesh>();
             auto bound = BoundingBox3F();
             std::vector<float> vertexBuffer{};
             std::vector<uint32_t> indexBuffer{};
             std::vector<wgpu::VertexAttribute> vertexAttributes{};
-            wgpu::VertexBufferLayout vertexBufferLayout;
             // Vertices
             {
                 const float *bufferPos = nullptr;
@@ -475,9 +475,7 @@ void GLTFLoader::loadMeshes(tinygltf::Model& model) {
                     offset += sizeof(float) * 4;
                     elementCount += 4;
                 }
-                vertexBufferLayout.attributes = vertexAttributes.data();
-                vertexBufferLayout.attributeCount = static_cast<uint32_t>(vertexAttributes.size());
-                vertexBufferLayout.arrayStride = offset;
+                bufferMesh->setVertexLayouts(vertexAttributes, offset);
                 
                 vertexBuffer.reserve(posAccessor.count * elementCount);
                 for (size_t v = 0; v < posAccessor.count; v++) {
@@ -547,12 +545,10 @@ void GLTFLoader::loadMeshes(tinygltf::Model& model) {
                         return;
                 }
             }
-            auto bufferMesh = std::make_shared<BufferMesh>();
             auto iBuffer = Buffer(_device, indexBuffer.data(), indexBuffer.size() * sizeof(uint32_t), wgpu::BufferUsage::Index);
             auto vBuffer = Buffer(_device, vertexBuffer.data(), vertexBuffer.size() * sizeof(float), wgpu::BufferUsage::Vertex);
             bufferMesh->setVertexBufferBinding(vBuffer);
             bufferMesh->setIndexBufferBinding(iBuffer, wgpu::IndexFormat::Uint32);
-            bufferMesh->setVertexLayouts({vertexBufferLayout});
             bufferMesh->addSubMesh(0, static_cast<uint32_t>(indexBuffer.size()), wgpu::PrimitiveTopology::TriangleList);
             bufferMesh->bounds = bound;
             renderer.emplace_back(std::make_pair(bufferMesh, primitive.material > -1 ? materials[primitive.material] : materials.back()));

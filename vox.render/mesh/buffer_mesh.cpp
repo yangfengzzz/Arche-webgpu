@@ -5,6 +5,7 @@
 //  property of any third parties.
 
 #include "buffer_mesh.h"
+#include <glog/logging.h>
 
 namespace vox {
 size_t BufferMesh::instanceCount() {
@@ -29,6 +30,18 @@ const std::vector<wgpu::VertexBufferLayout>& BufferMesh::vertexBufferLayouts() {
 
 void BufferMesh::setVertexLayouts(const std::vector<wgpu::VertexBufferLayout>& layouts) {
     _setVertexLayouts(layouts);
+}
+
+void BufferMesh::setVertexLayouts(const std::vector<wgpu::VertexAttribute>& attributes, uint64_t stride) {
+    if (_vertexAttributes.size() > 0) {
+        LOG(WARNING) << "reset vertex layouts\n";
+    }
+    
+    _vertexAttributes = attributes;
+    _layouts.attributes = _vertexAttributes.data();
+    _layouts.attributeCount = static_cast<uint32_t>(_vertexAttributes.size());
+    _layouts.arrayStride = stride;
+    _setVertexLayouts({_layouts});
 }
 
 void BufferMesh::setVertexBufferBinding(const Buffer& buffer, size_t index) {

@@ -41,6 +41,13 @@ public:
     void setVertexLayouts(const std::vector<wgpu::VertexBufferLayout>& layouts);
     
     /**
+     * Set vertex layouts.
+     * @param attributes - Vertex attributes collection
+     * @param stride - stride step size
+     */
+    void setVertexLayouts(const std::vector<wgpu::VertexAttribute>& attributes, uint64_t stride);
+    
+    /**
      * Set vertex buffer binding.
      * @param buffer - Vertex buffer binding
      * @param index - Vertex buffer index, the default value is 0
@@ -67,6 +74,10 @@ public:
      * @remarks When bufferBinding is null, it will clear IndexBufferBinding
      */
     void setIndexBufferBinding(std::optional<IndexBufferBinding> bufferBinding);
+    
+private:
+    wgpu::VertexBufferLayout _layouts;
+    std::vector<wgpu::VertexAttribute> _vertexAttributes{};
 };
 
 }
