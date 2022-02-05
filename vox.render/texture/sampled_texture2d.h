@@ -27,7 +27,7 @@ public:
                      wgpu::TextureUsage usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst,
                      bool mipmap = true);
     
-    wgpu::TextureView textureView();
+    wgpu::TextureView textureView() override;
     
     void setPixelBuffer(std::vector<uint8_t>& data,
                         uint32_t width,

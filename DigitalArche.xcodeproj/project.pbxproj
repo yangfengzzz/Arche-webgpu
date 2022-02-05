@@ -348,6 +348,8 @@
 		047BF16D27AD45A6003F3599 /* wgsl_pbr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF16B27AD45A6003F3599 /* wgsl_pbr.cpp */; };
 		047BF16E27AD45A6003F3599 /* wgsl_pbr.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF16C27AD45A6003F3599 /* wgsl_pbr.h */; };
 		047BF17127AD51B2003F3599 /* pbr_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF16F27AD51B2003F3599 /* pbr_app.cpp */; };
+		047BF17427AD6E33003F3599 /* sampled_texturecube.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF17227AD6E33003F3599 /* sampled_texturecube.cpp */; };
+		047BF17527AD6E33003F3599 /* sampled_texturecube.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF17327AD6E33003F3599 /* sampled_texturecube.h */; };
 		0495463B279F89E500783C84 /* shader_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954634279F89E400783C84 /* shader_data.h */; };
 		0495463C279F89E500783C84 /* shader_property.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954635279F89E400783C84 /* shader_property.h */; };
 		0495463D279F89E500783C84 /* shader_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954636279F89E400783C84 /* shader_data.cpp */; };
@@ -856,6 +858,8 @@
 		047BF16C27AD45A6003F3599 /* wgsl_pbr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_pbr.h; sourceTree = "<group>"; };
 		047BF16F27AD51B2003F3599 /* pbr_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pbr_app.cpp; sourceTree = "<group>"; };
 		047BF17027AD51B2003F3599 /* pbr_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pbr_app.h; sourceTree = "<group>"; };
+		047BF17227AD6E33003F3599 /* sampled_texturecube.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sampled_texturecube.cpp; sourceTree = "<group>"; };
+		047BF17327AD6E33003F3599 /* sampled_texturecube.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sampled_texturecube.h; sourceTree = "<group>"; };
 		04954634279F89E400783C84 /* shader_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_data.h; sourceTree = "<group>"; };
 		04954635279F89E400783C84 /* shader_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_property.h; sourceTree = "<group>"; };
 		04954636279F89E400783C84 /* shader_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader_data.cpp; sourceTree = "<group>"; };
@@ -1709,6 +1713,8 @@
 				0495472227A23CE100783C84 /* sampled_texture.cpp */,
 				0495472727A2405400783C84 /* sampled_texture2d.h */,
 				0495472627A2405400783C84 /* sampled_texture2d.cpp */,
+				047BF17327AD6E33003F3599 /* sampled_texturecube.h */,
+				047BF17227AD6E33003F3599 /* sampled_texturecube.cpp */,
 			);
 			path = texture;
 			sourceTree = "<group>";
@@ -1915,6 +1921,7 @@
 				047BF0FD27ACEBB7003F3599 /* fixed_joint.h in Headers */,
 				0495463F279F89E500783C84 /* shader_data_group.h in Headers */,
 				047BF16A27AD4339003F3599 /* wgsl_pbr_frag.h in Headers */,
+				047BF17527AD6E33003F3599 /* sampled_texturecube.h in Headers */,
 				047BF09027ABBAF0003F3599 /* wgsl_color_vert.h in Headers */,
 				047BF0CF27AC0D59003F3599 /* direct_light.h in Headers */,
 				0495472D27A2480000783C84 /* blinn_phong_material.h in Headers */,
@@ -2323,6 +2330,7 @@
 				04128461279ED4B10071BD86 /* imgui_draw.cpp in Sources */,
 				047BEFDA27A4DB63003F3599 /* wgsl_encoder.cpp in Sources */,
 				047BEFD627A4BFD9003F3599 /* wgsl_common_vert.cpp in Sources */,
+				047BF17427AD6E33003F3599 /* sampled_texturecube.cpp in Sources */,
 				047BF12327ACEBC7003F3599 /* box_collider_shape.cpp in Sources */,
 				04954681279F8CD600783C84 /* script.cpp in Sources */,
 				047BF09F27ABDA3A003F3599 /* wgsl_mobile_material_frag.cpp in Sources */,
