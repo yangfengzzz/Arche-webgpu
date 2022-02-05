@@ -31,6 +31,9 @@ void WGSLPbrFrag::operator()(std::string& source, const ShaderMacroCollection& m
     if (macros.contains(HAS_SH)) {
         source += "var irradiance = getLightProbeIrradiance(u_env_sh, geometry.normal);\n";
         source += "irradiance = irradiance * u_envMapLight.diffuseIntensity;\n";
+    } else if (macros.contains(HAS_DIFFUSE_ENV)) {
+        source += "var irradiance = textureSample(u_env_diffuseTexture, u_env_diffuseSampler, geometry.normal).rgb;\n";
+        source += "irradiance = irradiance * u_envMapLight.diffuseIntensity;\n";
     } else {
         source += "var irradiance = u_envMapLight.diffuse * u_envMapLight.diffuseIntensity;\n";
         source += "irradiance = irradiance * PI;\n";
@@ -40,7 +43,7 @@ void WGSLPbrFrag::operator()(std::string& source, const ShaderMacroCollection& m
     // IBL specular
     source += "var radiance = getLightProbeRadiance( geometry, material.roughness, i32(u_envMapLight.mipMapLevel), u_envMapLight.specularIntensity);\n";
     source += "reflectedLight.indirectSpecular = reflectedLight.indirectSpecular + radiance * envBRDFApprox(material.specularColor, material.roughness, dotNV );\n";
-
+    
     // Occlusion
     if (macros.contains(HAS_OCCLUSIONMAP)) {
         source += fmt::format("var ambientOcclusion = (textureSample(u_occlusionTexture, u_occlusionSampler, {}.v_uv).r - 1.0) * u_occlusionStrength + 1.0;\n", _input);

@@ -56,10 +56,14 @@ void WGSLLightFragDefine::operator()(WGSLEncoder& encoder,
         encoder.addUniformBinding("u_env_sh", UniformType::Vec3f32);
     }
     
+    if (macros.contains(HAS_DIFFUSE_ENV)) {
+        encoder.addSampledTextureBinding("u_env_diffuseTexture", TextureType::TextureCubef32,
+                                         "u_env_diffuseSampler", SamplerType::Sampler);
+    }
+    
     if (macros.contains(HAS_SPECULAR_ENV)) {
         encoder.addSampledTextureBinding("u_env_specularTexture", TextureType::TextureCubef32,
                                          "u_env_specularSampler", SamplerType::Sampler);
-        
     }
 }
 

@@ -14,18 +14,6 @@
 namespace vox {
 bool IBLApp::prepare(Engine &engine) {
     ForwardApplication::prepare(engine);
-        
-    const std::string path = "SkyMap/country/";
-    const std::array<std::string, 6> imageNames = {"posx.png", "negx.png", "posy.png", "negy.png", "posz.png", "negz.png"};
-    std::array<std::unique_ptr<Image>, 6> images;
-    std::array<Image*, 6> imagePtr;
-    for (int i = 0; i < 6; i++) {
-        images[i] = Image::load(path + imageNames[i]);
-        imagePtr[i] = images[i].get();
-    }
-    _cubeMap = std::make_shared<SampledTextureCube>(_device, images[0]->extent().width, images[0]->extent().height,
-                                                        images[0]->format());
-    _cubeMap->setPixelBuffer(imagePtr);
     
     auto skybox = std::make_unique<SkyboxSubpass>(_renderContext.get(), _scene.get(), _mainCamera);
     skybox->createCuboid();
@@ -50,13 +38,22 @@ void IBLApp::loadScene(uint32_t width, uint32_t height) {
     _materials[9] = Material("Blue", Color(0.0f, 0.0f, 1.0f, 1.0), 0.1f, 1.0f);
     _materials[10] = Material("Black", Color(0.0f, 1.0, 1.0, 1.0), 0.1f, 1.0f);
     
-    const int materialIndex = 0;
+    const int materialIndex = 7;
     Material mat = _materials[materialIndex];
     
-    _path = "../assets/SkyMap/country";
-    _images = {"posx.png", "negx.png", "posy.png", "negy.png", "posz.png", "negz.png"};
+    const std::string path = "SkyMap/country/";
+    const std::array<std::string, 6> imageNames = {"posx.png", "negx.png", "posy.png", "negy.png", "posz.png", "negz.png"};
+    std::array<std::unique_ptr<Image>, 6> images;
+    std::array<Image*, 6> imagePtr;
+    for (int i = 0; i < 6; i++) {
+        images[i] = Image::load(path + imageNames[i]);
+        imagePtr[i] = images[i].get();
+    }
+    _cubeMap = std::make_shared<SampledTextureCube>(_device, images[0]->extent().width, images[0]->extent().height,
+                                                    images[0]->format());
+    _cubeMap->setPixelBuffer(imagePtr);
     
-    _scene->ambientLight().setSpecularTexture(_cubeMap);    
+    _scene->ambientLight().setSpecularTexture(_cubeMap);
     _scene->ambientLight().setDiffuseTexture(_cubeMap);
     
     auto rootEntity = _scene->createRootEntity();
