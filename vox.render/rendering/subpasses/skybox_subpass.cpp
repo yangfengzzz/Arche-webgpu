@@ -8,6 +8,7 @@
 #include "rendering/render_pass.h"
 #include "mesh/primitive_mesh.h"
 #include "camera.h"
+#include "shaderlib/wgsl_skybox.h"
 
 namespace vox {
 SkyboxSubpass::SkyboxSubpass(RenderContext* renderContext,
@@ -17,6 +18,8 @@ Subpass(renderContext, scene, camera),
 _vpMatrix(renderContext->device(), sizeof(Matrix4x4F),
           wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst){
     createCuboid();
+    _vertexSource = std::make_unique<WGSLSkyboxVertex>();
+    _fragmentSource = std::make_unique<WGSLSkyboxFragment>();
 }
 
 void SkyboxSubpass::createSphere(float radius) {
@@ -46,7 +49,8 @@ void SkyboxSubpass::prepare() {
     _forwardPipelineDescriptor.label = "Skybox Pipeline";
     // Shader
     {
-        ShaderProgram* program = _pass->resourceCache().requestShader(_vertexSource, _fragmentSource);
+        ShaderMacroCollection macros;
+        ShaderProgram* program = _pass->resourceCache().requestShader(_vertexSource->compile(macros).first, _fragmentSource->compile(macros).first);
         _forwardPipelineDescriptor.vertex.entryPoint = "main";
         _forwardPipelineDescriptor.vertex.module = program->vertexShader();
         _fragment.entryPoint = "main";

@@ -42,8 +42,8 @@ private:
     SampledTextureCubePtr _cubeMap{nullptr};
     Buffer _vpMatrix;
     
-    std::string _vertexSource;
-    std::string _fragmentSource;
+    WGSLPtr _vertexSource{nullptr};
+    WGSLPtr _fragmentSource{nullptr};
     
     wgpu::RenderPipelineDescriptor _forwardPipelineDescriptor;
     wgpu::FragmentState _fragment;

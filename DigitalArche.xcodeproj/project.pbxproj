@@ -354,6 +354,8 @@
 		047BF17927AE0623003F3599 /* sampled_texture2d_view.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF17727AE0623003F3599 /* sampled_texture2d_view.h */; };
 		047BF17C27AE0ECA003F3599 /* skybox_subpass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF17A27AE0ECA003F3599 /* skybox_subpass.cpp */; };
 		047BF17D27AE0ECA003F3599 /* skybox_subpass.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF17B27AE0ECA003F3599 /* skybox_subpass.h */; };
+		047BF18027AE1A40003F3599 /* wgsl_skybox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF17E27AE1A40003F3599 /* wgsl_skybox.cpp */; };
+		047BF18127AE1A40003F3599 /* wgsl_skybox.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF17F27AE1A40003F3599 /* wgsl_skybox.h */; };
 		0495463B279F89E500783C84 /* shader_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954634279F89E400783C84 /* shader_data.h */; };
 		0495463C279F89E500783C84 /* shader_property.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954635279F89E400783C84 /* shader_property.h */; };
 		0495463D279F89E500783C84 /* shader_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954636279F89E400783C84 /* shader_data.cpp */; };
@@ -868,6 +870,8 @@
 		047BF17727AE0623003F3599 /* sampled_texture2d_view.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sampled_texture2d_view.h; sourceTree = "<group>"; };
 		047BF17A27AE0ECA003F3599 /* skybox_subpass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = skybox_subpass.cpp; sourceTree = "<group>"; };
 		047BF17B27AE0ECA003F3599 /* skybox_subpass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = skybox_subpass.h; sourceTree = "<group>"; };
+		047BF17E27AE1A40003F3599 /* wgsl_skybox.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_skybox.cpp; sourceTree = "<group>"; };
+		047BF17F27AE1A40003F3599 /* wgsl_skybox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_skybox.h; sourceTree = "<group>"; };
 		04954634279F89E400783C84 /* shader_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_data.h; sourceTree = "<group>"; };
 		04954635279F89E400783C84 /* shader_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_property.h; sourceTree = "<group>"; };
 		04954636279F89E400783C84 /* shader_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader_data.cpp; sourceTree = "<group>"; };
@@ -1712,6 +1716,8 @@
 				047BF0B127ABFCDC003F3599 /* wgsl_blinn_phong.cpp */,
 				047BF16C27AD45A6003F3599 /* wgsl_pbr.h */,
 				047BF16B27AD45A6003F3599 /* wgsl_pbr.cpp */,
+				047BF17F27AE1A40003F3599 /* wgsl_skybox.h */,
+				047BF17E27AE1A40003F3599 /* wgsl_skybox.cpp */,
 			);
 			path = shaderlib;
 			sourceTree = "<group>";
@@ -1931,6 +1937,7 @@
 				0495475427A2750900783C84 /* model_mesh.h in Headers */,
 				04128476279EEE760071BD86 /* depth_state.h in Headers */,
 				047BF0FD27ACEBB7003F3599 /* fixed_joint.h in Headers */,
+				047BF18127AE1A40003F3599 /* wgsl_skybox.h in Headers */,
 				0495463F279F89E500783C84 /* shader_data_group.h in Headers */,
 				047BF16A27AD4339003F3599 /* wgsl_pbr_frag.h in Headers */,
 				047BF17527AD6E33003F3599 /* sampled_texturecube.h in Headers */,
@@ -2227,6 +2234,7 @@
 				04128469279EDB2C0071BD86 /* blend_state.cpp in Sources */,
 				047BF08327ABB82B003F3599 /* wgsl_normal_share.cpp in Sources */,
 				047BF07827A6819C003F3599 /* mathlib.cpp in Sources */,
+				047BF18027AE1A40003F3599 /* wgsl_skybox.cpp in Sources */,
 				0495474F27A2714200783C84 /* buffer_mesh.cpp in Sources */,
 				047BF0E827ACEBAE003F3599 /* physics.cpp in Sources */,
 				04954707279FCD3C00783C84 /* free_control.cpp in Sources */,
