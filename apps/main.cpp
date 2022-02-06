@@ -18,6 +18,7 @@
 #include "ibl_app.h"
 #include "gltf_app.h"
 #include "scene_animation_app.h"
+#include "framebuffer_picker_app.h"
 
 int main(int argc, char * argv[]) {
     vox::UnixEngine engine{vox::UnixType::Mac, argc, argv};
