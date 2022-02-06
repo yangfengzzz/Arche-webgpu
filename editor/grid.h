@@ -8,6 +8,7 @@
 #define grid_hpp
 
 #include "script.h"
+#include "material/base_material.h"
 
 namespace vox {
 namespace editor {

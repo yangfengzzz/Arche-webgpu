@@ -9,27 +9,26 @@
 #include "scene.h"
 #include "mesh_renderer.h"
 #include "mesh/model_mesh.h"
-#include "material/base_material.h"
 
 namespace vox {
 namespace editor {
 class GridMaterial : public BaseMaterial {
 public:
-    GridMaterial() : BaseMaterial(Shader::find("editor-grid")) {
+    GridMaterial(wgpu::Device& device) : BaseMaterial(device, Shader::find("editor-grid")) {
         setIsTransparent(true);
     }
 };
 
 Grid::Grid(Entity *entity) :
 Script(entity) {
-    Shader::create("editor-grid", "vertex_grid", "fragment_grid");
+    Shader::create("editor-grid", nullptr, nullptr);
     
     _renderer = entity->addComponent<MeshRenderer>();
     _renderer->setMesh(createPlane(entity->scene()->device()));
-    _renderer->setMaterial(std::make_shared<GridMaterial>());
+    _renderer->setMaterial(std::make_shared<GridMaterial>(entity->scene()->device()));
 }
 
-ModelMeshPtr Grid::createPlane(MTL::Device *device) {
+ModelMeshPtr Grid::createPlane(wgpu::Device &device) {
     auto mesh = std::make_shared<ModelMesh>(device);
     
     auto positions = std::vector<Vector3F>(4);
@@ -49,7 +48,7 @@ ModelMeshPtr Grid::createPlane(MTL::Device *device) {
     mesh->setPositions(positions);
     mesh->setIndices(indices);
     mesh->uploadData(true);
-    
+    mesh->addSubMesh(0, 6, wgpu::PrimitiveTopology::TriangleList);
     return mesh;
 }
 
