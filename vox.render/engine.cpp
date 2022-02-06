@@ -21,7 +21,7 @@ std::string Engine::_externalStorageDirectory = "";
 std::string Engine::_tempDirectory = "";
 
 ExitCode Engine::initialize() {
-    google::InitGoogleLogging("DigitalVox");
+    google::InitGoogleLogging("DigitalArche");
     
     createWindow(_windowProperties);
     if (!_window) {
