@@ -26,21 +26,19 @@ bool ForwardApplication::prepare(Engine &engine) {
     
     // Create a render pass descriptor for thelighting and composition pass
     // Whatever rendered in the final pass needs to be stored so it can be displayed
-    _colorAttachments = std::make_unique<wgpu::RenderPassColorAttachment>();
-    _depthStencilAttachment = std::make_unique<wgpu::RenderPassDepthStencilAttachment>();
     _renderPassDescriptor.colorAttachmentCount = 1;
-    _renderPassDescriptor.colorAttachments = _colorAttachments.get();
-    _renderPassDescriptor.depthStencilAttachment = _depthStencilAttachment.get();
+    _renderPassDescriptor.colorAttachments = &_colorAttachments;
+    _renderPassDescriptor.depthStencilAttachment = &_depthStencilAttachment;
     
-    _colorAttachments->storeOp = wgpu::StoreOp::Store;
-    _colorAttachments->loadOp = wgpu::LoadOp::Clear;
+    _colorAttachments.storeOp = wgpu::StoreOp::Store;
+    _colorAttachments.loadOp = wgpu::LoadOp::Clear;
     auto& color = _scene->background.solidColor;
-    _colorAttachments->clearColor = wgpu::Color{color.r, color.g, color.b, color.a};
-    _depthStencilAttachment->depthLoadOp = wgpu::LoadOp::Clear;
-    _depthStencilAttachment->clearDepth = 1.0;
-    _depthStencilAttachment->depthStoreOp = wgpu::StoreOp::Discard;
-    _depthStencilAttachment->stencilLoadOp = wgpu::LoadOp::Clear;
-    _depthStencilAttachment->stencilStoreOp = wgpu::StoreOp::Discard;
+    _colorAttachments.clearColor = wgpu::Color{color.r, color.g, color.b, color.a};
+    _depthStencilAttachment.depthLoadOp = wgpu::LoadOp::Clear;
+    _depthStencilAttachment.clearDepth = 1.0;
+    _depthStencilAttachment.depthStoreOp = wgpu::StoreOp::Discard;
+    _depthStencilAttachment.stencilLoadOp = wgpu::LoadOp::Clear;
+    _depthStencilAttachment.stencilStoreOp = wgpu::StoreOp::Discard;
     _renderPass = std::make_unique<RenderPass>(_device, _renderPassDescriptor);
     _renderPass->addSubpass(std::make_unique<ForwardSubpass>(_renderContext.get(), _scene.get(), _mainCamera));
     if (_gui) {
@@ -59,8 +57,8 @@ void ForwardApplication::update(float delta_time) {
     //    _shadowManager->draw(commandBuffer);
     
     // Render the lighting and composition pass
-    _colorAttachments->view = _renderContext->currentDrawableTexture();
-    _depthStencilAttachment->view = _renderContext->depthStencilTexture();
+    _colorAttachments.view = _renderContext->currentDrawableTexture();
+    _depthStencilAttachment.view = _renderContext->depthStencilTexture();
     
     _renderPass->draw(commandEncoder, "Lighting & Composition Pass");
     // Finalize rendering here & push the command buffer to the GPU

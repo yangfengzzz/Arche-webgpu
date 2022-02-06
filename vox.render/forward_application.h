@@ -43,9 +43,8 @@ protected:
     std::unique_ptr<Scene> _scene{nullptr};
     
     wgpu::RenderPassDescriptor _renderPassDescriptor;
-    
-    std::unique_ptr<wgpu::RenderPassColorAttachment> _colorAttachments{nullptr};
-    std::unique_ptr<wgpu::RenderPassDepthStencilAttachment> _depthStencilAttachment{nullptr};
+    wgpu::RenderPassColorAttachment _colorAttachments;
+    wgpu::RenderPassDepthStencilAttachment _depthStencilAttachment;
     
     /**
      * @brief Pipeline used for rendering, it should be set up by the concrete sample

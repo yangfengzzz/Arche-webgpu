@@ -74,8 +74,8 @@ void EditorApplication::update(float delta_time) {
     // _shadowManager->draw(commandBuffer);
 
     // Render the lighting and composition pass
-    _colorAttachments->view = _renderContext->currentDrawableTexture();
-    _depthStencilAttachment->view = _renderContext->depthStencilTexture();
+    _colorAttachments.view = _renderContext->currentDrawableTexture();
+    _depthStencilAttachment.view = _renderContext->depthStencilTexture();
     
     _renderPass->draw(commandEncoder, "Lighting & Composition Pass");
     if (_needPick) {
