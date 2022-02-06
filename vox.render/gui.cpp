@@ -8,8 +8,10 @@
 #include "gui/imgui_impl_wgpu.h"
 
 namespace vox {
-GUI::GUI(wgpu::Device& device) {
-    ImGui_ImplWGPU_Init(device.Get(), 3, WGPUTextureFormat_RGBA8UnormSrgb);
+GUI::GUI(RenderContext* context) {
+    ImGui_ImplWGPU_Init(context->device().Get(), 3,
+                        (WGPUTextureFormat)context->drawableTextureFormat(),
+                        (WGPUTextureFormat)context->depthStencilTextureFormat());
 }
 
 GUI::~GUI() {

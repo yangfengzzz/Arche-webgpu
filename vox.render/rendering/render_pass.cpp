@@ -40,7 +40,6 @@ void RenderPass::draw(wgpu::CommandEncoder& commandEncoder,
         ImDrawData *drawData = ImGui::GetDrawData();
         if (drawData) {
             encoder.PushDebugGroup("GUI Rendering");
-            _gui->newFrame();
             _gui->draw(drawData, encoder);
             encoder.PopDebugGroup();
         }

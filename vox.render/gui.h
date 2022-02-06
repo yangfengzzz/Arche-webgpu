@@ -8,12 +8,12 @@
 #define gui_hpp
 
 #include "gui/imgui.h"
-#include <dawn/webgpu_cpp.h>
+#include "rendering/render_context.h"
 
 namespace vox {
 class GUI {
 public:
-    GUI(wgpu::Device& device);
+    GUI(RenderContext* context);
     
     ~GUI();
     

@@ -29,7 +29,7 @@ public:
 };
 
 void FramebufferPickerApp::loadScene(uint32_t width, uint32_t height) {
-    _gui = std::make_unique<GUI>(_device);
+    _gui = std::make_unique<GUI>(_renderContext.get());
     
     u = std::uniform_real_distribution<float>(0, 1);
     _scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));

@@ -61,7 +61,7 @@ void EditorApplication::update(float delta_time) {
     
     _renderPass->draw(commandEncoder, "Lighting & Composition Pass");
     if (_needPick) {
-        _colorPickerRenderPass->draw(commandEncoder, "color Picker Pass");
+        // _colorPickerRenderPass->draw(commandEncoder, "color Picker Pass");
     }
     
     // Finalize rendering here & push the command buffer to the GPU
