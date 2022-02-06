@@ -22,7 +22,7 @@ Subpass(renderContext, scene, camera) {
 void ColorPickerSubpass::prepare() {
     _depthStencil.format = _renderContext->depthStencilTextureFormat();
     _forwardPipelineDescriptor.depthStencil = &_depthStencil;
-    _colorTargetState.format = _renderContext->drawableTextureFormat();
+    _colorTargetState.format = wgpu::TextureFormat::BGRA8Unorm;
     _fragment.targetCount = 1;
     _fragment.targets = &_colorTargetState;
     _forwardPipelineDescriptor.fragment = &_fragment;

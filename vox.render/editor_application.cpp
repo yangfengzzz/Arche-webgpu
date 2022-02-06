@@ -26,7 +26,7 @@ bool EditorApplication::prepare(Engine &engine) {
     _colorPickerTextureDesc.size.height = extent.height * scale;
     _colorPickerTextureDesc.mipLevelCount = 1;
     _colorPickerTextureDesc.dimension = wgpu::TextureDimension::e2D;
-    _colorPickerTextureDesc.usage = wgpu::TextureUsage::RenderAttachment | wgpu::TextureUsage::TextureBinding;
+    _colorPickerTextureDesc.usage = wgpu::TextureUsage::RenderAttachment;
     _colorPickerTexture = _device.CreateTexture(&_colorPickerTextureDesc);
     _colorPickerTexture.SetLabel("ColorPicker Texture");
     
@@ -34,10 +34,12 @@ bool EditorApplication::prepare(Engine &engine) {
     _colorPickerPassDescriptor.colorAttachments = &_colorPickerColorAttachments;
     _colorPickerPassDescriptor.depthStencilAttachment = &_colorPickerDepthStencilAttachment;
     
-    _colorPickerColorAttachments.resolveTarget = _colorPickerTexture.CreateView();
+    _colorPickerColorAttachments.storeOp = wgpu::StoreOp::Store;
+    _colorPickerColorAttachments.loadOp = wgpu::LoadOp::Clear;
     _colorPickerDepthStencilAttachment.depthLoadOp = wgpu::LoadOp::Clear;
     _colorPickerDepthStencilAttachment.clearDepth = 1.0;
-    _colorPickerDepthStencilAttachment.view = _renderContext->depthStencilTexture();
+    _colorPickerDepthStencilAttachment.depthStoreOp = wgpu::StoreOp::Discard;
+    _colorPickerDepthStencilAttachment.stencilStoreOp = wgpu::StoreOp::Discard;
     
     _colorPickerRenderPass = std::make_unique<RenderPass>(_device, _colorPickerPassDescriptor);
     auto colorPickerSubpass = std::make_unique<ColorPickerSubpass>(_renderContext.get(), _scene.get(), _mainCamera);
@@ -61,7 +63,9 @@ void EditorApplication::update(float delta_time) {
     
     _renderPass->draw(commandEncoder, "Lighting & Composition Pass");
     if (_needPick) {
-        // _colorPickerRenderPass->draw(commandEncoder, "color Picker Pass");
+        _colorPickerColorAttachments.view = _colorPickerTexture.CreateView();
+        _colorPickerDepthStencilAttachment.view = _renderContext->depthStencilTexture();
+        _colorPickerRenderPass->draw(commandEncoder, "color Picker Pass");
     }
     
     // Finalize rendering here & push the command buffer to the GPU
@@ -70,8 +74,8 @@ void EditorApplication::update(float delta_time) {
     _renderContext->present();
 
     if (_needPick) {
-        auto picker = _colorPickerSubpass->getObjectByColor(_readColorFromRenderTarget());
-        pickFunctor(picker.first, picker.second);
+//        auto picker = _colorPickerSubpass->getObjectByColor(_readColorFromRenderTarget());
+//        pickFunctor(picker.first, picker.second);
         _needPick = false;
     }
 }

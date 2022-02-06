@@ -25,7 +25,7 @@ int main(int argc, char * argv[]) {
         
     auto code = engine.initialize();
     if (code == vox::ExitCode::Success) {
-        engine.setApp(std::make_unique<vox::PhysXApp>());
+        engine.setApp(std::make_unique<vox::FramebufferPickerApp>());
         utils::ScopedAutoreleasePool pool;
         code = engine.mainLoop();
     }
