@@ -375,6 +375,9 @@
 		047BF1A827AF9821003F3599 /* imgui_impl_wgpu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1A627AF9821003F3599 /* imgui_impl_wgpu.cpp */; };
 		047BF1AB27AF9905003F3599 /* gui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1A927AF9905003F3599 /* gui.cpp */; };
 		047BF1AC27AF9905003F3599 /* gui.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF1AA27AF9905003F3599 /* gui.h */; };
+		047BF1AF27AF9C0D003F3599 /* editor_application.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF1AD27AF9C0C003F3599 /* editor_application.h */; };
+		047BF1B327AFA079003F3599 /* color_picker_subpass.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF1B127AFA079003F3599 /* color_picker_subpass.h */; };
+		047BF1B527AFA105003F3599 /* editor_application.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1AE27AF9C0C003F3599 /* editor_application.cpp */; };
 		0495463B279F89E500783C84 /* shader_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954634279F89E400783C84 /* shader_data.h */; };
 		0495463C279F89E500783C84 /* shader_property.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954635279F89E400783C84 /* shader_property.h */; };
 		0495463D279F89E500783C84 /* shader_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954636279F89E400783C84 /* shader_data.cpp */; };
@@ -915,6 +918,10 @@
 		047BF1A627AF9821003F3599 /* imgui_impl_wgpu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_impl_wgpu.cpp; sourceTree = "<group>"; };
 		047BF1A927AF9905003F3599 /* gui.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gui.cpp; sourceTree = "<group>"; };
 		047BF1AA27AF9905003F3599 /* gui.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gui.h; sourceTree = "<group>"; };
+		047BF1AD27AF9C0C003F3599 /* editor_application.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = editor_application.h; sourceTree = "<group>"; };
+		047BF1AE27AF9C0C003F3599 /* editor_application.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = editor_application.cpp; sourceTree = "<group>"; };
+		047BF1B127AFA079003F3599 /* color_picker_subpass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = color_picker_subpass.h; sourceTree = "<group>"; };
+		047BF1B227AFA079003F3599 /* color_picker_subpass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = color_picker_subpass.cpp; sourceTree = "<group>"; };
 		04954634279F89E400783C84 /* shader_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_data.h; sourceTree = "<group>"; };
 		04954635279F89E400783C84 /* shader_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_property.h; sourceTree = "<group>"; };
 		04954636279F89E400783C84 /* shader_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader_data.cpp; sourceTree = "<group>"; };
@@ -1310,6 +1317,8 @@
 				047BF19227AE6F74003F3599 /* scene_animation_clip.cpp */,
 				049546FE279FCD1100783C84 /* forward_application.h */,
 				049546FD279FCD1100783C84 /* forward_application.cpp */,
+				047BF1AD27AF9C0C003F3599 /* editor_application.h */,
+				047BF1AE27AF9C0C003F3599 /* editor_application.cpp */,
 			);
 			path = vox.render;
 			sourceTree = "<group>";
@@ -1742,6 +1751,8 @@
 				049546F4279FC92B00783C84 /* forward_subpass.cpp */,
 				047BF17B27AE0ECA003F3599 /* skybox_subpass.h */,
 				047BF17A27AE0ECA003F3599 /* skybox_subpass.cpp */,
+				047BF1B127AFA079003F3599 /* color_picker_subpass.h */,
+				047BF1B227AFA079003F3599 /* color_picker_subpass.cpp */,
 			);
 			path = subpasses;
 			sourceTree = "<group>";
@@ -2015,7 +2026,9 @@
 				047BF11027ACEBBF003F3599 /* box_character_controller.h in Headers */,
 				0412843E279ED3A60071BD86 /* window.h in Headers */,
 				047BEFF327A5519C003F3599 /* wgsl_blend_shape_vert.h in Headers */,
+				047BF1AF27AF9C0D003F3599 /* editor_application.h in Headers */,
 				047BF0A427ABDD09003F3599 /* wgsl_light_frag_define.h in Headers */,
+				047BF1B327AFA079003F3599 /* color_picker_subpass.h in Headers */,
 				0495475027A2714200783C84 /* buffer_mesh.h in Headers */,
 				04954689279F8CD600783C84 /* update_flag_manager.h in Headers */,
 				0412843D279ED3A60071BD86 /* input_events.h in Headers */,
@@ -2305,6 +2318,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				047BEFFF27A56250003F3599 /* wgsl_position_vert.cpp in Sources */,
+				047BF1B527AFA105003F3599 /* editor_application.cpp in Sources */,
 				04128469279EDB2C0071BD86 /* blend_state.cpp in Sources */,
 				047BF08327ABB82B003F3599 /* wgsl_normal_share.cpp in Sources */,
 				047BF07827A6819C003F3599 /* mathlib.cpp in Sources */,
