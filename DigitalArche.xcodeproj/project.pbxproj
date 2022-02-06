@@ -397,6 +397,7 @@
 		047BF1F027AFB005003F3599 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B68278C797700D5648F /* Cocoa.framework */; };
 		047BF1F127AFB00A003F3599 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B6C278C798C00D5648F /* QuartzCore.framework */; };
 		047BF1F227AFB0CF003F3599 /* grid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1D727AFAF4B003F3599 /* grid.cpp */; };
+		047BF1F627AFB8A9003F3599 /* wgsl_grid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1F427AFB8A9003F3599 /* wgsl_grid.cpp */; };
 		0495463B279F89E500783C84 /* shader_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954634279F89E400783C84 /* shader_data.h */; };
 		0495463C279F89E500783C84 /* shader_property.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954635279F89E400783C84 /* shader_property.h */; };
 		0495463D279F89E500783C84 /* shader_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954636279F89E400783C84 /* shader_data.cpp */; };
@@ -991,6 +992,8 @@
 		047BF1DA27AFAF4C003F3599 /* imgui_canvas.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_canvas.cpp; sourceTree = "<group>"; };
 		047BF1DB27AFAF4C003F3599 /* imgui_node_editor_api.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_node_editor_api.cpp; sourceTree = "<group>"; };
 		047BF1DC27AFAF4C003F3599 /* gui_entry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gui_entry.h; sourceTree = "<group>"; };
+		047BF1F427AFB8A9003F3599 /* wgsl_grid.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_grid.cpp; sourceTree = "<group>"; };
+		047BF1F527AFB8A9003F3599 /* wgsl_grid.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_grid.h; sourceTree = "<group>"; };
 		04954634279F89E400783C84 /* shader_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_data.h; sourceTree = "<group>"; };
 		04954635279F89E400783C84 /* shader_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_property.h; sourceTree = "<group>"; };
 		04954636279F89E400783C84 /* shader_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader_data.cpp; sourceTree = "<group>"; };
@@ -1790,6 +1793,7 @@
 				047BF1D527AFAF4B003F3599 /* imgui_zmo.h */,
 				047BF1D327AFAF4B003F3599 /* imgui_zmo.cpp */,
 				047BF1C527AFAF02003F3599 /* editor.entitlements */,
+				047BF1F327AFB885003F3599 /* shaderlib */,
 				047BF1D627AFAF4B003F3599 /* main.cpp */,
 				047BF1C727AFAF4A003F3599 /* editor.h */,
 				047BF1CA27AFAF4A003F3599 /* editor.cpp */,
@@ -1800,6 +1804,15 @@
 				047BF1C927AFAF4A003F3599 /* editor_component.h */,
 			);
 			path = editor;
+			sourceTree = "<group>";
+		};
+		047BF1F327AFB885003F3599 /* shaderlib */ = {
+			isa = PBXGroup;
+			children = (
+				047BF1F527AFB8A9003F3599 /* wgsl_grid.h */,
+				047BF1F427AFB8A9003F3599 /* wgsl_grid.cpp */,
+			);
+			path = shaderlib;
 			sourceTree = "<group>";
 		};
 		04954642279F8A4400783C84 /* material */ = {
@@ -2663,6 +2676,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				047BF1F627AFB8A9003F3599 /* wgsl_grid.cpp in Sources */,
 				047BF1DE27AFAF4C003F3599 /* gui_entry.cpp in Sources */,
 				047BF1E527AFAF4C003F3599 /* imgui_node_editor_api.cpp in Sources */,
 				047BF1F227AFB0CF003F3599 /* grid.cpp in Sources */,

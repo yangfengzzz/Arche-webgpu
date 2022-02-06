@@ -9,6 +9,7 @@
 #include "scene.h"
 #include "mesh_renderer.h"
 #include "mesh/model_mesh.h"
+#include "shaderlib/wgsl_grid.h"
 
 namespace vox {
 namespace editor {
@@ -21,7 +22,7 @@ public:
 
 Grid::Grid(Entity *entity) :
 Script(entity) {
-    Shader::create("editor-grid", nullptr, nullptr);
+    Shader::create("editor-grid", std::make_unique<WGSLGridVertex>(), std::make_unique<WGSLGridFragment>());
     
     _renderer = entity->addComponent<MeshRenderer>();
     _renderer->setMesh(createPlane(entity->scene()->device()));
