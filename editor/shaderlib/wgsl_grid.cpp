@@ -17,7 +17,6 @@ void WGSLGridVertex::_createShaderSource(size_t hash, const ShaderMacroCollectio
     auto outputStructCounter = WGSLEncoder::startCounter(0);
     {
         auto encoder = createSourceEncoder(wgpu::ShaderStage::Vertex);
-        encoder.addInoutType("VertexIn", Attributes::Position, UniformType::Vec3f32);
 
         encoder.addInoutType("VertexOut", BuiltInType::Position, "position", UniformType::Vec4f32);
         encoder.addInoutType("VertexOut", WGSLEncoder::getCounterNumber(outputStructCounter), "nearPoint", UniformType::Vec3f32);
@@ -40,17 +39,17 @@ void WGSLGridVertex::_createShaderSource(size_t hash, const ShaderMacroCollectio
         _commonVert(encoder, macros);
         
         encoder.addEntry({{"in", "VertexIn"}}, {"out", "VertexOut"}, [&](std::string &source){
-            source += "out.nearPoint = UnprojectPoint(in.position.x, in.position.y, 0.0, u_viewInvMat, u_projInvMat).xyz;\n"; // unprojecting on the near plane
-            source += "out.farPoint = UnprojectPoint(in.position.x, in.position.y, 1.0, u_viewInvMat, u_projInvMat).xyz;\n"; // unprojecting on the far plane
-            source += "out.fragView0 = u_viewMat.columns[0];\n";
-            source += "out.fragView1 = u_viewMat.columns[1];\n";
-            source += "out.fragView2 = u_viewMat.columns[2];\n";
-            source += "out.fragView3 = u_viewMat.columns[3];\n";
-            source += "out.fragProj0 = u_projMat.columns[0];\n";
-            source += "out.fragProj1 = u_projMat.columns[1];\n";
-            source += "out.fragProj2 = u_projMat.columns[2];\n";
-            source += "out.fragProj3 = u_projMat.columns[3];\n";
-            source += "out.position = float4(in.position, 1.0);\n";
+            source += "out.nearPoint = UnprojectPoint(in.Position.x, in.Position.y, 0.0, u_cameraData.u_viewInvMat, u_cameraData.u_projInvMat).xyz;\n"; // unprojecting on the near plane
+            source += "out.farPoint = UnprojectPoint(in.Position.x, in.Position.y, 1.0, u_cameraData.u_viewInvMat, u_cameraData.u_projInvMat).xyz;\n"; // unprojecting on the far plane
+            source += "out.fragView0 = u_cameraData.u_viewMat[0];\n";
+            source += "out.fragView1 = u_cameraData.u_viewMat[1];\n";
+            source += "out.fragView2 = u_cameraData.u_viewMat[2];\n";
+            source += "out.fragView3 = u_cameraData.u_viewMat[3];\n";
+            source += "out.fragProj0 = u_cameraData.u_projMat[0];\n";
+            source += "out.fragProj1 = u_cameraData.u_projMat[1];\n";
+            source += "out.fragProj2 = u_cameraData.u_projMat[2];\n";
+            source += "out.fragProj3 = u_cameraData.u_projMat[3];\n";
+            source += "out.position = vec4<f32>(in.Position, 1.0);\n";
         });
         encoder.flush();
     }
@@ -92,11 +91,11 @@ void WGSLGridFragment::_createShaderSource(size_t hash, const ShaderMacroCollect
         grid += "    var minimumx = min(derivative.x, 1.0);\n";
         grid += "    var color = vec4<f32>(0.6, 0.6, 0.6, 1.0 - min(line, 1.0));\n";
             // z axis
-        grid += "    if(fragPos3D.x > -1 * minimumx && fragPos3D.x < 1 * minimumx) {\n";
+        grid += "    if(fragPos3D.x > -1.0 * minimumx && fragPos3D.x < 1.0 * minimumx) {\n";
         grid += "        color = vec4<f32>(0.0, 0.0, 1.0, 1.0);\n";
         grid += "    }\n";
             // x axis
-        grid += "    if(fragPos3D.z > -1 * minimumz && fragPos3D.z < 1 * minimumz) {\n";
+        grid += "    if(fragPos3D.z > -1.0 * minimumz && fragPos3D.z < 1.0 * minimumz) {\n";
         grid += "        color = vec4<f32>(1.0, 0.0, 0.0, 1.0);\n";
         grid += "    }\n";
         grid += "\n";
@@ -119,7 +118,8 @@ void WGSLGridFragment::_createShaderSource(size_t hash, const ShaderMacroCollect
         computeLinearDepth += "    var linearDepth = (2.0 * near * far) / (far + near - clip_space_depth * (far - near));\n"; // get linear value between 0.01 and 100
         computeLinearDepth += "    return linearDepth / far;\n"; // normalize
         computeLinearDepth += "}\n";
-        
+        encoder.addFunction(computeLinearDepth);
+
         encoder.addEntry({{"in", "VertexOut"}}, {"out", "Output"},  [&](std::string &source){
             source += "var t = -in.nearPoint.y / (in.farPoint.y - in.nearPoint.y);\n";
             source += "var fragPos3D: vec3<f32> = in.nearPoint + t * (in.farPoint - in.nearPoint);\n";
@@ -131,7 +131,7 @@ void WGSLGridFragment::_createShaderSource(size_t hash, const ShaderMacroCollect
             source += "var linearDepth = computeLinearDepth(fragPos3D, fragView, fragProj);\n";
             source += "var fading = max(0.0, (0.5 - linearDepth));\n";
             
-            source += "out.finalColor = (grid(fragPos3D, 1, true)) * float(t > 0);\n";
+            source += "out.finalColor = (grid(fragPos3D, 1.0, true)) * f32(t > 0.0);\n";
             source += "out.finalColor.a = out.finalColor.a * fading;\n";
             source += "out.depth = depth;\n";
         });

@@ -72,7 +72,7 @@ void Editor::loadScene(uint32_t width, uint32_t height) {
     _scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
     
     auto rootEntity = _scene->createRootEntity();
-//    rootEntity->addComponent<editor::Grid>();
+    rootEntity->addComponent<editor::Grid>();
 
     auto cameraEntity = rootEntity->createChild("camera");
     cameraEntity->transform->setPosition(10, 10, 10);
