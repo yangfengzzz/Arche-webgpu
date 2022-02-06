@@ -380,6 +380,22 @@
 		047BF1B527AFA105003F3599 /* editor_application.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1AE27AF9C0C003F3599 /* editor_application.cpp */; };
 		047BF1B627AFA242003F3599 /* color_picker_subpass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1B227AFA079003F3599 /* color_picker_subpass.cpp */; };
 		047BF1B927AFA525003F3599 /* framebuffer_picker_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1B827AFA525003F3599 /* framebuffer_picker_app.cpp */; };
+		047BF1DD27AFAF4C003F3599 /* editor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1CA27AFAF4A003F3599 /* editor.cpp */; };
+		047BF1DE27AFAF4C003F3599 /* gui_entry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1CC27AFAF4A003F3599 /* gui_entry.cpp */; };
+		047BF1DF27AFAF4C003F3599 /* imgui_node_editor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1D127AFAF4B003F3599 /* imgui_node_editor.cpp */; };
+		047BF1E027AFAF4C003F3599 /* imgui_zmo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1D327AFAF4B003F3599 /* imgui_zmo.cpp */; };
+		047BF1E127AFAF4C003F3599 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1D627AFAF4B003F3599 /* main.cpp */; };
+		047BF1E327AFAF4C003F3599 /* crude_json.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1D827AFAF4B003F3599 /* crude_json.cpp */; };
+		047BF1E427AFAF4C003F3599 /* imgui_canvas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1DA27AFAF4C003F3599 /* imgui_canvas.cpp */; };
+		047BF1E527AFAF4C003F3599 /* imgui_node_editor_api.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1DB27AFAF4C003F3599 /* imgui_node_editor_api.cpp */; };
+		047BF1EA27AFAFE3003F3599 /* libvox.math.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 041282EC279ECF3D0071BD86 /* libvox.math.a */; };
+		047BF1EB27AFAFE3003F3599 /* libvox.render.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04128424279ED3510071BD86 /* libvox.render.a */; };
+		047BF1EC27AFAFEE003F3599 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B72278C812000D5648F /* IOKit.framework */; };
+		047BF1ED27AFAFF2003F3599 /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B70278C811800D5648F /* IOSurface.framework */; };
+		047BF1EE27AFAFF6003F3599 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B6E278C811200D5648F /* Metal.framework */; };
+		047BF1EF27AFB000003F3599 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B6A278C798100D5648F /* CoreFoundation.framework */; };
+		047BF1F027AFB005003F3599 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B68278C797700D5648F /* Cocoa.framework */; };
+		047BF1F127AFB00A003F3599 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B6C278C798C00D5648F /* QuartzCore.framework */; };
 		0495463B279F89E500783C84 /* shader_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954634279F89E400783C84 /* shader_data.h */; };
 		0495463C279F89E500783C84 /* shader_property.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954635279F89E400783C84 /* shader_property.h */; };
 		0495463D279F89E500783C84 /* shader_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954636279F89E400783C84 /* shader_data.cpp */; };
@@ -493,6 +509,20 @@
 			remoteGlobalIDString = 041282EB279ECF3D0071BD86;
 			remoteInfo = vox.math;
 		};
+		047BF1E627AFAFDF003F3599 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 043B7B52278C4C5A00D5648F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 041282EB279ECF3D0071BD86;
+			remoteInfo = vox.math;
+		};
+		047BF1E827AFAFDF003F3599 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 043B7B52278C4C5A00D5648F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 04128423279ED3510071BD86;
+			remoteInfo = vox.render;
+		};
 		0495476327A295A100783C84 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 043B7B52278C4C5A00D5648F /* Project object */;
@@ -520,6 +550,15 @@
 			runOnlyForDeploymentPostprocessing = 1;
 		};
 		043B7B58278C4C5A00D5648F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		047BF1BC27AFAE81003F3599 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -926,6 +965,31 @@
 		047BF1B227AFA079003F3599 /* color_picker_subpass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = color_picker_subpass.cpp; sourceTree = "<group>"; };
 		047BF1B727AFA525003F3599 /* framebuffer_picker_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = framebuffer_picker_app.h; sourceTree = "<group>"; };
 		047BF1B827AFA525003F3599 /* framebuffer_picker_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = framebuffer_picker_app.cpp; sourceTree = "<group>"; };
+		047BF1BE27AFAE81003F3599 /* editor */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = editor; sourceTree = BUILT_PRODUCTS_DIR; };
+		047BF1C527AFAF02003F3599 /* editor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = editor.entitlements; sourceTree = "<group>"; };
+		047BF1C627AFAF4A003F3599 /* grid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = grid.h; sourceTree = "<group>"; };
+		047BF1C727AFAF4A003F3599 /* editor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = editor.h; sourceTree = "<group>"; };
+		047BF1C827AFAF4A003F3599 /* crude_json.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crude_json.h; sourceTree = "<group>"; };
+		047BF1C927AFAF4A003F3599 /* editor_component.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = editor_component.h; sourceTree = "<group>"; };
+		047BF1CA27AFAF4A003F3599 /* editor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = editor.cpp; sourceTree = "<group>"; };
+		047BF1CB27AFAF4A003F3599 /* imgui_bezier_math.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imgui_bezier_math.h; sourceTree = "<group>"; };
+		047BF1CC27AFAF4A003F3599 /* gui_entry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gui_entry.cpp; sourceTree = "<group>"; };
+		047BF1CD27AFAF4B003F3599 /* imgui_extra_math.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imgui_extra_math.h; sourceTree = "<group>"; };
+		047BF1CE27AFAF4B003F3599 /* imgui_bezier_math.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = imgui_bezier_math.inl; sourceTree = "<group>"; };
+		047BF1CF27AFAF4B003F3599 /* imgui_node_editor_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imgui_node_editor_internal.h; sourceTree = "<group>"; };
+		047BF1D027AFAF4B003F3599 /* imgui_node_editor_internal.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = imgui_node_editor_internal.inl; sourceTree = "<group>"; };
+		047BF1D127AFAF4B003F3599 /* imgui_node_editor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_node_editor.cpp; sourceTree = "<group>"; };
+		047BF1D227AFAF4B003F3599 /* imgui_node_editor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imgui_node_editor.h; sourceTree = "<group>"; };
+		047BF1D327AFAF4B003F3599 /* imgui_zmo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_zmo.cpp; sourceTree = "<group>"; };
+		047BF1D427AFAF4B003F3599 /* imgui_canvas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imgui_canvas.h; sourceTree = "<group>"; };
+		047BF1D527AFAF4B003F3599 /* imgui_zmo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imgui_zmo.h; sourceTree = "<group>"; };
+		047BF1D627AFAF4B003F3599 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		047BF1D727AFAF4B003F3599 /* grid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = grid.cpp; sourceTree = "<group>"; };
+		047BF1D827AFAF4B003F3599 /* crude_json.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = crude_json.cpp; sourceTree = "<group>"; };
+		047BF1D927AFAF4C003F3599 /* imgui_extra_math.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = imgui_extra_math.inl; sourceTree = "<group>"; };
+		047BF1DA27AFAF4C003F3599 /* imgui_canvas.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_canvas.cpp; sourceTree = "<group>"; };
+		047BF1DB27AFAF4C003F3599 /* imgui_node_editor_api.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_node_editor_api.cpp; sourceTree = "<group>"; };
+		047BF1DC27AFAF4C003F3599 /* gui_entry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gui_entry.h; sourceTree = "<group>"; };
 		04954634279F89E400783C84 /* shader_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_data.h; sourceTree = "<group>"; };
 		04954635279F89E400783C84 /* shader_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_property.h; sourceTree = "<group>"; };
 		04954636279F89E400783C84 /* shader_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader_data.cpp; sourceTree = "<group>"; };
@@ -1100,6 +1164,21 @@
 				043B7B6D278C798C00D5648F /* QuartzCore.framework in Frameworks */,
 				043B7B6B278C798100D5648F /* CoreFoundation.framework in Frameworks */,
 				043B7B69278C797700D5648F /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		047BF1BB27AFAE81003F3599 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				047BF1F127AFB00A003F3599 /* QuartzCore.framework in Frameworks */,
+				047BF1F027AFB005003F3599 /* Cocoa.framework in Frameworks */,
+				047BF1EF27AFB000003F3599 /* CoreFoundation.framework in Frameworks */,
+				047BF1EE27AFAFF6003F3599 /* Metal.framework in Frameworks */,
+				047BF1ED27AFAFF2003F3599 /* IOSurface.framework in Frameworks */,
+				047BF1EC27AFAFEE003F3599 /* IOKit.framework in Frameworks */,
+				047BF1EA27AFAFE3003F3599 /* libvox.math.a in Frameworks */,
+				047BF1EB27AFAFE3003F3599 /* libvox.render.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1396,6 +1475,7 @@
 				04128425279ED3510071BD86 /* vox.render */,
 				041283B1279ED0D60071BD86 /* unit_tests */,
 				043B7B5C278C4C5A00D5648F /* apps */,
+				047BF1BF27AFAE81003F3599 /* editor */,
 				043B7B5B278C4C5A00D5648F /* Products */,
 				043B7B67278C797600D5648F /* Frameworks */,
 			);
@@ -1408,6 +1488,7 @@
 				041282EC279ECF3D0071BD86 /* libvox.math.a */,
 				041283B0279ED0D60071BD86 /* unit_tests */,
 				04128424279ED3510071BD86 /* libvox.render.a */,
+				047BF1BE27AFAE81003F3599 /* editor */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1687,6 +1768,37 @@
 				047BF19B27AE718E003F3599 /* gltf_loader.cpp */,
 			);
 			path = loader;
+			sourceTree = "<group>";
+		};
+		047BF1BF27AFAE81003F3599 /* editor */ = {
+			isa = PBXGroup;
+			children = (
+				047BF1C827AFAF4A003F3599 /* crude_json.h */,
+				047BF1D827AFAF4B003F3599 /* crude_json.cpp */,
+				047BF1CD27AFAF4B003F3599 /* imgui_extra_math.h */,
+				047BF1D927AFAF4C003F3599 /* imgui_extra_math.inl */,
+				047BF1CB27AFAF4A003F3599 /* imgui_bezier_math.h */,
+				047BF1CE27AFAF4B003F3599 /* imgui_bezier_math.inl */,
+				047BF1D427AFAF4B003F3599 /* imgui_canvas.h */,
+				047BF1DA27AFAF4C003F3599 /* imgui_canvas.cpp */,
+				047BF1D227AFAF4B003F3599 /* imgui_node_editor.h */,
+				047BF1D127AFAF4B003F3599 /* imgui_node_editor.cpp */,
+				047BF1DB27AFAF4C003F3599 /* imgui_node_editor_api.cpp */,
+				047BF1CF27AFAF4B003F3599 /* imgui_node_editor_internal.h */,
+				047BF1D027AFAF4B003F3599 /* imgui_node_editor_internal.inl */,
+				047BF1D527AFAF4B003F3599 /* imgui_zmo.h */,
+				047BF1D327AFAF4B003F3599 /* imgui_zmo.cpp */,
+				047BF1C527AFAF02003F3599 /* editor.entitlements */,
+				047BF1D627AFAF4B003F3599 /* main.cpp */,
+				047BF1C727AFAF4A003F3599 /* editor.h */,
+				047BF1CA27AFAF4A003F3599 /* editor.cpp */,
+				047BF1C627AFAF4A003F3599 /* grid.h */,
+				047BF1D727AFAF4B003F3599 /* grid.cpp */,
+				047BF1DC27AFAF4C003F3599 /* gui_entry.h */,
+				047BF1CC27AFAF4A003F3599 /* gui_entry.cpp */,
+				047BF1C927AFAF4A003F3599 /* editor_component.h */,
+			);
+			path = editor;
 			sourceTree = "<group>";
 		};
 		04954642279F8A4400783C84 /* material */ = {
@@ -2226,6 +2338,25 @@
 			productReference = 043B7B5A278C4C5A00D5648F /* apps */;
 			productType = "com.apple.product-type.tool";
 		};
+		047BF1BD27AFAE81003F3599 /* editor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 047BF1C227AFAE81003F3599 /* Build configuration list for PBXNativeTarget "editor" */;
+			buildPhases = (
+				047BF1BA27AFAE81003F3599 /* Sources */,
+				047BF1BB27AFAE81003F3599 /* Frameworks */,
+				047BF1BC27AFAE81003F3599 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				047BF1E727AFAFDF003F3599 /* PBXTargetDependency */,
+				047BF1E927AFAFDF003F3599 /* PBXTargetDependency */,
+			);
+			name = editor;
+			productName = editor;
+			productReference = 047BF1BE27AFAE81003F3599 /* editor */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -2247,6 +2378,9 @@
 					043B7B59278C4C5A00D5648F = {
 						CreatedOnToolsVersion = 13.2.1;
 					};
+					047BF1BD27AFAE81003F3599 = {
+						CreatedOnToolsVersion = 13.2.1;
+					};
 				};
 			};
 			buildConfigurationList = 043B7B55278C4C5A00D5648F /* Build configuration list for PBXProject "DigitalArche" */;
@@ -2264,8 +2398,9 @@
 			targets = (
 				041282EB279ECF3D0071BD86 /* vox.math */,
 				04128423279ED3510071BD86 /* vox.render */,
-				043B7B59278C4C5A00D5648F /* apps */,
 				041283AF279ED0D60071BD86 /* unit_tests */,
+				043B7B59278C4C5A00D5648F /* apps */,
+				047BF1BD27AFAE81003F3599 /* editor */,
 			);
 		};
 /* End PBXProject section */
@@ -2523,6 +2658,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		047BF1BA27AFAE81003F3599 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				047BF1DE27AFAF4C003F3599 /* gui_entry.cpp in Sources */,
+				047BF1E527AFAF4C003F3599 /* imgui_node_editor_api.cpp in Sources */,
+				047BF1DD27AFAF4C003F3599 /* editor.cpp in Sources */,
+				047BF1E327AFAF4C003F3599 /* crude_json.cpp in Sources */,
+				047BF1E027AFAF4C003F3599 /* imgui_zmo.cpp in Sources */,
+				047BF1E127AFAF4C003F3599 /* main.cpp in Sources */,
+				047BF1DF27AFAF4C003F3599 /* imgui_node_editor.cpp in Sources */,
+				047BF1E427AFAF4C003F3599 /* imgui_canvas.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -2530,6 +2680,16 @@
 			isa = PBXTargetDependency;
 			target = 041282EB279ECF3D0071BD86 /* vox.math */;
 			targetProxy = 0412841B279ED1E40071BD86 /* PBXContainerItemProxy */;
+		};
+		047BF1E727AFAFDF003F3599 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 041282EB279ECF3D0071BD86 /* vox.math */;
+			targetProxy = 047BF1E627AFAFDF003F3599 /* PBXContainerItemProxy */;
+		};
+		047BF1E927AFAFDF003F3599 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 04128423279ED3510071BD86 /* vox.render */;
+			targetProxy = 047BF1E827AFAFDF003F3599 /* PBXContainerItemProxy */;
 		};
 		0495476427A295A100783C84 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -3149,6 +3309,276 @@
 			};
 			name = Release;
 		};
+		047BF1C327AFAE81003F3599 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = editor/editor.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4SL5L673UU;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					DAWN_ENABLE_BACKEND_METAL,
+					DAWN_ENABLE_BACKEND_NULL,
+					"$(inherited)",
+					TINT_BUILD_WGSL_READER,
+					DISABLE_CUDA_PHYSX,
+					PX_PHYSX_CORE_EXPORTS,
+					_DEBUG,
+					"'PX_DEBUG=1'",
+					"'PX_CHECKED=1'",
+					"'PX_NVTX=0'",
+					"'PX_SUPPORT_PVD=1'",
+				);
+				HEADER_SEARCH_PATHS = (
+					./vox.render,
+					./vox.math,
+				);
+				LD_RUNPATH_SEARCH_PATHS = (
+					../third_party/glog/build,
+					../third_party/ktx/build,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"./third_party/dawn/cmake-debug/src/common",
+					"./third_party/dawn/cmake-debug/src/dawn",
+					"./third_party/dawn/cmake-debug/src/dawn_native",
+					"./third_party/dawn/cmake-debug/src/dawn_platform",
+					"./third_party/dawn/cmake-debug/src/dawn_wire",
+					"./third_party/dawn/cmake-debug/third_party/tint/src",
+					"./third_party/dawn/cmake-debug/third_party/spirv-tools/source",
+					"./third_party/dawn/cmake-debug/third_party/spirv-tools/source/opt",
+					"./third_party/dawn/cmake-debug/third_party/abseil/absl/strings",
+					"./third_party/dawn/cmake-debug/third_party/abseil/absl/base",
+					"./third_party/dawn/cmake-debug/third_party/abseil/absl/numeric",
+					"./third_party/dawn/cmake-debug/third_party/glfw/src",
+					"./third_party/dawn/cmake-debug/examples",
+					./third_party/glog/build,
+					./third_party/fmt/build,
+					./third_party/ktx/build,
+					./third_party/glfw/build/src,
+					./third_party/physX/physx/bin/linux.clang/debug,
+					./third_party/ozz/build_debug/src/base,
+					./third_party/ozz/build_debug/src/animation/runtime,
+					./third_party/ozz/build_debug/src/geometry/runtime,
+				);
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-Wl,-headerpad_max_install_names",
+					"-lglfw3",
+					"-labsl_str_format_internal",
+					"-labsl_strings_internal",
+					"-labsl_strings",
+					"-labsl_base",
+					"-labsl_spinlock_wait",
+					"-labsl_raw_logging_internal",
+					"-labsl_throw_delegate",
+					"-labsl_log_severity",
+					"-labsl_int128",
+					"-ldawn_common",
+					"-ldawn_headers",
+					"-ldawncpp_headers",
+					"-ldawncpp",
+					"-ldawn_proc",
+					"-ldawn_platform",
+					"-ldawn_wire",
+					"-ltint",
+					"-ltint_diagnostic_utils",
+					"-lSPIRV-Tools",
+					"-lSPIRV-Tools-opt",
+					"-ldawn_sample_utils",
+					"-ldawn_native",
+					"-lglog",
+					"-lfmt",
+					"-lktx",
+					"-lPhysX_static_64",
+					"-lPhysXCommon_static_64",
+					"-lPhysXFoundation_static_64",
+					"-lPhysXPvdSDK_static_64",
+					"-lPhysXExtensions_static_64",
+					"-lPhysXCharacterKinematic_static_64",
+					"-lozz_base_d",
+					"-lozz_animation_d",
+					"-lozz_geometry_d",
+					"/Applications/Autodesk/FBX\\ SDK/2016.1.2/lib/clang/debug/libfbxsdk.a",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					./third_party/glfw/include,
+					./third_party/glog/build,
+					./third_party/glog/src,
+					./third_party/gflags/builds/include,
+					./third_party/dawn/src,
+					./third_party/dawn/src/include,
+					./third_party/dawn/third_party/glfw/include,
+					"./third_party/dawn/cmake-debug/gen/src/include",
+					./third_party/dawn/third_party/tint/include,
+					./third_party/dawn/third_party/tint,
+					./third_party/fmt/include,
+					./third_party/stb,
+					./third_party/tinyobj,
+					./third_party/tinygltf,
+					./third_party/ktx/include,
+					./third_party/astc/Source,
+					./third_party/physx/physx/source/common/src/mac,
+					./third_party/physx/physx/include,
+					./third_party/physx/physx/source/common/include,
+					./third_party/physx/physx/source/common/src,
+					./third_party/physx/physx/source/geomutils/include,
+					./third_party/physx/physx/source/geomutils/src,
+					./third_party/physx/physx/source/geomutils/src/contact,
+					./third_party/physx/physx/source/geomutils/src/common,
+					./third_party/physx/physx/source/geomutils/src/convex,
+					./third_party/physx/physx/source/geomutils/src/distance,
+					./third_party/physx/physx/source/geomutils/src/sweep,
+					./third_party/physx/physx/source/geomutils/src/gjk,
+					./third_party/physx/physx/source/geomutils/src/intersection,
+					./third_party/physx/physx/source/geomutils/src/mesh,
+					./third_party/physx/physx/source/geomutils/src/hf,
+					./third_party/physx/physx/source/geomutils/src/pcm,
+					./third_party/physx/physx/source/geomutils/src/ccd,
+					./third_party/physx/physx/source/physxgpu/include,
+					./third_party/physx/physx/../pxshared/include,
+					./third_party/physx/physx/source/foundation/include,
+					./third_party/ozz/include,
+					"/Applications/Autodesk/FBX\\ SDK/2016.1.2/include",
+				);
+			};
+			name = Debug;
+		};
+		047BF1C427AFAE81003F3599 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = editor/editor.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4SL5L673UU;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					DAWN_ENABLE_BACKEND_METAL,
+					DAWN_ENABLE_BACKEND_NULL,
+					"$(inherited)",
+					DISABLE_CUDA_PHYSX,
+					PX_PHYSX_CORE_EXPORTS,
+					NDEBUG,
+					"'PX_SUPPORT_PVD=0'",
+				);
+				HEADER_SEARCH_PATHS = (
+					./vox.render,
+					./vox.math,
+				);
+				LD_RUNPATH_SEARCH_PATHS = (
+					../third_party/glog/build,
+					../third_party/ktx/build,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"./third_party/dawn/cmake-release/src/common",
+					"./third_party/dawn/cmake-release/src/dawn",
+					"./third_party/dawn/cmake-release/src/dawn_native",
+					"./third_party/dawn/cmake-release/src/dawn_platform",
+					"./third_party/dawn/cmake-release/src/dawn_wire",
+					"./third_party/dawn/cmake-release/third_party/tint/src",
+					"./third_party/dawn/cmake-release/third_party/spirv-tools/source",
+					"./third_party/dawn/cmake-release/third_party/spirv-tools/source/opt",
+					"./third_party/dawn/cmake-release/third_party/abseil/absl/strings",
+					"./third_party/dawn/cmake-release/third_party/abseil/absl/base",
+					"./third_party/dawn/cmake-release/third_party/abseil/absl/numeric",
+					"./third_party/dawn/cmake-release/third_party/glfw/src",
+					"./third_party/dawn/cmake-release/examples",
+					./third_party/glog/build,
+					./third_party/fmt/build,
+					./third_party/ktx/build,
+					./third_party/glfw/build/src,
+					./third_party/physX/physx/bin/linux.clang/release,
+					./third_party/ozz/build_release/src/base,
+					./third_party/ozz/build_release/src/animation/runtime,
+					./third_party/ozz/build_release/src/geometry/runtime,
+				);
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-Wl,-headerpad_max_install_names",
+					"-lglfw3",
+					"-labsl_str_format_internal",
+					"-labsl_strings_internal",
+					"-labsl_strings",
+					"-labsl_base",
+					"-labsl_spinlock_wait",
+					"-labsl_raw_logging_internal",
+					"-labsl_throw_delegate",
+					"-labsl_log_severity",
+					"-labsl_int128",
+					"-ldawn_common",
+					"-ldawn_headers",
+					"-ldawncpp_headers",
+					"-ldawncpp",
+					"-ldawn_proc",
+					"-ldawn_platform",
+					"-ldawn_wire",
+					"-ltint",
+					"-ltint_diagnostic_utils",
+					"-lSPIRV-Tools",
+					"-lSPIRV-Tools-opt",
+					"-ldawn_sample_utils",
+					"-ldawn_native",
+					"-lglog",
+					"-lfmt",
+					"-lktx",
+					"-lPhysX_static_64",
+					"-lPhysXCommon_static_64",
+					"-lPhysXFoundation_static_64",
+					"-lPhysXPvdSDK_static_64",
+					"-lPhysXExtensions_static_64",
+					"-lPhysXCharacterKinematic_static_64",
+					"-lozz_base_r",
+					"-lozz_animation_r",
+					"-lozz_geometry_r",
+					"/Applications/Autodesk/FBX\\ SDK/2016.1.2/lib/clang/release/libfbxsdk.a",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					./third_party/glfw/include,
+					./third_party/glog/build,
+					./third_party/glog/src,
+					./third_party/gflags/builds/include,
+					./third_party/dawn/src,
+					./third_party/dawn/src/include,
+					./third_party/dawn/third_party/glfw/include,
+					"./third_party/dawn/cmake-release/gen/src/include",
+					./third_party/dawn/third_party/tint/include,
+					./third_party/dawn/third_party/tint,
+					./third_party/fmt/include,
+					./third_party/stb,
+					./third_party/tinyobj,
+					./third_party/tinygltf,
+					./third_party/ktx/include,
+					./third_party/astc/Source,
+					./third_party/physx/physx/source/common/src/mac,
+					./third_party/physx/physx/include,
+					./third_party/physx/physx/source/common/include,
+					./third_party/physx/physx/source/common/src,
+					./third_party/physx/physx/source/geomutils/include,
+					./third_party/physx/physx/source/geomutils/src,
+					./third_party/physx/physx/source/geomutils/src/contact,
+					./third_party/physx/physx/source/geomutils/src/common,
+					./third_party/physx/physx/source/geomutils/src/convex,
+					./third_party/physx/physx/source/geomutils/src/distance,
+					./third_party/physx/physx/source/geomutils/src/sweep,
+					./third_party/physx/physx/source/geomutils/src/gjk,
+					./third_party/physx/physx/source/geomutils/src/intersection,
+					./third_party/physx/physx/source/geomutils/src/mesh,
+					./third_party/physx/physx/source/geomutils/src/hf,
+					./third_party/physx/physx/source/geomutils/src/pcm,
+					./third_party/physx/physx/source/geomutils/src/ccd,
+					./third_party/physx/physx/source/physxgpu/include,
+					./third_party/physx/physx/../pxshared/include,
+					./third_party/physx/physx/source/foundation/include,
+					./third_party/ozz/include,
+					"/Applications/Autodesk/FBX\\ SDK/2016.1.2/include",
+				);
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -3193,6 +3623,15 @@
 			buildConfigurations = (
 				043B7B62278C4C5A00D5648F /* Debug */,
 				043B7B63278C4C5A00D5648F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		047BF1C227AFAE81003F3599 /* Build configuration list for PBXNativeTarget "editor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				047BF1C327AFAE81003F3599 /* Debug */,
+				047BF1C427AFAE81003F3599 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

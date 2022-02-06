@@ -9,6 +9,11 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>editor.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
 		<key>unit_tests.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
@@ -28,6 +33,11 @@
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>041283AF279ED0D60071BD86</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>047BF1BD27AFAE81003F3599</key>
 		<dict>
 			<key>primary</key>
 			<true/>
