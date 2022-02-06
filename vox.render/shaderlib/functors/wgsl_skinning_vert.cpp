@@ -5,6 +5,7 @@
 //  property of any third parties.
 
 #include "wgsl_skinning_vert.h"
+#include <fmt/core.h>
 
 namespace vox {
 WGSLSkinningVert::WGSLSkinningVert(const std::string& input, const std::string& output):
@@ -15,15 +16,15 @@ _output(output) {
 void WGSLSkinningVert::operator()(std::string& source, const ShaderMacroCollection& macros) {
     if (macros.contains(HAS_SKIN)) {
         if (macros.contains(HAS_JOINT_TEXTURE)) {
-            source += "mat4x4<f32> skinMatrix = WEIGHTS_0.x * getJointMatrix(u_jointSampler, JOINTS_0.x ) +\n";
-            source += "WEIGHTS_0.y * getJointMatrix(u_jointSampler, JOINTS_0.y ) +\n";
-            source += "WEIGHTS_0.z * getJointMatrix(u_jointSampler, JOINTS_0.z ) +\n";
-            source += "WEIGHTS_0.w * getJointMatrix(u_jointSampler, JOINTS_0.w );\n";
+            source += fmt::format("var skinMatrix = {}.Weights_0.x * getJointMatrix(u_jointSampler, {}.Joints_0.x ) +\n", _input, _input);
+            source += fmt::format("{}.Weights_0.y * getJointMatrix(u_jointSampler, {}.Joints_0.y ) +\n", _input, _input);
+            source += fmt::format("{}.Weights_0.z * getJointMatrix(u_jointSampler, {}.Joints_0.z ) +\n", _input, _input);
+            source += fmt::format("{}.Weights_0.w * getJointMatrix(u_jointSampler, {}.Joints_0.w );\n", _input, _input);
         } else {
-            source += "mat4x4<f32> skinMatrix = WEIGHTS_0.x * u_jointMatrix[ int( JOINTS_0.x ) ] +\n";
-            source += "WEIGHTS_0.y * u_jointMatrix[ int( JOINTS_0.y ) ] +\n";
-            source += "WEIGHTS_0.z * u_jointMatrix[ int( JOINTS_0.z ) ] +\n";
-            source += "WEIGHTS_0.w * u_jointMatrix[ int( JOINTS_0.w ) ];\n";
+            source += fmt::format("var skinMatrix = {}.Weights_0.x * u_jointMatrix[ i32( {}.Joints_0.x ) ] +\n", _input, _input);
+            source += fmt::format("{}.Weights_0.y * u_jointMatrix[ i32( {}.Joints_0.y ) ] +\n", _input, _input);
+            source += fmt::format("{}.Weights_0.z * u_jointMatrix[ i32( {}.Joints_0.z ) ] +\n", _input, _input);
+            source += fmt::format("{}.Weights_0.w * u_jointMatrix[ i32( {}.Joints_0.w ) ];\n", _input, _input);
         }
         source += "position = skinMatrix * position;\n";
         if (macros.contains(HAS_NORMAL) && !macros.contains(OMIT_NORMAL)) {

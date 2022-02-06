@@ -41,6 +41,7 @@ void GPUSkinnedMeshRenderer::update(float deltaTime) {
             std::copy(jointMat.data(), jointMat.data() + 16, jointMatrix.data() + i * 16);
         }
         shaderData.setData(_jointMatrixProperty, jointMatrix);
+        shaderData.enableMacro(JOINTS_COUNT, _skin->joints.size());
     }
 }
 
