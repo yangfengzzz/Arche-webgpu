@@ -108,7 +108,7 @@ bool EditorApplication::resize(uint32_t win_width, uint32_t win_height,
     _colorPickerTextureDesc.size.height = fb_height;
     _colorPickerTexture = _device.CreateTexture(&_colorPickerTextureDesc);
     
-    _colorPickerColorAttachments.resolveTarget = _colorPickerTexture.CreateView();
+    _colorPickerColorAttachments.view = _colorPickerTexture.CreateView();
     _colorPickerDepthStencilAttachment.view = _renderContext->depthStencilTexture();
 
     return true;
