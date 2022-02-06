@@ -55,11 +55,11 @@ public:
     }
     
     void onTriggerExit(physics::ColliderShapePtr other) override {
-        static_cast<UnlitMaterial *>(sphereRenderer->getMaterial().get())->setBaseColor(Color(u(e), u(e), u(e), 1));
+        static_cast<BlinnPhongMaterial *>(sphereRenderer->getMaterial().get())->setBaseColor(Color(u(e), u(e), u(e), 1));
     }
     
     void onTriggerEnter(physics::ColliderShapePtr other) override {
-        static_cast<UnlitMaterial *>(sphereRenderer->getMaterial().get())->setBaseColor(Color(u(e), u(e), u(e), 1));
+        static_cast<BlinnPhongMaterial *>(sphereRenderer->getMaterial().get())->setBaseColor(Color(u(e), u(e), u(e), 1));
     }
 };
 } // namespace
