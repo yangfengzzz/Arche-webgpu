@@ -59,6 +59,10 @@ private:
     wgpu::Buffer _stageBuffer;
     void _copyRenderTargetToBuffer(wgpu::CommandEncoder& commandEncoder);
     void _readColorFromRenderTarget();
+    
+    wgpu::ImageCopyTexture _imageCopyTexture;
+    wgpu::ImageCopyBuffer _imageCopyBuffer;
+    wgpu::Extent3D _extent;
 };
 
 }

@@ -55,6 +55,13 @@ void ColorPickerSubpass::_drawMeshes(wgpu::RenderPassEncoder &passEncoder) {
     std::sort(alphaTestQueue.begin(), alphaTestQueue.end(), _compareFromNearToFar);
     std::sort(transparentQueue.begin(), transparentQueue.end(), _compareFromFarToNear);
     
+    // prealloc buffer
+    size_t total = opaqueQueue.size() + alphaTestQueue.size() + transparentQueue.size();
+    _bufferPool.reserve(total);
+    for (size_t i = _bufferPool.size(); i < total; i++) {
+        _bufferPool.push_back(Buffer(_renderContext->device(), sizeof(Color), wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst));
+    }
+    
     _drawElement(passEncoder, opaqueQueue, compileMacros);
     _drawElement(passEncoder, alphaTestQueue, compileMacros);
     _drawElement(passEncoder, transparentQueue, compileMacros);
@@ -70,10 +77,13 @@ void ColorPickerSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
         auto& mesh = element.mesh;
         auto& subMesh = element.subMesh;
         
-        _currentId += 1;
         _primitivesMap[_currentId] = std::make_pair(renderer, mesh);
         Vector3F color = id2Color(_currentId);
-        _material->setBaseColor(Color(color.z, color.y, color.x, 1));
+        auto reverseColor = Color(color.z, color.y, color.x, 1);
+        Buffer& buffer = _bufferPool[_currentId];
+        buffer.uploadData(_renderContext->device(), &reverseColor, sizeof(Color));
+        _currentId += 1;
+
         // PSO
         {
             const std::string& vertexSource = _material->shader->vertexSource(macros);
@@ -94,7 +104,7 @@ void ColorPickerSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
                     auto& entry = layoutDesc.second.entries[i];
                     _bindGroupEntries[i].binding = entry.binding;
                     if (entry.buffer.type != wgpu::BufferBindingType::Undefined) {
-                        _bindingData(_bindGroupEntries[i], _material, renderer);
+                        _bindingData(_bindGroupEntries[i], buffer, renderer);
                     }
                 }
                 _bindGroupDescriptor.layout = bindGroupLayout;
@@ -138,7 +148,7 @@ void ColorPickerSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
 }
 
 void ColorPickerSubpass::_bindingData(wgpu::BindGroupEntry& entry,
-                                      MaterialPtr mat, Renderer* renderer) {
+                                      Buffer& buffer, Renderer* renderer) {
     auto group = Shader::getShaderPropertyGroup(entry.binding);
     if (group.has_value()) {
         switch (*group) {
@@ -158,8 +168,8 @@ void ColorPickerSubpass::_bindingData(wgpu::BindGroupEntry& entry,
                 break;
                 
             case ShaderDataGroup::Material:
-                entry.buffer = mat->shaderData.getData(entry.binding)->handle();
-                entry.size = mat->shaderData.getData(entry.binding)->size();
+                entry.buffer = buffer.handle();
+                entry.size = sizeof(Color);
                 break;
                 
             default:

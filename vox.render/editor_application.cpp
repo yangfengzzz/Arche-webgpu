@@ -30,16 +30,17 @@ bool EditorApplication::prepare(Engine &engine) {
     _colorPickerTexture = _device.CreateTexture(&_colorPickerTextureDesc);
     _colorPickerTexture.SetLabel("ColorPicker Texture");
     
-    _colorPickerPassDescriptor.colorAttachmentCount = 1;
-    _colorPickerPassDescriptor.colorAttachments = &_colorPickerColorAttachments;
-    _colorPickerPassDescriptor.depthStencilAttachment = &_colorPickerDepthStencilAttachment;
-    
     _colorPickerColorAttachments.storeOp = wgpu::StoreOp::Store;
     _colorPickerColorAttachments.loadOp = wgpu::LoadOp::Clear;
+    _colorPickerColorAttachments.clearColor = wgpu::Color{1, 1, 1, 1};
     _colorPickerDepthStencilAttachment.depthLoadOp = wgpu::LoadOp::Clear;
     _colorPickerDepthStencilAttachment.clearDepth = 1.0;
     _colorPickerDepthStencilAttachment.depthStoreOp = wgpu::StoreOp::Discard;
     _colorPickerDepthStencilAttachment.stencilStoreOp = wgpu::StoreOp::Discard;
+    
+    _colorPickerPassDescriptor.colorAttachmentCount = 1;
+    _colorPickerPassDescriptor.colorAttachments = &_colorPickerColorAttachments;
+    _colorPickerPassDescriptor.depthStencilAttachment = &_colorPickerDepthStencilAttachment;
     
     _colorPickerRenderPass = std::make_unique<RenderPass>(_device, _colorPickerPassDescriptor);
     auto colorPickerSubpass = std::make_unique<ColorPickerSubpass>(_renderContext.get(), _scene.get(), _mainCamera);
@@ -50,6 +51,16 @@ bool EditorApplication::prepare(Engine &engine) {
     bufferDesc.usage = wgpu::BufferUsage::MapRead | wgpu::BufferUsage::CopyDst;
     bufferDesc.size = 4;
     _stageBuffer = _device.CreateBuffer(&bufferDesc);
+    
+    _imageCopyTexture.texture = _colorPickerTexture;
+    _imageCopyTexture.mipLevel = 0;
+    _imageCopyTexture.aspect = wgpu::TextureAspect::All;
+        
+    _imageCopyBuffer.buffer = _stageBuffer;
+    _imageCopyBuffer.layout.offset = 0;
+    
+    _extent.width = 1;
+    _extent.height = 1;
     
     return true;
 }
@@ -76,13 +87,17 @@ void EditorApplication::update(float delta_time) {
     
     // Finalize rendering here & push the command buffer to the GPU
     wgpu::CommandBuffer commands = commandEncoder.Finish();
+    _device.GetQueue().OnSubmittedWorkDone(0, [](WGPUQueueWorkDoneStatus status, void * userdata) {
+        if (status == WGPUQueueWorkDoneStatus_Success) {
+            EditorApplication* app = static_cast<EditorApplication*>(userdata);
+            if (app->_needPick) {
+                app->_readColorFromRenderTarget();
+                app->_needPick = false;
+            }
+        }
+    }, this);
     _device.GetQueue().Submit(1, &commands);
     _renderContext->present();
-
-    if (_needPick) {
-        _readColorFromRenderTarget();
-        _needPick = false;
-    }
 }
 
 bool EditorApplication::resize(uint32_t win_width, uint32_t win_height,
@@ -122,19 +137,8 @@ void EditorApplication::_copyRenderTargetToBuffer(wgpu::CommandEncoder& commandE
     const uint32_t left = std::floor(nx * (canvasWidth - 1));
     const uint32_t bottom = std::floor((1 - ny) * (canvasHeight - 1));
     
-    wgpu::ImageCopyTexture imageCopyTexture;
-    imageCopyTexture.texture = _colorPickerTexture;
-    imageCopyTexture.mipLevel = 0;
-    imageCopyTexture.origin = wgpu::Origin3D{left, canvasHeight - bottom, 0};
-    imageCopyTexture.aspect = wgpu::TextureAspect::All;
-        
-    wgpu::ImageCopyBuffer imageCopyBuffer;
-    imageCopyBuffer.buffer = _stageBuffer;
-    imageCopyBuffer.layout.offset = 0;
-    imageCopyBuffer.layout.bytesPerRow = sizeof(uint8_t) * 4 * _colorPickerTextureDesc.size.width;
-    
-    wgpu::Extent3D extent{1, 1, 0};
-    commandEncoder.CopyTextureToBuffer(&imageCopyTexture, &imageCopyBuffer, &extent);
+    _imageCopyTexture.origin = wgpu::Origin3D{left, canvasHeight - bottom, 0};
+    commandEncoder.CopyTextureToBuffer(&_imageCopyTexture, &_imageCopyBuffer, &_extent);
 }
 
 void EditorApplication::_readColorFromRenderTarget() {

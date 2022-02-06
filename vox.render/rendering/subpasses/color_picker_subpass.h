@@ -46,7 +46,7 @@ private:
                       const ShaderMacroCollection& compileMacros);
     
     void _bindingData(wgpu::BindGroupEntry& entry,
-                      MaterialPtr mat, Renderer* renderer);
+                      Buffer& buffer, Renderer* renderer);
     
     wgpu::RenderPipelineDescriptor _forwardPipelineDescriptor;
     wgpu::DepthStencilState _depthStencil;
@@ -59,9 +59,10 @@ private:
     wgpu::PipelineLayoutDescriptor _pipelineLayoutDescriptor;
     wgpu::PipelineLayout _pipelineLayout;
     
-    std::shared_ptr<UnlitMaterial> _material{nullptr};
     uint32_t _currentId = 0;
     std::unordered_map<size_t, std::pair<Renderer *, MeshPtr>> _primitivesMap;
+    std::vector<Buffer> _bufferPool;
+    std::shared_ptr<UnlitMaterial> _material{nullptr};
 };
 
 }
