@@ -233,7 +233,7 @@ void GLTFLoader::loadNode(EntityPtr parent, const tinygltf::Node& node, uint32_t
         newNode->transform->setLocalMatrix(m);
     }
     
-    if (node.mesh > 0) {
+    if (node.mesh >= 0) {
         const auto& meshMats = renderers[node.mesh];
         for (const auto& meshMat : meshMats) {
             auto renderer = newNode->addComponent<GPUSkinnedMeshRenderer>();
