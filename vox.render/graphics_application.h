@@ -10,6 +10,7 @@
 #include "application.h"
 #include "rendering/render_pass.h"
 #include "scene.h"
+#include "gui.h"
 
 namespace vox {
 class GraphicsApplication : public Application {
@@ -46,12 +47,12 @@ protected:
      */
     wgpu::Device _device;
     
-    wgpu::Queue _queue;
-
     /**
      * @brief View used for rendering, it is responsible for managing the frames and their underlying images
      */
     std::unique_ptr<RenderContext> _renderContext{nullptr};
+    
+    std::unique_ptr<GUI> _gui{nullptr};
 };
 
 }        // namespace vox

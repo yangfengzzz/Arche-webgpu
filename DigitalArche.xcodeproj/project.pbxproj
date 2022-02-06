@@ -371,6 +371,10 @@
 		047BF19E27AE718E003F3599 /* gltf_loader.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF19C27AE718E003F3599 /* gltf_loader.h */; };
 		047BF1A127AEB941003F3599 /* gltf_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1A027AEB941003F3599 /* gltf_app.cpp */; };
 		047BF1A427AF7F2A003F3599 /* scene_animation_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1A327AF7F2A003F3599 /* scene_animation_app.cpp */; };
+		047BF1A727AF9821003F3599 /* imgui_impl_wgpu.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF1A527AF9821003F3599 /* imgui_impl_wgpu.h */; };
+		047BF1A827AF9821003F3599 /* imgui_impl_wgpu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1A627AF9821003F3599 /* imgui_impl_wgpu.cpp */; };
+		047BF1AB27AF9905003F3599 /* gui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1A927AF9905003F3599 /* gui.cpp */; };
+		047BF1AC27AF9905003F3599 /* gui.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF1AA27AF9905003F3599 /* gui.h */; };
 		0495463B279F89E500783C84 /* shader_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954634279F89E400783C84 /* shader_data.h */; };
 		0495463C279F89E500783C84 /* shader_property.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954635279F89E400783C84 /* shader_property.h */; };
 		0495463D279F89E500783C84 /* shader_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954636279F89E400783C84 /* shader_data.cpp */; };
@@ -907,6 +911,10 @@
 		047BF1A027AEB941003F3599 /* gltf_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gltf_app.cpp; sourceTree = "<group>"; };
 		047BF1A227AF7F2A003F3599 /* scene_animation_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scene_animation_app.h; sourceTree = "<group>"; };
 		047BF1A327AF7F2A003F3599 /* scene_animation_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scene_animation_app.cpp; sourceTree = "<group>"; };
+		047BF1A527AF9821003F3599 /* imgui_impl_wgpu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imgui_impl_wgpu.h; sourceTree = "<group>"; };
+		047BF1A627AF9821003F3599 /* imgui_impl_wgpu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_impl_wgpu.cpp; sourceTree = "<group>"; };
+		047BF1A927AF9905003F3599 /* gui.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gui.cpp; sourceTree = "<group>"; };
+		047BF1AA27AF9905003F3599 /* gui.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gui.h; sourceTree = "<group>"; };
 		04954634279F89E400783C84 /* shader_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_data.h; sourceTree = "<group>"; };
 		04954635279F89E400783C84 /* shader_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_property.h; sourceTree = "<group>"; };
 		04954636279F89E400783C84 /* shader_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader_data.cpp; sourceTree = "<group>"; };
@@ -1246,6 +1254,8 @@
 				0412842F279ED3A50071BD86 /* input_events.h */,
 				0412843A279ED3A60071BD86 /* input_events.cpp */,
 				0412844B279ED4870071BD86 /* gui */,
+				047BF1AA27AF9905003F3599 /* gui.h */,
+				047BF1A927AF9905003F3599 /* gui.cpp */,
 				04128439279ED3A50071BD86 /* engine.h */,
 				0412843B279ED3A60071BD86 /* engine.cpp */,
 				0412843C279ED3A60071BD86 /* unix_engine.h */,
@@ -1319,6 +1329,8 @@
 				04128450279ED4B00071BD86 /* imstb_truetype.h */,
 				0412844F279ED4B00071BD86 /* imgui_impl_glfw.h */,
 				04128457279ED4B10071BD86 /* imgui_impl_glfw.cpp */,
+				047BF1A527AF9821003F3599 /* imgui_impl_wgpu.h */,
+				047BF1A627AF9821003F3599 /* imgui_impl_wgpu.cpp */,
 			);
 			path = gui;
 			sourceTree = "<group>";
@@ -2046,6 +2058,7 @@
 				047BF10F27ACEBBF003F3599 /* character_controller.h in Headers */,
 				04128472279EED090071BD86 /* stencil_state.h in Headers */,
 				04128462279ED4B10071BD86 /* imconfig.h in Headers */,
+				047BF1A727AF9821003F3599 /* imgui_impl_wgpu.h in Headers */,
 				0412846E279EEB8B0071BD86 /* raster_state.h in Headers */,
 				047BF00C27A56500003F3599 /* wgsl_cache.h in Headers */,
 				04954688279F8CD600783C84 /* camera.h in Headers */,
@@ -2101,6 +2114,7 @@
 				04128444279ED3A60071BD86 /* application.h in Headers */,
 				047BF13C27ACF245003F3599 /* fbx_mesh.h in Headers */,
 				04954685279F8CD600783C84 /* scene.h in Headers */,
+				047BF1AC27AF9905003F3599 /* gui.h in Headers */,
 				049546F2279FC75900783C84 /* subpass.h in Headers */,
 				047BEFD727A4BFD9003F3599 /* wgsl_common_vert.h in Headers */,
 				0495474327A2640900783C84 /* index_buffer_binding.h in Headers */,
@@ -2294,6 +2308,7 @@
 				04128469279EDB2C0071BD86 /* blend_state.cpp in Sources */,
 				047BF08327ABB82B003F3599 /* wgsl_normal_share.cpp in Sources */,
 				047BF07827A6819C003F3599 /* mathlib.cpp in Sources */,
+				047BF1AB27AF9905003F3599 /* gui.cpp in Sources */,
 				047BF18027AE1A40003F3599 /* wgsl_skybox.cpp in Sources */,
 				0495474F27A2714200783C84 /* buffer_mesh.cpp in Sources */,
 				047BF0E827ACEBAE003F3599 /* physics.cpp in Sources */,
@@ -2432,6 +2447,7 @@
 				047BF07627A6819C003F3599 /* astc_kmeans_partitioning.cpp in Sources */,
 				047BF06827A6819C003F3599 /* astc_color_unquantize.cpp in Sources */,
 				047BF15527AD0776003F3599 /* wgsl_pbr_frag_define.cpp in Sources */,
+				047BF1A827AF9821003F3599 /* imgui_impl_wgpu.cpp in Sources */,
 				047BF0FC27ACEBB7003F3599 /* fixed_joint.cpp in Sources */,
 				047BF02827A6659E003F3599 /* astc.cpp in Sources */,
 				04954652279F8AE900783C84 /* base_material.cpp in Sources */,

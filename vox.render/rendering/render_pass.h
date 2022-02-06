@@ -9,7 +9,7 @@
 
 #include "subpass.h"
 #include "resource_cache.h"
-//#include "gui.h"
+#include "gui.h"
 #include <vector>
 
 namespace vox {
@@ -31,6 +31,8 @@ public:
               std::optional<std::string> label = std::nullopt);
         
     const wgpu::RenderPassDescriptor& renderPassDescriptor();
+    
+    void setGUI(GUI* gui);
         
 public:
     /**
@@ -68,6 +70,8 @@ private:
     std::unordered_map<std::string, RenderPass*> _parentPass;
     
     ResourceCache _resourceCache;
+    
+    GUI* _gui{nullptr};
 };
 
 }
