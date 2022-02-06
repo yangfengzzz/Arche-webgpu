@@ -55,7 +55,10 @@ private:
     std::unique_ptr<RenderPass> _colorPickerRenderPass{nullptr};
     ColorPickerSubpass* _colorPickerSubpass{nullptr};
     
-    std::array<uint8_t, 4> _readColorFromRenderTarget();
+    std::array<uint8_t, 4> _pixel{};
+    wgpu::Buffer _stageBuffer;
+    void _copyRenderTargetToBuffer(wgpu::CommandEncoder& commandEncoder);
+    void _readColorFromRenderTarget();
 };
 
 }

@@ -26,7 +26,7 @@ bool EditorApplication::prepare(Engine &engine) {
     _colorPickerTextureDesc.size.height = extent.height * scale;
     _colorPickerTextureDesc.mipLevelCount = 1;
     _colorPickerTextureDesc.dimension = wgpu::TextureDimension::e2D;
-    _colorPickerTextureDesc.usage = wgpu::TextureUsage::RenderAttachment;
+    _colorPickerTextureDesc.usage = wgpu::TextureUsage::RenderAttachment | wgpu::TextureUsage::CopySrc;
     _colorPickerTexture = _device.CreateTexture(&_colorPickerTextureDesc);
     _colorPickerTexture.SetLabel("ColorPicker Texture");
     
@@ -45,6 +45,11 @@ bool EditorApplication::prepare(Engine &engine) {
     auto colorPickerSubpass = std::make_unique<ColorPickerSubpass>(_renderContext.get(), _scene.get(), _mainCamera);
     _colorPickerSubpass = colorPickerSubpass.get();
     _colorPickerRenderPass->addSubpass(std::move(colorPickerSubpass));
+    
+    wgpu::BufferDescriptor bufferDesc;
+    bufferDesc.usage = wgpu::BufferUsage::MapRead | wgpu::BufferUsage::CopyDst;
+    bufferDesc.size = 4;
+    _stageBuffer = _device.CreateBuffer(&bufferDesc);
     
     return true;
 }
@@ -66,6 +71,7 @@ void EditorApplication::update(float delta_time) {
         _colorPickerColorAttachments.view = _colorPickerTexture.CreateView();
         _colorPickerDepthStencilAttachment.view = _renderContext->depthStencilTexture();
         _colorPickerRenderPass->draw(commandEncoder, "color Picker Pass");
+        _copyRenderTargetToBuffer(commandEncoder);
     }
     
     // Finalize rendering here & push the command buffer to the GPU
@@ -74,8 +80,7 @@ void EditorApplication::update(float delta_time) {
     _renderContext->present();
 
     if (_needPick) {
-//        auto picker = _colorPickerSubpass->getObjectByColor(_readColorFromRenderTarget());
-//        pickFunctor(picker.first, picker.second);
+        _readColorFromRenderTarget();
         _needPick = false;
     }
 }
@@ -99,29 +104,50 @@ void EditorApplication::pick(float offsetX, float offsetY) {
     _pickPos = Vector2F(offsetX, offsetY);
 }
 
-std::array<uint8_t, 4> EditorApplication::_readColorFromRenderTarget() {
-    int clientWidth = _mainCamera->width();
-    int clientHeight = _mainCamera->height();
-    int canvasWidth = static_cast<int>(_colorPickerTextureDesc.size.width);
-    int canvasHeight = static_cast<int>(_colorPickerTextureDesc.size.width);
+void EditorApplication::_copyRenderTargetToBuffer(wgpu::CommandEncoder& commandEncoder) {
+    uint32_t clientWidth = _mainCamera->width();
+    uint32_t clientHeight = _mainCamera->height();
+    uint32_t canvasWidth = static_cast<uint32_t>(_colorPickerTextureDesc.size.width);
+    uint32_t canvasHeight = static_cast<uint32_t>(_colorPickerTextureDesc.size.height);
 
-    const auto px = (_pickPos.x / clientWidth) * canvasWidth;
-    const auto py = (_pickPos.y / clientHeight) * canvasHeight;
+    const float px = (_pickPos.x / clientWidth) * canvasWidth;
+    const float py = (_pickPos.y / clientHeight) * canvasHeight;
 
     const auto viewport = _mainCamera->viewport();
     const auto viewWidth = (viewport.z - viewport.x) * canvasWidth;
     const auto viewHeight = (viewport.w - viewport.y) * canvasHeight;
 
-    const auto nx = (px - viewport.x) / viewWidth;
-    const auto ny = (py - viewport.y) / viewHeight;
-    const auto left = std::floor(nx * (canvasWidth - 1));
-    const auto bottom = std::floor((1 - ny) * (canvasHeight - 1));
-    std::array<uint8_t, 4> pixel;
+    const float nx = (px - viewport.x) / viewWidth;
+    const float ny = (py - viewport.y) / viewHeight;
+    const uint32_t left = std::floor(nx * (canvasWidth - 1));
+    const uint32_t bottom = std::floor((1 - ny) * (canvasHeight - 1));
+    
+    wgpu::ImageCopyTexture imageCopyTexture;
+    imageCopyTexture.texture = _colorPickerTexture;
+    imageCopyTexture.mipLevel = 0;
+    imageCopyTexture.origin = wgpu::Origin3D{left, canvasHeight - bottom, 0};
+    imageCopyTexture.aspect = wgpu::TextureAspect::All;
+        
+    wgpu::ImageCopyBuffer imageCopyBuffer;
+    imageCopyBuffer.buffer = _stageBuffer;
+    imageCopyBuffer.layout.offset = 0;
+    imageCopyBuffer.layout.bytesPerRow = sizeof(uint8_t) * 4 * _colorPickerTextureDesc.size.width;
+    
+    wgpu::Extent3D extent{1, 1, 0};
+    commandEncoder.CopyTextureToBuffer(&imageCopyTexture, &imageCopyBuffer, &extent);
+}
 
-//    _colorPickerTexture.getBytes(pixel.data(), sizeof(uint8_t) * 4,
-//                                 MTL::regionMake2D(left, canvasHeight - bottom, 1, 1), 0);
-
-    return pixel;
+void EditorApplication::_readColorFromRenderTarget() {
+    _stageBuffer.MapAsync(wgpu::MapMode::Read, 0, 4, [](WGPUBufferMapAsyncStatus status, void * userdata) {
+        if (status == WGPUBufferMapAsyncStatus_Success) {
+            EditorApplication* app = static_cast<EditorApplication*>(userdata);
+            memcpy(app->_pixel.data(), app->_stageBuffer.GetConstMappedRange(0, 4), 4);
+            auto picker = app->_colorPickerSubpass->getObjectByColor(app->_pixel);
+            app->pickFunctor(picker.first, picker.second);
+            
+            app->_stageBuffer.Unmap();
+        }
+    }, this);
 }
 
 }
