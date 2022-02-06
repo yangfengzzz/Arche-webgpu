@@ -120,7 +120,7 @@ void Engine::resize(uint32_t win_width, uint32_t win_height,
 }
 
 std::unique_ptr<RenderContext> Engine::createRenderContext(wgpu::Device& device) {
-    _binding = _window->createMetalBinding(device);
+    _binding = _window->createBackendBinding(device);
     auto extent = _window->extent();
     auto scale = _window->contentScaleFactor();
     return std::make_unique<RenderContext>(_binding.get(), extent.width * scale, extent.height * scale);
@@ -158,12 +158,12 @@ bool Engine::startApp() {
     _activeApp->setName("");
     
     if (!_activeApp) {
-        LOG(ERROR) << "Failed to create a valid metal app.";
+        LOG(ERROR) << "Failed to create a valid webgpu app.";
         return false;
     }
     
     if (!_activeApp->prepare(*this)) {
-        LOG(ERROR) << "Failed to prepare metal app.";
+        LOG(ERROR) << "Failed to prepare webgpu app.";
         return false;
     }
         

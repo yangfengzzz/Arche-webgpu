@@ -1,9 +1,8 @@
+//  Copyright (c) 2022 Feng Yang
 //
-//  box_collider_shape.hpp
-//  vox.render
-//
-//  Created by 杨丰 on 2021/12/2.
-//
+//  I am making my contributions/submissions to this project solely in my
+//  personal capacity and am not conveying any rights to any intellectual
+//  property of any third parties.
 
 #ifndef box_collider_shape_hpp
 #define box_collider_shape_hpp

@@ -1,9 +1,8 @@
+//  Copyright (c) 2022 Feng Yang
 //
-//  gpu_skinned_mesh_renderer.cpp
-//  vox.render
-//
-//  Created by 杨丰 on 2021/12/16.
-//
+//  I am making my contributions/submissions to this project solely in my
+//  personal capacity and am not conveying any rights to any intellectual
+//  property of any third parties.
 
 #include "gpu_skinned_mesh_renderer.h"
 #include "entity.h"

@@ -44,7 +44,7 @@ bool GraphicsApplication::prepare(Engine &engine) {
         return false;
     }
     
-    LOG(INFO) << "Initializing Metal Application";
+    LOG(INFO) << "Initializing WebGPU Application";
     
     _createCppDawnDevice();
     _renderContext = engine.createRenderContext(_device);
