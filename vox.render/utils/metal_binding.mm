@@ -46,7 +46,7 @@ public:
                                  WGPUTextureUsage usage,
                                  uint32_t width,
                                  uint32_t height) {
-        if (format != WGPUTextureFormat_BGRA8Unorm) {
+        if (format != WGPUTextureFormat_BGRA8UnormSrgb) {
             return "unsupported format";
         }
         ASSERT(width > 0);
@@ -61,7 +61,7 @@ public:
         
         _layer = [CAMetalLayer layer];
         [_layer setDevice:_mtlDevice];
-        [_layer setPixelFormat:MTLPixelFormatBGRA8Unorm];
+        [_layer setPixelFormat:MTLPixelFormatBGRA8Unorm_sRGB];
         [_layer setDrawableSize:size];
         
         constexpr uint32_t kFramebufferOnlyTextureUsages =
@@ -121,7 +121,7 @@ public:
     }
     
     wgpu::TextureFormat preferredSwapChainTextureFormat() override {
-        return wgpu::TextureFormat::BGRA8Unorm;
+        return wgpu::TextureFormat::BGRA8UnormSrgb;
     }
     
 private:

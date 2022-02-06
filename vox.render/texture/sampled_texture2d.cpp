@@ -60,7 +60,7 @@ void SampledTexture2D::setPixelBuffer(const std::vector<uint8_t>& data,
 void SampledTexture2D::setImageSource(const Image* image) {
     for (const auto& mipmap : image->mipmaps()) {
         wgpu::ImageCopyTexture imageCopyTexture = _createImageCopyTexture(mipmap.level, {0, 0, 0});
-        wgpu::TextureDataLayout textureLayout = _createTextureDataLayout(0, bytesPerPixel(image->format()) * mipmap.extent.width, wgpu::kCopyStrideUndefined);
+        wgpu::TextureDataLayout textureLayout = _createTextureDataLayout(mipmap.offset, bytesPerPixel(image->format()) * mipmap.extent.width, wgpu::kCopyStrideUndefined);
         wgpu::Extent3D copySize = {mipmap.extent.width, mipmap.extent.height, 1};
         _device.GetQueue().WriteTexture(&imageCopyTexture, image->data().data(), image->data().size(), &textureLayout, &copySize);
     }
