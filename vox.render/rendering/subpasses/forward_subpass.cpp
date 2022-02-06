@@ -109,7 +109,7 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
             _pipelineLayoutDescriptor.bindGroupLayouts = bindGroupLayouts.data();
             _pipelineLayout = _pass->resourceCache().requestPipelineLayout(_pipelineLayoutDescriptor);
             _forwardPipelineDescriptor.layout = _pipelineLayout;
-
+            
             material->renderState.apply(&_colorTargetState, &_depthStencil,
                                         _forwardPipelineDescriptor, passEncoder, true);
             
@@ -168,7 +168,7 @@ void ForwardSubpass::_bindingData(wgpu::BindGroupEntry& entry,
 }
 
 void ForwardSubpass::_bindingTexture(wgpu::BindGroupEntry& entry,
-                                  MaterialPtr mat, Renderer* renderer) {
+                                     MaterialPtr mat, Renderer* renderer) {
     auto group = Shader::getShaderPropertyGroup(entry.binding);
     if (group.has_value()) {
         switch (*group) {
@@ -195,7 +195,7 @@ void ForwardSubpass::_bindingTexture(wgpu::BindGroupEntry& entry,
 }
 
 void ForwardSubpass::_bindingSampler(wgpu::BindGroupEntry& entry,
-                                  MaterialPtr mat, Renderer* renderer) {
+                                     MaterialPtr mat, Renderer* renderer) {
     auto group = Shader::getShaderPropertyGroup(entry.binding);
     if (group.has_value()) {
         switch (*group) {

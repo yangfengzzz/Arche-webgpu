@@ -16,34 +16,33 @@ ColorPickerSubpass::ColorPickerSubpass(RenderContext* renderContext,
                                        Scene* scene,
                                        Camera* camera):
 Subpass(renderContext, scene, camera) {
+    _material = std::make_shared<UnlitMaterial>(renderContext->device());
 }
 
 void ColorPickerSubpass::prepare() {
-    _forwardPipelineDescriptor.label("ColorPicker Pipeline");
-    _forwardPipelineDescriptor.colorAttachments[0].pixelFormat(_pass->renderPassDescriptor()->colorAttachments[0].texture().pixelFormat());
-    _forwardPipelineDescriptor.depthAttachmentPixelFormat(_view->depthStencilPixelFormat());
-    
-    MTL::DepthStencilDescriptor depthStencilDesc;
-    depthStencilDesc.label("ColorPicker Creation");
-    depthStencilDesc.depthCompareFunction(MTL::CompareFunctionLess);
-    depthStencilDesc.depthWriteEnabled(true);
-    _forwardDepthStencilState = _view->device().makeDepthStencilState(depthStencilDesc);
+    _depthStencil.format = _renderContext->depthStencilTextureFormat();
+    _forwardPipelineDescriptor.depthStencil = &_depthStencil;
+    _colorTargetState.format = _renderContext->drawableTextureFormat();
+    _fragment.targetCount = 1;
+    _fragment.targets = &_colorTargetState;
+    _forwardPipelineDescriptor.fragment = &_fragment;
+    _forwardPipelineDescriptor.label = "ColorPicker Pipeline";
+    {
+        _forwardPipelineDescriptor.vertex.entryPoint = "main";
+        _fragment.entryPoint = "main";
+    }
 }
 
-void ColorPickerSubpass::draw(MTL::RenderCommandEncoder& commandEncoder) {
+void ColorPickerSubpass::draw(wgpu::RenderPassEncoder& passEncoder) {
     _currentId = 0;
     _primitivesMap.clear();
     
-    commandEncoder.pushDebugGroup("Draw ColorPicker");
-    commandEncoder.setCullMode(MTL::CullModeFront);
-    commandEncoder.setDepthStencilState(_forwardDepthStencilState);
-    commandEncoder.setStencilReferenceValue(128);
-    
-    _drawMeshes(commandEncoder);
-    commandEncoder.popDebugGroup();
+    passEncoder.PushDebugGroup("Draw ColorPicker");
+    _drawMeshes(passEncoder);
+    passEncoder.PopDebugGroup();
 }
 
-void ColorPickerSubpass::_drawMeshes(MTL::RenderCommandEncoder &renderEncoder) {
+void ColorPickerSubpass::_drawMeshes(wgpu::RenderPassEncoder &passEncoder) {
     auto compileMacros = ShaderMacroCollection();
     _scene->shaderData.mergeMacro(compileMacros, compileMacros);
     _camera->shaderData.mergeMacro(compileMacros, compileMacros);
@@ -56,56 +55,116 @@ void ColorPickerSubpass::_drawMeshes(MTL::RenderCommandEncoder &renderEncoder) {
     std::sort(alphaTestQueue.begin(), alphaTestQueue.end(), _compareFromNearToFar);
     std::sort(transparentQueue.begin(), transparentQueue.end(), _compareFromFarToNear);
     
-    _drawElement(renderEncoder, opaqueQueue, compileMacros);
-    _drawElement(renderEncoder, alphaTestQueue, compileMacros);
-    _drawElement(renderEncoder, transparentQueue, compileMacros);
+    _drawElement(passEncoder, opaqueQueue, compileMacros);
+    _drawElement(passEncoder, alphaTestQueue, compileMacros);
+    _drawElement(passEncoder, transparentQueue, compileMacros);
 }
 
-void ColorPickerSubpass::_drawElement(MTL::RenderCommandEncoder &renderEncoder,
+void ColorPickerSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
                                       const std::vector<RenderElement> &items,
                                       const ShaderMacroCollection& compileMacros) {
     for (auto &element : items) {
         auto macros = compileMacros;
-        auto renderer = element.renderer;
+        auto& renderer = element.renderer;
         renderer->shaderData.mergeMacro(macros, macros);
-        
-        auto material = element.material;
-        material->shaderData.mergeMacro(macros, macros);
-        ShaderProgram *program = _pass->resourceCache().requestShader(_pass->library(), "vertex_picker",
-                                                                      "fragment_picker", macros);
-        if (!program->isValid()) {
-            continue;
-        }
-        _forwardPipelineDescriptor.vertexFunction(program->vertexShader());
-        _forwardPipelineDescriptor.fragmentFunction(program->fragmentShader());
-        
-        // manully
         auto& mesh = element.mesh;
-        _forwardPipelineDescriptor.vertexDescriptor(&mesh->vertexDescriptor());
-        
-        auto m_forwardPipelineState = _pass->resourceCache().requestRenderPipelineState(_forwardPipelineDescriptor);
-        uploadUniforms(renderEncoder, m_forwardPipelineState->materialUniformBlock, material->shaderData);
-        uploadUniforms(renderEncoder, m_forwardPipelineState->rendererUniformBlock, renderer->shaderData);
-        uploadUniforms(renderEncoder, m_forwardPipelineState->sceneUniformBlock, _scene->shaderData);
-        uploadUniforms(renderEncoder, m_forwardPipelineState->cameraUniformBlock, _camera->shaderData);
-        renderEncoder.setRenderPipelineState(*m_forwardPipelineState);
+        auto& subMesh = element.subMesh;
         
         _currentId += 1;
         _primitivesMap[_currentId] = std::make_pair(renderer, mesh);
         Vector3F color = id2Color(_currentId);
-        renderEncoder.setFragmentBytes(&color, sizeof(Vector4F), 0);
-        
-        for (auto &meshBuffer: mesh->vertexBuffers()) {
-            renderEncoder.setVertexBuffer(meshBuffer.buffer(),
-                                          meshBuffer.offset(),
-                                          meshBuffer.argumentIndex());
+        _material->setBaseColor(Color(color.z, color.y, color.x, 1));
+        // PSO
+        {
+            const std::string& vertexSource = _material->shader->vertexSource(macros);
+            // std::cout<<vertexSource<<std::endl;
+            const std::string& fragmentSource = _material->shader->fragmentSource(macros);
+            // std::cout<<fragmentSource<<std::endl;
+            ShaderProgram* program = _pass->resourceCache().requestShader(vertexSource, fragmentSource);
+            _forwardPipelineDescriptor.vertex.module = program->vertexShader();
+            _fragment.module = program->fragmentShader();
+            
+            auto bindGroupLayoutDescriptors = _material->shader->bindGroupLayoutDescriptors(macros);
+            std::vector<wgpu::BindGroupLayout> bindGroupLayouts;
+            for (auto& layoutDesc : bindGroupLayoutDescriptors) {
+                wgpu::BindGroupLayout bindGroupLayout = _pass->resourceCache().requestBindGroupLayout(layoutDesc.second);
+                _bindGroupEntries.clear();
+                _bindGroupEntries.resize(layoutDesc.second.entryCount);
+                for (uint32_t i = 0; i < layoutDesc.second.entryCount; i++) {
+                    auto& entry = layoutDesc.second.entries[i];
+                    _bindGroupEntries[i].binding = entry.binding;
+                    if (entry.buffer.type != wgpu::BufferBindingType::Undefined) {
+                        _bindingData(_bindGroupEntries[i], _material, renderer);
+                    }
+                }
+                _bindGroupDescriptor.layout = bindGroupLayout;
+                _bindGroupDescriptor.entryCount = layoutDesc.second.entryCount;
+                _bindGroupDescriptor.entries = _bindGroupEntries.data();
+                auto uniformBindGroup = _pass->resourceCache().requestBindGroup(_bindGroupDescriptor);
+                passEncoder.SetBindGroup(layoutDesc.first, uniformBindGroup);
+                bindGroupLayouts.emplace_back(std::move(bindGroupLayout));
+            }
+            _material->shader->flush();
+            
+            _pipelineLayoutDescriptor.bindGroupLayoutCount = static_cast<uint32_t>(bindGroupLayouts.size());
+            _pipelineLayoutDescriptor.bindGroupLayouts = bindGroupLayouts.data();
+            _pipelineLayout = _pass->resourceCache().requestPipelineLayout(_pipelineLayoutDescriptor);
+            _forwardPipelineDescriptor.layout = _pipelineLayout;
+            
+            _material->renderState.apply(&_colorTargetState, &_depthStencil,
+                                         _forwardPipelineDescriptor, passEncoder, true);
+            
+            _forwardPipelineDescriptor.vertex.bufferCount = static_cast<uint32_t>(mesh->vertexBufferLayouts().size());
+            _forwardPipelineDescriptor.vertex.buffers = mesh->vertexBufferLayouts().data();
+            _forwardPipelineDescriptor.primitive.topology = subMesh->topology();
+            
+            auto renderPipeline = _pass->resourceCache().requestRenderPipeline(_forwardPipelineDescriptor);
+            passEncoder.SetPipeline(renderPipeline);
         }
-        auto& submesh = element.subMesh;
-        renderEncoder.drawIndexedPrimitives(submesh->primitiveType(),
-                                            submesh->indexCount(),
-                                            submesh->indexType(),
-                                            submesh->indexBuffer().buffer(),
-                                            submesh->indexBuffer().offset());
+        
+        // Draw Call
+        for (uint32_t j = 0; j < mesh->vertexBufferBindings().size(); j++) {
+            auto vertexBufferBinding =  mesh->vertexBufferBindings()[j];
+            if (vertexBufferBinding) {
+                passEncoder.SetVertexBuffer(j, mesh->vertexBufferBindings()[j]->handle());
+            }
+        }
+        auto indexBufferBinding = mesh->indexBufferBinding();
+        if (indexBufferBinding) {
+            passEncoder.SetIndexBuffer(mesh->indexBufferBinding()->buffer(), mesh->indexBufferBinding()->format());
+        }
+        passEncoder.DrawIndexed(subMesh->count(), 1, subMesh->start(), 0, 0);
+    }
+}
+
+void ColorPickerSubpass::_bindingData(wgpu::BindGroupEntry& entry,
+                                      MaterialPtr mat, Renderer* renderer) {
+    auto group = Shader::getShaderPropertyGroup(entry.binding);
+    if (group.has_value()) {
+        switch (*group) {
+            case ShaderDataGroup::Scene:
+                entry.buffer = _scene->shaderData.getData(entry.binding)->handle();
+                entry.size = _scene->shaderData.getData(entry.binding)->size();
+                break;
+                
+            case ShaderDataGroup::Camera:
+                entry.buffer = _camera->shaderData.getData(entry.binding)->handle();
+                entry.size = _camera->shaderData.getData(entry.binding)->size();
+                break;
+                
+            case ShaderDataGroup::Renderer:
+                entry.buffer = renderer->shaderData.getData(entry.binding)->handle();
+                entry.size = renderer->shaderData.getData(entry.binding)->size();
+                break;
+                
+            case ShaderDataGroup::Material:
+                entry.buffer = mat->shaderData.getData(entry.binding)->handle();
+                entry.size = mat->shaderData.getData(entry.binding)->size();
+                break;
+                
+            default:
+                break;
+        }
     }
 }
 

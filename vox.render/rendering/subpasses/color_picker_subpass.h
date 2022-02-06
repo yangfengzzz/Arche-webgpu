@@ -8,6 +8,7 @@
 #define color_picker_subpass_hpp
 
 #include "../subpass.h"
+#include "material/unlit_material.h"
 
 namespace vox {
 class ColorPickerSubpass: public Subpass {
@@ -38,17 +39,27 @@ public:
     std::pair<Renderer *, MeshPtr> getObjectByColor(const std::array<uint8_t, 4> &color);
     
 private:    
-    void _drawMeshes(wgpu::RenderPassEncoder& passEncoder);
+    void _drawMeshes(wgpu::RenderPassEncoder &passEncoder);
     
-    void _drawElement(wgpu::RenderPassEncoder& passEncoder,
+    void _drawElement(wgpu::RenderPassEncoder &passEncoder,
                       const std::vector<RenderElement> &items,
                       const ShaderMacroCollection& compileMacros);
+    
+    void _bindingData(wgpu::BindGroupEntry& entry,
+                      MaterialPtr mat, Renderer* renderer);
     
     wgpu::RenderPipelineDescriptor _forwardPipelineDescriptor;
     wgpu::DepthStencilState _depthStencil;
     wgpu::FragmentState _fragment;
     wgpu::ColorTargetState _colorTargetState;
     
+    wgpu::BindGroupDescriptor _bindGroupDescriptor;
+    std::vector<wgpu::BindGroupEntry> _bindGroupEntries{};
+    
+    wgpu::PipelineLayoutDescriptor _pipelineLayoutDescriptor;
+    wgpu::PipelineLayout _pipelineLayout;
+    
+    std::shared_ptr<UnlitMaterial> _material{nullptr};
     uint32_t _currentId = 0;
     std::unordered_map<size_t, std::pair<Renderer *, MeshPtr>> _primitivesMap;
 };

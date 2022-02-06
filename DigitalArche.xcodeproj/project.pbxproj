@@ -378,6 +378,7 @@
 		047BF1AF27AF9C0D003F3599 /* editor_application.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF1AD27AF9C0C003F3599 /* editor_application.h */; };
 		047BF1B327AFA079003F3599 /* color_picker_subpass.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF1B127AFA079003F3599 /* color_picker_subpass.h */; };
 		047BF1B527AFA105003F3599 /* editor_application.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1AE27AF9C0C003F3599 /* editor_application.cpp */; };
+		047BF1B627AFA242003F3599 /* color_picker_subpass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1B227AFA079003F3599 /* color_picker_subpass.cpp */; };
 		0495463B279F89E500783C84 /* shader_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954634279F89E400783C84 /* shader_data.h */; };
 		0495463C279F89E500783C84 /* shader_property.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954635279F89E400783C84 /* shader_property.h */; };
 		0495463D279F89E500783C84 /* shader_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954636279F89E400783C84 /* shader_data.cpp */; };
@@ -2371,6 +2372,7 @@
 				047BF0E327ACEBAE003F3599 /* physics_manager.cpp in Sources */,
 				047BF10727ACEBB7003F3599 /* spring_joint.cpp in Sources */,
 				047BF00727A56434003F3599 /* wgsl_unlit.cpp in Sources */,
+				047BF1B627AFA242003F3599 /* color_picker_subpass.cpp in Sources */,
 				047BF19D27AE718E003F3599 /* gltf_loader.cpp in Sources */,
 				047BF0E227ACEBAE003F3599 /* collider.cpp in Sources */,
 				0495472A27A2453200783C84 /* unlit_material.cpp in Sources */,
