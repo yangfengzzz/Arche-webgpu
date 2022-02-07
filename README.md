@@ -50,4 +50,5 @@ After clone all third-party dependencies, use the script in third_party folder t
 You can read code in [apps](https://github.com/yangfengzzz/DigitalArche/tree/main/apps) to find the feature in this
 code, like physx and shadow(WIP):
 ![PhysX](https://github.com/yangfengzzz/DigitalVoxEffect/raw/main/doc/img/physx.gif "PhysX")
-You can also redirect to [effect](https://github.com/yangfengzzz/DigitalVoxEffect) to see more effects.
+
+You can also redirect to [repos](https://github.com/yangfengzzz/DigitalVoxEffect) to see more effects.
