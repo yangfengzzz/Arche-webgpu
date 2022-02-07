@@ -15,7 +15,7 @@
 #ifndef UTILS_GLFWUTILS_H_
 #define UTILS_GLFWUTILS_H_
 
-#include "dawn/webgpu_cpp.h"
+#include <webgpu/webgpu_cpp.h>
 
 #include <memory>
 

@@ -7,7 +7,7 @@
 #ifndef raster_state_hpp
 #define raster_state_hpp
 
-#include <dawn/webgpu_cpp.h>
+#include <webgpu/webgpu_cpp.h>
 
 namespace vox {
 /**

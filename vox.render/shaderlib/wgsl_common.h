@@ -9,7 +9,7 @@
 
 #include <string>
 #include <vector>
-#include <dawn/webgpu_cpp.h>
+#include <webgpu/webgpu_cpp.h>
 
 namespace vox {
 //MARK: - Attributes

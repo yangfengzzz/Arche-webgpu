@@ -7,7 +7,7 @@
 #ifndef buffer_hpp
 #define buffer_hpp
 
-#include <dawn/webgpu_cpp.h>
+#include <webgpu/webgpu_cpp.h>
 #include <vector>
 
 namespace vox {

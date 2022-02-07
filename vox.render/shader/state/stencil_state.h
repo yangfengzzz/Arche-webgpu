@@ -7,7 +7,7 @@
 #ifndef stencil_state_hpp
 #define stencil_state_hpp
 
-#include <dawn/webgpu_cpp.h>
+#include <webgpu/webgpu_cpp.h>
 
 namespace vox {
 /**

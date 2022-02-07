@@ -7,7 +7,7 @@
 #ifndef render_target_blend_state_h
 #define render_target_blend_state_h
 
-#include <dawn/webgpu_cpp.h>
+#include <webgpu/webgpu_cpp.h>
 
 namespace vox {
 /**

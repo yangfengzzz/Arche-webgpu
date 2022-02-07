@@ -7,8 +7,6 @@
 #ifndef UTILS_SCOPEDAUTORELEASEPOOL_H_
 #define UTILS_SCOPEDAUTORELEASEPOOL_H_
 
-#include "common/Compiler.h"
-
 #include <cstddef>
 
 namespace utils {

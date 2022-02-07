@@ -15,7 +15,7 @@
 #ifndef UTILS_COMBORENDERBUNDLEENCODERDESCRIPTOR_H_
 #define UTILS_COMBORENDERBUNDLEENCODERDESCRIPTOR_H_
 
-#include <dawn/webgpu_cpp.h>
+#include <webgpu/webgpu_cpp.h>
 
 #include "common/Constants.h"
 

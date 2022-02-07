@@ -9,10 +9,7 @@
 #include "shader/shader.h"
 #include "shader/shader_pool.h"
 #include <glog/logging.h>
-
 #include <dawn/dawn_proc.h>
-#include <common/Assert.h>
-#include <common/Log.h>
 
 namespace vox {
 // Default to D3D12, Metal, Vulkan, OpenGL in that order as D3D12 and Metal are the preferred on
@@ -84,10 +81,10 @@ void PrintDeviceError(WGPUErrorType errorType, const char* message, void*) {
             errorTypeName = "Device lost";
             break;
         default:
-            UNREACHABLE();
+            assert(false && "UNREACHABLE");
             return;
     }
-    dawn::ErrorLog() << errorTypeName << " error: " << message;
+    LOG(ERROR) << errorTypeName << " error: " << message;
 }
 
 void GraphicsApplication::_createCppDawnDevice() {

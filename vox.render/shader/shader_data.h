@@ -16,7 +16,7 @@
 #include "std_helpers.h"
 #include <any>
 #include <unordered_map>
-#include <dawn/webgpu_cpp.h>
+#include <webgpu/webgpu_cpp.h>
 
 namespace vox {
 /**

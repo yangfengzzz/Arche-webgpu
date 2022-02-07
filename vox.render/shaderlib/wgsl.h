@@ -12,7 +12,7 @@
 #include "shader/shader_macro_collection.h"
 #include <unordered_map>
 #include <unordered_set>
-#include <dawn/webgpu_cpp.h>
+#include <webgpu/webgpu_cpp.h>
 
 namespace vox {
 class WGSL {

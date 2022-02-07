@@ -7,7 +7,7 @@
 #ifndef sampled_texture_hpp
 #define sampled_texture_hpp
 
-#include <dawn/webgpu_cpp.h>
+#include <webgpu/webgpu_cpp.h>
 #include <memory>
 
 namespace vox {

@@ -14,12 +14,10 @@
 
 #include "backend_binding.h"
 
-#include "common/Compiler.h"
-
 #include "GLFW/glfw3.h"
 
 #if defined(DAWN_ENABLE_BACKEND_OPENGL)
-#    include "dawn_native/OpenGLBackend.h"
+#    include <dawn/native/OpenGLBackend.h>
 #endif  // defined(DAWN_ENABLE_BACKEND_OPENGL)
 
 namespace vox {
@@ -49,10 +47,7 @@ wgpu::Device& BackendBinding::device() {
 
 void discoverAdapter(dawn::native::Instance* instance,
                      GLFWwindow* window,
-                     wgpu::BackendType type) {
-    DAWN_UNUSED(type);
-    DAWN_UNUSED(window);
-    
+                     wgpu::BackendType type) {    
     if (type == wgpu::BackendType::OpenGL || type == wgpu::BackendType::OpenGLES) {
 #if defined(DAWN_ENABLE_BACKEND_OPENGL)
         glfwMakeContextCurrent(window);

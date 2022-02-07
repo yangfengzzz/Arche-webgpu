@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include <dawn/dawn_wsi.h>
-#include <dawn/webgpu_cpp.h>
+#include <webgpu/webgpu_cpp.h>
 
 bool InitSample(int argc, const char** argv);
 void DoFlush();

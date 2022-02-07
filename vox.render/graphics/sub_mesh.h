@@ -7,7 +7,7 @@
 #ifndef sub_mesh_hpp
 #define sub_mesh_hpp
 
-#include <dawn/webgpu_cpp.h>
+#include <webgpu/webgpu_cpp.h>
 
 namespace vox {
 /**

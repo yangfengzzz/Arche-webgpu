@@ -7,7 +7,7 @@
 #ifndef image_hpp
 #define image_hpp
 
-#include <dawn/webgpu_cpp.h>
+#include <webgpu/webgpu_cpp.h>
 #include <string>
 #include <vector>
 

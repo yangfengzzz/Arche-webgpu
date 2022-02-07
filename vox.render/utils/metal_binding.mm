@@ -14,9 +14,7 @@
 
 #include "backend_binding.h"
 
-#include "common/Assert.h"
-#include "common/SwapChainUtils.h"
-#include "dawn_native/MetalBackend.h"
+#include <dawn/native/MetalBackend.h>
 
 #define GLFW_EXPOSE_NATIVE_COCOA
 #include "GLFW/glfw3.h"
@@ -49,8 +47,6 @@ public:
         if (format != WGPUTextureFormat_BGRA8UnormSrgb) {
             return "unsupported format";
         }
-        ASSERT(width > 0);
-        ASSERT(height > 0);
         
         NSView* contentView = [_nsWindow contentView];
         [contentView setWantsLayer:YES];
@@ -125,6 +121,26 @@ public:
     }
     
 private:
+    template <typename T>
+    DawnSwapChainImplementation CreateSwapChainImplementation(T* swapChain) {
+        DawnSwapChainImplementation impl = {};
+        impl.userData = swapChain;
+        impl.Init = [](void* userData, void* wsiContext) {
+            auto* ctx = static_cast<typename T::WSIContext*>(wsiContext);
+            reinterpret_cast<T*>(userData)->Init(ctx);
+        };
+        impl.Destroy = [](void* userData) { delete reinterpret_cast<T*>(userData); };
+        impl.Configure = [](void* userData, WGPUTextureFormat format, WGPUTextureUsage allowedUsage,
+                            uint32_t width, uint32_t height) {
+            return static_cast<T*>(userData)->Configure(format, allowedUsage, width, height);
+        };
+        impl.GetNextTexture = [](void* userData, DawnSwapChainNextTexture* nextTexture) {
+            return static_cast<T*>(userData)->GetNextTexture(nextTexture);
+        };
+        impl.Present = [](void* userData) { return static_cast<T*>(userData)->Present(); };
+        return impl;
+    }
+    
     DawnSwapChainImplementation _swapchainImpl = {};
 };
 

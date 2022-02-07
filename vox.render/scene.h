@@ -12,7 +12,7 @@
 #include <vector>
 #include <iostream>
 #include <iomanip>
-#include <dawn/webgpu_cpp.h>
+#include <webgpu/webgpu_cpp.h>
 
 #include "scene_forward.h"
 #include "components_manager.h"

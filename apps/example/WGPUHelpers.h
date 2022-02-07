@@ -15,7 +15,7 @@
 #ifndef UTILS_DAWNHELPERS_H_
 #define UTILS_DAWNHELPERS_H_
 
-#include <dawn/webgpu_cpp.h>
+#include <webgpu/webgpu_cpp.h>
 
 #include <array>
 #include <initializer_list>
