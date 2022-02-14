@@ -17,7 +17,7 @@
                BlueprintIdentifier = "043B7B59278C4C5A00D5648F"
                BuildableName = "apps"
                BlueprintName = "apps"
-               ReferencedContainer = "container:DigitalArche.xcodeproj">
+               ReferencedContainer = "container:Arche-cpp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -48,7 +48,7 @@
             BlueprintIdentifier = "043B7B59278C4C5A00D5648F"
             BuildableName = "apps"
             BlueprintName = "apps"
-            ReferencedContainer = "container:DigitalArche.xcodeproj">
+            ReferencedContainer = "container:Arche-cpp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -65,7 +65,7 @@
             BlueprintIdentifier = "043B7B59278C4C5A00D5648F"
             BuildableName = "apps"
             BlueprintName = "apps"
-            ReferencedContainer = "container:DigitalArche.xcodeproj">
+            ReferencedContainer = "container:Arche-cpp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

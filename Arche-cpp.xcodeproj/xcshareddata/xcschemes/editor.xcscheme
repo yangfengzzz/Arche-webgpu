@@ -17,7 +17,7 @@
                BlueprintIdentifier = "047BF1BD27AFAE81003F3599"
                BuildableName = "editor"
                BlueprintName = "editor"
-               ReferencedContainer = "container:DigitalArche.xcodeproj">
+               ReferencedContainer = "container:Arche-cpp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -48,7 +48,7 @@
             BlueprintIdentifier = "047BF1BD27AFAE81003F3599"
             BuildableName = "editor"
             BlueprintName = "editor"
-            ReferencedContainer = "container:DigitalArche.xcodeproj">
+            ReferencedContainer = "container:Arche-cpp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -65,7 +65,7 @@
             BlueprintIdentifier = "047BF1BD27AFAE81003F3599"
             BuildableName = "editor"
             BlueprintName = "editor"
-            ReferencedContainer = "container:DigitalArche.xcodeproj">
+            ReferencedContainer = "container:Arche-cpp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

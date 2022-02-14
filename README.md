@@ -1,4 +1,4 @@
-# DigitalArche - WebGPU Graphics Engine
+# Arche-Cpp - WebGPU Graphics Engine
 
 This project is a part of its WebGPU development, if you want to know about the implementation of web
 WebGPU ([WebGPU](https://github.com/gpuweb/types))
@@ -29,7 +29,7 @@ This repository contains submodules for external dependencies, so when doing a f
 recursively:
 
 ```
-git clone --recursive https://github.com/yangfengzzz/DigitalArche.git
+git clone --recursive https://github.com/ArcheGraphics/Arche-cpp.git
 ```
 
 Existing repositories can be updated manually:
@@ -47,7 +47,7 @@ After clone all third-party dependencies, use the script in third_party folder t
 
 ## Feature
 
-You can read code in [apps](https://github.com/yangfengzzz/DigitalArche/tree/main/apps) to find the feature in this
+You can read code in [apps](https://github.com/ArcheGraphics/Arche-cpp/tree/main/apps) to find the feature in this
 code, like physx and shadow(WIP):
 ![PhysX](https://github.com/yangfengzzz/DigitalVoxEffect/raw/main/doc/img/physx.gif "PhysX")
 

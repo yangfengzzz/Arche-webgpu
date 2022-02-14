@@ -2397,7 +2397,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 043B7B55278C4C5A00D5648F /* Build configuration list for PBXProject "DigitalArche" */;
+			buildConfigurationList = 043B7B55278C4C5A00D5648F /* Build configuration list for PBXProject "Arche-cpp" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -3611,7 +3611,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		043B7B55278C4C5A00D5648F /* Build configuration list for PBXProject "DigitalArche" */ = {
+		043B7B55278C4C5A00D5648F /* Build configuration list for PBXProject "Arche-cpp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				043B7B5F278C4C5A00D5648F /* Debug */,

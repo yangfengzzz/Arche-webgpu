@@ -17,7 +17,7 @@
                BlueprintIdentifier = "041283AF279ED0D60071BD86"
                BuildableName = "unit_tests"
                BlueprintName = "unit_tests"
-               ReferencedContainer = "container:DigitalArche.xcodeproj">
+               ReferencedContainer = "container:Arche-cpp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -48,7 +48,7 @@
             BlueprintIdentifier = "041283AF279ED0D60071BD86"
             BuildableName = "unit_tests"
             BlueprintName = "unit_tests"
-            ReferencedContainer = "container:DigitalArche.xcodeproj">
+            ReferencedContainer = "container:Arche-cpp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -65,7 +65,7 @@
             BlueprintIdentifier = "041283AF279ED0D60071BD86"
             BuildableName = "unit_tests"
             BlueprintName = "unit_tests"
-            ReferencedContainer = "container:DigitalArche.xcodeproj">
+            ReferencedContainer = "container:Arche-cpp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
