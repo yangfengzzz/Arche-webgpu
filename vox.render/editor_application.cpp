@@ -56,7 +56,7 @@ bool EditorApplication::prepare(Engine &engine) {
     _imageCopyTexture.texture = _colorPickerTexture;
     _imageCopyTexture.mipLevel = 0;
     _imageCopyTexture.aspect = wgpu::TextureAspect::All;
-        
+    
     _imageCopyBuffer.buffer = _stageBuffer;
     _imageCopyBuffer.layout.offset = 0;
     
@@ -69,10 +69,10 @@ bool EditorApplication::prepare(Engine &engine) {
 void EditorApplication::update(float delta_time) {
     GraphicsApplication::update(delta_time);
     _scene->update(delta_time);
-
+    
     wgpu::CommandEncoder commandEncoder = _device.CreateCommandEncoder();
-    // _shadowManager->draw(commandBuffer);
-
+    _shadowManager->draw(commandEncoder);
+    
     // Render the lighting and composition pass
     _colorAttachments.view = _renderContext->currentDrawableTexture();
     _depthStencilAttachment.view = _renderContext->depthStencilTexture();
@@ -103,14 +103,14 @@ void EditorApplication::update(float delta_time) {
 bool EditorApplication::resize(uint32_t win_width, uint32_t win_height,
                                uint32_t fb_width, uint32_t fb_height) {
     ForwardApplication::resize(win_width, win_height, fb_width, fb_height);
-
+    
     _colorPickerTextureDesc.size.width = fb_width;
     _colorPickerTextureDesc.size.height = fb_height;
     _colorPickerTexture = _device.CreateTexture(&_colorPickerTextureDesc);
     
     _colorPickerColorAttachments.view = _colorPickerTexture.CreateView();
     _colorPickerDepthStencilAttachment.view = _renderContext->depthStencilTexture();
-
+    
     return true;
 }
 
@@ -124,14 +124,14 @@ void EditorApplication::_copyRenderTargetToBuffer(wgpu::CommandEncoder& commandE
     uint32_t clientHeight = _mainCamera->height();
     uint32_t canvasWidth = static_cast<uint32_t>(_colorPickerTextureDesc.size.width);
     uint32_t canvasHeight = static_cast<uint32_t>(_colorPickerTextureDesc.size.height);
-
+    
     const float px = (_pickPos.x / clientWidth) * canvasWidth;
     const float py = (_pickPos.y / clientHeight) * canvasHeight;
-
+    
     const auto viewport = _mainCamera->viewport();
     const auto viewWidth = (viewport.z - viewport.x) * canvasWidth;
     const auto viewHeight = (viewport.w - viewport.y) * canvasHeight;
-
+    
     const float nx = (px - viewport.x) / viewWidth;
     const float ny = (py - viewport.y) / viewHeight;
     const uint32_t left = std::floor(nx * (canvasWidth - 1));

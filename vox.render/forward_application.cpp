@@ -22,7 +22,7 @@ bool ForwardApplication::prepare(Engine &engine) {
     auto extent = engine.window().extent();
     loadScene(extent.width, extent.height);
     
-    //    _shadowManager = std::make_unique<ShadowManager>(_library, _scene.get(), _mainCamera);
+    _shadowManager = std::make_unique<ShadowManager>(_scene.get(), _mainCamera);
     
     // Create a render pass descriptor for thelighting and composition pass
     // Whatever rendered in the final pass needs to be stored so it can be displayed
@@ -53,7 +53,7 @@ void ForwardApplication::update(float delta_time) {
     _scene->update(delta_time);
     
     wgpu::CommandEncoder commandEncoder = _device.CreateCommandEncoder();
-    //    _shadowManager->draw(commandBuffer);
+    _shadowManager->draw(commandEncoder);
     
     // Render the lighting and composition pass
     _colorAttachments.view = _renderContext->currentDrawableTexture();

@@ -8,7 +8,7 @@
 #define forward_hpp
 
 #include "graphics_application.h"
-//#include "lighting/shadow_manager.h"
+#include "shadow/shadow_manager.h"
 
 namespace vox {
 class ForwardApplication: public GraphicsApplication {
@@ -51,7 +51,7 @@ protected:
      */
     std::unique_ptr<RenderPass> _renderPass{nullptr};
     
-    //    std::unique_ptr<ShadowManager> _shadowManager{nullptr};
+    std::unique_ptr<ShadowManager> _shadowManager{nullptr};
 };
 
 }

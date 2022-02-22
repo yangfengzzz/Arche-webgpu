@@ -44,7 +44,7 @@ public:
 private:
     bool _needPick;
     Vector2F _pickPos;
-
+    
     wgpu::TextureDescriptor _colorPickerTextureDesc;
     wgpu::Texture _colorPickerTexture;
     
