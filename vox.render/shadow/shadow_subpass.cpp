@@ -10,13 +10,14 @@
 #include "camera.h"
 #include "renderer.h"
 #include "rendering/render_pass.h"
+#include "shadow_manager.h"
 
 namespace vox {
 ShadowSubpass::ShadowSubpass(RenderContext* renderContext,
                              Scene* scene,
                              Camera* camera):
 Subpass(renderContext, scene, camera) {
-    _material = std::make_shared<ShadowMaterial>(renderContext->device());
+    _material = std::make_shared<ShadowMaterial>(scene->device());
 }
 
 void ShadowSubpass::setViewProjectionMatrix(const Matrix4x4F& vp) {
@@ -24,7 +25,7 @@ void ShadowSubpass::setViewProjectionMatrix(const Matrix4x4F& vp) {
 }
 
 void ShadowSubpass::prepare() {
-    _depthStencil.format = _renderContext->depthStencilTextureFormat();
+    _depthStencil.format = ShadowManager::SHADOW_MAP_FORMAT;
     _shadowGenDescriptor.depthStencil = &_depthStencil;
     _shadowGenDescriptor.label = "Shadow Gen";
     {

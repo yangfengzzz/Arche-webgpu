@@ -108,6 +108,8 @@ private:
     Camera* _camera{nullptr};
     
     wgpu::RenderPassDescriptor _renderPassDescriptor;
+    wgpu::RenderPassDepthStencilAttachment _depthStencilAttachment;
+
     std::unique_ptr<RenderPass> _renderPass{nullptr};
     ShadowSubpass* _shadowSubpass{nullptr};
     
