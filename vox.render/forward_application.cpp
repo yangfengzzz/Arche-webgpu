@@ -51,7 +51,6 @@ bool ForwardApplication::prepare(Engine &engine) {
 void ForwardApplication::update(float delta_time) {
     GraphicsApplication::update(delta_time);
     _scene->update(delta_time);
-    _scene->updateShaderData();
     
     wgpu::CommandEncoder commandEncoder = _device.CreateCommandEncoder();
     //    _shadowManager->draw(commandBuffer);

@@ -115,9 +115,9 @@ Matrix4x4F Camera::projectionMatrix() {
     _lastAspectSize.y = _height;
     if (!_isOrthographic) {
         _projectionMatrix = makepPerspective(degreesToRadians(_fieldOfView),
-                                                aspectRatio(),
-                                                _nearClipPlane,
-                                                _farClipPlane);
+                                             aspectRatio(),
+                                             _nearClipPlane,
+                                             _farClipPlane);
     } else {
         const auto width = _orthographicSize * aspectRatio();
         const auto height = _orthographicSize;
@@ -179,31 +179,31 @@ Ray3F Camera::viewportPointToRay(const Vector2F &point) {
 Vector2F Camera::screenToViewportPoint(const Vector2F &point) {
     const Vector4F viewport = this->viewport();
     return Vector2F((point.x / _width - viewport.x) / viewport.z,
-                  (point.y / _height - viewport.y) / viewport.w);
+                    (point.y / _height - viewport.y) / viewport.w);
 }
 
 Vector3F Camera::screenToViewportPoint(const Vector3F &point) {
     const Vector4F viewport = this->viewport();
     return Vector3F((point.x / _width - viewport.x) / viewport.z,
-                  (point.y / _height - viewport.y) / viewport.w, 0);
+                    (point.y / _height - viewport.y) / viewport.w, 0);
 }
 
 Vector2F Camera::viewportToScreenPoint(const Vector2F &point) {
     const Vector4F viewport = this->viewport();
     return Vector2F((viewport.x + point.x * viewport.z) * _width,
-                  (viewport.y + point.y * viewport.w) * _height);
+                    (viewport.y + point.y * viewport.w) * _height);
 }
 
 Vector3F Camera::viewportToScreenPoint(const Vector3F &point) {
     const Vector4F viewport = this->viewport();
     return Vector3F((viewport.x + point.x * viewport.z) * _width,
-                  (viewport.y + point.y * viewport.w) * _height, 0);
+                    (viewport.y + point.y * viewport.w) * _height, 0);
 }
 
 Vector4F Camera::viewportToScreenPoint(const Vector4F &point) {
     const Vector4F viewport = this->viewport();
     return Vector4F((viewport.x + point.x * viewport.z) * _width,
-                  (viewport.y + point.y * viewport.w) * _height, 0, 0);
+                    (viewport.y + point.y * viewport.w) * _height, 0, 0);
 }
 
 Vector4F Camera::worldToScreenPoint(const Point3F &point) {
@@ -250,15 +250,20 @@ Point3F Camera::_innerViewportToWorldPoint(const Vector3F &point, const Matrix4x
     return clipPoint;
 }
 
-void Camera::updateShaderData() {
+void Camera::update() {
     _cameraData.u_viewMat = viewMatrix();
     _cameraData.u_projMat = projectionMatrix();
     _cameraData.u_VPMat = projectionMatrix() * viewMatrix();
     _cameraData.u_viewInvMat = _transform->worldMatrix();
     _cameraData.u_projInvMat = inverseProjectionMatrix();
     _cameraData.u_cameraPos = _transform->worldPosition();
-    
     shaderData.setData(Camera::_cameraProperty, _cameraData);
+
+    if (enableFrustumCulling && (_frustumViewChangeFlag->flag || _isFrustumProjectDirty)) {
+        _frustum.calculateFromMatrix(_cameraData.u_VPMat);
+        _frustumViewChangeFlag->flag = false;
+        _isFrustumProjectDirty = false;
+    }
 }
 
 Matrix4x4F Camera::invViewProjMat() {

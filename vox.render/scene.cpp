@@ -155,7 +155,7 @@ void Scene::updateShaderData() {
     // union scene and camera macro.
     light_manager.updateShaderData(_device, shaderData);
     for (auto& camera : _activeCameras) {
-        camera->updateShaderData();
+        camera->update();
     }
 }
 
@@ -173,6 +173,8 @@ void Scene::update(float deltaTime) {
     _componentsManager.callScriptOnLateUpdate(deltaTime);
     
     _componentsManager.callRendererOnUpdate(deltaTime);
+    
+    updateShaderData();
 }
 
 void Scene::updateInputEvent(const InputEvent &inputEvent) {

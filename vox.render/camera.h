@@ -223,7 +223,7 @@ public:
     
     uint32_t height();
     
-    void updateShaderData();
+    void update();
     
 public:
     void _onActive() override;
