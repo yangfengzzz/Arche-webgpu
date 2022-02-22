@@ -8,6 +8,7 @@
 #include "shader/shader.h"
 #include "camera.h"
 #include "matrix_utils.h"
+#include "texture/sampled_texture_utils.h"
 
 namespace vox {
 ShadowManager::ShadowManager(Scene* scene, Camera* camera):
@@ -45,7 +46,8 @@ void ShadowManager::draw(wgpu::CommandEncoder& commandEncoder) {
     _drawDirectShadowMap(commandEncoder);
     _scene->shaderData.setData(_shadowCountProp, _shadowCount);
     if (_shadowCount) {
-        // _packedTexture = commandBuffer.createTextureArray(_shadowMaps.begin(), _shadowMaps.begin() + _shadowCount, _packedTexture);
+        _packedTexture = SampledTextureUtils::createTextureArray(_shadowMaps.begin(), _shadowMaps.begin() + _shadowCount,
+                                                                 commandEncoder);
         _scene->shaderData.setSampledTexture(_shadowMapProp, _shadowSamplerProp, _packedTexture);
         _scene->shaderData.setData(_shadowDataProp, _shadowDatas);
     }
@@ -54,9 +56,9 @@ void ShadowManager::draw(wgpu::CommandEncoder& commandEncoder) {
     _drawPointShadowMap(commandEncoder);
     _scene->shaderData.setData(_cubeShadowCountProp, _cubeShadowCount);
     if (_cubeShadowCount) {
-        // _packedCubeTexture = commandBuffer.createCubeTextureArray(_cubeShadowMaps.begin(),
-        //                                                           _cubeShadowMaps.begin() + _cubeShadowCount,
-        //                                                           _packedCubeTexture);
+        _packedCubeTexture =
+        SampledTextureUtils::createCubeTextureArray(_cubeShadowMaps.begin(), _cubeShadowMaps.begin() + _cubeShadowCount,
+                                                    commandEncoder);
         _scene->shaderData.setSampledTexture(_cubeShadowMapProp, _cubeShadowSamplerProp, _packedCubeTexture);
         _scene->shaderData.setData(_cubeShadowDataProp, _cubeShadowDatas);
     }
@@ -121,7 +123,7 @@ void ShadowManager::_drawDirectShadowMap(wgpu::CommandEncoder& commandEncoder) {
                 _shadowSubpass->setViewProjectionMatrix(_shadowDatas[_shadowCount].vp[i]);
                 _renderPass->draw(commandEncoder, "Direct Shadow Pass");
             }
-            // texture = commandEncoder.createAtlas(_cascadeShadowMaps, texture);
+            texture = SampledTextureUtils::createAtlas(_cascadeShadowMaps, commandEncoder)->texture();
             _shadowCount++;
         }
     }
@@ -159,7 +161,7 @@ void ShadowManager::_drawPointShadowMap(wgpu::CommandEncoder& commandEncoder) {
                 _shadowSubpass->setViewProjectionMatrix(_cubeShadowDatas[_cubeShadowCount].vp[i]);
                 _renderPass->draw(commandEncoder, "Point Shadow Pass");
             }
-            // texture = commandEncoder.createCubeAtlas(_cubeMapSlices, texture);
+            texture = SampledTextureUtils::createCubeAtlas(_cubeMapSlices, commandEncoder)->texture();
             _cubeShadowCount++;
         }
     }
