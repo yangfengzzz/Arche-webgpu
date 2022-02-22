@@ -10,6 +10,7 @@
 #include "shaderlib/wgsl_unlit.h"
 #include "shaderlib/wgsl_blinn_phong.h"
 #include "shaderlib/wgsl_pbr.h"
+#include "shadow/wgsl_shadow.h"
 
 namespace vox {
 void ShaderPool::init() {
@@ -17,6 +18,8 @@ void ShaderPool::init() {
     Shader::create("blinn-phong", std::make_unique<WGSLBlinnPhongVertex>(), std::make_unique<WGSLBlinnPhongFragment>());
     Shader::create("pbr", std::make_unique<WGSLPbrVertex>(), std::make_unique<WGSLPbrFragment>(true));
     Shader::create("pbr-specular", std::make_unique<WGSLPbrVertex>(), std::make_unique<WGSLPbrFragment>(false));
+    
+    Shader::create("shadow", std::make_unique<WGSLShadowVertex>(), nullptr);
 }
 
 }
