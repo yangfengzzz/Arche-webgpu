@@ -27,6 +27,8 @@ _cubeShadowDataProp(Shader::createProperty("u_cubeShadowData", ShaderDataGroup::
 _cubeShadowCountProp(Shader::createProperty("u_cubeShadowCount", ShaderDataGroup::Scene)) {
     _renderPassDescriptor.depthStencilAttachment = &_depthStencilAttachment;
     _depthStencilAttachment.depthLoadOp = wgpu::LoadOp::Clear;
+    _depthStencilAttachment.clearDepth = 1.0;
+    _depthStencilAttachment.depthStoreOp = wgpu::StoreOp::Store;
     
     _renderPass = std::make_unique<RenderPass>(_scene->device(), _renderPassDescriptor);
     auto shadowSubpass = std::make_unique<ShadowSubpass>(nullptr, _scene, _camera);
@@ -92,6 +94,7 @@ void ShadowManager::_drawSpotShadowMap(wgpu::CommandEncoder& commandEncoder) {
                 descriptor.size.width = SHADOW_MAP_RESOLUTION;
                 descriptor.size.height = SHADOW_MAP_RESOLUTION;
                 descriptor.format = SHADOW_MAP_FORMAT;
+                descriptor.usage = wgpu::TextureUsage::RenderAttachment | wgpu::TextureUsage::CopyDst | wgpu::TextureUsage::CopySrc;
                 texture = _scene->device().CreateTexture(&descriptor);
                 
                 _shadowMaps.push_back(texture);
@@ -120,6 +123,7 @@ void ShadowManager::_drawDirectShadowMap(wgpu::CommandEncoder& commandEncoder) {
                 descriptor.size.width = SHADOW_MAP_RESOLUTION;
                 descriptor.size.height = SHADOW_MAP_RESOLUTION;
                 descriptor.format = SHADOW_MAP_FORMAT;
+                descriptor.usage = wgpu::TextureUsage::CopyDst | wgpu::TextureUsage::CopySrc;
                 texture = _scene->device().CreateTexture(&descriptor);
                 
                 _shadowMaps.push_back(texture);
@@ -132,6 +136,7 @@ void ShadowManager::_drawDirectShadowMap(wgpu::CommandEncoder& commandEncoder) {
                     descriptor.size.width = SHADOW_MAP_RESOLUTION / 2;
                     descriptor.size.height = SHADOW_MAP_RESOLUTION / 2;
                     descriptor.format = SHADOW_MAP_FORMAT;
+                    descriptor.usage = wgpu::TextureUsage::RenderAttachment | wgpu::TextureUsage::CopyDst | wgpu::TextureUsage::CopySrc;
                     _cascadeShadowMaps[i] = _scene->device().CreateTexture(&descriptor);
                 }
                 
@@ -160,6 +165,7 @@ void ShadowManager::_drawPointShadowMap(wgpu::CommandEncoder& commandEncoder) {
                 descriptor.size.height = SHADOW_MAP_RESOLUTION;
                 descriptor.size.depthOrArrayLayers = 6;
                 descriptor.format = SHADOW_MAP_FORMAT;
+                descriptor.usage = wgpu::TextureUsage::CopyDst | wgpu::TextureUsage::CopySrc;
                 texture = _scene->device().CreateTexture(&descriptor);
                 
                 _cubeShadowMaps.push_back(texture);
@@ -172,6 +178,7 @@ void ShadowManager::_drawPointShadowMap(wgpu::CommandEncoder& commandEncoder) {
                     descriptor.size.width = SHADOW_MAP_RESOLUTION;
                     descriptor.size.height = SHADOW_MAP_RESOLUTION;
                     descriptor.format = SHADOW_MAP_FORMAT;
+                    descriptor.usage = wgpu::TextureUsage::RenderAttachment | wgpu::TextureUsage::CopyDst | wgpu::TextureUsage::CopySrc;
                     _cubeMapSlices[i] = _scene->device().CreateTexture(&descriptor);
                 }
                 
