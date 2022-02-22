@@ -178,6 +178,9 @@
 		0443E8D927C4BDEA0099E13A /* wgsl_shadow.h in Headers */ = {isa = PBXBuildFile; fileRef = 0443E8D727C4BDEA0099E13A /* wgsl_shadow.h */; };
 		0443E8DC27C4C3280099E13A /* shadow_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0443E8DA27C4C3280099E13A /* shadow_manager.cpp */; };
 		0443E8DD27C4C3280099E13A /* shadow_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0443E8DB27C4C3280099E13A /* shadow_manager.h */; };
+		0443E8E027C4CB300099E13A /* shadowmap_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0443E8DE27C4CB300099E13A /* shadowmap_app.cpp */; };
+		0443E8E327C4CB7C0099E13A /* cascade_shadowmap_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0443E8E127C4CB7C0099E13A /* cascade_shadowmap_app.cpp */; };
+		0443E8E627C4CBBC0099E13A /* omni_shadowmap_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0443E8E427C4CBBC0099E13A /* omni_shadowmap_app.cpp */; };
 		047BEFD627A4BFD9003F3599 /* wgsl_common_vert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BEFD427A4BFD9003F3599 /* wgsl_common_vert.cpp */; };
 		047BEFD727A4BFD9003F3599 /* wgsl_common_vert.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BEFD527A4BFD9003F3599 /* wgsl_common_vert.h */; };
 		047BEFDA27A4DB63003F3599 /* wgsl_encoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BEFD827A4DB63003F3599 /* wgsl_encoder.cpp */; };
@@ -762,6 +765,12 @@
 		0443E8D727C4BDEA0099E13A /* wgsl_shadow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_shadow.h; sourceTree = "<group>"; };
 		0443E8DA27C4C3280099E13A /* shadow_manager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = shadow_manager.cpp; sourceTree = "<group>"; };
 		0443E8DB27C4C3280099E13A /* shadow_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shadow_manager.h; sourceTree = "<group>"; };
+		0443E8DE27C4CB300099E13A /* shadowmap_app.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = shadowmap_app.cpp; sourceTree = "<group>"; };
+		0443E8DF27C4CB300099E13A /* shadowmap_app.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shadowmap_app.h; sourceTree = "<group>"; };
+		0443E8E127C4CB7C0099E13A /* cascade_shadowmap_app.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = cascade_shadowmap_app.cpp; sourceTree = "<group>"; };
+		0443E8E227C4CB7C0099E13A /* cascade_shadowmap_app.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cascade_shadowmap_app.h; sourceTree = "<group>"; };
+		0443E8E427C4CBBC0099E13A /* omni_shadowmap_app.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = omni_shadowmap_app.cpp; sourceTree = "<group>"; };
+		0443E8E527C4CBBC0099E13A /* omni_shadowmap_app.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = omni_shadowmap_app.h; sourceTree = "<group>"; };
 		047BEFD427A4BFD9003F3599 /* wgsl_common_vert.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_common_vert.cpp; sourceTree = "<group>"; };
 		047BEFD527A4BFD9003F3599 /* wgsl_common_vert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_common_vert.h; sourceTree = "<group>"; };
 		047BEFD827A4DB63003F3599 /* wgsl_encoder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_encoder.cpp; sourceTree = "<group>"; };
@@ -1545,6 +1554,12 @@
 				047BF1A327AF7F2A003F3599 /* scene_animation_app.cpp */,
 				047BF1B727AFA525003F3599 /* framebuffer_picker_app.h */,
 				047BF1B827AFA525003F3599 /* framebuffer_picker_app.cpp */,
+				0443E8DF27C4CB300099E13A /* shadowmap_app.h */,
+				0443E8DE27C4CB300099E13A /* shadowmap_app.cpp */,
+				0443E8E227C4CB7C0099E13A /* cascade_shadowmap_app.h */,
+				0443E8E127C4CB7C0099E13A /* cascade_shadowmap_app.cpp */,
+				0443E8E527C4CBBC0099E13A /* omni_shadowmap_app.h */,
+				0443E8E427C4CBBC0099E13A /* omni_shadowmap_app.cpp */,
 			);
 			path = apps;
 			sourceTree = "<group>";
@@ -2696,17 +2711,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0443E8E027C4CB300099E13A /* shadowmap_app.cpp in Sources */,
 				0495475F27A294E600783C84 /* main.cpp in Sources */,
 				047BF1A427AF7F2A003F3599 /* scene_animation_app.cpp in Sources */,
 				047BF12D27ACEEEE003F3599 /* physx_dynamic_app.cpp in Sources */,
 				047BF15227ACFA86003F3599 /* animation_app.cpp in Sources */,
 				047BF1A127AEB941003F3599 /* gltf_app.cpp in Sources */,
 				047BF12E27ACEEEE003F3599 /* physx_app.cpp in Sources */,
+				0443E8E327C4CB7C0099E13A /* cascade_shadowmap_app.cpp in Sources */,
 				047BF17127AD51B2003F3599 /* pbr_app.cpp in Sources */,
 				047BF18E27AE6AF0003F3599 /* ibl_app.cpp in Sources */,
 				0495476227A2954200783C84 /* primitive_app.cpp in Sources */,
 				047BF18727AE48FE003F3599 /* Irradiance_app.cpp in Sources */,
 				047BF12F27ACEFFA003F3599 /* scoped_autorelease_pool.mm in Sources */,
+				0443E8E627C4CBBC0099E13A /* omni_shadowmap_app.cpp in Sources */,
 				047BF1B927AFA525003F3599 /* framebuffer_picker_app.cpp in Sources */,
 				047BF18427AE1DF7003F3599 /* skybox_app.cpp in Sources */,
 			);
