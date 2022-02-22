@@ -58,7 +58,7 @@ public:
     wgpu::BindGroup &requestBindGroup(wgpu::BindGroupDescriptor &descriptor);
 
     ShaderProgram *requestShader(const std::string &vertexSource,
-                                 const std::string &fragmentSource);
+                                 const std::optional<std::string> &fragmentSource);
     
 private:
     wgpu::Device &_device;

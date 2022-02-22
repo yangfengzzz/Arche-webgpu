@@ -356,10 +356,12 @@ wgpu::BindGroup &ResourceCache::requestBindGroup(wgpu::BindGroupDescriptor &desc
 }
 
 ShaderProgram *ResourceCache::requestShader(const std::string &vertexSource,
-                                            const std::string &fragmentSource) {
+                                            const std::optional<std::string> &fragmentSource) {
     std::size_t hash{0U};
     hash_combine(hash, std::hash<std::string>{}(vertexSource));
-    hash_combine(hash, std::hash<std::string>{}(fragmentSource));
+    if (fragmentSource) {
+        hash_combine(hash, std::hash<std::string>{}(fragmentSource.value()));
+    }
     
     auto iter = _state.shaders.find(hash);
     if (iter == _state.shaders.end()) {

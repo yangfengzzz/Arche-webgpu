@@ -9,6 +9,7 @@
 
 #include <webgpu/webgpu_cpp.h>
 #include <string>
+#include <optional>
 
 namespace vox {
 /**
@@ -18,7 +19,7 @@ class ShaderProgram {
 public:
     ShaderProgram(wgpu::Device& device,
                   const std::string& vertexSource,
-                  const std::string& fragmentSource);
+                  const std::optional<std::string>& fragmentSource);
     
     wgpu::ShaderModule& vertexShader();
     
@@ -29,7 +30,7 @@ private:
      * init and link program with shader.
      */
     void _createProgram(const std::string& vertexSource,
-                        const std::string& fragmentSource);
+                        const std::optional<std::string>& fragmentSource);
     
 private:
     wgpu::ShaderModule _vertexShader;

@@ -170,6 +170,10 @@
 		043B7B6F278C811200D5648F /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B6E278C811200D5648F /* Metal.framework */; };
 		043B7B71278C811800D5648F /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B70278C811800D5648F /* IOSurface.framework */; };
 		043B7B73278C812000D5648F /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B72278C812000D5648F /* IOKit.framework */; };
+		0443E8CF27C4B2F90099E13A /* shadow_subpass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0443E8CD27C4B2F90099E13A /* shadow_subpass.cpp */; };
+		0443E8D027C4B2F90099E13A /* shadow_subpass.h in Headers */ = {isa = PBXBuildFile; fileRef = 0443E8CE27C4B2F90099E13A /* shadow_subpass.h */; };
+		0443E8D427C4BB500099E13A /* shadow_material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0443E8D227C4BB500099E13A /* shadow_material.cpp */; };
+		0443E8D527C4BB500099E13A /* shadow_material.h in Headers */ = {isa = PBXBuildFile; fileRef = 0443E8D327C4BB500099E13A /* shadow_material.h */; };
 		047BEFD627A4BFD9003F3599 /* wgsl_common_vert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BEFD427A4BFD9003F3599 /* wgsl_common_vert.cpp */; };
 		047BEFD727A4BFD9003F3599 /* wgsl_common_vert.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BEFD527A4BFD9003F3599 /* wgsl_common_vert.h */; };
 		047BEFDA27A4DB63003F3599 /* wgsl_encoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BEFD827A4DB63003F3599 /* wgsl_encoder.cpp */; };
@@ -746,6 +750,10 @@
 		043B7B70278C811800D5648F /* IOSurface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOSurface.framework; path = System/Library/Frameworks/IOSurface.framework; sourceTree = SDKROOT; };
 		043B7B72278C812000D5648F /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		043B7B74278C841400D5648F /* apps.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = apps.entitlements; sourceTree = "<group>"; };
+		0443E8CD27C4B2F90099E13A /* shadow_subpass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = shadow_subpass.cpp; sourceTree = "<group>"; };
+		0443E8CE27C4B2F90099E13A /* shadow_subpass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shadow_subpass.h; sourceTree = "<group>"; };
+		0443E8D227C4BB500099E13A /* shadow_material.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = shadow_material.cpp; sourceTree = "<group>"; };
+		0443E8D327C4BB500099E13A /* shadow_material.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shadow_material.h; sourceTree = "<group>"; };
 		047BEFD427A4BFD9003F3599 /* wgsl_common_vert.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_common_vert.cpp; sourceTree = "<group>"; };
 		047BEFD527A4BFD9003F3599 /* wgsl_common_vert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_common_vert.h; sourceTree = "<group>"; };
 		047BEFD827A4DB63003F3599 /* wgsl_encoder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_encoder.cpp; sourceTree = "<group>"; };
@@ -1366,6 +1374,7 @@
 				0495472127A23CC800783C84 /* texture */,
 				047BF01527A6407D003F3599 /* image */,
 				047BF0B927AC07FF003F3599 /* lighting */,
+				0443E8D127C4BB350099E13A /* shadow */,
 				0495473B27A25A7D00783C84 /* graphics */,
 				0495474C27A2712F00783C84 /* mesh */,
 				0495465F279F8CBF00783C84 /* background.h */,
@@ -1543,6 +1552,17 @@
 				043B7B68278C797700D5648F /* Cocoa.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0443E8D127C4BB350099E13A /* shadow */ = {
+			isa = PBXGroup;
+			children = (
+				0443E8D327C4BB500099E13A /* shadow_material.h */,
+				0443E8D227C4BB500099E13A /* shadow_material.cpp */,
+				0443E8CE27C4B2F90099E13A /* shadow_subpass.h */,
+				0443E8CD27C4B2F90099E13A /* shadow_subpass.cpp */,
+			);
+			path = shadow;
 			sourceTree = "<group>";
 		};
 		047BEFE727A53FC2003F3599 /* functors */ = {
@@ -2222,6 +2242,7 @@
 				047BF0EA27ACEBAE003F3599 /* collider.h in Headers */,
 				047BF16627AD3FE0003F3599 /* wgsl_ibl_frag_define.h in Headers */,
 				0412845F279ED4B10071BD86 /* imstb_textedit.h in Headers */,
+				0443E8D027C4B2F90099E13A /* shadow_subpass.h in Headers */,
 				047BF0B427ABFCDC003F3599 /* wgsl_blinn_phong.h in Headers */,
 				047BF15627AD0776003F3599 /* wgsl_pbr_frag_define.h in Headers */,
 				0495473F27A25B1300783C84 /* buffer.h in Headers */,
@@ -2236,6 +2257,7 @@
 				04954708279FCD3C00783C84 /* orbit_control.h in Headers */,
 				047BF10627ACEBB7003F3599 /* hinge_joint.h in Headers */,
 				047BF13E27ACF245003F3599 /* animator_loader.h in Headers */,
+				0443E8D527C4BB500099E13A /* shadow_material.h in Headers */,
 				0412845C279ED4B10071BD86 /* imstb_truetype.h in Headers */,
 				047BF13D27ACF245003F3599 /* fbx.h in Headers */,
 				0412844A279ED3A60071BD86 /* unix_engine.h in Headers */,
@@ -2509,6 +2531,7 @@
 				047BF0BC27AC086B003F3599 /* light.cpp in Sources */,
 				047BF11427ACEBBF003F3599 /* character_controller.cpp in Sources */,
 				047BF06D27A6819C003F3599 /* astc_encoding_choice_error.cpp in Sources */,
+				0443E8D427C4BB500099E13A /* shadow_material.cpp in Sources */,
 				047BF16127AD1996003F3599 /* wgsl_direct_irradiance_frag_define.cpp in Sources */,
 				047BF00B27A56500003F3599 /* wgsl_cache.cpp in Sources */,
 				047BF07C27A6819C003F3599 /* astc_averages_and_directions.cpp in Sources */,
@@ -2517,6 +2540,7 @@
 				047BF0E527ACEBAE003F3599 /* dynamic_collider.cpp in Sources */,
 				047BF01C27A65E7F003F3599 /* stb.cpp in Sources */,
 				047BF07427A6819C003F3599 /* astc_ktx_dds.cpp in Sources */,
+				0443E8CF27C4B2F90099E13A /* shadow_subpass.cpp in Sources */,
 				049546E4279FA7D800783C84 /* backend_binding.cpp in Sources */,
 				0495467B279F8CD600783C84 /* entity.cpp in Sources */,
 				047BF06227A680C3003F3599 /* astc_image_load_store.cpp in Sources */,
