@@ -44,9 +44,12 @@ public:
     
     wgpu::Texture& texture();
     
-    virtual wgpu::TextureView textureView() = 0;
+public:
+    wgpu::TextureViewDimension textureViewDimension();
     
-    wgpu::Sampler& sampler();
+    void setTextureViewDimension(wgpu::TextureViewDimension dim);
+    
+    virtual wgpu::TextureView textureView() = 0;
     
 public:
     /**
@@ -95,6 +98,8 @@ public:
     
     void setCompareFunction(wgpu::CompareFunction function);
     
+    wgpu::Sampler& sampler();
+    
 protected:
     uint32_t _getMipmapCount(bool mipmap);
     
@@ -119,6 +124,7 @@ protected:
     wgpu::Sampler _nativeSampler;
     wgpu::TextureDescriptor _textureDesc;
     wgpu::SamplerDescriptor _samplerDesc;
+    wgpu::TextureViewDimension _dimension = wgpu::TextureViewDimension::Undefined;
     bool _isDirty{false};
 };
 using SampledTexturePtr = std::shared_ptr<SampledTexture>;

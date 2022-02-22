@@ -9,6 +9,8 @@
 #include "camera.h"
 #include "matrix_utils.h"
 #include "texture/texture_utils.h"
+#include "texture/sampled_texture2d.h"
+#include "texture/sampled_texturecube.h"
 
 namespace vox {
 ShadowManager::ShadowManager(Scene* scene, Camera* camera):
@@ -49,6 +51,7 @@ void ShadowManager::draw(wgpu::CommandEncoder& commandEncoder) {
         if (!_packedTexture || _packedTexture->depthOrArrayLayers() != _shadowCount) {
             _packedTexture = std::make_shared<SampledTexture2D>(_scene->device(), SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION,
                                                                 _shadowCount, SHADOW_MAP_FORMAT);
+            _packedTexture->setTextureViewDimension(wgpu::TextureViewDimension::e2DArray);
         }
         TextureUtils::buildTextureArray(_shadowMaps.begin(), _shadowMaps.begin() + _shadowCount,
                                         _packedTexture->texture(), commandEncoder);
@@ -64,6 +67,7 @@ void ShadowManager::draw(wgpu::CommandEncoder& commandEncoder) {
         if (!_packedCubeTexture) {
             _packedCubeTexture = std::make_shared<SampledTextureCube>(_scene->device(), SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION,
                                                                       _cubeShadowCount, SHADOW_MAP_FORMAT);
+            _packedCubeTexture->setTextureViewDimension(wgpu::TextureViewDimension::CubeArray);
         }
         TextureUtils::buildCubeTextureArray(_cubeShadowMaps.begin(), _cubeShadowMaps.begin() + _cubeShadowCount,
                                             _packedCubeTexture->texture(), commandEncoder);

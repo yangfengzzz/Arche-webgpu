@@ -37,6 +37,14 @@ wgpu::TextureFormat SampledTexture::format() {
     return _textureDesc.format;
 }
 
+wgpu::TextureViewDimension SampledTexture::textureViewDimension() {
+    return _dimension;
+}
+
+void SampledTexture::setTextureViewDimension(wgpu::TextureViewDimension dim) {
+    _dimension = dim;
+}
+
 uint32_t SampledTexture::_getMipmapCount(bool mipmap) {
     return mipmap ? log2(fmax(_textureDesc.size.width, _textureDesc.size.height)) + 1 : 1;
 }

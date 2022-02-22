@@ -22,6 +22,8 @@ SampledTexture(device) {
     _textureDesc.format = format;
     _textureDesc.usage = usage;
     _textureDesc.mipLevelCount = _getMipmapCount(mipmap);
+    
+    _dimension = wgpu::TextureViewDimension::e2D;
     _nativeTexture = device.CreateTexture(&_textureDesc);
 }
 
@@ -32,7 +34,7 @@ SampledTexture(device) {
 wgpu::TextureView SampledTexture2D::textureView() {
     wgpu::TextureViewDescriptor desc;
     desc.format = _textureDesc.format;
-    desc.dimension = wgpu::TextureViewDimension::e2D;
+    desc.dimension = _dimension;
     desc.mipLevelCount = _textureDesc.mipLevelCount;
     desc.arrayLayerCount = _textureDesc.size.depthOrArrayLayers;
     desc.aspect = wgpu::TextureAspect::All;
