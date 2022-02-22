@@ -54,6 +54,7 @@ void ShadowManager::draw(wgpu::CommandEncoder& commandEncoder) {
             _packedTexture->setTextureViewDimension(wgpu::TextureViewDimension::e2DArray);
         }
         TextureUtils::buildTextureArray(_shadowMaps.begin(), _shadowMaps.begin() + _shadowCount,
+                                        SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION,
                                         _packedTexture->texture(), commandEncoder);
         
         _scene->shaderData.setSampledTexture(_shadowMapProp, _shadowSamplerProp, _packedTexture);
@@ -70,6 +71,7 @@ void ShadowManager::draw(wgpu::CommandEncoder& commandEncoder) {
             _packedCubeTexture->setTextureViewDimension(wgpu::TextureViewDimension::CubeArray);
         }
         TextureUtils::buildCubeTextureArray(_cubeShadowMaps.begin(), _cubeShadowMaps.begin() + _cubeShadowCount,
+                                            SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION,
                                             _packedCubeTexture->texture(), commandEncoder);
         
         
@@ -138,7 +140,8 @@ void ShadowManager::_drawDirectShadowMap(wgpu::CommandEncoder& commandEncoder) {
                 _renderPass->draw(commandEncoder, "Direct Shadow Pass");
             }
             
-            TextureUtils::buildAtlas(_cascadeShadowMaps, texture, commandEncoder);
+            TextureUtils::buildAtlas(_cascadeShadowMaps, SHADOW_MAP_RESOLUTION / 2, SHADOW_MAP_RESOLUTION / 2,
+                                     texture, commandEncoder);
             _shadowCount++;
         }
     }
@@ -176,7 +179,8 @@ void ShadowManager::_drawPointShadowMap(wgpu::CommandEncoder& commandEncoder) {
                 _shadowSubpass->setViewProjectionMatrix(_cubeShadowDatas[_cubeShadowCount].vp[i]);
                 _renderPass->draw(commandEncoder, "Point Shadow Pass");
             }
-            TextureUtils::buildCubeAtlas(_cubeMapSlices, texture, commandEncoder);
+            TextureUtils::buildCubeAtlas(_cubeMapSlices, SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION,
+                                         texture, commandEncoder);
             _cubeShadowCount++;
         }
     }
