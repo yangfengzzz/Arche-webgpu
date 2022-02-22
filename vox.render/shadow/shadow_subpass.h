@@ -7,7 +7,7 @@
 #ifndef shadow_subpass_hpp
 #define shadow_subpass_hpp
 
-#include "../subpass.h"
+#include "rendering/subpass.h"
 #include "shadow_material.h"
 
 namespace vox {
