@@ -73,6 +73,7 @@ void ColorPickerSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
     for (auto &element : items) {
         auto macros = compileMacros;
         auto& renderer = element.renderer;
+        renderer->updateShaderData(_camera->viewMatrix(), _camera->projectionMatrix());
         renderer->shaderData.mergeMacro(macros, macros);
         auto& mesh = element.mesh;
         auto& subMesh = element.subMesh;

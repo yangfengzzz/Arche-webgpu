@@ -29,7 +29,9 @@ _cubeShadowCountProp(Shader::createProperty("u_cubeShadowCount", ShaderDataGroup
     _depthStencilAttachment.depthLoadOp = wgpu::LoadOp::Clear;
     _depthStencilAttachment.clearDepth = 1.0;
     _depthStencilAttachment.depthStoreOp = wgpu::StoreOp::Store;
-    
+    _depthStencilAttachment.stencilLoadOp = wgpu::LoadOp::Load;
+    _depthStencilAttachment.stencilStoreOp = wgpu::StoreOp::Discard;
+
     _renderPass = std::make_unique<RenderPass>(_scene->device(), _renderPassDescriptor);
     auto shadowSubpass = std::make_unique<ShadowSubpass>(nullptr, _scene, _camera);
     _shadowSubpass = shadowSubpass.get();

@@ -143,9 +143,7 @@ void ComponentsManager::callRender(Camera* camera,
         } else {
             element->setDistanceForSort(center.distanceSquaredTo(position));
         }
-        
-        element->updateShaderData(camera->viewMatrix(), camera->projectionMatrix());
-        
+                
         element->_render(opaqueQueue, alphaTestQueue, transparentQueue);
     }
 }
