@@ -49,7 +49,8 @@ void IBLApp::loadScene(uint32_t width, uint32_t height) {
         images[i] = Image::load(path + imageNames[i]);
         imagePtr[i] = images[i].get();
     }
-    _cubeMap = std::make_shared<SampledTextureCube>(_device, images[0]->extent().width, images[0]->extent().height,
+    _cubeMap = std::make_shared<SampledTextureCube>(_device,
+                                                    images[0]->extent().width, images[0]->extent().height, 1,
                                                     images[0]->format());
     _cubeMap->setPixelBuffer(imagePtr);
     

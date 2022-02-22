@@ -17,12 +17,16 @@ _device(device) {
     setAddressModeV(wgpu::AddressMode::Repeat);
 }
 
-float SampledTexture::width() {
+uint32_t SampledTexture::width() {
     return _textureDesc.size.width;
 }
 
-float SampledTexture::height() {
+uint32_t SampledTexture::height() {
     return _textureDesc.size.height;
+}
+
+uint32_t SampledTexture::depthOrArrayLayers() {
+    return _textureDesc.size.depthOrArrayLayers;
 }
 
 uint32_t SampledTexture::mipmapCount() {

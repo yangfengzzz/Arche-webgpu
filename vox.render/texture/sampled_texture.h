@@ -20,12 +20,17 @@ public:
     /**
      * The width of the texture.
      */
-    float width();
+    uint32_t width();
     
     /**
      * The height of the texture.
      */
-    float height();
+    uint32_t height();
+    
+    /**
+     * The depthOrArrayLayers of the texture.
+     */
+    uint32_t depthOrArrayLayers();
     
     /**
      * Texture mipmapping count.

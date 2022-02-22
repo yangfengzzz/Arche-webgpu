@@ -54,9 +54,11 @@ const std::vector<std::vector<uint64_t>> &Image::offsets() const {
 }
 
 std::shared_ptr<SampledTexture2D> Image::createSampledTexture(wgpu::Device &device, wgpu::TextureUsage usage) {
-    auto sampledTex = std::make_shared<SampledTexture2D>(device, _mipmaps.at(0).extent.width,
-                                                         _mipmaps.at(0).extent.height, _format, usage,
-                                                         _mipmaps.size() > 1? true:false);
+    auto sampledTex = std::make_shared<SampledTexture2D>(device,
+                                                         _mipmaps.at(0).extent.width,
+                                                         _mipmaps.at(0).extent.height,
+                                                         _mipmaps.at(0).extent.depthOrArrayLayers,
+                                                         _format, usage, _mipmaps.size() > 1? true:false);
     sampledTex->setImageSource(this);
     return sampledTex;
 }

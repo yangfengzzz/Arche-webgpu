@@ -11,13 +11,14 @@ namespace vox {
 SampledTextureCube::SampledTextureCube(wgpu::Device& device,
                                        uint32_t width,
                                        uint32_t height,
+                                       uint32_t depthOrArrayLayers,
                                        wgpu::TextureFormat format,
                                        wgpu::TextureUsage usage,
                                        bool mipmap):
 SampledTexture(device) {
     _textureDesc.size.width = width;
     _textureDesc.size.height = height;
-    _textureDesc.size.depthOrArrayLayers = 6;
+    _textureDesc.size.depthOrArrayLayers = 6 * depthOrArrayLayers;
     _textureDesc.format = format;
     _textureDesc.usage = usage;
     _textureDesc.mipLevelCount = _getMipmapCount(mipmap);

@@ -10,6 +10,8 @@
 #include "rendering/render_pass.h"
 #include "shadow_subpass.h"
 #include "scene.h"
+#include "texture/sampled_texture2d.h"
+#include "texture/sampled_texturecube.h"
 
 namespace vox {
 class ShadowManager {
@@ -126,14 +128,14 @@ private:
     ShaderProperty _shadowMapProp;
     ShaderProperty _shadowSamplerProp;
     ShaderProperty _shadowDataProp;
-    SampledTexturePtr _packedTexture{nullptr};
+    SampledTexture2DPtr _packedTexture{nullptr};
     std::array<ShadowManager::ShadowData, ShadowManager::MAX_SHADOW> _shadowDatas{};
     
     ShaderProperty _cubeShadowCountProp;
     ShaderProperty _cubeShadowMapProp;
     ShaderProperty _cubeShadowSamplerProp;
     ShaderProperty _cubeShadowDataProp;
-    SampledTexturePtr _packedCubeTexture{nullptr};
+    SampledTextureCubePtr _packedCubeTexture{nullptr};
     std::array<ShadowManager::CubeShadowData, ShadowManager::MAX_CUBE_SHADOW> _cubeShadowDatas{};
     
     const std::array<std::pair<Vector3F, Vector3F>, 6> _cubeMapDirection = {

@@ -24,7 +24,8 @@ public:
     SampledTexture2D(wgpu::Device& device,
                      uint32_t width,
                      uint32_t height,
-                     wgpu::TextureFormat format = wgpu::TextureFormat::RGBA8Sint,
+                     uint32_t depthOrArrayLayers = 1,
+                     wgpu::TextureFormat format = wgpu::TextureFormat::RGBA8Unorm,
                      wgpu::TextureUsage usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst,
                      bool mipmap = true);
     

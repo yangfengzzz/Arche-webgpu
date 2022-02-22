@@ -8,7 +8,7 @@
 #include "shader/shader.h"
 #include "camera.h"
 #include "matrix_utils.h"
-#include "texture/sampled_texture_utils.h"
+#include "texture/texture_utils.h"
 
 namespace vox {
 ShadowManager::ShadowManager(Scene* scene, Camera* camera):
@@ -46,13 +46,12 @@ void ShadowManager::draw(wgpu::CommandEncoder& commandEncoder) {
     _drawDirectShadowMap(commandEncoder);
     _scene->shaderData.setData(_shadowCountProp, _shadowCount);
     if (_shadowCount) {
-        if (_packedTexture) {
-            SampledTextureUtils::createTextureArray(_shadowMaps.begin(), _shadowMaps.begin() + _shadowCount,
-                                                    _packedTexture, commandEncoder);
-        } else {
-            _packedTexture = SampledTextureUtils::createTextureArray(_shadowMaps.begin(), _shadowMaps.begin() + _shadowCount,
-                                                                     commandEncoder);
+        if (!_packedTexture || _packedTexture->depthOrArrayLayers() != _shadowCount) {
+            _packedTexture = std::make_shared<SampledTexture2D>(_scene->device(), SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION,
+                                                                _shadowCount, SHADOW_MAP_FORMAT);
         }
+        TextureUtils::buildTextureArray(_shadowMaps.begin(), _shadowMaps.begin() + _shadowCount,
+                                        _packedTexture->texture(), commandEncoder);
         
         _scene->shaderData.setSampledTexture(_shadowMapProp, _shadowSamplerProp, _packedTexture);
         _scene->shaderData.setData(_shadowDataProp, _shadowDatas);
@@ -62,15 +61,14 @@ void ShadowManager::draw(wgpu::CommandEncoder& commandEncoder) {
     _drawPointShadowMap(commandEncoder);
     _scene->shaderData.setData(_cubeShadowCountProp, _cubeShadowCount);
     if (_cubeShadowCount) {
-        if (_packedCubeTexture) {
-            SampledTextureUtils::createCubeTextureArray(_cubeShadowMaps.begin(), _cubeShadowMaps.begin() + _cubeShadowCount,
-                                                        _packedCubeTexture, commandEncoder);
-        } else {
-            _packedCubeTexture =
-            SampledTextureUtils::createCubeTextureArray(_cubeShadowMaps.begin(), _cubeShadowMaps.begin() + _cubeShadowCount,
-                                                        commandEncoder);
+        if (!_packedCubeTexture) {
+            _packedCubeTexture = std::make_shared<SampledTextureCube>(_scene->device(), SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION,
+                                                                      _cubeShadowCount, SHADOW_MAP_FORMAT);
         }
-
+        TextureUtils::buildCubeTextureArray(_cubeShadowMaps.begin(), _cubeShadowMaps.begin() + _cubeShadowCount,
+                                            _packedCubeTexture->texture(), commandEncoder);
+        
+        
         _scene->shaderData.setSampledTexture(_cubeShadowMapProp, _cubeShadowSamplerProp, _packedCubeTexture);
         _scene->shaderData.setData(_cubeShadowDataProp, _cubeShadowDatas);
     }
@@ -135,8 +133,8 @@ void ShadowManager::_drawDirectShadowMap(wgpu::CommandEncoder& commandEncoder) {
                 _shadowSubpass->setViewProjectionMatrix(_shadowDatas[_shadowCount].vp[i]);
                 _renderPass->draw(commandEncoder, "Direct Shadow Pass");
             }
-
-            SampledTextureUtils::createAtlas(_cascadeShadowMaps, texture, commandEncoder);
+            
+            TextureUtils::buildAtlas(_cascadeShadowMaps, texture, commandEncoder);
             _shadowCount++;
         }
     }
@@ -174,7 +172,7 @@ void ShadowManager::_drawPointShadowMap(wgpu::CommandEncoder& commandEncoder) {
                 _shadowSubpass->setViewProjectionMatrix(_cubeShadowDatas[_cubeShadowCount].vp[i]);
                 _renderPass->draw(commandEncoder, "Point Shadow Pass");
             }
-            SampledTextureUtils::createCubeAtlas(_cubeMapSlices, texture, commandEncoder);
+            TextureUtils::buildCubeAtlas(_cubeMapSlices, texture, commandEncoder);
             _cubeShadowCount++;
         }
     }

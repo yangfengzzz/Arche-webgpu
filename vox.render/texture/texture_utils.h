@@ -1,0 +1,37 @@
+//  Copyright (c) 2022 Feng Yang
+//
+//  I am making my contributions/submissions to this project solely in my
+//  personal capacity and am not conveying any rights to any intellectual
+//  property of any third parties.
+
+#ifndef sampled_texture_utils_hpp
+#define sampled_texture_utils_hpp
+
+#include "sampled_texture.h"
+#include <vector>
+
+namespace vox {
+class TextureUtils {
+public:
+    static void buildTextureArray(const std::vector<wgpu::Texture>::iterator &texturesBegin,
+                                  const std::vector<wgpu::Texture>::iterator &texturesEnd,
+                                  wgpu::Texture& textureArray,
+                                  wgpu::CommandEncoder& commandEncoder);
+    
+    static void buildCubeTextureArray(const std::vector<wgpu::Texture>::iterator &texturesBegin,
+                                      const std::vector<wgpu::Texture>::iterator &texturesEnd,
+                                      wgpu::Texture& textureArray,
+                                      wgpu::CommandEncoder& commandEncoder);
+    
+    static void buildAtlas(const std::array<wgpu::Texture, 4> &textures,
+                           wgpu::Texture& atlas,
+                           wgpu::CommandEncoder& commandEncoder);
+    
+    static void buildCubeAtlas(const std::array<wgpu::Texture, 6> &textures,
+                               wgpu::Texture& atlas,
+                               wgpu::CommandEncoder& commandEncoder);
+};
+
+}
+
+#endif /* sampled_texture_utils_hpp */
