@@ -14,10 +14,13 @@ ShadowManager::ShadowManager(Scene* scene, Camera* camera):
 _scene(scene),
 _camera(camera),
 _shadowMapProp(Shader::createProperty("u_shadowMap", ShaderDataGroup::Scene)),
-_cubeShadowMapProp(Shader::createProperty("u_cubeShadowMap", ShaderDataGroup::Scene)),
+_shadowSamplerProp(Shader::createProperty("u_shadowSampler", ShaderDataGroup::Scene)),
 _shadowDataProp(Shader::createProperty("u_shadowData", ShaderDataGroup::Scene)),
-_cubeShadowDataProp(Shader::createProperty("u_cubeShadowData", ShaderDataGroup::Scene)),
 _shadowCountProp(Shader::createProperty("u_shadowCount", ShaderDataGroup::Scene)),
+
+_cubeShadowMapProp(Shader::createProperty("u_cubeShadowMap", ShaderDataGroup::Scene)),
+_cubeShadowSamplerProp(Shader::createProperty("u_cubeShadowSampler", ShaderDataGroup::Scene)),
+_cubeShadowDataProp(Shader::createProperty("u_cubeShadowData", ShaderDataGroup::Scene)),
 _cubeShadowCountProp(Shader::createProperty("u_cubeShadowCount", ShaderDataGroup::Scene)) {
     _renderPassDescriptor.depthStencilAttachment = &_depthStencilAttachment;
     _depthStencilAttachment.depthLoadOp = wgpu::LoadOp::Clear;
@@ -43,7 +46,7 @@ void ShadowManager::draw(wgpu::CommandEncoder& commandEncoder) {
     _scene->shaderData.setData(_shadowCountProp, _shadowCount);
     if (_shadowCount) {
         // _packedTexture = commandBuffer.createTextureArray(_shadowMaps.begin(), _shadowMaps.begin() + _shadowCount, _packedTexture);
-        _scene->shaderData.setData(_shadowMapProp, _packedTexture);
+        _scene->shaderData.setSampledTexture(_shadowMapProp, _shadowSamplerProp, _packedTexture);
         _scene->shaderData.setData(_shadowDataProp, _shadowDatas);
     }
     
@@ -54,7 +57,7 @@ void ShadowManager::draw(wgpu::CommandEncoder& commandEncoder) {
         // _packedCubeTexture = commandBuffer.createCubeTextureArray(_cubeShadowMaps.begin(),
         //                                                           _cubeShadowMaps.begin() + _cubeShadowCount,
         //                                                           _packedCubeTexture);
-        _scene->shaderData.setData(_cubeShadowMapProp, _packedCubeTexture);
+        _scene->shaderData.setSampledTexture(_cubeShadowMapProp, _cubeShadowSamplerProp, _packedCubeTexture);
         _scene->shaderData.setData(_cubeShadowDataProp, _cubeShadowDatas);
     }
 }

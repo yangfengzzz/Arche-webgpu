@@ -123,15 +123,18 @@ private:
     std::vector<wgpu::Texture> _shadowMaps{};
     
     ShaderProperty _shadowCountProp;
-    ShaderProperty _cubeShadowCountProp;
     ShaderProperty _shadowMapProp;
-    ShaderProperty _cubeShadowMapProp;
+    ShaderProperty _shadowSamplerProp;
     ShaderProperty _shadowDataProp;
-    ShaderProperty _cubeShadowDataProp;
-    wgpu::Texture _packedCubeTexture{nullptr};
-    std::array<ShadowManager::CubeShadowData, ShadowManager::MAX_CUBE_SHADOW> _cubeShadowDatas{};
-    wgpu::Texture _packedTexture{nullptr};
+    SampledTexturePtr _packedTexture{nullptr};
     std::array<ShadowManager::ShadowData, ShadowManager::MAX_SHADOW> _shadowDatas{};
+    
+    ShaderProperty _cubeShadowCountProp;
+    ShaderProperty _cubeShadowMapProp;
+    ShaderProperty _cubeShadowSamplerProp;
+    ShaderProperty _cubeShadowDataProp;
+    SampledTexturePtr _packedCubeTexture{nullptr};
+    std::array<ShadowManager::CubeShadowData, ShadowManager::MAX_CUBE_SHADOW> _cubeShadowDatas{};
     
     const std::array<std::pair<Vector3F, Vector3F>, 6> _cubeMapDirection = {
         std::make_pair(Vector3F(10, 0, 0), Vector3F(0, 1, 0)),
