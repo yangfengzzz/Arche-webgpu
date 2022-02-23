@@ -137,39 +137,41 @@ void ShadowManager::_drawDirectShadowMap(wgpu::CommandEncoder& commandEncoder) {
     for (const auto &light: lights) {
         if (light->enableShadow() && _shadowCount < MAX_SHADOW) {
             _updateCascadesShadow(light, _shadowDatas[_shadowCount]);
-            for (int i = 0; i < SHADOW_MAP_CASCADE_COUNT; i++) {
-                wgpu::Texture texture = nullptr;
-                if (_shadowCount < _shadowMaps.size()) {
-                    texture = _shadowMaps[_shadowCount];
-                } else {
-                    wgpu::TextureDescriptor descriptor;
-                    descriptor.size.width = SHADOW_MAP_RESOLUTION;
-                    descriptor.size.height = SHADOW_MAP_RESOLUTION;
-                    descriptor.format = SHADOW_MAP_FORMAT;
-                    descriptor.usage = wgpu::TextureUsage::RenderAttachment | wgpu::TextureUsage::CopyDst | wgpu::TextureUsage::CopySrc;
-                    texture = _scene->device().CreateTexture(&descriptor);
-                    
-                    _shadowMaps.push_back(texture);
-                }
+            
+            wgpu::Texture texture = nullptr;
+            if (_shadowCount < _shadowMaps.size()) {
+                texture = _shadowMaps[_shadowCount];
+            } else {
+                wgpu::TextureDescriptor descriptor;
+                descriptor.size.width = SHADOW_MAP_RESOLUTION;
+                descriptor.size.height = SHADOW_MAP_RESOLUTION;
+                descriptor.format = SHADOW_MAP_FORMAT;
+                descriptor.usage = wgpu::TextureUsage::RenderAttachment | wgpu::TextureUsage::CopyDst | wgpu::TextureUsage::CopySrc;
+                texture = _scene->device().CreateTexture(&descriptor);
                 
-                _depthStencilAttachment.view = texture.CreateView();
-                {
-                    std::shared_ptr<ShadowMaterial> material{nullptr};
-                    if (_numOfdrawCall < _materialPool.size()) {
-                        material = _materialPool[_numOfdrawCall];
-                    } else {
-                        material = std::make_shared<ShadowMaterial>(_scene->device());
-                        _materialPool.emplace_back(material);
-                    }
-                    material->setViewProjectionMatrix(_shadowDatas[_shadowCount].vp[i]);
-                    _shadowSubpass->setShadowMaterial(material);
-                    _renderPass->draw(commandEncoder, "Direct Shadow Pass");
-                    _numOfdrawCall++;
-                }
-                _shadowCount++;
+                _shadowMaps.push_back(texture);
             }
+            _depthStencilAttachment.view = texture.CreateView();
+            
+            for (int i = 0; i < SHADOW_MAP_CASCADE_COUNT; i++) {
+                std::shared_ptr<ShadowMaterial> material{nullptr};
+                if (_numOfdrawCall < _materialPool.size()) {
+                    material = _materialPool[_numOfdrawCall];
+                } else {
+                    material = std::make_shared<ShadowMaterial>(_scene->device());
+                    _materialPool.emplace_back(material);
+                }
+                material->setViewProjectionMatrix(_shadowDatas[_shadowCount].vp[i]);
+                _shadowSubpass->setShadowMaterial(material);
+                
+                _shadowSubpass->setViewport(_viewport[i]);
+                _renderPass->draw(commandEncoder, "Direct Shadow Pass");
+                _numOfdrawCall++;
+            }
+            _shadowCount++;
         }
     }
+    _shadowSubpass->setViewport(std::nullopt);
 }
 
 void ShadowManager::_drawPointShadowMap(wgpu::CommandEncoder& commandEncoder) {

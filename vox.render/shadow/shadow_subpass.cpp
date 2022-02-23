@@ -24,6 +24,10 @@ void ShadowSubpass::setShadowMaterial(const std::shared_ptr<ShadowMaterial>& mat
     _material = mat;
 }
 
+void ShadowSubpass::setViewport(const std::optional<Vector4F>& viewport) {
+    _viewport = viewport;
+}
+
 void ShadowSubpass::prepare() {
     _depthStencil.format = ShadowManager::SHADOW_MAP_FORMAT;
     _shadowGenDescriptor.depthStencil = &_depthStencil;
@@ -35,6 +39,10 @@ void ShadowSubpass::prepare() {
 
 void ShadowSubpass::draw(wgpu::RenderPassEncoder& passEncoder) {
     passEncoder.PushDebugGroup("Shadow Map Pass");
+    if (_viewport) {
+        passEncoder.SetViewport(_viewport->x, _viewport->y, _viewport->z, _viewport->w, 0, 1);
+    }
+    
     _drawMeshes(passEncoder);
     passEncoder.PopDebugGroup();
 }

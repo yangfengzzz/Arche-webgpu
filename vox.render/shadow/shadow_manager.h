@@ -147,6 +147,13 @@ private:
         std::make_pair(Vector3F(0, 0, 10), Vector3F(0, 1, 0)),
         std::make_pair(Vector3F(0, 0, -10), Vector3F(0, 1, 0)),
     };
+    
+    const std::array<Vector4F, 4> _viewport = {
+        Vector4F(0, 0, 0.5, 0.5),
+        Vector4F(0.5, 0, 0.5, 0.5),
+        Vector4F(0, 0.5, 0.5, 0.5),
+        Vector4F(0.5, 0.5, 0.5, 0.5),
+    };
 };
 }
 #endif /* shadow_manager_hpp */

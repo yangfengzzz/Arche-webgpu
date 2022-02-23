@@ -19,6 +19,8 @@ public:
     
     void setShadowMaterial(const std::shared_ptr<ShadowMaterial>& mat);
     
+    void setViewport(const std::optional<Vector4F>& viewport);
+    
     void prepare() override;
     
     void draw(wgpu::RenderPassEncoder& passEncoder) override;
@@ -42,6 +44,7 @@ private:
     wgpu::PipelineLayoutDescriptor _pipelineLayoutDescriptor;
     wgpu::PipelineLayout _pipelineLayout;
     
+    std::optional<Vector4F> _viewport = std::nullopt;
     std::shared_ptr<ShadowMaterial> _material{nullptr};
 };
 
