@@ -101,7 +101,7 @@ void PhysXDynamicApp::loadScene(uint32_t width, uint32_t height) {
         planeEntity->layer = Layer::Layer1;
         
         auto renderer = planeEntity->addComponent<MeshRenderer>();
-        // renderer->receiveShadow = true;
+        renderer->receiveShadow = true;
         renderer->setMesh(PrimitiveMesh::createCuboid(_device, size.x, size.y, size.z));
         renderer->setMaterial(mtl);
         planeEntity->transform->setPosition(position);
@@ -119,7 +119,7 @@ void PhysXDynamicApp::loadScene(uint32_t width, uint32_t height) {
         boxMtl->setBaseColor(Color(u(e), u(e), u(e), 1.0));
         auto boxEntity = _rootEntity->createChild("BoxEntity");
         auto boxRenderer = boxEntity->addComponent<MeshRenderer>();
-        // boxRenderer->castShadow = true;
+        boxRenderer->castShadow = true;
         boxRenderer->setMesh(PrimitiveMesh::createCuboid(_device, size.x, size.y, size.z));
         boxRenderer->setMaterial(boxMtl);
         boxEntity->transform->setPosition(position);
@@ -143,7 +143,7 @@ void PhysXDynamicApp::loadScene(uint32_t width, uint32_t height) {
         mtl->setBaseColor(Color(u(e), u(e), u(e), 1.0));
         auto capsuleEntity = _rootEntity->createChild();
         auto renderer = capsuleEntity->addComponent<MeshRenderer>();
-        // renderer->castShadow = true;
+        renderer->castShadow = true;
         renderer->setMesh(PrimitiveMesh::createCapsule(_device, radius, height, 20));
         renderer->setMaterial(mtl);
         capsuleEntity->transform->setPosition(position);
@@ -195,8 +195,15 @@ void PhysXDynamicApp::loadScene(uint32_t width, uint32_t height) {
     light->transform->setPosition(10, 10, 0);
     light->transform->lookAt(Point3F());
     auto directLight = light->addComponent<DirectLight>();
-    directLight->intensity = 1.0;
-    // directLight->setEnableShadow(true);
+    directLight->intensity = 0.5;
+    directLight->setEnableShadow(true);
+    
+    auto light2 = _rootEntity->createChild("light");
+    light2->transform->setPosition(0, 10, 10);
+    light2->transform->lookAt(Point3F());
+    auto directLight2 = light2->addComponent<DirectLight>();
+    directLight2->intensity = 0.5;
+    directLight2->setEnableShadow(true);
     
     auto player = addPlayer(1, 3, Point3F(0, 6.5, 0), QuaternionF());
     auto controller = player->addComponent<ControllerScript>();
@@ -257,7 +264,7 @@ EntityPtr PhysXDynamicApp::addSphere(float radius, const Point3F &position,
     mtl->setBaseColor(Color(u(e), u(e), u(e), 1.0));
     auto sphereEntity = _rootEntity->createChild();
     auto renderer = sphereEntity->addComponent<MeshRenderer>();
-    // renderer->castShadow = true;
+    renderer->castShadow = true;
     renderer->setMesh(PrimitiveMesh::createSphere(_device, radius));
     renderer->setMaterial(mtl);
     sphereEntity->transform->setPosition(position);
@@ -284,7 +291,7 @@ EntityPtr PhysXDynamicApp::addCapsule(float radius, float height,
     mtl->setBaseColor(Color(u(e), u(e), u(e), 1.0));
     auto capsuleEntity = _rootEntity->createChild();
     auto renderer = capsuleEntity->addComponent<MeshRenderer>();
-    // renderer->castShadow = true;
+    renderer->castShadow = true;
     renderer->setMesh(PrimitiveMesh::createCapsule(_device, radius, height));
     renderer->setMaterial(mtl);
     capsuleEntity->transform->setPosition(position);
