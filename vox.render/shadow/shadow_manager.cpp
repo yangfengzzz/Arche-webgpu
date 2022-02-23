@@ -63,14 +63,9 @@ void ShadowManager::draw(wgpu::CommandEncoder& commandEncoder) {
     _drawDirectShadowMap(commandEncoder);
     if (_shadowCount) {
         if (!_packedTexture || _packedTexture->depthOrArrayLayers() != _shadowCount) {
-            if (_shadowCount == 1) {
-                _packedTexture = std::make_shared<SampledTexture2D>(_scene->device(), SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION,
-                                                                    2, SHADOW_MAP_FORMAT); // layer must greater than 1 otherwise can't turn to be depth_array
-            } else {
-                _packedTexture = std::make_shared<SampledTexture2D>(_scene->device(), SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION,
-                                                                    _shadowCount, SHADOW_MAP_FORMAT);
-            }
-
+            _packedTexture = std::make_shared<SampledTexture2D>(_scene->device(), SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION,
+                                                                _shadowCount, SHADOW_MAP_FORMAT,
+                                                                wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst, false);
             _packedTexture->setTextureViewDimension(wgpu::TextureViewDimension::e2DArray);
             _packedTexture->setCompareFunction(wgpu::CompareFunction::Less);
             _packedTexture->setAddressModeU(wgpu::AddressMode::ClampToEdge);
@@ -89,7 +84,8 @@ void ShadowManager::draw(wgpu::CommandEncoder& commandEncoder) {
     if (_cubeShadowCount) {
         if (!_packedCubeTexture) {
             _packedCubeTexture = std::make_shared<SampledTextureCube>(_scene->device(), SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION,
-                                                                      _cubeShadowCount, SHADOW_MAP_FORMAT);
+                                                                      _cubeShadowCount, SHADOW_MAP_FORMAT,
+                                                                      wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst, false);
             _packedCubeTexture->setTextureViewDimension(wgpu::TextureViewDimension::CubeArray);
             _packedCubeTexture->setCompareFunction(wgpu::CompareFunction::Less);
             _packedCubeTexture->setAddressModeU(wgpu::AddressMode::ClampToEdge);
