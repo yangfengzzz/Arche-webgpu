@@ -185,24 +185,20 @@ void ShadowManager::_drawPointShadowMap(wgpu::CommandEncoder& commandEncoder) {
                 descriptor.size.height = SHADOW_MAP_RESOLUTION;
                 descriptor.size.depthOrArrayLayers = 6;
                 descriptor.format = SHADOW_MAP_FORMAT;
-                descriptor.usage = wgpu::TextureUsage::CopyDst | wgpu::TextureUsage::CopySrc;
+                descriptor.usage = wgpu::TextureUsage::RenderAttachment | wgpu::TextureUsage::CopyDst | wgpu::TextureUsage::CopySrc;
                 texture = _scene->device().CreateTexture(&descriptor);
                 
                 _cubeShadowMaps.push_back(texture);
             }
             
             _updatePointShadow(light, _cubeShadowDatas[_cubeShadowCount]);
+            wgpu::TextureViewDescriptor descriptor;
+            descriptor.format = SHADOW_MAP_FORMAT;
+            descriptor.dimension = wgpu::TextureViewDimension::e2D;
+            descriptor.arrayLayerCount = 1;
             for (int i = 0; i < 6; i++) {
-                if (_cubeMapSlices[i] == nullptr) {
-                    wgpu::TextureDescriptor descriptor;
-                    descriptor.size.width = SHADOW_MAP_RESOLUTION;
-                    descriptor.size.height = SHADOW_MAP_RESOLUTION;
-                    descriptor.format = SHADOW_MAP_FORMAT;
-                    descriptor.usage = wgpu::TextureUsage::RenderAttachment | wgpu::TextureUsage::CopyDst | wgpu::TextureUsage::CopySrc;
-                    _cubeMapSlices[i] = _scene->device().CreateTexture(&descriptor);
-                }
-                
-                _depthStencilAttachment.view = _cubeMapSlices[i].CreateView();
+                descriptor.baseArrayLayer = i;
+                _depthStencilAttachment.view = texture.CreateView(&descriptor);
                 
                 std::shared_ptr<ShadowMaterial> material{nullptr};
                 if (_numOfdrawCall < _materialPool.size()) {
@@ -216,8 +212,6 @@ void ShadowManager::_drawPointShadowMap(wgpu::CommandEncoder& commandEncoder) {
                 _renderPass->draw(commandEncoder, "Point Shadow Pass");
                 _numOfdrawCall++;
             }
-            TextureUtils::buildCubeAtlas(_cubeMapSlices, SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION,
-                                         texture, commandEncoder);
             _cubeShadowCount++;
         }
     }

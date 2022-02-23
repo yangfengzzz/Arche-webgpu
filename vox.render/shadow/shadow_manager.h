@@ -122,19 +122,18 @@ private:
     
     static uint32_t _shadowCount;
     std::vector<wgpu::Texture> _shadowMaps{};
+    SampledTexturePtr _packedTexture{nullptr};
     ShaderProperty _shadowMapProp;
     ShaderProperty _shadowSamplerProp;
     ShaderProperty _shadowDataProp;
-    SampledTexturePtr _packedTexture{nullptr};
     std::array<ShadowManager::ShadowData, ShadowManager::MAX_SHADOW> _shadowDatas{};
     
     static uint32_t _cubeShadowCount;
-    std::array<wgpu::Texture, 6> _cubeMapSlices{};
     std::vector<wgpu::Texture> _cubeShadowMaps{};
+    SampledTexturePtr _packedCubeTexture{nullptr};
     ShaderProperty _cubeShadowMapProp;
     ShaderProperty _cubeShadowSamplerProp;
     ShaderProperty _cubeShadowDataProp;
-    SampledTexturePtr _packedCubeTexture{nullptr};
     std::array<ShadowManager::CubeShadowData, ShadowManager::MAX_CUBE_SHADOW> _cubeShadowDatas{};
     
     uint32_t _numOfdrawCall = 0;
