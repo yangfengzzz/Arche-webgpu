@@ -185,6 +185,8 @@
 		0443E8EA27C4CE210099E13A /* texture_utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 0443E8E827C4CE210099E13A /* texture_utils.h */; };
 		0443E8F627C5C0890099E13A /* wgsl_shadow_vert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0443E8F427C5C0890099E13A /* wgsl_shadow_vert.cpp */; };
 		0443E8F727C5C0890099E13A /* wgsl_shadow_vert.h in Headers */ = {isa = PBXBuildFile; fileRef = 0443E8F527C5C0890099E13A /* wgsl_shadow_vert.h */; };
+		0443E8FA27C5C2ED0099E13A /* wgsl_shadow_frag.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0443E8F827C5C2ED0099E13A /* wgsl_shadow_frag.cpp */; };
+		0443E8FB27C5C2ED0099E13A /* wgsl_shadow_frag.h in Headers */ = {isa = PBXBuildFile; fileRef = 0443E8F927C5C2ED0099E13A /* wgsl_shadow_frag.h */; };
 		047BEFD627A4BFD9003F3599 /* wgsl_common_vert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BEFD427A4BFD9003F3599 /* wgsl_common_vert.cpp */; };
 		047BEFD727A4BFD9003F3599 /* wgsl_common_vert.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BEFD527A4BFD9003F3599 /* wgsl_common_vert.h */; };
 		047BEFDA27A4DB63003F3599 /* wgsl_encoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BEFD827A4DB63003F3599 /* wgsl_encoder.cpp */; };
@@ -779,6 +781,8 @@
 		0443E8E827C4CE210099E13A /* texture_utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = texture_utils.h; sourceTree = "<group>"; };
 		0443E8F427C5C0890099E13A /* wgsl_shadow_vert.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_shadow_vert.cpp; sourceTree = "<group>"; };
 		0443E8F527C5C0890099E13A /* wgsl_shadow_vert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_shadow_vert.h; sourceTree = "<group>"; };
+		0443E8F827C5C2ED0099E13A /* wgsl_shadow_frag.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_shadow_frag.cpp; sourceTree = "<group>"; };
+		0443E8F927C5C2ED0099E13A /* wgsl_shadow_frag.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_shadow_frag.h; sourceTree = "<group>"; };
 		047BEFD427A4BFD9003F3599 /* wgsl_common_vert.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_common_vert.cpp; sourceTree = "<group>"; };
 		047BEFD527A4BFD9003F3599 /* wgsl_common_vert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_common_vert.h; sourceTree = "<group>"; };
 		047BEFD827A4DB63003F3599 /* wgsl_encoder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_encoder.cpp; sourceTree = "<group>"; };
@@ -1605,6 +1609,8 @@
 			children = (
 				0443E8F527C5C0890099E13A /* wgsl_shadow_vert.h */,
 				0443E8F427C5C0890099E13A /* wgsl_shadow_vert.cpp */,
+				0443E8F927C5C2ED0099E13A /* wgsl_shadow_frag.h */,
+				0443E8F827C5C2ED0099E13A /* wgsl_shadow_frag.cpp */,
 			);
 			path = shadow;
 			sourceTree = "<group>";
@@ -2236,6 +2242,7 @@
 				0495463C279F89E500783C84 /* shader_property.h in Headers */,
 				047BF10427ACEBB7003F3599 /* spherical_joint.h in Headers */,
 				04954647279F8A7D00783C84 /* material.h in Headers */,
+				0443E8FB27C5C2ED0099E13A /* wgsl_shadow_frag.h in Headers */,
 				0495464D279F8A8700783C84 /* blend_mode.h in Headers */,
 				047BF12127ACEBC7003F3599 /* collider_shape.h in Headers */,
 				047BF08827ABB8F7003F3599 /* wgsl_worldpos_share.h in Headers */,
@@ -2575,6 +2582,7 @@
 				047BEFEA27A54561003F3599 /* wgsl_uv_share.cpp in Sources */,
 				047BEFDD27A4E762003F3599 /* wgsl_common.cpp in Sources */,
 				047BF16927AD4339003F3599 /* wgsl_pbr_frag.cpp in Sources */,
+				0443E8FA27C5C2ED0099E13A /* wgsl_shadow_frag.cpp in Sources */,
 				047BF0A727ABDFC8003F3599 /* wgsl_begin_mobile_frag.cpp in Sources */,
 				047BF15D27AD1435003F3599 /* wgsl_brdf.cpp in Sources */,
 				047BF0FB27ACEBB7003F3599 /* hinge_joint.cpp in Sources */,
