@@ -120,6 +120,11 @@ void WGSLBlinnPhongFragment::_createShaderSource(size_t hash, const ShaderMacroC
             _beginViewDirFrag(source, macros);
             _mobileBlinnphoneFrag(source, macros);
             _shadowFrag(source, macros);
+            if (macros.contains(SHADOW_MAP_COUNT) || macros.contains(CUBE_SHADOW_MAP_COUNT)) {
+                source += "diffuse = diffuse * shadow;\n";
+                source += "specular = specular * shadow;\n";
+            }
+            
             source += "out.finalColor = emission + ambient + diffuse + specular;\n";
             source += "out.finalColor.a = diffuse.a;\n";
         });
