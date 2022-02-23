@@ -14,12 +14,12 @@ WGSLShadowFrag::WGSLShadowFrag(){
 
 void WGSLShadowFrag::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros) {
     if (macros.contains(SHADOW_MAP_COUNT)) {
-        encoder.addUniformBinding("u_shadowData", "ShadowData");
+        encoder.addUniformBinding("u_shadowData", fmt::format("array<ShadowData, {}>", (int)*macros.macroConstant(SHADOW_MAP_COUNT)));
         encoder.addSampledTextureBinding("u_shadowMap", TextureType::TextureDepth2DArray, "u_shadowSampler", SamplerType::SamplerComparison);
     }
     
     if (macros.contains(CUBE_SHADOW_MAP_COUNT)) {
-        encoder.addUniformBinding("u_cubeShadowData", "CubeShadowData");
+        encoder.addUniformBinding("u_cubeShadowData", fmt::format("array<CubeShadowData, {}>", (int)*macros.macroConstant(CUBE_SHADOW_MAP_COUNT)));
         encoder.addSampledTextureBinding("u_cubeShadowMap", TextureType::TextureDepthCubeArray, "u_cubeShadowSampler", SamplerType::SamplerComparison);
     }
 }
@@ -34,8 +34,8 @@ void WGSLShadowFrag::operator()(std::string& source, const ShaderMacroCollection
         source += "loop {\n";
         source += fmt::format("if (i >= {}) {{ break; }}\n", (int)*macros.macroConstant(SHADOW_MAP_COUNT));
         
-        source += "shadow = shadow + filterPCF(in.v_pos, in.view_pos, u_shadowData, i, u_shadowMap, u_shadowSampler);\n";
-        // source += "shadow = shadow + textureProj(in.v_pos, in.view_pos, float2(0), u_shadowData, i, u_shadowMap, u_shadowSampler);\n";
+        source += "shadow = shadow + filterPCF(in.v_pos, in.view_pos, u_shadowData[i], i, u_shadowMap, u_shadowSampler);\n";
+        // source += "shadow = shadow + textureProj(in.v_pos, in.view_pos, float2(0), u_shadowData[i], i, u_shadowMap, u_shadowSampler);\n";
 
         source += "i = i + 1;\n";
         source += "}\n";
@@ -50,8 +50,8 @@ void WGSLShadowFrag::operator()(std::string& source, const ShaderMacroCollection
         source += "loop {\n";
         source += fmt::format("if (i >= {}) {{ break; }}\n", (int)*macros.macroConstant(CUBE_SHADOW_MAP_COUNT));
         
-        // source += "shadow = shadow + cubeFilterPCF(in.v_pos, u_cubeShadowData, i, u_cubeShadowMap, u_cubeShadowSampler);\n"; // too expensive
-        source += "shadow = shadow + cubeTextureProj(in.v_pos, vec2<f32>(0.0, 0.0), u_cubeShadowData, i, u_cubeShadowMap, u_cubeShadowSampler);\n";
+        // source += "shadow = shadow + cubeFilterPCF(in.v_pos, u_cubeShadowData[i], i, u_cubeShadowMap, u_cubeShadowSampler);\n"; // too expensive
+        source += "shadow = shadow + cubeTextureProj(in.v_pos, vec2<f32>(0.0, 0.0), u_cubeShadowData[i], i, u_cubeShadowMap, u_cubeShadowSampler);\n";
         
         source += "i = i + 1;\n";
         source += "}\n";
