@@ -50,8 +50,8 @@ void WGSLShadowFrag::operator()(std::string& source, const ShaderMacroCollection
         source += "loop {\n";
         source += fmt::format("if (i >= {}) {{ break; }}\n", (int)*macros.macroConstant(CUBE_SHADOW_MAP_COUNT));
         
-        // source += "shadow = shadow + cubeFilterPCF(in.v_pos, in.view_pos, u_cubeShadowData, i, u_cubeShadowMap, u_cubeShadowSampler);\n"; // too expensive
-        source += "shadow = shadow + cubeTextureProj(in.v_pos, in.view_pos, vec2<f32>(0.0, 0.0), u_cubeShadowData, i, u_cubeShadowMap, u_cubeShadowSampler);\n";
+        // source += "shadow = shadow + cubeFilterPCF(in.v_pos, u_cubeShadowData, i, u_cubeShadowMap, u_cubeShadowSampler);\n"; // too expensive
+        source += "shadow = shadow + cubeTextureProj(in.v_pos, vec2<f32>(0.0, 0.0), u_cubeShadowData, i, u_cubeShadowMap, u_cubeShadowSampler);\n";
         
         source += "i = i + 1;\n";
         source += "}\n";
