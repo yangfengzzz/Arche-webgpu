@@ -85,9 +85,9 @@ void ShadowManager::draw(wgpu::CommandEncoder& commandEncoder) {
             _packedCubeTexture = std::make_shared<SampledTextureCube>(_scene->device(), SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION,
                                                                       _cubeShadowCount, SHADOW_MAP_FORMAT);
             _packedCubeTexture->setTextureViewDimension(wgpu::TextureViewDimension::CubeArray);
-            _packedTexture->setCompareFunction(wgpu::CompareFunction::Less);
-            _packedTexture->setAddressModeU(wgpu::AddressMode::ClampToEdge);
-            _packedTexture->setAddressModeV(wgpu::AddressMode::ClampToEdge);
+            _packedCubeTexture->setCompareFunction(wgpu::CompareFunction::Less);
+            _packedCubeTexture->setAddressModeU(wgpu::AddressMode::ClampToEdge);
+            _packedCubeTexture->setAddressModeV(wgpu::AddressMode::ClampToEdge);
         }
         TextureUtils::buildCubeTextureArray(_cubeShadowMaps.begin(), _cubeShadowMaps.begin() + _cubeShadowCount,
                                             SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION,

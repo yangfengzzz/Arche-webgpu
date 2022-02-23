@@ -48,7 +48,7 @@ public:
         /**
          * Light cascade depth.
          */
-        float cascadeSplits[4];
+        Vector4F cascadeSplits;
     };
     
     struct CubeShadowData {
