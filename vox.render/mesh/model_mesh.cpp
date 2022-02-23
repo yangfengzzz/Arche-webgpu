@@ -173,6 +173,7 @@ const std::vector<Vector2F> &ModelMesh::uvs(int channelIndex) {
             return _uv7;
         default:
             assert(false && "The index of channel needs to be in range [0 - 7].");
+            throw std::exception();
     }
 }
 

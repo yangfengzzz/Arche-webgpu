@@ -21,6 +21,7 @@ bool Animator::addAnimationClip(const std::string &filename) {
         return addAnimationClip(filename, skinnedMesh->numJoints(), skinnedMesh->numSoaJoints());
     } else {
         assert(false && "found no skeleton");
+        throw std::exception();
     }
 }
 

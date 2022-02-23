@@ -103,6 +103,7 @@ wgpu::BindGroupLayoutEntry Shader::_findEntry(uint32_t group, uint32_t binding) 
         return entry;
     } else {
         assert(false);
+        throw std::exception();
     }
 }
 

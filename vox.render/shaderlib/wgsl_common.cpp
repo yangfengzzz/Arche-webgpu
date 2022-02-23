@@ -57,6 +57,7 @@ std::string toString(Attributes type) {
             break;
         default:
             assert(false && "Unknown attribute");
+            throw std::exception();
             break;
     }
 }
@@ -503,6 +504,7 @@ std::string toString(wgpu::TextureFormat type) {
             
         default:
             assert(false && "undefined");
+            throw std::exception();
             break;
     }
 }

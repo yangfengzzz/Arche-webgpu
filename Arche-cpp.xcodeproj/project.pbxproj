@@ -216,7 +216,6 @@
 		047BF00827A56434003F3599 /* wgsl_unlit.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF00627A56434003F3599 /* wgsl_unlit.h */; };
 		047BF00B27A56500003F3599 /* wgsl_cache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF00927A56500003F3599 /* wgsl_cache.cpp */; };
 		047BF00C27A56500003F3599 /* wgsl_cache.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF00A27A56500003F3599 /* wgsl_cache.h */; };
-		047BF01327A58872003F3599 /* wgsl_reflect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF01127A58872003F3599 /* wgsl_reflect.cpp */; };
 		047BF01427A58872003F3599 /* wgsl_reflect.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF01227A58872003F3599 /* wgsl_reflect.h */; };
 		047BF01827A640A3003F3599 /* image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF01627A640A3003F3599 /* image.cpp */; };
 		047BF01927A640A3003F3599 /* image.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF01727A640A3003F3599 /* image.h */; };
@@ -2695,7 +2694,6 @@
 				047BF13B27ACF245003F3599 /* fbx.cc in Sources */,
 				047BF12827ACEBC7003F3599 /* sphere_collider_shape.cpp in Sources */,
 				047BF0AF27ABFA2A003F3599 /* wgsl_mobile_blinnphong_frag.cpp in Sources */,
-				047BF01327A58872003F3599 /* wgsl_reflect.cpp in Sources */,
 				047BF12527ACEBC7003F3599 /* plane_collider_shape.cpp in Sources */,
 				0495474A27A2669600783C84 /* mesh.cpp in Sources */,
 				0495472427A23CE100783C84 /* sampled_texture.cpp in Sources */,
@@ -2831,6 +2829,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
+				EXCLUDED_ARCHS = arm64;
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
 				GCC_ENABLE_CPP_RTTI = YES;
@@ -2844,6 +2843,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
+				EXCLUDED_ARCHS = arm64;
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
 				GCC_ENABLE_CPP_RTTI = YES;
@@ -2860,6 +2860,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
+				EXCLUDED_ARCHS = arm64;
 				HEADER_SEARCH_PATHS = ./vox.math;
 				LD_RUNPATH_SEARCH_PATHS = ../third_party/glog/build;
 				LIBRARY_SEARCH_PATHS = (
@@ -2888,6 +2889,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
+				EXCLUDED_ARCHS = arm64;
 				HEADER_SEARCH_PATHS = ./vox.math;
 				LD_RUNPATH_SEARCH_PATHS = ../third_party/glog/build;
 				LIBRARY_SEARCH_PATHS = (
@@ -2914,6 +2916,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
+				EXCLUDED_ARCHS = arm64;
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
 				GCC_ENABLE_CPP_RTTI = YES;
@@ -2985,6 +2988,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
+				EXCLUDED_ARCHS = arm64;
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
 				GCC_ENABLE_CPP_RTTI = YES;
@@ -3160,11 +3164,13 @@
 		043B7B62278C4C5A00D5648F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_ENTITLEMENTS = apps/apps.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
+				EXCLUDED_ARCHS = arm64;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
 					DAWN_ENABLE_BACKEND_METAL,
@@ -3295,11 +3301,13 @@
 		043B7B63278C4C5A00D5648F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_ENTITLEMENTS = apps/apps.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
+				EXCLUDED_ARCHS = arm64;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
 					DAWN_ENABLE_BACKEND_METAL,
@@ -3431,6 +3439,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
+				EXCLUDED_ARCHS = arm64;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
 					DAWN_ENABLE_BACKEND_METAL,
@@ -3565,6 +3574,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
+				EXCLUDED_ARCHS = arm64;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
 					DAWN_ENABLE_BACKEND_METAL,

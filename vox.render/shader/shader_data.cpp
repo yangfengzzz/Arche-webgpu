@@ -75,6 +75,7 @@ wgpu::TextureView ShaderData::getTextureView(uint32_t uniqueID) {
         return iter->second->textureView();
     } else {
         assert(false && "unkonwn uniqueID for texture");
+        throw std::exception();
     }
 }
 
@@ -84,6 +85,7 @@ wgpu::Sampler& ShaderData::getSampler(uint32_t uniqueID) {
         return iter->second->sampler();
     } else {
         assert(false && "unkonwn uniqueID for sampler");
+        throw std::exception();
     }
 }
 

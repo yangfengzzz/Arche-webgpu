@@ -208,6 +208,7 @@ uint32_t bytesPerPixel(wgpu::TextureFormat format) {
             
         default:
             assert(false && "undefined");
+            throw std::exception();
             break;
     }
 }
