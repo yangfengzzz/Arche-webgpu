@@ -66,6 +66,9 @@ void ShadowManager::draw(wgpu::CommandEncoder& commandEncoder) {
             _packedTexture = std::make_shared<SampledTexture2D>(_scene->device(), SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION,
                                                                 _shadowCount, SHADOW_MAP_FORMAT);
             _packedTexture->setTextureViewDimension(wgpu::TextureViewDimension::e2DArray);
+            _packedTexture->setCompareFunction(wgpu::CompareFunction::Less);
+            _packedTexture->setAddressModeU(wgpu::AddressMode::ClampToEdge);
+            _packedTexture->setAddressModeV(wgpu::AddressMode::ClampToEdge);
         }
         TextureUtils::buildTextureArray(_shadowMaps.begin(), _shadowMaps.begin() + _shadowCount,
                                         SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION,
@@ -82,6 +85,9 @@ void ShadowManager::draw(wgpu::CommandEncoder& commandEncoder) {
             _packedCubeTexture = std::make_shared<SampledTextureCube>(_scene->device(), SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION,
                                                                       _cubeShadowCount, SHADOW_MAP_FORMAT);
             _packedCubeTexture->setTextureViewDimension(wgpu::TextureViewDimension::CubeArray);
+            _packedTexture->setCompareFunction(wgpu::CompareFunction::Less);
+            _packedTexture->setAddressModeU(wgpu::AddressMode::ClampToEdge);
+            _packedTexture->setAddressModeV(wgpu::AddressMode::ClampToEdge);
         }
         TextureUtils::buildCubeTextureArray(_cubeShadowMaps.begin(), _cubeShadowMaps.begin() + _cubeShadowCount,
                                             SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION,

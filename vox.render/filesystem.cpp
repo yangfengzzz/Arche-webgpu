@@ -17,7 +17,7 @@ namespace vox {
 namespace fs {
 namespace path {
 const std::unordered_map<Type, std::string> relative_paths = {{Type::Assets, "../assets/"},
-    {Type::Shaders, "shaders/"},
+    {Type::Shaders, "WGSL/"},
     {Type::Storage, "output/"},
     {Type::Screenshots, "output/images/"},
     {Type::Logs, "output/logs/"},
@@ -141,7 +141,7 @@ std::vector<uint8_t> readAsset(const std::string &filename, const uint32_t count
 }
 
 std::string readShader(const std::string &filename) {
-    return readTextFile(path::get(path::Type::Shaders) + filename);
+    return readTextFile(path::get(path::Type::Assets) + path::get(path::Type::Shaders) + filename);
 }
 
 std::vector<uint8_t> readShaderBinary(const std::string &filename) {

@@ -9,17 +9,8 @@
 #include <fmt/core.h>
 
 namespace vox {
-WGSLShadowVert::WGSLShadowVert(const std::pair<std::string, std::string>& outType):
-_output(outType.first),
-_outputStructName(outType.second) {
-}
-
-void WGSLShadowVert::operator()(WGSLEncoder& encoder,
-                                const ShaderMacroCollection& macros, size_t counterIndex) {
-    if (macros.contains(SHADOW_MAP_COUNT)) {
-        encoder.addInoutType(_outputStructName, WGSLEncoder::getCounterNumber(counterIndex),
-                             "view_pos", UniformType::Vec3f32);
-    }
+WGSLShadowVert::WGSLShadowVert(const std::string& output):
+_output(output) {
 }
 
 void WGSLShadowVert::operator()(std::string& source, const ShaderMacroCollection& macros) {

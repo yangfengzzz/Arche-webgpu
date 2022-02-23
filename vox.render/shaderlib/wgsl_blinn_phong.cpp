@@ -24,7 +24,10 @@ _uvVert("in", "out"),
 _colorVert("in", "out"),
 _normalVert("in", "out"),
 _worldPosVert("in", "out"),
-_positionVert("in", "out") {
+_positionVert("in", "out"),
+
+_shadowShare("VertexOut"),
+_shadowVert("out"){
     
 }
 
@@ -38,12 +41,15 @@ void WGSLBlinnPhongVertex::_createShaderSource(size_t hash, const ShaderMacroCol
         _common(encoder, macros);
         _commonVert(encoder, macros);
         _blendShapeInput(encoder, macros, inputStructCounter);
+        
         _uvShare(encoder, macros, outputStructCounter);
         _colorShare(encoder, macros, outputStructCounter);
         _normalShare(encoder, macros, outputStructCounter);
         _worldPosShare(encoder, macros, outputStructCounter);
+        _shadowShare(encoder, macros, outputStructCounter);
+        
         encoder.addInoutType("VertexOut", BuiltInType::Position, "position", UniformType::Vec4f32);
-
+        
         encoder.addEntry({{"in", "VertexIn"}}, {"out", "VertexOut"}, [&](std::string &source){
             _beginPositionVert(source, macros);
             _beginNormalVert(source, macros);
@@ -54,6 +60,8 @@ void WGSLBlinnPhongVertex::_createShaderSource(size_t hash, const ShaderMacroCol
             _normalVert(source, macros);
             _worldPosVert(source, macros);
             _positionVert(source, macros);
+            
+            _shadowVert(source, macros);
         });
         encoder.flush();
     }
@@ -77,7 +85,11 @@ _normalGet("VertexOut"),
 
 _beginMobileFrag("in", "out"),
 _beginViewDirFrag("in", "out"),
-_mobileBlinnphoneFrag("in", "out") {
+_mobileBlinnphoneFrag("in", "out"),
+
+_shadowShare("VertexOut"),
+_shadowFrag(),
+_shadowCommon() {
     
 }
 
@@ -88,11 +100,17 @@ void WGSLBlinnPhongFragment::_createShaderSource(size_t hash, const ShaderMacroC
     {
         auto encoder = createSourceEncoder(wgpu::ShaderStage::Fragment);
         _common(encoder, macros);
+        _shadowCommon(encoder, macros);
+        
         _commonFrag(encoder, macros);
+        _shadowFrag(encoder, macros);
+        
         _uvShare(encoder, macros, inputStructCounter);
         _colorShare(encoder, macros, inputStructCounter);
         _normalShare(encoder, macros, inputStructCounter);
         _worldPosShare(encoder, macros, inputStructCounter);
+        _shadowShare(encoder, macros, inputStructCounter);
+
         _lightFragDefine(encoder, macros, inputStructCounter);
         _mobileMaterialShare(encoder, macros, inputStructCounter);
         _normalGet(encoder, macros, inputStructCounter);
@@ -101,6 +119,7 @@ void WGSLBlinnPhongFragment::_createShaderSource(size_t hash, const ShaderMacroC
             _beginMobileFrag(source, macros);
             _beginViewDirFrag(source, macros);
             _mobileBlinnphoneFrag(source, macros);
+            _shadowFrag(source, macros);
             source += "out.finalColor = emission + ambient + diffuse + specular;\n";
             source += "out.finalColor.a = diffuse.a;\n";
         });

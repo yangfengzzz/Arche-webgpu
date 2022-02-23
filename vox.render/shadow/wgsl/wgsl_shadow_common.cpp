@@ -5,10 +5,19 @@
 //  property of any third parties.
 
 #include "wgsl_shadow_common.h"
+#include "filesystem.h"
 
 namespace vox {
 void WGSLShadowCommon::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros) {
+    if (macros.contains(SHADOW_MAP_COUNT)) {
+        std::string shadowFunction = fs::readShader("shadow.wgsl");
+        encoder.addStruct(shadowFunction);
+    }
     
+    if (macros.contains(CUBE_SHADOW_MAP_COUNT)) {
+        std::string shadowFunction = fs::readShader("shadow_cube.wgsl");
+        encoder.addStruct(shadowFunction);
+    }
 }
 
 }

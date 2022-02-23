@@ -189,6 +189,8 @@
 		0443E8FB27C5C2ED0099E13A /* wgsl_shadow_frag.h in Headers */ = {isa = PBXBuildFile; fileRef = 0443E8F927C5C2ED0099E13A /* wgsl_shadow_frag.h */; };
 		0443E8FE27C5C7C40099E13A /* wgsl_shadow_common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0443E8FC27C5C7C40099E13A /* wgsl_shadow_common.cpp */; };
 		0443E8FF27C5C7C40099E13A /* wgsl_shadow_common.h in Headers */ = {isa = PBXBuildFile; fileRef = 0443E8FD27C5C7C40099E13A /* wgsl_shadow_common.h */; };
+		0443E90327C5F6330099E13A /* wgsl_shadow_share.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0443E90127C5F6330099E13A /* wgsl_shadow_share.cpp */; };
+		0443E90427C5F6330099E13A /* wgsl_shadow_share.h in Headers */ = {isa = PBXBuildFile; fileRef = 0443E90227C5F6330099E13A /* wgsl_shadow_share.h */; };
 		047BEFD627A4BFD9003F3599 /* wgsl_common_vert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BEFD427A4BFD9003F3599 /* wgsl_common_vert.cpp */; };
 		047BEFD727A4BFD9003F3599 /* wgsl_common_vert.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BEFD527A4BFD9003F3599 /* wgsl_common_vert.h */; };
 		047BEFDA27A4DB63003F3599 /* wgsl_encoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BEFD827A4DB63003F3599 /* wgsl_encoder.cpp */; };
@@ -787,6 +789,8 @@
 		0443E8F927C5C2ED0099E13A /* wgsl_shadow_frag.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_shadow_frag.h; sourceTree = "<group>"; };
 		0443E8FC27C5C7C40099E13A /* wgsl_shadow_common.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_shadow_common.cpp; sourceTree = "<group>"; };
 		0443E8FD27C5C7C40099E13A /* wgsl_shadow_common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_shadow_common.h; sourceTree = "<group>"; };
+		0443E90127C5F6330099E13A /* wgsl_shadow_share.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_shadow_share.cpp; sourceTree = "<group>"; };
+		0443E90227C5F6330099E13A /* wgsl_shadow_share.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_shadow_share.h; sourceTree = "<group>"; };
 		047BEFD427A4BFD9003F3599 /* wgsl_common_vert.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_common_vert.cpp; sourceTree = "<group>"; };
 		047BEFD527A4BFD9003F3599 /* wgsl_common_vert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_common_vert.h; sourceTree = "<group>"; };
 		047BEFD827A4DB63003F3599 /* wgsl_encoder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_encoder.cpp; sourceTree = "<group>"; };
@@ -1596,6 +1600,7 @@
 		0443E8D127C4BB350099E13A /* shadow */ = {
 			isa = PBXGroup;
 			children = (
+				0443E90027C5E3A30099E13A /* wgsl */,
 				0443E8D727C4BDEA0099E13A /* wgsl_shadow.h */,
 				0443E8D627C4BDEA0099E13A /* wgsl_shadow.cpp */,
 				0443E8D327C4BB500099E13A /* shadow_material.h */,
@@ -1608,17 +1613,19 @@
 			path = shadow;
 			sourceTree = "<group>";
 		};
-		0443E8F327C5C06A0099E13A /* shadow */ = {
+		0443E90027C5E3A30099E13A /* wgsl */ = {
 			isa = PBXGroup;
 			children = (
 				0443E8FD27C5C7C40099E13A /* wgsl_shadow_common.h */,
 				0443E8FC27C5C7C40099E13A /* wgsl_shadow_common.cpp */,
+				0443E90227C5F6330099E13A /* wgsl_shadow_share.h */,
+				0443E90127C5F6330099E13A /* wgsl_shadow_share.cpp */,
 				0443E8F527C5C0890099E13A /* wgsl_shadow_vert.h */,
 				0443E8F427C5C0890099E13A /* wgsl_shadow_vert.cpp */,
 				0443E8F927C5C2ED0099E13A /* wgsl_shadow_frag.h */,
 				0443E8F827C5C2ED0099E13A /* wgsl_shadow_frag.cpp */,
 			);
-			path = shadow;
+			path = wgsl;
 			sourceTree = "<group>";
 		};
 		047BEFE727A53FC2003F3599 /* functors */ = {
@@ -1990,7 +1997,6 @@
 				047BEFD927A4DB63003F3599 /* wgsl_encoder.h */,
 				047BEFD827A4DB63003F3599 /* wgsl_encoder.cpp */,
 				047BEFE727A53FC2003F3599 /* functors */,
-				0443E8F327C5C06A0099E13A /* shadow */,
 				047BF00A27A56500003F3599 /* wgsl_cache.h */,
 				047BF00927A56500003F3599 /* wgsl_cache.cpp */,
 				047BF00627A56434003F3599 /* wgsl_unlit.h */,
@@ -2330,6 +2336,7 @@
 				047BF19527AE6F74003F3599 /* scene_animation_clip.h in Headers */,
 				04954684279F8CD600783C84 /* scene_forward.h in Headers */,
 				0495467E279F8CD600783C84 /* update_flag.h in Headers */,
+				0443E90427C5F6330099E13A /* wgsl_shadow_share.h in Headers */,
 				047BF01927A640A3003F3599 /* image.h in Headers */,
 				0495470A279FCD3C00783C84 /* spherical.h in Headers */,
 				0412847A279EEEEC0071BD86 /* render_state.h in Headers */,
@@ -2619,6 +2626,7 @@
 				047BF0E327ACEBAE003F3599 /* physics_manager.cpp in Sources */,
 				047BF10727ACEBB7003F3599 /* spring_joint.cpp in Sources */,
 				047BF00727A56434003F3599 /* wgsl_unlit.cpp in Sources */,
+				0443E90327C5F6330099E13A /* wgsl_shadow_share.cpp in Sources */,
 				047BF1B627AFA242003F3599 /* color_picker_subpass.cpp in Sources */,
 				047BF19D27AE718E003F3599 /* gltf_loader.cpp in Sources */,
 				047BF0E227ACEBAE003F3599 /* collider.cpp in Sources */,

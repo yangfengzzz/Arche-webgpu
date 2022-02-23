@@ -12,16 +12,12 @@
 namespace vox {
 class WGSLShadowVert {
 public:
-    WGSLShadowVert(const std::pair<std::string, std::string>& outType);
-    
-    void operator()(WGSLEncoder& encoder,
-                    const ShaderMacroCollection& macros, size_t counterIndex);
+    WGSLShadowVert(const std::string& output);
     
     void operator()(std::string& source, const ShaderMacroCollection& macros);
     
 private:
     const std::string _output;
-    const std::string _outputStructName{};
 };
 
 }

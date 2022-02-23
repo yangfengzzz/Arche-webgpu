@@ -4,28 +4,23 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef wgsl_shadow_frag_hpp
-#define wgsl_shadow_frag_hpp
+#ifndef wgsl_shadow_share_hpp
+#define wgsl_shadow_share_hpp
 
 #include "shaderlib/wgsl_encoder.h"
 
 namespace vox {
-class WGSLShadowFrag {
+class WGSLShadowShare {
 public:
-    WGSLShadowFrag(const std::pair<std::string, std::string>& outType);
+    WGSLShadowShare(const std::string& outputStructName);
     
     void operator()(WGSLEncoder& encoder,
                     const ShaderMacroCollection& macros, size_t counterIndex);
     
-    void operator()(std::string& source, const ShaderMacroCollection& macros);
-    
 private:
-    const std::string _output;
-    const std::string _outputStructName{};
-    
-    std::string _shadowDataStruct{};
-    std::string _cubeShadowDataStruct{};
+    std::string _outputStructName{};
 };
 
 }
-#endif /* wgsl_shadow_frag_hpp */
+
+#endif /* wgsl_shadow_share_hpp */

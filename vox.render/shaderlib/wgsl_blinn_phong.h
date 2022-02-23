@@ -32,6 +32,11 @@
 #include "functors/wgsl_mobile_blinnphong_frag.h"
 #include "functors/wgsl_normal_get.h"
 
+#include "shadow/wgsl/wgsl_shadow_vert.h"
+#include "shadow/wgsl/wgsl_shadow_frag.h"
+#include "shadow/wgsl/wgsl_shadow_common.h"
+#include "shadow/wgsl/wgsl_shadow_share.h"
+
 namespace vox {
 //MARK: - Unlit Vertex Code
 class WGSLBlinnPhongVertex : public WGSLCache {
@@ -58,6 +63,9 @@ private:
     WGSLNormalVert _normalVert;
     WGSLWorldPosVert _worldPosVert;
     WGSLPositionVert _positionVert;
+    
+    WGSLShadowShare _shadowShare;
+    WGSLShadowVert _shadowVert;
 };
 
 //MARK: - Unlit Fragment Code
@@ -81,6 +89,10 @@ private:
     WGSLBeginMobileFrag _beginMobileFrag;
     WGSLBeginViewDirFrag _beginViewDirFrag;
     WGSLMobileBlinnphongFrag _mobileBlinnphoneFrag;
+    
+    WGSLShadowShare _shadowShare;
+    WGSLShadowCommon _shadowCommon;
+    WGSLShadowFrag _shadowFrag;
 };
 
 }
