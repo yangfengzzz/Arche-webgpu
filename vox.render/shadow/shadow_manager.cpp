@@ -37,7 +37,7 @@ _cubeShadowDataProp(Shader::createProperty("u_cubeShadowData", ShaderDataGroup::
     _renderPassDescriptor.colorAttachments = nullptr;
     _renderPassDescriptor.depthStencilAttachment = &_depthStencilAttachment;
     _depthStencilAttachment.depthLoadOp = wgpu::LoadOp::Clear;
-    _depthStencilAttachment.clearDepth = 1.0;
+    _depthStencilAttachment.depthClearValue = 1.0;
     _depthStencilAttachment.depthStoreOp = wgpu::StoreOp::Store;
     _depthStencilAttachment.stencilLoadOp = wgpu::LoadOp::Load;
     _depthStencilAttachment.stencilStoreOp = wgpu::StoreOp::Discard;

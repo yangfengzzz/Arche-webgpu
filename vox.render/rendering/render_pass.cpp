@@ -44,7 +44,7 @@ void RenderPass::draw(wgpu::CommandEncoder& commandEncoder,
             encoder.PopDebugGroup();
         }
     }
-    encoder.EndPass();
+    encoder.End();
 }
 
 void RenderPass::addSubpass(std::unique_ptr<Subpass> &&subpass) {

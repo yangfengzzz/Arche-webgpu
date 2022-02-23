@@ -32,9 +32,9 @@ bool EditorApplication::prepare(Engine &engine) {
     
     _colorPickerColorAttachments.storeOp = wgpu::StoreOp::Store;
     _colorPickerColorAttachments.loadOp = wgpu::LoadOp::Clear;
-    _colorPickerColorAttachments.clearColor = wgpu::Color{1, 1, 1, 1};
+    _colorPickerColorAttachments.clearValue = wgpu::Color{1, 1, 1, 1};
     _colorPickerDepthStencilAttachment.depthLoadOp = wgpu::LoadOp::Clear;
-    _colorPickerDepthStencilAttachment.clearDepth = 1.0;
+    _colorPickerDepthStencilAttachment.depthClearValue = 1.0;
     _colorPickerDepthStencilAttachment.depthStoreOp = wgpu::StoreOp::Discard;
     _colorPickerDepthStencilAttachment.stencilLoadOp = wgpu::LoadOp::Clear;
     _colorPickerDepthStencilAttachment.stencilStoreOp = wgpu::StoreOp::Discard;
