@@ -91,6 +91,8 @@ void ShadowManager::_drawSpotShadowMap(wgpu::CommandEncoder& commandEncoder) {
     const auto &lights = _scene->light_manager.spotLights();
     for (const auto &light: lights) {
         if (light->enableShadow() && _shadowCount < MAX_SHADOW) {
+            _updateSpotShadow(light, _shadowDatas[_shadowCount]);
+
             wgpu::Texture texture = nullptr;
             if (_shadowCount < _shadowMaps.size()) {
                 texture = _shadowMaps[_shadowCount];
@@ -105,10 +107,8 @@ void ShadowManager::_drawSpotShadowMap(wgpu::CommandEncoder& commandEncoder) {
                 _shadowMaps.push_back(texture);
             }
             
-            _updateSpotShadow(light, _shadowDatas[_shadowCount]);
+            _depthStencilAttachment.view = texture.CreateView();
             {
-                _depthStencilAttachment.view = texture.CreateView();
-                
                 std::shared_ptr<ShadowMaterial> material{nullptr};
                 if (_numOfdrawCall < _materialPool.size()) {
                     material = _materialPool[_numOfdrawCall];
@@ -130,49 +130,38 @@ void ShadowManager::_drawDirectShadowMap(wgpu::CommandEncoder& commandEncoder) {
     const auto &lights = _scene->light_manager.directLights();
     for (const auto &light: lights) {
         if (light->enableShadow() && _shadowCount < MAX_SHADOW) {
-            wgpu::Texture texture = nullptr;
-            if (_shadowCount < _shadowMaps.size()) {
-                texture = _shadowMaps[_shadowCount];
-            } else {
-                wgpu::TextureDescriptor descriptor;
-                descriptor.size.width = SHADOW_MAP_RESOLUTION;
-                descriptor.size.height = SHADOW_MAP_RESOLUTION;
-                descriptor.format = SHADOW_MAP_FORMAT;
-                descriptor.usage = wgpu::TextureUsage::CopyDst | wgpu::TextureUsage::CopySrc;
-                texture = _scene->device().CreateTexture(&descriptor);
-                
-                _shadowMaps.push_back(texture);
-            }
-            
             _updateCascadesShadow(light, _shadowDatas[_shadowCount]);
             for (int i = 0; i < SHADOW_MAP_CASCADE_COUNT; i++) {
-                if (_cascadeShadowMaps[i] == nullptr) {
+                wgpu::Texture texture = nullptr;
+                if (_shadowCount < _shadowMaps.size()) {
+                    texture = _shadowMaps[_shadowCount];
+                } else {
                     wgpu::TextureDescriptor descriptor;
-                    descriptor.size.width = SHADOW_MAP_RESOLUTION / 2;
-                    descriptor.size.height = SHADOW_MAP_RESOLUTION / 2;
+                    descriptor.size.width = SHADOW_MAP_RESOLUTION;
+                    descriptor.size.height = SHADOW_MAP_RESOLUTION;
                     descriptor.format = SHADOW_MAP_FORMAT;
                     descriptor.usage = wgpu::TextureUsage::RenderAttachment | wgpu::TextureUsage::CopyDst | wgpu::TextureUsage::CopySrc;
-                    _cascadeShadowMaps[i] = _scene->device().CreateTexture(&descriptor);
+                    texture = _scene->device().CreateTexture(&descriptor);
+                    
+                    _shadowMaps.push_back(texture);
                 }
                 
-                _depthStencilAttachment.view = _cascadeShadowMaps[i].CreateView();
-                
-                std::shared_ptr<ShadowMaterial> material{nullptr};
-                if (_numOfdrawCall < _materialPool.size()) {
-                    material = _materialPool[_numOfdrawCall];
-                } else {
-                    material = std::make_shared<ShadowMaterial>(_scene->device());
-                    _materialPool.emplace_back(material);
+                _depthStencilAttachment.view = texture.CreateView();
+                {
+                    std::shared_ptr<ShadowMaterial> material{nullptr};
+                    if (_numOfdrawCall < _materialPool.size()) {
+                        material = _materialPool[_numOfdrawCall];
+                    } else {
+                        material = std::make_shared<ShadowMaterial>(_scene->device());
+                        _materialPool.emplace_back(material);
+                    }
+                    material->setViewProjectionMatrix(_shadowDatas[_shadowCount].vp[i]);
+                    _shadowSubpass->setShadowMaterial(material);
+                    _renderPass->draw(commandEncoder, "Direct Shadow Pass");
+                    _numOfdrawCall++;
                 }
-                material->setViewProjectionMatrix(_shadowDatas[_shadowCount].vp[i]);
-                _shadowSubpass->setShadowMaterial(material);
-                _renderPass->draw(commandEncoder, "Direct Shadow Pass");
-                _numOfdrawCall++;
+                _shadowCount++;
             }
-            
-            TextureUtils::buildAtlas(_cascadeShadowMaps, SHADOW_MAP_RESOLUTION / 2, SHADOW_MAP_RESOLUTION / 2,
-                                     texture, commandEncoder);
-            _shadowCount++;
         }
     }
 }

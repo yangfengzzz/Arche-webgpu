@@ -116,13 +116,8 @@ private:
     
     float _cascadeSplitLambda = 0.5f;
     
-    uint32_t _cubeShadowCount = 0;
-    std::array<wgpu::Texture, 6> _cubeMapSlices{};
-    std::vector<wgpu::Texture> _cubeShadowMaps{};
     uint32_t _shadowCount = 0;
-    std::array<wgpu::Texture, SHADOW_MAP_CASCADE_COUNT> _cascadeShadowMaps{};
     std::vector<wgpu::Texture> _shadowMaps{};
-    
     ShaderProperty _shadowCountProp;
     ShaderProperty _shadowMapProp;
     ShaderProperty _shadowSamplerProp;
@@ -130,6 +125,9 @@ private:
     SampledTexturePtr _packedTexture{nullptr};
     std::array<ShadowManager::ShadowData, ShadowManager::MAX_SHADOW> _shadowDatas{};
     
+    uint32_t _cubeShadowCount = 0;
+    std::array<wgpu::Texture, 6> _cubeMapSlices{};
+    std::vector<wgpu::Texture> _cubeShadowMaps{};
     ShaderProperty _cubeShadowCountProp;
     ShaderProperty _cubeShadowMapProp;
     ShaderProperty _cubeShadowSamplerProp;
