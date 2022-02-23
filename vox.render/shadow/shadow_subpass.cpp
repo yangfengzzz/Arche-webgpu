@@ -20,8 +20,8 @@ Subpass(renderContext, scene, camera) {
     _material = std::make_shared<ShadowMaterial>(scene->device());
 }
 
-void ShadowSubpass::setViewProjectionMatrix(const Matrix4x4F& vp) {
-    _material->setViewProjectionMatrix(vp);
+void ShadowSubpass::setShadowMaterial(const std::shared_ptr<ShadowMaterial>& mat) {
+    _material = mat;
 }
 
 void ShadowSubpass::prepare() {

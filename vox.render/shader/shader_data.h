@@ -54,8 +54,7 @@ public:
         }
         iter = _shaderBuffers.find(property.uniqueId);
         
-        std::vector<uint8_t> bytes = to_bytes(value);
-        _device.GetQueue().WriteBuffer(iter->second.handle(), 0, bytes.data(), sizeof(T));
+        _device.GetQueue().WriteBuffer(iter->second.handle(), 0, &value, sizeof(T));
     }
     
     template<typename T>
@@ -69,6 +68,19 @@ public:
         iter = _shaderBuffers.find(property.uniqueId);
         
         _device.GetQueue().WriteBuffer(iter->second.handle(), 0, value.data(), sizeof(T) * value.size());
+    }
+    
+    template<typename T, size_t N>
+    void setData(ShaderProperty property, const std::array<T, N>& value) {
+        auto iter = _shaderBuffers.find(property.uniqueId);
+        if (iter == _shaderBuffers.end()) {
+            _shaderBuffers.insert(std::make_pair(property.uniqueId,
+                                                 Buffer(_device, sizeof(T) * N,
+                                                        wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst)));
+        }
+        iter = _shaderBuffers.find(property.uniqueId);
+        
+        _device.GetQueue().WriteBuffer(iter->second.handle(), 0, value.data(), sizeof(T) * N);
     }
     
 public:

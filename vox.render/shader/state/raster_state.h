@@ -17,9 +17,10 @@ struct RasterState {
     /** Specifies whether or not front- and/or back-facing polygons can be culled. */
     wgpu::CullMode cullMode = wgpu::CullMode::Front;
     /** The multiplier by which an implementation-specific value is multiplied with to create a constant depth offset. */
-    float depthBias = 0;
+    int32_t depthBias = 0;
     /** The scale factor for the variable depth offset for each polygon. */
-    float slopeScaledDepthBias = 0;
+    float slopeScaledDepthBias = 1.0;
+    float depthBiasClamp = 0.01;
     
     void apply(wgpu::PrimitiveState& primitive,
                wgpu::DepthStencilState* depthStencil,

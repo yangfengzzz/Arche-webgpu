@@ -17,7 +17,7 @@ public:
                   Scene* scene,
                   Camera* camera);
     
-    void setViewProjectionMatrix(const Matrix4x4F& vp);
+    void setShadowMaterial(const std::shared_ptr<ShadowMaterial>& mat);
     
     void prepare() override;
     

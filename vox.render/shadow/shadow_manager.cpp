@@ -25,6 +25,8 @@ _cubeShadowMapProp(Shader::createProperty("u_cubeShadowMap", ShaderDataGroup::Sc
 _cubeShadowSamplerProp(Shader::createProperty("u_cubeShadowSampler", ShaderDataGroup::Scene)),
 _cubeShadowDataProp(Shader::createProperty("u_cubeShadowData", ShaderDataGroup::Scene)),
 _cubeShadowCountProp(Shader::createProperty("u_cubeShadowCount", ShaderDataGroup::Scene)) {
+    _renderPassDescriptor.colorAttachmentCount = 0;
+    _renderPassDescriptor.colorAttachments = nullptr;
     _renderPassDescriptor.depthStencilAttachment = &_depthStencilAttachment;
     _depthStencilAttachment.depthLoadOp = wgpu::LoadOp::Clear;
     _depthStencilAttachment.clearDepth = 1.0;
@@ -47,6 +49,7 @@ void ShadowManager::setCascadeSplitLambda(float value) {
 }
 
 void ShadowManager::draw(wgpu::CommandEncoder& commandEncoder) {
+    _numOfdrawCall = 0;
     _shadowCount = 0;
     _drawSpotShadowMap(commandEncoder);
     _drawDirectShadowMap(commandEncoder);
@@ -105,8 +108,18 @@ void ShadowManager::_drawSpotShadowMap(wgpu::CommandEncoder& commandEncoder) {
             _updateSpotShadow(light, _shadowDatas[_shadowCount]);
             {
                 _depthStencilAttachment.view = texture.CreateView();
-                _shadowSubpass->setViewProjectionMatrix(_shadowDatas[_shadowCount].vp[0]);
+                
+                std::shared_ptr<ShadowMaterial> material{nullptr};
+                if (_numOfdrawCall < _materialPool.size()) {
+                    material = _materialPool[_numOfdrawCall];
+                } else {
+                    material = std::make_shared<ShadowMaterial>(_scene->device());
+                    _materialPool.emplace_back(material);
+                }
+                material->setViewProjectionMatrix(_shadowDatas[_shadowCount].vp[0]);
+                _shadowSubpass->setShadowMaterial(material);
                 _renderPass->draw(commandEncoder, "Spot Shadow Pass");
+                _numOfdrawCall++;
             }
             _shadowCount++;
         }
@@ -143,8 +156,18 @@ void ShadowManager::_drawDirectShadowMap(wgpu::CommandEncoder& commandEncoder) {
                 }
                 
                 _depthStencilAttachment.view = _cascadeShadowMaps[i].CreateView();
-                _shadowSubpass->setViewProjectionMatrix(_shadowDatas[_shadowCount].vp[i]);
+                
+                std::shared_ptr<ShadowMaterial> material{nullptr};
+                if (_numOfdrawCall < _materialPool.size()) {
+                    material = _materialPool[_numOfdrawCall];
+                } else {
+                    material = std::make_shared<ShadowMaterial>(_scene->device());
+                    _materialPool.emplace_back(material);
+                }
+                material->setViewProjectionMatrix(_shadowDatas[_shadowCount].vp[i]);
+                _shadowSubpass->setShadowMaterial(material);
                 _renderPass->draw(commandEncoder, "Direct Shadow Pass");
+                _numOfdrawCall++;
             }
             
             TextureUtils::buildAtlas(_cascadeShadowMaps, SHADOW_MAP_RESOLUTION / 2, SHADOW_MAP_RESOLUTION / 2,
@@ -185,8 +208,18 @@ void ShadowManager::_drawPointShadowMap(wgpu::CommandEncoder& commandEncoder) {
                 }
                 
                 _depthStencilAttachment.view = _cubeMapSlices[i].CreateView();
-                _shadowSubpass->setViewProjectionMatrix(_cubeShadowDatas[_cubeShadowCount].vp[i]);
+                
+                std::shared_ptr<ShadowMaterial> material{nullptr};
+                if (_numOfdrawCall < _materialPool.size()) {
+                    material = _materialPool[_numOfdrawCall];
+                } else {
+                    material = std::make_shared<ShadowMaterial>(_scene->device());
+                    _materialPool.emplace_back(material);
+                }
+                material->setViewProjectionMatrix(_cubeShadowDatas[_cubeShadowCount].vp[i]);
+                _shadowSubpass->setShadowMaterial(material);
                 _renderPass->draw(commandEncoder, "Point Shadow Pass");
+                _numOfdrawCall++;
             }
             TextureUtils::buildCubeAtlas(_cubeMapSlices, SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION,
                                          texture, commandEncoder);

@@ -61,14 +61,14 @@ void ShadowMapApp::loadScene(uint32_t width, uint32_t height) {
     light->addComponent<lightMovemenet>();
     auto spotLight = light->addComponent<SpotLight>();
     spotLight->intensity = 0.2;
-    spotLight->setEnableShadow(true);
+//    spotLight->setEnableShadow(true);
     
     auto light2 = rootEntity->createChild("light2");
     light2->transform->setPosition(0, 10, 0);
     light2->transform->lookAt(Point3F(0, 0, 0), Vector3F(1, 0, 0));
     auto pointLight = light2->addComponent<PointLight>();
     pointLight->intensity = 0.2;
-//    pointLight->setEnableShadow(true);
+    pointLight->setEnableShadow(true);
     
     auto light3 = rootEntity->createChild("light3");
     light3->addComponent<lightMovemenetReverse>();

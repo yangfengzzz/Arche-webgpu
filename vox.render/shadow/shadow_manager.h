@@ -10,6 +10,7 @@
 #include "rendering/render_pass.h"
 #include "shadow_subpass.h"
 #include "scene.h"
+#include "shadow_material.h"
 
 namespace vox {
 class ShadowManager {
@@ -135,6 +136,9 @@ private:
     ShaderProperty _cubeShadowDataProp;
     SampledTexturePtr _packedCubeTexture{nullptr};
     std::array<ShadowManager::CubeShadowData, ShadowManager::MAX_CUBE_SHADOW> _cubeShadowDatas{};
+    
+    uint32_t _numOfdrawCall = 0;
+    std::vector<std::shared_ptr<ShadowMaterial>> _materialPool{};
     
     const std::array<std::pair<Vector3F, Vector3F>, 6> _cubeMapDirection = {
         std::make_pair(Vector3F(10, 0, 0), Vector3F(0, 1, 0)),

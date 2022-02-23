@@ -19,8 +19,9 @@ void RasterState::platformApply(wgpu::PrimitiveState& primitive,
     
     if (depthBias != 0 || slopeScaledDepthBias != 0) {
         if (depthStencil) {
-            depthStencil->depthBiasSlopeScale = slopeScaledDepthBias;
             depthStencil->depthBias = depthBias;
+            depthStencil->depthBiasSlopeScale = slopeScaledDepthBias;
+            depthStencil->depthBiasClamp = depthBiasClamp;
         }
     }
 }
