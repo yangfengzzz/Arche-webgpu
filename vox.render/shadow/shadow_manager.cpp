@@ -13,18 +13,26 @@
 #include "texture/sampled_texturecube.h"
 
 namespace vox {
+uint32_t ShadowManager::_shadowCount = 0;
+uint32_t ShadowManager::_cubeShadowCount = 0;
+uint32_t ShadowManager::shadowCount() {
+    return _shadowCount;
+}
+
+uint32_t ShadowManager::cubeShadowCount() {
+    return _cubeShadowCount;
+}
+
 ShadowManager::ShadowManager(Scene* scene, Camera* camera):
 _scene(scene),
 _camera(camera),
 _shadowMapProp(Shader::createProperty("u_shadowMap", ShaderDataGroup::Scene)),
 _shadowSamplerProp(Shader::createProperty("u_shadowSampler", ShaderDataGroup::Scene)),
 _shadowDataProp(Shader::createProperty("u_shadowData", ShaderDataGroup::Scene)),
-_shadowCountProp(Shader::createProperty("u_shadowCount", ShaderDataGroup::Scene)),
 
 _cubeShadowMapProp(Shader::createProperty("u_cubeShadowMap", ShaderDataGroup::Scene)),
 _cubeShadowSamplerProp(Shader::createProperty("u_cubeShadowSampler", ShaderDataGroup::Scene)),
-_cubeShadowDataProp(Shader::createProperty("u_cubeShadowData", ShaderDataGroup::Scene)),
-_cubeShadowCountProp(Shader::createProperty("u_cubeShadowCount", ShaderDataGroup::Scene)) {
+_cubeShadowDataProp(Shader::createProperty("u_cubeShadowData", ShaderDataGroup::Scene)) {
     _renderPassDescriptor.colorAttachmentCount = 0;
     _renderPassDescriptor.colorAttachments = nullptr;
     _renderPassDescriptor.depthStencilAttachment = &_depthStencilAttachment;
@@ -33,7 +41,7 @@ _cubeShadowCountProp(Shader::createProperty("u_cubeShadowCount", ShaderDataGroup
     _depthStencilAttachment.depthStoreOp = wgpu::StoreOp::Store;
     _depthStencilAttachment.stencilLoadOp = wgpu::LoadOp::Load;
     _depthStencilAttachment.stencilStoreOp = wgpu::StoreOp::Discard;
-
+    
     _renderPass = std::make_unique<RenderPass>(_scene->device(), _renderPassDescriptor);
     auto shadowSubpass = std::make_unique<ShadowSubpass>(nullptr, _scene, _camera);
     _shadowSubpass = shadowSubpass.get();
@@ -53,7 +61,6 @@ void ShadowManager::draw(wgpu::CommandEncoder& commandEncoder) {
     _shadowCount = 0;
     _drawSpotShadowMap(commandEncoder);
     _drawDirectShadowMap(commandEncoder);
-    _scene->shaderData.setData(_shadowCountProp, _shadowCount);
     if (_shadowCount) {
         if (!_packedTexture || _packedTexture->depthOrArrayLayers() != _shadowCount) {
             _packedTexture = std::make_shared<SampledTexture2D>(_scene->device(), SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION,
@@ -70,7 +77,6 @@ void ShadowManager::draw(wgpu::CommandEncoder& commandEncoder) {
     
     _cubeShadowCount = 0;
     _drawPointShadowMap(commandEncoder);
-    _scene->shaderData.setData(_cubeShadowCountProp, _cubeShadowCount);
     if (_cubeShadowCount) {
         if (!_packedCubeTexture) {
             _packedCubeTexture = std::make_shared<SampledTextureCube>(_scene->device(), SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION,
@@ -92,7 +98,7 @@ void ShadowManager::_drawSpotShadowMap(wgpu::CommandEncoder& commandEncoder) {
     for (const auto &light: lights) {
         if (light->enableShadow() && _shadowCount < MAX_SHADOW) {
             _updateSpotShadow(light, _shadowDatas[_shadowCount]);
-
+            
             wgpu::Texture texture = nullptr;
             if (_shadowCount < _shadowMaps.size()) {
                 texture = _shadowMaps[_shadowCount];

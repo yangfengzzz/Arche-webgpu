@@ -10,6 +10,7 @@
 #include "camera.h"
 #include "renderer.h"
 #include "rendering/render_pass.h"
+#include "shadow/shadow_manager.h"
 
 namespace vox {
 ForwardSubpass::ForwardSubpass(RenderContext* renderContext,
@@ -62,6 +63,15 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
     for (auto &element : items) {
         auto macros = compileMacros;
         auto& renderer = element.renderer;
+        uint32_t shadowCount = ShadowManager::shadowCount();
+        if (renderer->receiveShadow && shadowCount != 0) {
+            renderer->shaderData.enableMacro(SHADOW_MAP_COUNT, shadowCount);
+        }
+        uint32_t cubeShadowCount = ShadowManager::cubeShadowCount();
+        if (renderer->receiveShadow && cubeShadowCount != 0) {
+            renderer->shaderData.enableMacro(CUBE_SHADOW_MAP_COUNT, cubeShadowCount);
+        }
+        
         renderer->updateShaderData(_camera->viewMatrix(), _camera->projectionMatrix());
         renderer->shaderData.mergeMacro(macros, macros);
         auto& material = element.material;

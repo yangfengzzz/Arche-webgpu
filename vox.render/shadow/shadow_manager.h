@@ -78,6 +78,10 @@ public:
         Vector4F lightPos;
     };
     
+    static uint32_t shadowCount();
+    
+    static uint32_t cubeShadowCount();
+    
 public:
     ShadowManager(Scene* scene, Camera* camera);
     
@@ -116,19 +120,17 @@ private:
     
     float _cascadeSplitLambda = 0.5f;
     
-    uint32_t _shadowCount = 0;
+    static uint32_t _shadowCount;
     std::vector<wgpu::Texture> _shadowMaps{};
-    ShaderProperty _shadowCountProp;
     ShaderProperty _shadowMapProp;
     ShaderProperty _shadowSamplerProp;
     ShaderProperty _shadowDataProp;
     SampledTexturePtr _packedTexture{nullptr};
     std::array<ShadowManager::ShadowData, ShadowManager::MAX_SHADOW> _shadowDatas{};
     
-    uint32_t _cubeShadowCount = 0;
+    static uint32_t _cubeShadowCount;
     std::array<wgpu::Texture, 6> _cubeMapSlices{};
     std::vector<wgpu::Texture> _cubeShadowMaps{};
-    ShaderProperty _cubeShadowCountProp;
     ShaderProperty _cubeShadowMapProp;
     ShaderProperty _cubeShadowSamplerProp;
     ShaderProperty _cubeShadowDataProp;
