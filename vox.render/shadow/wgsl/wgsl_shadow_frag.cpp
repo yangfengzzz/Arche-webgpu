@@ -14,8 +14,13 @@ WGSLShadowFrag::WGSLShadowFrag(){
 
 void WGSLShadowFrag::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros) {
     if (macros.contains(SHADOW_MAP_COUNT)) {
-        encoder.addUniformBinding("u_shadowData", fmt::format("array<ShadowData, {}>", (int)*macros.macroConstant(SHADOW_MAP_COUNT)));
-        encoder.addSampledTextureBinding("u_shadowMap", TextureType::TextureDepth2DArray, "u_shadowSampler", SamplerType::SamplerComparison);
+        int count = (int)*macros.macroConstant(SHADOW_MAP_COUNT);
+        encoder.addUniformBinding("u_shadowData", fmt::format("array<ShadowData, {}>", count));
+        if (count == 1) {
+            encoder.addSampledTextureBinding("u_shadowMap", TextureType::TextureDepth2D, "u_shadowSampler", SamplerType::SamplerComparison);
+        } else {
+            encoder.addSampledTextureBinding("u_shadowMap", TextureType::TextureDepth2DArray, "u_shadowSampler", SamplerType::SamplerComparison);
+        }
     }
     
     if (macros.contains(CUBE_SHADOW_MAP_COUNT)) {
@@ -29,17 +34,24 @@ void WGSLShadowFrag::operator()(std::string& source, const ShaderMacroCollection
     source += "var totalShadow:f32 = 0.0;\n";
     
     if (macros.contains(SHADOW_MAP_COUNT)) {
-        source += "{\n";
-        source += "var i:i32 = 0;\n";
-        source += "loop {\n";
-        source += fmt::format("if (i >= {}) {{ break; }}\n", (int)*macros.macroConstant(SHADOW_MAP_COUNT));
-        
-        source += "shadow = shadow + filterPCF(in.v_pos, in.view_pos, u_shadowData[i], i, u_shadowMap, u_shadowSampler);\n";
-        // source += "shadow = shadow + textureProj(in.v_pos, in.view_pos, vec2<f32>(0.0, 0.0), u_shadowData[i], i, u_shadowMap, u_shadowSampler);\n";
+        int count = (int)*macros.macroConstant(SHADOW_MAP_COUNT);
 
-        source += "i = i + 1;\n";
-        source += "}\n";
-        source += "}\n";
+        if (count == 1) {
+            source += "shadow = shadow + filterPCF(in.v_pos, in.view_pos, u_shadowData[0], u_shadowMap, u_shadowSampler);\n";
+            // source += "shadow = shadow + textureProj(in.v_pos, in.view_pos, vec2<f32>(0.0, 0.0), u_shadowData[0], u_shadowMap, u_shadowSampler);\n";
+        } else {
+            source += "{\n";
+            source += "var i:i32 = 0;\n";
+            source += "loop {\n";
+            source += fmt::format("if (i >= {}) {{ break; }}\n", count);
+            
+            source += "shadow = shadow + filterPCF(in.v_pos, in.view_pos, u_shadowData[i], i, u_shadowMap, u_shadowSampler);\n";
+            // source += "shadow = shadow + textureProj(in.v_pos, in.view_pos, vec2<f32>(0.0, 0.0), u_shadowData[i], i, u_shadowMap, u_shadowSampler);\n";
+
+            source += "i = i + 1;\n";
+            source += "}\n";
+            source += "}\n";
+        }
         
         source += fmt::format("totalShadow = totalShadow + {}.0;\n", (int)*macros.macroConstant(SHADOW_MAP_COUNT));
     }

@@ -66,7 +66,11 @@ void ShadowManager::draw(wgpu::CommandEncoder& commandEncoder) {
             _packedTexture = std::make_shared<SampledTexture2D>(_scene->device(), SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION,
                                                                 _shadowCount, SHADOW_MAP_FORMAT,
                                                                 wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst, false);
-            _packedTexture->setTextureViewDimension(wgpu::TextureViewDimension::e2DArray);
+            if (_shadowCount == 1) {
+                _packedTexture->setTextureViewDimension(wgpu::TextureViewDimension::e2D);
+            } else {
+                _packedTexture->setTextureViewDimension(wgpu::TextureViewDimension::e2DArray);
+            }
             _packedTexture->setCompareFunction(wgpu::CompareFunction::Less);
             _packedTexture->setAddressModeU(wgpu::AddressMode::ClampToEdge);
             _packedTexture->setAddressModeV(wgpu::AddressMode::ClampToEdge);

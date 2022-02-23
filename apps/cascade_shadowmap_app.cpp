@@ -29,11 +29,6 @@ void CascadeShadowMapApp::loadScene(uint32_t width, uint32_t height) {
     directLight->intensity = 1.0;
     directLight->setEnableShadow(true);
     
-    // dawn neew more than one depth texture to make texture_depth_array
-    auto spotLight = light->addComponent<SpotLight>();
-    spotLight->intensity = 0.2;
-    spotLight->setEnableShadow(true);
-    
     // create box test entity
     float cubeSize = 2.0;
     auto boxMesh = PrimitiveMesh::createCuboid(_device, cubeSize, cubeSize, cubeSize);
