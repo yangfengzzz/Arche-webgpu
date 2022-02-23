@@ -35,7 +35,7 @@ void WGSLShadowFrag::operator()(std::string& source, const ShaderMacroCollection
         source += fmt::format("if (i >= {}) {{ break; }}\n", (int)*macros.macroConstant(SHADOW_MAP_COUNT));
         
         source += "shadow = shadow + filterPCF(in.v_pos, in.view_pos, u_shadowData[i], i, u_shadowMap, u_shadowSampler);\n";
-        // source += "shadow = shadow + textureProj(in.v_pos, in.view_pos, float2(0), u_shadowData[i], i, u_shadowMap, u_shadowSampler);\n";
+        // source += "shadow = shadow + textureProj(in.v_pos, in.view_pos, vec2<f32>(0.0, 0.0), u_shadowData[i], i, u_shadowMap, u_shadowSampler);\n";
 
         source += "i = i + 1;\n";
         source += "}\n";

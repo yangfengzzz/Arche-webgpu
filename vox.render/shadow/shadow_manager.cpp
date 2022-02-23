@@ -173,12 +173,18 @@ void ShadowManager::_drawDirectShadowMap(wgpu::CommandEncoder& commandEncoder) {
                 _shadowSubpass->setShadowMaterial(material);
                 
                 _shadowSubpass->setViewport(_viewport[i]);
+                if (i == 0) {
+                    _depthStencilAttachment.depthLoadOp = wgpu::LoadOp::Clear;
+                } else {
+                    _depthStencilAttachment.depthLoadOp = wgpu::LoadOp::Load;
+                }
                 _renderPass->draw(commandEncoder, "Direct Shadow Pass");
                 _numOfdrawCall++;
             }
             _shadowCount++;
         }
     }
+    _depthStencilAttachment.depthLoadOp = wgpu::LoadOp::Clear;
     _shadowSubpass->setViewport(std::nullopt);
 }
 

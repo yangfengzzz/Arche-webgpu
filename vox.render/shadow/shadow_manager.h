@@ -148,11 +148,11 @@ private:
         std::make_pair(Vector3F(0, 0, -10), Vector3F(0, 1, 0)),
     };
     
-    const std::array<Vector4F, 4> _viewport = {
-        Vector4F(0, 0, 0.5, 0.5),
-        Vector4F(0.5, 0, 0.5, 0.5),
-        Vector4F(0, 0.5, 0.5, 0.5),
-        Vector4F(0.5, 0.5, 0.5, 0.5),
+    const std::array<Vector4F, SHADOW_MAP_CASCADE_COUNT> _viewport = {
+        Vector4F(0, 0, SHADOW_MAP_RESOLUTION/2, SHADOW_MAP_RESOLUTION/2),
+        Vector4F(SHADOW_MAP_RESOLUTION/2, 0, SHADOW_MAP_RESOLUTION/2, SHADOW_MAP_RESOLUTION/2),
+        Vector4F(0, SHADOW_MAP_RESOLUTION/2, SHADOW_MAP_RESOLUTION/2, SHADOW_MAP_RESOLUTION/2),
+        Vector4F(SHADOW_MAP_RESOLUTION/2, SHADOW_MAP_RESOLUTION/2, SHADOW_MAP_RESOLUTION/2, SHADOW_MAP_RESOLUTION/2),
     };
 };
 }
