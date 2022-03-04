@@ -19,7 +19,7 @@ struct RasterState {
     /** The multiplier by which an implementation-specific value is multiplied with to create a constant depth offset. */
     int32_t depthBias = 0;
     /** The scale factor for the variable depth offset for each polygon. */
-    float slopeScaledDepthBias = 1.0;
+    float depthBiasSlopeScale = 1.0;
     float depthBiasClamp = 0.01;
     
     void apply(wgpu::PrimitiveState& primitive,

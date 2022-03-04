@@ -17,10 +17,10 @@ void RasterState::platformApply(wgpu::PrimitiveState& primitive,
         primitive.frontFace = wgpu::FrontFace::CCW;
     }
     
-    if (depthBias != 0 || slopeScaledDepthBias != 0) {
+    if (depthBias != 0 || depthBiasSlopeScale != 0) {
         if (depthStencil) {
             depthStencil->depthBias = depthBias;
-            depthStencil->depthBiasSlopeScale = slopeScaledDepthBias;
+            depthStencil->depthBiasSlopeScale = depthBiasSlopeScale;
             depthStencil->depthBiasClamp = depthBiasClamp;
         }
     }
