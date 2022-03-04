@@ -5,21 +5,8 @@
 //  property of any third parties.
 
 #include "subpass.h"
-#include "material/material.h"
-#include "renderer.h"
-#include <glog/logging.h>
 
 namespace vox {
-bool Subpass::_compareFromNearToFar(const RenderElement &a, const RenderElement &b) {
-    return (a.material->renderQueueType < b.material->renderQueueType) ||
-    (a.renderer->distanceForSort() < b.renderer->distanceForSort());
-}
-
-bool Subpass::_compareFromFarToNear(const RenderElement &a, const RenderElement &b) {
-    return (a.material->renderQueueType < b.material->renderQueueType) ||
-    (b.renderer->distanceForSort() < a.renderer->distanceForSort());
-}
-
 Subpass::Subpass(RenderContext* renderContext,
                  Scene* scene,
                  Camera* camera):

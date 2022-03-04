@@ -16,7 +16,7 @@ namespace vox {
 ForwardSubpass::ForwardSubpass(RenderContext* renderContext,
                                Scene* scene,
                                Camera* camera):
-Subpass(renderContext, scene, camera) {
+RenderSubpass(renderContext, scene, camera) {
 }
 
 void ForwardSubpass::prepare() {

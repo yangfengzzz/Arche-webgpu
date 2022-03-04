@@ -15,7 +15,7 @@ namespace vox {
 ColorPickerSubpass::ColorPickerSubpass(RenderContext* renderContext,
                                        Scene* scene,
                                        Camera* camera):
-Subpass(renderContext, scene, camera) {
+RenderSubpass(renderContext, scene, camera) {
     _material = std::make_shared<UnlitMaterial>(renderContext->device());
 }
 

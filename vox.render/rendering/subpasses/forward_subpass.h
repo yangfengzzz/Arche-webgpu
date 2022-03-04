@@ -7,10 +7,10 @@
 #ifndef forward_subpass_hpp
 #define forward_subpass_hpp
 
-#include "../subpass.h"
+#include "rendering/render_subpass.h"
 
 namespace vox {
-class ForwardSubpass: public Subpass {
+class ForwardSubpass: public RenderSubpass {
 public:
     ForwardSubpass(RenderContext* renderContext,
                    Scene* scene,
