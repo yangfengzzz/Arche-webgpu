@@ -119,7 +119,7 @@ void ShadowSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
                 _shadowGenDescriptor.vertex.buffers = mesh->vertexBufferLayouts().data();
                 _shadowGenDescriptor.primitive.topology = subMesh->topology();
                 
-                auto renderPipeline = _pass->resourceCache().requestRenderPipeline(_shadowGenDescriptor);
+                auto renderPipeline = _pass->resourceCache().requestPipeline(_shadowGenDescriptor);
                 passEncoder.SetPipeline(renderPipeline);
             }
             

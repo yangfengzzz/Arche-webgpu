@@ -295,7 +295,32 @@ struct hash<wgpu::BindGroupDescriptor> {
     }
 };
 
-}
+//MARK: - ComputePipelineDescriptor
+template<>
+struct hash<wgpu::ProgrammableStageDescriptor> {
+    std::size_t operator()(const wgpu::ProgrammableStageDescriptor &descriptor) const {
+        std::size_t result = 0;
+        
+        hash_combine(result, descriptor.module.Get());  // internal address
+        hash_combine(result, descriptor.entryPoint);
+
+        return result;
+    }
+};
+
+template<>
+struct hash<wgpu::ComputePipelineDescriptor> {
+    std::size_t operator()(const wgpu::ComputePipelineDescriptor &descriptor) const {
+        std::size_t result = 0;
+        
+        hash_combine(result, descriptor.layout.Get()); // internal address
+        hash_combine(result, descriptor.compute);
+        
+        return result;
+    }
+};
+
+} // namespace std
 
 //MARK: - ResourceCache
 namespace vox {
@@ -329,7 +354,20 @@ wgpu::PipelineLayout &ResourceCache::requestPipelineLayout(wgpu::PipelineLayoutD
     }
 }
 
-wgpu::RenderPipeline &ResourceCache::requestRenderPipeline(wgpu::RenderPipelineDescriptor &descriptor) {
+wgpu::BindGroup &ResourceCache::requestBindGroup(wgpu::BindGroupDescriptor &descriptor) {
+    std::hash<wgpu::BindGroupDescriptor> hasher;
+    size_t hash = hasher(descriptor);
+    
+    auto iter = _state.bindGroups.find(hash);
+    if (iter == _state.bindGroups.end()) {
+        _state.bindGroups[hash] = _device.CreateBindGroup(&descriptor);
+        return _state.bindGroups[hash];
+    } else {
+        return iter->second;
+    }
+}
+
+wgpu::RenderPipeline &ResourceCache::requestPipeline(wgpu::RenderPipelineDescriptor &descriptor) {
     std::hash<wgpu::RenderPipelineDescriptor> hasher;
     size_t hash = hasher(descriptor);
     
@@ -342,14 +380,14 @@ wgpu::RenderPipeline &ResourceCache::requestRenderPipeline(wgpu::RenderPipelineD
     }
 }
 
-wgpu::BindGroup &ResourceCache::requestBindGroup(wgpu::BindGroupDescriptor &descriptor) {
-    std::hash<wgpu::BindGroupDescriptor> hasher;
+wgpu::ComputePipeline &ResourceCache::requestPipeline(wgpu::ComputePipelineDescriptor &descriptor) {
+    std::hash<wgpu::ComputePipelineDescriptor> hasher;
     size_t hash = hasher(descriptor);
     
-    auto iter = _state.bindGroups.find(hash);
-    if (iter == _state.bindGroups.end()) {
-        _state.bindGroups[hash] = _device.CreateBindGroup(&descriptor);
-        return _state.bindGroups[hash];
+    auto iter = _state.computePipelines.find(hash);
+    if (iter == _state.computePipelines.end()) {
+        _state.computePipelines[hash] = _device.CreateComputePipeline(&descriptor);
+        return _state.computePipelines[hash];
     } else {
         return iter->second;
     }

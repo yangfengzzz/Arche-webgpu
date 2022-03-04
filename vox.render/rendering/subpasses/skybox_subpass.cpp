@@ -108,7 +108,7 @@ void SkyboxSubpass::prepare() {
         _forwardPipelineDescriptor.primitive.topology = wgpu::PrimitiveTopology::TriangleList;
         _forwardPipelineDescriptor.vertex.bufferCount = static_cast<uint32_t>(_mesh->vertexBufferLayouts().size());
         _forwardPipelineDescriptor.vertex.buffers = _mesh->vertexBufferLayouts().data();
-        _renderPipeline = _pass->resourceCache().requestRenderPipeline(_forwardPipelineDescriptor);
+        _renderPipeline = _pass->resourceCache().requestPipeline(_forwardPipelineDescriptor);
     }
 }
 

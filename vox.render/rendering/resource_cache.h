@@ -21,6 +21,8 @@ struct ResourceCacheState {
     std::unordered_map<std::size_t, wgpu::RenderPipeline> renderPipelines;
     std::unordered_map<std::size_t, wgpu::BindGroup> bindGroups;
     
+    std::unordered_map<std::size_t, wgpu::ComputePipeline> computePipelines;
+
     std::unordered_map<std::size_t, std::unique_ptr<ShaderProgram>> shaders;
 };
 
@@ -53,9 +55,11 @@ public:
 
     wgpu::PipelineLayout &requestPipelineLayout(wgpu::PipelineLayoutDescriptor &descriptor);
 
-    wgpu::RenderPipeline &requestRenderPipeline(wgpu::RenderPipelineDescriptor &descriptor);
-
     wgpu::BindGroup &requestBindGroup(wgpu::BindGroupDescriptor &descriptor);
+    
+    wgpu::RenderPipeline &requestPipeline(wgpu::RenderPipelineDescriptor &descriptor);
+    
+    wgpu::ComputePipeline &requestPipeline(wgpu::ComputePipelineDescriptor &descriptor);
 
     ShaderProgram *requestShader(const std::string &vertexSource,
                                  const std::optional<std::string> &fragmentSource);

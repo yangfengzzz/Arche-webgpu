@@ -128,7 +128,7 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
             _forwardPipelineDescriptor.vertex.buffers = mesh->vertexBufferLayouts().data();
             _forwardPipelineDescriptor.primitive.topology = subMesh->topology();
             
-            auto renderPipeline = _pass->resourceCache().requestRenderPipeline(_forwardPipelineDescriptor);
+            auto renderPipeline = _pass->resourceCache().requestPipeline(_forwardPipelineDescriptor);
             passEncoder.SetPipeline(renderPipeline);
         }
         
