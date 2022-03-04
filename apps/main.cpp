@@ -23,6 +23,8 @@
 #include "cascade_shadowmap_app.h"
 #include "omni_shadowmap_app.h"
 
+#include "atomic_compute.h"
+
 int main(int argc, char * argv[]) {
     vox::UnixEngine engine{vox::UnixType::Mac, argc, argv};
         
