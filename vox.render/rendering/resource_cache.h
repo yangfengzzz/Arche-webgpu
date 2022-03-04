@@ -7,7 +7,7 @@
 #ifndef resource_cache_hpp
 #define resource_cache_hpp
 
-#include "shader/shader_program.h"
+#include <webgpu/webgpu_cpp.h>
 #include <unordered_map>
 
 namespace vox {
@@ -23,7 +23,7 @@ struct ResourceCacheState {
     
     std::unordered_map<std::size_t, wgpu::ComputePipeline> computePipelines;
 
-    std::unordered_map<std::size_t, std::unique_ptr<ShaderProgram>> shaders;
+    std::unordered_map<std::size_t, wgpu::ShaderModule> shaders;
 };
 
 /**
@@ -61,8 +61,7 @@ public:
     
     wgpu::ComputePipeline &requestPipeline(wgpu::ComputePipelineDescriptor &descriptor);
 
-    ShaderProgram *requestShader(const std::string &vertexSource,
-                                 const std::optional<std::string> &fragmentSource);
+    wgpu::ShaderModule &requestShader(const std::string &source);
     
 private:
     wgpu::Device &_device;

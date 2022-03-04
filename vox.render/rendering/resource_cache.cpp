@@ -393,21 +393,21 @@ wgpu::ComputePipeline &ResourceCache::requestPipeline(wgpu::ComputePipelineDescr
     }
 }
 
-ShaderProgram *ResourceCache::requestShader(const std::string &vertexSource,
-                                            const std::optional<std::string> &fragmentSource) {
+wgpu::ShaderModule &ResourceCache::requestShader(const std::string &source) {
     std::size_t hash{0U};
-    hash_combine(hash, std::hash<std::string>{}(vertexSource));
-    if (fragmentSource) {
-        hash_combine(hash, std::hash<std::string>{}(fragmentSource.value()));
-    }
+    hash_combine(hash, std::hash<std::string>{}(source));
     
     auto iter = _state.shaders.find(hash);
     if (iter == _state.shaders.end()) {
-        auto shader = std::make_unique<ShaderProgram>(_device, vertexSource, fragmentSource);
-        _state.shaders[hash] = std::move(shader);
-        return _state.shaders[hash].get();
+        wgpu::ShaderModuleDescriptor desc;
+        wgpu::ShaderModuleWGSLDescriptor wgslDesc;
+        desc.nextInChain = &wgslDesc;
+
+        wgslDesc.source = source.c_str();
+        _state.shaders[hash] = _device.CreateShaderModule(&desc);
+        return _state.shaders[hash];
     } else {
-        return iter->second.get();
+        return iter->second;
     }
 }
 

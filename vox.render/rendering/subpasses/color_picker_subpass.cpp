@@ -91,9 +91,8 @@ void ColorPickerSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
             // std::cout<<vertexSource<<std::endl;
             const std::string& fragmentSource = _material->shader->fragmentSource(macros);
             // std::cout<<fragmentSource<<std::endl;
-            ShaderProgram* program = _pass->resourceCache().requestShader(vertexSource, fragmentSource);
-            _forwardPipelineDescriptor.vertex.module = program->vertexShader();
-            _fragment.module = program->fragmentShader();
+            _forwardPipelineDescriptor.vertex.module = _pass->resourceCache().requestShader(vertexSource);
+            _fragment.module = _pass->resourceCache().requestShader(fragmentSource);
             
             auto bindGroupLayoutDescriptors = _material->shader->bindGroupLayoutDescriptors(macros);
             std::vector<wgpu::BindGroupLayout> bindGroupLayouts;

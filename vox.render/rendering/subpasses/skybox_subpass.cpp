@@ -58,11 +58,10 @@ void SkyboxSubpass::prepare() {
         // std::cout<<vertexSource<<std::endl;
         const std::string& fragmentSource = _fragmentSource->compile(macros).first;
         // std::cout<<fragmentSource<<std::endl;
-        ShaderProgram* program = _pass->resourceCache().requestShader(vertexSource, fragmentSource);
         _forwardPipelineDescriptor.vertex.entryPoint = "main";
-        _forwardPipelineDescriptor.vertex.module = program->vertexShader();
+        _forwardPipelineDescriptor.vertex.module = _pass->resourceCache().requestShader(vertexSource);
         _fragment.entryPoint = "main";
-        _fragment.module = program->fragmentShader();
+        _fragment.module = _pass->resourceCache().requestShader(fragmentSource);
     }
     // BindGroupLayout
     {

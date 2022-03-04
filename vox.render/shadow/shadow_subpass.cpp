@@ -82,8 +82,7 @@ void ShadowSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
             {
                 const std::string& vertexSource = _material->shader->vertexSource(macros);
                 // std::cout<<vertexSource<<std::endl;
-                ShaderProgram* program = _pass->resourceCache().requestShader(vertexSource, std::nullopt);
-                _shadowGenDescriptor.vertex.module = program->vertexShader();
+                _shadowGenDescriptor.vertex.module = _pass->resourceCache().requestShader(vertexSource);
                 
                 auto bindGroupLayoutDescriptors = _material->shader->bindGroupLayoutDescriptors(macros);
                 std::vector<wgpu::BindGroupLayout> bindGroupLayouts;

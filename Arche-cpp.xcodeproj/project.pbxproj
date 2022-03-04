@@ -479,8 +479,6 @@
 		0495470A279FCD3C00783C84 /* spherical.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954704279FCD3C00783C84 /* spherical.h */; };
 		0495470B279FCD3C00783C84 /* spherical.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954705279FCD3C00783C84 /* spherical.cpp */; };
 		0495470C279FCD3C00783C84 /* free_control.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954706279FCD3C00783C84 /* free_control.h */; };
-		0495470F27A14FA800783C84 /* shader_program.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495470D27A14FA800783C84 /* shader_program.cpp */; };
-		0495471027A14FA800783C84 /* shader_program.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495470E27A14FA800783C84 /* shader_program.h */; };
 		0495471327A15BEE00783C84 /* shader_macro_collection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495471127A15BEE00783C84 /* shader_macro_collection.cpp */; };
 		0495471427A15BEE00783C84 /* shader_macro_collection.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495471227A15BEE00783C84 /* shader_macro_collection.h */; };
 		0495471E27A2396500783C84 /* shader_pool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495471C27A2396500783C84 /* shader_pool.cpp */; };
@@ -1133,8 +1131,6 @@
 		04954704279FCD3C00783C84 /* spherical.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = spherical.h; sourceTree = "<group>"; };
 		04954705279FCD3C00783C84 /* spherical.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = spherical.cpp; sourceTree = "<group>"; };
 		04954706279FCD3C00783C84 /* free_control.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = free_control.h; sourceTree = "<group>"; };
-		0495470D27A14FA800783C84 /* shader_program.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = shader_program.cpp; sourceTree = "<group>"; };
-		0495470E27A14FA800783C84 /* shader_program.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shader_program.h; sourceTree = "<group>"; };
 		0495471127A15BEE00783C84 /* shader_macro_collection.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = shader_macro_collection.cpp; sourceTree = "<group>"; };
 		0495471227A15BEE00783C84 /* shader_macro_collection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shader_macro_collection.h; sourceTree = "<group>"; };
 		0495471727A2346900783C84 /* wgsl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl.h; sourceTree = "<group>"; };
@@ -1489,8 +1485,6 @@
 				04128465279EDB030071BD86 /* state */,
 				04954635279F89E400783C84 /* shader_property.h */,
 				04954637279F89E400783C84 /* shader_property.cpp */,
-				0495470E27A14FA800783C84 /* shader_program.h */,
-				0495470D27A14FA800783C84 /* shader_program.cpp */,
 				0495471227A15BEE00783C84 /* shader_macro_collection.h */,
 				0495471127A15BEE00783C84 /* shader_macro_collection.cpp */,
 				047BEFE227A53AFF003F3599 /* internal_macro_name.h */,
@@ -2217,7 +2211,6 @@
 				047BF0E427ACEBAE003F3599 /* physics_manager.h in Headers */,
 				047BF0E927ACEBAE003F3599 /* physics.h in Headers */,
 				047BF08427ABB82B003F3599 /* wgsl_normal_share.h in Headers */,
-				0495471027A14FA800783C84 /* shader_program.h in Headers */,
 				047BF02527A66590003F3599 /* ktx_image.h in Headers */,
 				0443E8F727C5C0890099E13A /* wgsl_shadow_vert.h in Headers */,
 				047BF12427ACEBC7003F3599 /* box_collider_shape.h in Headers */,
@@ -2591,7 +2584,6 @@
 				0495474627A2657700783C84 /* sub_mesh.cpp in Sources */,
 				0443E8DC27C4C3280099E13A /* shadow_manager.cpp in Sources */,
 				0495463E279F89E500783C84 /* shader_property.cpp in Sources */,
-				0495470F27A14FA800783C84 /* shader_program.cpp in Sources */,
 				047BEFEA27A54561003F3599 /* wgsl_uv_share.cpp in Sources */,
 				047BEFDD27A4E762003F3599 /* wgsl_common.cpp in Sources */,
 				047BF16927AD4339003F3599 /* wgsl_pbr_frag.cpp in Sources */,
