@@ -29,11 +29,13 @@ private:
         _bindGroupInfo.clear();
         {
             auto encoder = createSourceEncoder(wgpu::ShaderStage::Fragment);
-            encoder.addStorageBufferBinding("u_counter", "atomic<u32>", true);
-            
-            encoder.addEntry({{"in", "VertexIn"}}, {"out", "VertexOut"}, [&](std::string &source){
-                source += "var atomic = float(u_atomic) % 255.0;";
-                source += "return vec4<f32>(atomic/255.0, 1 - atomic/255.0, atomic/255.0, 1.0);";
+
+            encoder.addStorageBufferBinding("u_atomic", UniformType::U32, true);
+            encoder.addInoutType("Output", 0, "finalColor", UniformType::Vec4f32);
+       
+            encoder.addEntry({}, {"out", "Output"},  [&](std::string &source){
+                source += "var counter:f32 = f32(u_atomic % 255u);\n";
+                source += "out.finalColor = vec4<f32>(counter / 255.0, 1.0 - counter / 255.0, counter / 255.0, 1.0);\n";
             });
             encoder.flush();
         }
@@ -74,12 +76,12 @@ private:
         _bindGroupInfo.clear();
         {
             auto encoder = createSourceEncoder(wgpu::ShaderStage::Compute);
-            encoder.addStorageBufferBinding("u_counter", "atomic<u32>", false);
+            encoder.addStorageBufferBinding("u_atomic", "atomic<u32>", false);
             
-            encoder.addEntry(Vector3F(2, 2, 2), {{"in", "VertexIn"}}, {"out", "VertexOut"}, [&](std::string &source){
-                source += "atomicStore(&u_counter, 0u);";
-                source += "storageBarrier()";
-                source += "atomicAdd(&u_counter, 1u);";
+            encoder.addEntry(Vector3F(2, 2, 2), [&](std::string &source){
+                source += "atomicStore(&u_atomic, 0u);\n";
+                source += "storageBarrier();\n";
+                source += "atomicAdd(&u_atomic, 1u);\n";
             });
             encoder.flush();
         }
@@ -102,7 +104,7 @@ bool AtomicComputeApp::prepare(Engine &engine) {
 }
 
 void AtomicComputeApp::loadScene(uint32_t width, uint32_t height) {
-    Shader::create("atomicRender", std::make_unique<WGSLUnlitFragment>(), std::make_unique<WGSLAtomicFragment>());
+    Shader::create("atomicRender", std::make_unique<WGSLUnlitVertex>(), std::make_unique<WGSLAtomicFragment>());
     
     auto rootEntity = _scene->createRootEntity();
     

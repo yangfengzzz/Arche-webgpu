@@ -68,7 +68,7 @@ void RenderPass::draw(wgpu::CommandEncoder& commandEncoder,
                 static_cast<ComputeSubpass*>(subpass)->compute(encoder);
             }
         } else {
-            if (subpass->type() == Subpass::Type::Render) {
+            if (preEncoder.first == Subpass::Type::Render) {
                 std::any_cast<wgpu::RenderPassEncoder>(preEncoder.second).End();
             } else {
                 std::any_cast<wgpu::ComputePassEncoder>(preEncoder.second).End();
