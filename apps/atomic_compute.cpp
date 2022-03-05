@@ -21,24 +21,29 @@ namespace vox {
 namespace {
 class WGSLAtomicFragment : public WGSLCache {
 public:
-    WGSLAtomicFragment() {}
+    WGSLAtomicFragment() : _uvShare("VertexOut") {}
     
 private:
+    WGSLUVShare _uvShare;
+    
     void _createShaderSource(size_t hash, const ShaderMacroCollection& macros) override {
         _source.clear();
         _bindGroupInfo.clear();
+        auto inputStructCounter = WGSLEncoder::startCounter(0);
         {
             auto encoder = createSourceEncoder(wgpu::ShaderStage::Fragment);
-
+            _uvShare(encoder, macros, inputStructCounter);
+            
             encoder.addStorageBufferBinding("u_atomic", UniformType::U32, true);
             encoder.addInoutType("Output", 0, "finalColor", UniformType::Vec4f32);
-       
-            encoder.addEntry({}, {"out", "Output"},  [&](std::string &source){
+            
+            encoder.addEntry({{"in", "VertexOut"}}, {"out", "Output"},  [&](std::string &source){
                 source += "var counter:f32 = f32(u_atomic % 255u);\n";
                 source += "out.finalColor = vec4<f32>(counter / 255.0, 1.0 - counter / 255.0, counter / 255.0, 1.0);\n";
             });
             encoder.flush();
         }
+        WGSLEncoder::endCounter(inputStructCounter);
         _sourceCache[hash] = _source;
         _infoCache[hash] = _bindGroupInfo;
     }
@@ -76,12 +81,15 @@ private:
         _bindGroupInfo.clear();
         {
             auto encoder = createSourceEncoder(wgpu::ShaderStage::Compute);
-            encoder.addStorageBufferBinding("u_atomic", "atomic<u32>", false);
+            encoder.addStruct("struct Counter {\n"
+                              "counter: atomic<u32>;\n"
+                              "}\n");
+            encoder.addStorageBufferBinding("u_atomic", "Counter", false);
             
             encoder.addEntry(Vector3F(2, 2, 2), [&](std::string &source){
-                source += "atomicStore(&u_atomic, 0u);\n";
+                source += "atomicStore(&u_atomic.counter, 0u);\n";
                 source += "storageBarrier();\n";
-                source += "atomicAdd(&u_atomic, 1u);\n";
+                source += "atomicAdd(&u_atomic.counter, 1u);\n";
             });
             encoder.flush();
         }
