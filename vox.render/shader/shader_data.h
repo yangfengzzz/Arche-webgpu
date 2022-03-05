@@ -92,9 +92,9 @@ public:
                            const ShaderProperty &sample_prop,
                            const SampledTexturePtr& value);
     
-    wgpu::TextureView getTextureView(uint32_t uniqueID);
+    std::optional<wgpu::TextureView> getTextureView(uint32_t uniqueID);
     
-    wgpu::Sampler& getSampler(uint32_t uniqueID);
+    std::optional<wgpu::Sampler> getSampler(uint32_t uniqueID);
     
 public:
     /**

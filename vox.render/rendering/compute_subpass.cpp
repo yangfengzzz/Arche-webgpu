@@ -6,6 +6,7 @@
 
 #include "compute_subpass.h"
 #include "render_pass.h"
+#include <glog/logging.h>
 
 namespace vox {
 Subpass::Type ComputeSubpass::type() {
@@ -17,15 +18,77 @@ Subpass(),
 _source(std::move(source)) {
 }
 
+void ComputeSubpass::stDispatchCount(uint32_t workgroupCountX,
+                                     uint32_t workgroupCountY,
+                                     uint32_t workgroupCountZ) {
+    _workgroupCountX = workgroupCountX;
+    _workgroupCountY = workgroupCountY;
+    _workgroupCountZ = workgroupCountZ;
+}
+
+void ComputeSubpass::attachShaderData(ShaderData* data) {
+    auto iter = std::find(_data.begin(), _data.end(), data);
+    if (iter == _data.end()) {
+        _data.push_back(data);
+    } else {
+        LOG(ERROR) << "ShaderData already attached." << std::endl;;
+    }
+}
+
+void ComputeSubpass::detachShaderData(ShaderData* data) {
+    auto iter = std::find(_data.begin(), _data.end(), data);
+    if (iter != _data.end()) {
+        _data.erase(iter);
+    }
+}
 
 void ComputeSubpass::prepare() {
-    
+    _computePipelineDescriptor.compute.entryPoint = "main";
 }
 
-void ComputeSubpass::compute(wgpu::ComputePassEncoder &commandEncoder) {
+void ComputeSubpass::compute(wgpu::ComputePassEncoder &passEncoder) {
+    auto compileMacros = ShaderMacroCollection();
+    for (auto& shaderData : _data) {
+        shaderData->mergeMacro(compileMacros, compileMacros);
+    }
     
+    _computePipelineDescriptor.compute.module = _compileShader(compileMacros);
+    
+    std::vector<wgpu::BindGroupLayout> bindGroupLayouts;
+    for (auto& layoutDesc : _bindGroupLayoutDescriptorMap) {
+        wgpu::BindGroupLayout bindGroupLayout = _pass->resourceCache().requestBindGroupLayout(layoutDesc.second);
+        _bindGroupEntries.clear();
+        _bindGroupEntries.resize(layoutDesc.second.entryCount);
+        for (uint32_t i = 0; i < layoutDesc.second.entryCount; i++) {
+            auto& entry = layoutDesc.second.entries[i];
+            _bindGroupEntries[i].binding = entry.binding;
+            if (entry.buffer.type != wgpu::BufferBindingType::Undefined) {
+                _bindingData(_bindGroupEntries[i]);
+            } else if (entry.texture.sampleType != wgpu::TextureSampleType::Undefined
+                       || entry.storageTexture.access != wgpu::StorageTextureAccess::Undefined) {
+                _bindingTexture(_bindGroupEntries[i]);
+            } else if (entry.sampler.type != wgpu::SamplerBindingType::Undefined) {
+                _bindingSampler(_bindGroupEntries[i]);
+            }
+        }
+        _bindGroupDescriptor.layout = bindGroupLayout;
+        _bindGroupDescriptor.entryCount = layoutDesc.second.entryCount;
+        _bindGroupDescriptor.entries = _bindGroupEntries.data();
+        auto uniformBindGroup = _pass->resourceCache().requestBindGroup(_bindGroupDescriptor);
+        passEncoder.SetBindGroup(layoutDesc.first, uniformBindGroup);
+        bindGroupLayouts.emplace_back(std::move(bindGroupLayout));
+    }
+    _flush();
+    
+    _pipelineLayoutDescriptor.bindGroupLayoutCount = static_cast<uint32_t>(bindGroupLayouts.size());
+    _pipelineLayoutDescriptor.bindGroupLayouts = bindGroupLayouts.data();
+    _pipelineLayout = _pass->resourceCache().requestPipelineLayout(_pipelineLayoutDescriptor);
+    _computePipelineDescriptor.layout = _pipelineLayout;
+    auto renderPipeline = _pass->resourceCache().requestPipeline(_computePipelineDescriptor);
+    passEncoder.SetPipeline(renderPipeline);
+    
+    passEncoder.Dispatch(_workgroupCountX, _workgroupCountY, _workgroupCountZ);
 }
-
 
 //MARK: - Internal
 void ComputeSubpass::_flush() {
@@ -35,7 +98,7 @@ void ComputeSubpass::_flush() {
 
 wgpu::ShaderModule &ComputeSubpass::_compileShader(const ShaderMacroCollection& macros) {
     auto result = _source->compile(macros);
-//    std::cout<<result.first<<std::endl;
+    // std::cout<<result.first<<std::endl;
     
     for (const auto& info : result.second) {
         _bindGroupLayoutEntryVecMap[info.first].reserve(info.second.size());
@@ -72,6 +135,37 @@ wgpu::BindGroupLayoutEntry ComputeSubpass::_findEntry(uint32_t group, uint32_t b
     } else {
         assert(false);
         throw std::exception();
+    }
+}
+
+void ComputeSubpass::_bindingData(wgpu::BindGroupEntry& entry) {
+    for (auto shaderData : _data) {
+        auto buffer = shaderData->getData(entry.binding);
+        if (buffer) {
+            entry.buffer = buffer->handle();
+            entry.size = buffer->size();
+            break;
+        }
+    }
+}
+
+void ComputeSubpass::_bindingTexture(wgpu::BindGroupEntry& entry) {
+    for (auto shaderData : _data) {
+        auto texture = shaderData->getTextureView(entry.binding);
+        if (texture) {
+            entry.textureView = texture.value();
+            break;
+        }
+    }
+}
+
+void ComputeSubpass::_bindingSampler(wgpu::BindGroupEntry& entry) {
+    for (auto shaderData : _data) {
+        auto sampler = shaderData->getSampler(entry.binding);
+        if (sampler) {
+            entry.sampler = sampler.value();
+            break;
+        }
     }
 }
 

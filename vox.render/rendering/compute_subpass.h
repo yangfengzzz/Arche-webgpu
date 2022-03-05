@@ -30,6 +30,14 @@ public:
     ComputeSubpass &operator=(ComputeSubpass &&) = delete;
     
 public:
+    void stDispatchCount(uint32_t workgroupCountX,
+                         uint32_t workgroupCountY = 1,
+                         uint32_t workgroupCountZ = 1);
+
+    void attachShaderData(ShaderData* data);
+    
+    void detachShaderData(ShaderData* data);
+    
     /**
      * @brief Prepares the shaders and shader variants for a subpass
      */
@@ -44,11 +52,29 @@ public:
 protected:
     wgpu::ShaderModule &_compileShader(const ShaderMacroCollection& macros);
     
+    void _bindingData(wgpu::BindGroupEntry& entry);
+    
+    void _bindingTexture(wgpu::BindGroupEntry& entry);
+    
+    void _bindingSampler(wgpu::BindGroupEntry& entry);
+    
     void _flush();
     
-    WGSLPtr _source;
+    uint32_t _workgroupCountX = 1;
+    uint32_t _workgroupCountY = 1;
+    uint32_t _workgroupCountZ = 1;
+    
+    std::vector<ShaderData*> _data{};
+    WGSLPtr _source{};
     BindGroupLayoutEntryVecMap _bindGroupLayoutEntryVecMap{};
     BindGroupLayoutDescriptorMap _bindGroupLayoutDescriptorMap{};
+    
+    wgpu::ComputePipelineDescriptor _computePipelineDescriptor;
+    wgpu::BindGroupDescriptor _bindGroupDescriptor;
+    std::vector<wgpu::BindGroupEntry> _bindGroupEntries{};
+    
+    wgpu::PipelineLayoutDescriptor _pipelineLayoutDescriptor;
+    wgpu::PipelineLayout _pipelineLayout;
     
 private:
     wgpu::BindGroupLayoutEntry _findEntry(uint32_t group, uint32_t binding);

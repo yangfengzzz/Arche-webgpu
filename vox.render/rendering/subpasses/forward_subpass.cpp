@@ -183,19 +183,19 @@ void ForwardSubpass::_bindingTexture(wgpu::BindGroupEntry& entry,
     if (group.has_value()) {
         switch (*group) {
             case ShaderDataGroup::Scene:
-                entry.textureView = _scene->shaderData.getTextureView(entry.binding);
+                entry.textureView = _scene->shaderData.getTextureView(entry.binding).value();
                 break;
                 
             case ShaderDataGroup::Camera:
-                entry.textureView = _camera->shaderData.getTextureView(entry.binding);
+                entry.textureView = _camera->shaderData.getTextureView(entry.binding).value();
                 break;
                 
             case ShaderDataGroup::Renderer:
-                entry.textureView = renderer->shaderData.getTextureView(entry.binding);
+                entry.textureView = renderer->shaderData.getTextureView(entry.binding).value();
                 break;
                 
             case ShaderDataGroup::Material:
-                entry.textureView = mat->shaderData.getTextureView(entry.binding);
+                entry.textureView = mat->shaderData.getTextureView(entry.binding).value();
                 break;
                 
             default:
@@ -210,19 +210,19 @@ void ForwardSubpass::_bindingSampler(wgpu::BindGroupEntry& entry,
     if (group.has_value()) {
         switch (*group) {
             case ShaderDataGroup::Scene:
-                entry.sampler = _scene->shaderData.getSampler(entry.binding);
+                entry.sampler = _scene->shaderData.getSampler(entry.binding).value();
                 break;
                 
             case ShaderDataGroup::Camera:
-                entry.sampler = _camera->shaderData.getSampler(entry.binding);
+                entry.sampler = _camera->shaderData.getSampler(entry.binding).value();
                 break;
                 
             case ShaderDataGroup::Renderer:
-                entry.sampler = renderer->shaderData.getSampler(entry.binding);
+                entry.sampler = renderer->shaderData.getSampler(entry.binding).value();
                 break;
                 
             case ShaderDataGroup::Material:
-                entry.sampler = mat->shaderData.getSampler(entry.binding);
+                entry.sampler = mat->shaderData.getSampler(entry.binding).value();
                 break;
                 
             default:

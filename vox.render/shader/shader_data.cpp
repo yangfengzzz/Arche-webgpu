@@ -69,23 +69,21 @@ void ShaderData::setSampledTexture(const ShaderProperty &texture_prop,
     _shaderSamplers[sample_prop.uniqueId] = value;
 }
 
-wgpu::TextureView ShaderData::getTextureView(uint32_t uniqueID) {
+std::optional<wgpu::TextureView> ShaderData::getTextureView(uint32_t uniqueID) {
     auto iter = _shaderTextures.find(uniqueID);
     if (iter != _shaderTextures.end()) {
         return iter->second->textureView();
     } else {
-        assert(false && "unkonwn uniqueID for texture");
-        throw std::exception();
+        return std::nullopt;
     }
 }
 
-wgpu::Sampler& ShaderData::getSampler(uint32_t uniqueID) {
+std::optional<wgpu::Sampler> ShaderData::getSampler(uint32_t uniqueID) {
     auto iter = _shaderSamplers.find(uniqueID);
     if (iter != _shaderSamplers.end()) {
         return iter->second->sampler();
     } else {
-        assert(false && "unkonwn uniqueID for sampler");
-        throw std::exception();
+        return std::nullopt;
     }
 }
 
