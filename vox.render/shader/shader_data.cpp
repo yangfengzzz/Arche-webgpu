@@ -38,6 +38,19 @@ const std::unordered_map<uint32_t, Buffer> &ShaderData::shaderBuffers() const {
     return _shaderBuffers;
 }
 
+void ShaderData::setBuffer(const std::string &property_name, const Buffer& value) {
+    auto property = Shader::getPropertyByName(property_name);
+    if (property.has_value()) {
+        setBuffer(property.value(), value);
+    } else {
+        assert(false && "can't find property");
+    }
+}
+
+void ShaderData::setBuffer(ShaderProperty property, const Buffer& value) {
+    _shaderBuffers.insert(std::make_pair(property.uniqueId, value));
+}
+
 //MARK: - Sampler&&Texture
 void ShaderData::setSampledTexture(const std::string &texture_name,
                                    const std::string &sample_name,

@@ -34,6 +34,10 @@ public:
     
     std::optional<Buffer> getData(uint32_t uniqueID);
     
+    void setBuffer(const std::string &property_name, const Buffer& value);
+    
+    void setBuffer(ShaderProperty property, const Buffer& value);
+    
     template<typename T>
     void setData(const std::string &property_name, const T& value) {
         auto property = Shader::getPropertyByName(property_name);

@@ -15,27 +15,59 @@
 #include "image/stb.h"
 #include "shaderlib/wgsl_cache.h"
 #include "rendering/compute_subpass.h"
+#include "shaderlib/wgsl_unlit.h"
 
 namespace vox {
 namespace {
+class WGSLAtomicFragment : public WGSLCache {
+public:
+    WGSLAtomicFragment() {}
+    
+private:
+    void _createShaderSource(size_t hash, const ShaderMacroCollection& macros) override {
+        _source.clear();
+        _bindGroupInfo.clear();
+        {
+            auto encoder = createSourceEncoder(wgpu::ShaderStage::Fragment);
+            encoder.addStorageBufferBinding("u_counter", "atomic<u32>", true);
+            
+            encoder.addEntry({{"in", "VertexIn"}}, {"out", "VertexOut"}, [&](std::string &source){
+                source += "var atomic = float(u_atomic) % 255.0;";
+                source += "return vec4<f32>(atomic/255.0, 1 - atomic/255.0, atomic/255.0, 1.0);";
+            });
+            encoder.flush();
+        }
+        _sourceCache[hash] = _source;
+        _infoCache[hash] = _bindGroupInfo;
+    }
+};
+
 class AtomicMaterial: public BaseMaterial {
 private:
     ShaderProperty _atomicProp;
+    Buffer _atomicBuffer;
     
 public:
     AtomicMaterial(wgpu::Device& device):
     BaseMaterial(device, Shader::find("atomicRender")),
-    _atomicProp(Shader::createProperty("u_atomic", ShaderDataGroup::Material)) {}
+    _atomicProp(Shader::createProperty("u_atomic", ShaderDataGroup::Material)),
+    _atomicBuffer(device, sizeof(uint32_t), wgpu::BufferUsage::Storage) {
+        setAtomicBuffer(_atomicBuffer);
+    }
     
-    void setAtomicBuffer(const wgpu::Buffer& buffer) {
-        shaderData.setData(_atomicProp, buffer);
+    const Buffer& atomicBuffer() {
+        return _atomicBuffer;
+    }
+    
+    void setAtomicBuffer(const Buffer& buffer) {
+        shaderData.setBuffer(_atomicProp, buffer);
     }
 };
 
 class WGSLAtomicCompute : public WGSLCache {
 public:
     WGSLAtomicCompute() {}
-        
+    
 private:
     void _createShaderSource(size_t hash, const ShaderMacroCollection& macros) override {
         _source.clear();
@@ -43,7 +75,7 @@ private:
         {
             auto encoder = createSourceEncoder(wgpu::ShaderStage::Compute);
             encoder.addStorageBufferBinding("u_counter", "atomic<u32>", false);
-
+            
             encoder.addEntry(Vector3F(2, 2, 2), {{"in", "VertexIn"}}, {"out", "VertexOut"}, [&](std::string &source){
                 source += "atomicStore(&u_counter, 0u);";
                 source += "storageBarrier()";
@@ -56,89 +88,21 @@ private:
     }
 };
 
-class AtomicComputeSubpass: public ComputeSubpass {
-private:
-    wgpu::ShaderModule _atomicCompute;
-    wgpu::ComputePipelineDescriptor _state;
-    wgpu::Buffer _atomicBuffer;
-    
-    wgpu::BindGroupDescriptor _bindGroupDescriptor;
-    std::vector<wgpu::BindGroupEntry> _bindGroupEntries{};
-    
-    wgpu::PipelineLayoutDescriptor _pipelineLayoutDescriptor;
-    wgpu::PipelineLayout _pipelineLayout;
-    
-    AtomicMaterial* _material{nullptr};
-    
-public:
-    AtomicComputeSubpass(RenderContext *context,
-                         Scene *scene,
-                         Camera *camera):
-    ComputeSubpass(std::make_unique<WGSLAtomicCompute>(), context, scene, camera) {
-    }
-    
-    void setAtomicMaterial(AtomicMaterial* mat) {
-        _material = mat;
-    }
-    
-    void prepare() override {
-        _atomicCompute = compileShader(ShaderMacroCollection());
-        _state.compute.module = _atomicCompute;
-        _state.compute.entryPoint = "main";
-        
-        std::vector<wgpu::BindGroupLayout> bindGroupLayouts;
-        for (auto& layoutDesc : _bindGroupLayoutDescriptorMap) {
-            wgpu::BindGroupLayout bindGroupLayout = _pass->resourceCache().requestBindGroupLayout(layoutDesc.second);
-            _bindGroupEntries.clear();
-            _bindGroupEntries.resize(layoutDesc.second.entryCount);
-            for (uint32_t i = 0; i < layoutDesc.second.entryCount; i++) {
-                auto& entry = layoutDesc.second.entries[i];
-                _bindGroupEntries[i].binding = entry.binding;
-                if (entry.buffer.type != wgpu::BufferBindingType::Undefined) {
-                    _bindingData(_bindGroupEntries[i], material, renderer);
-                } else if (entry.texture.sampleType != wgpu::TextureSampleType::Undefined ||
-                           entry.storageTexture.access != wgpu::StorageTextureAccess::Undefined) {
-                    _bindingTexture(_bindGroupEntries[i], material, renderer);
-                } else if (entry.sampler.type != wgpu::SamplerBindingType::Undefined) {
-                    _bindingSampler(_bindGroupEntries[i], material, renderer);
-                }
-            }
-            _bindGroupDescriptor.layout = bindGroupLayout;
-            _bindGroupDescriptor.entryCount = layoutDesc.second.entryCount;
-            _bindGroupDescriptor.entries = _bindGroupEntries.data();
-            auto uniformBindGroup = _pass->resourceCache().requestBindGroup(_bindGroupDescriptor);
-//            passEncoder.SetBindGroup(layoutDesc.first, uniformBindGroup);
-            bindGroupLayouts.emplace_back(std::move(bindGroupLayout));
-        }
-        flush();
-        
-        
-        _material->setAtomicBuffer(_atomicBuffer);
-    }
-    
-    void compute(wgpu::ComputePassEncoder &commandEncoder) override {
-        auto pipeline = _pass->resourceCache().requestPipeline(_state);
-        commandEncoder.SetPipeline(pipeline);
-        auto group = _pass->resourceCache().requestBindGroup(_group);
-        commandEncoder.SetBindGroup(0, group);
-        commandEncoder.Dispatch(2);
-    }
-};
-
 } // namespace
 
 bool AtomicComputeApp::prepare(Engine &engine) {
     ForwardApplication::prepare(engine);
     
-    auto subpass = std::make_unique<AtomicComputeSubpass>(_renderContext.get(), _scene.get(), _mainCamera);
-    subpass->setAtomicMaterial(static_cast<AtomicMaterial*>(_material.get()));
+    auto subpass = std::make_unique<ComputeSubpass>(std::make_unique<WGSLAtomicCompute>());
+    subpass->setDispatchCount(2, 2, 2);
+    subpass->attachShaderData(&_material->shaderData);
     _renderPass->addSubpass(std::move(subpass));
     
     return true;
 }
 
 void AtomicComputeApp::loadScene(uint32_t width, uint32_t height) {
-    // Shader::create("atomicRender", "vertex_unlit", "fragment_atomic");
+    Shader::create("atomicRender", std::make_unique<WGSLUnlitFragment>(), std::make_unique<WGSLAtomicFragment>());
     
     auto rootEntity = _scene->createRootEntity();
     

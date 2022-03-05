@@ -18,9 +18,9 @@ Subpass(),
 _source(std::move(source)) {
 }
 
-void ComputeSubpass::stDispatchCount(uint32_t workgroupCountX,
-                                     uint32_t workgroupCountY,
-                                     uint32_t workgroupCountZ) {
+void ComputeSubpass::setDispatchCount(uint32_t workgroupCountX,
+                                      uint32_t workgroupCountY,
+                                      uint32_t workgroupCountZ) {
     _workgroupCountX = workgroupCountX;
     _workgroupCountY = workgroupCountY;
     _workgroupCountZ = workgroupCountZ;

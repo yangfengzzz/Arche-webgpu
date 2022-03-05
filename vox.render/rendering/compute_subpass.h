@@ -30,10 +30,10 @@ public:
     ComputeSubpass &operator=(ComputeSubpass &&) = delete;
     
 public:
-    void stDispatchCount(uint32_t workgroupCountX,
-                         uint32_t workgroupCountY = 1,
-                         uint32_t workgroupCountZ = 1);
-
+    void setDispatchCount(uint32_t workgroupCountX,
+                          uint32_t workgroupCountY = 1,
+                          uint32_t workgroupCountZ = 1);
+    
     void attachShaderData(ShaderData* data);
     
     void detachShaderData(ShaderData* data);
