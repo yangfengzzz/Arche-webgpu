@@ -296,10 +296,10 @@ void WGSLEncoder::addEntry(const std::initializer_list<std::pair<std::string, st
     _needFlush = true;
 }
 
-void WGSLEncoder::addEntry(const Vector3F& workgroupSize, std::function<void(std::string&)> code) {
+void WGSLEncoder::addEntry(const std::array<uint32_t, 3>& workgroupSize, std::function<void(std::string&)> code) {
     if (_currentStage == wgpu::ShaderStage::Compute) {
         _entryBlock += fmt::format("@stage(compute) @workgroup_size({}, {}, {})\n",
-                                   workgroupSize.x, workgroupSize.y, workgroupSize.z);
+                                   workgroupSize[0], workgroupSize[1], workgroupSize[2]);
     } else {
         assert(false && "Use Begin at first");
     }

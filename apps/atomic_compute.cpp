@@ -86,7 +86,7 @@ private:
                               "}\n");
             encoder.addStorageBufferBinding("u_atomic", "Counter", false);
             
-            encoder.addEntry(Vector3F(2, 2, 2), [&](std::string &source){
+            encoder.addEntry({2, 2, 2}, [&](std::string &source){
                 // source += "atomicStore(&u_atomic.counter, 0u);\n";
                 // source += "storageBarrier();\n";
                 source += "atomicAdd(&u_atomic.counter, 1u);\n";

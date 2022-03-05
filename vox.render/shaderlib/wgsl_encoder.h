@@ -86,7 +86,7 @@ public:
     void addEntry(const std::initializer_list<std::pair<std::string, std::string>>& inParam,
                   const std::pair<std::string, std::string>& outType, std::function<void(std::string&)> code);
 
-    void addEntry(const Vector3F& workgroupSize, std::function<void(std::string&)> code);
+    void addEntry(const std::array<uint32_t, 3>& workgroupSize, std::function<void(std::string&)> code);
     
 public:
     void flush();
