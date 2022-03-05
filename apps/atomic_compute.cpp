@@ -87,8 +87,8 @@ private:
             encoder.addStorageBufferBinding("u_atomic", "Counter", false);
             
             encoder.addEntry(Vector3F(2, 2, 2), [&](std::string &source){
-                source += "atomicStore(&u_atomic.counter, 0u);\n";
-                source += "storageBarrier();\n";
+                // source += "atomicStore(&u_atomic.counter, 0u);\n";
+                // source += "storageBarrier();\n";
                 source += "atomicAdd(&u_atomic.counter, 1u);\n";
             });
             encoder.flush();
@@ -104,7 +104,7 @@ bool AtomicComputeApp::prepare(Engine &engine) {
     ForwardApplication::prepare(engine);
     
     auto subpass = std::make_unique<ComputeSubpass>(std::make_unique<WGSLAtomicCompute>());
-    subpass->setDispatchCount(2, 2, 2);
+    subpass->setDispatchCount(1, 1, 1);
     subpass->attachShaderData(&_material->shaderData);
     _renderPass->addSubpass(std::move(subpass));
     
