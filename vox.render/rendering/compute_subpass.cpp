@@ -5,35 +5,45 @@
 //  property of any third parties.
 
 #include "compute_subpass.h"
+#include "render_pass.h"
 
 namespace vox {
 Subpass::Type ComputeSubpass::type() {
     return Subpass::Type::Compute;
 }
 
-ComputeSubpass::ComputeSubpass(WGSLPtr&& source,
-                               RenderContext *context,
-                               Scene *scene,
-                               Camera *camera) :
-Subpass(context, scene, camera),
+ComputeSubpass::ComputeSubpass(WGSLPtr&& source) :
+Subpass(),
 _source(std::move(source)) {
 }
 
-void ComputeSubpass::flush() {
+
+void ComputeSubpass::prepare() {
+    
+}
+
+void ComputeSubpass::compute(wgpu::ComputePassEncoder &commandEncoder) {
+    
+}
+
+
+//MARK: - Internal
+void ComputeSubpass::_flush() {
     _bindGroupLayoutEntryVecMap.clear();
     _bindGroupLayoutDescriptorMap.clear();
 }
 
-const std::string& ComputeSubpass::compileShader(const ShaderMacroCollection& macros) {
+wgpu::ShaderModule &ComputeSubpass::_compileShader(const ShaderMacroCollection& macros) {
     auto result = _source->compile(macros);
-
+//    std::cout<<result.first<<std::endl;
+    
     for (const auto& info : result.second) {
         _bindGroupLayoutEntryVecMap[info.first].reserve(info.second.size());
         for (const auto& entry : info.second) {
             _bindGroupLayoutEntryVecMap[info.first].push_back(_findEntry(info.first, entry));
         }
     }
-
+    
     for (const auto& entryVec : _bindGroupLayoutEntryVecMap) {
         wgpu::BindGroupLayoutDescriptor desc;
         desc.entryCount = static_cast<uint32_t>(entryVec.second.size());
@@ -41,7 +51,7 @@ const std::string& ComputeSubpass::compileShader(const ShaderMacroCollection& ma
         _bindGroupLayoutDescriptorMap[entryVec.first] = desc;
     }
     
-    return result.first;
+    return _pass->resourceCache().requestShader(result.first);
 }
 
 wgpu::BindGroupLayoutEntry ComputeSubpass::_findEntry(uint32_t group, uint32_t binding) {
@@ -64,7 +74,5 @@ wgpu::BindGroupLayoutEntry ComputeSubpass::_findEntry(uint32_t group, uint32_t b
         throw std::exception();
     }
 }
-
-
 
 }

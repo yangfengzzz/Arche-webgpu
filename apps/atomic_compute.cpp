@@ -13,6 +13,7 @@
 #include "camera.h"
 #include "controls/orbit_control.h"
 #include "image/stb.h"
+#include "shaderlib/wgsl_cache.h"
 #include "rendering/compute_subpass.h"
 
 namespace vox {
@@ -31,12 +32,41 @@ public:
     }
 };
 
+class WGSLAtomicCompute : public WGSLCache {
+public:
+    WGSLAtomicCompute() {}
+        
+private:
+    void _createShaderSource(size_t hash, const ShaderMacroCollection& macros) override {
+        _source.clear();
+        _bindGroupInfo.clear();
+        {
+            auto encoder = createSourceEncoder(wgpu::ShaderStage::Compute);
+            encoder.addStorageBufferBinding("u_counter", "atomic<u32>", false);
+
+            encoder.addEntry(Vector3F(2, 2, 2), {{"in", "VertexIn"}}, {"out", "VertexOut"}, [&](std::string &source){
+                source += "atomicStore(&u_counter, 0u);";
+                source += "storageBarrier()";
+                source += "atomicAdd(&u_counter, 1u);";
+            });
+            encoder.flush();
+        }
+        _sourceCache[hash] = _source;
+        _infoCache[hash] = _bindGroupInfo;
+    }
+};
+
 class AtomicComputeSubpass: public ComputeSubpass {
 private:
     wgpu::ShaderModule _atomicCompute;
     wgpu::ComputePipelineDescriptor _state;
     wgpu::Buffer _atomicBuffer;
-    wgpu::BindGroupDescriptor _group;
+    
+    wgpu::BindGroupDescriptor _bindGroupDescriptor;
+    std::vector<wgpu::BindGroupEntry> _bindGroupEntries{};
+    
+    wgpu::PipelineLayoutDescriptor _pipelineLayoutDescriptor;
+    wgpu::PipelineLayout _pipelineLayout;
     
     AtomicMaterial* _material{nullptr};
     
@@ -44,7 +74,7 @@ public:
     AtomicComputeSubpass(RenderContext *context,
                          Scene *scene,
                          Camera *camera):
-    ComputeSubpass(nullptr, context, scene, camera) {
+    ComputeSubpass(std::make_unique<WGSLAtomicCompute>(), context, scene, camera) {
     }
     
     void setAtomicMaterial(AtomicMaterial* mat) {
@@ -52,9 +82,37 @@ public:
     }
     
     void prepare() override {
-        _atomicCompute = _pass->resourceCache().requestShader("atomicCounter");
+        _atomicCompute = compileShader(ShaderMacroCollection());
         _state.compute.module = _atomicCompute;
         _state.compute.entryPoint = "main";
+        
+        std::vector<wgpu::BindGroupLayout> bindGroupLayouts;
+        for (auto& layoutDesc : _bindGroupLayoutDescriptorMap) {
+            wgpu::BindGroupLayout bindGroupLayout = _pass->resourceCache().requestBindGroupLayout(layoutDesc.second);
+            _bindGroupEntries.clear();
+            _bindGroupEntries.resize(layoutDesc.second.entryCount);
+            for (uint32_t i = 0; i < layoutDesc.second.entryCount; i++) {
+                auto& entry = layoutDesc.second.entries[i];
+                _bindGroupEntries[i].binding = entry.binding;
+                if (entry.buffer.type != wgpu::BufferBindingType::Undefined) {
+                    _bindingData(_bindGroupEntries[i], material, renderer);
+                } else if (entry.texture.sampleType != wgpu::TextureSampleType::Undefined ||
+                           entry.storageTexture.access != wgpu::StorageTextureAccess::Undefined) {
+                    _bindingTexture(_bindGroupEntries[i], material, renderer);
+                } else if (entry.sampler.type != wgpu::SamplerBindingType::Undefined) {
+                    _bindingSampler(_bindGroupEntries[i], material, renderer);
+                }
+            }
+            _bindGroupDescriptor.layout = bindGroupLayout;
+            _bindGroupDescriptor.entryCount = layoutDesc.second.entryCount;
+            _bindGroupDescriptor.entries = _bindGroupEntries.data();
+            auto uniformBindGroup = _pass->resourceCache().requestBindGroup(_bindGroupDescriptor);
+//            passEncoder.SetBindGroup(layoutDesc.first, uniformBindGroup);
+            bindGroupLayouts.emplace_back(std::move(bindGroupLayout));
+        }
+        flush();
+        
+        
         _material->setAtomicBuffer(_atomicBuffer);
     }
     

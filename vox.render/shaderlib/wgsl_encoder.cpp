@@ -296,6 +296,39 @@ void WGSLEncoder::addEntry(const std::initializer_list<std::pair<std::string, st
     _needFlush = true;
 }
 
+void WGSLEncoder::addEntry(const Vector3F& workgroupSize,
+                           const std::initializer_list<std::pair<std::string, std::string>>& inParam,
+                           const std::pair<std::string, std::string>& outType, std::function<void(std::string&)> code) {
+    if (_currentStage == wgpu::ShaderStage::Compute) {
+        _entryBlock += fmt::format("@stage(compute), @workgroup_size({}, {}, {})\n",
+                                   workgroupSize.x, workgroupSize.y, workgroupSize.z);
+    } else {
+        assert(false && "Use Begin at first");
+    }
+    
+    _entryBlock += "fn main(";
+    for (const auto& param : inParam) {
+        _entryBlock += param.first;
+        _entryBlock += ": ";
+        _entryBlock += param.second;
+        _entryBlock += ", ";
+    }
+    _entryBlock += ") -> ";
+    _entryBlock += outType.second;
+    _entryBlock += " {\n";
+    
+    std::string formatTemplate = "var {}:{};\n";
+    _entryBlock += fmt::format(formatTemplate, outType.first, outType.second);
+    
+    code(_entryBlock);
+    
+    formatTemplate = "return {};\n";
+    _entryBlock += fmt::format(formatTemplate, outType.first);
+    _entryBlock += "}\n";
+    
+    _needFlush = true;
+}
+
 void WGSLEncoder::flush() {
     if (_needFlush) {
         _buildSource();

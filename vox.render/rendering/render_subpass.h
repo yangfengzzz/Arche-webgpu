@@ -37,6 +37,10 @@ public:
 protected:
     static bool _compareFromNearToFar(const RenderElement &a, const RenderElement &b);
     static bool _compareFromFarToNear(const RenderElement &a, const RenderElement &b);
+    
+    RenderContext* _renderContext{nullptr};
+    Scene* _scene{nullptr};
+    Camera* _camera{nullptr};
 };
 
 }

@@ -7,6 +7,7 @@
 #ifndef wgsl_encoder_hpp
 #define wgsl_encoder_hpp
 
+#include "vector3.h"
 #include "wgsl_common.h"
 #include "shader/shader_macro_collection.h"
 #include <unordered_map>
@@ -83,6 +84,10 @@ public:
     
 public:
     void addEntry(const std::initializer_list<std::pair<std::string, std::string>>& inParam,
+                  const std::pair<std::string, std::string>& outType, std::function<void(std::string&)> code);
+
+    void addEntry(const Vector3F& workgroupSize,
+                  const std::initializer_list<std::pair<std::string, std::string>>& inParam,
                   const std::pair<std::string, std::string>& outType, std::function<void(std::string&)> code);
     
 public:

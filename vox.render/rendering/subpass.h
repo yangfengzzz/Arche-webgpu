@@ -22,9 +22,7 @@ public:
     
     virtual Type type() = 0;
     
-    Subpass(RenderContext* renderContext,
-            Scene* scene,
-            Camera* camera);
+    Subpass() = default;
     
     Subpass(const Subpass &) = delete;
     
@@ -45,10 +43,6 @@ public:
     
 protected:
     RenderPass* _pass{nullptr};
-    
-    RenderContext* _renderContext{nullptr};
-    Scene* _scene{nullptr};
-    Camera* _camera{nullptr};
 };
 
 }

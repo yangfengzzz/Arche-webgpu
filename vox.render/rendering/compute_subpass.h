@@ -17,10 +17,7 @@ public:
     
     Subpass::Type type() override final;
     
-    ComputeSubpass(WGSLPtr&& source,
-                   RenderContext *context,
-                   Scene *scene,
-                   Camera *camera);
+    ComputeSubpass(WGSLPtr&& source);
     
     ComputeSubpass(const ComputeSubpass &) = delete;
     
@@ -32,17 +29,23 @@ public:
     
     ComputeSubpass &operator=(ComputeSubpass &&) = delete;
     
+public:
+    /**
+     * @brief Prepares the shaders and shader variants for a subpass
+     */
+    virtual void prepare() override;
+    
     /**
      * @brief Compute virtual function
      * @param commandEncoder CommandEncoder to use to record compute commands
      */
-    virtual void compute(wgpu::ComputePassEncoder &commandEncoder) = 0;
-    
-    const std::string& compileShader(const ShaderMacroCollection& macros);
-    
-    void flush();
+    virtual void compute(wgpu::ComputePassEncoder &commandEncoder);
     
 protected:
+    wgpu::ShaderModule &_compileShader(const ShaderMacroCollection& macros);
+    
+    void _flush();
+    
     WGSLPtr _source;
     BindGroupLayoutEntryVecMap _bindGroupLayoutEntryVecMap{};
     BindGroupLayoutDescriptorMap _bindGroupLayoutDescriptorMap{};

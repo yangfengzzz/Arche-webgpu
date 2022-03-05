@@ -17,7 +17,10 @@ Subpass::Type RenderSubpass::type() {
 RenderSubpass::RenderSubpass(RenderContext* renderContext,
                              Scene* scene,
                              Camera* camera):
-Subpass(renderContext, scene, camera) {
+Subpass(),
+_renderContext(renderContext),
+_scene(scene),
+_camera(camera) {
 }
 
 bool RenderSubpass::_compareFromNearToFar(const RenderElement &a, const RenderElement &b) {

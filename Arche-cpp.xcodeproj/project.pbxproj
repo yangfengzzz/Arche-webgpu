@@ -523,7 +523,6 @@
 		04F9E8FD27D2067400BD291B /* render_subpass.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E8FB27D2067400BD291B /* render_subpass.h */; };
 		04F9E90027D2095100BD291B /* compute_subpass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E8FE27D2095100BD291B /* compute_subpass.cpp */; };
 		04F9E90127D2095100BD291B /* compute_subpass.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E8FF27D2095100BD291B /* compute_subpass.h */; };
-		04F9E90427D2157B00BD291B /* atomic_compute.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E90227D2157B00BD291B /* atomic_compute.cpp */; };
 		04F9E90527D2E0BC00BD291B /* wgsl_reflect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF01127A58872003F3599 /* wgsl_reflect.cpp */; };
 /* End PBXBuildFile section */
 
@@ -2787,7 +2786,6 @@
 				047BF12F27ACEFFA003F3599 /* scoped_autorelease_pool.mm in Sources */,
 				0443E8E627C4CBBC0099E13A /* omni_shadowmap_app.cpp in Sources */,
 				047BF1B927AFA525003F3599 /* framebuffer_picker_app.cpp in Sources */,
-				04F9E90427D2157B00BD291B /* atomic_compute.cpp in Sources */,
 				047BF18427AE1DF7003F3599 /* skybox_app.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -7,14 +7,6 @@
 #include "subpass.h"
 
 namespace vox {
-Subpass::Subpass(RenderContext* renderContext,
-                 Scene* scene,
-                 Camera* camera):
-_renderContext(renderContext),
-_scene(scene),
-_camera(camera) {
-}
-
 void Subpass::setRenderPass(RenderPass* pass) {
     _pass = pass;
     prepare();
