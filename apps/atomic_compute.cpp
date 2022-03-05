@@ -44,7 +44,7 @@ public:
     AtomicComputeSubpass(RenderContext *context,
                          Scene *scene,
                          Camera *camera):
-    ComputeSubpass(context, scene, camera) {
+    ComputeSubpass(nullptr, context, scene, camera) {
     }
     
     void setAtomicMaterial(AtomicMaterial* mat) {

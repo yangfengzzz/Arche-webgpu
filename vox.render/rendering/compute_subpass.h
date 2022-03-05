@@ -12,9 +12,13 @@
 namespace vox {
 class ComputeSubpass : public Subpass {
 public:
+    using BindGroupLayoutEntryVecMap = std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>>;
+    using BindGroupLayoutDescriptorMap = std::unordered_map<uint32_t, wgpu::BindGroupLayoutDescriptor>;
+    
     Subpass::Type type() override final;
     
-    ComputeSubpass(RenderContext *context,
+    ComputeSubpass(WGSLPtr&& source,
+                   RenderContext *context,
                    Scene *scene,
                    Camera *camera);
     
@@ -33,6 +37,18 @@ public:
      * @param commandEncoder CommandEncoder to use to record compute commands
      */
     virtual void compute(wgpu::ComputePassEncoder &commandEncoder) = 0;
+    
+    const std::string& compileShader(const ShaderMacroCollection& macros);
+    
+    void flush();
+    
+protected:
+    WGSLPtr _source;
+    BindGroupLayoutEntryVecMap _bindGroupLayoutEntryVecMap{};
+    BindGroupLayoutDescriptorMap _bindGroupLayoutDescriptorMap{};
+    
+private:
+    wgpu::BindGroupLayoutEntry _findEntry(uint32_t group, uint32_t binding);
 };
 
 }

@@ -148,6 +148,56 @@ void WGSLEncoder::addSampledTextureBinding(const std::string& texName, TextureTy
     _needFlush = true;
 }
 
+//MARK: - Storage
+void WGSLEncoder::addStorageBufferBinding(const std::string& bufferName, UniformType type,
+                                          bool isRead, uint32_t group) {
+    addStorageBufferBinding(bufferName, toString(type), isRead, group);
+}
+
+void WGSLEncoder::addStorageBufferBinding(const std::string& bufferName, const std::string& type,
+                                          bool isRead, uint32_t group) {
+    auto property = Shader::getPropertyByName(bufferName);
+    if (property.has_value()) {
+        addStorageBufferBinding(bufferName, type, isRead, property.value().uniqueId, group);
+    } else {
+        assert(false && "Unknown Buffer Name");
+    }
+}
+
+void WGSLEncoder::addStorageBufferBinding(const std::string& bufferName, const std::string& type,
+                                          bool isRead, uint32_t binding, uint32_t group) {
+    const std::string formatTemplate = "@group({}) @binding({})\n "
+    "var<storage, {}> {}: {};\n ";
+    
+    if (isRead) {
+        _uniformBlock += fmt::format(formatTemplate, group, binding,
+                                     "read", bufferName, type);
+    } else {
+        _uniformBlock += fmt::format(formatTemplate, group, binding,
+                                     "read_write", bufferName, type);
+    }
+    
+    wgpu::BindGroupLayoutEntry entry;
+    entry.binding = binding;
+    entry.visibility = _currentStage;
+    if (isRead) {
+        entry.buffer.type = wgpu::BufferBindingType::ReadOnlyStorage;
+    } else {
+        entry.buffer.type = wgpu::BufferBindingType::Storage;
+    }
+    auto iter = _bindGroupLayoutEntryMap.find(group);
+    if (iter == _bindGroupLayoutEntryMap.end()) {
+        _bindGroupLayoutEntryMap[group][binding] = entry;
+    } else {
+        auto entryIter = _bindGroupLayoutEntryMap[group].find(binding);
+        if (entryIter == _bindGroupLayoutEntryMap[group].end()) {
+            _bindGroupLayoutEntryMap[group][binding] = entry;
+        }
+    }
+    _bindGroupInfo[group].insert(binding);
+    _needFlush = true;
+}
+
 void WGSLEncoder::addStorageTextureBinding(const std::string& texName, StorageTextureType texType,
                                            wgpu::TextureFormat texelFormat, uint32_t group) {
     const std::string formatTemplate = "@group({}) @binding({})\n "
@@ -181,6 +231,7 @@ void WGSLEncoder::addStorageTextureBinding(const std::string& texName, StorageTe
     _needFlush = true;
 }
 
+//MARK: - Inout
 void WGSLEncoder::addInoutType(const std::string& structName,
                                Attributes attributes, UniformType type) {
     addInoutType(structName, (uint32_t)attributes, toString(attributes), toString(type));

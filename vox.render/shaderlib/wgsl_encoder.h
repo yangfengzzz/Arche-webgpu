@@ -57,6 +57,16 @@ public:
                                   const std::string& samplerName, SamplerType samplerType, uint32_t samplerBinding,
                                   uint32_t group);
     
+public:
+    void addStorageBufferBinding(const std::string& bufferName, UniformType type,
+                                 bool isRead, uint32_t group = 0);
+
+    void addStorageBufferBinding(const std::string& bufferName, const std::string& type,
+                                 bool isRead, uint32_t group = 0);
+    
+    void addStorageBufferBinding(const std::string& bufferName, const std::string& type,
+                                 bool isRead, uint32_t binding, uint32_t group);
+    
     void addStorageTextureBinding(const std::string& texName, StorageTextureType texType,
                                   wgpu::TextureFormat texelFormat, uint32_t group = 0);
 

@@ -524,6 +524,7 @@
 		04F9E90027D2095100BD291B /* compute_subpass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E8FE27D2095100BD291B /* compute_subpass.cpp */; };
 		04F9E90127D2095100BD291B /* compute_subpass.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E8FF27D2095100BD291B /* compute_subpass.h */; };
 		04F9E90427D2157B00BD291B /* atomic_compute.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E90227D2157B00BD291B /* atomic_compute.cpp */; };
+		04F9E90527D2E0BC00BD291B /* wgsl_reflect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF01127A58872003F3599 /* wgsl_reflect.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -2619,6 +2620,7 @@
 				047BF06D27A6819C003F3599 /* astc_encoding_choice_error.cpp in Sources */,
 				0443E8D427C4BB500099E13A /* shadow_material.cpp in Sources */,
 				047BF16127AD1996003F3599 /* wgsl_direct_irradiance_frag_define.cpp in Sources */,
+				04F9E90527D2E0BC00BD291B /* wgsl_reflect.cpp in Sources */,
 				047BF00B27A56500003F3599 /* wgsl_cache.cpp in Sources */,
 				047BF07C27A6819C003F3599 /* astc_averages_and_directions.cpp in Sources */,
 				047BEFF227A5519C003F3599 /* wgsl_blend_shape_vert.cpp in Sources */,
