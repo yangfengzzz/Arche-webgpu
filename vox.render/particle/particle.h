@@ -172,9 +172,15 @@ private:
     float _minValue = 0.0;
     float _maxValue = 1.0;
     std::vector<float> _randomVec{};
-    std::unique_ptr<Buffer> _randomBuffer{nullptr};
     ShaderProperty _randomBufferProp;
     
+    ParticleSimulationData _simulationData;
+    ShaderProperty _simulationDataProp;
+    
+    ParticleEmitterData _emitterData;
+    ShaderProperty _emitterDataProp;
+    
+private:
     uint32_t _read = 0;
     uint32_t _write = 1;
     std::unique_ptr<Buffer> _atomicBuffer[2] = {nullptr, nullptr};
@@ -184,12 +190,6 @@ private:
     std::unique_ptr<Buffer> _appendConsumeBuffer[2] = {nullptr, nullptr};
     ShaderProperty _readConsumeBufferProp;
     ShaderProperty _writeConsumeBufferProp;
-
-    ParticleSimulationData _simulationData;
-    ShaderProperty _simulationDataProp;
-    
-    ParticleEmitterData _emitterData;
-    ShaderProperty _emitterDataProp;
     
     SampledTexture3DPtr _vectorFieldTexture{nullptr};
     ShaderProperty _vectorFieldTextureProp;

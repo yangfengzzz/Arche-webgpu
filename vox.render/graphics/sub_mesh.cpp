@@ -22,6 +22,10 @@ uint32_t SubMesh::count() const {
     return _count;
 }
 
+void SubMesh::setCount(uint32_t num) {
+    _count = num;
+}
+
 wgpu::PrimitiveTopology SubMesh::topology() const {
     return _topology;
 }

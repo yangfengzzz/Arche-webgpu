@@ -101,13 +101,10 @@ std::vector<size_t> ShaderMacroCollection::_internalMacroHashValue = {
     std::hash<std::string>{}("HAS_DIFFUSE_ENV"),
     
     // Particle Render
-    std::hash<std::string>{}("HAS_PARTICLE_TEXTURE"),
-    std::hash<std::string>{}("NEED_ROTATE_TO_VELOCITY"),
-    std::hash<std::string>{}("NEED_USE_ORIGIN_COLOR"),
-    std::hash<std::string>{}("NEED_SCALE_BY_LIFE_TIME"),
-    std::hash<std::string>{}("NEED_FADE_IN"),
-    std::hash<std::string>{}("NEED_FADE_OUT"),
-    std::hash<std::string>{}("IS_2D"),
+    std::hash<std::string>{}("NEED_PARTICLE_SCATTERING"),
+    std::hash<std::string>{}("NEED_PARTICLE_VECTOR_FIELD"),
+    std::hash<std::string>{}("NEED_PARTICLE_CURL_NOISE"),
+    std::hash<std::string>{}("NEED_PARTICLE_VELOCITY_CONTROL"),
     
     // Shadow
     std::hash<std::string>{}("SHADOW_MAP_COUNT"),

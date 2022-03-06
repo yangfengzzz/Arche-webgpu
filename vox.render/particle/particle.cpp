@@ -52,15 +52,11 @@ void Particle::_allocBuffer() {
     /* Random value buffer */
     uint32_t const num_randvalues = 3u * kMaxParticleCount;
     _randomVec.resize(num_randvalues);
-    _randomBuffer = std::make_unique<Buffer>(device, sizeof(float) * num_randvalues, wgpu::BufferUsage::Storage);
-    shaderData.setBuffer(_randomBufferProp, *_randomBuffer);
-    
+    shaderData.setData(_randomBufferProp, _randomVec);
+        
     /* Atomic */
-    uint32_t atomicInit = 0;
-    _atomicBuffer[0] = std::make_unique<Buffer>(device, sizeof(uint32_t), wgpu::BufferUsage::Storage);
-    _atomicBuffer[0]->uploadData(device, &atomicInit, sizeof(uint32_t));
-    _atomicBuffer[1] = std::make_unique<Buffer>(device, sizeof(uint32_t), wgpu::BufferUsage::Storage);
-    _atomicBuffer[1]->uploadData(device, &atomicInit, sizeof(uint32_t));
+    _atomicBuffer[0] = std::make_unique<Buffer>(device, sizeof(uint32_t), wgpu::BufferUsage::Storage | wgpu::BufferUsage::MapRead);
+    _atomicBuffer[1] = std::make_unique<Buffer>(device, sizeof(uint32_t), wgpu::BufferUsage::Storage | wgpu::BufferUsage::MapRead);
     
     /* Append Consume */
     _appendConsumeBuffer[0] = std::make_unique<Buffer>(device, sizeof(TParticle) * kMaxParticleCount,
@@ -96,6 +92,198 @@ void Particle::_allocMesh() {
         bufferMesh->addSubMesh(SubMesh());
         _meshes[i] = bufferMesh;
     }
+}
+
+void Particle::_generateRandomValues() {
+    std::uniform_real_distribution<float> distrib(_minValue, _maxValue);
+    for (unsigned int i = 0u; i < _randomVec.size(); ++i) {
+        _randomVec[i] = distrib(_mt);
+    }
+    shaderData.setData(_randomBufferProp, _randomVec);
+}
+
+void Particle::onUpdate(float deltaTime) {
+    _write = 1 - _write;
+    _read = 1 - _read;
+    
+    _atomicBuffer[_read]->handle().MapAsync(wgpu::MapMode::Read, 0, sizeof(uint32_t), [](WGPUBufferMapAsyncStatus status, void * userdata) {
+        if (status == WGPUBufferMapAsyncStatus_Success) {
+            Particle* app = static_cast<Particle*>(userdata);
+            memcpy(&app->_numAliveParticles, app->_atomicBuffer[app->_read]->handle().GetConstMappedRange(0, 4), 4);
+            app->_atomicBuffer[app->_read]->handle().Unmap();
+        }
+    }, this);
+    _meshes[_read]->subMesh()->setCount(_numAliveParticles);
+    _renderer->setMesh(_meshes[_read]);
+    _generateRandomValues();
+}
+
+const uint32_t Particle::numAliveParticles() const {
+    return _numAliveParticles;
+}
+
+ParticleMaterial& Particle::material() {
+    return *_material;
+}
+
+float Particle::timeStep() const {
+    return _simulationData.timeStep;
+}
+
+void Particle::setTimeStep(float step) {
+    _simulationData.timeStep = step;
+    shaderData.setData(_simulationDataProp, _simulationData);
+}
+
+Particle::SimulationVolume Particle::boundingVolumeType() const {
+    return _simulationData.boundingVolumeType;
+}
+
+void Particle::setBoundingVolumeType(SimulationVolume type) {
+    _simulationData.boundingVolumeType = type;
+    shaderData.setData(_simulationDataProp, _simulationData);
+}
+
+float Particle::bboxSize() const {
+    return _simulationData.bboxSize;
+}
+
+void Particle::setBBoxSize(float size) {
+    _simulationData.bboxSize = size;
+    shaderData.setData(_simulationDataProp, _simulationData);
+}
+
+float Particle::scatteringFactor() const {
+    return _simulationData.scatteringFactor;
+}
+
+void Particle::setScatteringFactor(float factor) {
+    _simulationData.scatteringFactor = factor;
+    shaderData.setData(_simulationDataProp, _simulationData);
+    shaderData.enableMacro(NEED_PARTICLE_SCATTERING);
+}
+
+std::shared_ptr<SampledTexture3D> Particle::vectorFieldTexture() const {
+    return _vectorFieldTexture;
+}
+
+void Particle::setVectorFieldTexture(const std::shared_ptr<SampledTexture3D>& field) {
+    _vectorFieldTexture = field;
+    shaderData.enableMacro(NEED_PARTICLE_VECTOR_FIELD);
+    shaderData.setSampledTexture(_vectorFieldTextureProp, _vectorFieldSamplerProp, field);
+}
+
+float Particle::vectorFieldFactor() const {
+    return _simulationData.vectorFieldFactor;
+}
+
+void Particle::setVectorFieldFactor(float factor) {
+    _simulationData.vectorFieldFactor = factor;
+    shaderData.setData(_simulationDataProp, _simulationData);
+}
+
+float Particle::curlNoiseFactor() const {
+    return _simulationData.curlNoiseFactor;
+}
+
+void Particle::setCurlNoiseFactor(float factor) {
+    _simulationData.curlNoiseFactor = factor;
+    shaderData.enableMacro(NEED_PARTICLE_CURL_NOISE);
+    shaderData.setData(_simulationDataProp, _simulationData);
+}
+
+float Particle::curlNoiseScale() const {
+    return _simulationData.curlNoiseScale;
+}
+
+void Particle::setCurlNoiseScale(float scale) {
+    _simulationData.curlNoiseScale = scale;
+    shaderData.enableMacro(NEED_PARTICLE_CURL_NOISE);
+    shaderData.setData(_simulationDataProp, _simulationData);
+}
+
+float Particle::velocityFactor() const {
+    return _simulationData.velocityFactor;
+}
+
+void Particle::setVelocityFactor(float factor) {
+    _simulationData.velocityFactor = factor;
+    shaderData.enableMacro(NEED_PARTICLE_VELOCITY_CONTROL);
+    shaderData.setData(_simulationDataProp, _simulationData);
+}
+
+//MARK: - Emitter
+uint32_t Particle::emitCount() const {
+    return _emitterData.emitCount;
+}
+
+void Particle::setEmitCount(uint32_t count) {
+    _emitterData.emitCount = count;
+    shaderData.setData(_emitterDataProp, _emitterData);
+}
+
+Particle::EmitterType Particle::emitterType() const {
+    return _emitterData.emitterType;
+}
+
+void Particle::setEmitterType(EmitterType type) {
+    _emitterData.emitterType = type;
+    shaderData.setData(_emitterDataProp, _emitterData);
+}
+
+Vector3F Particle::emitterPosition() const {
+    return _emitterData.emitterPosition;
+}
+
+void Particle::setEmitterPosition(const Vector3F& position) {
+    _emitterData.emitterPosition = position;
+    shaderData.setData(_emitterDataProp, _emitterData);
+}
+
+Vector3F Particle::emitterDirection() const {
+    return _emitterData.emitterDirection;
+}
+
+void Particle::setEmitterDirection(const Vector3F& direction) {
+    _emitterData.emitterDirection = direction;
+    shaderData.setData(_emitterDataProp, _emitterData);
+}
+
+float Particle::emitterRadius() const {
+    return _emitterData.emitterRadius;
+}
+
+void Particle::setEmitterRadius(float radius) {
+    _emitterData.emitterRadius = radius;
+    shaderData.setData(_emitterDataProp, _emitterData);
+}
+
+float Particle::particleMinAge() const {
+    return _emitterData.particleMinAge;
+}
+
+void Particle::setParticleMinAge(float age) {
+    _emitterData.particleMinAge = age;
+    shaderData.setData(_emitterDataProp, _emitterData);
+}
+
+float Particle::particleMaxAge() const {
+    return _emitterData.particleMaxAge;
+}
+
+void Particle::setParticleMaxAge(float age) {
+    _emitterData.particleMaxAge = age;
+    shaderData.setData(_emitterDataProp, _emitterData);
+}
+
+void Particle::_onEnable() {
+    Script::_onEnable();
+    ParticleManager::getSingleton().addParticle(this);
+}
+
+void Particle::_onDisable() {
+    Script::_onDisable();
+    ParticleManager::getSingleton().removeParticle(this);
 }
 
 }

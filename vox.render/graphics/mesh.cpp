@@ -7,6 +7,14 @@
 #include "mesh.h"
 
 namespace vox {
+SubMesh* Mesh::subMesh() {
+    if (_subMeshes.size() > 0) {
+        return &_subMeshes[0];
+    } else {
+        return nullptr;
+    }
+}
+
 const SubMesh* Mesh::subMesh() const {
     if (_subMeshes.size() > 0) {
         return &_subMeshes[0];

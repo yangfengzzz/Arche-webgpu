@@ -27,6 +27,8 @@ public:
      */
     const SubMesh* subMesh() const;
     
+    SubMesh* subMesh();
+    
     /**
      * A collection of sub-mesh, each sub-mesh can be rendered with an independent material.
      */

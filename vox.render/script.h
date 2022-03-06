@@ -113,7 +113,7 @@ public:
     }
     
     
-private:
+protected:
     friend class Entity;
     
     friend class ComponentsManager;
