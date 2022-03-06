@@ -522,7 +522,7 @@
 		04F9E90027D2095100BD291B /* compute_pass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E8FE27D2095100BD291B /* compute_pass.cpp */; };
 		04F9E90127D2095100BD291B /* compute_pass.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E8FF27D2095100BD291B /* compute_pass.h */; };
 		04F9E90527D2E0BC00BD291B /* wgsl_reflect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF01127A58872003F3599 /* wgsl_reflect.cpp */; };
-		04F9E90627D3684E00BD291B /* atomic_compute.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E90227D2157B00BD291B /* atomic_compute.cpp */; };
+		04F9E90627D3684E00BD291B /* atomic_compute_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E90227D2157B00BD291B /* atomic_compute_app.cpp */; };
 		04F9E90A27D4657A00BD291B /* particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E90827D4657A00BD291B /* particle.cpp */; };
 		04F9E90B27D4657A00BD291B /* particle.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E90927D4657A00BD291B /* particle.h */; };
 		04F9E90E27D465A800BD291B /* particle_material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E90C27D465A800BD291B /* particle_material.cpp */; };
@@ -539,6 +539,7 @@
 		04F9E92527D4AE3E00BD291B /* wgsl_particle_noise.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E92327D4AE3E00BD291B /* wgsl_particle_noise.h */; };
 		04F9E92827D4B56100BD291B /* wgsl_particle_emission.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E92627D4B56100BD291B /* wgsl_particle_emission.cpp */; };
 		04F9E92927D4B56100BD291B /* wgsl_particle_emission.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E92727D4B56100BD291B /* wgsl_particle_emission.h */; };
+		04F9E92C27D4DB1A00BD291B /* particle_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E92A27D4DB1A00BD291B /* particle_app.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1193,8 +1194,8 @@
 		04F9E8FB27D2067400BD291B /* subpass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = subpass.h; sourceTree = "<group>"; };
 		04F9E8FE27D2095100BD291B /* compute_pass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = compute_pass.cpp; sourceTree = "<group>"; };
 		04F9E8FF27D2095100BD291B /* compute_pass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = compute_pass.h; sourceTree = "<group>"; };
-		04F9E90227D2157B00BD291B /* atomic_compute.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = atomic_compute.cpp; sourceTree = "<group>"; };
-		04F9E90327D2157B00BD291B /* atomic_compute.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = atomic_compute.h; sourceTree = "<group>"; };
+		04F9E90227D2157B00BD291B /* atomic_compute_app.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = atomic_compute_app.cpp; sourceTree = "<group>"; };
+		04F9E90327D2157B00BD291B /* atomic_compute_app.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = atomic_compute_app.h; sourceTree = "<group>"; };
 		04F9E90827D4657A00BD291B /* particle.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = particle.cpp; sourceTree = "<group>"; };
 		04F9E90927D4657A00BD291B /* particle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = particle.h; sourceTree = "<group>"; };
 		04F9E90C27D465A800BD291B /* particle_material.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = particle_material.cpp; sourceTree = "<group>"; };
@@ -1212,6 +1213,8 @@
 		04F9E92327D4AE3E00BD291B /* wgsl_particle_noise.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_particle_noise.h; sourceTree = "<group>"; };
 		04F9E92627D4B56100BD291B /* wgsl_particle_emission.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_particle_emission.cpp; sourceTree = "<group>"; };
 		04F9E92727D4B56100BD291B /* wgsl_particle_emission.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_particle_emission.h; sourceTree = "<group>"; };
+		04F9E92A27D4DB1A00BD291B /* particle_app.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = particle_app.cpp; sourceTree = "<group>"; };
+		04F9E92B27D4DB1A00BD291B /* particle_app.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = particle_app.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1616,8 +1619,10 @@
 				0443E8E127C4CB7C0099E13A /* cascade_shadowmap_app.cpp */,
 				0443E8E527C4CBBC0099E13A /* omni_shadowmap_app.h */,
 				0443E8E427C4CBBC0099E13A /* omni_shadowmap_app.cpp */,
-				04F9E90327D2157B00BD291B /* atomic_compute.h */,
-				04F9E90227D2157B00BD291B /* atomic_compute.cpp */,
+				04F9E90327D2157B00BD291B /* atomic_compute_app.h */,
+				04F9E90227D2157B00BD291B /* atomic_compute_app.cpp */,
+				04F9E92B27D4DB1A00BD291B /* particle_app.h */,
+				04F9E92A27D4DB1A00BD291B /* particle_app.cpp */,
 			);
 			path = apps;
 			sourceTree = "<group>";
@@ -2853,6 +2858,7 @@
 				047BF15227ACFA86003F3599 /* animation_app.cpp in Sources */,
 				047BF1A127AEB941003F3599 /* gltf_app.cpp in Sources */,
 				047BF12E27ACEEEE003F3599 /* physx_app.cpp in Sources */,
+				04F9E92C27D4DB1A00BD291B /* particle_app.cpp in Sources */,
 				0443E8E327C4CB7C0099E13A /* cascade_shadowmap_app.cpp in Sources */,
 				047BF17127AD51B2003F3599 /* pbr_app.cpp in Sources */,
 				047BF18E27AE6AF0003F3599 /* ibl_app.cpp in Sources */,
@@ -2861,7 +2867,7 @@
 				047BF12F27ACEFFA003F3599 /* scoped_autorelease_pool.mm in Sources */,
 				0443E8E627C4CBBC0099E13A /* omni_shadowmap_app.cpp in Sources */,
 				047BF1B927AFA525003F3599 /* framebuffer_picker_app.cpp in Sources */,
-				04F9E90627D3684E00BD291B /* atomic_compute.cpp in Sources */,
+				04F9E90627D3684E00BD291B /* atomic_compute_app.cpp in Sources */,
 				047BF18427AE1DF7003F3599 /* skybox_app.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

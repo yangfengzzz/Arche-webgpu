@@ -5,6 +5,7 @@
 //  property of any third parties.
 
 #include "particle_manager.h"
+#include "particle/wgsl/wgsl_particle_emission.h"
 #include <glog/logging.h>
 
 namespace vox {
@@ -18,7 +19,7 @@ ParticleManager &ParticleManager::getSingleton(void) {
 }
 //-----------------------------------------------------------------------
 ParticleManager::ParticleManager(wgpu::Device& device) {
-    _emitterPass = std::make_unique<ComputePass>(device, nullptr);
+    _emitterPass = std::make_unique<ComputePass>(device, std::make_unique<WGSLParticleEmission>());
     _simulationPass = std::make_unique<ComputePass>(device, nullptr);
 }
 

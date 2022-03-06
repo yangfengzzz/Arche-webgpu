@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "atomic_compute.h"
+#include "atomic_compute_app.h"
 #include "entity.h"
 #include "mesh/primitive_mesh.h"
 #include "mesh/mesh_renderer.h"
