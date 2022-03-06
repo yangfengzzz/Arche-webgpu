@@ -14,7 +14,7 @@ namespace vox {
 SkyboxSubpass::SkyboxSubpass(RenderContext* renderContext,
                              Scene* scene,
                              Camera* camera):
-RenderSubpass(renderContext, scene, camera),
+Subpass(renderContext, scene, camera),
 _vpMatrix(renderContext->device(), sizeof(Matrix4x4F),
           wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst){
     createCuboid();

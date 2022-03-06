@@ -4,8 +4,8 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef subpass_hpp
-#define subpass_hpp
+#ifndef render_subpass_hpp
+#define render_subpass_hpp
 
 #include "render_context.h"
 #include "scene.h"
@@ -15,14 +15,9 @@ class RenderPass;
 
 class Subpass {
 public:
-    enum Type {
-        Render,
-        Compute,
-    };
-    
-    virtual Type type() = 0;
-    
-    Subpass() = default;
+    Subpass(RenderContext* renderContext,
+            Scene* scene,
+            Camera* camera);
     
     Subpass(const Subpass &) = delete;
     
@@ -34,17 +29,29 @@ public:
     
     Subpass &operator=(Subpass &&) = delete;
     
+    void setRenderPass(RenderPass* pass);
+    
+    /**
+     * @brief Draw virtual function
+     * @param commandEncoder CommandEncoder to use to record draw commands
+     */
+    virtual void draw(wgpu::RenderPassEncoder& commandEncoder) = 0;
+    
     /**
      * @brief Prepares the shaders and shader variants for a subpass
      */
     virtual void prepare() = 0;
     
-    virtual void setRenderPass(RenderPass* pass);
-    
 protected:
+    static bool _compareFromNearToFar(const RenderElement &a, const RenderElement &b);
+    static bool _compareFromFarToNear(const RenderElement &a, const RenderElement &b);
+    
     RenderPass* _pass{nullptr};
+    
+    RenderContext* _renderContext{nullptr};
+    Scene* _scene{nullptr};
+    Camera* _camera{nullptr};
 };
 
 }
-
-#endif /* subpass_hpp */
+#endif /* render_subpass_hpp */

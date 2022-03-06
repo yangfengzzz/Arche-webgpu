@@ -4,21 +4,18 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "compute_subpass.h"
+#include "compute_pass.h"
 #include "render_pass.h"
 #include <glog/logging.h>
 
 namespace vox {
-Subpass::Type ComputeSubpass::type() {
-    return Subpass::Type::Compute;
+ComputePass::ComputePass(wgpu::Device& device, WGSLPtr&& source) :
+_source(std::move(source)),
+_resourceCache(device) {
+    _computePipelineDescriptor.compute.entryPoint = "main";
 }
 
-ComputeSubpass::ComputeSubpass(WGSLPtr&& source) :
-Subpass(),
-_source(std::move(source)) {
-}
-
-void ComputeSubpass::setDispatchCount(uint32_t workgroupCountX,
+void ComputePass::setDispatchCount(uint32_t workgroupCountX,
                                       uint32_t workgroupCountY,
                                       uint32_t workgroupCountZ) {
     _workgroupCountX = workgroupCountX;
@@ -26,7 +23,7 @@ void ComputeSubpass::setDispatchCount(uint32_t workgroupCountX,
     _workgroupCountZ = workgroupCountZ;
 }
 
-void ComputeSubpass::attachShaderData(ShaderData* data) {
+void ComputePass::attachShaderData(ShaderData* data) {
     auto iter = std::find(_data.begin(), _data.end(), data);
     if (iter == _data.end()) {
         _data.push_back(data);
@@ -35,18 +32,14 @@ void ComputeSubpass::attachShaderData(ShaderData* data) {
     }
 }
 
-void ComputeSubpass::detachShaderData(ShaderData* data) {
+void ComputePass::detachShaderData(ShaderData* data) {
     auto iter = std::find(_data.begin(), _data.end(), data);
     if (iter != _data.end()) {
         _data.erase(iter);
     }
 }
 
-void ComputeSubpass::prepare() {
-    _computePipelineDescriptor.compute.entryPoint = "main";
-}
-
-void ComputeSubpass::compute(wgpu::ComputePassEncoder &passEncoder) {
+void ComputePass::compute(wgpu::ComputePassEncoder &passEncoder) {
     auto compileMacros = ShaderMacroCollection();
     for (auto& shaderData : _data) {
         shaderData->mergeMacro(compileMacros, compileMacros);
@@ -56,7 +49,7 @@ void ComputeSubpass::compute(wgpu::ComputePassEncoder &passEncoder) {
     
     std::vector<wgpu::BindGroupLayout> bindGroupLayouts;
     for (auto& layoutDesc : _bindGroupLayoutDescriptorMap) {
-        wgpu::BindGroupLayout bindGroupLayout = _pass->resourceCache().requestBindGroupLayout(layoutDesc.second);
+        wgpu::BindGroupLayout bindGroupLayout = _resourceCache.requestBindGroupLayout(layoutDesc.second);
         _bindGroupEntries.clear();
         _bindGroupEntries.resize(layoutDesc.second.entryCount);
         for (uint32_t i = 0; i < layoutDesc.second.entryCount; i++) {
@@ -74,7 +67,7 @@ void ComputeSubpass::compute(wgpu::ComputePassEncoder &passEncoder) {
         _bindGroupDescriptor.layout = bindGroupLayout;
         _bindGroupDescriptor.entryCount = layoutDesc.second.entryCount;
         _bindGroupDescriptor.entries = _bindGroupEntries.data();
-        auto uniformBindGroup = _pass->resourceCache().requestBindGroup(_bindGroupDescriptor);
+        auto uniformBindGroup = _resourceCache.requestBindGroup(_bindGroupDescriptor);
         passEncoder.SetBindGroup(layoutDesc.first, uniformBindGroup);
         bindGroupLayouts.emplace_back(std::move(bindGroupLayout));
     }
@@ -82,21 +75,21 @@ void ComputeSubpass::compute(wgpu::ComputePassEncoder &passEncoder) {
     
     _pipelineLayoutDescriptor.bindGroupLayoutCount = static_cast<uint32_t>(bindGroupLayouts.size());
     _pipelineLayoutDescriptor.bindGroupLayouts = bindGroupLayouts.data();
-    _pipelineLayout = _pass->resourceCache().requestPipelineLayout(_pipelineLayoutDescriptor);
+    _pipelineLayout = _resourceCache.requestPipelineLayout(_pipelineLayoutDescriptor);
     _computePipelineDescriptor.layout = _pipelineLayout;
-    auto renderPipeline = _pass->resourceCache().requestPipeline(_computePipelineDescriptor);
+    auto renderPipeline = _resourceCache.requestPipeline(_computePipelineDescriptor);
     passEncoder.SetPipeline(renderPipeline);
     
     passEncoder.Dispatch(_workgroupCountX, _workgroupCountY, _workgroupCountZ);
 }
 
 //MARK: - Internal
-void ComputeSubpass::_flush() {
+void ComputePass::_flush() {
     _bindGroupLayoutEntryVecMap.clear();
     _bindGroupLayoutDescriptorMap.clear();
 }
 
-wgpu::ShaderModule &ComputeSubpass::_compileShader(const ShaderMacroCollection& macros) {
+wgpu::ShaderModule &ComputePass::_compileShader(const ShaderMacroCollection& macros) {
     auto result = _source->compile(macros);
     // std::cout<<result.first<<std::endl;
     
@@ -114,10 +107,10 @@ wgpu::ShaderModule &ComputeSubpass::_compileShader(const ShaderMacroCollection& 
         _bindGroupLayoutDescriptorMap[entryVec.first] = desc;
     }
     
-    return _pass->resourceCache().requestShader(result.first);
+    return _resourceCache.requestShader(result.first);
 }
 
-wgpu::BindGroupLayoutEntry ComputeSubpass::_findEntry(uint32_t group, uint32_t binding) {
+wgpu::BindGroupLayoutEntry ComputePass::_findEntry(uint32_t group, uint32_t binding) {
     wgpu::BindGroupLayoutEntry entry;
     entry.visibility = wgpu::ShaderStage::None;
     
@@ -138,7 +131,7 @@ wgpu::BindGroupLayoutEntry ComputeSubpass::_findEntry(uint32_t group, uint32_t b
     }
 }
 
-void ComputeSubpass::_bindingData(wgpu::BindGroupEntry& entry) {
+void ComputePass::_bindingData(wgpu::BindGroupEntry& entry) {
     for (auto shaderData : _data) {
         auto buffer = shaderData->getData(entry.binding);
         if (buffer) {
@@ -149,7 +142,7 @@ void ComputeSubpass::_bindingData(wgpu::BindGroupEntry& entry) {
     }
 }
 
-void ComputeSubpass::_bindingTexture(wgpu::BindGroupEntry& entry) {
+void ComputePass::_bindingTexture(wgpu::BindGroupEntry& entry) {
     for (auto shaderData : _data) {
         auto texture = shaderData->getTextureView(entry.binding);
         if (texture) {
@@ -159,7 +152,7 @@ void ComputeSubpass::_bindingTexture(wgpu::BindGroupEntry& entry) {
     }
 }
 
-void ComputeSubpass::_bindingSampler(wgpu::BindGroupEntry& entry) {
+void ComputePass::_bindingSampler(wgpu::BindGroupEntry& entry) {
     for (auto shaderData : _data) {
         auto sampler = shaderData->getSampler(entry.binding);
         if (sampler) {

@@ -7,27 +7,27 @@
 #ifndef compute_subpass_hpp
 #define compute_subpass_hpp
 
-#include "subpass.h"
+#include "resource_cache.h"
+#include "render_context.h"
+#include "scene.h"
 
 namespace vox {
-class ComputeSubpass : public Subpass {
+class ComputePass {
 public:
     using BindGroupLayoutEntryVecMap = std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>>;
     using BindGroupLayoutDescriptorMap = std::unordered_map<uint32_t, wgpu::BindGroupLayoutDescriptor>;
+        
+    ComputePass(wgpu::Device& device, WGSLPtr&& source);
     
-    Subpass::Type type() override final;
+    ComputePass(const ComputePass &) = delete;
     
-    ComputeSubpass(WGSLPtr&& source);
+    ComputePass(ComputePass &&) = delete;
     
-    ComputeSubpass(const ComputeSubpass &) = delete;
+    virtual ~ComputePass() = default;
     
-    ComputeSubpass(ComputeSubpass &&) = default;
+    ComputePass &operator=(const ComputePass &) = delete;
     
-    virtual ~ComputeSubpass() = default;
-    
-    ComputeSubpass &operator=(const ComputeSubpass &) = delete;
-    
-    ComputeSubpass &operator=(ComputeSubpass &&) = delete;
+    ComputePass &operator=(ComputePass &&) = delete;
     
 public:
     void setDispatchCount(uint32_t workgroupCountX,
@@ -37,11 +37,6 @@ public:
     void attachShaderData(ShaderData* data);
     
     void detachShaderData(ShaderData* data);
-    
-    /**
-     * @brief Prepares the shaders and shader variants for a subpass
-     */
-    virtual void prepare() override;
     
     /**
      * @brief Compute virtual function
@@ -78,6 +73,8 @@ protected:
     
 private:
     wgpu::BindGroupLayoutEntry _findEntry(uint32_t group, uint32_t binding);
+    
+    ResourceCache _resourceCache;
 };
 
 }

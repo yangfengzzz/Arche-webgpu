@@ -53,7 +53,7 @@ void ForwardApplication::update(float delta_time) {
     _scene->update(delta_time);
     
     wgpu::CommandEncoder commandEncoder = _device.CreateCommandEncoder();
-    _shadowManager->draw(commandEncoder);
+    updateGPUTask(commandEncoder);
     
     // Render the lighting and composition pass
     _colorAttachments.view = _renderContext->currentDrawableTexture();
@@ -64,6 +64,10 @@ void ForwardApplication::update(float delta_time) {
     wgpu::CommandBuffer commands = commandEncoder.Finish();
     _device.GetQueue().Submit(1, &commands);
     _renderContext->present();
+}
+
+void ForwardApplication::updateGPUTask(wgpu::CommandEncoder& commandEncoder) {
+    _shadowManager->draw(commandEncoder);
 }
 
 bool ForwardApplication::resize(uint32_t win_width, uint32_t win_height,

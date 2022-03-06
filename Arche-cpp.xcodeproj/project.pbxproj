@@ -465,8 +465,6 @@
 		049546E6279FA7D800783C84 /* null_binding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049546A2279F948700783C84 /* null_binding.cpp */; };
 		049546ED279FC74800783C84 /* render_pass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049546EB279FC74800783C84 /* render_pass.cpp */; };
 		049546EE279FC74800783C84 /* render_pass.h in Headers */ = {isa = PBXBuildFile; fileRef = 049546EC279FC74800783C84 /* render_pass.h */; };
-		049546F1279FC75900783C84 /* subpass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049546EF279FC75900783C84 /* subpass.cpp */; };
-		049546F2279FC75900783C84 /* subpass.h in Headers */ = {isa = PBXBuildFile; fileRef = 049546F0279FC75900783C84 /* subpass.h */; };
 		049546F6279FC92B00783C84 /* forward_subpass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049546F4279FC92B00783C84 /* forward_subpass.cpp */; };
 		049546F7279FC92B00783C84 /* forward_subpass.h in Headers */ = {isa = PBXBuildFile; fileRef = 049546F5279FC92B00783C84 /* forward_subpass.h */; };
 		049546FA279FC9B400783C84 /* graphics_application.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049546F8279FC9B400783C84 /* graphics_application.cpp */; };
@@ -519,10 +517,10 @@
 		0495476C27A2C6C500783C84 /* resource_cache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495476A27A2C6C500783C84 /* resource_cache.cpp */; };
 		0495476D27A2C6C500783C84 /* resource_cache.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495476B27A2C6C500783C84 /* resource_cache.h */; };
 		0495478627A403C700783C84 /* wgsl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495478527A403C700783C84 /* wgsl.cpp */; };
-		04F9E8FC27D2067400BD291B /* render_subpass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E8FA27D2067400BD291B /* render_subpass.cpp */; };
-		04F9E8FD27D2067400BD291B /* render_subpass.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E8FB27D2067400BD291B /* render_subpass.h */; };
-		04F9E90027D2095100BD291B /* compute_subpass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E8FE27D2095100BD291B /* compute_subpass.cpp */; };
-		04F9E90127D2095100BD291B /* compute_subpass.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E8FF27D2095100BD291B /* compute_subpass.h */; };
+		04F9E8FC27D2067400BD291B /* subpass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E8FA27D2067400BD291B /* subpass.cpp */; };
+		04F9E8FD27D2067400BD291B /* subpass.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E8FB27D2067400BD291B /* subpass.h */; };
+		04F9E90027D2095100BD291B /* compute_pass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E8FE27D2095100BD291B /* compute_pass.cpp */; };
+		04F9E90127D2095100BD291B /* compute_pass.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E8FF27D2095100BD291B /* compute_pass.h */; };
 		04F9E90527D2E0BC00BD291B /* wgsl_reflect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF01127A58872003F3599 /* wgsl_reflect.cpp */; };
 		04F9E90627D3684E00BD291B /* atomic_compute.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E90227D2157B00BD291B /* atomic_compute.cpp */; };
 /* End PBXBuildFile section */
@@ -1123,8 +1121,6 @@
 		049546E0279FA75E00783C84 /* BackendBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackendBinding.h; sourceTree = "<group>"; };
 		049546EB279FC74800783C84 /* render_pass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = render_pass.cpp; sourceTree = "<group>"; };
 		049546EC279FC74800783C84 /* render_pass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = render_pass.h; sourceTree = "<group>"; };
-		049546EF279FC75900783C84 /* subpass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = subpass.cpp; sourceTree = "<group>"; };
-		049546F0279FC75900783C84 /* subpass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = subpass.h; sourceTree = "<group>"; };
 		049546F4279FC92B00783C84 /* forward_subpass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = forward_subpass.cpp; sourceTree = "<group>"; };
 		049546F5279FC92B00783C84 /* forward_subpass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = forward_subpass.h; sourceTree = "<group>"; };
 		049546F8279FC9B400783C84 /* graphics_application.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = graphics_application.cpp; sourceTree = "<group>"; };
@@ -1177,10 +1173,10 @@
 		0495476A27A2C6C500783C84 /* resource_cache.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = resource_cache.cpp; sourceTree = "<group>"; };
 		0495476B27A2C6C500783C84 /* resource_cache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = resource_cache.h; sourceTree = "<group>"; };
 		0495478527A403C700783C84 /* wgsl.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl.cpp; sourceTree = "<group>"; };
-		04F9E8FA27D2067400BD291B /* render_subpass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = render_subpass.cpp; sourceTree = "<group>"; };
-		04F9E8FB27D2067400BD291B /* render_subpass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = render_subpass.h; sourceTree = "<group>"; };
-		04F9E8FE27D2095100BD291B /* compute_subpass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = compute_subpass.cpp; sourceTree = "<group>"; };
-		04F9E8FF27D2095100BD291B /* compute_subpass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = compute_subpass.h; sourceTree = "<group>"; };
+		04F9E8FA27D2067400BD291B /* subpass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = subpass.cpp; sourceTree = "<group>"; };
+		04F9E8FB27D2067400BD291B /* subpass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = subpass.h; sourceTree = "<group>"; };
+		04F9E8FE27D2095100BD291B /* compute_pass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = compute_pass.cpp; sourceTree = "<group>"; };
+		04F9E8FF27D2095100BD291B /* compute_pass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = compute_pass.h; sourceTree = "<group>"; };
 		04F9E90227D2157B00BD291B /* atomic_compute.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = atomic_compute.cpp; sourceTree = "<group>"; };
 		04F9E90327D2157B00BD291B /* atomic_compute.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = atomic_compute.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1942,14 +1938,12 @@
 			children = (
 				0495476B27A2C6C500783C84 /* resource_cache.h */,
 				0495476A27A2C6C500783C84 /* resource_cache.cpp */,
+				04F9E8FF27D2095100BD291B /* compute_pass.h */,
+				04F9E8FE27D2095100BD291B /* compute_pass.cpp */,
 				049546EC279FC74800783C84 /* render_pass.h */,
 				049546EB279FC74800783C84 /* render_pass.cpp */,
-				049546F0279FC75900783C84 /* subpass.h */,
-				049546EF279FC75900783C84 /* subpass.cpp */,
-				04F9E8FF27D2095100BD291B /* compute_subpass.h */,
-				04F9E8FE27D2095100BD291B /* compute_subpass.cpp */,
-				04F9E8FB27D2067400BD291B /* render_subpass.h */,
-				04F9E8FA27D2067400BD291B /* render_subpass.cpp */,
+				04F9E8FB27D2067400BD291B /* subpass.h */,
+				04F9E8FA27D2067400BD291B /* subpass.cpp */,
 				049546F3279FC76500783C84 /* subpasses */,
 				04954690279F8D5E00783C84 /* render_element.h */,
 				0495468F279F8D5E00783C84 /* render_element.cpp */,
@@ -2266,7 +2260,7 @@
 				04954647279F8A7D00783C84 /* material.h in Headers */,
 				0443E8FB27C5C2ED0099E13A /* wgsl_shadow_frag.h in Headers */,
 				0495464D279F8A8700783C84 /* blend_mode.h in Headers */,
-				04F9E8FD27D2067400BD291B /* render_subpass.h in Headers */,
+				04F9E8FD27D2067400BD291B /* subpass.h in Headers */,
 				047BF12127ACEBC7003F3599 /* collider_shape.h in Headers */,
 				047BF08827ABB8F7003F3599 /* wgsl_worldpos_share.h in Headers */,
 				049546F7279FC92B00783C84 /* forward_subpass.h in Headers */,
@@ -2307,7 +2301,7 @@
 				047BF00C27A56500003F3599 /* wgsl_cache.h in Headers */,
 				04954688279F8CD600783C84 /* camera.h in Headers */,
 				0495473127A24A1300783C84 /* pbr_base_material.h in Headers */,
-				04F9E90127D2095100BD291B /* compute_subpass.h in Headers */,
+				04F9E90127D2095100BD291B /* compute_pass.h in Headers */,
 				047BF16E27AD45A6003F3599 /* wgsl_pbr.h in Headers */,
 				047BF0EC27ACEBAE003F3599 /* hit_result.h in Headers */,
 				0443E8EA27C4CE210099E13A /* texture_utils.h in Headers */,
@@ -2366,7 +2360,6 @@
 				04954685279F8CD600783C84 /* scene.h in Headers */,
 				047BF1AC27AF9905003F3599 /* gui.h in Headers */,
 				0443E8FF27C5C7C40099E13A /* wgsl_shadow_common.h in Headers */,
-				049546F2279FC75900783C84 /* subpass.h in Headers */,
 				047BEFD727A4BFD9003F3599 /* wgsl_common_vert.h in Headers */,
 				0495474327A2640900783C84 /* index_buffer_binding.h in Headers */,
 				047BF19327AE6F74003F3599 /* scene_animator.h in Headers */,
@@ -2672,7 +2665,7 @@
 				047BF07A27A6819C003F3599 /* astc_weight_quant_xfer_tables.cpp in Sources */,
 				0495473527A24BE000783C84 /* pbr_material.cpp in Sources */,
 				04954640279F89E500783C84 /* shader.cpp in Sources */,
-				04F9E8FC27D2067400BD291B /* render_subpass.cpp in Sources */,
+				04F9E8FC27D2067400BD291B /* subpass.cpp in Sources */,
 				047BF06727A68190003F3599 /* astc_toplevel.cpp in Sources */,
 				047BF11327ACEBBF003F3599 /* capsule_character_controller.cpp in Sources */,
 				047BF0C127AC0D19003F3599 /* point_light.cpp in Sources */,
@@ -2712,7 +2705,6 @@
 				0495474A27A2669600783C84 /* mesh.cpp in Sources */,
 				0495472427A23CE100783C84 /* sampled_texture.cpp in Sources */,
 				047BF07927A6819C003F3599 /* astc_percentile_tables.cpp in Sources */,
-				049546F1279FC75900783C84 /* subpass.cpp in Sources */,
 				04128461279ED4B10071BD86 /* imgui_draw.cpp in Sources */,
 				047BEFDA27A4DB63003F3599 /* wgsl_encoder.cpp in Sources */,
 				047BEFD627A4BFD9003F3599 /* wgsl_common_vert.cpp in Sources */,
@@ -2750,7 +2742,7 @@
 				04954683279F8CD600783C84 /* update_flag.cpp in Sources */,
 				047BF0CD27AC0D59003F3599 /* direct_light.cpp in Sources */,
 				047BF0FE27ACEBB7003F3599 /* joint.cpp in Sources */,
-				04F9E90027D2095100BD291B /* compute_subpass.cpp in Sources */,
+				04F9E90027D2095100BD291B /* compute_pass.cpp in Sources */,
 				04954709279FCD3C00783C84 /* orbit_control.cpp in Sources */,
 				0495473927A2564500783C84 /* pbr_specular_material.cpp in Sources */,
 				047BF07527A6819C003F3599 /* astc_compute_variance.cpp in Sources */,

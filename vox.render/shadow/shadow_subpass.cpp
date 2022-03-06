@@ -16,7 +16,7 @@ namespace vox {
 ShadowSubpass::ShadowSubpass(RenderContext* renderContext,
                              Scene* scene,
                              Camera* camera):
-RenderSubpass(renderContext, scene, camera) {
+Subpass(renderContext, scene, camera) {
     _material = std::make_shared<ShadowMaterial>(scene->device());
 }
 

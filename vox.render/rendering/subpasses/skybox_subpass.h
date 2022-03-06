@@ -7,11 +7,11 @@
 #ifndef skybox_subpass_hpp
 #define skybox_subpass_hpp
 
-#include "rendering/render_subpass.h"
+#include "rendering/subpass.h"
 #include "texture/sampled_texturecube.h"
 
 namespace vox {
-class SkyboxSubpass: public RenderSubpass {
+class SkyboxSubpass: public Subpass {
 public:
     SkyboxSubpass(RenderContext* renderContext,
                   Scene* scene,

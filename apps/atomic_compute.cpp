@@ -14,7 +14,6 @@
 #include "controls/orbit_control.h"
 #include "image/stb.h"
 #include "shaderlib/wgsl_cache.h"
-#include "rendering/compute_subpass.h"
 #include "shaderlib/wgsl_unlit.h"
 
 namespace vox {
@@ -100,17 +99,7 @@ private:
 
 } // namespace
 
-bool AtomicComputeApp::prepare(Engine &engine) {
-    ForwardApplication::prepare(engine);
-    
-    auto subpass = std::make_unique<ComputeSubpass>(std::make_unique<WGSLAtomicCompute>());
-    subpass->setDispatchCount(1, 1, 1);
-    subpass->attachShaderData(&_material->shaderData);
-    _renderPass->addSubpass(std::move(subpass));
-    
-    return true;
-}
-
+//MARK: - AtomicComputeApp
 void AtomicComputeApp::loadScene(uint32_t width, uint32_t height) {
     Shader::create("atomicRender", std::make_unique<WGSLUnlitVertex>(), std::make_unique<WGSLAtomicFragment>());
     
@@ -135,4 +124,23 @@ void AtomicComputeApp::loadScene(uint32_t width, uint32_t height) {
     _material = std::make_shared<AtomicMaterial>(_device);
     renderer->setMaterial(_material);
 }
+
+bool AtomicComputeApp::prepare(Engine &engine) {
+    ForwardApplication::prepare(engine);
+    
+    _pass = std::make_unique<ComputePass>(_device, std::make_unique<WGSLAtomicCompute>());
+    _pass->setDispatchCount(1, 1, 1);
+    _pass->attachShaderData(&_material->shaderData);
+    
+    return true;
+}
+
+void AtomicComputeApp::updateGPUTask(wgpu::CommandEncoder& commandEncoder) {
+    ForwardApplication::updateGPUTask(commandEncoder);
+    
+    auto encoder = commandEncoder.BeginComputePass();
+    _pass->compute(encoder);
+    encoder.End();
+}
+
 }
