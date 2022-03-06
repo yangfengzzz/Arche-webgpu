@@ -14,6 +14,16 @@
 namespace vox {
 class ParticleManager : public Singleton<ParticleManager> {
 public:
+    static constexpr uint32_t PARTICLES_KERNEL_GROUP_WIDTH = 512;
+    
+    static constexpr uint32_t threadsGroupCount(uint32_t nthreads) {
+        return (nthreads + PARTICLES_KERNEL_GROUP_WIDTH-1u) / PARTICLES_KERNEL_GROUP_WIDTH;
+    }
+
+    static constexpr uint32_t floorParticleCount(uint32_t nparticles) {
+      return PARTICLES_KERNEL_GROUP_WIDTH * (nparticles / PARTICLES_KERNEL_GROUP_WIDTH);
+    }
+    
     static ParticleManager &getSingleton(void);
     
     static ParticleManager *getSingletonPtr(void);

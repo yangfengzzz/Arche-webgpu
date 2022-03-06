@@ -17,9 +17,9 @@ namespace vox {
 class Particle : public Script {
 public:
     // [USER DEFINED]
-    static float constexpr kDefaultSimulationVolumeSize = 32.0f;
-    static uint32_t constexpr kMaxParticleCount = (1u << 15u);
-    static uint32_t constexpr kBatchEmitCount = std::max(256u, (kMaxParticleCount >> 4u));
+    static constexpr float kDefaultSimulationVolumeSize = 32.0f;
+    static constexpr uint32_t kMaxParticleCount = (1u << 15u);
+    static constexpr uint32_t kBatchEmitCount = std::max(256u, (kMaxParticleCount >> 4u));
     
     enum class EmitterType : uint32_t {
         POINT,

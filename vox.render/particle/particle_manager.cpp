@@ -70,7 +70,8 @@ void ParticleManager::_emission(const uint32_t count, Particle* particle,
     particle->setEmitCount(count);
     
     _emitterPass->attachShaderData(&particle->shaderData);
-    _emitterPass->setDispatchCount(1);
+    auto nGroups = threadsGroupCount(count);
+    _emitterPass->setDispatchCount(nGroups);
     _emitterPass->compute(passEncoder);
     _emitterPass->detachShaderData(&particle->shaderData);
 }
@@ -82,9 +83,10 @@ void ParticleManager::_simulation(const uint32_t count, Particle* particle,
     }
     
     _simulationPass->attachShaderData(&particle->shaderData);
-    _simulationPass->setDispatchCount(1);
+    auto nGroups = threadsGroupCount(particle->numAliveParticles() + count);
+    _simulationPass->setDispatchCount(nGroups);
     _simulationPass->compute(passEncoder);
-    _simulationPass->detachShaderData(&particle->shaderData);    
+    _simulationPass->detachShaderData(&particle->shaderData);
 }
 
 }

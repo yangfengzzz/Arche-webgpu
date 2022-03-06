@@ -47,10 +47,11 @@ void Particle::_allocBuffer() {
     auto& device = entity()->scene()->device();
     
     /* Assert than the number of particles will be a factor of threadGroupWidth */
-    fprintf(stderr, "[ %u particles, %u per batch ]\n", kMaxParticleCount , kBatchEmitCount);
+    uint32_t numParticles = ParticleManager::floorParticleCount(kMaxParticleCount); //
+    fprintf(stderr, "[ %u particles, %u per batch ]\n", numParticles , kBatchEmitCount);
     
     /* Random value buffer */
-    uint32_t const num_randvalues = 3u * kMaxParticleCount;
+    uint32_t const num_randvalues = 3u * numParticles;
     _randomVec.resize(num_randvalues);
     shaderData.setData(_randomBufferProp, _randomVec);
         
@@ -65,9 +66,9 @@ void Particle::_allocBuffer() {
     });
     
     /* Append Consume */
-    _appendConsumeBuffer[0] = std::make_unique<Buffer>(device, sizeof(TParticle) * kMaxParticleCount,
+    _appendConsumeBuffer[0] = std::make_unique<Buffer>(device, sizeof(TParticle) * numParticles,
                                                        wgpu::BufferUsage::Storage);
-    _appendConsumeBuffer[1] = std::make_unique<Buffer>(device, sizeof(TParticle) * kMaxParticleCount,
+    _appendConsumeBuffer[1] = std::make_unique<Buffer>(device, sizeof(TParticle) * numParticles,
                                                        wgpu::BufferUsage::Storage);
     shaderData.setBufferFunctor(_readConsumeBufferProp, [this]()->Buffer {
         return *_appendConsumeBuffer[_read];
