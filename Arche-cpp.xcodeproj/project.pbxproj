@@ -523,6 +523,10 @@
 		04F9E90127D2095100BD291B /* compute_pass.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E8FF27D2095100BD291B /* compute_pass.h */; };
 		04F9E90527D2E0BC00BD291B /* wgsl_reflect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF01127A58872003F3599 /* wgsl_reflect.cpp */; };
 		04F9E90627D3684E00BD291B /* atomic_compute.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E90227D2157B00BD291B /* atomic_compute.cpp */; };
+		04F9E90A27D4657A00BD291B /* particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E90827D4657A00BD291B /* particle.cpp */; };
+		04F9E90B27D4657A00BD291B /* particle.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E90927D4657A00BD291B /* particle.h */; };
+		04F9E90E27D465A800BD291B /* particle_material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E90C27D465A800BD291B /* particle_material.cpp */; };
+		04F9E90F27D465A800BD291B /* particle_material.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E90D27D465A800BD291B /* particle_material.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1179,6 +1183,10 @@
 		04F9E8FF27D2095100BD291B /* compute_pass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = compute_pass.h; sourceTree = "<group>"; };
 		04F9E90227D2157B00BD291B /* atomic_compute.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = atomic_compute.cpp; sourceTree = "<group>"; };
 		04F9E90327D2157B00BD291B /* atomic_compute.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = atomic_compute.h; sourceTree = "<group>"; };
+		04F9E90827D4657A00BD291B /* particle.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = particle.cpp; sourceTree = "<group>"; };
+		04F9E90927D4657A00BD291B /* particle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = particle.h; sourceTree = "<group>"; };
+		04F9E90C27D465A800BD291B /* particle_material.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = particle_material.cpp; sourceTree = "<group>"; };
+		04F9E90D27D465A800BD291B /* particle_material.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = particle_material.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1417,6 +1425,7 @@
 				0443E8D127C4BB350099E13A /* shadow */,
 				0495473B27A25A7D00783C84 /* graphics */,
 				0495474C27A2712F00783C84 /* mesh */,
+				04F9E90727D4655F00BD291B /* particle */,
 				0495465F279F8CBF00783C84 /* background.h */,
 				04954662279F8CD500783C84 /* layer.h */,
 				04954668279F8CD500783C84 /* update_flag.h */,
@@ -2108,6 +2117,17 @@
 			path = example;
 			sourceTree = "<group>";
 		};
+		04F9E90727D4655F00BD291B /* particle */ = {
+			isa = PBXGroup;
+			children = (
+				04F9E90927D4657A00BD291B /* particle.h */,
+				04F9E90827D4657A00BD291B /* particle.cpp */,
+				04F9E90D27D465A800BD291B /* particle_material.h */,
+				04F9E90C27D465A800BD291B /* particle_material.cpp */,
+			);
+			path = particle;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -2240,6 +2260,7 @@
 				047BF0FD27ACEBB7003F3599 /* fixed_joint.h in Headers */,
 				047BF18127AE1A40003F3599 /* wgsl_skybox.h in Headers */,
 				0495463F279F89E500783C84 /* shader_data_group.h in Headers */,
+				04F9E90B27D4657A00BD291B /* particle.h in Headers */,
 				047BF16A27AD4339003F3599 /* wgsl_pbr_frag.h in Headers */,
 				047BF17527AD6E33003F3599 /* sampled_texturecube.h in Headers */,
 				047BF09027ABBAF0003F3599 /* wgsl_color_vert.h in Headers */,
@@ -2364,6 +2385,7 @@
 				0495474327A2640900783C84 /* index_buffer_binding.h in Headers */,
 				047BF19327AE6F74003F3599 /* scene_animator.h in Headers */,
 				04128460279ED4B10071BD86 /* imgui_internal.h in Headers */,
+				04F9E90F27D465A800BD291B /* particle_material.h in Headers */,
 				047BF17927AE0623003F3599 /* sampled_texture2d_view.h in Headers */,
 				0495468B279F8CD600783C84 /* std_helpers.h in Headers */,
 				047BF14927ACF275003F3599 /* animator.h in Headers */,
@@ -2582,6 +2604,7 @@
 				0495474F27A2714200783C84 /* buffer_mesh.cpp in Sources */,
 				047BF0E827ACEBAE003F3599 /* physics.cpp in Sources */,
 				04954707279FCD3C00783C84 /* free_control.cpp in Sources */,
+				04F9E90A27D4657A00BD291B /* particle.cpp in Sources */,
 				04954691279F8D5E00783C84 /* render_element.cpp in Sources */,
 				04128442279ED3A60071BD86 /* window.cpp in Sources */,
 				0443E8E927C4CE210099E13A /* texture_utils.cpp in Sources */,
@@ -2738,6 +2761,7 @@
 				0443E8FE27C5C7C40099E13A /* wgsl_shadow_common.cpp in Sources */,
 				047BF10027ACEBB7003F3599 /* spherical_joint.cpp in Sources */,
 				0495475327A2750900783C84 /* model_mesh.cpp in Sources */,
+				04F9E90E27D465A800BD291B /* particle_material.cpp in Sources */,
 				04128459279ED4B10071BD86 /* imgui_widgets.cpp in Sources */,
 				04954683279F8CD600783C84 /* update_flag.cpp in Sources */,
 				047BF0CD27AC0D59003F3599 /* direct_light.cpp in Sources */,
