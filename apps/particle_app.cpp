@@ -15,6 +15,8 @@
 
 namespace vox {
 void ParticleApp::loadScene(uint32_t width, uint32_t height) {
+    _manager = std::make_unique<ParticleManager>(_device);
+
     _scene->background.solidColor = Color(0, 0, 0, 1);
     auto rootEntity = _scene->createRootEntity();
     
@@ -64,14 +66,6 @@ void ParticleApp::loadScene(uint32_t width, uint32_t height) {
     auto material = std::make_shared<BlinnPhongMaterial>(_device);
     material->setBaseColor(Color(0.4, 0.6, 0.6));
     renderer->setMaterial(material);
-}
-
-bool ParticleApp::prepare(Engine &engine) {
-    ForwardApplication::prepare(engine);
-    
-    _manager = std::make_unique<ParticleManager>(_device);
-    
-    return true;
 }
 
 void ParticleApp::updateGPUTask(wgpu::CommandEncoder& commandEncoder) {

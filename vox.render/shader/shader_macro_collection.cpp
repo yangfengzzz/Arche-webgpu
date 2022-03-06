@@ -105,6 +105,7 @@ std::vector<size_t> ShaderMacroCollection::_internalMacroHashValue = {
     std::hash<std::string>{}("NEED_PARTICLE_VECTOR_FIELD"),
     std::hash<std::string>{}("NEED_PARTICLE_CURL_NOISE"),
     std::hash<std::string>{}("NEED_PARTICLE_VELOCITY_CONTROL"),
+    std::hash<std::string>{}("PARTICLE_COUNT"),
     
     // Shadow
     std::hash<std::string>{}("SHADOW_MAP_COUNT"),

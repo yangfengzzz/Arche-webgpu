@@ -48,6 +48,7 @@ void Particle::_allocBuffer() {
     
     /* Assert than the number of particles will be a factor of threadGroupWidth */
     uint32_t numParticles = ParticleManager::floorParticleCount(kMaxParticleCount); //
+    shaderData.enableMacro(PARTICLE_COUNT, numParticles);
     fprintf(stderr, "[ %u particles, %u per batch ]\n", numParticles , kBatchEmitCount);
     
     /* Random value buffer */
