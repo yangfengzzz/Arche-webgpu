@@ -142,5 +142,7 @@ enum class BuiltInType {
 };
 std::string toString(BuiltInType type);
 
+std::string toType(BuiltInType type);
+
 }
 #endif /* wgsl_common_h */

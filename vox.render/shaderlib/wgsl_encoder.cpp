@@ -264,7 +264,8 @@ void WGSLEncoder::addInoutType(const std::string& structName, BuiltInType builti
 }
 
 void WGSLEncoder::addEntry(const std::initializer_list<std::pair<std::string, std::string>>& inParam,
-                           const std::pair<std::string, std::string>& outType, std::function<void(std::string&)> code) {
+                           const std::pair<std::string, std::string>& outType, std::function<void(std::string&)> code,
+                           const std::initializer_list<std::pair<std::string, BuiltInType>>& builtIn) {
     if (_currentStage == wgpu::ShaderStage::Vertex) {
         _entryBlock += "@stage(vertex)\n";
     } else if (_currentStage == wgpu::ShaderStage::Fragment) {
@@ -279,6 +280,9 @@ void WGSLEncoder::addEntry(const std::initializer_list<std::pair<std::string, st
         _entryBlock += ": ";
         _entryBlock += param.second;
         _entryBlock += ", ";
+    }
+    for (const auto& vars : builtIn) {
+        _entryBlock += fmt::format("@builtin({}) {}: {},\n", toString(vars.second), vars.first, toType(vars.second));
     }
     _entryBlock += ") -> ";
     _entryBlock += outType.second;
@@ -296,7 +300,8 @@ void WGSLEncoder::addEntry(const std::initializer_list<std::pair<std::string, st
     _needFlush = true;
 }
 
-void WGSLEncoder::addEntry(const std::array<uint32_t, 3>& workgroupSize, std::function<void(std::string&)> code) {
+void WGSLEncoder::addEntry(const std::array<uint32_t, 3>& workgroupSize, std::function<void(std::string&)> code,
+                           const std::initializer_list<std::pair<std::string, BuiltInType>>& builtIn) {
     if (_currentStage == wgpu::ShaderStage::Compute) {
         _entryBlock += fmt::format("@stage(compute) @workgroup_size({}, {}, {})\n",
                                    workgroupSize[0], workgroupSize[1], workgroupSize[2]);
@@ -304,7 +309,11 @@ void WGSLEncoder::addEntry(const std::array<uint32_t, 3>& workgroupSize, std::fu
         assert(false && "Use Begin at first");
     }
     
-    _entryBlock += "fn main() {\n";
+    _entryBlock += "fn main(";
+    for (const auto& vars : builtIn) {
+        _entryBlock += fmt::format("@builtin({}) {}: {},\n", toString(vars.second), vars.first, toType(vars.second));
+    }
+    _entryBlock += ") {\n";
     code(_entryBlock);
     _entryBlock += "}\n";
     

@@ -537,6 +537,8 @@
 		04F9E92127D4AE0D00BD291B /* wgsl_particle_sdf.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E91F27D4AE0D00BD291B /* wgsl_particle_sdf.h */; };
 		04F9E92427D4AE3E00BD291B /* wgsl_particle_noise.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E92227D4AE3E00BD291B /* wgsl_particle_noise.cpp */; };
 		04F9E92527D4AE3E00BD291B /* wgsl_particle_noise.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E92327D4AE3E00BD291B /* wgsl_particle_noise.h */; };
+		04F9E92827D4B56100BD291B /* wgsl_particle_emission.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E92627D4B56100BD291B /* wgsl_particle_emission.cpp */; };
+		04F9E92927D4B56100BD291B /* wgsl_particle_emission.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E92727D4B56100BD291B /* wgsl_particle_emission.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1208,6 +1210,8 @@
 		04F9E91F27D4AE0D00BD291B /* wgsl_particle_sdf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_particle_sdf.h; sourceTree = "<group>"; };
 		04F9E92227D4AE3E00BD291B /* wgsl_particle_noise.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_particle_noise.cpp; sourceTree = "<group>"; };
 		04F9E92327D4AE3E00BD291B /* wgsl_particle_noise.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_particle_noise.h; sourceTree = "<group>"; };
+		04F9E92627D4B56100BD291B /* wgsl_particle_emission.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_particle_emission.cpp; sourceTree = "<group>"; };
+		04F9E92727D4B56100BD291B /* wgsl_particle_emission.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_particle_emission.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2164,6 +2168,8 @@
 				04F9E91E27D4AE0D00BD291B /* wgsl_particle_sdf.cpp */,
 				04F9E92327D4AE3E00BD291B /* wgsl_particle_noise.h */,
 				04F9E92227D4AE3E00BD291B /* wgsl_particle_noise.cpp */,
+				04F9E92727D4B56100BD291B /* wgsl_particle_emission.h */,
+				04F9E92627D4B56100BD291B /* wgsl_particle_emission.cpp */,
 			);
 			path = wgsl;
 			sourceTree = "<group>";
@@ -2364,6 +2370,7 @@
 				047BF00C27A56500003F3599 /* wgsl_cache.h in Headers */,
 				04954688279F8CD600783C84 /* camera.h in Headers */,
 				0495473127A24A1300783C84 /* pbr_base_material.h in Headers */,
+				04F9E92927D4B56100BD291B /* wgsl_particle_emission.h in Headers */,
 				04F9E90127D2095100BD291B /* compute_pass.h in Headers */,
 				047BF16E27AD45A6003F3599 /* wgsl_pbr.h in Headers */,
 				047BF0EC27ACEBAE003F3599 /* hit_result.h in Headers */,
@@ -2807,6 +2814,7 @@
 				047BF0D227ACB183003F3599 /* light_manager.cpp in Sources */,
 				047BF09327ABBBA3003F3599 /* wgsl_normal_vert.cpp in Sources */,
 				047BF12227ACEBC7003F3599 /* capsule_collider_shape.cpp in Sources */,
+				04F9E92827D4B56100BD291B /* wgsl_particle_emission.cpp in Sources */,
 				047BF06A27A6819C003F3599 /* astc_pick_best_endpoint_format.cpp in Sources */,
 				0443E8FE27C5C7C40099E13A /* wgsl_shadow_common.cpp in Sources */,
 				047BF10027ACEBB7003F3599 /* spherical_joint.cpp in Sources */,

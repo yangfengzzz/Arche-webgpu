@@ -553,4 +553,47 @@ std::string toString(BuiltInType type) {
     }
 }
 
+std::string toType(BuiltInType type) {
+    switch (type) {
+        case BuiltInType::VertexIndex:
+            return "u32";
+            break;
+        case BuiltInType::InstanceIndex:
+            return "u32";
+            break;
+        case BuiltInType::Position:
+            return "vec4<f32>";
+            break;
+        case BuiltInType::FrontFacing:
+            return "bool";
+            break;
+        case BuiltInType::FragDepth:
+            return "f32";
+            break;
+        case BuiltInType::LocalInvocationID:
+            return "vec3<u32>";
+            break;
+        case BuiltInType::LocalInvocationIndex:
+            return "u32";
+            break;
+        case BuiltInType::GlobalInvocationID:
+            return "vec3<u32>";
+            break;
+        case BuiltInType::WorkgroupID:
+            return "vec3<u32>";
+            break;
+        case BuiltInType::NumWorkgroups:
+            return "vec3<u32>";
+            break;
+        case BuiltInType::SampleIndex:
+            return "u32";
+            break;
+        case BuiltInType::SampleMask:
+            return "u32";
+            break;
+        default:
+            break;
+    }
+}
+
 }
