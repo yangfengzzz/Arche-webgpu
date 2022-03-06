@@ -19,7 +19,10 @@ enum class ShaderDataGroup {
     /** Renderer group. */
     Renderer,
     /** material group. */
-    Material
+    Material,
+    
+    /** compute group. */
+    Compute
 };
 
 }

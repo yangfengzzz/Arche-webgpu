@@ -36,6 +36,15 @@ public:
         kNumSimulationVolume
     };
     
+    struct TParticle {
+        Vector4<float> position;
+        Vector4<float> velocity;
+        float start_age;
+        float age;
+        float padding0;
+        uint32_t id;
+    };
+    
     struct ParticleEmitterData {
         Vector3F emitterPosition;
         uint32_t emitCount;
@@ -163,16 +172,16 @@ private:
     float _minValue = 0.0;
     float _maxValue = 1.0;
     std::vector<float> _randomVec{};
-    Buffer _randomBuffer;
+    std::unique_ptr<Buffer> _randomBuffer{nullptr};
     ShaderProperty _randomBufferProp;
     
     uint32_t _read = 0;
     uint32_t _write = 1;
-    Buffer _atomicBuffer[2];
+    std::unique_ptr<Buffer> _atomicBuffer[2] = {nullptr, nullptr};
     ShaderProperty _readAtomicBufferProp;
     ShaderProperty _writeAtomicBufferProp;
     
-    Buffer _appendConsumeBuffer[2];
+    std::unique_ptr<Buffer> _appendConsumeBuffer[2] = {nullptr, nullptr};
     ShaderProperty _readConsumeBufferProp;
     ShaderProperty _writeConsumeBufferProp;
 
@@ -186,8 +195,8 @@ private:
     ShaderProperty _vectorFieldTextureProp;
     ShaderProperty _vectorFieldSamplerProp;
     
-    Buffer _dpBuffer;
-    Buffer _sortIndicesBuffer;
+    std::unique_ptr<Buffer> _dpBuffer{nullptr};
+    std::unique_ptr<Buffer> _sortIndicesBuffer{nullptr};
 };
 }
 
