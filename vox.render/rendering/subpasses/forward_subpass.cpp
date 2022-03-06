@@ -141,8 +141,10 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
         auto indexBufferBinding = mesh->indexBufferBinding();
         if (indexBufferBinding) {
             passEncoder.SetIndexBuffer(mesh->indexBufferBinding()->buffer(), mesh->indexBufferBinding()->format());
+            passEncoder.DrawIndexed(subMesh->count(), 1, subMesh->start(), 0, 0);
+        } else {
+            passEncoder.Draw(subMesh->count());
         }
-        passEncoder.DrawIndexed(subMesh->count(), 1, subMesh->start(), 0, 0);
     }
 }
 

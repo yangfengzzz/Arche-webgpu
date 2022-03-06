@@ -15,6 +15,18 @@ _resourceCache(device) {
     _computePipelineDescriptor.compute.entryPoint = "main";
 }
 
+uint32_t ComputePass::workgroupCountX() const {
+    return _workgroupCountX;
+}
+
+uint32_t ComputePass::workgroupCountY() const {
+    return _workgroupCountY;
+}
+
+uint32_t ComputePass::workgroupCountZ() const {
+    return _workgroupCountZ;
+}
+
 void ComputePass::setDispatchCount(uint32_t workgroupCountX,
                                       uint32_t workgroupCountY,
                                       uint32_t workgroupCountZ) {

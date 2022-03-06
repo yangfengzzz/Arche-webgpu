@@ -29,6 +29,12 @@ public:
     void update(wgpu::ComputePassEncoder passEncoder);
     
 private:
+    void _emission(const uint32_t count,
+                   Particle* particle, wgpu::ComputePassEncoder &passEncoder);
+    
+    void _simulation(const uint32_t count,
+                     Particle* particle, wgpu::ComputePassEncoder &passEncoder);
+    
     std::vector<Particle*> _particles{};
     
     std::unique_ptr<ComputePass> _emitterPass{nullptr};

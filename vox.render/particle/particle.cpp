@@ -57,12 +57,24 @@ void Particle::_allocBuffer() {
     /* Atomic */
     _atomicBuffer[0] = std::make_unique<Buffer>(device, sizeof(uint32_t), wgpu::BufferUsage::Storage | wgpu::BufferUsage::MapRead);
     _atomicBuffer[1] = std::make_unique<Buffer>(device, sizeof(uint32_t), wgpu::BufferUsage::Storage | wgpu::BufferUsage::MapRead);
+    shaderData.setBufferFunctor(_readAtomicBufferProp, [this]()->Buffer {
+        return *_atomicBuffer[_read];
+    });
+    shaderData.setBufferFunctor(_writeAtomicBufferProp, [this]()->Buffer {
+        return *_atomicBuffer[_write];
+    });
     
     /* Append Consume */
     _appendConsumeBuffer[0] = std::make_unique<Buffer>(device, sizeof(TParticle) * kMaxParticleCount,
                                                        wgpu::BufferUsage::Storage);
     _appendConsumeBuffer[1] = std::make_unique<Buffer>(device, sizeof(TParticle) * kMaxParticleCount,
                                                        wgpu::BufferUsage::Storage);
+    shaderData.setBufferFunctor(_readConsumeBufferProp, [this]()->Buffer {
+        return *_appendConsumeBuffer[_read];
+    });
+    shaderData.setBufferFunctor(_writeConsumeBufferProp, [this]()->Buffer {
+        return *_appendConsumeBuffer[_write];
+    });
     
     /* Sort buffers */
     // The parallel nature of the sorting algorithm needs power of two sized buffer.

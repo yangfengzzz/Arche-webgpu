@@ -30,6 +30,12 @@ public:
     ComputePass &operator=(ComputePass &&) = delete;
     
 public:
+    uint32_t workgroupCountX() const;
+
+    uint32_t workgroupCountY() const;
+
+    uint32_t workgroupCountZ() const;
+    
     void setDispatchCount(uint32_t workgroupCountX,
                           uint32_t workgroupCountY = 1,
                           uint32_t workgroupCountZ = 1);
