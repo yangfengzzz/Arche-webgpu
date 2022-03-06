@@ -529,6 +529,8 @@
 		04F9E90F27D465A800BD291B /* particle_material.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E90D27D465A800BD291B /* particle_material.h */; };
 		04F9E91227D475D700BD291B /* sampled_texture3d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E91027D475D700BD291B /* sampled_texture3d.cpp */; };
 		04F9E91327D475D700BD291B /* sampled_texture3d.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E91127D475D700BD291B /* sampled_texture3d.h */; };
+		04F9E91627D4817A00BD291B /* particle_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E91427D4817A00BD291B /* particle_manager.cpp */; };
+		04F9E91727D4817A00BD291B /* particle_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E91527D4817A00BD291B /* particle_manager.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1191,6 +1193,9 @@
 		04F9E90D27D465A800BD291B /* particle_material.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = particle_material.h; sourceTree = "<group>"; };
 		04F9E91027D475D700BD291B /* sampled_texture3d.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sampled_texture3d.cpp; sourceTree = "<group>"; };
 		04F9E91127D475D700BD291B /* sampled_texture3d.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sampled_texture3d.h; sourceTree = "<group>"; };
+		04F9E91427D4817A00BD291B /* particle_manager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = particle_manager.cpp; sourceTree = "<group>"; };
+		04F9E91527D4817A00BD291B /* particle_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = particle_manager.h; sourceTree = "<group>"; };
+		04F9E91827D481A000BD291B /* singleton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = singleton.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1397,6 +1402,7 @@
 			isa = PBXGroup;
 			children = (
 				04954675279F8CD600783C84 /* std_helpers.h */,
+				04F9E91827D481A000BD291B /* singleton.h */,
 				047BF01F27A66084003F3599 /* filesystem.h */,
 				047BF01E27A66084003F3599 /* filesystem.cpp */,
 				04128438279ED3A50071BD86 /* timer.h */,
@@ -2130,6 +2136,8 @@
 				04F9E90827D4657A00BD291B /* particle.cpp */,
 				04F9E90D27D465A800BD291B /* particle_material.h */,
 				04F9E90C27D465A800BD291B /* particle_material.cpp */,
+				04F9E91527D4817A00BD291B /* particle_manager.h */,
+				04F9E91427D4817A00BD291B /* particle_manager.cpp */,
 			);
 			path = particle;
 			sourceTree = "<group>";
@@ -2360,6 +2368,7 @@
 				047BF01D27A65E7F003F3599 /* stb.h in Headers */,
 				04954708279FCD3C00783C84 /* orbit_control.h in Headers */,
 				047BF10627ACEBB7003F3599 /* hinge_joint.h in Headers */,
+				04F9E91727D4817A00BD291B /* particle_manager.h in Headers */,
 				047BF13E27ACF245003F3599 /* animator_loader.h in Headers */,
 				0443E8D527C4BB500099E13A /* shadow_material.h in Headers */,
 				0412845C279ED4B10071BD86 /* imstb_truetype.h in Headers */,
@@ -2641,6 +2650,7 @@
 				047BF0BC27AC086B003F3599 /* light.cpp in Sources */,
 				047BF11427ACEBBF003F3599 /* character_controller.cpp in Sources */,
 				047BF06D27A6819C003F3599 /* astc_encoding_choice_error.cpp in Sources */,
+				04F9E91627D4817A00BD291B /* particle_manager.cpp in Sources */,
 				0443E8D427C4BB500099E13A /* shadow_material.cpp in Sources */,
 				047BF16127AD1996003F3599 /* wgsl_direct_irradiance_frag_define.cpp in Sources */,
 				04F9E90527D2E0BC00BD291B /* wgsl_reflect.cpp in Sources */,
