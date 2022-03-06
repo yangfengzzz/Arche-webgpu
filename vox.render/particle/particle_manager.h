@@ -51,5 +51,7 @@ private:
     std::unique_ptr<ComputePass> _simulationPass{nullptr};
 };
 
+template<> inline ParticleManager *Singleton<ParticleManager>::msSingleton{nullptr};
+
 }
 #endif /* particle_manager_hpp */

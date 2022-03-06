@@ -8,9 +8,6 @@
 #include <glog/logging.h>
 
 namespace vox {
-template<> ParticleManager *Singleton<ParticleManager>::msSingleton = 0;
-
-//-----------------------------------------------------------------------
 ParticleManager *ParticleManager::getSingletonPtr(void) {
     return msSingleton;
 }
@@ -19,7 +16,7 @@ ParticleManager &ParticleManager::getSingleton(void) {
     assert(msSingleton);
     return (*msSingleton);
 }
-
+//-----------------------------------------------------------------------
 ParticleManager::ParticleManager(wgpu::Device& device) {
     _emitterPass = std::make_unique<ComputePass>(device, nullptr);
     _simulationPass = std::make_unique<ComputePass>(device, nullptr);

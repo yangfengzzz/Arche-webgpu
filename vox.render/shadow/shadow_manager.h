@@ -11,9 +11,10 @@
 #include "shadow_subpass.h"
 #include "scene.h"
 #include "shadow_material.h"
+#include "singleton.h"
 
 namespace vox {
-class ShadowManager {
+class ShadowManager : public Singleton<ShadowManager> {
 public:
     static constexpr uint32_t SHADOW_MAP_CASCADE_COUNT = 4;
     static constexpr uint32_t MAX_SHADOW = 10;
@@ -81,6 +82,10 @@ public:
     static uint32_t shadowCount();
     
     static uint32_t cubeShadowCount();
+    
+    static ShadowManager &getSingleton(void);
+    
+    static ShadowManager *getSingletonPtr(void);
     
 public:
     ShadowManager(Scene* scene, Camera* camera);
@@ -155,5 +160,8 @@ private:
         Vector4F(SHADOW_MAP_RESOLUTION/2, SHADOW_MAP_RESOLUTION/2, SHADOW_MAP_RESOLUTION/2, SHADOW_MAP_RESOLUTION/2),
     };
 };
+
+template<> inline ShadowManager* Singleton<ShadowManager>::msSingleton{nullptr};
+
 }
 #endif /* shadow_manager_hpp */

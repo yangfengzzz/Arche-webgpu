@@ -23,6 +23,16 @@ uint32_t ShadowManager::cubeShadowCount() {
     return _cubeShadowCount;
 }
 
+ShadowManager *ShadowManager::getSingletonPtr(void) {
+    return msSingleton;
+}
+
+ShadowManager &ShadowManager::getSingleton(void) {
+    assert(msSingleton);
+    return (*msSingleton);
+}
+
+//-----------------------------------------------------------------------
 ShadowManager::ShadowManager(Scene* scene, Camera* camera):
 _scene(scene),
 _camera(camera),

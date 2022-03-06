@@ -531,6 +531,12 @@
 		04F9E91327D475D700BD291B /* sampled_texture3d.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E91127D475D700BD291B /* sampled_texture3d.h */; };
 		04F9E91627D4817A00BD291B /* particle_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E91427D4817A00BD291B /* particle_manager.cpp */; };
 		04F9E91727D4817A00BD291B /* particle_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E91527D4817A00BD291B /* particle_manager.h */; };
+		04F9E91C27D4A95A00BD291B /* wgsl_particle_common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E91A27D4A95A00BD291B /* wgsl_particle_common.cpp */; };
+		04F9E91D27D4A95A00BD291B /* wgsl_particle_common.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E91B27D4A95A00BD291B /* wgsl_particle_common.h */; };
+		04F9E92027D4AE0D00BD291B /* wgsl_particle_sdf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E91E27D4AE0D00BD291B /* wgsl_particle_sdf.cpp */; };
+		04F9E92127D4AE0D00BD291B /* wgsl_particle_sdf.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E91F27D4AE0D00BD291B /* wgsl_particle_sdf.h */; };
+		04F9E92427D4AE3E00BD291B /* wgsl_particle_noise.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E92227D4AE3E00BD291B /* wgsl_particle_noise.cpp */; };
+		04F9E92527D4AE3E00BD291B /* wgsl_particle_noise.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E92327D4AE3E00BD291B /* wgsl_particle_noise.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1196,6 +1202,12 @@
 		04F9E91427D4817A00BD291B /* particle_manager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = particle_manager.cpp; sourceTree = "<group>"; };
 		04F9E91527D4817A00BD291B /* particle_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = particle_manager.h; sourceTree = "<group>"; };
 		04F9E91827D481A000BD291B /* singleton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = singleton.h; sourceTree = "<group>"; };
+		04F9E91A27D4A95A00BD291B /* wgsl_particle_common.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_particle_common.cpp; sourceTree = "<group>"; };
+		04F9E91B27D4A95A00BD291B /* wgsl_particle_common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_particle_common.h; sourceTree = "<group>"; };
+		04F9E91E27D4AE0D00BD291B /* wgsl_particle_sdf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_particle_sdf.cpp; sourceTree = "<group>"; };
+		04F9E91F27D4AE0D00BD291B /* wgsl_particle_sdf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_particle_sdf.h; sourceTree = "<group>"; };
+		04F9E92227D4AE3E00BD291B /* wgsl_particle_noise.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_particle_noise.cpp; sourceTree = "<group>"; };
+		04F9E92327D4AE3E00BD291B /* wgsl_particle_noise.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_particle_noise.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2132,6 +2144,7 @@
 		04F9E90727D4655F00BD291B /* particle */ = {
 			isa = PBXGroup;
 			children = (
+				04F9E91927D4A93E00BD291B /* wgsl */,
 				04F9E90927D4657A00BD291B /* particle.h */,
 				04F9E90827D4657A00BD291B /* particle.cpp */,
 				04F9E90D27D465A800BD291B /* particle_material.h */,
@@ -2140,6 +2153,19 @@
 				04F9E91427D4817A00BD291B /* particle_manager.cpp */,
 			);
 			path = particle;
+			sourceTree = "<group>";
+		};
+		04F9E91927D4A93E00BD291B /* wgsl */ = {
+			isa = PBXGroup;
+			children = (
+				04F9E91B27D4A95A00BD291B /* wgsl_particle_common.h */,
+				04F9E91A27D4A95A00BD291B /* wgsl_particle_common.cpp */,
+				04F9E91F27D4AE0D00BD291B /* wgsl_particle_sdf.h */,
+				04F9E91E27D4AE0D00BD291B /* wgsl_particle_sdf.cpp */,
+				04F9E92327D4AE3E00BD291B /* wgsl_particle_noise.h */,
+				04F9E92227D4AE3E00BD291B /* wgsl_particle_noise.cpp */,
+			);
+			path = wgsl;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2271,6 +2297,7 @@
 				04954660279F8CBF00783C84 /* background.h in Headers */,
 				0495475427A2750900783C84 /* model_mesh.h in Headers */,
 				04128476279EEE760071BD86 /* depth_state.h in Headers */,
+				04F9E91D27D4A95A00BD291B /* wgsl_particle_common.h in Headers */,
 				047BF0FD27ACEBB7003F3599 /* fixed_joint.h in Headers */,
 				047BF18127AE1A40003F3599 /* wgsl_skybox.h in Headers */,
 				0495463F279F89E500783C84 /* shader_data_group.h in Headers */,
@@ -2340,6 +2367,7 @@
 				04F9E90127D2095100BD291B /* compute_pass.h in Headers */,
 				047BF16E27AD45A6003F3599 /* wgsl_pbr.h in Headers */,
 				047BF0EC27ACEBAE003F3599 /* hit_result.h in Headers */,
+				04F9E92127D4AE0D00BD291B /* wgsl_particle_sdf.h in Headers */,
 				0443E8EA27C4CE210099E13A /* texture_utils.h in Headers */,
 				047BF00027A56250003F3599 /* wgsl_position_vert.h in Headers */,
 				047BF0FF27ACEBB7003F3599 /* configurable_joint.h in Headers */,
@@ -2375,6 +2403,7 @@
 				047BF13D27ACF245003F3599 /* fbx.h in Headers */,
 				0412844A279ED3A60071BD86 /* unix_engine.h in Headers */,
 				0412843F279ED3A60071BD86 /* glfw_window.h in Headers */,
+				04F9E92527D4AE3E00BD291B /* wgsl_particle_noise.h in Headers */,
 				047BEFDB27A4DB63003F3599 /* wgsl_encoder.h in Headers */,
 				047BF19527AE6F74003F3599 /* scene_animation_clip.h in Headers */,
 				04954684279F8CD600783C84 /* scene_forward.h in Headers */,
@@ -2627,6 +2656,7 @@
 				047BF14127ACF245003F3599 /* animator_loader.cpp in Sources */,
 				047BF10327ACEBB7003F3599 /* configurable_joint.cpp in Sources */,
 				047BF06327A680CD003F3599 /* softfloat.cpp in Sources */,
+				04F9E92027D4AE0D00BD291B /* wgsl_particle_sdf.cpp in Sources */,
 				0495473227A24A1300783C84 /* pbr_base_material.cpp in Sources */,
 				047BF0AB27ABF9A3003F3599 /* wgsl_begin_viewdir_frag.cpp in Sources */,
 				04128479279EEEEC0071BD86 /* render_state.cpp in Sources */,
@@ -2719,6 +2749,7 @@
 				047BF15927AD0FF4003F3599 /* wgsl_pbr_helper.cpp in Sources */,
 				047BF08F27ABBAF0003F3599 /* wgsl_color_vert.cpp in Sources */,
 				047BF10227ACEBB7003F3599 /* translational_joint.cpp in Sources */,
+				04F9E92427D4AE3E00BD291B /* wgsl_particle_noise.cpp in Sources */,
 				047BF06F27A6819C003F3599 /* astc_quantization.cpp in Sources */,
 				04128443279ED3A60071BD86 /* timer.cpp in Sources */,
 				0495468C279F8CD600783C84 /* component.cpp in Sources */,
@@ -2737,6 +2768,7 @@
 				0495474227A2640900783C84 /* index_buffer_binding.cpp in Sources */,
 				047BF07327A6819C003F3599 /* astc_compress_symbolic.cpp in Sources */,
 				047BF08B27ABB9AD003F3599 /* wgsl_begin_normal_vert.cpp in Sources */,
+				04F9E91C27D4A95A00BD291B /* wgsl_particle_common.cpp in Sources */,
 				047BF06B27A6819C003F3599 /* astc_find_best_partitioning.cpp in Sources */,
 				047BF13B27ACF245003F3599 /* fbx.cc in Sources */,
 				047BF12827ACEBC7003F3599 /* sphere_collider_shape.cpp in Sources */,
@@ -2911,6 +2943,7 @@
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
 				EXCLUDED_ARCHS = arm64;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = ./vox.math;
 				LD_RUNPATH_SEARCH_PATHS = ../third_party/glog/build;
 				LIBRARY_SEARCH_PATHS = (
@@ -2940,6 +2973,7 @@
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
 				EXCLUDED_ARCHS = arm64;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = ./vox.math;
 				LD_RUNPATH_SEARCH_PATHS = ../third_party/glog/build;
 				LIBRARY_SEARCH_PATHS = (
@@ -3235,6 +3269,7 @@
 					"'PX_NVTX=0'",
 					"'PX_SUPPORT_PVD=1'",
 				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
 					./vox.render,
 					./vox.math,
@@ -3368,6 +3403,7 @@
 					NDEBUG,
 					"'PX_SUPPORT_PVD=0'",
 				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
 					./vox.render,
 					./vox.math,
@@ -3504,6 +3540,7 @@
 					"'PX_NVTX=0'",
 					"'PX_SUPPORT_PVD=1'",
 				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
 					./vox.render,
 					./vox.math,
@@ -3635,6 +3672,7 @@
 					NDEBUG,
 					"'PX_SUPPORT_PVD=0'",
 				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
 					./vox.render,
 					./vox.math,
