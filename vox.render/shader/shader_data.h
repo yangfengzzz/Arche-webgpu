@@ -34,9 +34,11 @@ public:
     
     std::optional<Buffer> getData(uint32_t uniqueID);
     
-    void setBuffer(const std::string &property_name, const Buffer& value);
+    void setBufferFunctor(const std::string &property_name,
+                          std::function<Buffer()> functor);
     
-    void setBuffer(ShaderProperty property, const Buffer& value);
+    void setBufferFunctor(ShaderProperty property,
+                          std::function<Buffer()> functor);
     
     template<typename T>
     void setData(const std::string &property_name, const T& value) {
@@ -133,6 +135,7 @@ public:
 private:
     wgpu::Device& _device;
     std::unordered_map<uint32_t, Buffer> _shaderBuffers{};
+    std::unordered_map<uint32_t, std::function<Buffer()>> _shaderBufferFunctors{};
     std::unordered_map<uint32_t, SampledTexturePtr> _shaderTextures{};
     std::unordered_map<uint32_t, SampledTexturePtr> _shaderSamplers{};
     

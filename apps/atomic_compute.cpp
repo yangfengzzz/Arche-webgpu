@@ -66,7 +66,9 @@ public:
     }
     
     void setAtomicBuffer(const Buffer& buffer) {
-        shaderData.setBuffer(_atomicProp, buffer);
+        shaderData.setBufferFunctor(_atomicProp, [this]()->Buffer {
+            return _atomicBuffer;
+        });
     }
 };
 

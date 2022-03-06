@@ -29,26 +29,33 @@ std::optional<Buffer> ShaderData::getData(uint32_t uniqueID) {
     auto iter = _shaderBuffers.find(uniqueID);
     if (iter != _shaderBuffers.end()) {
         return iter->second;
-    } else {
-        return std::nullopt;
     }
+    
+    auto functorIter = _shaderBufferFunctors.find(uniqueID);
+    if (functorIter != _shaderBufferFunctors.end()) {
+        return functorIter->second();
+    }
+    
+    return std::nullopt;
 }
 
 const std::unordered_map<uint32_t, Buffer> &ShaderData::shaderBuffers() const {
     return _shaderBuffers;
 }
 
-void ShaderData::setBuffer(const std::string &property_name, const Buffer& value) {
+void ShaderData::setBufferFunctor(const std::string &property_name,
+                                  std::function<Buffer()> functor) {
     auto property = Shader::getPropertyByName(property_name);
     if (property.has_value()) {
-        setBuffer(property.value(), value);
+        setBufferFunctor(property.value(), functor);
     } else {
         assert(false && "can't find property");
     }
 }
 
-void ShaderData::setBuffer(ShaderProperty property, const Buffer& value) {
-    _shaderBuffers.insert(std::make_pair(property.uniqueId, value));
+void ShaderData::setBufferFunctor(ShaderProperty property,
+                                  std::function<Buffer()> functor) {
+    _shaderBufferFunctors.insert(std::make_pair(property.uniqueId, functor));
 }
 
 //MARK: - Sampler&&Texture
