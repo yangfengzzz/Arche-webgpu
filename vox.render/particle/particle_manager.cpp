@@ -44,9 +44,7 @@ void ParticleManager::removeParticle(Particle* particle) {
 }
 
 void ParticleManager::update(wgpu::ComputePassEncoder passEncoder) {
-    for (auto& particle : _particles) {
-        _emitterPass->attachShaderData(&particle->shaderData);
-        
+    for (auto& particle : _particles) {        
         /* Max number of particles able to be spawned. */
         uint32_t const num_dead_particles = Particle::kMaxParticleCount - particle->numAliveParticles();
         /* Number of particles to be emitted. */

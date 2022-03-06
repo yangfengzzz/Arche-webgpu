@@ -18,7 +18,7 @@ class Particle : public Script {
 public:
     // [USER DEFINED]
     static constexpr float kDefaultSimulationVolumeSize = 32.0f;
-    static constexpr uint32_t kMaxParticleCount = (1u << 15u);
+    static constexpr uint32_t kMaxParticleCount = (1u << 10u);
     static constexpr uint32_t kBatchEmitCount = std::max(256u, (kMaxParticleCount >> 4u));
     
     enum class EmitterType : uint32_t {

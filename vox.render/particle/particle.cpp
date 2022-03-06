@@ -52,13 +52,12 @@ void Particle::_allocBuffer() {
     fprintf(stderr, "[ %u particles, %u per batch ]\n", numParticles , kBatchEmitCount);
     
     /* Random value buffer */
-    uint32_t const num_randvalues = 3u * numParticles;
-    _randomVec.resize(num_randvalues);
+    _randomVec.resize(4u * numParticles);
     shaderData.setData(_randomBufferProp, _randomVec);
         
     /* Atomic */
-    _atomicBuffer[0] = std::make_unique<Buffer>(device, sizeof(uint32_t), wgpu::BufferUsage::Storage | wgpu::BufferUsage::MapRead);
-    _atomicBuffer[1] = std::make_unique<Buffer>(device, sizeof(uint32_t), wgpu::BufferUsage::Storage | wgpu::BufferUsage::MapRead);
+    _atomicBuffer[0] = std::make_unique<Buffer>(device, sizeof(uint32_t), wgpu::BufferUsage::Storage);
+    _atomicBuffer[1] = std::make_unique<Buffer>(device, sizeof(uint32_t), wgpu::BufferUsage::Storage);
     shaderData.setBufferFunctor(_readAtomicBufferProp, [this]()->Buffer {
         return *_atomicBuffer[_read];
     });
@@ -120,13 +119,6 @@ void Particle::onUpdate(float deltaTime) {
     _write = 1 - _write;
     _read = 1 - _read;
     
-    _atomicBuffer[_read]->handle().MapAsync(wgpu::MapMode::Read, 0, sizeof(uint32_t), [](WGPUBufferMapAsyncStatus status, void * userdata) {
-        if (status == WGPUBufferMapAsyncStatus_Success) {
-            Particle* app = static_cast<Particle*>(userdata);
-            memcpy(&app->_numAliveParticles, app->_atomicBuffer[app->_read]->handle().GetConstMappedRange(0, 4), 4);
-            app->_atomicBuffer[app->_read]->handle().Unmap();
-        }
-    }, this);
     _meshes[_read]->subMesh()->setCount(_numAliveParticles);
     _renderer->setMesh(_meshes[_read]);
     _generateRandomValues();
@@ -232,6 +224,7 @@ uint32_t Particle::emitCount() const {
 }
 
 void Particle::setEmitCount(uint32_t count) {
+    _numAliveParticles += count;
     _emitterData.emitCount = count;
     shaderData.setData(_emitterDataProp, _emitterData);
 }
