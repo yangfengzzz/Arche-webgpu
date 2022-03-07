@@ -7,6 +7,7 @@
 #include "light_manager.h"
 #include "shader/shader.h"
 #include "scene.h"
+#include "lighting/wgsl/wgsl_cluster_compute.h"
 #include <glog/logging.h>
 
 namespace vox {
@@ -24,6 +25,12 @@ _scene(scene),
 _pointLightProperty(Shader::createProperty("u_pointLight", ShaderDataGroup::Scene)),
 _spotLightProperty(Shader::createProperty("u_spotLight", ShaderDataGroup::Scene)),
 _directLightProperty(Shader::createProperty("u_directLight", ShaderDataGroup::Scene)){
+    _clusterBoundsCompute =
+    std::make_unique<ComputePass>(_scene->device(), std::make_unique<WGSLClusterBoundsSource>(TILE_COUNT, MAX_LIGHTS_PER_CLUSTER,
+                                                                                              WORKGROUP_SIZE));
+    _clusterLightsCompute =
+    std::make_unique<ComputePass>(_scene->device(), std::make_unique<WGSLClusterLightsSource>(TILE_COUNT, MAX_LIGHTS_PER_CLUSTER,
+                                                                                              WORKGROUP_SIZE));
 }
 
 void LightManager::setCamera(Camera* camera) {
@@ -93,11 +100,6 @@ const std::vector<DirectLight *> &LightManager::directLights() const {
     return _directLights;
 }
 
-//MARK: - Internal Uploader
-void LightManager::draw(wgpu::CommandEncoder& commandEncoder) {
-    _updateShaderData(_scene->shaderData);
-}
-
 void LightManager::_updateShaderData(ShaderData &shaderData) {
     size_t pointLightCount = _pointLights.size();
     _pointLightDatas.resize(pointLightCount);
@@ -138,6 +140,15 @@ void LightManager::_updateShaderData(ShaderData &shaderData) {
     } else {
         shaderData.disableMacro(SPOT_LIGHT_COUNT);
     }
+}
+
+//MARK: - Forward Plus
+void LightManager::draw(wgpu::CommandEncoder& commandEncoder) {
+    _updateShaderData(_scene->shaderData);
+    
+    auto encoder = commandEncoder.BeginComputePass();
+    // _clusterBoundsCompute->compute(encoder);
+    encoder.End();
 }
 
 
