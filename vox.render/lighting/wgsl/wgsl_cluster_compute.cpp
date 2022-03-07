@@ -48,13 +48,13 @@ _totalTiles(totalTiles) {
 }
 
 void WGSLClusterStructs::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros) {
-    encoder.addStruct(fmt::format("struct ClusterBounds {\n"
+    encoder.addStruct(fmt::format("struct ClusterBounds {{\n"
                                   "  minAABB : vec3<f32>;\n"
                                   "  maxAABB : vec3<f32>;\n"
-                                  "};\n"
-                                  "struct Clusters {\n"
+                                  "}};\n"
+                                  "struct Clusters {{\n"
                                   "  bounds : array<ClusterBounds, {}>;\n"
-                                  "};\n", _totalTiles));
+                                  "}};\n", _totalTiles));
 }
 
 //MARK: - WGSLClusterLightsStructs
@@ -64,23 +64,23 @@ _maxLightsPerCluster(maxLightsPerCluster) {
 }
 
 void WGSLClusterLightsStructs::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros) {
-    encoder.addStruct(fmt::format("struct ClusterLights {\n"
+    encoder.addStruct(fmt::format("struct ClusterLights {{\n"
                                   "  offset : u32;\n"
                                   "  count : u32;\n"
-                                  "};\n"
-                                  "struct ClusterLightGroup {\n"
+                                  "}};\n"
+                                  "struct ClusterLightGroup {{\n"
                                   "  offset : atomic<u32>;\n"
                                   "  lights : array<ClusterLights, {}>;\n"
                                   "  indices : array<u32, {}>;\n"
-                                  "};\n", _totalTiles, _totalTiles * _maxLightsPerCluster));
-    encoder.addStorageBufferBinding("clusterLights", "ClusterLightGroup", false);
+                                  "}};\n", _totalTiles, _totalTiles * _maxLightsPerCluster));
+    encoder.addStorageBufferBinding("u_clusterLights", "ClusterLightGroup", false);
 }
 
 //MARK: - WGSLClusterBoundsSource
 WGSLClusterBoundsSource::WGSLClusterBoundsSource(const std::array<uint32_t, 3>& tileCount, uint32_t maxLightsPerCluster,
                                                  const std::array<uint32_t, 3>& workgroupSize):
+_projectionUniforms(),
 _clusterStructs(tileCount[0] * tileCount[1] * tileCount[2]),
-_clusterLightsStructs(tileCount[0] * tileCount[1] * tileCount[2], maxLightsPerCluster),
 _tileCount(tileCount),
 _workgroupSize(workgroupSize) {
 }
@@ -91,8 +91,8 @@ void WGSLClusterBoundsSource::_createShaderSource(size_t hash, const ShaderMacro
     _bindGroupInfo.clear();
     {
         auto encoder = createSourceEncoder(wgpu::ShaderStage::Compute);
+        _projectionUniforms(encoder, macros);
         _clusterStructs(encoder, macros);
-        _clusterLightsStructs(encoder, macros);
         encoder.addStorageBufferBinding("u_clusters", "Clusters", false);
         encoder.addFunction("fn lineIntersectionToZPlane(a : vec3<f32>, b : vec3<f32>, zDistance : f32) -> vec3<f32> {\n"
                             "  let normal = vec3<f32>(0.0, 0.0, 1.0);\n"
@@ -224,13 +224,13 @@ void WGSLClusterLightsSource::_createShaderSource(size_t hash, const ShaderMacro
             "  }\n"
             "}\n"
             "\n"
-            "var offset = atomicAdd(&clusterLights.offset, clusterLightCount);\n"
+            "var offset = atomicAdd(&u_clusterLights.offset, clusterLightCount);\n"
             "\n"
             "for(var i = 0u; i < clusterLightCount; i = i + 1u) {\n"
-            "  clusterLights.indices[offset + i] = cluserLightIndices[i];\n"
+            "  u_clusterLights.indices[offset + i] = cluserLightIndices[i];\n"
             "}\n"
-            "clusterLights.lights[tileIndex].offset = offset;\n"
-            "clusterLights.lights[tileIndex].count = clusterLightCount;\n";
+            "u_clusterLights.lights[tileIndex].offset = offset;\n"
+            "u_clusterLights.lights[tileIndex].count = clusterLightCount;\n";
         }, {{"global_id", BuiltInType::GlobalInvocationID}});
         encoder.flush();
     }

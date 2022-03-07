@@ -57,8 +57,8 @@ private:
     std::array<uint32_t, 3> _tileCount{};
     std::array<uint32_t, 3> _workgroupSize{};
     
+    WGSLProjectionUniforms _projectionUniforms;
     WGSLClusterStructs _clusterStructs;
-    WGSLClusterLightsStructs _clusterLightsStructs;
 };
 
 //MARK: - WGSLClusterLightsSource

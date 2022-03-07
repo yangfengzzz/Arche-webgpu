@@ -30,7 +30,7 @@ _directLightProperty(Shader::createProperty("u_directLight", ShaderDataGroup::Sc
 _projectionProp(Shader::createProperty("u_cluster_projection", ShaderDataGroup::Compute)),
 _viewProp(Shader::createProperty("u_cluster_view", ShaderDataGroup::Compute)),
 _clustersProp(Shader::createProperty("u_clusters", ShaderDataGroup::Compute)),
-_clusterLightsProp(Shader::createProperty("u_clusterLight", ShaderDataGroup::Compute)) {
+_clusterLightsProp(Shader::createProperty("u_clusterLights", ShaderDataGroup::Compute)) {
     auto& device = _scene->device();
     _clustersBuffer = std::make_unique<Buffer>(device, sizeof(Clusters), wgpu::BufferUsage::Storage | wgpu::BufferUsage::CopyDst);
     _shaderData.setBufferFunctor(_clustersProp, [this]()->Buffer {
@@ -187,7 +187,7 @@ void LightManager::draw(wgpu::CommandEncoder& commandEncoder) {
         if (updateBounds) {
             _clusterBoundsCompute->compute(encoder);
         }
-        _clusterLightsCompute->compute(encoder);
+//        _clusterLightsCompute->compute(encoder);
         encoder.End();
     }
 }
