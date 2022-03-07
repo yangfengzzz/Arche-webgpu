@@ -71,7 +71,7 @@ void EditorApplication::update(float delta_time) {
     _scene->update(delta_time);
     
     wgpu::CommandEncoder commandEncoder = _device.CreateCommandEncoder();
-    _shadowManager->draw(commandEncoder);
+    updateGPUTask(commandEncoder);
     
     // Render the lighting and composition pass
     _colorAttachments.view = _renderContext->currentDrawableTexture();

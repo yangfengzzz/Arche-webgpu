@@ -5,9 +5,9 @@
 //  property of any third parties.
 
 #include "spot_light.h"
-#include "scene.h"
 #include "matrix_utils.h"
 #include "entity.h"
+#include "light_manager.h"
 
 namespace vox {
 SpotLight::SpotLight(Entity *entity) :
@@ -15,11 +15,11 @@ Light(entity) {
 }
 
 void SpotLight::_onEnable() {
-    scene()->light_manager.attachSpotLight(this);
+    LightManager::getSingleton().attachSpotLight(this);
 }
 
 void SpotLight::_onDisable() {
-    scene()->light_manager.detachSpotLight(this);
+    LightManager::getSingleton().detachSpotLight(this);
 }
 
 void SpotLight::_updateShaderData(SpotLightData &shaderData) {

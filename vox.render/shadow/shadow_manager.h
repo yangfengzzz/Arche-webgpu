@@ -8,8 +8,8 @@
 #define shadow_manager_hpp
 
 #include "rendering/render_pass.h"
+#include "lighting/point_light.h"
 #include "shadow_subpass.h"
-#include "scene.h"
 #include "shadow_material.h"
 #include "singleton.h"
 

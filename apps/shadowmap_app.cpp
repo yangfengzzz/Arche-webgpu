@@ -10,6 +10,8 @@
 #include "material/blinn_phong_material.h"
 #include "controls/orbit_control.h"
 #include "camera.h"
+#include "lighting/direct_light.h"
+#include "lighting/spot_light.h"
 
 namespace vox {
 namespace {

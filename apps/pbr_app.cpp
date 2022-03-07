@@ -9,6 +9,7 @@
 #include "mesh/mesh_renderer.h"
 #include "material/pbr_material.h"
 #include "camera.h"
+#include "lighting/direct_light.h"
 
 namespace vox {
 void PBRApp::loadScene(uint32_t width, uint32_t height) {

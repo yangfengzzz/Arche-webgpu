@@ -5,9 +5,9 @@
 //  property of any third parties.
 
 #include "point_light.h"
-#include "scene.h"
 #include "matrix_utils.h"
 #include "entity.h"
+#include "light_manager.h"
 
 namespace vox {
 PointLight::PointLight(Entity *entity) :
@@ -15,11 +15,11 @@ Light(entity) {
 }
 
 void PointLight::_onEnable() {
-    scene()->light_manager.attachPointLight(this);
+    LightManager::getSingleton().attachPointLight(this);
 }
 
 void PointLight::_onDisable() {
-    scene()->light_manager.detachPointLight(this);
+    LightManager::getSingleton().detachPointLight(this);
 }
 
 void PointLight::_updateShaderData(PointLightData &shaderData) {

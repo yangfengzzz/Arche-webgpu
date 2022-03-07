@@ -11,6 +11,7 @@
 #include "texture/texture_utils.h"
 #include "texture/sampled_texture2d.h"
 #include "texture/sampled_texturecube.h"
+#include "lighting/light_manager.h"
 
 namespace vox {
 uint32_t ShadowManager::_shadowCount = 0;
@@ -116,7 +117,7 @@ void ShadowManager::draw(wgpu::CommandEncoder& commandEncoder) {
 }
 
 void ShadowManager::_drawSpotShadowMap(wgpu::CommandEncoder& commandEncoder) {
-    const auto &lights = _scene->light_manager.spotLights();
+    const auto &lights = LightManager::getSingleton().spotLights();
     for (const auto &light: lights) {
         if (light->enableShadow() && _shadowCount < MAX_SHADOW) {
             _updateSpotShadow(light, _shadowDatas[_shadowCount]);
@@ -155,7 +156,7 @@ void ShadowManager::_drawSpotShadowMap(wgpu::CommandEncoder& commandEncoder) {
 }
 
 void ShadowManager::_drawDirectShadowMap(wgpu::CommandEncoder& commandEncoder) {
-    const auto &lights = _scene->light_manager.directLights();
+    const auto &lights = LightManager::getSingleton().directLights();
     for (const auto &light: lights) {
         if (light->enableShadow() && _shadowCount < MAX_SHADOW) {
             _updateCascadesShadow(light, _shadowDatas[_shadowCount]);
@@ -203,7 +204,7 @@ void ShadowManager::_drawDirectShadowMap(wgpu::CommandEncoder& commandEncoder) {
 }
 
 void ShadowManager::_drawPointShadowMap(wgpu::CommandEncoder& commandEncoder) {
-    const auto &lights = _scene->light_manager.pointLights();
+    const auto &lights = LightManager::getSingleton().pointLights();
     for (const auto &light: lights) {
         if (light->enableShadow() && _cubeShadowCount < MAX_CUBE_SHADOW) {
             wgpu::Texture texture = nullptr;

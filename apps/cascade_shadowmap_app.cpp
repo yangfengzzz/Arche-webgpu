@@ -10,6 +10,7 @@
 #include "material/blinn_phong_material.h"
 #include "camera.h"
 #include "controls/orbit_control.h"
+#include "lighting/direct_light.h"
 
 namespace vox {
 void CascadeShadowMapApp::loadScene(uint32_t width, uint32_t height) {

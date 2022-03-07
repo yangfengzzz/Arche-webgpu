@@ -10,6 +10,7 @@
 #include "material/pbr_material.h"
 #include "rendering/subpasses/skybox_subpass.h"
 #include "camera.h"
+#include "lighting/direct_light.h"
 
 namespace vox {
 bool IBLApp::prepare(Engine &engine) {

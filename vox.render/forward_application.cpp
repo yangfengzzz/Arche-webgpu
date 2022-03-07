@@ -18,10 +18,12 @@ bool ForwardApplication::prepare(Engine &engine) {
     GraphicsApplication::prepare(engine);
     
     _scene = std::make_unique<Scene>(_device);
-    
-    auto extent = engine.window().extent();
-    loadScene(extent.width, extent.height);
-    
+    _lightManager = std::make_unique<LightManager>(_scene.get());
+    {
+        auto extent = engine.window().extent();
+        loadScene(extent.width, extent.height);
+    }
+    _lightManager->setCamera(_mainCamera);
     _shadowManager = std::make_unique<ShadowManager>(_scene.get(), _mainCamera);
     
     // Create a render pass descriptor for thelighting and composition pass
@@ -68,6 +70,7 @@ void ForwardApplication::update(float delta_time) {
 
 void ForwardApplication::updateGPUTask(wgpu::CommandEncoder& commandEncoder) {
     _shadowManager->draw(commandEncoder);
+    _lightManager->draw(commandEncoder);
 }
 
 bool ForwardApplication::resize(uint32_t win_width, uint32_t win_height,

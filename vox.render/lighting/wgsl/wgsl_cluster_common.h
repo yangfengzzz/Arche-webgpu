@@ -8,6 +8,7 @@
 #define wgsl_cluster_common_hpp
 
 #include "shaderlib/wgsl_encoder.h"
+
 namespace vox {
 //MARK: - WGSLProjectionUniforms
 class WGSLProjectionUniforms {

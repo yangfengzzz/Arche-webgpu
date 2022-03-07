@@ -19,6 +19,7 @@
 #include "physics/shape/plane_collider_shape.h"
 #include "physics/shape/capsule_collider_shape.h"
 #include "lighting/point_light.h"
+#include "lighting/direct_light.h"
 #include "controls/orbit_control.h"
 
 namespace vox {

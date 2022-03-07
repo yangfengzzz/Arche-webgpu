@@ -1456,6 +1456,8 @@
 				049546F9279FC9B400783C84 /* graphics_application.h */,
 				049546F8279FC9B400783C84 /* graphics_application.cpp */,
 				049546DC279FA2CC00783C84 /* utils */,
+				0495473B27A25A7D00783C84 /* graphics */,
+				0495474C27A2712F00783C84 /* mesh */,
 				04954656279F8BDE00783C84 /* rendering */,
 				04128464279EDAF80071BD86 /* shader */,
 				0495471627A231F400783C84 /* shaderlib */,
@@ -1464,8 +1466,6 @@
 				047BF01527A6407D003F3599 /* image */,
 				047BF0B927AC07FF003F3599 /* lighting */,
 				0443E8D127C4BB350099E13A /* shadow */,
-				0495473B27A25A7D00783C84 /* graphics */,
-				0495474C27A2712F00783C84 /* mesh */,
 				04F9E90727D4655F00BD291B /* particle */,
 				0495465F279F8CBF00783C84 /* background.h */,
 				04954662279F8CD500783C84 /* layer.h */,
@@ -1807,8 +1807,7 @@
 		047BF0B927AC07FF003F3599 /* lighting */ = {
 			isa = PBXGroup;
 			children = (
-				047BF0C827AC0D59003F3599 /* light_manager.h */,
-				047BF0C227AC0D59003F3599 /* light_manager.cpp */,
+				04F9E93127D5CDFF00BD291B /* wgsl */,
 				047BF0BB27AC086B003F3599 /* light.h */,
 				047BF0BA27AC086B003F3599 /* light.cpp */,
 				047BF0C427AC0D59003F3599 /* spot_light.h */,
@@ -1817,6 +1816,8 @@
 				047BF0BF27AC0D19003F3599 /* point_light.cpp */,
 				047BF0C727AC0D59003F3599 /* direct_light.h */,
 				047BF0C527AC0D59003F3599 /* direct_light.cpp */,
+				047BF0C827AC0D59003F3599 /* light_manager.h */,
+				047BF0C227AC0D59003F3599 /* light_manager.cpp */,
 				047BF0C327AC0D59003F3599 /* ambient_light.h */,
 				047BF0C627AC0D59003F3599 /* ambient_light.cpp */,
 			);
@@ -2045,7 +2046,6 @@
 		0495471627A231F400783C84 /* shaderlib */ = {
 			isa = PBXGroup;
 			children = (
-				04F9E93127D5CDFF00BD291B /* forward_plus */,
 				0495475527A2821C00783C84 /* wgsl_common.h */,
 				047BEFDC27A4E762003F3599 /* wgsl_common.cpp */,
 				0495471727A2346900783C84 /* wgsl.h */,
@@ -2194,7 +2194,7 @@
 			path = wgsl;
 			sourceTree = "<group>";
 		};
-		04F9E93127D5CDFF00BD291B /* forward_plus */ = {
+		04F9E93127D5CDFF00BD291B /* wgsl */ = {
 			isa = PBXGroup;
 			children = (
 				04F9E93B27D5D67E00BD291B /* wgsl_cluster_common.h */,
@@ -2202,7 +2202,7 @@
 				04F9E93727D5D08A00BD291B /* wgsl_cluster_compute.h */,
 				04F9E93627D5D08A00BD291B /* wgsl_cluster_compute.cpp */,
 			);
-			path = forward_plus;
+			path = wgsl;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

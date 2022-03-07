@@ -7,7 +7,7 @@
 #ifndef wgsl_cluster_compute_hpp
 #define wgsl_cluster_compute_hpp
 
-#include "shaderlib/forward_plus/wgsl_cluster_common.h"
+#include "wgsl_cluster_common.h"
 #include "shaderlib/wgsl_cache.h"
 
 namespace vox {

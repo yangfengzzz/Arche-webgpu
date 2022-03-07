@@ -11,15 +11,22 @@
 #include "spot_light.h"
 #include "direct_light.h"
 #include "shader/shader_data.h"
+#include "singleton.h"
 
 namespace vox {
 /**
  * Light Manager.
  */
-class LightManager {
-public:    
-    LightManager();
+class LightManager : public Singleton<LightManager> {
+public:
+    static LightManager &getSingleton(void);
+    
+    static LightManager *getSingletonPtr(void);
+    
+    LightManager(Scene* scene);
         
+    void setCamera(Camera* camera);
+    
     /**
      * Register a light object to the current scene.
      * @param light render light
@@ -65,9 +72,12 @@ public:
     const std::vector<DirectLight *> &directLights() const;
     
 public:
-    void updateShaderData(wgpu::Device& device, ShaderData &shaderData);
-    
+    void draw(wgpu::CommandEncoder& commandEncoder);
+        
 private:
+    Scene* _scene{nullptr};
+    Camera* _camera{nullptr};
+    
     std::vector<PointLight *> _pointLights;
     std::vector<PointLight::PointLightData> _pointLightDatas;
     ShaderProperty _pointLightProperty;
@@ -79,7 +89,11 @@ private:
     std::vector<DirectLight *> _directLights;
     std::vector<DirectLight::DirectLightData> _directLightDatas;
     ShaderProperty _directLightProperty;
+    
+    void _updateShaderData(ShaderData &shaderData);
 };
+
+template<> inline LightManager* Singleton<LightManager>::msSingleton{nullptr};
 
 }
 
