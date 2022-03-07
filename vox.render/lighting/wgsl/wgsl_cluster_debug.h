@@ -21,8 +21,11 @@ private:
     void _createShaderSource(size_t hash, const ShaderMacroCollection& macros) override;
     
     WGSLUVShare _uvShare;
+    WGSLProjectionUniforms _projectionUniforms;
     WGSLTileFunctions _tileFunctions;
     WGSLClusterLightsStructs _clusterLightsStructs;
+    
+    uint32_t _maxLightsPerCluster;
 };
 
 }

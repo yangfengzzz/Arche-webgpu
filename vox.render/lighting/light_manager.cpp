@@ -29,10 +29,10 @@ _shaderData(scene->device()),
 _pointLightProperty(Shader::createProperty("u_pointLight", ShaderDataGroup::Scene)),
 _spotLightProperty(Shader::createProperty("u_spotLight", ShaderDataGroup::Scene)),
 _directLightProperty(Shader::createProperty("u_directLight", ShaderDataGroup::Scene)),
-_projectionProp(Shader::createProperty("u_cluster_projection", ShaderDataGroup::Compute)),
+_projectionProp(Shader::createProperty("u_cluster_projection", ShaderDataGroup::Scene)),
 _viewProp(Shader::createProperty("u_cluster_view", ShaderDataGroup::Compute)),
 _clustersProp(Shader::createProperty("u_clusters", ShaderDataGroup::Compute)),
-_clusterLightsProp(Shader::createProperty("u_clusterLights", ShaderDataGroup::Compute)) {
+_clusterLightsProp(Shader::createProperty("u_clusterLights", ShaderDataGroup::Material)) {
     Shader::create("cluster_debug", std::make_unique<WGSLUnlitVertex>(), std::make_unique<WGSLClusterDebug>(TILE_COUNT, MAX_LIGHTS_PER_CLUSTER));
     
     auto& device = _scene->device();
@@ -42,7 +42,7 @@ _clusterLightsProp(Shader::createProperty("u_clusterLights", ShaderDataGroup::Co
     });
     
     _clusterLightsBuffer = std::make_unique<Buffer>(device, sizeof(ClusterLightGroup), wgpu::BufferUsage::Storage | wgpu::BufferUsage::CopyDst);
-    _shaderData.setBufferFunctor(_clusterLightsProp, [this]()->Buffer {
+    _scene->shaderData.setBufferFunctor(_clusterLightsProp, [this]()->Buffer {
         return *_clusterLightsBuffer;
     });
     
@@ -50,6 +50,7 @@ _clusterLightsProp(Shader::createProperty("u_clusterLights", ShaderDataGroup::Co
     std::make_unique<ComputePass>(_scene->device(), std::make_unique<WGSLClusterBoundsSource>(TILE_COUNT, MAX_LIGHTS_PER_CLUSTER,
                                                                                               WORKGROUP_SIZE));
     _clusterBoundsCompute->attachShaderData(&_shaderData);
+    _clusterBoundsCompute->attachShaderData(&_scene->shaderData);
     _clusterBoundsCompute->setDispatchCount(DISPATCH_SIZE[0], DISPATCH_SIZE[1], DISPATCH_SIZE[2]);
     
     _clusterLightsCompute =
@@ -187,7 +188,7 @@ void LightManager::draw(wgpu::CommandEncoder& commandEncoder) {
         }
         _projectionUniforms.zNear = _camera->nearClipPlane();
         _projectionUniforms.zFar = _camera->farClipPlane();
-        _shaderData.setData(_projectionProp, _projectionUniforms);
+        _scene->shaderData.setData(_projectionProp, _projectionUniforms);
         
         _viewUniforms.matrix = _camera->viewMatrix();
         _viewUniforms.position = _camera->entity()->transform->worldPosition();
