@@ -4,10 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef wgsl_custer_compute_hpp
-#define wgsl_custer_compute_hpp
+#ifndef wgsl_cluster_compute_hpp
+#define wgsl_cluster_compute_hpp
 
-#include "shaderlib/wgsl_encoder.h"
+#include "shaderlib/forward_plus/wgsl_cluster_common.h"
 #include "shaderlib/wgsl_cache.h"
 
 namespace vox {
@@ -56,5 +56,25 @@ private:
     WGSLClusterLightsStructs _clusterLightsStructs;
 };
 
+//MARK: - WGSLClusterLightsSource
+class WGSLClusterLightsSource : public WGSLCache {
+public:
+    WGSLClusterLightsSource(const std::array<uint32_t, 3>& tileCount, uint32_t maxLightsPerCluster,
+                            const std::array<uint32_t, 3>& workgroupSize);
+    
+    void _createShaderSource(size_t hash, const ShaderMacroCollection& macros) override;
+        
+private:
+    std::array<uint32_t, 3> _tileCount{};
+    std::array<uint32_t, 3> _workgroupSize{};
+    
+    WGSLProjectionUniforms _projectionUniforms;
+    WGSLViewUniforms _viewUniforms;
+    WGSLLightUniforms _lightUniforms;
+    WGSLClusterLightsStructs _clusterLightsStructs;
+    WGSLClusterStructs _clusterStructs;
+    WGSLTileFunctions _tileFunctions;
+};
+
 }
-#endif /* wgsl_custer_compute_hpp */
+#endif /* wgsl_cluster_compute_hpp */

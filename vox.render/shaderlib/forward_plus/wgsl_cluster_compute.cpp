@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "wgsl_custer_compute.h"
+#include "wgsl_cluster_compute.h"
 #include <fmt/core.h>
 #include <unordered_map>
 
@@ -144,5 +144,93 @@ void WGSLClusterBoundsSource::_createShaderSource(size_t hash, const ShaderMacro
     _infoCache[hash] = _bindGroupInfo;
 }
 
+//MARK: - WGSLClusterLightsSource
+WGSLClusterLightsSource::WGSLClusterLightsSource(const std::array<uint32_t, 3>& tileCount, uint32_t maxLightsPerCluster,
+                                                 const std::array<uint32_t, 3>& workgroupSize):
+_projectionUniforms(),
+_viewUniforms(),
+_lightUniforms(),
+_clusterLightsStructs(tileCount[0] * tileCount[1] * tileCount[2], maxLightsPerCluster),
+_clusterStructs(),
+_tileFunctions(tileCount),
+_tileCount(tileCount),
+_workgroupSize(workgroupSize){
+}
+
+void WGSLClusterLightsSource::_createShaderSource(size_t hash, const ShaderMacroCollection& macros) {
+    _source.clear();
+    _bindGroupInfo.clear();
+    {
+        auto encoder = createSourceEncoder(wgpu::ShaderStage::Compute);
+        _projectionUniforms(encoder, macros);
+        _viewUniforms(encoder, macros);
+        _lightUniforms(encoder, macros);
+        _clusterLightsStructs(encoder, macros);
+        _clusterStructs(encoder, macros);
+        encoder.addStorageBufferBinding("clusters", "Clusters", false);
+        _tileFunctions(encoder, macros);
+        
+        encoder.addFunction("fn sqDistPointAABB(point : vec3<f32>, minAABB : vec3<f32>, maxAABB : vec3<f32>) -> f32 {\n"
+                            "  var sqDist = 0.0;\n"
+                            "  // const minAABB : vec3<f32> = clusters.bounds[tileIndex].minAABB;\n"
+                            "  // const maxAABB : vec3<f32> = clusters.bounds[tileIndex].maxAABB;\n"
+                            "\n"
+                            "  // Wait, does this actually work? Just porting code, but it seems suspect?\n"
+                            "  for(var i = 0; i < 3; i = i + 1) {\n"
+                            "    let v = point[i];\n"
+                            "    if(v < minAABB[i]){\n"
+                            "      sqDist = sqDist + (minAABB[i] - v) * (minAABB[i] - v);\n"
+                            "    }\n"
+                            "    if(v > maxAABB[i]){\n"
+                            "      sqDist = sqDist + (v - maxAABB[i]) * (v - maxAABB[i]);\n"
+                            "    }\n"
+                            "  }\n"
+                            "\n"
+                            "  return sqDist;\n"
+                            "}\n");
+        
+        encoder.addEntry({2, 2, 2}, [&](std::string &source){
+            source +=
+            "let tileIndex = global_id.x +\n"
+            "    global_id.y * tileCount.x +\n"
+            "    global_id.z * tileCount.x * tileCount.y;\n"
+            "\n"
+            "var clusterLightCount = 0u;\n"
+            "var cluserLightIndices : array<u32, ${MAX_LIGHTS_PER_CLUSTER}>;\n"
+            "for (var i = 0u; i < globalLights.lightCount; i = i + 1u) {\n"
+            "  let range = globalLights.lights[i].range;\n"
+            "  // Lights without an explicit range affect every cluster, but this is a poor way to handle that.\n"
+            "  var lightInCluster = range <= 0.0;\n"
+            "\n"
+            "  if (!lightInCluster) {\n"
+            "    let lightViewPos = view.matrix * vec4<f32>(globalLights.lights[i].position, 1.0);\n"
+            "    let sqDist = sqDistPointAABB(lightViewPos.xyz, clusters.bounds[tileIndex].minAABB, clusters.bounds[tileIndex].maxAABB);\n"
+            "    lightInCluster = sqDist <= (range * range);\n"
+            "  }\n"
+            "\n"
+            "  if (lightInCluster) {\n"
+            "    // Light affects this cluster. Add it to the list.\n"
+            "    cluserLightIndices[clusterLightCount] = i;\n"
+            "    clusterLightCount = clusterLightCount + 1u;\n"
+            "  }\n"
+            "\n"
+            "  if (clusterLightCount == ${MAX_LIGHTS_PER_CLUSTER}u) {\n"
+            "    break;\n"
+            "  }\n"
+            "}\n"
+            "\n"
+            "var offset = atomicAdd(&clusterLights.offset, clusterLightCount);\n"
+            "\n"
+            "for(var i = 0u; i < clusterLightCount; i = i + 1u) {\n"
+            "  clusterLights.indices[offset + i] = cluserLightIndices[i];\n"
+            "}\n"
+            "clusterLights.lights[tileIndex].offset = offset;\n"
+            "clusterLights.lights[tileIndex].count = clusterLightCount;\n";
+        }, {{"global_id", BuiltInType::GlobalInvocationID}});
+        encoder.flush();
+    }
+    _sourceCache[hash] = _source;
+    _infoCache[hash] = _bindGroupInfo;
+}
 
 }

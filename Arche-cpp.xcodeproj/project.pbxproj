@@ -542,8 +542,10 @@
 		04F9E92C27D4DB1A00BD291B /* particle_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E92A27D4DB1A00BD291B /* particle_app.cpp */; };
 		04F9E92F27D5ACB200BD291B /* wgsl_particle_draw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E92D27D5ACB200BD291B /* wgsl_particle_draw.cpp */; };
 		04F9E93027D5ACB200BD291B /* wgsl_particle_draw.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E92E27D5ACB200BD291B /* wgsl_particle_draw.h */; };
-		04F9E93827D5D08A00BD291B /* wgsl_custer_compute.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E93627D5D08A00BD291B /* wgsl_custer_compute.cpp */; };
-		04F9E93927D5D08A00BD291B /* wgsl_custer_compute.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E93727D5D08A00BD291B /* wgsl_custer_compute.h */; };
+		04F9E93827D5D08A00BD291B /* wgsl_cluster_compute.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E93627D5D08A00BD291B /* wgsl_cluster_compute.cpp */; };
+		04F9E93927D5D08A00BD291B /* wgsl_cluster_compute.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E93727D5D08A00BD291B /* wgsl_cluster_compute.h */; };
+		04F9E93C27D5D67E00BD291B /* wgsl_cluster_common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E93A27D5D67E00BD291B /* wgsl_cluster_common.cpp */; };
+		04F9E93D27D5D67E00BD291B /* wgsl_cluster_common.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E93B27D5D67E00BD291B /* wgsl_cluster_common.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1221,8 +1223,10 @@
 		04F9E92B27D4DB1A00BD291B /* particle_app.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = particle_app.h; sourceTree = "<group>"; };
 		04F9E92D27D5ACB200BD291B /* wgsl_particle_draw.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_particle_draw.cpp; sourceTree = "<group>"; };
 		04F9E92E27D5ACB200BD291B /* wgsl_particle_draw.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_particle_draw.h; sourceTree = "<group>"; };
-		04F9E93627D5D08A00BD291B /* wgsl_custer_compute.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_custer_compute.cpp; sourceTree = "<group>"; };
-		04F9E93727D5D08A00BD291B /* wgsl_custer_compute.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_custer_compute.h; sourceTree = "<group>"; };
+		04F9E93627D5D08A00BD291B /* wgsl_cluster_compute.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_cluster_compute.cpp; sourceTree = "<group>"; };
+		04F9E93727D5D08A00BD291B /* wgsl_cluster_compute.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_cluster_compute.h; sourceTree = "<group>"; };
+		04F9E93A27D5D67E00BD291B /* wgsl_cluster_common.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_cluster_common.cpp; sourceTree = "<group>"; };
+		04F9E93B27D5D67E00BD291B /* wgsl_cluster_common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_cluster_common.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2193,8 +2197,10 @@
 		04F9E93127D5CDFF00BD291B /* forward_plus */ = {
 			isa = PBXGroup;
 			children = (
-				04F9E93727D5D08A00BD291B /* wgsl_custer_compute.h */,
-				04F9E93627D5D08A00BD291B /* wgsl_custer_compute.cpp */,
+				04F9E93B27D5D67E00BD291B /* wgsl_cluster_common.h */,
+				04F9E93A27D5D67E00BD291B /* wgsl_cluster_common.cpp */,
+				04F9E93727D5D08A00BD291B /* wgsl_cluster_compute.h */,
+				04F9E93627D5D08A00BD291B /* wgsl_cluster_compute.cpp */,
 			);
 			path = forward_plus;
 			sourceTree = "<group>";
@@ -2405,7 +2411,7 @@
 				047BF0FF27ACEBB7003F3599 /* configurable_joint.h in Headers */,
 				047BF10127ACEBB7003F3599 /* spring_joint.h in Headers */,
 				047BF0BD27AC086B003F3599 /* light.h in Headers */,
-				04F9E93927D5D08A00BD291B /* wgsl_custer_compute.h in Headers */,
+				04F9E93927D5D08A00BD291B /* wgsl_cluster_compute.h in Headers */,
 				0443E8DD27C4C3280099E13A /* shadow_manager.h in Headers */,
 				04128446279ED3A60071BD86 /* timer.h in Headers */,
 				047BF0C027AC0D19003F3599 /* point_light.h in Headers */,
@@ -2414,6 +2420,7 @@
 				047BF15E27AD1435003F3599 /* wgsl_brdf.h in Headers */,
 				047BF0EA27ACEBAE003F3599 /* collider.h in Headers */,
 				047BF16627AD3FE0003F3599 /* wgsl_ibl_frag_define.h in Headers */,
+				04F9E93D27D5D67E00BD291B /* wgsl_cluster_common.h in Headers */,
 				0412845F279ED4B10071BD86 /* imstb_textedit.h in Headers */,
 				0443E8D027C4B2F90099E13A /* shadow_subpass.h in Headers */,
 				04F9E93027D5ACB200BD291B /* wgsl_particle_draw.h in Headers */,
@@ -2732,7 +2739,7 @@
 				047BF09B27ABC04D003F3599 /* wgsl_common_frag.cpp in Sources */,
 				047BEFE527A53FB8003F3599 /* wgsl_blend_shape_input.cpp in Sources */,
 				049546F6279FC92B00783C84 /* forward_subpass.cpp in Sources */,
-				04F9E93827D5D08A00BD291B /* wgsl_custer_compute.cpp in Sources */,
+				04F9E93827D5D08A00BD291B /* wgsl_cluster_compute.cpp in Sources */,
 				047BF0E327ACEBAE003F3599 /* physics_manager.cpp in Sources */,
 				047BF10727ACEBB7003F3599 /* spring_joint.cpp in Sources */,
 				047BF00727A56434003F3599 /* wgsl_unlit.cpp in Sources */,
@@ -2848,6 +2855,7 @@
 				0443E8FE27C5C7C40099E13A /* wgsl_shadow_common.cpp in Sources */,
 				047BF10027ACEBB7003F3599 /* spherical_joint.cpp in Sources */,
 				0495475327A2750900783C84 /* model_mesh.cpp in Sources */,
+				04F9E93C27D5D67E00BD291B /* wgsl_cluster_common.cpp in Sources */,
 				04F9E90E27D465A800BD291B /* particle_material.cpp in Sources */,
 				04128459279ED4B10071BD86 /* imgui_widgets.cpp in Sources */,
 				04954683279F8CD600783C84 /* update_flag.cpp in Sources */,
