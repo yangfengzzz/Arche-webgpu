@@ -46,12 +46,14 @@ _clusterLightsProp(Shader::createProperty("u_clusterLights", ShaderDataGroup::Co
     std::make_unique<ComputePass>(_scene->device(), std::make_unique<WGSLClusterBoundsSource>(TILE_COUNT, MAX_LIGHTS_PER_CLUSTER,
                                                                                               WORKGROUP_SIZE));
     _clusterBoundsCompute->attachShaderData(&_shaderData);
+    _clusterBoundsCompute->setDispatchCount(DISPATCH_SIZE[0], DISPATCH_SIZE[1], DISPATCH_SIZE[2]);
     
     _clusterLightsCompute =
     std::make_unique<ComputePass>(_scene->device(), std::make_unique<WGSLClusterLightsSource>(TILE_COUNT, MAX_LIGHTS_PER_CLUSTER,
                                                                                               WORKGROUP_SIZE));
     _clusterLightsCompute->attachShaderData(&_shaderData);
     _clusterLightsCompute->attachShaderData(&_scene->shaderData);
+    _clusterLightsCompute->setDispatchCount(DISPATCH_SIZE[0], DISPATCH_SIZE[1], DISPATCH_SIZE[2]);
 }
 
 void LightManager::setCamera(Camera* camera) {
@@ -189,7 +191,7 @@ void LightManager::draw(wgpu::CommandEncoder& commandEncoder) {
 
         auto encoder = commandEncoder.BeginComputePass();
         if (updateBounds) {
-//            _clusterBoundsCompute->compute(encoder);
+            _clusterBoundsCompute->compute(encoder);
         }
         _clusterLightsCompute->compute(encoder);
         encoder.End();

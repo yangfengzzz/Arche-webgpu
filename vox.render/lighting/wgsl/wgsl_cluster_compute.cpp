@@ -15,7 +15,7 @@ _tileCount(tileCount) {
 }
 
 void WGSLTileFunctions::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros) {
-    encoder.addStruct(fmt::format("let tileCount : vec3<u32> = vec3<u32>({}u, {}u, {});",
+    encoder.addStruct(fmt::format("let tileCount : vec3<u32> = vec3<u32>({}u, {}u, {}u);\n",
                                   _tileCount[0], _tileCount[1], _tileCount[2]));
     std::string tileFunc =
     "fn linearDepth(depthSample : f32) -> f32 {\n"
@@ -202,28 +202,53 @@ void WGSLClusterLightsSource::_createShaderSource(size_t hash, const ShaderMacro
             "\n"
             "var clusterLightCount = 0u;\n";
             source += fmt::format("var cluserLightIndices : array<u32, {}>;\n", _maxLightsPerCluster);
-            source += "for (var i = 0u; i < globalLights.lightCount; i = i + 1u) {\n"
-            "  let range = globalLights.lights[i].range;\n"
-            "  // Lights without an explicit range affect every cluster, but this is a poor way to handle that.\n"
-            "  var lightInCluster = range <= 0.0;\n"
-            "\n"
-            "  if (!lightInCluster) {\n"
-            "    let lightViewPos = u_cluster_view.matrix * vec4<f32>(globalLights.lights[i].position, 1.0);\n"
-            "    let sqDist = sqDistPointAABB(lightViewPos.xyz, u_clusters.bounds[tileIndex].minAABB, u_clusters.bounds[tileIndex].maxAABB);\n"
-            "    lightInCluster = sqDist <= (range * range);\n"
-            "  }\n"
-            "\n"
-            "  if (lightInCluster) {\n"
-            "    // Light affects this cluster. Add it to the list.\n"
-            "    cluserLightIndices[clusterLightCount] = i;\n"
-            "    clusterLightCount = clusterLightCount + 1u;\n"
-            "  }\n"
-            "\n";
-            source += fmt::format("  if (clusterLightCount == {}u) {{\n", _maxLightsPerCluster);
-            source += "    break;\n"
-            "  }\n"
-            "}\n"
-            "\n"
+            if (macros.contains(POINT_LIGHT_COUNT)) {
+                source += fmt::format("for (var i = 0u; i < {}u; i = i + 1u) {{\n", (int)*macros.macroConstant(POINT_LIGHT_COUNT));
+                source += "  let range = u_pointLight[i].distance;\n"
+                "  // Lights without an explicit range affect every cluster, but this is a poor way to handle that.\n"
+                "  var lightInCluster = range <= 0.0;\n"
+                "\n"
+                "  if (!lightInCluster) {\n"
+                "    let lightViewPos = u_cluster_view.matrix * vec4<f32>(u_pointLight[i].position, 1.0);\n"
+                "    let sqDist = sqDistPointAABB(lightViewPos.xyz, u_clusters.bounds[tileIndex].minAABB, u_clusters.bounds[tileIndex].maxAABB);\n"
+                "    lightInCluster = sqDist <= (range * range);\n"
+                "  }\n"
+                "\n"
+                "  if (lightInCluster) {\n"
+                "    // Light affects this cluster. Add it to the list.\n"
+                "    cluserLightIndices[clusterLightCount] = i;\n"
+                "    clusterLightCount = clusterLightCount + 1u;\n"
+                "  }\n"
+                "\n";
+                source += fmt::format("  if (clusterLightCount == {}u) {{\n", _maxLightsPerCluster);
+                source += "    break;\n"
+                "  }\n"
+                "}\n";
+            }
+            if (macros.contains(SPOT_LIGHT_COUNT)) {
+                source += fmt::format("for (var i = 0u; i < {}u; i = i + 1u) {{\n", (int)*macros.macroConstant(SPOT_LIGHT_COUNT));
+                source += "  let range = u_spotLight[i].distance;\n"
+                "  // Lights without an explicit range affect every cluster, but this is a poor way to handle that.\n"
+                "  var lightInCluster = range <= 0.0;\n"
+                "\n"
+                "  if (!lightInCluster) {\n"
+                "    let lightViewPos = u_cluster_view.matrix * vec4<f32>(u_spotLight[i].position, 1.0);\n"
+                "    let sqDist = sqDistPointAABB(lightViewPos.xyz, u_clusters.bounds[tileIndex].minAABB, u_clusters.bounds[tileIndex].maxAABB);\n"
+                "    lightInCluster = sqDist <= (range * range);\n"
+                "  }\n"
+                "\n"
+                "  if (lightInCluster) {\n"
+                "    // Light affects this cluster. Add it to the list.\n"
+                "    cluserLightIndices[clusterLightCount] = i;\n"
+                "    clusterLightCount = clusterLightCount + 1u;\n"
+                "  }\n"
+                "\n";
+                source += fmt::format("  if (clusterLightCount == {}u) {{\n", _maxLightsPerCluster);
+                source += "    break;\n"
+                "  }\n"
+                "}\n";
+            }
+            source += "\n"
             "var offset = atomicAdd(&u_clusterLights.offset, clusterLightCount);\n"
             "\n"
             "for(var i = 0u; i < clusterLightCount; i = i + 1u) {\n"
