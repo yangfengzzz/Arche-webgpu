@@ -22,17 +22,5 @@ public:
     void operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros);
 };
 
-//MARK: - WGSLLightUniforms
-class WGSLLightUniforms {
-public:
-    void operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros);
-};
-
-//MARK: - WGSLModelUniforms
-class WGSLModelUniforms {
-public:
-    void operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros);
-};
-
 }
 #endif /* wgsl_cluster_common_hpp */

@@ -122,7 +122,7 @@ private:
     
     struct ViewUniforms {
         Matrix4x4F matrix;
-        Vector3F position;
+        Point3F position;
     };
     ViewUniforms _viewUniforms;
     ShaderProperty _viewProp;

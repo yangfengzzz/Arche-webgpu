@@ -12,13 +12,7 @@
 namespace vox {
 class WGSLLightFragDefine {
 public:
-    WGSLLightFragDefine(const std::string& outputStructName);
-    
-    void operator()(WGSLEncoder& encoder,
-                    const ShaderMacroCollection& macros, size_t counterIndex);
-    
-private:
-    std::string _outputStructName{};
+    void operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros);
 };
 
 }

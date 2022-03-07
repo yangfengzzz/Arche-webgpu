@@ -9,6 +9,7 @@
 
 #include "wgsl_cluster_common.h"
 #include "shaderlib/wgsl_cache.h"
+#include "shaderlib/functors/wgsl_light_frag_define.h"
 
 namespace vox {
 //MARK: - WGSLTileFunctions
@@ -76,7 +77,7 @@ private:
 
     WGSLProjectionUniforms _projectionUniforms;
     WGSLViewUniforms _viewUniforms;
-    WGSLLightUniforms _lightUniforms;
+    WGSLLightFragDefine _lightFragDefine;
     WGSLClusterLightsStructs _clusterLightsStructs;
     WGSLClusterStructs _clusterStructs;
     WGSLTileFunctions _tileFunctions;

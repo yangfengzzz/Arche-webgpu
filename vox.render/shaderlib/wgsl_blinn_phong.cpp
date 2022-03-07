@@ -79,7 +79,7 @@ _uvShare("VertexOut"),
 _colorShare("VertexOut"),
 _normalShare("VertexOut"),
 _worldPosShare("VertexOut"),
-_lightFragDefine("VertexOut"),
+_lightFragDefine(),
 _mobileMaterialShare("VertexOut"),
 _normalGet("VertexOut"),
 
@@ -111,7 +111,7 @@ void WGSLBlinnPhongFragment::_createShaderSource(size_t hash, const ShaderMacroC
         _worldPosShare(encoder, macros, inputStructCounter);
         _shadowShare(encoder, macros, inputStructCounter);
 
-        _lightFragDefine(encoder, macros, inputStructCounter);
+        _lightFragDefine(encoder, macros);
         _mobileMaterialShare(encoder, macros, inputStructCounter);
         _normalGet(encoder, macros, inputStructCounter);
         encoder.addInoutType("Output", 0, "finalColor", UniformType::Vec4f32);

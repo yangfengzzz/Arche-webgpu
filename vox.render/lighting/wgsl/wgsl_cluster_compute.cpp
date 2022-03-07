@@ -153,7 +153,7 @@ WGSLClusterLightsSource::WGSLClusterLightsSource(const std::array<uint32_t, 3>& 
                                                  const std::array<uint32_t, 3>& workgroupSize):
 _projectionUniforms(),
 _viewUniforms(),
-_lightUniforms(),
+_lightFragDefine(),
 _clusterLightsStructs(tileCount[0] * tileCount[1] * tileCount[2], maxLightsPerCluster),
 _clusterStructs(tileCount[0] * tileCount[1] * tileCount[2]),
 _tileFunctions(tileCount),
@@ -169,7 +169,7 @@ void WGSLClusterLightsSource::_createShaderSource(size_t hash, const ShaderMacro
         auto encoder = createSourceEncoder(wgpu::ShaderStage::Compute);
         _projectionUniforms(encoder, macros);
         _viewUniforms(encoder, macros);
-        _lightUniforms(encoder, macros);
+        _lightFragDefine(encoder, macros);
         _clusterLightsStructs(encoder, macros);
         _clusterStructs(encoder, macros);
         encoder.addStorageBufferBinding("u_clusters", "Clusters", false);
@@ -219,7 +219,7 @@ void WGSLClusterLightsSource::_createShaderSource(size_t hash, const ShaderMacro
             "    clusterLightCount = clusterLightCount + 1u;\n"
             "  }\n"
             "\n";
-            source += fmt::format("  if (clusterLightCount == {}u) {\n", _maxLightsPerCluster);
+            source += fmt::format("  if (clusterLightCount == {}u) {{\n", _maxLightsPerCluster);
             source += "    break;\n"
             "  }\n"
             "}\n"

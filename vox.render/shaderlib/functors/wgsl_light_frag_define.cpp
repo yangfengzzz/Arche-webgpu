@@ -9,12 +9,8 @@
 #include <fmt/core.h>
 
 namespace vox {
-WGSLLightFragDefine::WGSLLightFragDefine(const std::string& outputStructName) :
-_outputStructName(outputStructName) {
-}
-
 void WGSLLightFragDefine::operator()(WGSLEncoder& encoder,
-                                     const ShaderMacroCollection& macros, size_t counterIndex) {
+                                     const ShaderMacroCollection& macros) {
     if (macros.contains(DIRECT_LIGHT_COUNT)) {
         encoder.addStruct("struct DirectLight {\n"
                           "  color : vec3<f32>;\n"

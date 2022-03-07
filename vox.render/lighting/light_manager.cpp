@@ -183,11 +183,15 @@ void LightManager::draw(wgpu::CommandEncoder& commandEncoder) {
         _projectionUniforms.zFar = _camera->farClipPlane();
         _shaderData.setData(_projectionProp, _projectionUniforms);
         
+        _viewUniforms.matrix = _camera->viewMatrix();
+        _viewUniforms.position = _camera->entity()->transform->worldPosition();
+        _shaderData.setData(_viewProp, _viewUniforms);
+
         auto encoder = commandEncoder.BeginComputePass();
         if (updateBounds) {
-            _clusterBoundsCompute->compute(encoder);
+//            _clusterBoundsCompute->compute(encoder);
         }
-//        _clusterLightsCompute->compute(encoder);
+        _clusterLightsCompute->compute(encoder);
         encoder.End();
     }
 }

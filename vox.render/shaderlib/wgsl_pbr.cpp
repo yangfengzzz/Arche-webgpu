@@ -71,7 +71,7 @@ _uvShare("VertexOut"),
 _colorShare("VertexOut"),
 _normalShare("VertexOut"),
 _worldPosShare("VertexOut"),
-_lightFragDefine("VertexOut"),
+_lightFragDefine(),
 _pbrFragDefine("VertexOut", is_metallic_workflow),
 _pbrHelper("VertexOut", is_metallic_workflow),
 _pbrFrag("in", "out", is_metallic_workflow){
@@ -90,7 +90,7 @@ void WGSLPbrFragment::_createShaderSource(size_t hash, const ShaderMacroCollecti
         _colorShare(encoder, macros, inputStructCounter);
         _normalShare(encoder, macros, inputStructCounter);
         _worldPosShare(encoder, macros, inputStructCounter);
-        _lightFragDefine(encoder, macros, inputStructCounter);
+        _lightFragDefine(encoder, macros);
         _pbrFragDefine(encoder, macros, inputStructCounter);
         _pbrHelper(encoder, macros, inputStructCounter);
         encoder.addInoutType("Output", 0, "finalColor", UniformType::Vec4f32);

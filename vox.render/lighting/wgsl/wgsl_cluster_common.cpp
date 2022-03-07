@@ -27,29 +27,4 @@ void WGSLViewUniforms::operator()(WGSLEncoder& encoder, const ShaderMacroCollect
     encoder.addUniformBinding("u_cluster_view", "ViewUniforms");
 }
 
-//MARK: - WGSLLightUniforms
-void WGSLLightUniforms::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros) {
-    encoder.addStruct("struct Light {\n"
-                      "  position : vec3<f32>;\n"
-                      "  range : f32;\n"
-                      "  color : vec3<f32>;\n"
-                      "  intensity : f32;\n"
-                      "};\n"
-                      "\n"
-                      "struct GlobalLightUniforms {\n"
-                      "  ambient : vec3<f32>;\n"
-                      "  lightCount : u32;\n"
-                      "  lights : array<Light>;\n"
-                      "};\n");
-    encoder.addStorageBufferBinding("globalLights", "GlobalLightUniforms", true);
-}
-
-//MARK: - WGSLModelUniforms
-void WGSLModelUniforms::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros) {
-    encoder.addStruct("struct ModelUniforms {\n"
-                      "  matrix : mat4x4<f32>;\n"
-                      "};\n");
-    encoder.addUniformBinding("model", "ModelUniforms");
-}
-
 }
