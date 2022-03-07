@@ -129,7 +129,9 @@ private:
     
     struct ClusterBounds {
         Vector3F minAABB;
+        float _pad1;
         Vector3F maxAABB;
+        float _pad2;
     };
     struct Clusters {
         std::array<ClusterBounds, TOTAL_TILES> bounds;
