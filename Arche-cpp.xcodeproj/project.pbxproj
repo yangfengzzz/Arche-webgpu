@@ -546,6 +546,10 @@
 		04F9E93927D5D08A00BD291B /* wgsl_cluster_compute.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E93727D5D08A00BD291B /* wgsl_cluster_compute.h */; };
 		04F9E93C27D5D67E00BD291B /* wgsl_cluster_common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E93A27D5D67E00BD291B /* wgsl_cluster_common.cpp */; };
 		04F9E93D27D5D67E00BD291B /* wgsl_cluster_common.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E93B27D5D67E00BD291B /* wgsl_cluster_common.h */; };
+		04F9E94027D654A500BD291B /* cluster_debug_material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E93E27D654A500BD291B /* cluster_debug_material.cpp */; };
+		04F9E94127D654A500BD291B /* cluster_debug_material.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E93F27D654A500BD291B /* cluster_debug_material.h */; };
+		04F9E94427D6558E00BD291B /* wgsl_cluster_debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E94227D6558E00BD291B /* wgsl_cluster_debug.cpp */; };
+		04F9E94527D6558E00BD291B /* wgsl_cluster_debug.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E94327D6558E00BD291B /* wgsl_cluster_debug.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1227,6 +1231,10 @@
 		04F9E93727D5D08A00BD291B /* wgsl_cluster_compute.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_cluster_compute.h; sourceTree = "<group>"; };
 		04F9E93A27D5D67E00BD291B /* wgsl_cluster_common.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_cluster_common.cpp; sourceTree = "<group>"; };
 		04F9E93B27D5D67E00BD291B /* wgsl_cluster_common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_cluster_common.h; sourceTree = "<group>"; };
+		04F9E93E27D654A500BD291B /* cluster_debug_material.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = cluster_debug_material.cpp; sourceTree = "<group>"; };
+		04F9E93F27D654A500BD291B /* cluster_debug_material.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cluster_debug_material.h; sourceTree = "<group>"; };
+		04F9E94227D6558E00BD291B /* wgsl_cluster_debug.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_cluster_debug.cpp; sourceTree = "<group>"; };
+		04F9E94327D6558E00BD291B /* wgsl_cluster_debug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_cluster_debug.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1807,6 +1815,8 @@
 		047BF0B927AC07FF003F3599 /* lighting */ = {
 			isa = PBXGroup;
 			children = (
+				04F9E93F27D654A500BD291B /* cluster_debug_material.h */,
+				04F9E93E27D654A500BD291B /* cluster_debug_material.cpp */,
 				04F9E93127D5CDFF00BD291B /* wgsl */,
 				047BF0BB27AC086B003F3599 /* light.h */,
 				047BF0BA27AC086B003F3599 /* light.cpp */,
@@ -2201,6 +2211,8 @@
 				04F9E93A27D5D67E00BD291B /* wgsl_cluster_common.cpp */,
 				04F9E93727D5D08A00BD291B /* wgsl_cluster_compute.h */,
 				04F9E93627D5D08A00BD291B /* wgsl_cluster_compute.cpp */,
+				04F9E94327D6558E00BD291B /* wgsl_cluster_debug.h */,
+				04F9E94227D6558E00BD291B /* wgsl_cluster_debug.cpp */,
 			);
 			path = wgsl;
 			sourceTree = "<group>";
@@ -2413,6 +2425,7 @@
 				047BF0BD27AC086B003F3599 /* light.h in Headers */,
 				04F9E93927D5D08A00BD291B /* wgsl_cluster_compute.h in Headers */,
 				0443E8DD27C4C3280099E13A /* shadow_manager.h in Headers */,
+				04F9E94527D6558E00BD291B /* wgsl_cluster_debug.h in Headers */,
 				04128446279ED3A60071BD86 /* timer.h in Headers */,
 				047BF0C027AC0D19003F3599 /* point_light.h in Headers */,
 				047BF00427A562F4003F3599 /* wgsl_common.h in Headers */,
@@ -2445,6 +2458,7 @@
 				0412844A279ED3A60071BD86 /* unix_engine.h in Headers */,
 				0412843F279ED3A60071BD86 /* glfw_window.h in Headers */,
 				04F9E92527D4AE3E00BD291B /* wgsl_particle_noise.h in Headers */,
+				04F9E94127D654A500BD291B /* cluster_debug_material.h in Headers */,
 				047BEFDB27A4DB63003F3599 /* wgsl_encoder.h in Headers */,
 				047BF19527AE6F74003F3599 /* scene_animation_clip.h in Headers */,
 				04954684279F8CD600783C84 /* scene_forward.h in Headers */,
@@ -2820,6 +2834,7 @@
 				0495474A27A2669600783C84 /* mesh.cpp in Sources */,
 				0495472427A23CE100783C84 /* sampled_texture.cpp in Sources */,
 				047BF07927A6819C003F3599 /* astc_percentile_tables.cpp in Sources */,
+				04F9E94427D6558E00BD291B /* wgsl_cluster_debug.cpp in Sources */,
 				04128461279ED4B10071BD86 /* imgui_draw.cpp in Sources */,
 				047BEFDA27A4DB63003F3599 /* wgsl_encoder.cpp in Sources */,
 				047BEFD627A4BFD9003F3599 /* wgsl_common_vert.cpp in Sources */,
@@ -2844,6 +2859,7 @@
 				047BF02827A6659E003F3599 /* astc.cpp in Sources */,
 				04954652279F8AE900783C84 /* base_material.cpp in Sources */,
 				047BF16D27AD45A6003F3599 /* wgsl_pbr.cpp in Sources */,
+				04F9E94027D654A500BD291B /* cluster_debug_material.cpp in Sources */,
 				049546ED279FC74800783C84 /* render_pass.cpp in Sources */,
 				047BEFFB27A56187003F3599 /* wgsl_uv_vert.cpp in Sources */,
 				0495476C27A2C6C500783C84 /* resource_cache.cpp in Sources */,
