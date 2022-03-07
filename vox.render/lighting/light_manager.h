@@ -20,6 +20,7 @@ namespace vox {
  */
 class LightManager : public Singleton<LightManager> {
 public:
+    static constexpr uint32_t FORWARD_PLUS_ENABLE = 10;
     static constexpr std::array<uint32_t, 3> TILE_COUNT = {32, 18, 48};
     static constexpr uint32_t TOTAL_TILES = TILE_COUNT[0] * TILE_COUNT[1] * TILE_COUNT[2];
     
@@ -109,6 +110,46 @@ private:
     void _updateShaderData(ShaderData &shaderData);
     
 private:
+    struct ProjectionUniforms {
+        Matrix4x4F matrix;
+        Matrix4x4F inverseMatrix;
+        Vector2F outputSize;
+        float zNear;
+        float zFar;
+    };
+    ProjectionUniforms _projectionUniforms;
+    ShaderProperty _projectionProp;
+    
+    struct ViewUniforms {
+        Matrix4x4F matrix;
+        Vector3F position;
+    };
+    ViewUniforms _viewUniforms;
+    ShaderProperty _viewProp;
+    
+    struct ClusterBounds {
+        Vector3F minAABB;
+        Vector3F maxAABB;
+    };
+    struct Clusters {
+        std::array<ClusterBounds, TOTAL_TILES> bounds;
+    };
+    ShaderProperty _clustersProp;
+    std::unique_ptr<Buffer> _clustersBuffer;
+    
+    struct ClusterLights {
+        uint32_t offset;
+        uint32_t count;
+    };
+    struct ClusterLightGroup {
+        uint32_t offset;
+        std::array<ClusterLights, TOTAL_TILES> lights;
+        std::array<uint32_t, MAX_LIGHTS_PER_CLUSTER * TOTAL_TILES> indices;
+    };
+    ShaderProperty _clusterLightsProp;
+    std::unique_ptr<Buffer> _clusterLightsBuffer;
+    
+    ShaderData _shaderData;
     std::unique_ptr<ComputePass> _clusterBoundsCompute{nullptr};
     std::unique_ptr<ComputePass> _clusterLightsCompute{nullptr};
 };

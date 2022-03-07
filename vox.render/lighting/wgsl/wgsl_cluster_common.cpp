@@ -15,7 +15,7 @@ void WGSLProjectionUniforms::operator()(WGSLEncoder& encoder, const ShaderMacroC
                       "  zNear : f32;\n"
                       "  zFar : f32;\n"
                       "};\n");
-    encoder.addUniformBinding("projection", "ProjectionUniforms");
+    encoder.addUniformBinding("u_cluster_projection", "ProjectionUniforms");
 }
 
 //MARK: - WGSLViewUniforms
@@ -24,7 +24,7 @@ void WGSLViewUniforms::operator()(WGSLEncoder& encoder, const ShaderMacroCollect
                       "  matrix : mat4x4<f32>;\n"
                       "  position : vec3<f32>;\n"
                       "};\n");
-    encoder.addUniformBinding("view", "ViewUniforms");
+    encoder.addUniformBinding("u_cluster_view", "ViewUniforms");
 }
 
 //MARK: - WGSLLightUniforms

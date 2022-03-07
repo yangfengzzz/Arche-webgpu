@@ -15,21 +15,21 @@ _tileCount(tileCount) {
 }
 
 void WGSLTileFunctions::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros) {
-    encoder.addStruct(fmt::format("let tileCount : vec3<u32> = vec3<u32>({}u, {}u, ${});",
+    encoder.addStruct(fmt::format("let tileCount : vec3<u32> = vec3<u32>({}u, {}u, {});",
                                   _tileCount[0], _tileCount[1], _tileCount[2]));
     std::string tileFunc =
     "fn linearDepth(depthSample : f32) -> f32 {\n"
-    "  return projection.zFar*projection.zNear / fma(depthSample, projection.zNear-projection.zFar, projection.zFar);\n"
+    "  return u_cluster_projection.zFar * u_cluster_projection.zNear / fma(depthSample, u_cluster_projection.zNear - u_cluster_projection.zFar, u_cluster_projection.zFar);\n"
     "}\n"
     "\n"
     "fn getTile(fragCoord : vec4<f32>) -> vec3<u32> {\n"
     "  // TODO: scale and bias calculation can be moved outside the shader to save cycles.\n"
-    "  let sliceScale = f32(tileCount.z) / log2(projection.zFar / projection.zNear);\n"
-    "  let sliceBias = -(f32(tileCount.z) * log2(projection.zNear) / log2(projection.zFar / projection.zNear));\n"
+    "  let sliceScale = f32(tileCount.z) / log2(u_cluster_projection.zFar / u_cluster_projection.zNear);\n"
+    "  let sliceBias = -(f32(tileCount.z) * log2(u_cluster_projection.zNear) / log2(u_cluster_projection.zFar / u_cluster_projection.zNear));\n"
     "  let zTile = u32(max(log2(linearDepth(fragCoord.z)) * sliceScale + sliceBias, 0.0));\n"
     "\n"
-    "  return vec3<u32>(u32(fragCoord.x / (projection.outputSize.x / f32(tileCount.x))),\n"
-    "      u32(fragCoord.y / (projection.outputSize.y / f32(tileCount.y))),\n"
+    "  return vec3<u32>(u32(fragCoord.x / (u_cluster_projection.outputSize.x / f32(tileCount.x))),\n"
+    "      u32(fragCoord.y / (u_cluster_projection.outputSize.y / f32(tileCount.y))),\n"
     "      zTile);\n"
     "}\n"
     "\n"
@@ -43,14 +43,18 @@ void WGSLTileFunctions::operator()(WGSLEncoder& encoder, const ShaderMacroCollec
 }
 
 //MARK: - WGSLClusterStructs
+WGSLClusterStructs::WGSLClusterStructs(uint32_t totalTiles):
+_totalTiles(totalTiles) {
+}
+
 void WGSLClusterStructs::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros) {
-    encoder.addStruct("struct ClusterBounds {\n"
-                      "  minAABB : vec3<f32>;\n"
-                      "  maxAABB : vec3<f32>;\n"
-                      "};\n"
-                      "struct Clusters {\n"
-                      "  bounds : array<ClusterBounds, ${TOTAL_TILES}>;\n"
-                      "};\n");
+    encoder.addStruct(fmt::format("struct ClusterBounds {\n"
+                                  "  minAABB : vec3<f32>;\n"
+                                  "  maxAABB : vec3<f32>;\n"
+                                  "};\n"
+                                  "struct Clusters {\n"
+                                  "  bounds : array<ClusterBounds, {}>;\n"
+                                  "};\n", _totalTiles));
 }
 
 //MARK: - WGSLClusterLightsStructs
@@ -75,7 +79,7 @@ void WGSLClusterLightsStructs::operator()(WGSLEncoder& encoder, const ShaderMacr
 //MARK: - WGSLClusterBoundsSource
 WGSLClusterBoundsSource::WGSLClusterBoundsSource(const std::array<uint32_t, 3>& tileCount, uint32_t maxLightsPerCluster,
                                                  const std::array<uint32_t, 3>& workgroupSize):
-_clusterStructs(),
+_clusterStructs(tileCount[0] * tileCount[1] * tileCount[2]),
 _clusterLightsStructs(tileCount[0] * tileCount[1] * tileCount[2], maxLightsPerCluster),
 _tileCount(tileCount),
 _workgroupSize(workgroupSize) {
@@ -89,7 +93,7 @@ void WGSLClusterBoundsSource::_createShaderSource(size_t hash, const ShaderMacro
         auto encoder = createSourceEncoder(wgpu::ShaderStage::Compute);
         _clusterStructs(encoder, macros);
         _clusterLightsStructs(encoder, macros);
-        encoder.addStorageBufferBinding("clusters", "Clusters", false);
+        encoder.addStorageBufferBinding("u_clusters", "Clusters", false);
         encoder.addFunction("fn lineIntersectionToZPlane(a : vec3<f32>, b : vec3<f32>, zDistance : f32) -> vec3<f32> {\n"
                             "  let normal = vec3<f32>(0.0, 0.0, 1.0);\n"
                             "  let ab = b - a;\n"
@@ -98,12 +102,12 @@ void WGSLClusterBoundsSource::_createShaderSource(size_t hash, const ShaderMacro
                             "}\n"
                             "\n"
                             "fn clipToView(clip : vec4<f32>) -> vec4<f32> {\n"
-                            "  let view = projection.inverseMatrix * clip;\n"
+                            "  let view = u_cluster_projection.inverseMatrix * clip;\n"
                             "  return view / vec4<f32>(view.w, view.w, view.w, view.w);\n"
                             "}\n"
                             "\n"
                             "fn screen2View(screen : vec4<f32>) -> vec4<f32> {\n"
-                            "  let texCoord = screen.xy / projection.outputSize.xy;\n"
+                            "  let texCoord = screen.xy / u_cluster_projection.outputSize.xy;\n"
                             "  let clip = vec4<f32>(vec2<f32>(texCoord.x, 1.0 - texCoord.y) * 2.0 - vec2<f32>(1.0, 1.0), screen.z, screen.w);\n"
                             "  return clipToView(clip);\n"
                             "}\n");
@@ -117,8 +121,8 @@ void WGSLClusterBoundsSource::_createShaderSource(size_t hash, const ShaderMacro
             "    global_id.y * tileCount.x +\n"
             "    global_id.z * tileCount.x * tileCount.y;\n"
             "\n"
-            "let tileSize = vec2<f32>(projection.outputSize.x / f32(tileCount.x),\n"
-            "projection.outputSize.y / f32(tileCount.y));\n"
+            "let tileSize = vec2<f32>(u_cluster_projection.outputSize.x / f32(tileCount.x),\n"
+            "u_cluster_projection.outputSize.y / f32(tileCount.y));\n"
             "\n"
             "let maxPoint_sS = vec4<f32>(vec2<f32>(f32(global_id.x+1u), f32(global_id.y+1u)) * tileSize, 0.0, 1.0);\n"
             "let minPoint_sS = vec4<f32>(vec2<f32>(f32(global_id.x), f32(global_id.y)) * tileSize, 0.0, 1.0);\n"
@@ -126,16 +130,16 @@ void WGSLClusterBoundsSource::_createShaderSource(size_t hash, const ShaderMacro
             "let maxPoint_vS = screen2View(maxPoint_sS).xyz;\n"
             "let minPoint_vS = screen2View(minPoint_sS).xyz;\n"
             "\n"
-            "let tileNear = -projection.zNear * pow(projection.zFar/ projection.zNear, f32(global_id.z)/f32(tileCount.z));\n"
-            "let tileFar = -projection.zNear * pow(projection.zFar/ projection.zNear, f32(global_id.z+1u)/f32(tileCount.z));\n"
+            "let tileNear = -u_cluster_projection.zNear * pow(u_cluster_projection.zFar/ u_cluster_projection.zNear, f32(global_id.z)/f32(tileCount.z));\n"
+            "let tileFar = -u_cluster_projection.zNear * pow(u_cluster_projection.zFar/ u_cluster_projection.zNear, f32(global_id.z+1u)/f32(tileCount.z));\n"
             "\n"
             "let minPointNear = lineIntersectionToZPlane(eyePos, minPoint_vS, tileNear);\n"
             "let minPointFar = lineIntersectionToZPlane(eyePos, minPoint_vS, tileFar);\n"
             "let maxPointNear = lineIntersectionToZPlane(eyePos, maxPoint_vS, tileNear);\n"
             "let maxPointFar = lineIntersectionToZPlane(eyePos, maxPoint_vS, tileFar);\n"
             "\n"
-            "clusters.bounds[tileIndex].minAABB = min(min(minPointNear, minPointFar),min(maxPointNear, maxPointFar));\n"
-            "clusters.bounds[tileIndex].maxAABB = max(max(minPointNear, minPointFar),max(maxPointNear, maxPointFar));\n";
+            "u_clusters.bounds[tileIndex].minAABB = min(min(minPointNear, minPointFar),min(maxPointNear, maxPointFar));\n"
+            "u_clusters.bounds[tileIndex].maxAABB = max(max(minPointNear, minPointFar),max(maxPointNear, maxPointFar));\n";
             
         }, {{"global_id", BuiltInType::GlobalInvocationID}});
         encoder.flush();
@@ -151,8 +155,9 @@ _projectionUniforms(),
 _viewUniforms(),
 _lightUniforms(),
 _clusterLightsStructs(tileCount[0] * tileCount[1] * tileCount[2], maxLightsPerCluster),
-_clusterStructs(),
+_clusterStructs(tileCount[0] * tileCount[1] * tileCount[2]),
 _tileFunctions(tileCount),
+_maxLightsPerCluster(maxLightsPerCluster),
 _tileCount(tileCount),
 _workgroupSize(workgroupSize){
 }
@@ -167,13 +172,13 @@ void WGSLClusterLightsSource::_createShaderSource(size_t hash, const ShaderMacro
         _lightUniforms(encoder, macros);
         _clusterLightsStructs(encoder, macros);
         _clusterStructs(encoder, macros);
-        encoder.addStorageBufferBinding("clusters", "Clusters", false);
+        encoder.addStorageBufferBinding("u_clusters", "Clusters", false);
         _tileFunctions(encoder, macros);
         
         encoder.addFunction("fn sqDistPointAABB(point : vec3<f32>, minAABB : vec3<f32>, maxAABB : vec3<f32>) -> f32 {\n"
                             "  var sqDist = 0.0;\n"
-                            "  // const minAABB : vec3<f32> = clusters.bounds[tileIndex].minAABB;\n"
-                            "  // const maxAABB : vec3<f32> = clusters.bounds[tileIndex].maxAABB;\n"
+                            "  // const minAABB : vec3<f32> = u_clusters.bounds[tileIndex].minAABB;\n"
+                            "  // const maxAABB : vec3<f32> = u_clusters.bounds[tileIndex].maxAABB;\n"
                             "\n"
                             "  // Wait, does this actually work? Just porting code, but it seems suspect?\n"
                             "  for(var i = 0; i < 3; i = i + 1) {\n"
@@ -189,22 +194,22 @@ void WGSLClusterLightsSource::_createShaderSource(size_t hash, const ShaderMacro
                             "  return sqDist;\n"
                             "}\n");
         
-        encoder.addEntry({2, 2, 2}, [&](std::string &source){
+        encoder.addEntry({_workgroupSize[0], _workgroupSize[1], _workgroupSize[2]}, [&](std::string &source){
             source +=
             "let tileIndex = global_id.x +\n"
             "    global_id.y * tileCount.x +\n"
             "    global_id.z * tileCount.x * tileCount.y;\n"
             "\n"
-            "var clusterLightCount = 0u;\n"
-            "var cluserLightIndices : array<u32, ${MAX_LIGHTS_PER_CLUSTER}>;\n"
-            "for (var i = 0u; i < globalLights.lightCount; i = i + 1u) {\n"
+            "var clusterLightCount = 0u;\n";
+            source += fmt::format("var cluserLightIndices : array<u32, {}>;\n", _maxLightsPerCluster);
+            source += "for (var i = 0u; i < globalLights.lightCount; i = i + 1u) {\n"
             "  let range = globalLights.lights[i].range;\n"
             "  // Lights without an explicit range affect every cluster, but this is a poor way to handle that.\n"
             "  var lightInCluster = range <= 0.0;\n"
             "\n"
             "  if (!lightInCluster) {\n"
-            "    let lightViewPos = view.matrix * vec4<f32>(globalLights.lights[i].position, 1.0);\n"
-            "    let sqDist = sqDistPointAABB(lightViewPos.xyz, clusters.bounds[tileIndex].minAABB, clusters.bounds[tileIndex].maxAABB);\n"
+            "    let lightViewPos = u_cluster_view.matrix * vec4<f32>(globalLights.lights[i].position, 1.0);\n"
+            "    let sqDist = sqDistPointAABB(lightViewPos.xyz, u_clusters.bounds[tileIndex].minAABB, u_clusters.bounds[tileIndex].maxAABB);\n"
             "    lightInCluster = sqDist <= (range * range);\n"
             "  }\n"
             "\n"
@@ -213,9 +218,9 @@ void WGSLClusterLightsSource::_createShaderSource(size_t hash, const ShaderMacro
             "    cluserLightIndices[clusterLightCount] = i;\n"
             "    clusterLightCount = clusterLightCount + 1u;\n"
             "  }\n"
-            "\n"
-            "  if (clusterLightCount == ${MAX_LIGHTS_PER_CLUSTER}u) {\n"
-            "    break;\n"
+            "\n";
+            source += fmt::format("  if (clusterLightCount == {}u) {\n", _maxLightsPerCluster);
+            source += "    break;\n"
             "  }\n"
             "}\n"
             "\n"

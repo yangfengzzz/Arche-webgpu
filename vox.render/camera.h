@@ -135,6 +135,11 @@ public:
     Matrix4x4F projectionMatrix();
     
     /**
+     * The inverse of the projection matrix.
+     */
+    Matrix4x4F inverseProjectionMatrix();
+    
+    /**
      * Whether to enable HDR.
      * @todo When render pipeline modification
      */
@@ -243,11 +248,6 @@ private:
      * The inverse matrix of view projection matrix.
      */
     Matrix4x4F invViewProjMat();
-    
-    /**
-     * The inverse of the projection matrix.
-     */
-    Matrix4x4F inverseProjectionMatrix();
     
     CameraData _cameraData;
     ShaderProperty _cameraProperty;

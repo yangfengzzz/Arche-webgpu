@@ -7,6 +7,7 @@
 #include "light_manager.h"
 #include "shader/shader.h"
 #include "scene.h"
+#include "camera.h"
 #include "lighting/wgsl/wgsl_cluster_compute.h"
 #include <glog/logging.h>
 
@@ -22,15 +23,35 @@ LightManager &LightManager::getSingleton(void) {
 
 LightManager::LightManager(Scene* scene) :
 _scene(scene),
+_shaderData(scene->device()),
 _pointLightProperty(Shader::createProperty("u_pointLight", ShaderDataGroup::Scene)),
 _spotLightProperty(Shader::createProperty("u_spotLight", ShaderDataGroup::Scene)),
-_directLightProperty(Shader::createProperty("u_directLight", ShaderDataGroup::Scene)){
+_directLightProperty(Shader::createProperty("u_directLight", ShaderDataGroup::Scene)),
+_projectionProp(Shader::createProperty("u_cluster_projection", ShaderDataGroup::Compute)),
+_viewProp(Shader::createProperty("u_cluster_view", ShaderDataGroup::Compute)),
+_clustersProp(Shader::createProperty("u_clusters", ShaderDataGroup::Compute)),
+_clusterLightsProp(Shader::createProperty("u_clusterLight", ShaderDataGroup::Compute)) {
+    auto& device = _scene->device();
+    _clustersBuffer = std::make_unique<Buffer>(device, sizeof(Clusters), wgpu::BufferUsage::Storage | wgpu::BufferUsage::CopyDst);
+    _shaderData.setBufferFunctor(_clustersProp, [this]()->Buffer {
+        return *_clustersBuffer;
+    });
+    
+    _clusterLightsBuffer = std::make_unique<Buffer>(device, sizeof(ClusterLightGroup), wgpu::BufferUsage::Storage | wgpu::BufferUsage::CopyDst);
+    _shaderData.setBufferFunctor(_clusterLightsProp, [this]()->Buffer {
+        return *_clusterLightsBuffer;
+    });
+    
     _clusterBoundsCompute =
     std::make_unique<ComputePass>(_scene->device(), std::make_unique<WGSLClusterBoundsSource>(TILE_COUNT, MAX_LIGHTS_PER_CLUSTER,
                                                                                               WORKGROUP_SIZE));
+    _clusterBoundsCompute->attachShaderData(&_shaderData);
+    
     _clusterLightsCompute =
     std::make_unique<ComputePass>(_scene->device(), std::make_unique<WGSLClusterLightsSource>(TILE_COUNT, MAX_LIGHTS_PER_CLUSTER,
                                                                                               WORKGROUP_SIZE));
+    _clusterLightsCompute->attachShaderData(&_shaderData);
+    _clusterLightsCompute->attachShaderData(&_scene->shaderData);
 }
 
 void LightManager::setCamera(Camera* camera) {
@@ -146,9 +167,29 @@ void LightManager::_updateShaderData(ShaderData &shaderData) {
 void LightManager::draw(wgpu::CommandEncoder& commandEncoder) {
     _updateShaderData(_scene->shaderData);
     
-    auto encoder = commandEncoder.BeginComputePass();
-    // _clusterBoundsCompute->compute(encoder);
-    encoder.End();
+    size_t pointLightCount = _pointLights.size();
+    size_t spotLightCount = _spotLights.size();
+    if (pointLightCount + spotLightCount > FORWARD_PLUS_ENABLE) {
+        bool updateBounds = false;
+        
+        _projectionUniforms.matrix = _camera->projectionMatrix();
+        _projectionUniforms.inverseMatrix = _camera->inverseProjectionMatrix();
+        if (_projectionUniforms.outputSize.x != _camera->width() ||
+            _projectionUniforms.outputSize.y != _camera->height()) {
+            updateBounds = true;
+            _projectionUniforms.outputSize = Vector2F(_camera->width(), _camera->height());
+        }
+        _projectionUniforms.zNear = _camera->nearClipPlane();
+        _projectionUniforms.zFar = _camera->farClipPlane();
+        _shaderData.setData(_projectionProp, _projectionUniforms);
+        
+        auto encoder = commandEncoder.BeginComputePass();
+        if (updateBounds) {
+            _clusterBoundsCompute->compute(encoder);
+        }
+        _clusterLightsCompute->compute(encoder);
+        encoder.End();
+    }
 }
 
 

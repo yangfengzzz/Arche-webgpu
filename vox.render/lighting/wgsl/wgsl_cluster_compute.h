@@ -25,7 +25,12 @@ private:
 //MARK: - WGSLClusterStructs
 class WGSLClusterStructs {
 public:
+    WGSLClusterStructs(uint32_t totalTiles);
+    
     void operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros);
+    
+private:
+    uint32_t _totalTiles;
 };
 
 //MARK: - WGSLClusterLightsStructs
@@ -67,7 +72,8 @@ public:
 private:
     std::array<uint32_t, 3> _tileCount{};
     std::array<uint32_t, 3> _workgroupSize{};
-    
+    uint32_t _maxLightsPerCluster;
+
     WGSLProjectionUniforms _projectionUniforms;
     WGSLViewUniforms _viewUniforms;
     WGSLLightUniforms _lightUniforms;
