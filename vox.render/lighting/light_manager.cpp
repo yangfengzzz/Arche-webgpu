@@ -29,8 +29,7 @@ _shaderData(scene->device()),
 _pointLightProperty(Shader::createProperty("u_pointLight", ShaderDataGroup::Scene)),
 _spotLightProperty(Shader::createProperty("u_spotLight", ShaderDataGroup::Scene)),
 _directLightProperty(Shader::createProperty("u_directLight", ShaderDataGroup::Scene)),
-_projectionProp(Shader::createProperty("u_cluster_projection", ShaderDataGroup::Scene)),
-_viewProp(Shader::createProperty("u_cluster_view", ShaderDataGroup::Compute)),
+_forwardPlusProp(Shader::createProperty("u_cluster_uniform", ShaderDataGroup::Scene)),
 _clustersProp(Shader::createProperty("u_clusters", ShaderDataGroup::Compute)),
 _clusterLightsProp(Shader::createProperty("u_clusterLights", ShaderDataGroup::Scene)) {
     Shader::create("cluster_debug", std::make_unique<WGSLUnlitVertex>(),
@@ -174,28 +173,30 @@ void LightManager::_updateShaderData(ShaderData &shaderData) {
 }
 
 //MARK: - Forward Plus
+bool LightManager::enableForwardPlus() const {
+    return _enableForwardPlus;
+}
+
 void LightManager::draw(wgpu::CommandEncoder& commandEncoder) {
     _updateShaderData(_scene->shaderData);
     
     size_t pointLightCount = _pointLights.size();
     size_t spotLightCount = _spotLights.size();
-    if (pointLightCount + spotLightCount > FORWARD_PLUS_ENABLE) {
+    if (pointLightCount + spotLightCount > FORWARD_PLUS_ENABLE_MIN_COUNT) {
+        _enableForwardPlus = true;
         bool updateBounds = false;
         
-        _projectionUniforms.matrix = _camera->projectionMatrix();
-        _projectionUniforms.inverseMatrix = _camera->inverseProjectionMatrix();
-        if (_projectionUniforms.outputSize.x != _camera->width() ||
-            _projectionUniforms.outputSize.y != _camera->height()) {
+        _forwardPlusUniforms.matrix = _camera->projectionMatrix();
+        _forwardPlusUniforms.inverseMatrix = _camera->inverseProjectionMatrix();
+        if (_forwardPlusUniforms.outputSize.x != _camera->width() ||
+            _forwardPlusUniforms.outputSize.y != _camera->height()) {
             updateBounds = true;
-            _projectionUniforms.outputSize = Vector2F(_camera->framebufferWidth(), _camera->framebufferHeight());
+            _forwardPlusUniforms.outputSize = Vector2F(_camera->framebufferWidth(), _camera->framebufferHeight());
         }
-        _projectionUniforms.zNear = _camera->nearClipPlane();
-        _projectionUniforms.zFar = _camera->farClipPlane();
-        _scene->shaderData.setData(_projectionProp, _projectionUniforms);
-        
-        _viewUniforms.matrix = _camera->viewMatrix();
-        _viewUniforms.position = _camera->entity()->transform->worldPosition();
-        _shaderData.setData(_viewProp, _viewUniforms);
+        _forwardPlusUniforms.zNear = _camera->nearClipPlane();
+        _forwardPlusUniforms.zFar = _camera->farClipPlane();
+        _forwardPlusUniforms.viewMatrix = _camera->viewMatrix();
+        _scene->shaderData.setData(_forwardPlusProp, _forwardPlusUniforms);
         
         auto encoder = commandEncoder.BeginComputePass();
         if (updateBounds) {

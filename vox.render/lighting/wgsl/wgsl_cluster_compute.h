@@ -58,7 +58,7 @@ private:
     std::array<uint32_t, 3> _tileCount{};
     std::array<uint32_t, 3> _workgroupSize{};
     
-    WGSLProjectionUniforms _projectionUniforms;
+    WGSLForwardPlusUniforms _forwardPlusUniforms;
     WGSLClusterStructs _clusterStructs;
 };
 
@@ -75,8 +75,7 @@ private:
     std::array<uint32_t, 3> _workgroupSize{};
     uint32_t _maxLightsPerCluster;
 
-    WGSLProjectionUniforms _projectionUniforms;
-    WGSLViewUniforms _viewUniforms;
+    WGSLForwardPlusUniforms _forwardPlusUniforms;
     WGSLLightFragDefine _lightFragDefine;
     WGSLClusterLightsStructs _clusterLightsStructs;
     WGSLClusterStructs _clusterStructs;

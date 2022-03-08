@@ -9,7 +9,7 @@
 
 namespace vox {
 WGSLClusterDebug::WGSLClusterDebug(const std::array<uint32_t, 3>& tileCount, uint32_t maxLightsPerCluster):
-_projectionUniforms(),
+_forwardPlusUniforms(),
 _tileFunctions(tileCount),
 _clusterLightsStructs(tileCount[0] * tileCount[1] * tileCount[2], maxLightsPerCluster),
 _uvShare("VertexOut"),
@@ -22,7 +22,7 @@ void WGSLClusterDebug::_createShaderSource(size_t hash, const ShaderMacroCollect
     auto inputStructCounter = WGSLEncoder::startCounter(0);
     {
         auto encoder = createSourceEncoder(wgpu::ShaderStage::Fragment);
-        _projectionUniforms(encoder, macros);
+        _forwardPlusUniforms(encoder, macros);
         _tileFunctions(encoder, macros);
         _clusterLightsStructs(encoder, macros);
         

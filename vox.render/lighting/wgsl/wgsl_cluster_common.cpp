@@ -7,24 +7,16 @@
 #include "wgsl_cluster_common.h"
 
 namespace vox {
-void WGSLProjectionUniforms::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros) {
-    encoder.addStruct("struct ProjectionUniforms {\n"
+void WGSLForwardPlusUniforms::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros) {
+    encoder.addStruct("struct ForwardPlusUniforms {\n"
                       "  matrix : mat4x4<f32>;\n"
                       "  inverseMatrix : mat4x4<f32>;\n"
                       "  outputSize : vec2<f32>;\n"
                       "  zNear : f32;\n"
                       "  zFar : f32;\n"
+                      "  viewMatrix : mat4x4<f32>;\n"
                       "};\n");
-    encoder.addUniformBinding("u_cluster_projection", "ProjectionUniforms");
-}
-
-//MARK: - WGSLViewUniforms
-void WGSLViewUniforms::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros) {
-    encoder.addStruct("struct ViewUniforms {\n"
-                      "  matrix : mat4x4<f32>;\n"
-                      "  position : vec3<f32>;\n"
-                      "};\n");
-    encoder.addUniformBinding("u_cluster_view", "ViewUniforms");
+    encoder.addUniformBinding("u_cluster_uniform", "ForwardPlusUniforms");
 }
 
 }

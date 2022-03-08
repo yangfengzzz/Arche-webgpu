@@ -20,7 +20,7 @@ namespace vox {
  */
 class LightManager : public Singleton<LightManager> {
 public:
-    static constexpr uint32_t FORWARD_PLUS_ENABLE = 0;
+    static constexpr uint32_t FORWARD_PLUS_ENABLE_MIN_COUNT = 0;
     static constexpr std::array<uint32_t, 3> TILE_COUNT = {32, 18, 48};
     static constexpr uint32_t TOTAL_TILES = TILE_COUNT[0] * TILE_COUNT[1] * TILE_COUNT[2];
     
@@ -89,6 +89,8 @@ public:
     const std::vector<DirectLight *> &directLights() const;
     
 public:
+    bool enableForwardPlus() const;
+    
     void draw(wgpu::CommandEncoder& commandEncoder);
     
 private:
@@ -110,22 +112,18 @@ private:
     void _updateShaderData(ShaderData &shaderData);
     
 private:
+    bool _enableForwardPlus{false};
+    
     struct ProjectionUniforms {
         Matrix4x4F matrix;
         Matrix4x4F inverseMatrix;
         Vector2F outputSize;
         float zNear;
         float zFar;
+        Matrix4x4F viewMatrix;
     };
-    ProjectionUniforms _projectionUniforms;
-    ShaderProperty _projectionProp;
-    
-    struct ViewUniforms {
-        Matrix4x4F matrix;
-        Point3F position;
-    };
-    ViewUniforms _viewUniforms;
-    ShaderProperty _viewProp;
+    ProjectionUniforms _forwardPlusUniforms;
+    ShaderProperty _forwardPlusProp;
     
     struct ClusterBounds {
         Vector3F minAABB;

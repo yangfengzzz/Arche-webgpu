@@ -10,14 +10,8 @@
 #include "shaderlib/wgsl_encoder.h"
 
 namespace vox {
-//MARK: - WGSLProjectionUniforms
-class WGSLProjectionUniforms {
-public:
-    void operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros);
-};
-
-//MARK: - WGSLViewUniforms
-class WGSLViewUniforms {
+//MARK: - WGSLForwardPlusUniforms
+class WGSLForwardPlusUniforms {
 public:
     void operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros);
 };
