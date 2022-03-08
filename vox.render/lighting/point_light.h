@@ -28,7 +28,7 @@ public:
     /** Light intensity. */
     float intensity = 1.0;
     /** Defines a distance cutoff at which the light's intensity must be considered zero. */
-    float distance = 100;
+    float distance = 5;
     
     PointLight(Entity *entity);
     

@@ -9,6 +9,7 @@
 #define wgsl_cluster_debug_hpp
 
 #include "shaderlib/wgsl_cache.h"
+#include "shaderlib/functors/wgsl_uv_share.h"
 #include "wgsl_cluster_compute.h"
 
 namespace vox {
@@ -19,6 +20,7 @@ public:
 private:
     void _createShaderSource(size_t hash, const ShaderMacroCollection& macros) override;
     
+    WGSLUVShare _uvShare;
     WGSLProjectionUniforms _projectionUniforms;
     WGSLTileFunctions _tileFunctions;
     WGSLClusterLightsStructs _clusterLightsStructs;

@@ -12,6 +12,7 @@ WGSLClusterDebug::WGSLClusterDebug(const std::array<uint32_t, 3>& tileCount, uin
 _projectionUniforms(),
 _tileFunctions(tileCount),
 _clusterLightsStructs(tileCount[0] * tileCount[1] * tileCount[2], maxLightsPerCluster),
+_uvShare("VertexOut"),
 _maxLightsPerCluster(maxLightsPerCluster) {
 }
 
@@ -25,6 +26,7 @@ void WGSLClusterDebug::_createShaderSource(size_t hash, const ShaderMacroCollect
         _tileFunctions(encoder, macros);
         _clusterLightsStructs(encoder, macros);
         
+        _uvShare(encoder, macros, inputStructCounter);
         encoder.addInoutType("VertexOut", BuiltInType::Position, "fragCoord", UniformType::Vec4f32);
         encoder.addInoutType("Output", 0, "finalColor", UniformType::Vec4f32);
         

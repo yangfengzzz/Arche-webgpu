@@ -34,7 +34,7 @@ public:
     /** Light intensity. */
     float intensity = 1.0;
     /** Defines a distance cutoff at which the light's intensity must be considered zero. */
-    float distance = 100;
+    float distance = 5;
     /** Angle, in radians, from centre of spotlight where falloff begins. */
     float angle = M_PI / 6;
     /** Angle, in radians, from falloff begins to ends. */

@@ -5,7 +5,7 @@
 //  property of any third parties.
 
 #include "cluster_forward_app.h"
-#include "mesh/buffer_mesh.h"
+#include "mesh/primitive_mesh.h"
 #include "mesh/mesh_renderer.h"
 #include "camera.h"
 #include "controls/orbit_control.h"
@@ -14,6 +14,31 @@
 #include <random>
 
 namespace vox {
+namespace {
+class MoveScript : public Script {
+    Point3F pos = Point3F(-5, 0, 0);
+    float vel = 4;
+    int8_t velSign = -1;
+    
+public:
+    MoveScript(Entity *entity) : Script(entity) {
+    }
+    
+    void onUpdate(float deltaTime) override {
+        if (pos.x >= 5) {
+            velSign = -1;
+        }
+        if (pos.x <= -5) {
+            velSign = 1;
+        }
+        pos.x += deltaTime * vel * float(velSign);
+        
+        entity()->transform->setPosition(pos);
+    }
+};
+
+} // namespace
+
 void ClusterForwardApp::loadScene(uint32_t width, uint32_t height) {
     _scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
     
@@ -32,14 +57,25 @@ void ClusterForwardApp::loadScene(uint32_t width, uint32_t height) {
     pointLight->intensity = 0.3;
     
     // create box test entity
+    float cubeSize = 2.0;
     auto boxEntity = rootEntity->createChild("BoxEntity");
     auto boxMtl = std::make_shared<ClusterDebugMaterial>(_device);
     auto boxRenderer = boxEntity->addComponent<MeshRenderer>();
-    
-    auto mesh = std::make_shared<BufferMesh>();
-    mesh->addSubMesh(0, 6);
-    boxRenderer->setMesh(mesh);
+    boxRenderer->setMesh(PrimitiveMesh::createCuboid(_device, cubeSize, cubeSize, cubeSize));
     boxRenderer->setMaterial(boxMtl);
+    
+    // create sphere test entity
+    float radius = 1.25;
+    auto sphereEntity = rootEntity->createChild("SphereEntity");
+    sphereEntity->transform->setPosition(Point3F(-5, 0, 0));
+    auto sphereRenderer = sphereEntity->addComponent<MeshRenderer>();
+    auto sphereMtl = std::make_shared<ClusterDebugMaterial>(_device);
+    std::default_random_engine e;
+    std::uniform_real_distribution<float> u(0, 1);
+    sphereRenderer->setMesh(PrimitiveMesh::createSphere(_device, radius));
+    sphereRenderer->setMaterial(sphereMtl);
+    
+    sphereEntity->addComponent<MoveScript>();
 }
 
 }
