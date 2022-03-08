@@ -11,6 +11,7 @@
 #include "controls/orbit_control.h"
 #include "lighting/point_light.h"
 #include "lighting/cluster_debug_material.h"
+#include "lighting/sprite/sprite_debug.h"
 #include <random>
 
 namespace vox {
@@ -18,6 +19,8 @@ void ClusterForwardApp::loadScene() {
     _scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
     
     auto rootEntity = _scene->createRootEntity();
+    rootEntity->addComponent<SpriteDebug>();
+    
     auto cameraEntity = rootEntity->createChild("camera");
     cameraEntity->transform->setPosition(10, 10, 10);
     cameraEntity->transform->lookAt(Point3F(0, 0, 0));
@@ -30,7 +33,7 @@ void ClusterForwardApp::loadScene() {
     light->addComponent<PointLight>();
     
     auto light2 = rootEntity->createChild("light");
-    light2->transform->setPosition(-3, -3, 0);
+    light2->transform->setPosition(-3, 3, 0);
     light2->addComponent<PointLight>();
     
     // create box test entity

@@ -12,20 +12,20 @@
 namespace vox {
 SpriteDebug::SpriteDebug(Entity* entity):
 Script(entity) {
-    Shader::create("spotlight_sprite_debug", std::make_unique<WGSLSpriteDebugVertex>(),
-                   std::make_unique<WGSLSpriteDebugFragment>(true));
-    Shader::create("pointlight_sprite_debug", std::make_unique<WGSLSpriteDebugVertex>(),
-                   std::make_unique<WGSLSpriteDebugFragment>(false));
+    Shader::create("spotlight_sprite_debug", std::make_unique<WGSLSpriteDebugVertex>(true),
+                   std::make_unique<WGSLSpriteDebugFragment>());
+    Shader::create("pointlight_sprite_debug", std::make_unique<WGSLSpriteDebugVertex>(false),
+                   std::make_unique<WGSLSpriteDebugFragment>());
 
     _spotLightMesh = std::make_shared<BufferMesh>();
-    _spotLightMesh->addSubMesh(0, 4);
+    _spotLightMesh->addSubMesh(0, 4, wgpu::PrimitiveTopology::TriangleStrip);
     _spotEntity = entity->createChild();
     auto spotRenderer = _spotEntity->addComponent<MeshRenderer>();
     spotRenderer->setMaterial(std::make_shared<SpriteDebugMaterial>(entity->scene()->device(), true));
     spotRenderer->setMesh(_spotLightMesh);
     
     _pointLightMesh = std::make_shared<BufferMesh>();
-    _pointLightMesh->addSubMesh(0, 4);
+    _pointLightMesh->addSubMesh(0, 4, wgpu::PrimitiveTopology::TriangleStrip);
     _pointEntity = entity->createChild();
     auto pointRenderer = _pointEntity->addComponent<MeshRenderer>();
     pointRenderer->setMaterial(std::make_shared<SpriteDebugMaterial>(entity->scene()->device(), false));

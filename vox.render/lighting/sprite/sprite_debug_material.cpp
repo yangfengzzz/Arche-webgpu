@@ -82,7 +82,7 @@ void WGSLSpriteDebugFragment::_createShaderSource(size_t hash, const ShaderMacro
         encoder.addEntry({{"in", "VertexOut"}}, {"out", "Output"},  [&](std::string &source){
             source += "let distToCenter = length(in.localPos);\n";
             source += "let fade = (1.0 - distToCenter) * (1.0 / (distToCenter * distToCenter));\n";
-            source += "out.finalColor = vec4<f32>(linearTosRGB(in.color * fade), fade);\n";
+            source += "out.finalColor = vec4<f32>(in.color * fade, fade);\n";
         });
         encoder.flush();
     }
@@ -93,6 +93,7 @@ void WGSLSpriteDebugFragment::_createShaderSource(size_t hash, const ShaderMacro
 //MARK: - SpriteDebugMaterial
 SpriteDebugMaterial::SpriteDebugMaterial(wgpu::Device& device, bool isSpotLight):
 BaseMaterial(device, Shader::find(isSpotLight? "spotlight_sprite_debug": "pointlight_sprite_debug")) {
+    setRenderFace(RenderFace::Double);
     setIsTransparent(true);
     setBlendMode(BlendMode::Additive);
 }
