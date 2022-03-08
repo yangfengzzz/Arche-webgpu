@@ -8,8 +8,31 @@
 #define sprite_debug_material_hpp
 
 #include "material/base_material.h"
+#include "shaderlib/functors/wgsl_light_frag_define.h"
+#include "shaderlib/functors/wgsl_common_frag.h"
+#include "wgsl_cache.h"
 
 namespace vox {
+//MARK: - Unlit Vertex Code
+class WGSLSpriteDebugVertex : public WGSLCache {
+public:
+    WGSLSpriteDebugVertex(bool isSpotLight);
+        
+private:
+    void _createShaderSource(size_t hash, const ShaderMacroCollection& macros) override;
+    
+    bool _isSpotLight;
+    WGSLLightFragDefine _lightFragDefine;
+    WGSLCommonFrag _commonVert;
+};
+
+//MARK: - Unlit Fragment Code
+class WGSLSpriteDebugFragment : public WGSLCache {        
+private:
+    void _createShaderSource(size_t hash, const ShaderMacroCollection& macros) override;
+};
+
+//MARK: - SpriteDebugMaterial
 class SpriteDebugMaterial : public BaseMaterial {
 public:
     SpriteDebugMaterial(wgpu::Device& device, bool isSpotLight);

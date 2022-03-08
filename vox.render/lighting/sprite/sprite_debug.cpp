@@ -12,8 +12,10 @@
 namespace vox {
 SpriteDebug::SpriteDebug(Entity* entity):
 Script(entity) {
-    Shader::create("spotlight_sprite_debug", nullptr, nullptr);
-    Shader::create("pointlight_sprite_debug", nullptr, nullptr);
+    Shader::create("spotlight_sprite_debug", std::make_unique<WGSLSpriteDebugVertex>(),
+                   std::make_unique<WGSLSpriteDebugFragment>(true));
+    Shader::create("pointlight_sprite_debug", std::make_unique<WGSLSpriteDebugVertex>(),
+                   std::make_unique<WGSLSpriteDebugFragment>(false));
 
     _spotLightMesh = std::make_shared<BufferMesh>();
     _spotLightMesh->addSubMesh(0, 4);
