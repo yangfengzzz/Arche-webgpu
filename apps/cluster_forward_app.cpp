@@ -34,7 +34,7 @@ void ClusterForwardApp::loadScene() {
     
     auto light2 = rootEntity->createChild("light");
     light2->transform->setPosition(-3, 3, 0);
-    light2->addComponent<PointLight>();
+    light2->addComponent<SpotLight>();
     
     // create box test entity
     float cubeSize = 20.0;

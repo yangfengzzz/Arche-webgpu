@@ -32,7 +32,7 @@ void WGSLClusterDebug::_createShaderSource(size_t hash, const ShaderMacroCollect
         
         encoder.addEntry({{"in", "VertexOut"}}, {"out", "Output"},  [&](std::string &source){
             source += "let clusterIndex : u32 = getClusterIndex(in.fragCoord);\n";
-            source += "let lightCount : u32 = u_clusterLights.lights[clusterIndex].count;\n";
+            source += "let lightCount : u32 = u_clusterLights.lights[clusterIndex].point_count + u_clusterLights.lights[clusterIndex].spot_count;\n";
             source += fmt::format("let lightFactor : f32 = f32(lightCount) / f32({});\n", _maxLightsPerCluster);
             source += "out.finalColor = mix(vec4<f32>(0.0, 0.0, 1.0, 1.0), vec4<f32>(1.0, 0.0, 0.0, 1.0), vec4<f32>(lightFactor, lightFactor, lightFactor, lightFactor));\n";
         });

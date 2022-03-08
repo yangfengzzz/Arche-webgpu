@@ -139,7 +139,8 @@ private:
     
     struct ClusterLights {
         uint32_t offset;
-        uint32_t count;
+        uint32_t point_count;
+        uint32_t spot_count;
     };
     struct ClusterLightGroup {
         uint32_t offset;

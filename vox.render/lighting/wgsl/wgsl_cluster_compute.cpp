@@ -66,7 +66,8 @@ _maxLightsPerCluster(maxLightsPerCluster) {
 void WGSLClusterLightsStructs::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros) {
     encoder.addStruct(fmt::format("struct ClusterLights {{\n"
                                   "  offset : u32;\n"
-                                  "  count : u32;\n"
+                                  "  point_count : u32;\n"
+                                  "  spot_count : u32;\n"
                                   "}};\n"
                                   "struct ClusterLightGroup {{\n"
                                   "  offset : atomic<u32>;\n"
@@ -221,7 +222,8 @@ void WGSLClusterLightsSource::_createShaderSource(size_t hash, const ShaderMacro
                 source += fmt::format("  if (clusterLightCount == {}u) {{\n", _maxLightsPerCluster);
                 source += "    break;\n"
                 "  }\n"
-                "}\n";
+                "}\n"
+                "let pointLightCount = clusterLightCount;\n";
             }
             if (macros.contains(SPOT_LIGHT_COUNT)) {
                 source += fmt::format("for (var i = 0u; i < {}u; i = i + 1u) {{\n", (int)*macros.macroConstant(SPOT_LIGHT_COUNT));
@@ -253,7 +255,8 @@ void WGSLClusterLightsSource::_createShaderSource(size_t hash, const ShaderMacro
             "  u_clusterLights.indices[offset + i] = cluserLightIndices[i];\n"
             "}\n"
             "u_clusterLights.lights[tileIndex].offset = offset;\n"
-            "u_clusterLights.lights[tileIndex].count = clusterLightCount;\n";
+            "u_clusterLights.lights[tileIndex].point_count = pointLightCount;\n"
+            "u_clusterLights.lights[tileIndex].spot_count = clusterLightCount - pointLightCount;\n";
         }, {{"global_id", BuiltInType::GlobalInvocationID}});
         encoder.flush();
     }
