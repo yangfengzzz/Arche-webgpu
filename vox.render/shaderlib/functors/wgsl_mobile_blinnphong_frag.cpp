@@ -58,7 +58,7 @@ void WGSLMobileBlinnphongFrag::operator()(std::string& source, const ShaderMacro
         
         source += "var i:u32 = 0u;\n";
         source += "loop {\n";
-        source += "if (i >= lightCount) {{ break; }}\n";
+        source += "if (i >= lightCount) { break; }\n";
         
         if (LightManager::getSingleton().enableForwardPlus()) {
             source += "let index = u_clusterLights.indices[lightOffset + i];\n";
@@ -95,7 +95,7 @@ void WGSLMobileBlinnphongFrag::operator()(std::string& source, const ShaderMacro
         
         source += "var i:u32 = 0u;\n";
         source += "loop {\n";
-        source += "if (i >= spotlightCount) {{ break; }}\n";
+        source += "if (i >= spotlightCount) { break; }\n";
         
         if (LightManager::getSingleton().enableForwardPlus()) {
             source += "let index = u_clusterLights.indices[lightOffset + i + pointlightCount];\n";

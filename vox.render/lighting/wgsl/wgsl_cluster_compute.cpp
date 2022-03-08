@@ -222,9 +222,11 @@ void WGSLClusterLightsSource::_createShaderSource(size_t hash, const ShaderMacro
                 source += fmt::format("  if (clusterLightCount == {}u) {{\n", _maxLightsPerCluster);
                 source += "    break;\n"
                 "  }\n"
-                "}\n"
-                "let pointLightCount = clusterLightCount;\n";
+                "}\n";
             }
+            
+            source += "let pointLightCount = clusterLightCount;\n";
+            
             if (macros.contains(SPOT_LIGHT_COUNT)) {
                 source += fmt::format("for (var i = 0u; i < {}u; i = i + 1u) {{\n", (int)*macros.macroConstant(SPOT_LIGHT_COUNT));
                 source += "  let range = u_spotLight[i].distance;\n"

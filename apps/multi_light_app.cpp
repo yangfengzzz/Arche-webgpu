@@ -45,6 +45,7 @@ public:
         pos.y += deltaTime * vel * float(velSign);
         
         entity()->transform->setPosition(pos);
+        entity()->transform->lookAt(Point3F(0, 0, 0));
     }
 };
 

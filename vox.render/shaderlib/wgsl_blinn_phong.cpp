@@ -104,6 +104,8 @@ void WGSLBlinnPhongFragment::_createShaderSource(size_t hash, const ShaderMacroC
     auto inputStructCounter = WGSLEncoder::startCounter(0);
     {
         auto encoder = createSourceEncoder(wgpu::ShaderStage::Fragment);
+        encoder.addInoutType("VertexOut", BuiltInType::Position, "position", UniformType::Vec4f32);
+
         _common(encoder, macros);
         _shadowCommon(encoder, macros);
         
@@ -126,7 +128,6 @@ void WGSLBlinnPhongFragment::_createShaderSource(size_t hash, const ShaderMacroC
         _mobileMaterialShare(encoder, macros, inputStructCounter);
         _normalGet(encoder, macros, inputStructCounter);
         
-        encoder.addInoutType("VertexOut", BuiltInType::Position, "position", UniformType::Vec4f32);
         encoder.addInoutType("Output", 0, "finalColor", UniformType::Vec4f32);
         encoder.addEntry({{"in", "VertexOut"}}, {"out", "Output"}, [&](std::string &source){
             _beginMobileFrag(source, macros);
