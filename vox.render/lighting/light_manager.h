@@ -20,7 +20,7 @@ namespace vox {
  */
 class LightManager : public Singleton<LightManager> {
 public:
-    static constexpr uint32_t FORWARD_PLUS_ENABLE_MIN_COUNT = 0;
+    static constexpr uint32_t FORWARD_PLUS_ENABLE_MIN_COUNT = 20;
     static constexpr std::array<uint32_t, 3> TILE_COUNT = {32, 18, 48};
     static constexpr uint32_t TOTAL_TILES = TILE_COUNT[0] * TILE_COUNT[1] * TILE_COUNT[2];
     

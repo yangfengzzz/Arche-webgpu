@@ -53,7 +53,7 @@ void WGSLMobileBlinnphongFrag::operator()(std::string& source, const ShaderMacro
         if (LightManager::getSingleton().enableForwardPlus()) {
             source += "let lightCount = u_clusterLights.lights[clusterIndex].point_count;\n";
         } else {
-            source += fmt::format("let lightCount = {};\n", (int)*macros.macroConstant(POINT_LIGHT_COUNT));
+            source += fmt::format("let lightCount = {}u;\n", (int)*macros.macroConstant(POINT_LIGHT_COUNT));
         }
         
         source += "var i:u32 = 0u;\n";
@@ -90,7 +90,7 @@ void WGSLMobileBlinnphongFrag::operator()(std::string& source, const ShaderMacro
             source += "let pointlightCount = u_clusterLights.lights[clusterIndex].point_count;\n";
             source += "let spotlightCount = u_clusterLights.lights[clusterIndex].spot_count;\n";
         } else {
-            source += fmt::format("let spotlightCount = {};\n", (int)*macros.macroConstant(SPOT_LIGHT_COUNT));
+            source += fmt::format("let spotlightCount = {}u;\n", (int)*macros.macroConstant(SPOT_LIGHT_COUNT));
         }
         
         source += "var i:u32 = 0u;\n";

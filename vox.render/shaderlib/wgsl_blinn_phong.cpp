@@ -116,9 +116,11 @@ void WGSLBlinnPhongFragment::_createShaderSource(size_t hash, const ShaderMacroC
         _worldPosShare(encoder, macros, inputStructCounter);
         _shadowShare(encoder, macros, inputStructCounter);
         
-        _forwardPlusUniforms(encoder, macros);
-        _tileFunctions(encoder, macros);
-        _clusterLightsStructs(encoder, macros);
+        if (LightManager::getSingleton().enableForwardPlus()) {
+            _forwardPlusUniforms(encoder, macros);
+            _tileFunctions(encoder, macros);
+            _clusterLightsStructs(encoder, macros);
+        }
         
         _lightFragDefine(encoder, macros);
         _mobileMaterialShare(encoder, macros, inputStructCounter);

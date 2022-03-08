@@ -65,7 +65,7 @@ void MultiLightApp::loadScene() {
     std::default_random_engine e;
     std::uniform_real_distribution<float> u(0, 1);
     // init point light
-    for (uint32_t i = 0; i < 10; i++) {
+    for (uint32_t i = 0; i < 50; i++) {
         auto light = rootEntity->createChild("light");
         light->addComponent<MoveScript>();
         auto pointLight = light->addComponent<PointLight>();
@@ -73,7 +73,7 @@ void MultiLightApp::loadScene() {
     }
     
     // init spot light
-    for (uint32_t i = 0; i < 10; i++) {
+    for (uint32_t i = 0; i < 50; i++) {
         auto light = rootEntity->createChild("light");
         light->addComponent<MoveScript>();
         auto spotLight = light->addComponent<SpotLight>();
@@ -84,9 +84,9 @@ void MultiLightApp::loadScene() {
     float cubeSize = 20.0;
     auto boxEntity = rootEntity->createChild("BoxEntity");
     auto boxMtl = std::make_shared<BlinnPhongMaterial>(_device);
-    boxMtl->setBaseColor(Color(1.0, 0.0, 0.0, 1.0));
+    boxMtl->setBaseColor(Color(0.0, 0.6, 0.3, 1.0));
     auto boxRenderer = boxEntity->addComponent<MeshRenderer>();
-    boxRenderer->setMesh(PrimitiveMesh::createPlane(_device, cubeSize, cubeSize));
+    boxRenderer->setMesh(PrimitiveMesh::createPlane(_device, cubeSize, cubeSize, 100, 1000));
     boxRenderer->setMaterial(boxMtl);
 }
 
