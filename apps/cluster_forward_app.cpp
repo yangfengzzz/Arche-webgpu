@@ -14,31 +14,6 @@
 #include <random>
 
 namespace vox {
-namespace {
-class MoveScript : public Script {
-    Point3F pos = Point3F(-5, 0, 0);
-    float vel = 4;
-    int8_t velSign = -1;
-    
-public:
-    MoveScript(Entity *entity) : Script(entity) {
-    }
-    
-    void onUpdate(float deltaTime) override {
-        if (pos.x >= 5) {
-            velSign = -1;
-        }
-        if (pos.x <= -5) {
-            velSign = 1;
-        }
-        pos.x += deltaTime * vel * float(velSign);
-        
-        entity()->transform->setPosition(pos);
-    }
-};
-
-} // namespace
-
 void ClusterForwardApp::loadScene() {
     _scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
     
@@ -51,9 +26,12 @@ void ClusterForwardApp::loadScene() {
     
     // init point light
     auto light = rootEntity->createChild("light");
-//    light->transform->setPosition(0, 3, 0);
-    auto pointLight = light->addComponent<PointLight>();
-    pointLight->intensity = 0.3;
+    light->transform->setPosition(3, 3, 0);
+    light->addComponent<PointLight>();
+    
+    auto light2 = rootEntity->createChild("light");
+    light2->transform->setPosition(-3, -3, 0);
+    light2->addComponent<PointLight>();
     
     // create box test entity
     float cubeSize = 20.0;
@@ -62,19 +40,6 @@ void ClusterForwardApp::loadScene() {
     auto boxRenderer = boxEntity->addComponent<MeshRenderer>();
     boxRenderer->setMesh(PrimitiveMesh::createPlane(_device, cubeSize, cubeSize));
     boxRenderer->setMaterial(boxMtl);
-    
-    // create sphere test entity
-    float radius = 1.25;
-    auto sphereEntity = rootEntity->createChild("SphereEntity");
-    sphereEntity->transform->setPosition(Point3F(-5, 0, 0));
-    auto sphereRenderer = sphereEntity->addComponent<MeshRenderer>();
-    auto sphereMtl = std::make_shared<ClusterDebugMaterial>(_device);
-    std::default_random_engine e;
-    std::uniform_real_distribution<float> u(0, 1);
-    sphereRenderer->setMesh(PrimitiveMesh::createSphere(_device, radius));
-    sphereRenderer->setMaterial(sphereMtl);
-    
-    sphereEntity->addComponent<MoveScript>();
 }
 
 }
