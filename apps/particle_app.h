@@ -13,7 +13,7 @@
 namespace vox {
 class ParticleApp : public ForwardApplication {
 public:
-    void loadScene(uint32_t width, uint32_t height) override;
+    void loadScene() override;
     
     void updateGPUTask(wgpu::CommandEncoder& commandEncoder) override;
     

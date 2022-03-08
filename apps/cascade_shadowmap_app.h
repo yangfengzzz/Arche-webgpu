@@ -12,7 +12,7 @@
 namespace vox {
 class CascadeShadowMapApp : public ForwardApplication {
 public:
-    void loadScene(uint32_t width, uint32_t height) override;
+    void loadScene() override;
 };
 }
 

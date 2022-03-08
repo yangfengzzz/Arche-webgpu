@@ -38,14 +38,13 @@ bool SkyboxApp::prepare(Engine &engine) {
     return true;
 }
 
-void SkyboxApp::loadScene(uint32_t width, uint32_t height) {
+void SkyboxApp::loadScene() {
     auto rootEntity = _scene->createRootEntity();
     
     auto cameraEntity = rootEntity->createChild();
     cameraEntity->transform->setPosition(10, 10, 10);
     cameraEntity->transform->lookAt(Point3F(0, 0, 0));
     _mainCamera = cameraEntity->addComponent<Camera>();
-    _mainCamera->resize(width, height);
     cameraEntity->addComponent<control::OrbitControl>();
     
     auto modelEntity = rootEntity->createChild();

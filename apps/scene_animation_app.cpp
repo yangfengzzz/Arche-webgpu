@@ -13,13 +13,12 @@
 #include "camera.h"
 
 namespace vox {
-void SceneAnimationApp::loadScene(uint32_t width, uint32_t height) {
+void SceneAnimationApp::loadScene() {
     auto rootEntity = _scene->createRootEntity();
     
     auto cameraEntity = rootEntity->createChild();
     cameraEntity->transform->setPosition(2, 2, 2);
     _mainCamera = cameraEntity->addComponent<Camera>();
-    _mainCamera->resize(width, height);
     auto control = cameraEntity->addComponent<control::OrbitControl>();
     control->target = Point3F(0, 1, 0);
     

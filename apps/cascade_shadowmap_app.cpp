@@ -13,14 +13,13 @@
 #include "lighting/direct_light.h"
 
 namespace vox {
-void CascadeShadowMapApp::loadScene(uint32_t width, uint32_t height) {
+void CascadeShadowMapApp::loadScene() {
     auto rootEntity = _scene->createRootEntity();
     
     auto cameraEntity = rootEntity->createChild();
     cameraEntity->transform->setPosition(0, 10, 50);
     cameraEntity->transform->lookAt(Point3F(0, 0, 0));
     _mainCamera = cameraEntity->addComponent<Camera>();
-    _mainCamera->resize(width, height);
     cameraEntity->addComponent<control::OrbitControl>();
     
     auto light = rootEntity->createChild("light");

@@ -14,7 +14,7 @@
 namespace vox {
 class IrradianceApp : public ForwardApplication {
 public:
-    void loadScene(uint32_t width, uint32_t height) override;
+    void loadScene() override;
     
 private:
     SampledTextureCubePtr _cubeMap{nullptr};

@@ -28,7 +28,7 @@ public:
     }
 };
 
-void FramebufferPickerApp::loadScene(uint32_t width, uint32_t height) {
+void FramebufferPickerApp::loadScene() {
     _gui = std::make_unique<GUI>(_renderContext.get());
     
     u = std::uniform_real_distribution<float>(0, 1);
@@ -41,7 +41,6 @@ void FramebufferPickerApp::loadScene(uint32_t width, uint32_t height) {
     cameraEntity->transform->setPosition(10, 10, 10);
     cameraEntity->transform->lookAt(Point3F(0, 0, 0));
     _mainCamera = cameraEntity->addComponent<Camera>();
-    _mainCamera->resize(width, height);
     cameraEntity->addComponent<control::OrbitControl>();
     
     // init point light

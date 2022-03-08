@@ -31,7 +31,7 @@ private:
 
 }
 
-void PrimitiveApp::loadScene(uint32_t width, uint32_t height) {
+void PrimitiveApp::loadScene() {
     _scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
     auto rootEntity = _scene->createRootEntity();
     
@@ -39,7 +39,6 @@ void PrimitiveApp::loadScene(uint32_t width, uint32_t height) {
     cameraEntity->transform->setPosition(10, 10, 10);
     cameraEntity->transform->lookAt(Point3F(0, 0, 0));
     _mainCamera = cameraEntity->addComponent<Camera>();
-    _mainCamera->resize(width, height);
     cameraEntity->addComponent<control::OrbitControl>();
     
     // init point light

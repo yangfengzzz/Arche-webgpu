@@ -13,7 +13,7 @@
 namespace vox {
 class Editor : public EditorApplication {
 public:
-    void loadScene(uint32_t width, uint32_t height) override;
+    void loadScene() override;
     
     void pickFunctor(Renderer *renderer, MeshPtr mesh) override;
     

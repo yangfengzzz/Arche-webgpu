@@ -222,11 +222,16 @@ public:
      */
     Ray3F screenPointToRay(const Vector2F &point);
     
-    void resize(uint32_t width, uint32_t height);
+    void resize(uint32_t win_width, uint32_t win_height,
+                uint32_t fb_width, uint32_t fb_height);
     
-    uint32_t width();
+    uint32_t width() const;
     
-    uint32_t height();
+    uint32_t height() const;
+    
+    uint32_t framebufferWidth() const;
+    
+    uint32_t framebufferHeight() const;
     
     void update();
     
@@ -276,8 +281,10 @@ private:
     Vector2F _lastAspectSize = Vector2F();
     Matrix4x4F _invViewProjMat = Matrix4x4F();
     
-    uint32_t _width;
-    uint32_t _height;
+    uint32_t _width{0};
+    uint32_t _height{0};
+    uint32_t _fbWidth{0};
+    uint32_t _fbHeight{0};
 };
 
 

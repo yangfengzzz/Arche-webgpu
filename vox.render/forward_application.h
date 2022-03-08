@@ -33,7 +33,7 @@ public:
     
     void inputEvent(const InputEvent &inputEvent) override;
     
-    virtual void loadScene(uint32_t width, uint32_t height) = 0;
+    virtual void loadScene() = 0;
     
     virtual void updateGPUTask(wgpu::CommandEncoder& commandEncoder);
     

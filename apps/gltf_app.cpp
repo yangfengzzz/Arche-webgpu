@@ -12,13 +12,12 @@
 #include "camera.h"
 
 namespace vox {
-void GLTFApp::loadScene(uint32_t width, uint32_t height) {
+void GLTFApp::loadScene() {
     auto rootEntity = _scene->createRootEntity();
     
     auto cameraEntity = rootEntity->createChild();
     cameraEntity->transform->setPosition(5, 5, 1);
     _mainCamera = cameraEntity->addComponent<Camera>();
-    _mainCamera->resize(width, height);
     cameraEntity->addComponent<control::FreeControl>();
     
     // init point light

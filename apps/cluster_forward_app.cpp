@@ -39,7 +39,7 @@ public:
 
 } // namespace
 
-void ClusterForwardApp::loadScene(uint32_t width, uint32_t height) {
+void ClusterForwardApp::loadScene() {
     _scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
     
     auto rootEntity = _scene->createRootEntity();
@@ -47,21 +47,20 @@ void ClusterForwardApp::loadScene(uint32_t width, uint32_t height) {
     cameraEntity->transform->setPosition(10, 10, 10);
     cameraEntity->transform->lookAt(Point3F(0, 0, 0));
     _mainCamera = cameraEntity->addComponent<Camera>();
-    _mainCamera->resize(width, height);
     cameraEntity->addComponent<control::OrbitControl>();
     
     // init point light
     auto light = rootEntity->createChild("light");
-    light->transform->setPosition(0, 3, 0);
+//    light->transform->setPosition(0, 3, 0);
     auto pointLight = light->addComponent<PointLight>();
     pointLight->intensity = 0.3;
     
     // create box test entity
-    float cubeSize = 2.0;
+    float cubeSize = 20.0;
     auto boxEntity = rootEntity->createChild("BoxEntity");
     auto boxMtl = std::make_shared<ClusterDebugMaterial>(_device);
     auto boxRenderer = boxEntity->addComponent<MeshRenderer>();
-    boxRenderer->setMesh(PrimitiveMesh::createCuboid(_device, cubeSize, cubeSize, cubeSize));
+    boxRenderer->setMesh(PrimitiveMesh::createPlane(_device, cubeSize, cubeSize));
     boxRenderer->setMaterial(boxMtl);
     
     // create sphere test entity

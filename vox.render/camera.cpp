@@ -282,17 +282,28 @@ Matrix4x4F Camera::inverseProjectionMatrix() {
     return _inverseProjectionMatrix;
 }
 
-void Camera::resize(uint32_t width, uint32_t height) {
-    _width = width;
-    _height = height;
+void Camera::resize(uint32_t win_width, uint32_t win_height,
+                    uint32_t fb_width, uint32_t fb_height) {
+    _width = win_width;
+    _height = win_height;
+    _fbWidth = fb_width;
+    _fbHeight = fb_height;
 }
 
-uint32_t Camera::width() {
+uint32_t Camera::width() const {
     return _width;
 }
 
-uint32_t Camera::height() {
+uint32_t Camera::height() const {
     return _height;
+}
+
+uint32_t Camera::framebufferWidth() const {
+    return _fbWidth;
+}
+
+uint32_t Camera::framebufferHeight() const {
+    return _fbHeight;
 }
 
 }

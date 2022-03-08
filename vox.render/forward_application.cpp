@@ -20,8 +20,11 @@ bool ForwardApplication::prepare(Engine &engine) {
     _scene = std::make_unique<Scene>(_device);
     _lightManager = std::make_unique<LightManager>(_scene.get());
     {
+        loadScene();
         auto extent = engine.window().extent();
-        loadScene(extent.width, extent.height);
+        auto factor = engine.window().contentScaleFactor();
+        _scene->updateSize(extent.width, extent.height, factor * extent.width, factor * extent.height);
+        _mainCamera->resize(extent.width, extent.height, factor * extent.width, factor * extent.height);
     }
     _lightManager->setCamera(_mainCamera);
     _shadowManager = std::make_unique<ShadowManager>(_scene.get(), _mainCamera);
@@ -77,7 +80,7 @@ bool ForwardApplication::resize(uint32_t win_width, uint32_t win_height,
                                 uint32_t fb_width, uint32_t fb_height) {
     GraphicsApplication::resize(win_width, win_height, fb_width, fb_height);
     _scene->updateSize(win_width, win_height, fb_width, fb_height);
-    _mainCamera->resize(win_width, win_height);
+    _mainCamera->resize(win_width, win_height, fb_width, fb_height);
     return true;
 }
 

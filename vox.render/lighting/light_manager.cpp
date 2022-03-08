@@ -187,7 +187,7 @@ void LightManager::draw(wgpu::CommandEncoder& commandEncoder) {
         if (_projectionUniforms.outputSize.x != _camera->width() ||
             _projectionUniforms.outputSize.y != _camera->height()) {
             updateBounds = true;
-            _projectionUniforms.outputSize = Vector2F(_camera->width(), _camera->height());
+            _projectionUniforms.outputSize = Vector2F(_camera->framebufferWidth(), _camera->framebufferHeight());
         }
         _projectionUniforms.zNear = _camera->nearClipPlane();
         _projectionUniforms.zFar = _camera->farClipPlane();

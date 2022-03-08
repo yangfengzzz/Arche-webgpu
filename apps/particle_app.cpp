@@ -14,7 +14,7 @@
 #include "controls/orbit_control.h"
 
 namespace vox {
-void ParticleApp::loadScene(uint32_t width, uint32_t height) {
+void ParticleApp::loadScene() {
     _manager = std::make_unique<ParticleManager>(_device);
 
     _scene->background.solidColor = Color(0, 0, 0, 1);
@@ -24,7 +24,6 @@ void ParticleApp::loadScene(uint32_t width, uint32_t height) {
     cameraEntity->transform->setPosition(-30, 30, 30);
     cameraEntity->transform->lookAt(Point3F(0, 0, 0));
     _mainCamera = cameraEntity->addComponent<Camera>();
-    _mainCamera->resize(width, height);
     cameraEntity->addComponent<control::OrbitControl>();
     
     // init point light

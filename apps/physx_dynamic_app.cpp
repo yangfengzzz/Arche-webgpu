@@ -83,7 +83,7 @@ public:
 
 }
 
-void PhysXDynamicApp::loadScene(uint32_t width, uint32_t height) {
+void PhysXDynamicApp::loadScene() {
     u = std::uniform_real_distribution<float>(0, 1);
     _scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
     
@@ -92,7 +92,6 @@ void PhysXDynamicApp::loadScene(uint32_t width, uint32_t height) {
     cameraEntity->transform->setPosition(20, 20, 20);
     cameraEntity->transform->lookAt(Point3F(0, 0, 0));
     _mainCamera = cameraEntity->addComponent<Camera>();
-    _mainCamera->resize(width, height);
     cameraEntity->addComponent<control::OrbitControl>();
     
     auto addPlane = [&](const Vector3F &size, const Point3F &position, const QuaternionF &rotation) {

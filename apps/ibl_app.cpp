@@ -24,7 +24,7 @@ bool IBLApp::prepare(Engine &engine) {
     return true;
 }
 
-void IBLApp::loadScene(uint32_t width, uint32_t height) {
+void IBLApp::loadScene() {
     _materials.resize(11);
     _materials[0] = Material("Gold", Color(1.0f, 0.765557f, 0.336057f, 1.0), 0.1f, 1.0f);
     _materials[1] = Material("Copper", Color(0.955008f, 0.637427f, 0.538163f, 1.0), 0.1f, 1.0f);
@@ -63,7 +63,6 @@ void IBLApp::loadScene(uint32_t width, uint32_t height) {
     cameraEntity->transform->setPosition(10, 10, 10);
     cameraEntity->transform->lookAt(Point3F(0, 0, 0));
     _mainCamera = cameraEntity->addComponent<Camera>();
-    _mainCamera->resize(width, height);
     cameraEntity->addComponent<control::OrbitControl>();
     
     auto light = rootEntity->createChild("light");
