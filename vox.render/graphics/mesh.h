@@ -23,6 +23,11 @@ public:
     BoundingBox3F bounds = BoundingBox3F();
     
     /**
+     * Instanced count, disable instanced drawing when set zero.
+     */
+    uint32_t instanceCount() const;
+    
+    /**
      * First sub-mesh. Rendered using the first material.
      */
     const SubMesh* subMesh() const;
@@ -80,7 +85,7 @@ protected:
     void _setIndexBufferBinding(std::optional<IndexBufferBinding> binding);
     
 protected:
-    size_t _instanceCount = 0;
+    uint32_t _instanceCount = 1;
     std::vector<std::optional<Buffer>> _vertexBufferBindings{};
     std::optional<IndexBufferBinding> _indexBufferBinding = std::nullopt;
     std::vector<wgpu::VertexBufferLayout> _vertexBufferLayouts{};

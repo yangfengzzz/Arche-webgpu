@@ -7,6 +7,10 @@
 #include "mesh.h"
 
 namespace vox {
+uint32_t Mesh::instanceCount() const {
+    return _instanceCount;
+}
+
 SubMesh* Mesh::subMesh() {
     if (_subMeshes.size() > 0) {
         return &_subMeshes[0];

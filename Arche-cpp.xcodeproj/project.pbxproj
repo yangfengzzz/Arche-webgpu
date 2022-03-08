@@ -420,6 +420,10 @@
 		047BF1F627AFB8A9003F3599 /* wgsl_grid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1F427AFB8A9003F3599 /* wgsl_grid.cpp */; };
 		048DBF0227D6DD47003AE9E8 /* wgsl_quad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048DBF0027D6DD47003AE9E8 /* wgsl_quad.cpp */; };
 		048DBF0327D6DD47003AE9E8 /* wgsl_quad.h in Headers */ = {isa = PBXBuildFile; fileRef = 048DBF0127D6DD47003AE9E8 /* wgsl_quad.h */; };
+		048DBF0B27D70C5F003AE9E8 /* sprite_debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048DBF0927D70C5F003AE9E8 /* sprite_debug.cpp */; };
+		048DBF0C27D70C5F003AE9E8 /* sprite_debug.h in Headers */ = {isa = PBXBuildFile; fileRef = 048DBF0A27D70C5F003AE9E8 /* sprite_debug.h */; };
+		048DBF0F27D70E7A003AE9E8 /* sprite_debug_material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 048DBF0D27D70E7A003AE9E8 /* sprite_debug_material.cpp */; };
+		048DBF1027D70E7A003AE9E8 /* sprite_debug_material.h in Headers */ = {isa = PBXBuildFile; fileRef = 048DBF0E27D70E7A003AE9E8 /* sprite_debug_material.h */; };
 		0495463B279F89E500783C84 /* shader_data.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954634279F89E400783C84 /* shader_data.h */; };
 		0495463C279F89E500783C84 /* shader_property.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954635279F89E400783C84 /* shader_property.h */; };
 		0495463D279F89E500783C84 /* shader_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954636279F89E400783C84 /* shader_data.cpp */; };
@@ -1072,6 +1076,10 @@
 		047BF1F527AFB8A9003F3599 /* wgsl_grid.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_grid.h; sourceTree = "<group>"; };
 		048DBF0027D6DD47003AE9E8 /* wgsl_quad.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_quad.cpp; sourceTree = "<group>"; };
 		048DBF0127D6DD47003AE9E8 /* wgsl_quad.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_quad.h; sourceTree = "<group>"; };
+		048DBF0927D70C5F003AE9E8 /* sprite_debug.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sprite_debug.cpp; sourceTree = "<group>"; };
+		048DBF0A27D70C5F003AE9E8 /* sprite_debug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sprite_debug.h; sourceTree = "<group>"; };
+		048DBF0D27D70E7A003AE9E8 /* sprite_debug_material.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sprite_debug_material.cpp; sourceTree = "<group>"; };
+		048DBF0E27D70E7A003AE9E8 /* sprite_debug_material.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sprite_debug_material.h; sourceTree = "<group>"; };
 		04954634279F89E400783C84 /* shader_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_data.h; sourceTree = "<group>"; };
 		04954635279F89E400783C84 /* shader_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader_property.h; sourceTree = "<group>"; };
 		04954636279F89E400783C84 /* shader_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader_data.cpp; sourceTree = "<group>"; };
@@ -1824,6 +1832,7 @@
 		047BF0B927AC07FF003F3599 /* lighting */ = {
 			isa = PBXGroup;
 			children = (
+				048DBF0827D70C4E003AE9E8 /* sprite */,
 				04F9E93F27D654A500BD291B /* cluster_debug_material.h */,
 				04F9E93E27D654A500BD291B /* cluster_debug_material.cpp */,
 				04F9E93127D5CDFF00BD291B /* wgsl */,
@@ -1971,6 +1980,17 @@
 				047BF1F427AFB8A9003F3599 /* wgsl_grid.cpp */,
 			);
 			path = shaderlib;
+			sourceTree = "<group>";
+		};
+		048DBF0827D70C4E003AE9E8 /* sprite */ = {
+			isa = PBXGroup;
+			children = (
+				048DBF0A27D70C5F003AE9E8 /* sprite_debug.h */,
+				048DBF0927D70C5F003AE9E8 /* sprite_debug.cpp */,
+				048DBF0E27D70E7A003AE9E8 /* sprite_debug_material.h */,
+				048DBF0D27D70E7A003AE9E8 /* sprite_debug_material.cpp */,
+			);
+			path = sprite;
 			sourceTree = "<group>";
 		};
 		04954642279F8A4400783C84 /* material */ = {
@@ -2342,6 +2362,7 @@
 				049546FB279FC9B400783C84 /* graphics_application.h in Headers */,
 				047BF0E427ACEBAE003F3599 /* physics_manager.h in Headers */,
 				047BF0E927ACEBAE003F3599 /* physics.h in Headers */,
+				048DBF1027D70E7A003AE9E8 /* sprite_debug_material.h in Headers */,
 				047BF08427ABB82B003F3599 /* wgsl_normal_share.h in Headers */,
 				047BF02527A66590003F3599 /* ktx_image.h in Headers */,
 				0443E8F727C5C0890099E13A /* wgsl_shadow_vert.h in Headers */,
@@ -2470,6 +2491,7 @@
 				0412844A279ED3A60071BD86 /* unix_engine.h in Headers */,
 				0412843F279ED3A60071BD86 /* glfw_window.h in Headers */,
 				04F9E92527D4AE3E00BD291B /* wgsl_particle_noise.h in Headers */,
+				048DBF0C27D70C5F003AE9E8 /* sprite_debug.h in Headers */,
 				04F9E94127D654A500BD291B /* cluster_debug_material.h in Headers */,
 				047BEFDB27A4DB63003F3599 /* wgsl_encoder.h in Headers */,
 				047BF19527AE6F74003F3599 /* scene_animation_clip.h in Headers */,
@@ -2728,6 +2750,7 @@
 				047BF0AB27ABF9A3003F3599 /* wgsl_begin_viewdir_frag.cpp in Sources */,
 				04128479279EEEEC0071BD86 /* render_state.cpp in Sources */,
 				047BF07F27ABB6F3003F3599 /* wgsl_color_share.cpp in Sources */,
+				048DBF0B27D70C5F003AE9E8 /* sprite_debug.cpp in Sources */,
 				047BF0EB27ACEBAE003F3599 /* static_collider.cpp in Sources */,
 				049546FF279FCD1100783C84 /* forward_application.cpp in Sources */,
 				0495474627A2657700783C84 /* sub_mesh.cpp in Sources */,
@@ -2779,6 +2802,7 @@
 				047BF06627A68168003F3599 /* astc_stb_tga.cpp in Sources */,
 				047BF06927A6819C003F3599 /* astc_integer_sequence.cpp in Sources */,
 				04128475279EEE760071BD86 /* depth_state.cpp in Sources */,
+				048DBF0F27D70E7A003AE9E8 /* sprite_debug_material.cpp in Sources */,
 				04128449279ED3A60071BD86 /* engine.cpp in Sources */,
 				04954686279F8CD600783C84 /* scene.cpp in Sources */,
 				049546E6279FA7D800783C84 /* null_binding.cpp in Sources */,

@@ -11,13 +11,8 @@
 
 namespace vox {
 class BufferMesh:public Mesh {
-public:
-    /**
-     * Instanced count, disable instanced drawing when set zero.
-     */
-    size_t instanceCount();
-    
-    void setInstanceCount(size_t newValue);
+public:    
+    void setInstanceCount(uint32_t newValue);
     
     /**
      * Vertex buffer binding collection.

@@ -8,11 +8,7 @@
 #include <glog/logging.h>
 
 namespace vox {
-size_t BufferMesh::instanceCount() {
-    return _instanceCount;
-}
-
-void BufferMesh::setInstanceCount(size_t newValue) {
+void BufferMesh::setInstanceCount(uint32_t newValue) {
     _instanceCount = newValue;
 }
 

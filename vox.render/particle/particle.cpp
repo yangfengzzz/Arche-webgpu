@@ -119,7 +119,7 @@ void Particle::onUpdate(float deltaTime) {
     _write = 1 - _write;
     _read = 1 - _read;
     
-    _meshes[_read]->subMesh()->setCount(_numAliveParticles);
+    // _meshes[_read]->subMesh()->setCount(_numAliveParticles);
     _renderer->setMesh(_meshes[_read]);
     _generateRandomValues();
 }

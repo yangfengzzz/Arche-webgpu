@@ -27,9 +27,7 @@ public:
     uint32_t start() const;
     
     uint32_t count() const;
-    
-    void setCount(uint32_t num);
-    
+        
     wgpu::PrimitiveTopology topology() const;
     
 private:
