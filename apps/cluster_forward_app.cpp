@@ -37,7 +37,7 @@ void ClusterForwardApp::loadScene(uint32_t width, uint32_t height) {
     auto boxRenderer = boxEntity->addComponent<MeshRenderer>();
     
     auto mesh = std::make_shared<BufferMesh>();
-    mesh->addSubMesh(0, 3);
+    mesh->addSubMesh(0, 6);
     boxRenderer->setMesh(mesh);
     boxRenderer->setMaterial(boxMtl);
 }

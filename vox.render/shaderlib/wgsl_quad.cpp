@@ -15,7 +15,9 @@ void WGSLQuadVertex::_createShaderSource(size_t hash, const ShaderMacroCollectio
     {
         auto encoder = createSourceEncoder(wgpu::ShaderStage::Vertex);
         encoder.addInoutType("VertexIn", BuiltInType::VertexIndex, "vertex_index", UniformType::U32);
-        encoder.addStruct("let quadVertex = array<vec4<f32>, 3>(vec4<f32>(-1.0, -1.0, 0.0, 1.0), vec4<f32>(-1.0, 1.0, 0.0, 1.0), vec4<f32>(1.0, 1.0, 0.0, 1.0));\n");
+        encoder.addStruct("let quadVertex = array<vec4<f32>, 6>(vec4<f32>(1.0, 1.0, 0.0, 1.0), vec4<f32>(-1.0, 1.0, 0.0, 1.0), vec4<f32>(-1.0, -1.0, 0.0, 1.0),\n"
+                          "vec4<f32>(1.0, 1.0, 0.0, 1.0), vec4<f32>(-1.0, -1.0, 0.0, 1.0), vec4<f32>(1.0, -1.0, 0.0, 1.0)"
+                          ");\n");
         encoder.addInoutType("VertexOut", BuiltInType::Position, "position", UniformType::Vec4f32);
 
         encoder.addEntry({{"in", "VertexIn"}}, {"out", "VertexOut"}, [&](std::string &source){
