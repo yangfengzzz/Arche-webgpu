@@ -198,6 +198,10 @@ void LightManager::draw(wgpu::CommandEncoder& commandEncoder) {
         _forwardPlusUniforms.viewMatrix = _camera->viewMatrix();
         _scene->shaderData.setData(_forwardPlusProp, _forwardPlusUniforms);
         
+        // Reset the light offset counter to 0 before populating the light clusters.
+        uint32_t empty = 0;
+        _clusterLightsBuffer->uploadData(_scene->device(), &empty, sizeof(uint32_t));
+        
         auto encoder = commandEncoder.BeginComputePass();
         if (updateBounds) {
             _clusterBoundsCompute->compute(encoder);

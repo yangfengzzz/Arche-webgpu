@@ -33,7 +33,7 @@ public:
     
     // Each cluster tracks up to MAX_LIGHTS_PER_CLUSTER light indices (ints) and one light count.
     // This limitation should be able to go away when we have atomic methods in WGSL.
-    static constexpr uint32_t MAX_LIGHTS_PER_CLUSTER = 2;
+    static constexpr uint32_t MAX_LIGHTS_PER_CLUSTER = 50;
     static constexpr uint32_t CLUSTER_LIGHTS_SIZE = (8 * TOTAL_TILES) + (4 * MAX_LIGHTS_PER_CLUSTER * TOTAL_TILES) + 4;
     
     static LightManager &getSingleton(void);
