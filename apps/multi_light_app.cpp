@@ -16,6 +16,40 @@
 #include <random>
 
 namespace vox {
+namespace {
+class MoveScript : public Script {
+    std::random_device rd;
+    std::mt19937 gen;
+    std::uniform_real_distribution<float> dis;
+    
+    Point3F pos;
+    float vel;
+    int8_t velSign = -1;
+    
+public:
+    MoveScript(Entity *entity) :
+    Script(entity),
+    gen(rd()) {
+        dis = std::uniform_real_distribution<float>(-1.0, 1.0);
+        pos = Point3F(10 * dis(gen), 0, 10 * dis(gen));
+        vel = std::abs(dis(gen) * 4);
+    }
+    
+    void onUpdate(float deltaTime) override {
+        if (pos.y >= 5) {
+            velSign = -1;
+        }
+        if (pos.y <= -5) {
+            velSign = 1;
+        }
+        pos.y += deltaTime * vel * float(velSign);
+        
+        entity()->transform->setPosition(pos);
+    }
+};
+
+}
+
 void MultiLightApp::loadScene() {
     _scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
     
@@ -28,19 +62,29 @@ void MultiLightApp::loadScene() {
     _mainCamera = cameraEntity->addComponent<Camera>();
     cameraEntity->addComponent<control::OrbitControl>();
     
+    std::default_random_engine e;
+    std::uniform_real_distribution<float> u(0, 1);
     // init point light
-    auto light = rootEntity->createChild("light");
-    light->transform->setPosition(3, 3, 0);
-    light->addComponent<PointLight>();
+    for (uint32_t i = 0; i < 10; i++) {
+        auto light = rootEntity->createChild("light");
+        light->addComponent<MoveScript>();
+        auto pointLight = light->addComponent<PointLight>();
+        pointLight->color = Color(u(e), u(e), u(e), 1);
+    }
     
-    auto light2 = rootEntity->createChild("light");
-    light2->transform->setPosition(-3, 3, 0);
-    light2->addComponent<SpotLight>();
+    // init spot light
+    for (uint32_t i = 0; i < 10; i++) {
+        auto light = rootEntity->createChild("light");
+        light->addComponent<MoveScript>();
+        auto spotLight = light->addComponent<SpotLight>();
+        spotLight->color = Color(u(e), u(e), u(e), 1);
+    }
     
     // create box test entity
     float cubeSize = 20.0;
     auto boxEntity = rootEntity->createChild("BoxEntity");
     auto boxMtl = std::make_shared<BlinnPhongMaterial>(_device);
+    boxMtl->setBaseColor(Color(1.0, 0.0, 0.0, 1.0));
     auto boxRenderer = boxEntity->addComponent<MeshRenderer>();
     boxRenderer->setMesh(PrimitiveMesh::createPlane(_device, cubeSize, cubeSize));
     boxRenderer->setMaterial(boxMtl);
