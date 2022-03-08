@@ -5,6 +5,7 @@
 //  property of any third parties.
 
 #include "wgsl_mobile_blinnphong_frag.h"
+#include "lighting/light_manager.h"
 #include <fmt/core.h>
 
 namespace vox {
@@ -22,6 +23,11 @@ void WGSLMobileBlinnphongFrag::operator()(std::string& source, const ShaderMacro
 
     source += "var lightDiffuse = vec3<f32>( 0.0, 0.0, 0.0 );\n";
     source += "var lightSpecular = vec3<f32>( 0.0, 0.0, 0.0 );\n";
+    
+    if (LightManager::getSingleton().enableForwardPlus()) {
+        source += fmt::format("let clusterIndex = getClusterIndex({}.position);\n", _input);
+        source += "let lightOffset  = u_clusterLights.lights[clusterIndex].offset;\n";
+    }
     
     if (macros.contains(DIRECT_LIGHT_COUNT)) {
         source += "{\n";
@@ -43,21 +49,34 @@ void WGSLMobileBlinnphongFrag::operator()(std::string& source, const ShaderMacro
     
     if (macros.contains(POINT_LIGHT_COUNT)) {
         source += "{\n";
+        
+        if (LightManager::getSingleton().enableForwardPlus()) {
+            source += "let lightCount = u_clusterLights.lights[clusterIndex].point_count;\n";
+        } else {
+            source += fmt::format("let lightCount = {};\n", (int)*macros.macroConstant(POINT_LIGHT_COUNT));
+        }
+        
         source += "var i:i32 = 0;\n";
         source += "loop {\n";
-        source += fmt::format("if (i >= {}) {{ break; }}\n", (int)*macros.macroConstant(POINT_LIGHT_COUNT));
+        source += "if (i >= {lightCount}) {{ break; }}\n";
         
-        source += fmt::format("    var direction = {}.v_pos - u_pointLight[i].position;\n", _input);
+        if (LightManager::getSingleton().enableForwardPlus()) {
+            source += "let index = u_clusterLights.indices[lightOffset + i];\n";
+        } else {
+            source += "let index = i;\n";
+        }
+        
+        source += fmt::format("    var direction = {}.v_pos - u_pointLight[index].position;\n", _input);
         source += "    var dist = length( direction );\n";
         source += "    direction = direction / dist;\n";
-        source += "    var decay = clamp(1.0 - pow(dist / u_pointLight[i].distance, 4.0), 0.0, 1.0);\n";
+        source += "    var decay = clamp(1.0 - pow(dist / u_pointLight[index].distance, 4.0), 0.0, 1.0);\n";
         source += "\n";
         source += "    var d =  max( dot( N, -direction ), 0.0 ) * decay;\n";
-        source += "    lightDiffuse = lightDiffuse + u_pointLight[i].color * d;\n";
+        source += "    lightDiffuse = lightDiffuse + u_pointLight[index].color * d;\n";
         source += "\n";
         source += "    var halfDir = normalize( V - direction );\n";
         source += "    var s = pow( clamp( dot( N, halfDir ), 0.0, 1.0 ), u_blinnPhongData.shininess )  * decay;\n";
-        source += "    lightSpecular = lightSpecular + u_pointLight[i].color * s;\n";
+        source += "    lightSpecular = lightSpecular + u_pointLight[index].color * s;\n";
 
         source += "i = i + 1;\n";
         source += "}\n";
@@ -66,23 +85,37 @@ void WGSLMobileBlinnphongFrag::operator()(std::string& source, const ShaderMacro
     
     if (macros.contains(SPOT_LIGHT_COUNT)) {
         source += "{\n";
+        
+        if (LightManager::getSingleton().enableForwardPlus()) {
+            source += "let pointlightCount = u_clusterLights.lights[clusterIndex].point_count;\n";
+            source += "let spotlightCount = u_clusterLights.lights[clusterIndex].spot_count;\n";
+        } else {
+            source += fmt::format("let spotlightCount = {};\n", (int)*macros.macroConstant(SPOT_LIGHT_COUNT));
+        }
+        
         source += "var i:i32 = 0;\n";
         source += "loop {\n";
-        source += fmt::format("if (i >= {}) {{ break; }}\n", (int)*macros.macroConstant(SPOT_LIGHT_COUNT));
+        source += "if (i >= {spotlightCount}) {{ break; }}\n";
         
-        source += fmt::format("    var direction = u_spotLight[i].position - {}.v_pos;\n", _input);
+        if (LightManager::getSingleton().enableForwardPlus()) {
+            source += "let index = u_clusterLights.indices[lightOffset + i + pointlightCount];\n";
+        } else {
+            source += "let index = i;\n";
+        }
+        
+        source += fmt::format("    var direction = u_spotLight[index].position - {}.v_pos;\n", _input);
         source += "    var lightDistance = length( direction );\n";
         source += "    direction = direction / lightDistance;\n";
-        source += "    var angleCos = dot( direction, -u_spotLight[i].direction );\n";
-        source += "    var decay = clamp(1.0 - pow(lightDistance/u_spotLight[i].distance, 4.0), 0.0, 1.0);\n";
-        source += "    var spotEffect = smoothStep( u_spotLight[i].penumbraCos, u_spotLight[i].angleCos, angleCos );\n";
+        source += "    var angleCos = dot( direction, -u_spotLight[index].direction );\n";
+        source += "    var decay = clamp(1.0 - pow(lightDistance/u_spotLight[index].distance, 4.0), 0.0, 1.0);\n";
+        source += "    var spotEffect = smoothStep( u_spotLight[index].penumbraCos, u_spotLight[index].angleCos, angleCos );\n";
         source += "    var decayTotal = decay * spotEffect;\n";
         source += "    var d = max( dot( N, direction ), 0.0 )  * decayTotal;\n";
-        source += "    lightDiffuse = lightDiffuse + u_spotLight[i].color * d;\n";
+        source += "    lightDiffuse = lightDiffuse + u_spotLight[index].color * d;\n";
         source += "\n";
         source += "    var halfDir = normalize( V + direction );\n";
         source += "    var s = pow( clamp( dot( N, halfDir ), 0.0, 1.0 ), u_blinnPhongData.shininess ) * decayTotal;\n";
-        source += "    lightSpecular = lightSpecular + u_spotLight[i].color * s;\n";
+        source += "    lightSpecular = lightSpecular + u_spotLight[index].color * s;\n";
 
         source += "i = i + 1;\n";
         source += "}\n";

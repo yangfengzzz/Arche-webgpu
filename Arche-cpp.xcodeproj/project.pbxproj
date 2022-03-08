@@ -164,6 +164,7 @@
 		04128476279EEE760071BD86 /* depth_state.h in Headers */ = {isa = PBXBuildFile; fileRef = 04128474279EEE760071BD86 /* depth_state.h */; };
 		04128479279EEEEC0071BD86 /* render_state.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04128477279EEEEC0071BD86 /* render_state.cpp */; };
 		0412847A279EEEEC0071BD86 /* render_state.h in Headers */ = {isa = PBXBuildFile; fileRef = 04128478279EEEEC0071BD86 /* render_state.h */; };
+		04311AE727D7302B00B918E3 /* multi_light_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04311AE527D7302B00B918E3 /* multi_light_app.cpp */; };
 		043B7B69278C797700D5648F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B68278C797700D5648F /* Cocoa.framework */; };
 		043B7B6B278C798100D5648F /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B6A278C798100D5648F /* CoreFoundation.framework */; };
 		043B7B6D278C798C00D5648F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B6C278C798C00D5648F /* QuartzCore.framework */; };
@@ -791,6 +792,8 @@
 		04128474279EEE760071BD86 /* depth_state.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = depth_state.h; sourceTree = "<group>"; };
 		04128477279EEEEC0071BD86 /* render_state.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = render_state.cpp; sourceTree = "<group>"; };
 		04128478279EEEEC0071BD86 /* render_state.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = render_state.h; sourceTree = "<group>"; };
+		04311AE527D7302B00B918E3 /* multi_light_app.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = multi_light_app.cpp; sourceTree = "<group>"; };
+		04311AE627D7302B00B918E3 /* multi_light_app.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = multi_light_app.h; sourceTree = "<group>"; };
 		043B7B5A278C4C5A00D5648F /* apps */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = apps; sourceTree = BUILT_PRODUCTS_DIR; };
 		043B7B5D278C4C5A00D5648F /* main_example.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main_example.cpp; sourceTree = "<group>"; };
 		043B7B64278C745300D5648F /* SampleUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SampleUtils.h; sourceTree = "<group>"; };
@@ -1658,6 +1661,8 @@
 				04F9E90227D2157B00BD291B /* atomic_compute_app.cpp */,
 				04F9E94727D6D6AE00BD291B /* cluster_forward_app.h */,
 				04F9E94627D6D6AE00BD291B /* cluster_forward_app.cpp */,
+				04311AE627D7302B00B918E3 /* multi_light_app.h */,
+				04311AE527D7302B00B918E3 /* multi_light_app.cpp */,
 				04F9E92B27D4DB1A00BD291B /* particle_app.h */,
 				04F9E92A27D4DB1A00BD291B /* particle_app.cpp */,
 			);
@@ -2954,6 +2959,7 @@
 				0443E8E627C4CBBC0099E13A /* omni_shadowmap_app.cpp in Sources */,
 				047BF1B927AFA525003F3599 /* framebuffer_picker_app.cpp in Sources */,
 				04F9E90627D3684E00BD291B /* atomic_compute_app.cpp in Sources */,
+				04311AE727D7302B00B918E3 /* multi_light_app.cpp in Sources */,
 				047BF18427AE1DF7003F3599 /* skybox_app.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
