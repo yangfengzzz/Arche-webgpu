@@ -10,7 +10,7 @@
 #include "camera.h"
 #include "lighting/wgsl/wgsl_cluster_compute.h"
 #include "lighting/wgsl/wgsl_cluster_debug.h"
-#include "shaderlib/wgsl_unlit.h"
+#include "shaderlib/wgsl_quad.h"
 #include <glog/logging.h>
 
 namespace vox {
@@ -33,7 +33,7 @@ _projectionProp(Shader::createProperty("u_cluster_projection", ShaderDataGroup::
 _viewProp(Shader::createProperty("u_cluster_view", ShaderDataGroup::Compute)),
 _clustersProp(Shader::createProperty("u_clusters", ShaderDataGroup::Compute)),
 _clusterLightsProp(Shader::createProperty("u_clusterLights", ShaderDataGroup::Scene)) {
-    Shader::create("cluster_debug", std::make_unique<WGSLUnlitVertex>(),
+    Shader::create("cluster_debug", std::make_unique<WGSLQuadVertex>(),
                    std::make_unique<WGSLClusterDebug>(TILE_COUNT, MAX_LIGHTS_PER_CLUSTER));
     
     auto& device = _scene->device();
