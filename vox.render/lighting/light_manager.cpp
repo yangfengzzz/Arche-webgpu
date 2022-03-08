@@ -32,30 +32,33 @@ _directLightProperty(Shader::createProperty("u_directLight", ShaderDataGroup::Sc
 _projectionProp(Shader::createProperty("u_cluster_projection", ShaderDataGroup::Scene)),
 _viewProp(Shader::createProperty("u_cluster_view", ShaderDataGroup::Compute)),
 _clustersProp(Shader::createProperty("u_clusters", ShaderDataGroup::Compute)),
-_clusterLightsProp(Shader::createProperty("u_clusterLights", ShaderDataGroup::Material)) {
-    Shader::create("cluster_debug", std::make_unique<WGSLUnlitVertex>(), std::make_unique<WGSLClusterDebug>(TILE_COUNT, MAX_LIGHTS_PER_CLUSTER));
+_clusterLightsProp(Shader::createProperty("u_clusterLights", ShaderDataGroup::Scene)) {
+    Shader::create("cluster_debug", std::make_unique<WGSLUnlitVertex>(),
+                   std::make_unique<WGSLClusterDebug>(TILE_COUNT, MAX_LIGHTS_PER_CLUSTER));
     
     auto& device = _scene->device();
-    _clustersBuffer = std::make_unique<Buffer>(device, sizeof(Clusters), wgpu::BufferUsage::Storage | wgpu::BufferUsage::CopyDst);
+    _clustersBuffer = std::make_unique<Buffer>(device, sizeof(Clusters),
+                                               wgpu::BufferUsage::Storage | wgpu::BufferUsage::CopyDst);
     _shaderData.setBufferFunctor(_clustersProp, [this]()->Buffer {
         return *_clustersBuffer;
     });
     
-    _clusterLightsBuffer = std::make_unique<Buffer>(device, sizeof(ClusterLightGroup), wgpu::BufferUsage::Storage | wgpu::BufferUsage::CopyDst);
+    _clusterLightsBuffer = std::make_unique<Buffer>(device, sizeof(ClusterLightGroup),
+                                                    wgpu::BufferUsage::Storage | wgpu::BufferUsage::CopyDst);
     _scene->shaderData.setBufferFunctor(_clusterLightsProp, [this]()->Buffer {
         return *_clusterLightsBuffer;
     });
     
     _clusterBoundsCompute =
-    std::make_unique<ComputePass>(_scene->device(), std::make_unique<WGSLClusterBoundsSource>(TILE_COUNT, MAX_LIGHTS_PER_CLUSTER,
-                                                                                              WORKGROUP_SIZE));
+    std::make_unique<ComputePass>(device, std::make_unique<WGSLClusterBoundsSource>(TILE_COUNT, MAX_LIGHTS_PER_CLUSTER,
+                                                                                    WORKGROUP_SIZE));
     _clusterBoundsCompute->attachShaderData(&_shaderData);
     _clusterBoundsCompute->attachShaderData(&_scene->shaderData);
     _clusterBoundsCompute->setDispatchCount(DISPATCH_SIZE[0], DISPATCH_SIZE[1], DISPATCH_SIZE[2]);
     
     _clusterLightsCompute =
-    std::make_unique<ComputePass>(_scene->device(), std::make_unique<WGSLClusterLightsSource>(TILE_COUNT, MAX_LIGHTS_PER_CLUSTER,
-                                                                                              WORKGROUP_SIZE));
+    std::make_unique<ComputePass>(device, std::make_unique<WGSLClusterLightsSource>(TILE_COUNT, MAX_LIGHTS_PER_CLUSTER,
+                                                                                    WORKGROUP_SIZE));
     _clusterLightsCompute->attachShaderData(&_shaderData);
     _clusterLightsCompute->attachShaderData(&_scene->shaderData);
     _clusterLightsCompute->setDispatchCount(DISPATCH_SIZE[0], DISPATCH_SIZE[1], DISPATCH_SIZE[2]);
@@ -193,7 +196,7 @@ void LightManager::draw(wgpu::CommandEncoder& commandEncoder) {
         _viewUniforms.matrix = _camera->viewMatrix();
         _viewUniforms.position = _camera->entity()->transform->worldPosition();
         _shaderData.setData(_viewProp, _viewUniforms);
-
+        
         auto encoder = commandEncoder.BeginComputePass();
         if (updateBounds) {
             _clusterBoundsCompute->compute(encoder);
