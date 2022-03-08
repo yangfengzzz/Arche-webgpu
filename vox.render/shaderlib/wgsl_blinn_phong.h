@@ -37,6 +37,9 @@
 #include "shadow/wgsl/wgsl_shadow_common.h"
 #include "shadow/wgsl/wgsl_shadow_share.h"
 
+#include "lighting/wgsl/wgsl_cluster_common.h"
+#include "lighting/wgsl/wgsl_cluster_compute.h"
+
 namespace vox {
 //MARK: - Unlit Vertex Code
 class WGSLBlinnPhongVertex : public WGSLCache {
@@ -93,6 +96,10 @@ private:
     WGSLShadowShare _shadowShare;
     WGSLShadowCommon _shadowCommon;
     WGSLShadowFrag _shadowFrag;
+    
+    WGSLForwardPlusUniforms _forwardPlusUniforms;
+    WGSLTileFunctions _tileFunctions;
+    WGSLClusterLightsStructs _clusterLightsStructs;
 };
 
 }

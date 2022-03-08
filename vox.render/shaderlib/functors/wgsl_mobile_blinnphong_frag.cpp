@@ -56,9 +56,9 @@ void WGSLMobileBlinnphongFrag::operator()(std::string& source, const ShaderMacro
             source += fmt::format("let lightCount = {};\n", (int)*macros.macroConstant(POINT_LIGHT_COUNT));
         }
         
-        source += "var i:i32 = 0;\n";
+        source += "var i:u32 = 0u;\n";
         source += "loop {\n";
-        source += "if (i >= {lightCount}) {{ break; }}\n";
+        source += "if (i >= lightCount) {{ break; }}\n";
         
         if (LightManager::getSingleton().enableForwardPlus()) {
             source += "let index = u_clusterLights.indices[lightOffset + i];\n";
@@ -78,7 +78,7 @@ void WGSLMobileBlinnphongFrag::operator()(std::string& source, const ShaderMacro
         source += "    var s = pow( clamp( dot( N, halfDir ), 0.0, 1.0 ), u_blinnPhongData.shininess )  * decay;\n";
         source += "    lightSpecular = lightSpecular + u_pointLight[index].color * s;\n";
 
-        source += "i = i + 1;\n";
+        source += "i = i + 1u;\n";
         source += "}\n";
         source += "}\n";
     }
@@ -93,9 +93,9 @@ void WGSLMobileBlinnphongFrag::operator()(std::string& source, const ShaderMacro
             source += fmt::format("let spotlightCount = {};\n", (int)*macros.macroConstant(SPOT_LIGHT_COUNT));
         }
         
-        source += "var i:i32 = 0;\n";
+        source += "var i:u32 = 0u;\n";
         source += "loop {\n";
-        source += "if (i >= {spotlightCount}) {{ break; }}\n";
+        source += "if (i >= spotlightCount) {{ break; }}\n";
         
         if (LightManager::getSingleton().enableForwardPlus()) {
             source += "let index = u_clusterLights.indices[lightOffset + i + pointlightCount];\n";
@@ -117,7 +117,7 @@ void WGSLMobileBlinnphongFrag::operator()(std::string& source, const ShaderMacro
         source += "    var s = pow( clamp( dot( N, halfDir ), 0.0, 1.0 ), u_blinnPhongData.shininess ) * decayTotal;\n";
         source += "    lightSpecular = lightSpecular + u_spotLight[index].color * s;\n";
 
-        source += "i = i + 1;\n";
+        source += "i = i + 1u;\n";
         source += "}\n";
         source += "}\n";
     }

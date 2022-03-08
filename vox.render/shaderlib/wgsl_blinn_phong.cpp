@@ -5,6 +5,7 @@
 //  property of any third parties.
 
 #include "wgsl_blinn_phong.h"
+#include "light_manager.h"
 
 namespace vox {
 WGSLBlinnPhongVertex::WGSLBlinnPhongVertex():
@@ -89,8 +90,12 @@ _mobileBlinnphoneFrag("in", "out"),
 
 _shadowShare("VertexOut"),
 _shadowFrag(),
-_shadowCommon() {
-    
+_shadowCommon(),
+
+_forwardPlusUniforms(),
+_tileFunctions(LightManager::TILE_COUNT),
+_clusterLightsStructs(LightManager::TILE_COUNT[0] * LightManager::TILE_COUNT[1] * LightManager::TILE_COUNT[2],
+                      LightManager::MAX_LIGHTS_PER_CLUSTER) {
 }
 
 void WGSLBlinnPhongFragment::_createShaderSource(size_t hash, const ShaderMacroCollection& macros) {
@@ -110,10 +115,16 @@ void WGSLBlinnPhongFragment::_createShaderSource(size_t hash, const ShaderMacroC
         _normalShare(encoder, macros, inputStructCounter);
         _worldPosShare(encoder, macros, inputStructCounter);
         _shadowShare(encoder, macros, inputStructCounter);
-
+        
+        _forwardPlusUniforms(encoder, macros);
+        _tileFunctions(encoder, macros);
+        _clusterLightsStructs(encoder, macros);
+        
         _lightFragDefine(encoder, macros);
         _mobileMaterialShare(encoder, macros, inputStructCounter);
         _normalGet(encoder, macros, inputStructCounter);
+        
+        encoder.addInoutType("VertexOut", BuiltInType::Position, "position", UniformType::Vec4f32);
         encoder.addInoutType("Output", 0, "finalColor", UniformType::Vec4f32);
         encoder.addEntry({{"in", "VertexOut"}}, {"out", "Output"}, [&](std::string &source){
             _beginMobileFrag(source, macros);
