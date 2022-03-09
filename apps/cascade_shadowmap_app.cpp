@@ -35,9 +35,9 @@ void CascadeShadowMapApp::loadScene() {
     auto boxMesh = PrimitiveMesh::createCuboid(_device, cubeSize, cubeSize, cubeSize);
     auto boxMtl = std::make_shared<BlinnPhongMaterial>(_device);
     boxMtl->setBaseColor(Color(0.3, 0.3, 0.3, 0.5));
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 40; i++) {
         auto boxEntity = rootEntity->createChild("BoxEntity");
-        boxEntity->transform->setPosition(Point3F(0, 2, i * 10 - 20));
+        boxEntity->transform->setPosition(Point3F(0, 2, i * 10 - 200));
         
         auto boxRenderer = boxEntity->addComponent<MeshRenderer>();
         boxRenderer->setMesh(boxMesh);
@@ -53,7 +53,7 @@ void CascadeShadowMapApp::loadScene() {
     auto shadowDebug = std::make_shared<ShadowDebugMaterial>(_device);
     
     auto planeRenderer = planeEntity->addComponent<MeshRenderer>();
-    planeRenderer->setMesh(PrimitiveMesh::createPlane(_device, 10, 80));
+    planeRenderer->setMesh(PrimitiveMesh::createPlane(_device, 10, 400));
     planeRenderer->setMaterial(planeMtl);
     // planeRenderer->setMaterial(shadowDebug);
     planeRenderer->receiveShadow = true;

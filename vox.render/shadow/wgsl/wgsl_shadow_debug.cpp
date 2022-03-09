@@ -26,6 +26,8 @@ void WGSLShadowDebug::_createShaderSource(size_t hash, const ShaderMacroCollecti
         auto encoder = createSourceEncoder(wgpu::ShaderStage::Fragment);
         encoder.addInoutType("VertexOut", BuiltInType::Position, "position", UniformType::Vec4f32);
         
+        _shadowCommon(encoder, macros);
+        
         _commonFrag(encoder, macros);
         _shadowFrag(encoder, macros);
         
@@ -42,29 +44,25 @@ void WGSLShadowDebug::_createShaderSource(size_t hash, const ShaderMacroCollecti
                             "  return (2.0 * n) / (f + n - z * (f - n));\n"
                             "}\n");
         
+        encoder.addInoutType("Output", 0, "finalColor", UniformType::Vec4f32);
         encoder.addEntry({{"in", "VertexOut"}}, {"out", "Output"},  [&](std::string &source){
             // Get cascade index for the current fragment's view position
             source +=
-            "uint cascadeIndex = 0;\n"
-            "for(uint i = 0; i < 4 - 1; ++i) {\n"
+            "var cascadeIndex = 0u;\n"
+            "for(var i = 0u; i < 4u - 1u; i = i + 1u) {\n"
             "  if(in.view_pos.z < u_shadowData[0].cascadeSplits[i]) {\n"
-            "    cascadeIndex = i + 1;\n"
+            "    cascadeIndex = i + 1u;\n"
             "  }\n"
             "}\n"
             "\n"
-            "\n"
-            "float depth = u_shadowMap.sample(textureSampler, in.v_uv, 0);\n"
-            "\n"
-            "if (cascadeIndex == 0) {\n"
-            "  out.finalColor = float4(1,1,1,1);\n"
-            "} else if (cascadeIndex == 1) {\n"
-            "  out.finalColor = float4(1,0,0,1);\n"
-            "} else if (cascadeIndex == 2) {\n"
-            "  out.finalColor = float4(0,1,0,1);\n"
-            "} else if (cascadeIndex == 3) {\n"
-            "  out.finalColor = float4(0,0,1,1);\n"
-            "} else {\n"
-            "  out.finalColor = float4(float3(1.0-LinearizeDepth(depth)), 1.0);\n"
+            "if (cascadeIndex == 0u) {\n"
+            "  out.finalColor = vec4<f32>(1.0, 1.0, 1.0, 1.0);\n"
+            "} else if (cascadeIndex == 1u) {\n"
+            "  out.finalColor = vec4<f32>(1.0, 0.0, 0.0, 1.0);\n"
+            "} else if (cascadeIndex == 2u) {\n"
+            "  out.finalColor = vec4<f32>(0.0, 1.0, 0.0, 1.0);\n"
+            "} else if (cascadeIndex == 3u) {\n"
+            "  out.finalColor = vec4<f32>(0.0, 0.0, 1.0, 1.0);\n"
             "}\n";
         });
         encoder.flush();

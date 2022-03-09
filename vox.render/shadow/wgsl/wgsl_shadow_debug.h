@@ -14,6 +14,7 @@
 #include "shaderlib/functors/wgsl_normal_share.h"
 #include "shaderlib/functors/wgsl_worldpos_share.h"
 
+#include "shadow/wgsl/wgsl_shadow_common.h"
 #include "shadow/wgsl/wgsl_shadow_share.h"
 #include "shadow/wgsl/wgsl_shadow_frag.h"
 
@@ -31,6 +32,7 @@ private:
     WGSLNormalShare _normalShare;
     WGSLWorldPosShare _worldPosShare;
     
+    WGSLShadowCommon _shadowCommon;
     WGSLShadowShare _shadowShare;
     WGSLShadowFrag _shadowFrag;
 };
