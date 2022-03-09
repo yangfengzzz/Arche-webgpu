@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0400D25327D840810018FB52 /* wgsl_shadow_debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0400D25127D840810018FB52 /* wgsl_shadow_debug.cpp */; };
+		0400D25427D840810018FB52 /* wgsl_shadow_debug.h in Headers */ = {isa = PBXBuildFile; fileRef = 0400D25227D840810018FB52 /* wgsl_shadow_debug.h */; };
+		0400D25727D8457C0018FB52 /* shadow_debug_material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0400D25527D8457C0018FB52 /* shadow_debug_material.cpp */; };
+		0400D25827D8457C0018FB52 /* shadow_debug_material.h in Headers */ = {isa = PBXBuildFile; fileRef = 0400D25627D8457C0018FB52 /* shadow_debug_material.h */; };
 		04128351279ECF6E0071BD86 /* level_set_utils-inl.h in Headers */ = {isa = PBXBuildFile; fileRef = 041282F7279ECF6B0071BD86 /* level_set_utils-inl.h */; };
 		04128352279ECF6E0071BD86 /* intersection_query_engine2.h in Headers */ = {isa = PBXBuildFile; fileRef = 041282F8279ECF6B0071BD86 /* intersection_query_engine2.h */; };
 		04128353279ECF6E0071BD86 /* collision_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 041282F9279ECF6B0071BD86 /* collision_utils.cpp */; };
@@ -629,6 +633,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0400D25127D840810018FB52 /* wgsl_shadow_debug.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_shadow_debug.cpp; sourceTree = "<group>"; };
+		0400D25227D840810018FB52 /* wgsl_shadow_debug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_shadow_debug.h; sourceTree = "<group>"; };
+		0400D25527D8457C0018FB52 /* shadow_debug_material.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = shadow_debug_material.cpp; sourceTree = "<group>"; };
+		0400D25627D8457C0018FB52 /* shadow_debug_material.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shadow_debug_material.h; sourceTree = "<group>"; };
 		041282EC279ECF3D0071BD86 /* libvox.math.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libvox.math.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		041282F7279ECF6B0071BD86 /* level_set_utils-inl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "level_set_utils-inl.h"; sourceTree = "<group>"; };
 		041282F8279ECF6B0071BD86 /* intersection_query_engine2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = intersection_query_engine2.h; sourceTree = "<group>"; };
@@ -1685,6 +1693,8 @@
 		0443E8D127C4BB350099E13A /* shadow */ = {
 			isa = PBXGroup;
 			children = (
+				0400D25627D8457C0018FB52 /* shadow_debug_material.h */,
+				0400D25527D8457C0018FB52 /* shadow_debug_material.cpp */,
 				0443E90027C5E3A30099E13A /* wgsl */,
 				0443E8D727C4BDEA0099E13A /* wgsl_shadow.h */,
 				0443E8D627C4BDEA0099E13A /* wgsl_shadow.cpp */,
@@ -1709,6 +1719,8 @@
 				0443E8F427C5C0890099E13A /* wgsl_shadow_vert.cpp */,
 				0443E8F927C5C2ED0099E13A /* wgsl_shadow_frag.h */,
 				0443E8F827C5C2ED0099E13A /* wgsl_shadow_frag.cpp */,
+				0400D25227D840810018FB52 /* wgsl_shadow_debug.h */,
+				0400D25127D840810018FB52 /* wgsl_shadow_debug.cpp */,
 			);
 			path = wgsl;
 			sourceTree = "<group>";
@@ -2353,6 +2365,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0400D25427D840810018FB52 /* wgsl_shadow_debug.h in Headers */,
 				0495464B279F8A8700783C84 /* render_face.h in Headers */,
 				047BF08027ABB6F3003F3599 /* wgsl_color_share.h in Headers */,
 				047BF0B827ABFE2F003F3599 /* wgsl_normal_get.h in Headers */,
@@ -2497,6 +2510,7 @@
 				0412843F279ED3A60071BD86 /* glfw_window.h in Headers */,
 				04F9E92527D4AE3E00BD291B /* wgsl_particle_noise.h in Headers */,
 				048DBF0C27D70C5F003AE9E8 /* sprite_debug.h in Headers */,
+				0400D25827D8457C0018FB52 /* shadow_debug_material.h in Headers */,
 				04F9E94127D654A500BD291B /* cluster_debug_material.h in Headers */,
 				047BEFDB27A4DB63003F3599 /* wgsl_encoder.h in Headers */,
 				047BF19527AE6F74003F3599 /* scene_animation_clip.h in Headers */,
@@ -2748,6 +2762,7 @@
 				04128442279ED3A60071BD86 /* window.cpp in Sources */,
 				0443E8E927C4CE210099E13A /* texture_utils.cpp in Sources */,
 				047BF14127ACF245003F3599 /* animator_loader.cpp in Sources */,
+				0400D25727D8457C0018FB52 /* shadow_debug_material.cpp in Sources */,
 				047BF10327ACEBB7003F3599 /* configurable_joint.cpp in Sources */,
 				047BF06327A680CD003F3599 /* softfloat.cpp in Sources */,
 				04F9E92027D4AE0D00BD291B /* wgsl_particle_sdf.cpp in Sources */,
@@ -2844,6 +2859,7 @@
 				047BF13F27ACF245003F3599 /* fbx_mesh.cpp in Sources */,
 				0495472E27A2480000783C84 /* blinn_phong_material.cpp in Sources */,
 				047BF07727A6819C003F3599 /* astc_block_sizes2.cpp in Sources */,
+				0400D25327D840810018FB52 /* wgsl_shadow_debug.cpp in Sources */,
 				047BF15927AD0FF4003F3599 /* wgsl_pbr_helper.cpp in Sources */,
 				047BF08F27ABBAF0003F3599 /* wgsl_color_vert.cpp in Sources */,
 				047BF10227ACEBB7003F3599 /* translational_joint.cpp in Sources */,
