@@ -90,6 +90,7 @@ void PhysXApp::loadScene() {
     boxRenderer->setMaterial(boxMtl);
     
     auto boxCollider = boxEntity->addComponent<physics::StaticCollider>();
+    // boxCollider->debugEntity = boxEntity;
     auto boxColliderShape = std::make_shared<physics::BoxColliderShape>();
     boxColliderShape->setSize(Vector3F(cubeSize, cubeSize, cubeSize));
     boxCollider->addShape(boxColliderShape);
@@ -107,6 +108,7 @@ void PhysXApp::loadScene() {
     sphereRenderer->setMaterial(sphereMtl);
     
     auto sphereCollider = sphereEntity->addComponent<physics::DynamicCollider>();
+    // sphereCollider->debugEntity = sphereEntity;
     auto sphereColliderShape = std::make_shared<physics::SphereColliderShape>();
     sphereColliderShape->setRadius(radius);
     sphereColliderShape->setTrigger(true);

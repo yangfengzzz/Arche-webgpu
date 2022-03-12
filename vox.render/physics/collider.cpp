@@ -33,8 +33,8 @@ void Collider::addShape(const ColliderShapePtr &shape) {
     }
     
 #ifdef _DEBUG
-    if (_entity) {
-        shape->setEntity(_entity);
+    if (debugEntity) {
+        shape->setEntity(debugEntity);
     }
 #endif
 }
@@ -50,8 +50,8 @@ void Collider::removeShape(const ColliderShapePtr &shape) {
     }
     
 #ifdef _DEBUG
-    if (_entity) {
-        shape->removeEntity(_entity);
+    if (debugEntity) {
+        shape->removeEntity(debugEntity);
     }
 #endif
 }
@@ -79,10 +79,10 @@ void Collider::_onUpdate() {
         }
         
 #ifdef _DEBUG
-        if (_entity) {
+        if (debugEntity) {
             auto transform = _nativeActor->getGlobalPose();
-            _entity->transform->setPosition(Point3F(transform.p.x, transform.p.y, transform.p.z));
-            _entity->transform->setRotationQuaternion(transform.q.x, transform.q.y, transform.q.z, transform.q.w);
+            debugEntity->transform->setPosition(Point3F(transform.p.x, transform.p.y, transform.p.z));
+            debugEntity->transform->setRotationQuaternion(transform.q.x, transform.q.y, transform.q.z, transform.q.w);
         }
 #endif
     }

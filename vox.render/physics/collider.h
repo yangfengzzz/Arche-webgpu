@@ -40,7 +40,7 @@ public:
     
 public:
 #ifdef _DEBUG
-    EntityPtr _entity{nullptr};;
+    EntityPtr debugEntity{nullptr};;
 #endif
     
 protected:
