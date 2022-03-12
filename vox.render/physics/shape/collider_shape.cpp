@@ -11,7 +11,6 @@ namespace vox {
 namespace physics {
 ColliderShape::ColliderShape() :
 _nativeMaterial(PhysicsManager::_nativePhysics()->createMaterial(0, 0, 0)) {
-    _pose.setOrientation(QuaternionF(0, 0, halfSqrt, halfSqrt));
 }
 
 Collider *ColliderShape::collider() {
@@ -24,6 +23,9 @@ void ColliderShape::setLocalPose(const Transform3F &pose) {
     const auto &p = pose.translation();
     const auto &q = pose.orientation();
     _nativeShape->setLocalPose(PxTransform(PxVec3(p.x, p.y, p.z), PxQuat(q.x, q.y, q.z, q.w)));
+    if (_entity) {
+        _entity->transform->setPosition(getLocalTranslation());
+    }
 }
 
 Transform3F ColliderShape::localPose() const {
@@ -37,6 +39,11 @@ void ColliderShape::setPosition(const Vector3F &pos) {
 
 Vector3F ColliderShape::position() const {
     return _pose.translation();
+}
+
+void ColliderShape::setWorldScale(const Vector3F &scale) {
+    _pose.setTranslation(_pose.translation() * scale);
+    setLocalPose(_pose);
 }
 
 void ColliderShape::setMaterial(PxMaterial *material) {
@@ -92,6 +99,23 @@ bool ColliderShape::sceneQuery() {
 void ColliderShape::setSceneQuery(bool isQuery) {
     _nativeShape->setFlag(PxShapeFlag::Enum::eSCENE_QUERY_SHAPE, isQuery);
 }
+
+#ifdef _DEBUG
+void ColliderShape::setEntity(EntityPtr value) {
+    _entity = value->createChild();
+    _entity->transform->setPosition(getLocalTranslation());
+}
+
+void ColliderShape::removeEntity(EntityPtr value) {
+    value->removeChild(_entity);
+    _entity = nullptr;
+}
+    
+Point3F ColliderShape::getLocalTranslation() {
+    auto trans = _nativeShape->getLocalPose();
+    return Point3F(trans.p.x, trans.p.y, trans.p.z);
+}
+#endif
 
 }
 }

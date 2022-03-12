@@ -7,6 +7,7 @@
 #ifndef collider_shape_hpp
 #define collider_shape_hpp
 
+#include "scene_forward.h"
 #include "../physics.h"
 #include "transform3.h"
 #include <vector>
@@ -28,7 +29,7 @@ public:
     
     Vector3F position() const;
     
-    virtual void setWorldScale(const Vector3F &scale) = 0;
+    virtual void setWorldScale(const Vector3F &scale);
     
 public:
     void setMaterial(PxMaterial *materials);
@@ -57,6 +58,15 @@ public:
     
     void setSceneQuery(bool isQuery);
     
+public:
+#ifdef _DEBUG
+    virtual void setEntity(EntityPtr value);
+
+    void removeEntity(EntityPtr value);
+    
+    Point3F getLocalTranslation();
+#endif
+    
 protected:
     friend class Collider;
     
@@ -69,6 +79,10 @@ protected:
     Vector3F _scale = Vector3F(1, 1, 1);
     Transform3F _pose;
     static constexpr float halfSqrt = 0.70710678118655;
+    
+#ifdef _DEBUG
+    EntityPtr _entity{nullptr};
+#endif
 };
 
 }

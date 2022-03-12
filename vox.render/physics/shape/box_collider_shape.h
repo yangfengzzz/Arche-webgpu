@@ -21,6 +21,12 @@ public:
     
     void setWorldScale(const Vector3F &scale) override;
     
+#ifdef _DEBUG
+    void setEntity(EntityPtr value) override;
+    
+    void _syncBoxGeometry();
+#endif
+    
 private:
     Vector3F _half = Vector3F(0.5, 0.5, 0.5);
 };

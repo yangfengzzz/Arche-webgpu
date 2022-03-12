@@ -9,6 +9,10 @@
 
 #include "collider_shape.h"
 
+#ifdef _DEBUG
+#include "mesh/mesh_renderer.h"
+#endif
+
 namespace vox {
 namespace physics {
 /**
@@ -54,6 +58,16 @@ public:
     void setUpAxis(ColliderShapeUpAxis::Enum value);
     
     void setWorldScale(const Vector3F &scale) override;
+    
+#ifdef _DEBUG
+    void setEntity(EntityPtr value) override;
+    
+    void _syncCapsuleGeometry();
+    
+    void _syncCapsuleAxis(ColliderShapeUpAxis::Enum upAxis);
+    
+    MeshRenderer* _renderer{nullptr};
+#endif
     
 private:
     float _radius = 1;

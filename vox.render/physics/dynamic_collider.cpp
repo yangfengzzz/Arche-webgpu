@@ -198,6 +198,13 @@ void DynamicCollider::_onLateUpdate() {
     transform->setWorldPosition(Point3F(pose.p.x, pose.p.y, pose.p.z));
     transform->setWorldRotationQuaternion(QuaternionF(pose.q.x, pose.q.y, pose.q.z, pose.q.w));
     _updateFlag->flag = false;
+    
+#ifdef _DEBUG
+    if (_entity) {
+        _entity->transform->setPosition(Point3F(pose.p.x, pose.p.y, pose.p.z));
+        _entity->transform->setRotationQuaternion(QuaternionF(pose.q.x, pose.q.y, pose.q.z, pose.q.w));
+    }
+#endif
 }
 
 }

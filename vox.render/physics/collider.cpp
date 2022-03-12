@@ -31,6 +31,12 @@ void Collider::addShape(const ColliderShapePtr &shape) {
         _nativeActor->attachShape(*shape->_nativeShape);
         shape->_collider = this;
     }
+    
+#ifdef _DEBUG
+    if (_entity) {
+        shape->setEntity(_entity);
+    }
+#endif
 }
 
 void Collider::removeShape(const ColliderShapePtr &shape) {
@@ -42,6 +48,12 @@ void Collider::removeShape(const ColliderShapePtr &shape) {
         entity()->scene()->_physicsManager._removeColliderShape(shape);
         shape->_collider = nullptr;
     }
+    
+#ifdef _DEBUG
+    if (_entity) {
+        shape->removeEntity(_entity);
+    }
+#endif
 }
 
 void Collider::clearShapes() {
@@ -65,6 +77,14 @@ void Collider::_onUpdate() {
         for (auto &_shape: _shapes) {
             _shape->setWorldScale(worldScale);
         }
+        
+#ifdef _DEBUG
+        if (_entity) {
+            auto transform = _nativeActor->getGlobalPose();
+            _entity->transform->setPosition(Point3F(transform.p.x, transform.p.y, transform.p.z));
+            _entity->transform->setRotationQuaternion(transform.q.x, transform.q.y, transform.q.z, transform.q.w);
+        }
+#endif
     }
 }
 

@@ -24,9 +24,6 @@ public:
     Vector3F rotation();
     
     void setRotation(const Vector3F &value);
-    
-    void setWorldScale(const Vector3F &scale) {
-    }
 };
 
 }
