@@ -6,7 +6,6 @@
 
 #include "wgsl_particle_draw.h"
 #include "filesystem.h"
-#include <fmt/core.h>
 
 namespace vox {
 WGSLParticleVertex::WGSLParticleVertex():
@@ -41,12 +40,11 @@ void WGSLParticleVertex::_createShaderSource(size_t hash, const ShaderMacroColle
                           "};\n");
         encoder.addUniformBinding("u_particleData", "ParticleData");
         
-        auto particleCount = *macros.macroConstant(PARTICLE_COUNT);
-        encoder.addUniformBinding("u_writeConsumeBuffer", fmt::format("array<TParticle, {}>", particleCount));
-        
         _commonFrag(encoder, macros);
         
-        encoder.addInoutType("VertexIn", BuiltInType::InstanceIndex, "instanceIndex", UniformType::U32);
+        encoder.addInoutType("VertexIn", 0, "position", UniformType::Vec4f32);
+        encoder.addInoutType("VertexIn", 1, "velocity", UniformType::Vec4f32);
+        encoder.addInoutType("VertexIn", 2, "simulation", UniformType::Vec4f32);
         encoder.addInoutType("VertexIn", BuiltInType::VertexIndex, "vertexIndex", UniformType::U32);
 
         encoder.addInoutType("VertexOut", BuiltInType::Position, "position", UniformType::Vec4f32);
@@ -57,18 +55,17 @@ void WGSLParticleVertex::_createShaderSource(size_t hash, const ShaderMacroColle
         encoder.addEntry({{"in", "VertexIn"}}, {"out", "VertexOut"}, [&](std::string &source){
             source +=
             "    // Time alived in [0, 1].\n"
-            "    let dAge = 1.0 - maprange(0.0, u_writeConsumeBuffer[in.instanceIndex].start_age,\n"
-            "                                       u_writeConsumeBuffer[in.instanceIndex].age);\n"
+            "    let dAge = 1.0 - maprange(0.0, in.simulation.x, in.simulation.y);\n"
             "    let decay = curve_inout(dAge, 0.55);\n"
             "    \n"
             "    out.uv = pos[in.vertexIndex];\n"
-            "    let worldPosApprox = u_cameraData.u_projMat * u_cameraData.u_viewMat * vec4<f32>(u_writeConsumeBuffer[in.instanceIndex].position.xyz, 1.0);\n"
+            "    let worldPosApprox = u_cameraData.u_projMat * u_cameraData.u_viewMat * vec4<f32>(in.position.xyz, 1.0);\n"
             "    let worldPos = vec3<f32>(out.uv, 0.0) * compute_size(worldPosApprox.z/worldPosApprox.w, decay,\n"
             "                                                         u_particleData.minParticleSize, u_particleData.maxParticleSize) * 0.025;\n"
             "    \n"
             "    // Generate a billboarded model view matrix\n"
             "    var bbModelViewMatrix:mat4x4<f32> = mat4x4<f32>(1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0);\n"
-            "    bbModelViewMatrix[3] = vec4<f32>(u_writeConsumeBuffer[in.instanceIndex].position.xyz, 1.0);\n"
+            "    bbModelViewMatrix[3] = vec4<f32>(in.position.xyz, 1.0);\n"
             "    bbModelViewMatrix = u_cameraData.u_viewMat * bbModelViewMatrix;\n"
             "    bbModelViewMatrix[0][0] = 1.0;\n"
             "    bbModelViewMatrix[0][1] = 0.0;\n"
@@ -84,7 +81,7 @@ void WGSLParticleVertex::_createShaderSource(size_t hash, const ShaderMacroColle
             "    out.position = u_cameraData.u_projMat * bbModelViewMatrix * vec4<f32>(worldPos, 1.0);\n"
             "    \n"
             "    // Output parameters.\n"
-            "    out.color = base_color(u_writeConsumeBuffer[in.instanceIndex].position.xyz, decay,\n"
+            "    out.color = base_color(in.position.xyz, decay,\n"
             "                           u_particleData.colorMode, u_particleData.birthGradient, u_particleData.deathGradient);\n"
             "    out.decay = decay;\n"
             "    \n"

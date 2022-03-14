@@ -41,6 +41,19 @@ _sortIndicesBufferProp(Shader::createProperty("u_sortIndicesBuffer", ShaderDataG
     
     _mesh = std::make_shared<BufferMesh>();
     _mesh->addSubMesh(0, 4, wgpu::PrimitiveTopology::TriangleStrip);
+    
+    std::vector<wgpu::VertexAttribute> vertexAttributes(3);
+    vertexAttributes[0].format = wgpu::VertexFormat::Float32x4;
+    vertexAttributes[0].offset = 0;
+    vertexAttributes[0].shaderLocation = 0;
+    vertexAttributes[1].format = wgpu::VertexFormat::Float32x4;
+    vertexAttributes[1].offset = sizeof(Vector4F);
+    vertexAttributes[1].shaderLocation = 1;
+    vertexAttributes[2].format = wgpu::VertexFormat::Float32x4;
+    vertexAttributes[2].offset = 2 * sizeof(Vector4F);
+    vertexAttributes[2].shaderLocation = 2;
+    _mesh->setVertexLayouts(vertexAttributes, sizeof(TParticle), wgpu::VertexStepMode::Instance);
+    
     _material = std::make_shared<ParticleMaterial>(entity->scene()->device());
     setMaterial(_material);
 }
@@ -69,9 +82,9 @@ void ParticleRenderer::_allocBuffer() {
     
     /* Append Consume */
     _appendConsumeBuffer[0] = std::make_unique<Buffer>(device, sizeof(TParticle) * numParticles,
-                                                       wgpu::BufferUsage::Storage | wgpu::BufferUsage::Uniform);
+                                                       wgpu::BufferUsage::Storage | wgpu::BufferUsage::Vertex);
     _appendConsumeBuffer[1] = std::make_unique<Buffer>(device, sizeof(TParticle) * numParticles,
-                                                       wgpu::BufferUsage::Storage | wgpu::BufferUsage::Uniform);
+                                                       wgpu::BufferUsage::Storage | wgpu::BufferUsage::Vertex);
     shaderData.setBufferFunctor(_readConsumeBufferProp, [this]()->Buffer {
         return *_appendConsumeBuffer[_read];
     });
@@ -126,6 +139,7 @@ void ParticleRenderer::update(float deltaTime) {
     
     // todo
     _mesh->setInstanceCount(_numAliveParticles);
+    _mesh->setVertexBufferBinding(*_appendConsumeBuffer[_read]);
     _generateRandomValues();
 }
 

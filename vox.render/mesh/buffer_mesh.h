@@ -40,7 +40,8 @@ public:
      * @param attributes - Vertex attributes collection
      * @param stride - stride step size
      */
-    void setVertexLayouts(const std::vector<wgpu::VertexAttribute>& attributes, uint64_t stride);
+    void setVertexLayouts(const std::vector<wgpu::VertexAttribute>& attributes,
+                          uint64_t stride, wgpu::VertexStepMode stepMode = wgpu::VertexStepMode::Vertex);
     
     /**
      * Set vertex buffer binding.

@@ -28,12 +28,14 @@ void BufferMesh::setVertexLayouts(const std::vector<wgpu::VertexBufferLayout>& l
     _setVertexLayouts(layouts);
 }
 
-void BufferMesh::setVertexLayouts(const std::vector<wgpu::VertexAttribute>& attributes, uint64_t stride) {
+void BufferMesh::setVertexLayouts(const std::vector<wgpu::VertexAttribute>& attributes,
+                                  uint64_t stride, wgpu::VertexStepMode stepMode) {
     if (_vertexAttributes.size() > 0) {
         LOG(WARNING) << "reset vertex layouts\n";
     }
     
     _vertexAttributes = attributes;
+    _layouts.stepMode = stepMode;
     _layouts.attributes = _vertexAttributes.data();
     _layouts.attributeCount = static_cast<uint32_t>(_vertexAttributes.size());
     _layouts.arrayStride = stride;
