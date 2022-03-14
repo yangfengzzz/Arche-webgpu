@@ -49,10 +49,9 @@ void WGSLParticleSimulation::_createShaderSource(size_t hash, const ShaderMacroC
                             "    atomicSub(&u_readAtomicBuffer.counter, 1u);\n"
                             "    return u_readConsumeBuffer[index];\n"
                             "}}\n");
-        encoder.addFunction(fmt::format("fn pushParticle(p: TParticle, write_count: ptr<storage, atomic<u32> >, "
-                                        "write_particles: ptr<storage, array<TParticle, {}> >) {{\n"
-                                        "    let index = atomicAdd(write_count, 1u);\n"
-                                        "    (*write_particles)[index] = p;\n"
+        encoder.addFunction(fmt::format("fn pushParticle(p: TParticle) {{\n"
+                                        "    let index = atomicAdd(&u_writeAtomicBuffer.counter, 1u);\n"
+                                        "    u_writeConsumeBuffer[index] = p;\n"
                                         "}}\n", particleCount));
         
         encoder.addFunction("fn updatedAge(p: TParticle, uTimeStep: f32) -> f32 {\n"
@@ -65,12 +64,10 @@ void WGSLParticleSimulation::_createShaderSource(size_t hash, const ShaderMacroC
                             "    (*p).age = age;\n"
                             "}\n");
         
-        encoder.addFunction("fn calculateScattering(uScatteringFactor:f32,\n"
-                            "                        randbuffer: array<f32, 10>,\n"
-                            "                            gid:u32)->vec3<f32> {\n"
-                            "    var randforce = vec3<f32>(randbuffer[gid], randbuffer[gid+1u], randbuffer[gid+2u]);\n"
+        encoder.addFunction("fn calculateScattering(gid:u32)->vec3<f32> {\n"
+                            "    var randforce = vec3<f32>(u_randomBuffer[gid], u_randomBuffer[gid+1u], u_randomBuffer[gid+2u]);\n"
                             "    randforce = 2.0 * randforce - 1.0;\n"
-                            "    return uScatteringFactor * randforce;\n"
+                            "    return u_simulationData.scatteringFactor * randforce;\n"
                             "}\n");
         
         encoder.addFunction("fn calculateRepulsion(p:TParticle)->vec3<f32> {\n"
@@ -95,12 +92,9 @@ void WGSLParticleSimulation::_createShaderSource(size_t hash, const ShaderMacroC
                             "    return uVectorFieldFactor * vfield;\n"
                             "}\n");
         
-        encoder.addFunction("fn calculateCurlNoise(p:TParticle,\n"
-                            "                      uCurlNoiseScale:f32,\n"
-                            "                      uCurlNoiseFactor:f32,\n"
-                            "                      uPerlinNoisePermutationSeed:f32)->vec3<f32> {\n"
-                            "    let curl_velocity = compute_curl(p.position.xyz * uCurlNoiseScale, uPerlinNoisePermutationSeed);\n"
-                            "    return uCurlNoiseFactor * curl_velocity;\n"
+        encoder.addFunction("fn calculateCurlNoise(p:TParticle)->vec3<f32> {\n"
+                            "    let curl_velocity = compute_curl(p.position.xyz * u_simulationData.curlNoiseScale, 0.0);\n"
+                            "    return u_simulationData.curlNoiseFactor * curl_velocity;\n"
                             "}\n");
         
         encoder.addFunction("fn collideSphere(r:f32, center:vec3<f32>, pos: ptr<function, vec3<f32> >, vel: ptr<function, vec3<f32> >) {\n"
@@ -153,49 +147,48 @@ void WGSLParticleSimulation::_createShaderSource(size_t hash, const ShaderMacroC
                             "    *pos = p + center;\n"
                             "}\n");
         
-        encoder.addFunction("fn collisionHandling(pos: ptr<function, vec3<f32> >, vel: ptr<function, vec3<f32> >\n"
-                            "                    uBoundingVolume:i32,\n"
-                            "                        uBBoxSize:f32) {\n"
-                            "    let r = 0.5 * uBBoxSize;\n"
+        encoder.addFunction("fn collisionHandling(pos: ptr<function, vec3<f32> >, vel: ptr<function, vec3<f32> >) {\n"
+                            "    let r = 0.5 * u_simulationData.bboxSize;\n"
                             "    \n"
-                            "    if (uBoundingVolume == 0) {\n"
+                            "    if (u_simulationData.boundingVolumeType == 0) {\n"
                             "        collideSphere(r, vec3<f32>(0.0), pos, vel);\n"
                             "    } else {\n"
-                            "        if (uBoundingVolume == 1) {\n"
+                            "        if (u_simulationData.boundingVolumeType == 1) {\n"
                             "            collideBox(vec3<f32>(r), vec3<f32>(0.0), pos, vel); {\n"
                             "        }\n"
                             "    }\n"
                             "}\n");
         
         encoder.addEntry({ParticleManager::PARTICLES_KERNEL_GROUP_WIDTH, 1, 1}, [&](std::string &source){
-            source += "    // Local copy of the particle.\n"
+            // Local copy of the particle.
+            source +=
             "    let p = popParticle(gid);\n"
             "    \n"
-            "    let age = updatedAge(p, uTimeStep);\n"
+            "    let age = updatedAge(p, u_simulationData.timeStep);\n"
             "    \n"
             "    if (age > 0.0) {\n"
             "        // Calculate external forces.\n"
             "        var force = vec3<f32>(0.0);\n"
             "        \n";
             if (macros.contains(NEED_PARTICLE_SCATTERING)) {
-                source += "        force += calculateScattering(uScatteringFactor, uRandomBuffer, gid);\n";
+                source += "force += calculateScattering(gid);\n";
             };
             
-            source += "        force += calculateRepulsion(p);\n"
-            "        force += calculateTargetMesh(p);\n";
+            source += "force += calculateRepulsion(p);\n"
+            "force += calculateTargetMesh(p);\n";
             
             if (macros.contains(NEED_PARTICLE_VECTOR_FIELD)) {
-                source += "            force += calculateVectorField(p, uVectorFieldFactor,\n"
-                "                               uVectorFieldTexture, uVectorFieldSampler);\n";
+                source += "force += calculateVectorField(p, uVectorFieldFactor,\n"
+                "                    uVectorFieldTexture, uVectorFieldSampler);\n";
             }
             
             if (macros.contains(NEED_PARTICLE_CURL_NOISE)) {
-                source += "            force += calculateCurlNoise(p, uCurlNoiseScale,\n"
-                "                               uCurlNoiseFactor, uPerlinNoisePermutationSeed);\n";
+                source += "force += calculateCurlNoise(p);\n";
             }
             
-            source += "        // Integrations vectors.\n"
-            "        let dt = vec3<f32>(uTimeStep);\n"
+            // Integrations vectors.
+            source +=
+            "        let dt = vec3<f32>(u_simulationData.timeStep);\n"
             "        var velocity = p.velocity.xyz;\n"
             "        var position = p.position.xyz;\n"
             "        \n"
@@ -203,22 +196,21 @@ void WGSLParticleSimulation::_createShaderSource(size_t hash, const ShaderMacroC
             "        velocity = fma(force, dt, velocity);\n";
             
             if (macros.contains(NEED_PARTICLE_VELOCITY_CONTROL)) {
-                source += "            velocity = uVelocityFactor * normalize(velocity);\n";
+                source += "velocity = u_simulationData.velocityFactor * normalize(velocity);\n";
             }
             
-            source += "        // Integrate position.\n"
+            // Integrate position.
+            source +=
             "        position = fma(velocity, dt, position);\n"
             "        \n"
             "        // Handle collisions.\n"
-            "        collisionHandling(position, velocity,\n"
-            "                          uBoundingVolume,\n"
-            "                          uBBoxSize);\n"
+            "        collisionHandling(&position, &velocity);\n"
             "        \n"
             "        // Update the particle.\n"
             "        updateParticle(p, position, velocity, age);\n"
             "        \n"
             "        // Save it in buffer.\n"
-            "        pushParticle(p, uWriteCounter, uWriteParticle);\n"
+            "        pushParticle(p);\n"
             "    }\n";
         }, {{"global_id", BuiltInType::GlobalInvocationID}});
         encoder.flush();
