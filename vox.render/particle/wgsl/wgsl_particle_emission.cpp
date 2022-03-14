@@ -39,14 +39,14 @@ void WGSLParticleEmission::_createShaderSource(size_t hash, const ShaderMacroCol
         
         auto particleCount = *macros.macroConstant(PARTICLE_COUNT);
         encoder.addStorageBufferBinding("u_readConsumeBuffer", fmt::format("array<TParticle, {}>", particleCount), false);
-        encoder.addUniformBinding("u_randomBuffer", fmt::format("array<vec4<f32>, {}>", particleCount/2));
+        encoder.addUniformBinding("u_randomBuffer", "array<vec4<f32>, 256>");
                 
         encoder.addEntry({ParticleManager::PARTICLES_KERNEL_GROUP_WIDTH, 1, 1}, [&](std::string &source){
             // source += "atomicStore(&u_readAtomicBuffer.counter, 0u);\n";
             // source += "storageBarrier();\n";
             source += "if (global_id.x < u_emitterData.emitCount) {\n";
             source += " // Random vector.\n"
-            "    let rn = vec3<f32>(u_randomBuffer[global_id.x].x, u_randomBuffer[global_id.x].y, u_randomBuffer[global_id.x].z);\n"
+            "    let rn = vec3<f32>(u_randomBuffer[global_id.x / 256u].x, u_randomBuffer[global_id.x / 256u].y, u_randomBuffer[global_id.x / 256u].z);\n"
             "    \n"
             "    // Position\n"
             "    var pos = u_emitterData.emitterPosition;\n"
@@ -69,7 +69,7 @@ void WGSLParticleEmission::_createShaderSource(size_t hash, const ShaderMacroCol
             "    // [As the threadgroup are not full, some dead particles might appears if not\n"
             "    // skipped in following stages].\n"
             "    \n"
-            "    let age = mix( u_emitterData.particleMinAge, u_emitterData.particleMaxAge, u_randomBuffer[global_id.x].w);\n"
+            "    let age = mix( u_emitterData.particleMinAge, u_emitterData.particleMaxAge, u_randomBuffer[global_id.x / 256u].w);\n"
             "\n"
             "    // Emit particle id.\n"
             "    let id = atomicAdd(&u_readAtomicBuffer.counter, 1u);\n"

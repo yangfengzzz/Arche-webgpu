@@ -67,7 +67,7 @@ void ParticleRenderer::_allocBuffer() {
     fprintf(stderr, "[ %u particles, %u per batch ]\n", numParticles , kBatchEmitCount);
     
     /* Random value buffer */
-    _randomVec.resize(4u * numParticles);
+    _randomVec.resize(4u * 256);
     shaderData.setData(_randomBufferProp, _randomVec);
         
     /* Atomic */

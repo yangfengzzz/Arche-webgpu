@@ -43,7 +43,7 @@ void WGSLParticleSimulation::_createShaderSource(size_t hash, const ShaderMacroC
         auto particleCount = *macros.macroConstant(PARTICLE_COUNT);
         encoder.addStorageBufferBinding("u_readConsumeBuffer", fmt::format("array<TParticle, {}>", particleCount), false);
         encoder.addStorageBufferBinding("u_writeConsumeBuffer", fmt::format("array<TParticle, {}>", particleCount), false);
-        encoder.addUniformBinding("u_randomBuffer", fmt::format("array<vec4<f32>, {}>", particleCount/2));
+        encoder.addUniformBinding("u_randomBuffer", "array<vec4<f32>, 256>");
         
         encoder.addFunction("fn popParticle(index: u32) -> TParticle {\n"
                             "    atomicSub(&u_readAtomicBuffer.counter, 1u);\n"
@@ -65,7 +65,7 @@ void WGSLParticleSimulation::_createShaderSource(size_t hash, const ShaderMacroC
                             "}\n");
         
         encoder.addFunction("fn calculateScattering(global_id:u32)->vec3<f32> {\n"
-                            "    var randforce = vec3<f32>(u_randomBuffer[global_id].x, u_randomBuffer[global_id].y, u_randomBuffer[global_id].z);\n"
+                            "    var randforce = vec3<f32>(u_randomBuffer[global_id / 256u].x, u_randomBuffer[global_id / 256u].y, u_randomBuffer[global_id / 256u].z);\n"
                             "    randforce = 2.0 * randforce - 1.0;\n"
                             "    return u_simulationData.scatteringFactor * randforce;\n"
                             "}\n");
