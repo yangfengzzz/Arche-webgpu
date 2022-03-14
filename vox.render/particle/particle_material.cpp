@@ -75,7 +75,7 @@ bool ParticleMaterial::debugDraw() const {
 }
 
 void ParticleMaterial::setDebugDraw(bool flag) {
-    _particleData.debugDraw = flag;
+    _particleData.debugDraw = flag? 1: 0;
     shaderData.setData(_particleDataProp, _particleData);
 }
 

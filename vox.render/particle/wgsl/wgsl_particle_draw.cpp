@@ -36,7 +36,8 @@ void WGSLParticleVertex::_createShaderSource(size_t hash, const ShaderMacroColle
                           "    maxParticleSize: f32;\n"
                           "    colorMode: u32;\n"
                           "    fadeCoefficient: f32;\n"
-                          "    debugDraw: bool;\n"
+                          "    debugDraw: f32;\n"
+                          "    _pad: f32;\n"
                           "};\n");
         encoder.addUniformBinding("u_particleData", "ParticleData");
         
@@ -55,8 +56,6 @@ void WGSLParticleVertex::_createShaderSource(size_t hash, const ShaderMacroColle
 
         encoder.addEntry({{"in", "VertexIn"}}, {"out", "VertexOut"}, [&](std::string &source){
             source +=
-            "    var out:VertexOut;\n"
-            "    \n"
             "    // Time alived in [0, 1].\n"
             "    let dAge = 1.0 - maprange(0.0, u_writeConsumeBuffer[in.instanceIndex].start_age,\n"
             "                                       u_writeConsumeBuffer[in.instanceIndex].age);\n"
@@ -120,7 +119,8 @@ void WGSLParticleFragment::_createShaderSource(size_t hash, const ShaderMacroCol
                           "    maxParticleSize: f32;\n"
                           "    colorMode: u32;\n"
                           "    fadeCoefficient: f32;\n"
-                          "    debugDraw: bool;\n"
+                          "    debugDraw: f32;\n"
+                          "    _pad: f32;\n"
                           "};\n");
         encoder.addUniformBinding("u_particleData", "ParticleData");
         
@@ -130,7 +130,8 @@ void WGSLParticleFragment::_createShaderSource(size_t hash, const ShaderMacroCol
 
         encoder.addInoutType("Output", 0, "finalColor", UniformType::Vec4f32);
         encoder.addEntry({{"in", "VertexOut"}}, {"out", "Output"},  [&](std::string &source){
-            source += "out.finalColor = compute_color(in.color, in.decay, in.uv, u_particleData.fadeCoefficient, u_particleData.debugDraw);\n";
+            source += "out.finalColor = compute_color(in.color, in.decay, in.uv, u_particleData.fadeCoefficient, "
+            "bool(u_particleData.debugDraw));\n";
         });
         encoder.flush();
     }

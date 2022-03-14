@@ -26,7 +26,8 @@ public:
         float maxParticleSize;
         ColorMode colorMode = ColorMode::DEFAULT;
         float fadeCoefficient;
-        bool debugDraw;
+        float debugDraw;
+        float _pad;
     };
     
     float minParticleSize() const;
