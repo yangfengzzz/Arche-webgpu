@@ -42,7 +42,7 @@ void WGSLParticleVertex::_createShaderSource(size_t hash, const ShaderMacroColle
         encoder.addUniformBinding("u_particleData", "ParticleData");
         
         auto particleCount = *macros.macroConstant(PARTICLE_COUNT);
-        encoder.addStorageBufferBinding("u_writeConsumeBuffer", fmt::format("array<TParticle, {}>", particleCount), false);
+        encoder.addUniformBinding("u_writeConsumeBuffer", fmt::format("array<TParticle, {}>", particleCount));
         
         _commonFrag(encoder, macros);
         

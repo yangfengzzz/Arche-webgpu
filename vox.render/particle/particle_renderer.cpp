@@ -69,9 +69,9 @@ void ParticleRenderer::_allocBuffer() {
     
     /* Append Consume */
     _appendConsumeBuffer[0] = std::make_unique<Buffer>(device, sizeof(TParticle) * numParticles,
-                                                       wgpu::BufferUsage::Storage);
+                                                       wgpu::BufferUsage::Storage | wgpu::BufferUsage::Uniform);
     _appendConsumeBuffer[1] = std::make_unique<Buffer>(device, sizeof(TParticle) * numParticles,
-                                                       wgpu::BufferUsage::Storage);
+                                                       wgpu::BufferUsage::Storage | wgpu::BufferUsage::Uniform);
     shaderData.setBufferFunctor(_readConsumeBufferProp, [this]()->Buffer {
         return *_appendConsumeBuffer[_read];
     });
