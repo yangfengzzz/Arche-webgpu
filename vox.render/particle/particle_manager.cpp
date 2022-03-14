@@ -63,7 +63,7 @@ void ParticleManager::draw(wgpu::CommandEncoder& commandEncoder) {
         /* Number of particles to be emitted. */
         uint32_t const emit_count = std::min(ParticleRenderer::kBatchEmitCount, num_dead_particles); //
         _emission(emit_count, particle, passEncoder);
-        _simulation(emit_count, particle, passEncoder);
+        _simulation(particle, passEncoder);
     }
     passEncoder.End();
 }
@@ -86,14 +86,14 @@ void ParticleManager::_emission(const uint32_t count, ParticleRenderer* particle
     _emitterPass->detachShaderData(&particle->shaderData);
 }
 
-void ParticleManager::_simulation(const uint32_t count, ParticleRenderer* particle,
+void ParticleManager::_simulation(ParticleRenderer* particle,
                                   wgpu::ComputePassEncoder &passEncoder) {
-    if (particle->numAliveParticles() + count == 0u) {
+    if (particle->numAliveParticles() == 0u) {
         return;
     }
     
     _simulationPass->attachShaderData(&particle->shaderData);
-    auto nGroups = threadsGroupCount(particle->numAliveParticles() + count);
+    auto nGroups = threadsGroupCount(particle->numAliveParticles());
     _simulationPass->setDispatchCount(nGroups);
     _simulationPass->compute(passEncoder);
     _simulationPass->detachShaderData(&particle->shaderData);

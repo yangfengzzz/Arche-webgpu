@@ -47,8 +47,7 @@ private:
     void _emission(const uint32_t count,
                    ParticleRenderer* particle, wgpu::ComputePassEncoder &passEncoder);
     
-    void _simulation(const uint32_t count,
-                     ParticleRenderer* particle, wgpu::ComputePassEncoder &passEncoder);
+    void _simulation(ParticleRenderer* particle, wgpu::ComputePassEncoder &passEncoder);
     
 private:
     std::vector<ParticleRenderer*> _particles{};
