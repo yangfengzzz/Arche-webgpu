@@ -75,6 +75,7 @@ void ForwardApplication::update(float delta_time) {
 void ForwardApplication::updateGPUTask(wgpu::CommandEncoder& commandEncoder) {
     _shadowManager->draw(commandEncoder);
     _lightManager->draw(commandEncoder);
+    _particleManager->draw(commandEncoder);
 }
 
 bool ForwardApplication::resize(uint32_t win_width, uint32_t win_height,

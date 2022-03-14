@@ -8,6 +8,7 @@
 #define wgsl_particle_draw_hpp
 
 #include "wgsl_cache.h"
+#include "wgsl_particle_common.h"
 #include "shaderlib/functors/wgsl_common_frag.h"
 
 namespace vox {
@@ -19,6 +20,7 @@ public:
 private:
     void _createShaderSource(size_t hash, const ShaderMacroCollection& macros) override;
     
+    WGSLParticleCommon _particleCommon;
     WGSLCommonFrag _commonFrag;
 };
 

@@ -6,6 +6,7 @@
 
 #include "particle_manager.h"
 #include "particle/wgsl/wgsl_particle_emission.h"
+#include "particle/wgsl/wgsl_particle_draw.h"
 #include <glog/logging.h>
 
 namespace vox {
@@ -19,7 +20,7 @@ ParticleManager &ParticleManager::getSingleton(void) {
 }
 //-----------------------------------------------------------------------
 ParticleManager::ParticleManager(wgpu::Device& device) {
-    Shader::create("particle_instancing", nullptr, nullptr);
+    Shader::create("particle_instancing", std::make_unique<WGSLParticleVertex>(), std::make_unique<WGSLParticleFragment>());
 
     _emitterPass = std::make_unique<ComputePass>(device, std::make_unique<WGSLParticleEmission>());
     _simulationPass = std::make_unique<ComputePass>(device, nullptr);
@@ -61,7 +62,7 @@ void ParticleManager::draw(wgpu::CommandEncoder& commandEncoder) {
         /* Number of particles to be emitted. */
         uint32_t const emit_count = std::min(ParticleRenderer::kBatchEmitCount, num_dead_particles); //
         _emission(emit_count, particle, passEncoder);
-        _simulation(emit_count, particle, passEncoder);
+//        _simulation(emit_count, particle, passEncoder);
     }
     passEncoder.End();
 }

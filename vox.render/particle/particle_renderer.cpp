@@ -39,8 +39,8 @@ _dpBufferProp(Shader::createProperty("u_dpBuffer", ShaderDataGroup::Renderer)),
 _sortIndicesBufferProp(Shader::createProperty("u_sortIndicesBuffer", ShaderDataGroup::Renderer)) {
     _allocBuffer();
     
-    auto bufferMesh = std::make_shared<BufferMesh>();
-    bufferMesh->addSubMesh(0, 4, wgpu::PrimitiveTopology::TriangleStrip);
+    _mesh = std::make_shared<BufferMesh>();
+    _mesh->addSubMesh(0, 4, wgpu::PrimitiveTopology::TriangleStrip);
     _material = std::make_shared<ParticleMaterial>(entity->scene()->device());
     setMaterial(_material);
 }

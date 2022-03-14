@@ -8,7 +8,7 @@
 
 namespace vox {
 ParticleMaterial::ParticleMaterial(wgpu::Device& device):
-BaseMaterial(device, Shader::find("particle")),
+BaseMaterial(device, Shader::find("particle_instancing")),
 _particleDataProp(Shader::createProperty("u_particleData", ShaderDataGroup::Material)) {
     shaderData.setData(_particleDataProp, _particleData);
 

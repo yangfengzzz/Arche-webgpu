@@ -14,9 +14,6 @@ namespace vox {
 class ParticleApp : public ForwardApplication {
 public:
     void loadScene() override;
-        
-private:
-    std::unique_ptr<ParticleManager> _manager{nullptr};
 };
 }
 #endif /* particle_app_hpp */

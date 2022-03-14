@@ -5,6 +5,7 @@
 //  property of any third parties.
 
 #include "wgsl_particle_draw.h"
+#include "filesystem.h"
 #include <fmt/core.h>
 
 namespace vox {
@@ -19,8 +20,13 @@ void WGSLParticleVertex::_createShaderSource(size_t hash, const ShaderMacroColle
     auto outputStructCounter = WGSLEncoder::startCounter(0);
     {
         auto encoder = createSourceEncoder(wgpu::ShaderStage::Vertex);
+        _particleCommon(encoder, macros);
+
+        std::string particleDraw = fs::readShader("particle/particle_draw.wgsl");
+        encoder.addStruct(particleDraw);
+        
         encoder.addStruct("var<private> pos : array<vec2<f32>, 4> = array<vec2<f32>, 4>(\n"
-                          "  vec2<f32>(-1.0, 1.0), vec2<f32>(1.0, 1.0), vec2<f32>(-1.0, -1.0), vec2<f32>(1.0, -1.0)\n"
+                          "  vec2<f32>(-1.0, 1.0), vec2<f32>(-1.0, -1.0), vec2<f32>(1.0, 1.0), vec2<f32>(1.0, -1.0)\n"
                           ");\n");
         
         encoder.addStruct("struct ParticleData {\n"
@@ -52,17 +58,17 @@ void WGSLParticleVertex::_createShaderSource(size_t hash, const ShaderMacroColle
             "    var out:VertexOut;\n"
             "    \n"
             "    // Time alived in [0, 1].\n"
-            "    let dAge = 1.0f - maprange(0.0f, u_writeConsumeBuffer[instanceIndex].start_age,\n"
-            "                                       u_writeConsumeBuffer[instanceIndex].age);\n"
-            "    let decay = curve_inout(dAge, 0.55f);\n"
+            "    let dAge = 1.0 - maprange(0.0, u_writeConsumeBuffer[in.instanceIndex].start_age,\n"
+            "                                       u_writeConsumeBuffer[in.instanceIndex].age);\n"
+            "    let decay = curve_inout(dAge, 0.55);\n"
             "    \n"
-            "    out.uv = pos[vertexIndex];\n"
+            "    out.uv = pos[in.vertexIndex];\n"
             "    let worldPos = vec3<f32>(out.uv, 0.0) * compute_size(out.position.z/out.position.w, decay,\n"
-            "                                                         uMinParticleSize, uMaxParticleSize) * 0.025;\n"
+            "                                                         u_particleData.minParticleSize, u_particleData.maxParticleSize) * 0.025;\n"
             "    \n"
             "    // Generate a billboarded model view matrix\n"
             "    var bbModelViewMatrix:mat4x4<f32>;\n"
-            "    bbModelViewMatrix[3] = float4(u_writeConsumeBuffer[instanceIndex].position.xyz, 1.0);\n"
+            "    bbModelViewMatrix[3] = vec4<f32>(u_writeConsumeBuffer[in.instanceIndex].position.xyz, 1.0);\n"
             "    bbModelViewMatrix = u_cameraData.u_viewMat * bbModelViewMatrix;\n"
             "    bbModelViewMatrix[0][0] = 1.0;\n"
             "    bbModelViewMatrix[0][1] = 0.0;\n"
@@ -75,11 +81,11 @@ void WGSLParticleVertex::_createShaderSource(size_t hash, const ShaderMacroColle
             "    bbModelViewMatrix[2][0] = 0.0;\n"
             "    bbModelViewMatrix[2][1] = 0.0;\n"
             "    bbModelViewMatrix[2][2] = 1.0;\n"
-            "    out.position = u_cameraData.u_projMat * bbModelViewMatrix * float4(worldPos, 1.0);\n"
+            "    out.position = u_cameraData.u_projMat * bbModelViewMatrix * vec4<f32>(worldPos, 1.0);\n"
             "    \n"
             "    // Output parameters.\n"
-            "    out.color = base_color(uWriteParticle[instanceIndex].position.xyz, decay,\n"
-            "                           uColorMode, uBirthGradient, uDeathGradient);\n"
+            "    out.color = base_color(u_writeConsumeBuffer[in.instanceIndex].position.xyz, decay,\n"
+            "                           u_particleData.colorMode, u_particleData.birthGradient, u_particleData.deathGradient);\n"
             "    out.decay = decay;\n"
             "    \n"
             "    return out;\n";
@@ -104,6 +110,9 @@ void WGSLParticleFragment::_createShaderSource(size_t hash, const ShaderMacroCol
     {
         auto encoder = createSourceEncoder(wgpu::ShaderStage::Fragment);
         
+        std::string particleDraw = fs::readShader("particle/particle_draw.wgsl");
+        encoder.addStruct(particleDraw);
+        
         encoder.addStruct("struct ParticleData {\n"
                           "    birthGradient: vec3<f32>;\n"
                           "    minParticleSize: f32;\n"
@@ -121,7 +130,7 @@ void WGSLParticleFragment::_createShaderSource(size_t hash, const ShaderMacroCol
 
         encoder.addInoutType("Output", 0, "finalColor", UniformType::Vec4f32);
         encoder.addEntry({{"in", "VertexOut"}}, {"out", "Output"},  [&](std::string &source){
-            source += "out.finalColor = compute_color(in.color, in.decay, in.uv, uFadeCoefficient, uDebugDraw);\n";
+            source += "out.finalColor = compute_color(in.color, in.decay, in.uv, u_particleData.fadeCoefficient, u_particleData.debugDraw);\n";
         });
         encoder.flush();
     }

@@ -15,8 +15,6 @@
 
 namespace vox {
 void ParticleApp::loadScene() {
-    _manager = std::make_unique<ParticleManager>(_device);
-
     _scene->background.solidColor = Color(0, 0, 0, 1);
     auto rootEntity = _scene->createRootEntity();
     

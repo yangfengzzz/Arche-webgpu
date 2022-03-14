@@ -25,7 +25,7 @@ void WGSLSpriteDebugVertex::_createShaderSource(size_t hash, const ShaderMacroCo
         _commonVert(encoder, macros);
         
         encoder.addStruct("var<private> pos : array<vec2<f32>, 4> = array<vec2<f32>, 4>(\n"
-                          "  vec2<f32>(-1.0, 1.0), vec2<f32>(1.0, 1.0), vec2<f32>(-1.0, -1.0), vec2<f32>(1.0, -1.0)\n"
+                          "  vec2<f32>(-1.0, 1.0), vec2<f32>(-1.0, -1.0), vec2<f32>(1.0, 1.0), vec2<f32>(1.0, -1.0)\n"
                           ");\n");
         
         encoder.addInoutType("VertexIn", BuiltInType::VertexIndex, "vertexIndex", UniformType::U32);
@@ -93,7 +93,6 @@ void WGSLSpriteDebugFragment::_createShaderSource(size_t hash, const ShaderMacro
 //MARK: - SpriteDebugMaterial
 SpriteDebugMaterial::SpriteDebugMaterial(wgpu::Device& device, bool isSpotLight):
 BaseMaterial(device, Shader::find(isSpotLight? "spotlight_sprite_debug": "pointlight_sprite_debug")) {
-    setRenderFace(RenderFace::Double);
     setIsTransparent(true);
     setBlendMode(BlendMode::Additive);
 }
