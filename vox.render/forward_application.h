@@ -10,6 +10,7 @@
 #include "graphics_application.h"
 #include "shadow/shadow_manager.h"
 #include "lighting/light_manager.h"
+#include "particle/particle_manager.h"
 
 namespace vox {
 class ForwardApplication: public GraphicsApplication {
@@ -56,6 +57,7 @@ protected:
     
     std::unique_ptr<ShadowManager> _shadowManager{nullptr};
     std::unique_ptr<LightManager> _lightManager{nullptr};
+    std::unique_ptr<ParticleManager> _particleManager{nullptr};
 };
 
 }

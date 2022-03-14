@@ -536,8 +536,8 @@
 		04F9E90127D2095100BD291B /* compute_pass.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E8FF27D2095100BD291B /* compute_pass.h */; };
 		04F9E90527D2E0BC00BD291B /* wgsl_reflect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF01127A58872003F3599 /* wgsl_reflect.cpp */; };
 		04F9E90627D3684E00BD291B /* atomic_compute_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E90227D2157B00BD291B /* atomic_compute_app.cpp */; };
-		04F9E90A27D4657A00BD291B /* particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E90827D4657A00BD291B /* particle.cpp */; };
-		04F9E90B27D4657A00BD291B /* particle.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E90927D4657A00BD291B /* particle.h */; };
+		04F9E90A27D4657A00BD291B /* particle_renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E90827D4657A00BD291B /* particle_renderer.cpp */; };
+		04F9E90B27D4657A00BD291B /* particle_renderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E90927D4657A00BD291B /* particle_renderer.h */; };
 		04F9E90E27D465A800BD291B /* particle_material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E90C27D465A800BD291B /* particle_material.cpp */; };
 		04F9E90F27D465A800BD291B /* particle_material.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E90D27D465A800BD291B /* particle_material.h */; };
 		04F9E91227D475D700BD291B /* sampled_texture3d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E91027D475D700BD291B /* sampled_texture3d.cpp */; };
@@ -1234,8 +1234,8 @@
 		04F9E8FF27D2095100BD291B /* compute_pass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = compute_pass.h; sourceTree = "<group>"; };
 		04F9E90227D2157B00BD291B /* atomic_compute_app.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = atomic_compute_app.cpp; sourceTree = "<group>"; };
 		04F9E90327D2157B00BD291B /* atomic_compute_app.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = atomic_compute_app.h; sourceTree = "<group>"; };
-		04F9E90827D4657A00BD291B /* particle.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = particle.cpp; sourceTree = "<group>"; };
-		04F9E90927D4657A00BD291B /* particle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = particle.h; sourceTree = "<group>"; };
+		04F9E90827D4657A00BD291B /* particle_renderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = particle_renderer.cpp; sourceTree = "<group>"; };
+		04F9E90927D4657A00BD291B /* particle_renderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = particle_renderer.h; sourceTree = "<group>"; };
 		04F9E90C27D465A800BD291B /* particle_material.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = particle_material.cpp; sourceTree = "<group>"; };
 		04F9E90D27D465A800BD291B /* particle_material.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = particle_material.h; sourceTree = "<group>"; };
 		04F9E91027D475D700BD291B /* sampled_texture3d.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sampled_texture3d.cpp; sourceTree = "<group>"; };
@@ -2231,8 +2231,8 @@
 			isa = PBXGroup;
 			children = (
 				04F9E91927D4A93E00BD291B /* wgsl */,
-				04F9E90927D4657A00BD291B /* particle.h */,
-				04F9E90827D4657A00BD291B /* particle.cpp */,
+				04F9E90927D4657A00BD291B /* particle_renderer.h */,
+				04F9E90827D4657A00BD291B /* particle_renderer.cpp */,
 				04F9E90D27D465A800BD291B /* particle_material.h */,
 				04F9E90C27D465A800BD291B /* particle_material.cpp */,
 				04F9E91527D4817A00BD291B /* particle_manager.h */,
@@ -2406,7 +2406,7 @@
 				047BF0FD27ACEBB7003F3599 /* fixed_joint.h in Headers */,
 				047BF18127AE1A40003F3599 /* wgsl_skybox.h in Headers */,
 				0495463F279F89E500783C84 /* shader_data_group.h in Headers */,
-				04F9E90B27D4657A00BD291B /* particle.h in Headers */,
+				04F9E90B27D4657A00BD291B /* particle_renderer.h in Headers */,
 				047BF16A27AD4339003F3599 /* wgsl_pbr_frag.h in Headers */,
 				047BF17527AD6E33003F3599 /* sampled_texturecube.h in Headers */,
 				047BF09027ABBAF0003F3599 /* wgsl_color_vert.h in Headers */,
@@ -2764,7 +2764,7 @@
 				0495474F27A2714200783C84 /* buffer_mesh.cpp in Sources */,
 				047BF0E827ACEBAE003F3599 /* physics.cpp in Sources */,
 				04954707279FCD3C00783C84 /* free_control.cpp in Sources */,
-				04F9E90A27D4657A00BD291B /* particle.cpp in Sources */,
+				04F9E90A27D4657A00BD291B /* particle_renderer.cpp in Sources */,
 				04954691279F8D5E00783C84 /* render_element.cpp in Sources */,
 				04128442279ED3A60071BD86 /* window.cpp in Sources */,
 				0443E8E927C4CE210099E13A /* texture_utils.cpp in Sources */,

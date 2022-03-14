@@ -19,15 +19,17 @@ ParticleManager &ParticleManager::getSingleton(void) {
 }
 //-----------------------------------------------------------------------
 ParticleManager::ParticleManager(wgpu::Device& device) {
+    Shader::create("particle_instancing", nullptr, nullptr);
+
     _emitterPass = std::make_unique<ComputePass>(device, std::make_unique<WGSLParticleEmission>());
     _simulationPass = std::make_unique<ComputePass>(device, nullptr);
 }
 
-const std::vector<Particle*>& ParticleManager::particles() const {
+const std::vector<ParticleRenderer*>& ParticleManager::particles() const {
     return _particles;
 }
 
-void ParticleManager::addParticle(Particle* particle) {
+void ParticleManager::addParticle(ParticleRenderer* particle) {
     auto iter = std::find(_particles.begin(), _particles.end(), particle);
     if (iter == _particles.end()) {
         _particles.push_back(particle);
@@ -36,31 +38,41 @@ void ParticleManager::addParticle(Particle* particle) {
     }
 }
 
-void ParticleManager::removeParticle(Particle* particle) {
+void ParticleManager::removeParticle(ParticleRenderer* particle) {
     auto iter = std::find(_particles.begin(), _particles.end(), particle);
     if (iter != _particles.end()) {
         _particles.erase(iter);
     }
 }
 
-void ParticleManager::update(wgpu::ComputePassEncoder passEncoder) {
+float ParticleManager::timeStepFactor() const {
+    return _timeStepFactor;
+}
+
+void ParticleManager::setTimeStepFactor(float factor) {
+    _timeStepFactor = factor;
+}
+
+void ParticleManager::draw(wgpu::CommandEncoder& commandEncoder) {
+    auto passEncoder = commandEncoder.BeginComputePass();
     for (auto& particle : _particles) {        
         /* Max number of particles able to be spawned. */
-        uint32_t const num_dead_particles = Particle::kMaxParticleCount - particle->numAliveParticles();
+        uint32_t const num_dead_particles = ParticleRenderer::kMaxParticleCount - particle->numAliveParticles();
         /* Number of particles to be emitted. */
-        uint32_t const emit_count = std::min(Particle::kBatchEmitCount, num_dead_particles); //
+        uint32_t const emit_count = std::min(ParticleRenderer::kBatchEmitCount, num_dead_particles); //
         _emission(emit_count, particle, passEncoder);
         _simulation(emit_count, particle, passEncoder);
     }
+    passEncoder.End();
 }
 
-void ParticleManager::_emission(const uint32_t count, Particle* particle,
+void ParticleManager::_emission(const uint32_t count, ParticleRenderer* particle,
                                 wgpu::ComputePassEncoder &passEncoder) {
     /* Emit only if a minimum count is reached. */
     if (!count) {
         return;
     }
-    if (count < Particle::kBatchEmitCount) {
+    if (count < ParticleRenderer::kBatchEmitCount) {
         //return;
     }
     particle->setEmitCount(count);
@@ -72,7 +84,7 @@ void ParticleManager::_emission(const uint32_t count, Particle* particle,
     _emitterPass->detachShaderData(&particle->shaderData);
 }
 
-void ParticleManager::_simulation(const uint32_t count, Particle* particle,
+void ParticleManager::_simulation(const uint32_t count, ParticleRenderer* particle,
                                   wgpu::ComputePassEncoder &passEncoder) {
     if (particle->numAliveParticles() + count == 0u) {
         return;

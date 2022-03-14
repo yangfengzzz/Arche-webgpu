@@ -14,9 +14,7 @@ namespace vox {
 class ParticleApp : public ForwardApplication {
 public:
     void loadScene() override;
-    
-    void updateGPUTask(wgpu::CommandEncoder& commandEncoder) override;
-    
+        
 private:
     std::unique_ptr<ParticleManager> _manager{nullptr};
 };

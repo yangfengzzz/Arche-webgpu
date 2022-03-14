@@ -18,6 +18,7 @@ bool ForwardApplication::prepare(Engine &engine) {
     GraphicsApplication::prepare(engine);
     
     _scene = std::make_unique<Scene>(_device);
+    _particleManager = std::make_unique<ParticleManager>(_device);
     _lightManager = std::make_unique<LightManager>(_scene.get());
     {
         loadScene();

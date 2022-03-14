@@ -7,14 +7,14 @@
 #ifndef particle_hpp
 #define particle_hpp
 
-#include "script.h"
+#include "renderer.h"
 #include "particle_material.h"
 #include "texture/sampled_texture3d.h"
 #include "mesh/buffer_mesh.h"
 #include <random>
 
 namespace vox {
-class Particle : public Script {
+class ParticleRenderer : public Renderer {
 public:
     // [USER DEFINED]
     static constexpr float kDefaultSimulationVolumeSize = 32.0f;
@@ -67,20 +67,20 @@ public:
         float velocityFactor;
     };
     
-    explicit Particle(Entity *entity);
+    explicit ParticleRenderer(Entity *entity);
     
     ParticleMaterial& material();
     
     const uint32_t numAliveParticles() const;
     
-    ShaderData shaderData;
-    
 public:
-    void onUpdate(float deltaTime) override;
+    void _render(std::vector<RenderElement> &opaqueQueue,
+                 std::vector<RenderElement> &alphaTestQueue,
+                 std::vector<RenderElement> &transparentQueue) override;
     
-    float timeStepFactor() const;
-
-    void setTimeStepFactor(float factor);
+    void _updateBounds(BoundingBox3F &worldBounds) override;
+    
+    void update(float deltaTime) override;
         
 public:
     float timeStep() const;
@@ -154,18 +154,14 @@ private:
     void _onDisable() override;
     
     void _allocBuffer();
-    
-    void _allocMesh();
-    
+        
     void _generateRandomValues();
     
 private:
     uint32_t _numAliveParticles = 0;
-    float _timeStepFactor = 1.0f;
 
+    std::shared_ptr<BufferMesh> _mesh{nullptr};
     std::shared_ptr<ParticleMaterial> _material{nullptr};
-    MeshRenderer* _renderer{nullptr};
-    std::shared_ptr<BufferMesh> _meshes[2];
     
     std::random_device _randomDevice;
     std::mt19937 _mt;
@@ -180,6 +176,10 @@ private:
     ParticleEmitterData _emitterData;
     ShaderProperty _emitterDataProp;
     
+    SampledTexture3DPtr _vectorFieldTexture{nullptr};
+    ShaderProperty _vectorFieldTextureProp;
+    ShaderProperty _vectorFieldSamplerProp;
+    
 private:
     uint32_t _read = 0;
     uint32_t _write = 1;
@@ -191,12 +191,10 @@ private:
     ShaderProperty _readConsumeBufferProp;
     ShaderProperty _writeConsumeBufferProp;
     
-    SampledTexture3DPtr _vectorFieldTexture{nullptr};
-    ShaderProperty _vectorFieldTextureProp;
-    ShaderProperty _vectorFieldSamplerProp;
-    
     std::unique_ptr<Buffer> _dpBuffer{nullptr};
+    ShaderProperty _dpBufferProp;
     std::unique_ptr<Buffer> _sortIndicesBuffer{nullptr};
+    ShaderProperty _sortIndicesBufferProp;
 };
 }
 

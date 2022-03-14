@@ -33,16 +33,16 @@ void ParticleApp::loadScene() {
     pointLight->intensity = 0.3;
     
     auto particleEntity = rootEntity->createChild();
-    auto particle = particleEntity->addComponent<Particle>();
+    auto particle = particleEntity->addComponent<ParticleRenderer>();
     // emitter
     particle->setParticleMinAge(50.f);
     particle->setParticleMaxAge(100.f);
-    particle->setEmitterType(Particle::EmitterType::SPHERE);
+    particle->setEmitterType(ParticleRenderer::EmitterType::SPHERE);
     particle->setEmitterDirection(Vector3F(0, 1, 0));
     particle->setEmitterPosition(Vector3F()); // todo
     particle->setEmitterRadius(2.0f);
-    particle->setBoundingVolumeType(Particle::SimulationVolume::SPHERE);
-    particle->setBBoxSize(Particle::kDefaultSimulationVolumeSize);
+    particle->setBoundingVolumeType(ParticleRenderer::SimulationVolume::SPHERE);
+    particle->setBBoxSize(ParticleRenderer::kDefaultSimulationVolumeSize);
     
     // simulation
     particle->setScatteringFactor(1.f);
@@ -65,14 +65,6 @@ void ParticleApp::loadScene() {
     auto material = std::make_shared<BlinnPhongMaterial>(_device);
     material->setBaseColor(Color(0.4, 0.6, 0.6));
     renderer->setMaterial(material);
-}
-
-void ParticleApp::updateGPUTask(wgpu::CommandEncoder& commandEncoder) {
-    ForwardApplication::updateGPUTask(commandEncoder);
-    
-    auto encoder = commandEncoder.BeginComputePass();
-    _manager->update(encoder);
-    encoder.End();
 }
 
 }

@@ -8,7 +8,7 @@
 #define particle_manager_hpp
 
 #include "singleton.h"
-#include "particle.h"
+#include "particle_renderer.h"
 #include "rendering/compute_pass.h"
 
 namespace vox {
@@ -30,23 +30,30 @@ public:
     
     ParticleManager(wgpu::Device& device);
     
-    const std::vector<Particle*>& particles() const;
+    const std::vector<ParticleRenderer*>& particles() const;
     
-    void addParticle(Particle* particle);
+    void addParticle(ParticleRenderer* particle);
     
-    void removeParticle(Particle* particle);
+    void removeParticle(ParticleRenderer* particle);
     
-    void update(wgpu::ComputePassEncoder passEncoder);
+    void draw(wgpu::CommandEncoder& commandEncoder);
+
+public:
+    float timeStepFactor() const;
+
+    void setTimeStepFactor(float factor);
     
 private:
     void _emission(const uint32_t count,
-                   Particle* particle, wgpu::ComputePassEncoder &passEncoder);
+                   ParticleRenderer* particle, wgpu::ComputePassEncoder &passEncoder);
     
     void _simulation(const uint32_t count,
-                     Particle* particle, wgpu::ComputePassEncoder &passEncoder);
+                     ParticleRenderer* particle, wgpu::ComputePassEncoder &passEncoder);
     
-    std::vector<Particle*> _particles{};
-    
+private:
+    std::vector<ParticleRenderer*> _particles{};
+    float _timeStepFactor = 1.0f;
+
     std::unique_ptr<ComputePass> _emitterPass{nullptr};
     std::unique_ptr<ComputePass> _simulationPass{nullptr};
 };
