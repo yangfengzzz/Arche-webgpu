@@ -19,6 +19,9 @@ void WGSLParticleSimulation::_createShaderSource(size_t hash, const ShaderMacroC
     {
         auto encoder = createSourceEncoder(wgpu::ShaderStage::Compute);
         _particleCommon(encoder, macros);
+        _particleNoise(encoder, macros);
+        _particleSDF(encoder, macros);
+        
         encoder.addStruct("struct ParticleSimulationData {\n"
                           "    timeStep:f32;\n"
                           "    boundingVolumeType:i32;\n"
@@ -42,11 +45,10 @@ void WGSLParticleSimulation::_createShaderSource(size_t hash, const ShaderMacroC
         encoder.addStorageBufferBinding("u_writeConsumeBuffer", fmt::format("array<TParticle, {}>", particleCount), false);
         encoder.addUniformBinding("u_randomBuffer", fmt::format("array<vec4<f32>, {}>", particleCount/2));
         
-        encoder.addFunction(fmt::format("fn popParticle(read_count: ptr<storage, atomic<u32> >, read_particles: ptr<storage, array<TParticle, {}> >, "
-                                        "index: u32) -> TParticle {{\n"
-                                        "    atomicSub(read_count, 1u);\n"
-                                        "    return (*read_particles)[index];\n"
-                                        "}}\n", particleCount));
+        encoder.addFunction("fn popParticle(index: u32) -> TParticle {{\n"
+                            "    atomicSub(&u_readAtomicBuffer.counter, 1u);\n"
+                            "    return u_readConsumeBuffer[index];\n"
+                            "}}\n");
         encoder.addFunction(fmt::format("fn pushParticle(p: TParticle, write_count: ptr<storage, atomic<u32> >, "
                                         "write_particles: ptr<storage, array<TParticle, {}> >) {{\n"
                                         "    let index = atomicAdd(write_count, 1u);\n"
@@ -56,50 +58,51 @@ void WGSLParticleSimulation::_createShaderSource(size_t hash, const ShaderMacroC
         encoder.addFunction("fn updatedAge(p: TParticle, uTimeStep: f32) -> f32 {\n"
                             "    return clamp(p.age - uTimeStep, 0.0, p.start_age);\n"
                             "}\n");
-                            
+        
         encoder.addFunction("fn updateParticle(p: ptr<function, TParticle>, pos: vec3<f32>, vel: vec3<f32>, age: f32) {\n"
-                            "    p.position.xyz = pos;\n"
-                            "    p.velocity.xyz = vel;\n"
-                            "    p.age = age;\n"
+                            "    (*p).position.xyz = pos;\n"
+                            "    (*p).velocity.xyz = vel;\n"
+                            "    (*p).age = age;\n"
                             "}\n");
-                            
+        
         encoder.addFunction("fn calculateScattering(uScatteringFactor:f32,\n"
                             "                        randbuffer: array<f32, 10>,\n"
-                            "                            gid:uint)->vec3<f32> {\n"
+                            "                            gid:u32)->vec3<f32> {\n"
                             "    var randforce = vec3<f32>(randbuffer[gid], randbuffer[gid+1u], randbuffer[gid+2u]);\n"
                             "    randforce = 2.0 * randforce - 1.0;\n"
                             "    return uScatteringFactor * randforce;\n"
                             "}\n");
-                            
+        
         encoder.addFunction("fn calculateRepulsion(p:TParticle)->vec3<f32> {\n"
                             "    let push = vec3<f32>(0.0);    \n"
                             "    return push;\n"
                             "}\n");
-                            
+        
         encoder.addFunction("fn calculateTargetMesh(p:TParticle)->vec3<f32> {\n"
                             "    let pull = vec3<f32>(0.0);\n"
                             "    return pull;\n"
                             "}\n");
-                            
+        
         encoder.addFunction("fn calculateVectorField(p:TParticle,\n"
                             "                             uVectorFieldFactor:f32,\n"
                             "                            uVectorFieldTexture:texture_3d<f32>,\n"
                             "                             uVectorFieldSampler:sampler) {\n"
-                            "    let extent = 0.5 * textureDimensions(uVectorFieldTexture);\n"
+                            "    let dim = textureDimensions(uVectorFieldTexture);"
+                            "    let extent = vec3<f32>(0.5 * f32(dim.x), 0.5 * f32(dim.y), 0.5 * f32(dim.z));\n"
                             "    let texcoord = (p.position.xyz + extent) / (2.0 * extent);\n"
                             "    let vfield = textureSample(uVectorFieldTexture, uVectorFieldSampler, texcoord).xyz;\n"
                             "    \n"
                             "    return uVectorFieldFactor * vfield;\n"
                             "}\n");
-                            
+        
         encoder.addFunction("fn calculateCurlNoise(p:TParticle,\n"
                             "                      uCurlNoiseScale:f32,\n"
                             "                      uCurlNoiseFactor:f32,\n"
-                            "                      uPerlinNoisePermutationSeed:i32)->vec3<f32> {\n"
+                            "                      uPerlinNoisePermutationSeed:f32)->vec3<f32> {\n"
                             "    let curl_velocity = compute_curl(p.position.xyz * uCurlNoiseScale, uPerlinNoisePermutationSeed);\n"
                             "    return uCurlNoiseFactor * curl_velocity;\n"
                             "}\n");
-                            
+        
         encoder.addFunction("fn collideSphere(r:f32, center:vec3<f32>, pos: ptr<function, vec3<f32> >, vel: ptr<function, vec3<f32> >) {\n"
                             "    let p = *pos - center;\n"
                             "    \n"
@@ -113,7 +116,7 @@ void WGSLParticleSimulation::_createShaderSource(size_t hash, const ShaderMacroC
                             "        *pos = center - r*n;\n"
                             "    }\n"
                             "}\n");
-                            
+        
         encoder.addFunction("fn collideBox(corner:vec3<f32>, center:vec3<f32>, pos: ptr<function, vec3<f32> >, vel: ptr<function, vec3<f32> >) {\n"
                             "    let p = *pos - center;\n"
                             "    \n"
@@ -149,58 +152,61 @@ void WGSLParticleSimulation::_createShaderSource(size_t hash, const ShaderMacroC
                             "    \n"
                             "    *pos = p + center;\n"
                             "}\n");
-                            
+        
         encoder.addFunction("fn collisionHandling(pos: ptr<function, vec3<f32> >, vel: ptr<function, vec3<f32> >\n"
                             "                    uBoundingVolume:i32,\n"
                             "                        uBBoxSize:f32) {\n"
                             "    let r = 0.5 * uBBoxSize;\n"
                             "    \n"
-                            "    if (uBoundingVolume == 0)\n"
+                            "    if (uBoundingVolume == 0) {\n"
                             "        collideSphere(r, vec3<f32>(0.0), pos, vel);\n"
-                            "    else\n"
-                            "        if (uBoundingVolume == 1)\n"
-                            "            collideBox(vec3<f32>(r), vec3<f32>(0.0), pos, vel);\n"
+                            "    } else {\n"
+                            "        if (uBoundingVolume == 1) {\n"
+                            "            collideBox(vec3<f32>(r), vec3<f32>(0.0), pos, vel); {\n"
+                            "        }\n"
+                            "    }\n"
                             "}\n");
         
         encoder.addEntry({ParticleManager::PARTICLES_KERNEL_GROUP_WIDTH, 1, 1}, [&](std::string &source){
             source += "    // Local copy of the particle.\n"
-            "    let p = popParticle(uReadCounter,\n"
-            "                              uReadParticle,\n"
-            "                              gid);\n"
+            "    let p = popParticle(gid);\n"
             "    \n"
             "    let age = updatedAge(p, uTimeStep);\n"
             "    \n"
             "    if (age > 0.0) {\n"
             "        // Calculate external forces.\n"
             "        var force = vec3<f32>(0.0);\n"
-            "        \n"
-            "        if (needParticleScattering) {\n"
-            "            force += calculateScattering(uScatteringFactor, uRandomBuffer, gid);\n"
-            "        }\n"
-            "        force += calculateRepulsion(p);\n"
-            "        force += calculateTargetMesh(p);\n"
-            "        if (needParticleVectorField) {\n"
-            "            force += calculateVectorField(p, uVectorFieldFactor,\n"
-            "                                          uVectorFieldTexture, uVectorFieldSampler);\n"
-            "        }\n"
-            "        if (needParticleCurlNoise) {\n"
-            "            force += calculateCurlNoise(p, uCurlNoiseScale,\n"
-            "                                        uCurlNoiseFactor, uPerlinNoisePermutationSeed);\n"
-            "        }\n"
-            "        \n"
-            "        // Integrations vectors.\n"
+            "        \n";
+            if (macros.contains(NEED_PARTICLE_SCATTERING)) {
+                source += "        force += calculateScattering(uScatteringFactor, uRandomBuffer, gid);\n";
+            };
+            
+            source += "        force += calculateRepulsion(p);\n"
+            "        force += calculateTargetMesh(p);\n";
+            
+            if (macros.contains(NEED_PARTICLE_VECTOR_FIELD)) {
+                source += "            force += calculateVectorField(p, uVectorFieldFactor,\n"
+                "                               uVectorFieldTexture, uVectorFieldSampler);\n";
+            }
+            
+            if (macros.contains(NEED_PARTICLE_CURL_NOISE)) {
+                source += "            force += calculateCurlNoise(p, uCurlNoiseScale,\n"
+                "                               uCurlNoiseFactor, uPerlinNoisePermutationSeed);\n";
+            }
+            
+            source += "        // Integrations vectors.\n"
             "        let dt = vec3<f32>(uTimeStep);\n"
             "        var velocity = p.velocity.xyz;\n"
             "        var position = p.position.xyz;\n"
             "        \n"
             "        // Integrate velocity.\n"
-            "        velocity = fma(force, dt, velocity);\n"
-            "        \n"
-            "        if (needParticleVelocityControl) {\n"
-            "            velocity = uVelocityFactor * normalize(velocity);\n"
-            "        }\n"
-            "        \n"
-            "        // Integrate position.\n"
+            "        velocity = fma(force, dt, velocity);\n";
+            
+            if (macros.contains(NEED_PARTICLE_VELOCITY_CONTROL)) {
+                source += "            velocity = uVelocityFactor * normalize(velocity);\n";
+            }
+            
+            source += "        // Integrate position.\n"
             "        position = fma(velocity, dt, position);\n"
             "        \n"
             "        // Handle collisions.\n"

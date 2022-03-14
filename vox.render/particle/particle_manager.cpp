@@ -63,7 +63,7 @@ void ParticleManager::draw(wgpu::CommandEncoder& commandEncoder) {
         /* Number of particles to be emitted. */
         uint32_t const emit_count = std::min(ParticleRenderer::kBatchEmitCount, num_dead_particles); //
         _emission(emit_count, particle, passEncoder);
-//        _simulation(emit_count, particle, passEncoder);
+        _simulation(emit_count, particle, passEncoder);
     }
     passEncoder.End();
 }

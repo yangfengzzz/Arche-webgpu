@@ -9,6 +9,8 @@
 
 #include "shaderlib/wgsl_cache.h"
 #include "wgsl_particle_common.h"
+#include "wgsl_particle_noise.h"
+#include "wgsl_particle_sdf.h"
 
 namespace vox {
 class WGSLParticleSimulation : public WGSLCache {
@@ -19,6 +21,8 @@ private:
     void _createShaderSource(size_t hash, const ShaderMacroCollection& macros) override;
     
     WGSLParticleCommon _particleCommon;
+    WGSLParticleNoise _particleNoise;
+    WGSLParticleSDF _particleSDF;
 };
 
 }
