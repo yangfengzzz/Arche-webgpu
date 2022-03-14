@@ -6,6 +6,7 @@
 
 #include "particle_manager.h"
 #include "particle/wgsl/wgsl_particle_emission.h"
+#include "particle/wgsl/wgsl_particle_simulation.h"
 #include "particle/wgsl/wgsl_particle_draw.h"
 #include <glog/logging.h>
 
@@ -23,7 +24,7 @@ ParticleManager::ParticleManager(wgpu::Device& device) {
     Shader::create("particle_instancing", std::make_unique<WGSLParticleVertex>(), std::make_unique<WGSLParticleFragment>());
 
     _emitterPass = std::make_unique<ComputePass>(device, std::make_unique<WGSLParticleEmission>());
-    _simulationPass = std::make_unique<ComputePass>(device, nullptr);
+    _simulationPass = std::make_unique<ComputePass>(device, std::make_unique<WGSLParticleSimulation>());
 }
 
 const std::vector<ParticleRenderer*>& ParticleManager::particles() const {

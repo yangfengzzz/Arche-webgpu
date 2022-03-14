@@ -530,6 +530,8 @@
 		0495478627A403C700783C84 /* wgsl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495478527A403C700783C84 /* wgsl.cpp */; };
 		049D2FF127DC856A0037DC6A /* wireframe_primitive_mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049D2FEF27DC856A0037DC6A /* wireframe_primitive_mesh.cpp */; };
 		049D2FF227DC856A0037DC6A /* wireframe_primitive_mesh.h in Headers */ = {isa = PBXBuildFile; fileRef = 049D2FF027DC856A0037DC6A /* wireframe_primitive_mesh.h */; };
+		04A053C527DF1AA1002D7449 /* wgsl_particle_simulation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04A053C327DF1AA1002D7449 /* wgsl_particle_simulation.cpp */; };
+		04A053C627DF1AA1002D7449 /* wgsl_particle_simulation.h in Headers */ = {isa = PBXBuildFile; fileRef = 04A053C427DF1AA1002D7449 /* wgsl_particle_simulation.h */; };
 		04F9E8FC27D2067400BD291B /* subpass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E8FA27D2067400BD291B /* subpass.cpp */; };
 		04F9E8FD27D2067400BD291B /* subpass.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E8FB27D2067400BD291B /* subpass.h */; };
 		04F9E90027D2095100BD291B /* compute_pass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E8FE27D2095100BD291B /* compute_pass.cpp */; };
@@ -1228,6 +1230,8 @@
 		0495478527A403C700783C84 /* wgsl.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl.cpp; sourceTree = "<group>"; };
 		049D2FEF27DC856A0037DC6A /* wireframe_primitive_mesh.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wireframe_primitive_mesh.cpp; sourceTree = "<group>"; };
 		049D2FF027DC856A0037DC6A /* wireframe_primitive_mesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wireframe_primitive_mesh.h; sourceTree = "<group>"; };
+		04A053C327DF1AA1002D7449 /* wgsl_particle_simulation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_particle_simulation.cpp; sourceTree = "<group>"; };
+		04A053C427DF1AA1002D7449 /* wgsl_particle_simulation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_particle_simulation.h; sourceTree = "<group>"; };
 		04F9E8FA27D2067400BD291B /* subpass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = subpass.cpp; sourceTree = "<group>"; };
 		04F9E8FB27D2067400BD291B /* subpass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = subpass.h; sourceTree = "<group>"; };
 		04F9E8FE27D2095100BD291B /* compute_pass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = compute_pass.cpp; sourceTree = "<group>"; };
@@ -2252,6 +2256,8 @@
 				04F9E92227D4AE3E00BD291B /* wgsl_particle_noise.cpp */,
 				04F9E92727D4B56100BD291B /* wgsl_particle_emission.h */,
 				04F9E92627D4B56100BD291B /* wgsl_particle_emission.cpp */,
+				04A053C427DF1AA1002D7449 /* wgsl_particle_simulation.h */,
+				04A053C327DF1AA1002D7449 /* wgsl_particle_simulation.cpp */,
 				04F9E92E27D5ACB200BD291B /* wgsl_particle_draw.h */,
 				04F9E92D27D5ACB200BD291B /* wgsl_particle_draw.cpp */,
 			);
@@ -2431,6 +2437,7 @@
 				047BF12127ACEBC7003F3599 /* collider_shape.h in Headers */,
 				047BF08827ABB8F7003F3599 /* wgsl_worldpos_share.h in Headers */,
 				049546F7279FC92B00783C84 /* forward_subpass.h in Headers */,
+				04A053C627DF1AA1002D7449 /* wgsl_particle_simulation.h in Headers */,
 				047BF12727ACEBC7003F3599 /* sphere_collider_shape.h in Headers */,
 				0495475827A2868000783C84 /* primitive_mesh.h in Headers */,
 				047BF0A827ABDFC8003F3599 /* wgsl_begin_mobile_frag.h in Headers */,
@@ -2910,6 +2917,7 @@
 				047BF09F27ABDA3A003F3599 /* wgsl_mobile_material_frag.cpp in Sources */,
 				0495470B279FCD3C00783C84 /* spherical.cpp in Sources */,
 				049546DA279FA0F200783C84 /* render_context.cpp in Sources */,
+				04A053C527DF1AA1002D7449 /* wgsl_particle_simulation.cpp in Sources */,
 				047BF0B327ABFCDC003F3599 /* wgsl_blinn_phong.cpp in Sources */,
 				0495473E27A25B1300783C84 /* buffer.cpp in Sources */,
 				0495463D279F89E500783C84 /* shader_data.cpp in Sources */,
