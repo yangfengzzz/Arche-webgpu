@@ -8,6 +8,7 @@
 #define wgsl_particle_draw_hpp
 
 #include "wgsl_cache.h"
+#include "shaderlib/functors/wgsl_common_frag.h"
 
 namespace vox {
 //MARK: - Unlit Vertex Code
@@ -17,6 +18,8 @@ public:
         
 private:
     void _createShaderSource(size_t hash, const ShaderMacroCollection& macros) override;
+    
+    WGSLCommonFrag _commonFrag;
 };
 
 //MARK: - Unlit Fragment Code
