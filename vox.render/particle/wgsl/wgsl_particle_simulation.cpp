@@ -45,14 +45,14 @@ void WGSLParticleSimulation::_createShaderSource(size_t hash, const ShaderMacroC
         encoder.addStorageBufferBinding("u_writeConsumeBuffer", fmt::format("array<TParticle, {}>", particleCount), false);
         encoder.addUniformBinding("u_randomBuffer", fmt::format("array<vec4<f32>, {}>", particleCount/2));
         
-        encoder.addFunction("fn popParticle(index: u32) -> TParticle {{\n"
+        encoder.addFunction("fn popParticle(index: u32) -> TParticle {\n"
                             "    atomicSub(&u_readAtomicBuffer.counter, 1u);\n"
                             "    return u_readConsumeBuffer[index];\n"
-                            "}}\n");
-        encoder.addFunction(fmt::format("fn pushParticle(p: TParticle) {{\n"
-                                        "    let index = atomicAdd(&u_writeAtomicBuffer.counter, 1u);\n"
-                                        "    u_writeConsumeBuffer[index] = p;\n"
-                                        "}}\n", particleCount));
+                            "}\n");
+        encoder.addFunction("fn pushParticle(p: TParticle) {\n"
+                            "    let index = atomicAdd(&u_writeAtomicBuffer.counter, 1u);\n"
+                            "    u_writeConsumeBuffer[index] = p;\n"
+                            "}\n");
         
         encoder.addFunction("fn updatedAge(p: TParticle, uTimeStep: f32) -> f32 {\n"
                             "    return clamp(p.age - uTimeStep, 0.0, p.start_age);\n"
@@ -162,7 +162,7 @@ void WGSLParticleSimulation::_createShaderSource(size_t hash, const ShaderMacroC
         encoder.addEntry({ParticleManager::PARTICLES_KERNEL_GROUP_WIDTH, 1, 1}, [&](std::string &source){
             // Local copy of the particle.
             source +=
-            "    let p = popParticle(global_id.x);\n"
+            "    var p = popParticle(global_id.x);\n"
             "    \n"
             "    let age = updatedAge(p, u_simulationData.timeStep);\n"
             "    \n"
