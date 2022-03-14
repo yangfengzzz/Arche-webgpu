@@ -103,7 +103,7 @@ void ComputePass::_flush() {
 
 wgpu::ShaderModule &ComputePass::_compileShader(const ShaderMacroCollection& macros) {
     auto result = _source->compile(macros);
-     std::cout<<result.first<<std::endl;
+    // std::cout<<result.first<<std::endl;
     
     for (const auto& info : result.second) {
         _bindGroupLayoutEntryVecMap[info.first].reserve(info.second.size());

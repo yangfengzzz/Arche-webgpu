@@ -59,13 +59,13 @@ void WGSLParticleSimulation::_createShaderSource(size_t hash, const ShaderMacroC
                             "}\n");
         
         encoder.addFunction("fn updateParticle(p: ptr<function, TParticle>, pos: vec3<f32>, vel: vec3<f32>, age: f32) {\n"
-                            "    (*p).position.xyz = pos;\n"
-                            "    (*p).velocity.xyz = vel;\n"
+                            "    (*p).position = vec4<f32>(pos, (*p).position.w);\n"
+                            "    (*p).velocity = vec4<f32>(vel, (*p).velocity.w);\n"
                             "    (*p).age = age;\n"
                             "}\n");
         
-        encoder.addFunction("fn calculateScattering(gid:u32)->vec3<f32> {\n"
-                            "    var randforce = vec3<f32>(u_randomBuffer[gid], u_randomBuffer[gid+1u], u_randomBuffer[gid+2u]);\n"
+        encoder.addFunction("fn calculateScattering(global_id:u32)->vec3<f32> {\n"
+                            "    var randforce = vec3<f32>(u_randomBuffer[global_id].x, u_randomBuffer[global_id].y, u_randomBuffer[global_id].z);\n"
                             "    randforce = 2.0 * randforce - 1.0;\n"
                             "    return u_simulationData.scatteringFactor * randforce;\n"
                             "}\n");
@@ -81,9 +81,9 @@ void WGSLParticleSimulation::_createShaderSource(size_t hash, const ShaderMacroC
                             "}\n");
         
         encoder.addFunction("fn calculateVectorField(p:TParticle,\n"
-                            "                             uVectorFieldFactor:f32,\n"
-                            "                            uVectorFieldTexture:texture_3d<f32>,\n"
-                            "                             uVectorFieldSampler:sampler) {\n"
+                            "                        uVectorFieldFactor:f32,\n"
+                            "                        uVectorFieldTexture:texture_3d<f32>,\n"
+                            "                        uVectorFieldSampler:sampler)->vec3<f32> {\n"
                             "    let dim = textureDimensions(uVectorFieldTexture);"
                             "    let extent = vec3<f32>(0.5 * f32(dim.x), 0.5 * f32(dim.y), 0.5 * f32(dim.z));\n"
                             "    let texcoord = (p.position.xyz + extent) / (2.0 * extent);\n"
@@ -112,7 +112,7 @@ void WGSLParticleSimulation::_createShaderSource(size_t hash, const ShaderMacroC
                             "}\n");
         
         encoder.addFunction("fn collideBox(corner:vec3<f32>, center:vec3<f32>, pos: ptr<function, vec3<f32> >, vel: ptr<function, vec3<f32> >) {\n"
-                            "    let p = *pos - center;\n"
+                            "    var p = *pos - center;\n"
                             "    \n"
                             "    if (p.x < -corner.x) {\n"
                             "        p.x = -corner.x;\n"
@@ -154,7 +154,7 @@ void WGSLParticleSimulation::_createShaderSource(size_t hash, const ShaderMacroC
                             "        collideSphere(r, vec3<f32>(0.0), pos, vel);\n"
                             "    } else {\n"
                             "        if (u_simulationData.boundingVolumeType == 1) {\n"
-                            "            collideBox(vec3<f32>(r), vec3<f32>(0.0), pos, vel); {\n"
+                            "            collideBox(vec3<f32>(r), vec3<f32>(0.0), pos, vel);\n"
                             "        }\n"
                             "    }\n"
                             "}\n");
@@ -162,7 +162,7 @@ void WGSLParticleSimulation::_createShaderSource(size_t hash, const ShaderMacroC
         encoder.addEntry({ParticleManager::PARTICLES_KERNEL_GROUP_WIDTH, 1, 1}, [&](std::string &source){
             // Local copy of the particle.
             source +=
-            "    let p = popParticle(gid);\n"
+            "    let p = popParticle(global_id.x);\n"
             "    \n"
             "    let age = updatedAge(p, u_simulationData.timeStep);\n"
             "    \n"
@@ -171,19 +171,19 @@ void WGSLParticleSimulation::_createShaderSource(size_t hash, const ShaderMacroC
             "        var force = vec3<f32>(0.0);\n"
             "        \n";
             if (macros.contains(NEED_PARTICLE_SCATTERING)) {
-                source += "force += calculateScattering(gid);\n";
+                source += "force = force + calculateScattering(global_id.x);\n";
             };
             
-            source += "force += calculateRepulsion(p);\n"
-            "force += calculateTargetMesh(p);\n";
+            source += "force = force + calculateRepulsion(p);\n"
+            "force = force + calculateTargetMesh(p);\n";
             
             if (macros.contains(NEED_PARTICLE_VECTOR_FIELD)) {
-                source += "force += calculateVectorField(p, uVectorFieldFactor,\n"
+                source += "force = force + calculateVectorField(p, uVectorFieldFactor,\n"
                 "                    uVectorFieldTexture, uVectorFieldSampler);\n";
             }
             
             if (macros.contains(NEED_PARTICLE_CURL_NOISE)) {
-                source += "force += calculateCurlNoise(p);\n";
+                source += "force = force + calculateCurlNoise(p);\n";
             }
             
             // Integrations vectors.
@@ -207,7 +207,7 @@ void WGSLParticleSimulation::_createShaderSource(size_t hash, const ShaderMacroC
             "        collisionHandling(&position, &velocity);\n"
             "        \n"
             "        // Update the particle.\n"
-            "        updateParticle(p, position, velocity, age);\n"
+            "        updateParticle(&p, position, velocity, age);\n"
             "        \n"
             "        // Save it in buffer.\n"
             "        pushParticle(p);\n"
