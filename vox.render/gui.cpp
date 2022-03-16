@@ -10,8 +10,7 @@
 namespace vox {
 GUI::GUI(RenderContext* context) {
     ImGui_ImplWGPU_Init(context->device().Get(), 3,
-                        (WGPUTextureFormat)context->drawableTextureFormat(),
-                        (WGPUTextureFormat)context->depthStencilTextureFormat());
+                        (WGPUTextureFormat)context->drawableTextureFormat());
 }
 
 GUI::~GUI() {

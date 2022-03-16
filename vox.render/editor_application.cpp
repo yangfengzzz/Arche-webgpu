@@ -16,37 +16,95 @@ EditorApplication::~EditorApplication() {
 }
 
 bool EditorApplication::prepare(Engine &engine) {
-    ForwardApplication::prepare(engine);
+    GraphicsApplication::prepare(engine);
     
     auto extent = engine.window().extent();
     auto scale = engine.window().contentScaleFactor();
     
-    _colorPickerTextureDesc.format = wgpu::TextureFormat::BGRA8Unorm;
-    _colorPickerTextureDesc.size.width = extent.width * scale;
-    _colorPickerTextureDesc.size.height = extent.height * scale;
-    _colorPickerTextureDesc.mipLevelCount = 1;
-    _colorPickerTextureDesc.dimension = wgpu::TextureDimension::e2D;
-    _colorPickerTextureDesc.usage = wgpu::TextureUsage::RenderAttachment | wgpu::TextureUsage::CopySrc;
-    _colorPickerTexture = _device.CreateTexture(&_colorPickerTextureDesc);
-    _colorPickerTexture.SetLabel("ColorPicker Texture");
+    _scene = std::make_unique<Scene>(_device);
+    _particleManager = std::make_unique<ParticleManager>(_device);
+    _lightManager = std::make_unique<LightManager>(_scene.get());
+    {
+        loadScene();
+        auto extent = engine.window().extent();
+        auto factor = engine.window().contentScaleFactor();
+        _scene->updateSize(extent.width, extent.height, factor * extent.width, factor * extent.height);
+        _mainCamera->resize(extent.width, extent.height, factor * extent.width, factor * extent.height);
+    }
+    _lightManager->setCamera(_mainCamera);
+    _shadowManager = std::make_unique<ShadowManager>(_scene.get(), _mainCamera);
     
-    _colorPickerColorAttachments.storeOp = wgpu::StoreOp::Store;
-    _colorPickerColorAttachments.loadOp = wgpu::LoadOp::Clear;
-    _colorPickerColorAttachments.clearValue = wgpu::Color{1, 1, 1, 1};
-    _colorPickerDepthStencilAttachment.depthLoadOp = wgpu::LoadOp::Clear;
-    _colorPickerDepthStencilAttachment.depthClearValue = 1.0;
-    _colorPickerDepthStencilAttachment.depthStoreOp = wgpu::StoreOp::Discard;
-    _colorPickerDepthStencilAttachment.stencilLoadOp = wgpu::LoadOp::Clear;
-    _colorPickerDepthStencilAttachment.stencilStoreOp = wgpu::StoreOp::Discard;
+    // scene render target
+    {
+        // Create a render pass descriptor for thelighting and composition pass
+        // Whatever rendered in the final pass needs to be stored so it can be displayed
+        _renderPassDescriptor.colorAttachmentCount = 1;
+        _renderPassDescriptor.colorAttachments = &_colorAttachments;
+        _renderPassDescriptor.depthStencilAttachment = &_depthStencilAttachment;
+        
+        _sceneTextureDesc.format = _renderContext->drawableTextureFormat();
+        _sceneTextureDesc.size.width = extent.width * scale;
+        _sceneTextureDesc.size.height = extent.height * scale;
+        _sceneTextureDesc.mipLevelCount = 1;
+        _sceneTextureDesc.dimension = wgpu::TextureDimension::e2D;
+        _sceneTextureDesc.usage = wgpu::TextureUsage::RenderAttachment | wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopySrc;
+        _sceneTexture = _device.CreateTexture(&_sceneTextureDesc);
+        _sceneTexture.SetLabel("Scene Texture");
+        
+        _colorAttachments.storeOp = wgpu::StoreOp::Store;
+        _colorAttachments.loadOp = wgpu::LoadOp::Clear;
+        auto& color = _scene->background.solidColor;
+        _colorAttachments.clearValue = wgpu::Color{color.r, color.g, color.b, color.a};
+        _depthStencilAttachment.depthLoadOp = wgpu::LoadOp::Clear;
+        _depthStencilAttachment.depthClearValue = 1.0;
+        _depthStencilAttachment.depthStoreOp = wgpu::StoreOp::Discard;
+        _depthStencilAttachment.stencilLoadOp = wgpu::LoadOp::Clear;
+        _depthStencilAttachment.stencilStoreOp = wgpu::StoreOp::Discard;
+        
+        _renderPass = std::make_unique<RenderPass>(_device, _renderPassDescriptor);
+        _renderPass->addSubpass(std::make_unique<ForwardSubpass>(_renderContext.get(), _scene.get(), _mainCamera));
+    }
     
-    _colorPickerPassDescriptor.colorAttachmentCount = 1;
-    _colorPickerPassDescriptor.colorAttachments = &_colorPickerColorAttachments;
-    _colorPickerPassDescriptor.depthStencilAttachment = &_colorPickerDepthStencilAttachment;
+    // color picker render target
+    {
+        _colorPickerPassDescriptor.colorAttachmentCount = 1;
+        _colorPickerPassDescriptor.colorAttachments = &_colorPickerColorAttachments;
+        _colorPickerPassDescriptor.depthStencilAttachment = &_colorPickerDepthStencilAttachment;
+        
+        _colorPickerTextureDesc.format = wgpu::TextureFormat::BGRA8Unorm;
+        _colorPickerTextureDesc.size.width = extent.width * scale;
+        _colorPickerTextureDesc.size.height = extent.height * scale;
+        _colorPickerTextureDesc.mipLevelCount = 1;
+        _colorPickerTextureDesc.dimension = wgpu::TextureDimension::e2D;
+        _colorPickerTextureDesc.usage = wgpu::TextureUsage::RenderAttachment | wgpu::TextureUsage::CopySrc;
+        _colorPickerTexture = _device.CreateTexture(&_colorPickerTextureDesc);
+        _colorPickerTexture.SetLabel("ColorPicker Texture");
+        
+        _colorPickerColorAttachments.storeOp = wgpu::StoreOp::Store;
+        _colorPickerColorAttachments.loadOp = wgpu::LoadOp::Clear;
+        _colorPickerColorAttachments.clearValue = wgpu::Color{1, 1, 1, 1};
+        _colorPickerDepthStencilAttachment.depthLoadOp = wgpu::LoadOp::Clear;
+        _colorPickerDepthStencilAttachment.depthClearValue = 1.0;
+        _colorPickerDepthStencilAttachment.depthStoreOp = wgpu::StoreOp::Discard;
+        _colorPickerDepthStencilAttachment.stencilLoadOp = wgpu::LoadOp::Clear;
+        _colorPickerDepthStencilAttachment.stencilStoreOp = wgpu::StoreOp::Discard;
+        
+        _colorPickerRenderPass = std::make_unique<RenderPass>(_device, _colorPickerPassDescriptor);
+        auto colorPickerSubpass = std::make_unique<ColorPickerSubpass>(_renderContext.get(), _scene.get(), _mainCamera);
+        _colorPickerSubpass = colorPickerSubpass.get();
+        _colorPickerRenderPass->addSubpass(std::move(colorPickerSubpass));
+    }
     
-    _colorPickerRenderPass = std::make_unique<RenderPass>(_device, _colorPickerPassDescriptor);
-    auto colorPickerSubpass = std::make_unique<ColorPickerSubpass>(_renderContext.get(), _scene.get(), _mainCamera);
-    _colorPickerSubpass = colorPickerSubpass.get();
-    _colorPickerRenderPass->addSubpass(std::move(colorPickerSubpass));
+    // gui
+    {
+        // Create a render pass descriptor for thelighting and composition pass
+        // Whatever rendered in the final pass needs to be stored so it can be displayed
+        _guiPassDescriptor.colorAttachmentCount = 1;
+        _guiPassDescriptor.colorAttachments = &_guiColorAttachments;
+        
+        _guiColorAttachments.storeOp = wgpu::StoreOp::Store;
+        _guiColorAttachments.loadOp = wgpu::LoadOp::Clear;
+    }
     
     wgpu::BufferDescriptor bufferDesc;
     bufferDesc.usage = wgpu::BufferUsage::MapRead | wgpu::BufferUsage::CopyDst;
@@ -68,21 +126,33 @@ bool EditorApplication::prepare(Engine &engine) {
 
 void EditorApplication::update(float delta_time) {
     GraphicsApplication::update(delta_time);
-    _scene->update(delta_time);
-    
-    wgpu::CommandEncoder commandEncoder = _device.CreateCommandEncoder();
-    updateGPUTask(commandEncoder);
     
     // Render the lighting and composition pass
-    _colorAttachments.view = _renderContext->currentDrawableTexture();
+    _colorAttachments.view = _sceneTexture.CreateView();
     _depthStencilAttachment.view = _renderContext->depthStencilTexture();
-    
+    _scene->update(delta_time);
+
+    wgpu::CommandEncoder commandEncoder = _device.CreateCommandEncoder();
+    updateGPUTask(commandEncoder);
     _renderPass->draw(commandEncoder, "Lighting & Composition Pass");
+    
     if (_needPick) {
         _colorPickerColorAttachments.view = _colorPickerTexture.CreateView();
         _colorPickerDepthStencilAttachment.view = _renderContext->depthStencilTexture();
         _colorPickerRenderPass->draw(commandEncoder, "color Picker Pass");
         _copyRenderTargetToBuffer(commandEncoder);
+    }
+    
+    if (_gui) {        
+        ImDrawData *drawData = ImGui::GetDrawData();
+        if (drawData) {
+            _guiColorAttachments.view = _renderContext->currentDrawableTexture();
+            wgpu::RenderPassEncoder encoder = commandEncoder.BeginRenderPass(&_guiPassDescriptor);
+            encoder.PushDebugGroup("GUI Rendering");
+            _gui->draw(drawData, encoder);
+            encoder.PopDebugGroup();
+            encoder.End();
+        }
     }
     
     // Finalize rendering here & push the command buffer to the GPU
@@ -107,11 +177,19 @@ bool EditorApplication::resize(uint32_t win_width, uint32_t win_height,
     _colorPickerTextureDesc.size.width = fb_width;
     _colorPickerTextureDesc.size.height = fb_height;
     _colorPickerTexture = _device.CreateTexture(&_colorPickerTextureDesc);
-    
     _colorPickerColorAttachments.view = _colorPickerTexture.CreateView();
     _colorPickerDepthStencilAttachment.view = _renderContext->depthStencilTexture();
     
+    _sceneTextureDesc.size.width = fb_width;
+    _sceneTextureDesc.size.height = fb_height;
+    _sceneTexture = _device.CreateTexture(&_sceneTextureDesc);
+    _colorAttachments.view = _sceneTexture.CreateView();
+    
     return true;
+}
+
+wgpu::TextureView EditorApplication::sceneTextureView() {
+    return _colorAttachments.view;
 }
 
 void EditorApplication::pick(float offsetX, float offsetY) {

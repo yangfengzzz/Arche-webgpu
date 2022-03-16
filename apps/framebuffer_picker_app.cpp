@@ -19,13 +19,24 @@ class GUIScript: public Script {
 public:
     GUIScript(Entity* entity):Script(entity) {}
     
+    void setApp(FramebufferPickerApp* app) {
+        _app = app;
+    }
+    
     void onUpdate(float deltaTime) override {
         ImGui::NewFrame();
         ImGui::Begin("Panel");
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+        if (_app->sceneTextureView().Get() != nullptr) {
+            ImGui::Image((ImTextureID)_app->sceneTextureView().Get(), ImGui::GetWindowSize(), ImVec2(0, 1), ImVec2(1, 0));
+        }
         ImGui::End();
+        
         ImGui::Render();
     }
+    
+private:
+    FramebufferPickerApp* _app{nullptr};
 };
 
 void FramebufferPickerApp::loadScene() {
@@ -35,7 +46,8 @@ void FramebufferPickerApp::loadScene() {
     _scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
     
     auto rootEntity = _scene->createRootEntity();
-    rootEntity->addComponent<GUIScript>();
+    auto editor = rootEntity->addComponent<GUIScript>();
+    editor->setApp(this);
     
     auto cameraEntity = rootEntity->createChild("camera");
     cameraEntity->transform->setPosition(10, 10, 10);

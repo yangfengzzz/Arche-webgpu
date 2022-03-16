@@ -41,16 +41,22 @@ public:
      */
     void pick(float offsetX, float offsetY);
     
+    wgpu::TextureView sceneTextureView();
+    
 private:
     bool _needPick;
     Vector2F _pickPos;
     
     wgpu::TextureDescriptor _colorPickerTextureDesc;
     wgpu::Texture _colorPickerTexture;
-    
     wgpu::RenderPassDescriptor _colorPickerPassDescriptor;
     wgpu::RenderPassColorAttachment _colorPickerColorAttachments;
     wgpu::RenderPassDepthStencilAttachment _colorPickerDepthStencilAttachment;
+
+    wgpu::TextureDescriptor _sceneTextureDesc;
+    wgpu::Texture _sceneTexture;
+    wgpu::RenderPassDescriptor _guiPassDescriptor;
+    wgpu::RenderPassColorAttachment _guiColorAttachments;
     
     std::unique_ptr<RenderPass> _colorPickerRenderPass{nullptr};
     ColorPickerSubpass* _colorPickerSubpass{nullptr};
