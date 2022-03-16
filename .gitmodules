@@ -43,3 +43,9 @@
 [submodule "third_party/ozz"]
 	path = third_party/ozz
 	url = https://github.com/guillaumeblanc/ozz-animation.git
+[submodule "third_party/rttr"]
+	path = third_party/rttr
+	url = https://github.com/rttrorg/rttr.git
+[submodule "third_party/rapidjson"]
+	path = third_party/rapidjson
+	url = https://github.com/Tencent/rapidjson.git
