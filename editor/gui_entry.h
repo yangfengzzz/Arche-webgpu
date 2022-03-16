@@ -10,8 +10,27 @@
 #include "script.h"
 
 namespace vox {
+class Editor;
+
 namespace editor {
 class MainMenu;
+
+struct ApplicationStateWindows {
+    bool styleEditor = false;
+    bool statsWindow = false;
+    bool shaderEditorWindow = false;
+    bool texturEditorWindow = false;
+    bool seaEditor = false;
+    bool textureStore = false;
+    bool osLisc = false;
+    bool filtersManager = false;
+    bool foliageManager = false;
+    bool supportersTribute = false;
+    bool skySettings = false;
+    bool modulesManager = false;
+    bool lightControls = true;
+    bool cameraControls = true;
+};
 
 struct ApplicationStateGlobals {
     float mouseSpeed = 25;
@@ -59,9 +78,15 @@ struct ApplicationStateStates {
 
 class GUIEntry: public Script {
 public:
+    ApplicationStateWindows windows;
+    ApplicationStateStates states;
+    ApplicationStateGlobals globals;
+    
     GUIEntry(Entity* entity);
     
     ~GUIEntry();
+    
+    void setApp(vox::Editor* app);
     
     void onUpdate(float deltaTime) override;
     
@@ -73,11 +98,12 @@ public:
     
     void showGeneralControls();
     
-private:
-    MainMenu* _mainMenu{nullptr};
+    void showMainScene();
     
-    ApplicationStateStates states;
-    ApplicationStateGlobals globals;
+private:
+    vox::Editor* _app{nullptr};
+    
+    MainMenu* _mainMenu{nullptr};
 };
 
 }

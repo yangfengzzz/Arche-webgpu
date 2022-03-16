@@ -34,6 +34,7 @@ void Editor::loadScene() {
     cameraEntity->transform->lookAt(Point3F(0, 0, 0));
     _mainCamera = cameraEntity->addComponent<Camera>();
     _entry = cameraEntity->addComponent<editor::GUIEntry>();
+    _entry->setApp(this);
 
     // init point light
     auto light = rootEntity->createChild("light");

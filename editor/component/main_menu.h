@@ -11,8 +11,11 @@
 
 namespace vox {
 namespace editor {
+class GUIEntry;
 class MainMenu {
 public:
+    MainMenu(GUIEntry *entry);
+    
     void showMainMenu();
     
     void showFileMenu();
@@ -22,6 +25,9 @@ public:
     void showWindowsMenu();
     
     void showHelpMenu();
+    
+private:
+    GUIEntry *_entry{nullptr};
 };
 
 }

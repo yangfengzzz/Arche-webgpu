@@ -5,18 +5,24 @@
 //  property of any third parties.
 
 #include "gui_entry.h"
+#include "editor.h"
 #include "gui/imgui.h"
 #include "component/main_menu.h"
+#include "component/app_styles.h"
 
 namespace vox {
 namespace editor {
 GUIEntry::GUIEntry(Entity* entity):
 Script(entity) {
-    _mainMenu = new MainMenu();
+    _mainMenu = new MainMenu(this);
 }
 
 GUIEntry::~GUIEntry() {
     delete _mainMenu;
+}
+
+void GUIEntry::setApp(vox::Editor* app) {
+    _app = app;
 }
 
 void GUIEntry::onUpdate(float deltaTime) {
@@ -36,6 +42,12 @@ void GUIEntry::renderImGui() {
         ImGui::Checkbox("Auto Calculate Aspect Ratio", &states.autoAspectCalcRatio);
         ImGui::End();
 //    }
+    
+    showMainScene();
+    
+    if (windows.styleEditor) {
+        showStyleEditor(&windows.styleEditor);
+    }
     
     onImGuiRenderEnd();
     
@@ -103,6 +115,25 @@ void GUIEntry::showGeneralControls() {
         exit(0);
     }
 
+    ImGui::End();
+}
+
+void GUIEntry::showMainScene() {
+    ImGui::Begin("Viewport");
+    {
+        ImGui::BeginChild("MainRender");
+
+        if (ImGui::IsWindowHovered()) {
+        }
+
+        ImVec2 wsize = ImGui::GetWindowSize();
+        globals.viewportSize[0] = wsize.x;
+        globals.viewportSize[1] = wsize.y;
+
+        ImGui::Image((ImTextureID) _app->sceneTextureView().Get(), wsize);
+
+        ImGui::EndChild();
+    }
     ImGui::End();
 }
 
