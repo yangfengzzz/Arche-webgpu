@@ -4,87 +4,82 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef gizmo_hpp
-#define gizmo_hpp
+#ifndef gui_entry_hpp
+#define gui_entry_hpp
 
 #include "script.h"
-#include "gui/imgui.h"
-#include "editor_component.h"
-#include "imgui_zmo.h"
-#include "imgui_node_editor.h"
-#include <vector>
 
 namespace vox {
-namespace picker {
-class FramebufferPicker;
-}
-namespace control {
-class OrbitControl;
-}
-
 namespace editor {
-class GUIEntry : public Script {
+class MainMenu;
+
+struct ApplicationStateGlobals {
+    float mouseSpeed = 25;
+    float scrollSpeed = 0.5f;
+    float mouseScrollAmount = 0;
+    float viewportMousePosX = 0;
+    float viewportMousePosY = 0;
+    float scale = 1.0f;
+    float offset[3];
+
+
+    int resolution = 256;
+    int numberOfNoiseTypes = 3;
+    int secondCounter = 0;
+    int textureBakeMode = 0;
+    int texBakeRes = 1024;
+
+    std::string currentOpenFilePath = "";
+    std::string currentBaseModelPath = "";
+    std::string kernelsIncludeDir = "";
+
+    float viewportSize[4];
+    float hMapC[4];
+};
+
+struct ApplicationStateStates {
+    bool usingBase = true;
+    bool skyboxEnabled = false;
+    bool vSync = true;
+    bool autoUpdate = false;
+    bool mouseButton1, mouseButton2, mouseButton3;
+    bool wireFrameMode = false;
+    bool reqTexRfrsh = false;
+    bool autoSave = false;
+    bool exploreMode = false;
+    bool iExploreMode = false;
+    bool showFoliage = true;
+    bool textureBake = false;
+    bool useGPUForNormals = true;
+    bool postProcess = false;
+    bool autoAspectCalcRatio = true;
+    std::atomic<bool> ruinning = true;
+    std::atomic<bool> remeshing = false;
+};
+
+class GUIEntry: public Script {
 public:
-    GUIEntry(Entity *entity);
+    GUIEntry(Entity* entity);
     
     ~GUIEntry();
     
-    void setRenderer(Renderer *render);
-    
     void onUpdate(float deltaTime) override;
     
-    void addEditorComponent(std::unique_ptr<EditorComponent> &&component);
+    void renderImGui();
     
-    void removeEditorComponent(EditorComponent *component);
+    void onBeforeImGuiRender();
     
-private:
-    void editTransform(float *cameraView, float *cameraProjection, float *matrix, bool editTransformDecomposition);
+    void onImGuiRenderEnd();
     
-private:
-    void imGuiEx_BeginColumn();
-    
-    void imGuiEx_NextColumn();
-    
-    void imGuiEx_EndColumn();
-    
-    void nodeEditor();
+    void showGeneralControls();
     
 private:
-    Camera *_camera = nullptr;
-    picker::FramebufferPicker *_picker = nullptr;
-    control::OrbitControl *_controller = nullptr;
+    MainMenu* _mainMenu{nullptr};
     
-    //selected
-    Renderer *_render = nullptr;
-    
-    //used for gui
-    float _fov;
-    float _camDistance = 8.f;
-    ImGuizmo::OPERATION _currentGizmoOperation = ImGuizmo::TRANSLATE;
-    
-private:
-    bool _showEditor = false;
-    
-    // Struct to hold basic information about connection between
-    // pins. Note that connection (aka. link) has its own ID.
-    // This is useful later with dealing with selections, deletion
-    // or other operations.
-    struct LinkInfo {
-        NodeEditor::LinkId Id;
-        NodeEditor::PinId InputId;
-        NodeEditor::PinId OutputId;
-    };
-    
-    NodeEditor::EditorContext *_context = nullptr;    // Editor context, required to trace a editor state.
-    bool _firstFrame = true;    // Flag set for first frame only, some action need to be executed once.
-    ImVector<LinkInfo> _links;                // List of live links. It is dynamic unless you want to create read-only view over nodes.
-    int _nextLinkId = 100;     // Counter to help generate link ids. In real application this will probably based on pointer to user data structure.
-    
-private:
-    std::vector<std::unique_ptr<EditorComponent>> _editorScripts;
+    ApplicationStateStates states;
+    ApplicationStateGlobals globals;
 };
 
 }
 }
-
 #endif /* gui_entry_hpp */

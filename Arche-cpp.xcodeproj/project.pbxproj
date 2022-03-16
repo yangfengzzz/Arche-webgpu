@@ -168,6 +168,10 @@
 		04128476279EEE760071BD86 /* depth_state.h in Headers */ = {isa = PBXBuildFile; fileRef = 04128474279EEE760071BD86 /* depth_state.h */; };
 		04128479279EEEEC0071BD86 /* render_state.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04128477279EEEEC0071BD86 /* render_state.cpp */; };
 		0412847A279EEEEC0071BD86 /* render_state.h in Headers */ = {isa = PBXBuildFile; fileRef = 04128478279EEEEC0071BD86 /* render_state.h */; };
+		04219C8C27E1754B00F52C74 /* editor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1CA27AFAF4A003F3599 /* editor.cpp */; };
+		04219C9127E1759D00F52C74 /* gui_entry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219C8F27E1759D00F52C74 /* gui_entry.cpp */; };
+		04219C9727E175F400F52C74 /* app_styles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219C9327E175F300F52C74 /* app_styles.cpp */; };
+		04219C9827E175F400F52C74 /* main_menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219C9427E175F300F52C74 /* main_menu.cpp */; };
 		04311AE727D7302B00B918E3 /* multi_light_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04311AE527D7302B00B918E3 /* multi_light_app.cpp */; };
 		043B7B69278C797700D5648F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B68278C797700D5648F /* Cocoa.framework */; };
 		043B7B6B278C798100D5648F /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B6A278C798100D5648F /* CoreFoundation.framework */; };
@@ -405,8 +409,6 @@
 		047BF1B527AFA105003F3599 /* editor_application.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1AE27AF9C0C003F3599 /* editor_application.cpp */; };
 		047BF1B627AFA242003F3599 /* color_picker_subpass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1B227AFA079003F3599 /* color_picker_subpass.cpp */; };
 		047BF1B927AFA525003F3599 /* framebuffer_picker_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1B827AFA525003F3599 /* framebuffer_picker_app.cpp */; };
-		047BF1DD27AFAF4C003F3599 /* editor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1CA27AFAF4A003F3599 /* editor.cpp */; };
-		047BF1DE27AFAF4C003F3599 /* gui_entry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1CC27AFAF4A003F3599 /* gui_entry.cpp */; };
 		047BF1DF27AFAF4C003F3599 /* imgui_node_editor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1D127AFAF4B003F3599 /* imgui_node_editor.cpp */; };
 		047BF1E027AFAF4C003F3599 /* imgui_zmo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1D327AFAF4B003F3599 /* imgui_zmo.cpp */; };
 		047BF1E127AFAF4C003F3599 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1D627AFAF4B003F3599 /* main.cpp */; };
@@ -804,6 +806,13 @@
 		04128474279EEE760071BD86 /* depth_state.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = depth_state.h; sourceTree = "<group>"; };
 		04128477279EEEEC0071BD86 /* render_state.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = render_state.cpp; sourceTree = "<group>"; };
 		04128478279EEEEC0071BD86 /* render_state.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = render_state.h; sourceTree = "<group>"; };
+		04219C8A27E1704500F52C74 /* test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = test.cpp; sourceTree = "<group>"; };
+		04219C8F27E1759D00F52C74 /* gui_entry.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gui_entry.cpp; sourceTree = "<group>"; };
+		04219C9027E1759D00F52C74 /* gui_entry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gui_entry.h; sourceTree = "<group>"; };
+		04219C9327E175F300F52C74 /* app_styles.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = app_styles.cpp; sourceTree = "<group>"; };
+		04219C9427E175F300F52C74 /* main_menu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main_menu.cpp; sourceTree = "<group>"; };
+		04219C9527E175F300F52C74 /* main_menu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = main_menu.h; sourceTree = "<group>"; };
+		04219C9627E175F300F52C74 /* app_styles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = app_styles.h; sourceTree = "<group>"; };
 		04311AE527D7302B00B918E3 /* multi_light_app.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = multi_light_app.cpp; sourceTree = "<group>"; };
 		04311AE627D7302B00B918E3 /* multi_light_app.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = multi_light_app.h; sourceTree = "<group>"; };
 		043B7B5A278C4C5A00D5648F /* apps */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = apps; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1070,7 +1079,7 @@
 		047BF1C927AFAF4A003F3599 /* editor_component.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = editor_component.h; sourceTree = "<group>"; };
 		047BF1CA27AFAF4A003F3599 /* editor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = editor.cpp; sourceTree = "<group>"; };
 		047BF1CB27AFAF4A003F3599 /* imgui_bezier_math.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imgui_bezier_math.h; sourceTree = "<group>"; };
-		047BF1CC27AFAF4A003F3599 /* gui_entry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gui_entry.cpp; sourceTree = "<group>"; };
+		047BF1CC27AFAF4A003F3599 /* entry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = entry.cpp; sourceTree = "<group>"; };
 		047BF1CD27AFAF4B003F3599 /* imgui_extra_math.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imgui_extra_math.h; sourceTree = "<group>"; };
 		047BF1CE27AFAF4B003F3599 /* imgui_bezier_math.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = imgui_bezier_math.inl; sourceTree = "<group>"; };
 		047BF1CF27AFAF4B003F3599 /* imgui_node_editor_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imgui_node_editor_internal.h; sourceTree = "<group>"; };
@@ -1086,7 +1095,7 @@
 		047BF1D927AFAF4C003F3599 /* imgui_extra_math.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = imgui_extra_math.inl; sourceTree = "<group>"; };
 		047BF1DA27AFAF4C003F3599 /* imgui_canvas.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_canvas.cpp; sourceTree = "<group>"; };
 		047BF1DB27AFAF4C003F3599 /* imgui_node_editor_api.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_node_editor_api.cpp; sourceTree = "<group>"; };
-		047BF1DC27AFAF4C003F3599 /* gui_entry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gui_entry.h; sourceTree = "<group>"; };
+		047BF1DC27AFAF4C003F3599 /* entry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = entry.h; sourceTree = "<group>"; };
 		047BF1F427AFB8A9003F3599 /* wgsl_grid.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_grid.cpp; sourceTree = "<group>"; };
 		047BF1F527AFB8A9003F3599 /* wgsl_grid.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_grid.h; sourceTree = "<group>"; };
 		048DBF0027D6DD47003AE9E8 /* wgsl_quad.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_quad.cpp; sourceTree = "<group>"; };
@@ -1610,6 +1619,28 @@
 			path = state;
 			sourceTree = "<group>";
 		};
+		04219C8D27E1756E00F52C74 /* test */ = {
+			isa = PBXGroup;
+			children = (
+				047BF1C927AFAF4A003F3599 /* editor_component.h */,
+				047BF1DC27AFAF4C003F3599 /* entry.h */,
+				047BF1CC27AFAF4A003F3599 /* entry.cpp */,
+				04219C8A27E1704500F52C74 /* test.cpp */,
+			);
+			path = test;
+			sourceTree = "<group>";
+		};
+		04219C9227E175CD00F52C74 /* component */ = {
+			isa = PBXGroup;
+			children = (
+				04219C9627E175F300F52C74 /* app_styles.h */,
+				04219C9327E175F300F52C74 /* app_styles.cpp */,
+				04219C9527E175F300F52C74 /* main_menu.h */,
+				04219C9427E175F300F52C74 /* main_menu.cpp */,
+			);
+			path = component;
+			sourceTree = "<group>";
+		};
 		043B7B51278C4C5A00D5648F = {
 			isa = PBXGroup;
 			children = (
@@ -1969,6 +2000,7 @@
 		047BF1BF27AFAE81003F3599 /* editor */ = {
 			isa = PBXGroup;
 			children = (
+				04219C8D27E1756E00F52C74 /* test */,
 				047BF1C827AFAF4A003F3599 /* crude_json.h */,
 				047BF1D827AFAF4B003F3599 /* crude_json.cpp */,
 				047BF1CD27AFAF4B003F3599 /* imgui_extra_math.h */,
@@ -1989,11 +2021,11 @@
 				047BF1D627AFAF4B003F3599 /* main.cpp */,
 				047BF1C727AFAF4A003F3599 /* editor.h */,
 				047BF1CA27AFAF4A003F3599 /* editor.cpp */,
+				04219C9027E1759D00F52C74 /* gui_entry.h */,
+				04219C8F27E1759D00F52C74 /* gui_entry.cpp */,
+				04219C9227E175CD00F52C74 /* component */,
 				047BF1C627AFAF4A003F3599 /* grid.h */,
 				047BF1D727AFAF4B003F3599 /* grid.cpp */,
-				047BF1DC27AFAF4C003F3599 /* gui_entry.h */,
-				047BF1CC27AFAF4A003F3599 /* gui_entry.cpp */,
-				047BF1C927AFAF4A003F3599 /* editor_component.h */,
 			);
 			path = editor;
 			sourceTree = "<group>";
@@ -3001,12 +3033,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				047BF1F627AFB8A9003F3599 /* wgsl_grid.cpp in Sources */,
-				047BF1DE27AFAF4C003F3599 /* gui_entry.cpp in Sources */,
 				047BF1E527AFAF4C003F3599 /* imgui_node_editor_api.cpp in Sources */,
+				04219C9727E175F400F52C74 /* app_styles.cpp in Sources */,
 				047BF1F227AFB0CF003F3599 /* grid.cpp in Sources */,
-				047BF1DD27AFAF4C003F3599 /* editor.cpp in Sources */,
+				04219C8C27E1754B00F52C74 /* editor.cpp in Sources */,
 				047BF1E327AFAF4C003F3599 /* crude_json.cpp in Sources */,
 				047BF1E027AFAF4C003F3599 /* imgui_zmo.cpp in Sources */,
+				04219C9827E175F400F52C74 /* main_menu.cpp in Sources */,
+				04219C9127E1759D00F52C74 /* gui_entry.cpp in Sources */,
 				047BF1E127AFAF4C003F3599 /* main.cpp in Sources */,
 				047BF1DF27AFAF4C003F3599 /* imgui_node_editor.cpp in Sources */,
 				047BF1E427AFAF4C003F3599 /* imgui_canvas.cpp in Sources */,
@@ -3686,6 +3720,7 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					../third_party/glog/build,
 					../third_party/ktx/build,
+					../third_party/rttr/build/lib,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"./third_party/dawn/cmake-debug/src/dawn",
@@ -3708,6 +3743,7 @@
 					./third_party/ozz/build_debug/src/base,
 					./third_party/ozz/build_debug/src/animation/runtime,
 					./third_party/ozz/build_debug/src/geometry/runtime,
+					./third_party/rttr/build/lib,
 				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
@@ -3747,6 +3783,7 @@
 					"-lozz_animation_d",
 					"-lozz_geometry_d",
 					"/Applications/Autodesk/FBX\\ SDK/2016.1.2/lib/clang/debug/libfbxsdk.a",
+					"-lrttr_core",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SYSTEM_HEADER_SEARCH_PATHS = (
@@ -3787,6 +3824,9 @@
 					./third_party/physx/physx/source/foundation/include,
 					./third_party/ozz/include,
 					"/Applications/Autodesk/FBX\\ SDK/2016.1.2/include",
+					./third_party/rttr/src,
+					./third_party/rttr/build/src,
+					./third_party/rapidjson/include,
 				);
 			};
 			name = Debug;
@@ -3818,6 +3858,7 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					../third_party/glog/build,
 					../third_party/ktx/build,
+					../third_party/rttr/build/lib,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"./third_party/dawn/cmake-release/src/dawn",
@@ -3840,6 +3881,7 @@
 					./third_party/ozz/build_release/src/base,
 					./third_party/ozz/build_release/src/animation/runtime,
 					./third_party/ozz/build_release/src/geometry/runtime,
+					./third_party/rttr/build/lib,
 				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
@@ -3879,6 +3921,7 @@
 					"-lozz_animation_r",
 					"-lozz_geometry_r",
 					"/Applications/Autodesk/FBX\\ SDK/2016.1.2/lib/clang/release/libfbxsdk.a",
+					"-lrttr_core",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SYSTEM_HEADER_SEARCH_PATHS = (
@@ -3919,6 +3962,9 @@
 					./third_party/physx/physx/source/foundation/include,
 					./third_party/ozz/include,
 					"/Applications/Autodesk/FBX\\ SDK/2016.1.2/include",
+					./third_party/rttr/src,
+					./third_party/rttr/build/src,
+					./third_party/rapidjson/include,
 				);
 			};
 			name = Release;
