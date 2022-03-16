@@ -51,6 +51,7 @@ void Editor::loadScene() {
 
 void Editor::pickFunctor(Renderer *renderer, MeshPtr mesh) {
     if (renderer && mesh) {
+        _entry->setRenderer(renderer);
     }
 }
 

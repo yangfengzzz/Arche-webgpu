@@ -8,10 +8,15 @@
 #define gui_entry_hpp
 
 #include "script.h"
-#include "controls/orbit_control.h"
+#include "gui/imgui.h"
+#include "imgui_zmo.h"
+#include "imgui_node_editor.h"
 
 namespace vox {
 class Editor;
+namespace control {
+class OrbitControl;
+}
 
 namespace editor {
 class MainMenu;
@@ -89,10 +94,13 @@ public:
     
     void setApp(vox::Editor* app);
     
+    void setRenderer(Renderer *render);
+    
     Camera* camera() const;
     
     void onUpdate(float deltaTime) override;
     
+public:
     void renderImGui();
     
     void onBeforeImGuiRender();
@@ -101,6 +109,10 @@ public:
     
     void showGeneralControls();
     
+    void showGizmoControls();
+    
+    void editTransform(float *cameraView, float *cameraProjection, float *matrix, bool editTransformDecomposition);
+    
     void showMainScene();
     
 private:
@@ -108,6 +120,15 @@ private:
     Camera* _camera{nullptr};
     control::OrbitControl* _cameraControl{nullptr};
     
+    //selected
+    Renderer *_render = nullptr;
+    
+    //used for gui
+    float _fov;
+    float _camDistance = 8.f;
+    ImGuizmo::OPERATION _currentGizmoOperation = ImGuizmo::TRANSLATE;
+    
+private:
     MainMenu* _mainMenu{nullptr};
 };
 
