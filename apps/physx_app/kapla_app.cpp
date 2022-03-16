@@ -30,7 +30,7 @@ void KaplaApp::createCylindricalTower(EntityPtr entity,
                                       const Vector3F& dims, const Vector3F& centerPos, physics::PxMaterial *material,
                                       physics::PxFilterData &simFilterData, physics::PxFilterData &queryFilterData,
                                       float density, bool bUseSweeps, bool bStartAsleep) {
-    auto box = PrimitiveMesh::createCuboid(_device, 2.f * dims.x,  2.f * dims.y,  2.f * dims.z);
+    auto box = PrimitiveMesh::createCuboid(_device, dims.x,  dims.y,  dims.z);
     auto boxMtl = std::make_shared<BlinnPhongMaterial>(_device);
     boxMtl->setBaseColor(Color(1, 0.0, 0.0, 1.0));
     float startHeight = 0.f;
@@ -57,10 +57,11 @@ void KaplaApp::createCylindricalTower(EntityPtr entity,
             
             auto boxColliderShape = std::make_shared<physics::BoxColliderShape>();
             boxColliderShape->setMaterial(material);
+            boxColliderShape->setSize(dims);
             innerBox->addShape(boxColliderShape);
             
-//            if (bStartAsleep)
-//                innerBox->putToSleep();
+            if (bStartAsleep)
+                innerBox->putToSleep();
         }
         
         startHeight += 4.f * dims.y;
@@ -83,6 +84,7 @@ void KaplaApp::loadScene() {
     auto light = rootEntity->createChild("light");
     light->transform->setPosition(0, 10, 0);
     auto pointLight = light->addComponent<PointLight>();
+    pointLight->distance = 100;
     pointLight->intensity = 0.3;
     
     const Vector3F dims(0.08f, 0.25f, 1.0f);
@@ -95,15 +97,14 @@ void KaplaApp::loadScene() {
     createCylindricalTower(rootEntity, nbOuterRadialLayouts, outerRadius, 0, 8, dims, Vector3F(0.f, 0.f, 0.f),
                            DefaultMaterial, simFilterData, queryFilterData);
     
-    auto addPlane = [&](const Vector3F &size, const Point3F &position, const QuaternionF &rotation) {
+    auto addPlane = [&](const Vector2F &size, const Point3F &position, const QuaternionF &rotation) {
         auto mtl = std::make_shared<BlinnPhongMaterial>(_device);
         mtl->setBaseColor(Color(0.03179807202597362, 0.3939682161541871, 0.41177952549087604, 1.0));
         auto planeEntity = rootEntity->createChild();
-        planeEntity->layer = Layer::Layer1;
         
         auto renderer = planeEntity->addComponent<MeshRenderer>();
         renderer->receiveShadow = true;
-        renderer->setMesh(PrimitiveMesh::createCuboid(_device, size.x, size.y, size.z));
+        renderer->setMesh(PrimitiveMesh::createPlane(_device, size.x, size.y));
         renderer->setMaterial(mtl);
         planeEntity->transform->setPosition(position);
         planeEntity->transform->setRotationQuaternion(rotation);
@@ -114,7 +115,7 @@ void KaplaApp::loadScene() {
         
         return planeEntity;
     };
-    addPlane(Vector3F(30, 0.1, 30), Point3F(), QuaternionF());
+    addPlane(Vector2F(30, 30), Point3F(), QuaternionF());
 
 }
 
