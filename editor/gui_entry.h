@@ -8,6 +8,7 @@
 #define gui_entry_hpp
 
 #include "script.h"
+#include "controls/orbit_control.h"
 
 namespace vox {
 class Editor;
@@ -88,6 +89,8 @@ public:
     
     void setApp(vox::Editor* app);
     
+    Camera* camera() const;
+    
     void onUpdate(float deltaTime) override;
     
     void renderImGui();
@@ -102,6 +105,8 @@ public:
     
 private:
     vox::Editor* _app{nullptr};
+    Camera* _camera{nullptr};
+    control::OrbitControl* _cameraControl{nullptr};
     
     MainMenu* _mainMenu{nullptr};
 };

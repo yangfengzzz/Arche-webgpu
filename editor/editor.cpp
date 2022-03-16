@@ -15,7 +15,6 @@
 #include "physics/shape/box_collider_shape.h"
 #include "physics/shape/sphere_collider_shape.h"
 #include "lighting/point_light.h"
-#include "controls/orbit_control.h"
 
 #include "grid.h"
 #include <random>
@@ -30,11 +29,9 @@ void Editor::loadScene() {
     rootEntity->addComponent<editor::Grid>();
 
     auto cameraEntity = rootEntity->createChild("camera");
-    cameraEntity->transform->setPosition(10, 10, 10);
-    cameraEntity->transform->lookAt(Point3F(0, 0, 0));
-    _mainCamera = cameraEntity->addComponent<Camera>();
     _entry = cameraEntity->addComponent<editor::GUIEntry>();
     _entry->setApp(this);
+    _mainCamera = _entry->camera();
 
     // init point light
     auto light = rootEntity->createChild("light");
