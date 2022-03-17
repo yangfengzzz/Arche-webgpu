@@ -9,11 +9,14 @@
 
 #include <string>
 #include "generator_mask.h"
+#include "noise_layers/layered_noise_manager.h"
 
 namespace vox {
 namespace editor {
 class CPUNoiseLayersGenerator {
 public:
+    CPUNoiseLayersGenerator();
+    
     void showSetting(int id);
 
     void update();
@@ -26,8 +29,8 @@ public:
     double time = 0;
     std::string uid;
     std::string name;
-//    LayeredNoiseManager *noiseManager;
-    GeneratorMaskManager *maskManager;
+    LayeredNoiseManager noiseManager;
+    GeneratorMaskManager maskManager;
 };
 
 

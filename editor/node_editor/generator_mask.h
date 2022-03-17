@@ -43,9 +43,9 @@ class GeneratorMaskManager {
 public:
     GeneratorMaskManager(std::string uid);
 
-    float EvaluateAt(float x, float y, float z, float value);
+    float evaluateAt(float x, float y, float z, float value);
     
-    void ShowSettings();
+    void showSettings();
     
     bool enabled = false;
     std::vector<GeneratorMask> masks;

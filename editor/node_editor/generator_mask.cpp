@@ -14,7 +14,7 @@ GeneratorMaskManager::GeneratorMaskManager(std::string uid):
 uid(uid) {
 }
 
-float GeneratorMaskManager::EvaluateAt(float x, float y, float z, float value) {
+float GeneratorMaskManager::evaluateAt(float x, float y, float z, float value) {
     float m = 0.0f;
 
     for (int i = 0; i < masks.size(); i++) {
@@ -57,7 +57,7 @@ float GeneratorMaskManager::EvaluateAt(float x, float y, float z, float value) {
     return value;
 }
 
-void GeneratorMaskManager::ShowSettings() {
+void GeneratorMaskManager::showSettings() {
     ImGui::Checkbox(("Enabled##GMSK" + uid).c_str(), &enabled);
 
     if (ImGui::BeginCombo("Masking Mode##GMSK", generator_mask_type_names[type])) {
