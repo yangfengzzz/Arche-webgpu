@@ -8,6 +8,9 @@
 #define gui_entry_hpp
 
 #include <string>
+#include <webgpu/webgpu_cpp.h>
+#include "singleton.h"
+
 #include "editor_component.h"
 #include "gui/imgui.h"
 #include "imgui_zmo.h"
@@ -83,8 +86,12 @@ struct ApplicationStateStates {
     std::atomic<bool> remeshing = false;
 };
 
-class GUIEntry {
+class GUIEntry : public Singleton<GUIEntry> {
 public:
+    static GUIEntry &getSingleton(void);
+    
+    static GUIEntry *getSingletonPtr(void);
+    
     ApplicationStateWindows windows;
     ApplicationStateStates states;
     ApplicationStateGlobals globals;
@@ -93,17 +100,18 @@ public:
     
     ~GUIEntry();
     
-    void setApp(vox::Editor* app);
+    void setRootEntity(EntityPtr root);
     
     void setRenderer(Renderer *render);
         
+    Camera* sceneCamera{nullptr};
     ImVec2 viewportPos;
     ImVec2 viewportSize;
     
-    void update();
+    void update(const wgpu::TextureView& view);
     
 public:
-    void renderImGui();
+    void renderImGui(const wgpu::TextureView& view);
     
     void onBeforeImGuiRender();
     
@@ -117,11 +125,10 @@ public:
 
     void editTransform(float *cameraView, float *cameraProjection, float *matrix);
     
-    void showMainScene();
+    void showMainScene(const wgpu::TextureView& view);
     
 private:
-    vox::Editor* _app{nullptr};
-    Camera* _camera{nullptr};
+    EntityPtr _root{nullptr};
     control::OrbitControl* _cameraControl{nullptr};
     
     //selected
@@ -137,5 +144,6 @@ private:
 };
 
 }
+template<> inline editor::GUIEntry* Singleton<editor::GUIEntry>::msSingleton{nullptr};
 }
 #endif /* gui_entry_hpp */

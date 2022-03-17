@@ -15,8 +15,6 @@
 #include "physics/shape/box_collider_shape.h"
 #include "physics/shape/sphere_collider_shape.h"
 #include "lighting/point_light.h"
-
-#include "grid.h"
 #include <random>
 
 namespace vox {
@@ -25,12 +23,10 @@ void Editor::loadScene() {
     _scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
     
     auto rootEntity = _scene->createRootEntity();
-    rootEntity->addComponent<editor::Grid>();
-
-    auto cameraEntity = rootEntity->createChild("camera");
-    cameraEntity->transform->setPosition(10, 10, 10);
-    cameraEntity->transform->lookAt(Point3F(0, 0, 0));
-    _mainCamera = cameraEntity->addComponent<Camera>();
+    _gui = std::make_unique<GUI>(_renderContext.get());
+    _entry = std::make_unique<editor::GUIEntry>();
+    _entry->setRootEntity(rootEntity->createChild("UI"));
+    _mainCamera = _entry->sceneCamera;
 
     // init point light
     auto light = rootEntity->createChild("light");
@@ -46,10 +42,6 @@ void Editor::loadScene() {
     boxMtl->setBaseColor(Color(0.8, 0.3, 0.3, 1.0));
     boxRenderer->setMesh(PrimitiveMesh::createCuboid(_device, cubeSize, cubeSize, cubeSize));
     boxRenderer->setMaterial(boxMtl);
-    
-    _gui = std::make_unique<GUI>(_renderContext.get());
-    _entry = std::make_unique<editor::GUIEntry>();
-    _entry->setApp(this);
 }
 
 void Editor::pickFunctor(Renderer *renderer, MeshPtr mesh) {
@@ -77,8 +69,8 @@ void Editor::inputEvent(const InputEvent &inputEvent) {
     }
 }
 
-void Editor::editorUpdate() {
-    _entry->update();
+void Editor::editorUpdate(const wgpu::TextureView& view) {
+    _entry->update(view);
 }
 
 }

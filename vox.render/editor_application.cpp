@@ -145,7 +145,7 @@ void EditorApplication::update(float delta_time) {
     
     
     if (_gui) {
-        editorUpdate();
+        editorUpdate(_colorAttachments.view);
         ImDrawData *drawData = ImGui::GetDrawData();
         if (drawData) {
             _guiColorAttachments.view = _renderContext->currentDrawableTexture();
@@ -188,10 +188,6 @@ bool EditorApplication::resize(uint32_t win_width, uint32_t win_height,
     _colorAttachments.view = _sceneTexture.CreateView();
     
     return true;
-}
-
-wgpu::TextureView EditorApplication::sceneTextureView() {
-    return _colorAttachments.view;
 }
 
 void EditorApplication::pick(float offsetX, float offsetY) {

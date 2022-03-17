@@ -34,7 +34,7 @@ public:
 public:
     virtual void pickFunctor(Renderer *renderer, MeshPtr mesh) {}
     
-    virtual void editorUpdate() {}
+    virtual void editorUpdate(const wgpu::TextureView& view) {}
     
     /**
      * Pick the object at the screen coordinate position.
@@ -42,9 +42,7 @@ public:
      * @param offsetY Relative Y coordinate of the canvas
      */
     void pick(float offsetX, float offsetY);
-    
-    wgpu::TextureView sceneTextureView();
-    
+        
 private:
     bool _needPick;
     Vector2F _pickPos;

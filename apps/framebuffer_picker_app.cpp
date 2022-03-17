@@ -63,13 +63,11 @@ void FramebufferPickerApp::pickFunctor(Renderer *renderer, MeshPtr mesh) {
     }
 }
 
-void FramebufferPickerApp::editorUpdate() {
+void FramebufferPickerApp::editorUpdate(const wgpu::TextureView& view) {
     ImGui::NewFrame();
     ImGui::Begin("Panel");
     ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-    if (sceneTextureView().Get() != nullptr) {
-        ImGui::Image((ImTextureID)sceneTextureView().Get(), ImGui::GetWindowSize());
-    }
+    ImGui::Image((ImTextureID)view.Get(), ImGui::GetWindowSize());
     ImGui::End();
     
     ImGui::Render();

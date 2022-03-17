@@ -16,8 +16,18 @@
 // editor component
 #include "component/main_menu.h"
 #include "component/app_styles.h"
+#include "grid.h"
 
 namespace vox {
+editor::GUIEntry *editor::GUIEntry::getSingletonPtr(void) {
+    return msSingleton;
+}
+
+editor::GUIEntry &editor::GUIEntry::getSingleton(void) {
+    assert(msSingleton);
+    return (*msSingleton);
+}
+
 namespace editor {
 GUIEntry::GUIEntry() {
     _mainMenu = new MainMenu(this);
@@ -27,25 +37,31 @@ GUIEntry::~GUIEntry() {
     delete _mainMenu;
 }
 
-void GUIEntry::setApp(vox::Editor* app) {
-    _app = app;
+void GUIEntry::setRootEntity(EntityPtr root) {
+    _root = root;
+    _root->transform->setPosition(10, 10, 10);
+    _root->transform->lookAt(Point3F(0, 0, 0));
+    _root->addComponent<editor::Grid>();
     
-    _camera = _app->mainCamera();
-    _fov = _camera->fieldOfView();
-    _cameraControl = _camera->entity()->addComponent<control::OrbitControl>();
+    sceneCamera = _root->addComponent<Camera>();
+    _fov = sceneCamera->fieldOfView();
+    _cameraControl = _root->addComponent<control::OrbitControl>();
 }
 
 void GUIEntry::setRenderer(Renderer *render) {
     _render = render;
 }
 
-void GUIEntry::update() {
-    renderImGui();
+void GUIEntry::update(const wgpu::TextureView& view) {
+    ImGui::NewFrame();
+
+    renderImGui(view);
+    
+    ImGui::EndFrame();
+    ImGui::Render();
 }
 
-void GUIEntry::renderImGui() {
-    ImGui::NewFrame();
-    
+void GUIEntry::renderImGui(const wgpu::TextureView& view) {
     onBeforeImGuiRender();
     _mainMenu->showMainMenu();
     showGeneralControls();
@@ -55,19 +71,16 @@ void GUIEntry::renderImGui() {
     }
     
     if (states.autoAspectCalcRatio) {
-        _camera->setAspectRatio(globals.viewportSize[0] / globals.viewportSize[1]);
+        sceneCamera->setAspectRatio(globals.viewportSize[0] / globals.viewportSize[1]);
     }
     
-    showMainScene();
+    showMainScene(view);
     
     if (windows.styleEditor) {
         showStyleEditor(&windows.styleEditor);
     }
     
     onImGuiRenderEnd();
-    
-    ImGui::EndFrame();
-    ImGui::Render();
 }
 
 void GUIEntry::onBeforeImGuiRender() {
@@ -135,7 +148,7 @@ void GUIEntry::showGeneralControls() {
 
 //MARK: - Gizmos
 void GUIEntry::showGizmoControls() {
-    ImGuizmo::SetOrthographic(_camera->isOrthographic());
+    ImGuizmo::SetOrthographic(sceneCamera->isOrthographic());
     ImGuizmo::BeginFrame();
     
     ImGui::Begin("Camera Controls");
@@ -146,7 +159,7 @@ void GUIEntry::showGizmoControls() {
     
     ImGui::Text("Camera");
     ImGui::SliderFloat("Fov", &_fov, 20.f, 110.f);
-    _camera->setFieldOfView(_fov);
+    sceneCamera->setFieldOfView(_fov);
     
     ImGuiIO &io = ImGui::GetIO();
     ImGui::Text("X: %f Y: %f", io.MousePos.x, io.MousePos.y);
@@ -168,13 +181,13 @@ void GUIEntry::showGizmoControls() {
             _cameraControl->setEnabled(false);
         }
         
-        auto cameraProjection = _camera->projectionMatrix();
-        auto cameraView = _camera->viewMatrix();
+        auto cameraProjection = sceneCamera->projectionMatrix();
+        auto cameraView = sceneCamera->viewMatrix();
         auto modelMat = _render->entity()->transform->localMatrix();
         editTransformPanel(cameraView.data(), cameraProjection.data(), modelMat.data());
         _render->entity()->transform->setLocalMatrix(modelMat);
         cameraView.invert();
-        _camera->entity()->transform->setWorldMatrix(cameraView);
+        sceneCamera->entity()->transform->setWorldMatrix(cameraView);
     }
     
     ImGui::End();
@@ -247,7 +260,7 @@ void GUIEntry::editTransformPanel(float *cameraView, float *cameraProjection, fl
 }
 
 // MARK: - Viewport
-void GUIEntry::showMainScene() {
+void GUIEntry::showMainScene(const wgpu::TextureView& view) {
     ImGui::Begin("Viewport");
     {
         ImGui::BeginChild("MainRender");
@@ -267,20 +280,20 @@ void GUIEntry::showMainScene() {
         globals.viewportSize[1] = wsize.y;
         
         // main scene
-        ImGui::Image((ImTextureID) _app->sceneTextureView().Get(), wsize);
+        ImGui::Image((ImTextureID) view.Get(), wsize);
         
         if (_render != nullptr) {
             if (ImGuizmo::IsOver()) {
                 _cameraControl->setEnabled(false);
             }
             
-            auto cameraProjection = _camera->projectionMatrix();
-            auto cameraView = _camera->viewMatrix();
+            auto cameraProjection = sceneCamera->projectionMatrix();
+            auto cameraView = sceneCamera->viewMatrix();
             auto modelMat = _render->entity()->transform->localMatrix();
             editTransform(cameraView.data(), cameraProjection.data(), modelMat.data());
             _render->entity()->transform->setLocalMatrix(modelMat);
             cameraView.invert();
-            _camera->entity()->transform->setWorldMatrix(cameraView);
+            sceneCamera->entity()->transform->setWorldMatrix(cameraView);
         }
         ImGui::EndChild();
     }
