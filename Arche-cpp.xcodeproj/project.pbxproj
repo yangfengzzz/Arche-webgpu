@@ -834,6 +834,8 @@
 		04219CAE27E313CE00F52C74 /* gpu_noise_layer_generator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gpu_noise_layer_generator.h; sourceTree = "<group>"; };
 		04219CB127E3150700F52C74 /* noise_layer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = noise_layer.cpp; sourceTree = "<group>"; };
 		04219CB227E3150700F52C74 /* noise_layer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = noise_layer.h; sourceTree = "<group>"; };
+		04219CB427E31AE300F52C74 /* layered_noise_manager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = layered_noise_manager.cpp; sourceTree = "<group>"; };
+		04219CB527E31AE300F52C74 /* layered_noise_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = layered_noise_manager.h; sourceTree = "<group>"; };
 		04311AE527D7302B00B918E3 /* multi_light_app.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = multi_light_app.cpp; sourceTree = "<group>"; };
 		04311AE627D7302B00B918E3 /* multi_light_app.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = multi_light_app.h; sourceTree = "<group>"; };
 		043B7B5A278C4C5A00D5648F /* apps */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = apps; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1704,6 +1706,8 @@
 			children = (
 				04219CB227E3150700F52C74 /* noise_layer.h */,
 				04219CB127E3150700F52C74 /* noise_layer.cpp */,
+				04219CB527E31AE300F52C74 /* layered_noise_manager.h */,
+				04219CB427E31AE300F52C74 /* layered_noise_manager.cpp */,
 			);
 			path = noise_layers;
 			sourceTree = "<group>";
