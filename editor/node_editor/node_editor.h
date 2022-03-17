@@ -135,7 +135,7 @@ public:
     
     NodeEditorNode(int id = generateUID());
 
-    ~NodeEditorNode();
+    virtual ~NodeEditorNode();
 
     virtual NodeOutput evaluate(NodeInputParam input, NodeEditorPin *pin) = 0;
 

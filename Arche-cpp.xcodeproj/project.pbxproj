@@ -180,6 +180,7 @@
 		04219CAF27E313CE00F52C74 /* gpu_noise_layer_generator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219CAD27E313CE00F52C74 /* gpu_noise_layer_generator.cpp */; };
 		04219CBD27E31F9F00F52C74 /* node_editor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219CBB27E31F9F00F52C74 /* node_editor.cpp */; };
 		04219CBE27E320AE00F52C74 /* cpu_node_editor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219CB727E31ED300F52C74 /* cpu_node_editor.cpp */; };
+		04219CC127E323D700F52C74 /* imgui_shapes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219CBF27E323D700F52C74 /* imgui_shapes.cpp */; };
 		04311AE727D7302B00B918E3 /* multi_light_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04311AE527D7302B00B918E3 /* multi_light_app.cpp */; };
 		043B7B69278C797700D5648F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B68278C797700D5648F /* Cocoa.framework */; };
 		043B7B6B278C798100D5648F /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B6A278C798100D5648F /* CoreFoundation.framework */; };
@@ -842,6 +843,8 @@
 		04219CB827E31ED300F52C74 /* cpu_node_editor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cpu_node_editor.h; sourceTree = "<group>"; };
 		04219CBB27E31F9F00F52C74 /* node_editor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = node_editor.cpp; sourceTree = "<group>"; };
 		04219CBC27E31F9F00F52C74 /* node_editor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = node_editor.h; sourceTree = "<group>"; };
+		04219CBF27E323D700F52C74 /* imgui_shapes.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_shapes.cpp; sourceTree = "<group>"; };
+		04219CC027E323D700F52C74 /* imgui_shapes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = imgui_shapes.h; sourceTree = "<group>"; };
 		04311AE527D7302B00B918E3 /* multi_light_app.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = multi_light_app.cpp; sourceTree = "<group>"; };
 		04311AE627D7302B00B918E3 /* multi_light_app.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = multi_light_app.h; sourceTree = "<group>"; };
 		043B7B5A278C4C5A00D5648F /* apps */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = apps; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2106,6 +2109,8 @@
 				047BF1D027AFAF4B003F3599 /* imgui_node_editor_internal.inl */,
 				047BF1D527AFAF4B003F3599 /* imgui_zmo.h */,
 				047BF1D327AFAF4B003F3599 /* imgui_zmo.cpp */,
+				04219CC027E323D700F52C74 /* imgui_shapes.h */,
+				04219CBF27E323D700F52C74 /* imgui_shapes.cpp */,
 				047BF1C527AFAF02003F3599 /* editor.entitlements */,
 				047BF1F327AFB885003F3599 /* shaderlib */,
 				04219C9E27E2DF4A00F52C74 /* node_editor */,
@@ -3134,6 +3139,7 @@
 				04219CA527E2FC7900F52C74 /* generator_mask.cpp in Sources */,
 				047BF1E327AFAF4C003F3599 /* crude_json.cpp in Sources */,
 				047BF1E027AFAF4C003F3599 /* imgui_zmo.cpp in Sources */,
+				04219CC127E323D700F52C74 /* imgui_shapes.cpp in Sources */,
 				04219CA127E2DF7000F52C74 /* mesh_generator_manager.cpp in Sources */,
 				04219CAC27E313AF00F52C74 /* cpu_noise_layers_generator.cpp in Sources */,
 				04219C9827E175F400F52C74 /* main_menu.cpp in Sources */,
