@@ -175,6 +175,9 @@
 		04219C9C27E182D500F52C74 /* kapla_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219C9A27E182D500F52C74 /* kapla_app.cpp */; };
 		04219CA127E2DF7000F52C74 /* mesh_generator_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219C9F27E2DF7000F52C74 /* mesh_generator_manager.cpp */; };
 		04219CA527E2FC7900F52C74 /* generator_mask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219CA327E2FC7900F52C74 /* generator_mask.cpp */; };
+		04219CA927E30D5600F52C74 /* clear_mesh_generator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219CA727E30D5600F52C74 /* clear_mesh_generator.cpp */; };
+		04219CAC27E313AF00F52C74 /* cpu_noise_layers_generator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219CAA27E313AF00F52C74 /* cpu_noise_layers_generator.cpp */; };
+		04219CAF27E313CE00F52C74 /* gpu_noise_layer_generator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219CAD27E313CE00F52C74 /* gpu_noise_layer_generator.cpp */; };
 		04311AE727D7302B00B918E3 /* multi_light_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04311AE527D7302B00B918E3 /* multi_light_app.cpp */; };
 		043B7B69278C797700D5648F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B68278C797700D5648F /* Cocoa.framework */; };
 		043B7B6B278C798100D5648F /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B6A278C798100D5648F /* CoreFoundation.framework */; };
@@ -823,6 +826,12 @@
 		04219CA327E2FC7900F52C74 /* generator_mask.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = generator_mask.cpp; sourceTree = "<group>"; };
 		04219CA427E2FC7900F52C74 /* generator_mask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = generator_mask.h; sourceTree = "<group>"; };
 		04219CA627E2FCEF00F52C74 /* mask_layer_helper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mask_layer_helper.h; sourceTree = "<group>"; };
+		04219CA727E30D5600F52C74 /* clear_mesh_generator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = clear_mesh_generator.cpp; sourceTree = "<group>"; };
+		04219CA827E30D5600F52C74 /* clear_mesh_generator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = clear_mesh_generator.h; sourceTree = "<group>"; };
+		04219CAA27E313AF00F52C74 /* cpu_noise_layers_generator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = cpu_noise_layers_generator.cpp; sourceTree = "<group>"; };
+		04219CAB27E313AF00F52C74 /* cpu_noise_layers_generator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cpu_noise_layers_generator.h; sourceTree = "<group>"; };
+		04219CAD27E313CE00F52C74 /* gpu_noise_layer_generator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gpu_noise_layer_generator.cpp; sourceTree = "<group>"; };
+		04219CAE27E313CE00F52C74 /* gpu_noise_layer_generator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gpu_noise_layer_generator.h; sourceTree = "<group>"; };
 		04311AE527D7302B00B918E3 /* multi_light_app.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = multi_light_app.cpp; sourceTree = "<group>"; };
 		04311AE627D7302B00B918E3 /* multi_light_app.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = multi_light_app.h; sourceTree = "<group>"; };
 		043B7B5A278C4C5A00D5648F /* apps */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = apps; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1666,6 +1675,12 @@
 				04219CA427E2FC7900F52C74 /* generator_mask.h */,
 				04219CA327E2FC7900F52C74 /* generator_mask.cpp */,
 				04219CA627E2FCEF00F52C74 /* mask_layer_helper.h */,
+				04219CA827E30D5600F52C74 /* clear_mesh_generator.h */,
+				04219CA727E30D5600F52C74 /* clear_mesh_generator.cpp */,
+				04219CAE27E313CE00F52C74 /* gpu_noise_layer_generator.h */,
+				04219CAD27E313CE00F52C74 /* gpu_noise_layer_generator.cpp */,
+				04219CAB27E313AF00F52C74 /* cpu_noise_layers_generator.h */,
+				04219CAA27E313AF00F52C74 /* cpu_noise_layers_generator.cpp */,
 				04219CA027E2DF7000F52C74 /* mesh_generator_manager.h */,
 				04219C9F27E2DF7000F52C74 /* mesh_generator_manager.cpp */,
 			);
@@ -3076,6 +3091,7 @@
 			files = (
 				047BF1F627AFB8A9003F3599 /* wgsl_grid.cpp in Sources */,
 				047BF1E527AFAF4C003F3599 /* imgui_node_editor_api.cpp in Sources */,
+				04219CAF27E313CE00F52C74 /* gpu_noise_layer_generator.cpp in Sources */,
 				04219C9727E175F400F52C74 /* app_styles.cpp in Sources */,
 				047BF1F227AFB0CF003F3599 /* grid.cpp in Sources */,
 				04219C8C27E1754B00F52C74 /* editor.cpp in Sources */,
@@ -3083,11 +3099,13 @@
 				047BF1E327AFAF4C003F3599 /* crude_json.cpp in Sources */,
 				047BF1E027AFAF4C003F3599 /* imgui_zmo.cpp in Sources */,
 				04219CA127E2DF7000F52C74 /* mesh_generator_manager.cpp in Sources */,
+				04219CAC27E313AF00F52C74 /* cpu_noise_layers_generator.cpp in Sources */,
 				04219C9827E175F400F52C74 /* main_menu.cpp in Sources */,
 				04219C9127E1759D00F52C74 /* gui_entry.cpp in Sources */,
 				047BF1E127AFAF4C003F3599 /* main.cpp in Sources */,
 				047BF1DF27AFAF4C003F3599 /* imgui_node_editor.cpp in Sources */,
 				047BF1E427AFAF4C003F3599 /* imgui_canvas.cpp in Sources */,
+				04219CA927E30D5600F52C74 /* clear_mesh_generator.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
