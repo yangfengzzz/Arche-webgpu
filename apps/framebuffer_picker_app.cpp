@@ -15,30 +15,6 @@
 #include "gui.h"
 
 namespace vox {
-class GUIScript: public Script {
-public:
-    GUIScript(Entity* entity):Script(entity) {}
-    
-    void setApp(FramebufferPickerApp* app) {
-        _app = app;
-    }
-    
-    void onUpdate(float deltaTime) override {
-        ImGui::NewFrame();
-        ImGui::Begin("Panel");
-        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-        if (_app->sceneTextureView().Get() != nullptr) {
-            ImGui::Image((ImTextureID)_app->sceneTextureView().Get(), ImGui::GetWindowSize(), ImVec2(0, 1), ImVec2(1, 0));
-        }
-        ImGui::End();
-        
-        ImGui::Render();
-    }
-    
-private:
-    FramebufferPickerApp* _app{nullptr};
-};
-
 void FramebufferPickerApp::loadScene() {
     _gui = std::make_unique<GUI>(_renderContext.get());
     
@@ -46,8 +22,6 @@ void FramebufferPickerApp::loadScene() {
     _scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
     
     auto rootEntity = _scene->createRootEntity();
-    auto editor = rootEntity->addComponent<GUIScript>();
-    editor->setApp(this);
     
     auto cameraEntity = rootEntity->createChild("camera");
     cameraEntity->transform->setPosition(10, 10, 10);
@@ -87,6 +61,18 @@ void FramebufferPickerApp::pickFunctor(Renderer *renderer, MeshPtr mesh) {
     if (renderer && mesh) {
         static_cast<BlinnPhongMaterial *>(renderer->getMaterial().get())->setBaseColor(Color(u(e), u(e), u(e), 1));
     }
+}
+
+void FramebufferPickerApp::editorUpdate() {
+    ImGui::NewFrame();
+    ImGui::Begin("Panel");
+    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+    if (sceneTextureView().Get() != nullptr) {
+        ImGui::Image((ImTextureID)sceneTextureView().Get(), ImGui::GetWindowSize());
+    }
+    ImGui::End();
+    
+    ImGui::Render();
 }
 
 void FramebufferPickerApp::inputEvent(const InputEvent &inputEvent) {

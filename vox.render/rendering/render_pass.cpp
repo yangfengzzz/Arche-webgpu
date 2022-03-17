@@ -18,10 +18,6 @@ const wgpu::RenderPassDescriptor& RenderPass::renderPassDescriptor() {
     return _desc;
 }
 
-void RenderPass::setGUI(GUI* gui) {
-    _gui = gui;
-}
-
 //MARK: - Subpass
 void RenderPass::draw(wgpu::CommandEncoder& commandEncoder,
                       std::optional<std::string> label) {
@@ -36,15 +32,6 @@ void RenderPass::draw(wgpu::CommandEncoder& commandEncoder,
         _subpasses[i]->draw(encoder);
     }
     _activeSubpassIndex = 0;
-    
-    if (_gui) {
-        ImDrawData *drawData = ImGui::GetDrawData();
-        if (drawData) {
-            encoder.PushDebugGroup("GUI Rendering");
-            _gui->draw(drawData, encoder);
-            encoder.PopDebugGroup();
-        }
-    }
     encoder.End();
 }
 

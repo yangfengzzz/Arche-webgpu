@@ -51,9 +51,6 @@ bool ForwardApplication::prepare(Engine &engine) {
     _depthStencilAttachment.stencilStoreOp = wgpu::StoreOp::Discard;
     _renderPass = std::make_unique<RenderPass>(_device, _renderPassDescriptor);
     _renderPass->addSubpass(std::make_unique<ForwardSubpass>(_renderContext.get(), _scene.get(), _mainCamera));
-    if (_gui) {
-        _renderPass->setGUI(_gui.get());
-    }
     
     return true;
 }

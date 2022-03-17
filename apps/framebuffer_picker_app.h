@@ -17,6 +17,8 @@ public:
     
     void pickFunctor(Renderer *renderer, MeshPtr mesh) override;
     
+    void editorUpdate() override;
+    
     void inputEvent(const InputEvent &inputEvent) override;
     
 private:
