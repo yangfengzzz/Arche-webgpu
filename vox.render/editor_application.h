@@ -32,7 +32,9 @@ public:
                 uint32_t fb_width, uint32_t fb_height) override;
     
 public:
-    virtual void pickFunctor(Renderer *renderer, MeshPtr mesh) {};
+    virtual void pickFunctor(Renderer *renderer, MeshPtr mesh) {}
+    
+    virtual void editorUpdate() {}
     
     /**
      * Pick the object at the screen coordinate position.

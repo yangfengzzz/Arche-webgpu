@@ -38,6 +38,8 @@ public:
     
     virtual void updateGPUTask(wgpu::CommandEncoder& commandEncoder);
     
+    Camera* mainCamera();
+    
 protected:
     Camera* _mainCamera{nullptr};
     

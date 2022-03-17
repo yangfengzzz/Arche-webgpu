@@ -7,10 +7,9 @@
 #ifndef editor_component_hpp
 #define editor_component_hpp
 
-#include <stdio.h>
+#include "scene_forward.h"
 
 namespace vox {
-namespace editor {
 class EditorComponent {
 public:
     virtual ~EditorComponent() {
@@ -19,7 +18,6 @@ public:
     virtual void onUpdate() = 0;
 };
 
-}
 }
 
 #endif /* editor_component_hpp */

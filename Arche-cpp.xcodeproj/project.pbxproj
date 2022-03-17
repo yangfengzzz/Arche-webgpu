@@ -1625,7 +1625,6 @@
 		04219C8D27E1756E00F52C74 /* test */ = {
 			isa = PBXGroup;
 			children = (
-				047BF1C927AFAF4A003F3599 /* editor_component.h */,
 				047BF1DC27AFAF4C003F3599 /* entry.h */,
 				047BF1CC27AFAF4A003F3599 /* entry.cpp */,
 				04219C8A27E1704500F52C74 /* test.cpp */,
@@ -2036,6 +2035,7 @@
 				047BF1CA27AFAF4A003F3599 /* editor.cpp */,
 				04219C9027E1759D00F52C74 /* gui_entry.h */,
 				04219C8F27E1759D00F52C74 /* gui_entry.cpp */,
+				047BF1C927AFAF4A003F3599 /* editor_component.h */,
 				04219C9227E175CD00F52C74 /* component */,
 				047BF1C627AFAF4A003F3599 /* grid.h */,
 				047BF1D727AFAF4B003F3599 /* grid.cpp */,

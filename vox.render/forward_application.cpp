@@ -10,6 +10,10 @@
 #include "camera.h"
 
 namespace vox {
+Camera* ForwardApplication::mainCamera() {
+    return _mainCamera;
+}
+
 ForwardApplication::~ForwardApplication() {
     _renderPass.reset();
 }

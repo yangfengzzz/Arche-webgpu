@@ -47,7 +47,7 @@ bool EditorApplication::prepare(Engine &engine) {
         _sceneTextureDesc.size.height = extent.height * scale;
         _sceneTextureDesc.mipLevelCount = 1;
         _sceneTextureDesc.dimension = wgpu::TextureDimension::e2D;
-        _sceneTextureDesc.usage = wgpu::TextureUsage::RenderAttachment | wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopySrc;
+        _sceneTextureDesc.usage = wgpu::TextureUsage::RenderAttachment | wgpu::TextureUsage::TextureBinding;
         _sceneTexture = _device.CreateTexture(&_sceneTextureDesc);
         _sceneTexture.SetLabel("Scene Texture");
         
@@ -143,7 +143,9 @@ void EditorApplication::update(float delta_time) {
         _copyRenderTargetToBuffer(commandEncoder);
     }
     
-    if (_gui) {        
+    
+    if (_gui) {
+        editorUpdate();
         ImDrawData *drawData = ImGui::GetDrawData();
         if (drawData) {
             _guiColorAttachments.view = _renderContext->currentDrawableTexture();

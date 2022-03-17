@@ -286,6 +286,7 @@ Window(properties) {
 }
 
 GlfwWindow::~GlfwWindow() {
+    ImGui_ImplGlfw_Shutdown();
     glfwTerminate();
 }
 
@@ -346,7 +347,6 @@ void GlfwWindow::processEvents() {
 }
 
 void GlfwWindow::close() {
-    ImGui_ImplGlfw_Shutdown();
     glfwSetWindowShouldClose(_handle, GLFW_TRUE);
 }
 

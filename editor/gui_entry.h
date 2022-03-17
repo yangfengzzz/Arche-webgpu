@@ -7,7 +7,8 @@
 #ifndef gui_entry_hpp
 #define gui_entry_hpp
 
-#include "script.h"
+#include <string>
+#include "editor_component.h"
 #include "gui/imgui.h"
 #include "imgui_zmo.h"
 #include "imgui_node_editor.h"
@@ -82,23 +83,24 @@ struct ApplicationStateStates {
     std::atomic<bool> remeshing = false;
 };
 
-class GUIEntry: public Script {
+class GUIEntry {
 public:
     ApplicationStateWindows windows;
     ApplicationStateStates states;
     ApplicationStateGlobals globals;
     
-    GUIEntry(Entity* entity);
+    GUIEntry();
     
     ~GUIEntry();
     
     void setApp(vox::Editor* app);
     
     void setRenderer(Renderer *render);
+        
+    ImVec2 viewportPos;
+    ImVec2 viewportSize;
     
-    Camera* camera() const;
-    
-    void onUpdate(float deltaTime) override;
+    void update();
     
 public:
     void renderImGui();
@@ -111,7 +113,9 @@ public:
     
     void showGizmoControls();
     
-    void editTransform(float *cameraView, float *cameraProjection, float *matrix, bool editTransformDecomposition);
+    void editTransformPanel(float *cameraView, float *cameraProjection, float *matrix);
+
+    void editTransform(float *cameraView, float *cameraProjection, float *matrix);
     
     void showMainScene();
     

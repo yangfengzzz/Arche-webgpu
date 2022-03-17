@@ -21,7 +21,6 @@
 
 namespace vox {
 void Editor::loadScene() {
-    _gui = std::make_unique<GUI>(_renderContext.get());
     _scene->background.solidColor = Color(0.9, 0.9, 0.9, 1.0);
     _scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
     
@@ -29,9 +28,9 @@ void Editor::loadScene() {
     rootEntity->addComponent<editor::Grid>();
 
     auto cameraEntity = rootEntity->createChild("camera");
-    _entry = cameraEntity->addComponent<editor::GUIEntry>();
-    _entry->setApp(this);
-    _mainCamera = _entry->camera();
+    cameraEntity->transform->setPosition(10, 10, 10);
+    cameraEntity->transform->lookAt(Point3F(0, 0, 0));
+    _mainCamera = cameraEntity->addComponent<Camera>();
 
     // init point light
     auto light = rootEntity->createChild("light");
@@ -47,6 +46,10 @@ void Editor::loadScene() {
     boxMtl->setBaseColor(Color(0.8, 0.3, 0.3, 1.0));
     boxRenderer->setMesh(PrimitiveMesh::createCuboid(_device, cubeSize, cubeSize, cubeSize));
     boxRenderer->setMaterial(boxMtl);
+    
+    _gui = std::make_unique<GUI>(_renderContext.get());
+    _entry = std::make_unique<editor::GUIEntry>();
+    _entry->setApp(this);
 }
 
 void Editor::pickFunctor(Renderer *renderer, MeshPtr mesh) {
@@ -61,9 +64,21 @@ void Editor::inputEvent(const InputEvent &inputEvent) {
     if (inputEvent.source() == EventSource::Mouse) {
         const auto &mouse_button = static_cast<const MouseButtonInputEvent &>(inputEvent);
         if (mouse_button.action() == MouseAction::Down) {
-            pick(mouse_button.pos_x(), mouse_button.pos_y());
+            auto width = _mainCamera->width();
+            auto height = _mainCamera->height();
+            
+            auto pickerUnitPosX = (mouse_button.pos_x() - _entry->viewportPos.x) / _entry->viewportSize.x;
+            auto pickerUnitPosY = (mouse_button.pos_y() - _entry->viewportPos.y) / _entry->viewportSize.y;
+
+            if (pickerUnitPosX <= 1 && pickerUnitPosX > 0 && pickerUnitPosY <= 1 && pickerUnitPosY > 0) {
+                pick(pickerUnitPosX * width, pickerUnitPosY * height);
+            }
         }
     }
+}
+
+void Editor::editorUpdate() {
+    _entry->update();
 }
 
 }
