@@ -1628,6 +1628,7 @@
 		04219C8D27E1756E00F52C74 /* test */ = {
 			isa = PBXGroup;
 			children = (
+				047BF1C927AFAF4A003F3599 /* editor_component.h */,
 				047BF1DC27AFAF4C003F3599 /* entry.h */,
 				047BF1CC27AFAF4A003F3599 /* entry.cpp */,
 				04219C8A27E1704500F52C74 /* test.cpp */,
@@ -1655,13 +1656,22 @@
 			path = physx_app;
 			sourceTree = "<group>";
 		};
-		04219C9E27E2DF4A00F52C74 /* generators */ = {
+		04219C9E27E2DF4A00F52C74 /* node_editor */ = {
 			isa = PBXGroup;
 			children = (
 				04219CA027E2DF7000F52C74 /* mesh_generator_manager.h */,
 				04219C9F27E2DF7000F52C74 /* mesh_generator_manager.cpp */,
 			);
-			path = generators;
+			path = node_editor;
+			sourceTree = "<group>";
+		};
+		04219CA227E2F53900F52C74 /* scene_component */ = {
+			isa = PBXGroup;
+			children = (
+				047BF1C627AFAF4A003F3599 /* grid.h */,
+				047BF1D727AFAF4B003F3599 /* grid.cpp */,
+			);
+			path = scene_component;
 			sourceTree = "<group>";
 		};
 		043B7B51278C4C5A00D5648F = {
@@ -2042,16 +2052,14 @@
 				047BF1D327AFAF4B003F3599 /* imgui_zmo.cpp */,
 				047BF1C527AFAF02003F3599 /* editor.entitlements */,
 				047BF1F327AFB885003F3599 /* shaderlib */,
-				04219C9E27E2DF4A00F52C74 /* generators */,
+				04219C9E27E2DF4A00F52C74 /* node_editor */,
+				04219C9227E175CD00F52C74 /* component */,
+				04219CA227E2F53900F52C74 /* scene_component */,
 				047BF1D627AFAF4B003F3599 /* main.cpp */,
 				047BF1C727AFAF4A003F3599 /* editor.h */,
 				047BF1CA27AFAF4A003F3599 /* editor.cpp */,
 				04219C9027E1759D00F52C74 /* gui_entry.h */,
 				04219C8F27E1759D00F52C74 /* gui_entry.cpp */,
-				047BF1C927AFAF4A003F3599 /* editor_component.h */,
-				04219C9227E175CD00F52C74 /* component */,
-				047BF1C627AFAF4A003F3599 /* grid.h */,
-				047BF1D727AFAF4B003F3599 /* grid.cpp */,
 			);
 			path = editor;
 			sourceTree = "<group>";
@@ -3744,6 +3752,7 @@
 				HEADER_SEARCH_PATHS = (
 					./vox.render,
 					./vox.math,
+					./editor,
 				);
 				LD_RUNPATH_SEARCH_PATHS = (
 					../third_party/glog/build,
@@ -3882,6 +3891,7 @@
 				HEADER_SEARCH_PATHS = (
 					./vox.render,
 					./vox.math,
+					./editor,
 				);
 				LD_RUNPATH_SEARCH_PATHS = (
 					../third_party/glog/build,

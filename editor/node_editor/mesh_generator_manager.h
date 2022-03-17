@@ -9,14 +9,19 @@
 
 #include <vector>
 #include <atomic>
+#include "singleton.h"
 
 namespace vox {
 namespace editor {
-class MeshGeneratorManager {
+class MeshGeneratorManager : public Singleton<MeshGeneratorManager> {
 public:
+    static MeshGeneratorManager &getSingleton(void);
+    
+    static MeshGeneratorManager *getSingletonPtr(void);
 };
 
 
 }
+template<> inline editor::MeshGeneratorManager* Singleton<editor::MeshGeneratorManager>::msSingleton{nullptr};
 }
 #endif /* mesh_generator_manager_hpp */

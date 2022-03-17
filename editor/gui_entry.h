@@ -9,21 +9,28 @@
 
 #include <string>
 #include <webgpu/webgpu_cpp.h>
+#include "scene_forward.h"
 #include "singleton.h"
 
-#include "editor_component.h"
 #include "gui/imgui.h"
 #include "imgui_zmo.h"
 #include "imgui_node_editor.h"
 
 namespace vox {
-class Editor;
 namespace control {
 class OrbitControl;
 }
 
 namespace editor {
 class MainMenu;
+
+struct ApplicationStateStatistics {
+    double deltatime = 1;
+    double frameRate = 1;
+    double meshGenerationTime = 0;
+    int triangles = 0;
+    int vertexCount = 0;
+};
 
 struct ApplicationStateWindows {
     bool styleEditor = false;
@@ -40,30 +47,6 @@ struct ApplicationStateWindows {
     bool modulesManager = false;
     bool lightControls = true;
     bool cameraControls = true;
-};
-
-struct ApplicationStateGlobals {
-    float mouseSpeed = 25;
-    float scrollSpeed = 0.5f;
-    float mouseScrollAmount = 0;
-    float viewportMousePosX = 0;
-    float viewportMousePosY = 0;
-    float scale = 1.0f;
-    float offset[3];
-
-
-    int resolution = 256;
-    int numberOfNoiseTypes = 3;
-    int secondCounter = 0;
-    int textureBakeMode = 0;
-    int texBakeRes = 1024;
-
-    std::string currentOpenFilePath = "";
-    std::string currentBaseModelPath = "";
-    std::string kernelsIncludeDir = "";
-
-    float viewportSize[4];
-    float hMapC[4];
 };
 
 struct ApplicationStateStates {
@@ -86,16 +69,48 @@ struct ApplicationStateStates {
     std::atomic<bool> remeshing = false;
 };
 
+struct ApplicationStateGlobals {
+    float mouseSpeed = 25;
+    float scrollSpeed = 0.5f;
+    float mouseScrollAmount = 0;
+    float viewportMousePosX = 0;
+    float viewportMousePosY = 0;
+    float scale = 1.0f;
+    float offset[3];
+
+    int resolution = 256;
+    int numberOfNoiseTypes = 3;
+    int secondCounter = 0;
+    int textureBakeMode = 0;
+    int texBakeRes = 1024;
+
+    std::string currentOpenFilePath = "";
+    std::string currentBaseModelPath = "";
+    std::string kernelsIncludeDir = "";
+
+    float viewportSize[4];
+    float hMapC[4];
+};
+
+enum ApplicationMode {
+    TERRAIN = 0,
+    CUSTOM_BASE,
+    CUBE_MARCHED
+};
+
+//MARK: - GUIEntry
 class GUIEntry : public Singleton<GUIEntry> {
 public:
     static GUIEntry &getSingleton(void);
     
     static GUIEntry *getSingletonPtr(void);
     
+    ApplicationStateStatistics stats;
     ApplicationStateWindows windows;
     ApplicationStateStates states;
     ApplicationStateGlobals globals;
-    
+    ApplicationMode mode = ApplicationMode::TERRAIN;
+
     GUIEntry();
     
     ~GUIEntry();

@@ -16,7 +16,7 @@
 // editor component
 #include "component/main_menu.h"
 #include "component/app_styles.h"
-#include "grid.h"
+#include "scene_component/grid.h"
 
 namespace vox {
 editor::GUIEntry *editor::GUIEntry::getSingletonPtr(void) {
