@@ -174,6 +174,7 @@
 		04219C9827E175F400F52C74 /* main_menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219C9427E175F300F52C74 /* main_menu.cpp */; };
 		04219C9C27E182D500F52C74 /* kapla_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219C9A27E182D500F52C74 /* kapla_app.cpp */; };
 		04219CA127E2DF7000F52C74 /* mesh_generator_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219C9F27E2DF7000F52C74 /* mesh_generator_manager.cpp */; };
+		04219CA527E2FC7900F52C74 /* generator_mask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219CA327E2FC7900F52C74 /* generator_mask.cpp */; };
 		04311AE727D7302B00B918E3 /* multi_light_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04311AE527D7302B00B918E3 /* multi_light_app.cpp */; };
 		043B7B69278C797700D5648F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B68278C797700D5648F /* Cocoa.framework */; };
 		043B7B6B278C798100D5648F /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B6A278C798100D5648F /* CoreFoundation.framework */; };
@@ -819,6 +820,9 @@
 		04219C9B27E182D500F52C74 /* kapla_app.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = kapla_app.h; sourceTree = "<group>"; };
 		04219C9F27E2DF7000F52C74 /* mesh_generator_manager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mesh_generator_manager.cpp; sourceTree = "<group>"; };
 		04219CA027E2DF7000F52C74 /* mesh_generator_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mesh_generator_manager.h; sourceTree = "<group>"; };
+		04219CA327E2FC7900F52C74 /* generator_mask.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = generator_mask.cpp; sourceTree = "<group>"; };
+		04219CA427E2FC7900F52C74 /* generator_mask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = generator_mask.h; sourceTree = "<group>"; };
+		04219CA627E2FCEF00F52C74 /* mask_layer_helper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mask_layer_helper.h; sourceTree = "<group>"; };
 		04311AE527D7302B00B918E3 /* multi_light_app.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = multi_light_app.cpp; sourceTree = "<group>"; };
 		04311AE627D7302B00B918E3 /* multi_light_app.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = multi_light_app.h; sourceTree = "<group>"; };
 		043B7B5A278C4C5A00D5648F /* apps */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = apps; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1659,6 +1663,9 @@
 		04219C9E27E2DF4A00F52C74 /* node_editor */ = {
 			isa = PBXGroup;
 			children = (
+				04219CA427E2FC7900F52C74 /* generator_mask.h */,
+				04219CA327E2FC7900F52C74 /* generator_mask.cpp */,
+				04219CA627E2FCEF00F52C74 /* mask_layer_helper.h */,
 				04219CA027E2DF7000F52C74 /* mesh_generator_manager.h */,
 				04219C9F27E2DF7000F52C74 /* mesh_generator_manager.cpp */,
 			);
@@ -3072,6 +3079,7 @@
 				04219C9727E175F400F52C74 /* app_styles.cpp in Sources */,
 				047BF1F227AFB0CF003F3599 /* grid.cpp in Sources */,
 				04219C8C27E1754B00F52C74 /* editor.cpp in Sources */,
+				04219CA527E2FC7900F52C74 /* generator_mask.cpp in Sources */,
 				047BF1E327AFAF4C003F3599 /* crude_json.cpp in Sources */,
 				047BF1E027AFAF4C003F3599 /* imgui_zmo.cpp in Sources */,
 				04219CA127E2DF7000F52C74 /* mesh_generator_manager.cpp in Sources */,
@@ -3781,6 +3789,7 @@
 					./third_party/ozz/build_debug/src/animation/runtime,
 					./third_party/ozz/build_debug/src/geometry/runtime,
 					./third_party/rttr/build/lib,
+					./third_party/fastnoise2/build/Release/lib,
 				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
@@ -3821,6 +3830,7 @@
 					"-lozz_geometry_d",
 					"/Applications/Autodesk/FBX\\ SDK/2016.1.2/lib/clang/debug/libfbxsdk.a",
 					"-lrttr_core",
+					"-lFastNoise",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SYSTEM_HEADER_SEARCH_PATHS = (
@@ -3864,6 +3874,7 @@
 					./third_party/rttr/src,
 					./third_party/rttr/build/src,
 					./third_party/rapidjson/include,
+					./third_party/fastnoise2/include,
 				);
 			};
 			name = Debug;
@@ -3920,6 +3931,7 @@
 					./third_party/ozz/build_release/src/animation/runtime,
 					./third_party/ozz/build_release/src/geometry/runtime,
 					./third_party/rttr/build/lib,
+					./third_party/fastnoise2/build/Release/lib,
 				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
@@ -3960,6 +3972,7 @@
 					"-lozz_geometry_r",
 					"/Applications/Autodesk/FBX\\ SDK/2016.1.2/lib/clang/release/libfbxsdk.a",
 					"-lrttr_core",
+					"-lFastNoise",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SYSTEM_HEADER_SEARCH_PATHS = (
@@ -4003,6 +4016,7 @@
 					./third_party/rttr/src,
 					./third_party/rttr/build/src,
 					./third_party/rapidjson/include,
+					./third_party/fastnoise2/include,
 				);
 			};
 			name = Release;
