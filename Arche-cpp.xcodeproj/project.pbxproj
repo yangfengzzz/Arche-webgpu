@@ -584,6 +584,11 @@
 		04F9E94427D6558E00BD291B /* wgsl_cluster_debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E94227D6558E00BD291B /* wgsl_cluster_debug.cpp */; };
 		04F9E94527D6558E00BD291B /* wgsl_cluster_debug.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E94327D6558E00BD291B /* wgsl_cluster_debug.h */; };
 		04F9E94827D6D6AE00BD291B /* cluster_forward_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E94627D6D6AE00BD291B /* cluster_forward_app.cpp */; };
+		04FDEF2827E4402E00BBE8E4 /* blend_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF2627E4402E00BBE8E4 /* blend_node.cpp */; };
+		04FDEF2B27E441FA00BBE8E4 /* clamp_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF2927E441FA00BBE8E4 /* clamp_node.cpp */; };
+		04FDEF2E27E442B300BBE8E4 /* cos_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF2C27E442B300BBE8E4 /* cos_node.cpp */; };
+		04FDEF3127E4435A00BBE8E4 /* curve_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF2F27E4435A00BBE8E4 /* curve_node.cpp */; };
+		04FDEF3427E443F000BBE8E4 /* imgui_curve.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF3227E443F000BBE8E4 /* imgui_curve.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1327,6 +1332,16 @@
 		04F9E94327D6558E00BD291B /* wgsl_cluster_debug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_cluster_debug.h; sourceTree = "<group>"; };
 		04F9E94627D6D6AE00BD291B /* cluster_forward_app.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = cluster_forward_app.cpp; sourceTree = "<group>"; };
 		04F9E94727D6D6AE00BD291B /* cluster_forward_app.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cluster_forward_app.h; sourceTree = "<group>"; };
+		04FDEF2627E4402E00BBE8E4 /* blend_node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = blend_node.cpp; sourceTree = "<group>"; };
+		04FDEF2727E4402E00BBE8E4 /* blend_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = blend_node.h; sourceTree = "<group>"; };
+		04FDEF2927E441FA00BBE8E4 /* clamp_node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = clamp_node.cpp; sourceTree = "<group>"; };
+		04FDEF2A27E441FA00BBE8E4 /* clamp_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = clamp_node.h; sourceTree = "<group>"; };
+		04FDEF2C27E442B300BBE8E4 /* cos_node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = cos_node.cpp; sourceTree = "<group>"; };
+		04FDEF2D27E442B300BBE8E4 /* cos_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cos_node.h; sourceTree = "<group>"; };
+		04FDEF2F27E4435A00BBE8E4 /* curve_node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = curve_node.cpp; sourceTree = "<group>"; };
+		04FDEF3027E4435A00BBE8E4 /* curve_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = curve_node.h; sourceTree = "<group>"; };
+		04FDEF3227E443F000BBE8E4 /* imgui_curve.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_curve.cpp; sourceTree = "<group>"; };
+		04FDEF3327E443F000BBE8E4 /* imgui_curve.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = imgui_curve.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1750,6 +1765,14 @@
 				04219CC227E325FB00F52C74 /* abs_node.cpp */,
 				04219CD127E42B9E00F52C74 /* add_node.h */,
 				04219CD027E42B9E00F52C74 /* add_node.cpp */,
+				04FDEF2D27E442B300BBE8E4 /* cos_node.h */,
+				04FDEF2C27E442B300BBE8E4 /* cos_node.cpp */,
+				04FDEF3027E4435A00BBE8E4 /* curve_node.h */,
+				04FDEF2F27E4435A00BBE8E4 /* curve_node.cpp */,
+				04FDEF2727E4402E00BBE8E4 /* blend_node.h */,
+				04FDEF2627E4402E00BBE8E4 /* blend_node.cpp */,
+				04FDEF2A27E441FA00BBE8E4 /* clamp_node.h */,
+				04FDEF2927E441FA00BBE8E4 /* clamp_node.cpp */,
 				04219CC827E411C100F52C74 /* output_node.h */,
 				04219CC727E411C100F52C74 /* output_node.cpp */,
 			);
@@ -2132,6 +2155,8 @@
 				047BF1D027AFAF4B003F3599 /* imgui_node_editor_internal.inl */,
 				047BF1D527AFAF4B003F3599 /* imgui_zmo.h */,
 				047BF1D327AFAF4B003F3599 /* imgui_zmo.cpp */,
+				04FDEF3327E443F000BBE8E4 /* imgui_curve.h */,
+				04FDEF3227E443F000BBE8E4 /* imgui_curve.cpp */,
 				04219CC027E323D700F52C74 /* imgui_shapes.h */,
 				04219CBF27E323D700F52C74 /* imgui_shapes.cpp */,
 				047BF1C527AFAF02003F3599 /* editor.entitlements */,
@@ -3156,6 +3181,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				047BF1F627AFB8A9003F3599 /* wgsl_grid.cpp in Sources */,
+				04FDEF2827E4402E00BBE8E4 /* blend_node.cpp in Sources */,
 				047BF1E527AFAF4C003F3599 /* imgui_node_editor_api.cpp in Sources */,
 				04219CAF27E313CE00F52C74 /* gpu_noise_layer_generator.cpp in Sources */,
 				04219CBE27E320AE00F52C74 /* cpu_node_editor.cpp in Sources */,
@@ -3167,6 +3193,7 @@
 				04219CC627E408AD00F52C74 /* layered_noise_manager.cpp in Sources */,
 				04219CA527E2FC7900F52C74 /* generator_mask.cpp in Sources */,
 				04219CCC27E413FC00F52C74 /* editor_utils.cpp in Sources */,
+				04FDEF2B27E441FA00BBE8E4 /* clamp_node.cpp in Sources */,
 				047BF1E327AFAF4C003F3599 /* crude_json.cpp in Sources */,
 				04219CC427E325FB00F52C74 /* abs_node.cpp in Sources */,
 				047BF1E027AFAF4C003F3599 /* imgui_zmo.cpp in Sources */,
@@ -3176,12 +3203,15 @@
 				04219CA127E2DF7000F52C74 /* mesh_generator_manager.cpp in Sources */,
 				04219CAC27E313AF00F52C74 /* cpu_noise_layers_generator.cpp in Sources */,
 				04219C9827E175F400F52C74 /* main_menu.cpp in Sources */,
+				04FDEF3127E4435A00BBE8E4 /* curve_node.cpp in Sources */,
 				04219CC527E4075700F52C74 /* noise_layer.cpp in Sources */,
 				04219C9127E1759D00F52C74 /* gui_entry.cpp in Sources */,
 				047BF1E127AFAF4C003F3599 /* main.cpp in Sources */,
 				047BF1DF27AFAF4C003F3599 /* imgui_node_editor.cpp in Sources */,
 				047BF1E427AFAF4C003F3599 /* imgui_canvas.cpp in Sources */,
 				04219CA927E30D5600F52C74 /* clear_mesh_generator.cpp in Sources */,
+				04FDEF2E27E442B300BBE8E4 /* cos_node.cpp in Sources */,
+				04FDEF3427E443F000BBE8E4 /* imgui_curve.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
