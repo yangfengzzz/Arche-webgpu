@@ -604,6 +604,12 @@
 		04FDEF5C27E4AE4000BBE8E4 /* noise_perlin_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF5A27E4AE4000BBE8E4 /* noise_perlin_node.cpp */; };
 		04FDEF5F27E4AED800BBE8E4 /* noise_value_cubic_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF5D27E4AED800BBE8E4 /* noise_value_cubic_node.cpp */; };
 		04FDEF6227E4AF6500BBE8E4 /* noise_value_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF6027E4AF6500BBE8E4 /* noise_value_node.cpp */; };
+		04FDEF6527E4B02300BBE8E4 /* pixelate_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF6327E4B02300BBE8E4 /* pixelate_node.cpp */; };
+		04FDEF6827E4B1C200BBE8E4 /* random_number_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF6627E4B1C200BBE8E4 /* random_number_node.cpp */; };
+		04FDEF6B27E4B23E00BBE8E4 /* sin_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF6927E4B23E00BBE8E4 /* sin_node.cpp */; };
+		04FDEF6E27E4B2AC00BBE8E4 /* square_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF6C27E4B2AC00BBE8E4 /* square_node.cpp */; };
+		04FDEF7127E4B31B00BBE8E4 /* sub_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF6F27E4B31B00BBE8E4 /* sub_node.cpp */; };
+		04FDEF7427E4B39700BBE8E4 /* tan_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF7227E4B39700BBE8E4 /* tan_node.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1387,6 +1393,18 @@
 		04FDEF5E27E4AED800BBE8E4 /* noise_value_cubic_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = noise_value_cubic_node.h; sourceTree = "<group>"; };
 		04FDEF6027E4AF6500BBE8E4 /* noise_value_node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = noise_value_node.cpp; sourceTree = "<group>"; };
 		04FDEF6127E4AF6500BBE8E4 /* noise_value_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = noise_value_node.h; sourceTree = "<group>"; };
+		04FDEF6327E4B02300BBE8E4 /* pixelate_node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = pixelate_node.cpp; sourceTree = "<group>"; };
+		04FDEF6427E4B02300BBE8E4 /* pixelate_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pixelate_node.h; sourceTree = "<group>"; };
+		04FDEF6627E4B1C200BBE8E4 /* random_number_node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = random_number_node.cpp; sourceTree = "<group>"; };
+		04FDEF6727E4B1C200BBE8E4 /* random_number_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = random_number_node.h; sourceTree = "<group>"; };
+		04FDEF6927E4B23E00BBE8E4 /* sin_node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sin_node.cpp; sourceTree = "<group>"; };
+		04FDEF6A27E4B23E00BBE8E4 /* sin_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sin_node.h; sourceTree = "<group>"; };
+		04FDEF6C27E4B2AC00BBE8E4 /* square_node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = square_node.cpp; sourceTree = "<group>"; };
+		04FDEF6D27E4B2AC00BBE8E4 /* square_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = square_node.h; sourceTree = "<group>"; };
+		04FDEF6F27E4B31B00BBE8E4 /* sub_node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sub_node.cpp; sourceTree = "<group>"; };
+		04FDEF7027E4B31B00BBE8E4 /* sub_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sub_node.h; sourceTree = "<group>"; };
+		04FDEF7227E4B39700BBE8E4 /* tan_node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tan_node.cpp; sourceTree = "<group>"; };
+		04FDEF7327E4B39700BBE8E4 /* tan_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tan_node.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1810,12 +1828,20 @@
 				04219CC227E325FB00F52C74 /* abs_node.cpp */,
 				04219CD127E42B9E00F52C74 /* add_node.h */,
 				04219CD027E42B9E00F52C74 /* add_node.cpp */,
+				04FDEF7027E4B31B00BBE8E4 /* sub_node.h */,
+				04FDEF6F27E4B31B00BBE8E4 /* sub_node.cpp */,
 				04FDEF4F27E47E3200BBE8E4 /* mul_node.h */,
 				04FDEF4E27E47E3200BBE8E4 /* mul_node.cpp */,
 				04FDEF3627E44C3300BBE8E4 /* div_node.h */,
 				04FDEF3527E44C3300BBE8E4 /* div_node.cpp */,
+				04FDEF6D27E4B2AC00BBE8E4 /* square_node.h */,
+				04FDEF6C27E4B2AC00BBE8E4 /* square_node.cpp */,
+				04FDEF6A27E4B23E00BBE8E4 /* sin_node.h */,
+				04FDEF6927E4B23E00BBE8E4 /* sin_node.cpp */,
 				04FDEF2D27E442B300BBE8E4 /* cos_node.h */,
 				04FDEF2C27E442B300BBE8E4 /* cos_node.cpp */,
+				04FDEF7327E4B39700BBE8E4 /* tan_node.h */,
+				04FDEF7227E4B39700BBE8E4 /* tan_node.cpp */,
 				04FDEF3027E4435A00BBE8E4 /* curve_node.h */,
 				04FDEF2F27E4435A00BBE8E4 /* curve_node.cpp */,
 				04FDEF2727E4402E00BBE8E4 /* blend_node.h */,
@@ -1848,6 +1874,10 @@
 				04FDEF5427E4816900BBE8E4 /* noise_open_simplex2_node.cpp */,
 				04FDEF5827E4AD8F00BBE8E4 /* noise_open_simplex2s_node.h */,
 				04FDEF5727E4AD8F00BBE8E4 /* noise_open_simplex2s_node.cpp */,
+				04FDEF6427E4B02300BBE8E4 /* pixelate_node.h */,
+				04FDEF6327E4B02300BBE8E4 /* pixelate_node.cpp */,
+				04FDEF6727E4B1C200BBE8E4 /* random_number_node.h */,
+				04FDEF6627E4B1C200BBE8E4 /* random_number_node.cpp */,
 				04219CC827E411C100F52C74 /* output_node.h */,
 				04219CC727E411C100F52C74 /* output_node.cpp */,
 			);
@@ -3259,8 +3289,10 @@
 				04FDEF5027E47E3200BBE8E4 /* mul_node.cpp in Sources */,
 				04FDEF2827E4402E00BBE8E4 /* blend_node.cpp in Sources */,
 				047BF1E527AFAF4C003F3599 /* imgui_node_editor_api.cpp in Sources */,
+				04FDEF7127E4B31B00BBE8E4 /* sub_node.cpp in Sources */,
 				04219CAF27E313CE00F52C74 /* gpu_noise_layer_generator.cpp in Sources */,
 				04219CBE27E320AE00F52C74 /* cpu_node_editor.cpp in Sources */,
+				04FDEF6827E4B1C200BBE8E4 /* random_number_node.cpp in Sources */,
 				04219C9727E175F400F52C74 /* app_styles.cpp in Sources */,
 				047BF1F227AFB0CF003F3599 /* grid.cpp in Sources */,
 				04219CCF27E41D6A00F52C74 /* ui_font_manager.cpp in Sources */,
@@ -3270,10 +3302,12 @@
 				04219CBD27E31F9F00F52C74 /* node_editor.cpp in Sources */,
 				04219CC627E408AD00F52C74 /* layered_noise_manager.cpp in Sources */,
 				04219CA527E2FC7900F52C74 /* generator_mask.cpp in Sources */,
+				04FDEF6E27E4B2AC00BBE8E4 /* square_node.cpp in Sources */,
 				04219CCC27E413FC00F52C74 /* editor_utils.cpp in Sources */,
 				04FDEF5F27E4AED800BBE8E4 /* noise_value_cubic_node.cpp in Sources */,
 				04FDEF4427E47AB500BBE8E4 /* max_mesh_coordinates_node.cpp in Sources */,
 				04FDEF2B27E441FA00BBE8E4 /* clamp_node.cpp in Sources */,
+				04FDEF6527E4B02300BBE8E4 /* pixelate_node.cpp in Sources */,
 				047BF1E327AFAF4C003F3599 /* crude_json.cpp in Sources */,
 				04FDEF4727E47B7600BBE8E4 /* mesh_coordinates_node.cpp in Sources */,
 				04FDEF5C27E4AE4000BBE8E4 /* noise_perlin_node.cpp in Sources */,
@@ -3287,6 +3321,8 @@
 				04219CC927E411C100F52C74 /* output_node.cpp in Sources */,
 				04219CA127E2DF7000F52C74 /* mesh_generator_manager.cpp in Sources */,
 				04219CAC27E313AF00F52C74 /* cpu_noise_layers_generator.cpp in Sources */,
+				04FDEF7427E4B39700BBE8E4 /* tan_node.cpp in Sources */,
+				04FDEF6B27E4B23E00BBE8E4 /* sin_node.cpp in Sources */,
 				04219C9827E175F400F52C74 /* main_menu.cpp in Sources */,
 				04FDEF3127E4435A00BBE8E4 /* curve_node.cpp in Sources */,
 				04FDEF3D27E44D5B00BBE8E4 /* hill_node.cpp in Sources */,
