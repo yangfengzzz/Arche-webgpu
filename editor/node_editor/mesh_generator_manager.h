@@ -11,6 +11,11 @@
 #include <atomic>
 #include "singleton.h"
 
+#include "clear_mesh_generator.h"
+#include "cpu_node_editor.h"
+#include "cpu_noise_layers_generator.h"
+#include "gpu_noise_layer_generator.h"
+
 namespace vox {
 namespace editor {
 class MeshGeneratorManager : public Singleton<MeshGeneratorManager> {
@@ -18,6 +23,35 @@ public:
     static MeshGeneratorManager &getSingleton(void);
     
     static MeshGeneratorManager *getSingletonPtr(void);
+    
+    MeshGeneratorManager();
+    
+    void generate();
+
+    void generateSync();
+
+    void showSettings();
+
+    void generateForTerrain();
+
+    void generateForCustomBase();
+
+    void executeKernels();
+
+    void executeCPUGenerators();
+
+    void loadKernels();
+
+    double time = 0;
+    
+    bool windowStat = true;
+    
+private:
+    std::atomic<bool> *isRemeshing;
+    std::unique_ptr<ClearMeshGenerator> clearMeshGen;
+    std::vector<std::unique_ptr<CPUNoiseLayersGenerator>> cpuNoiseLayers;
+    std::vector<std::unique_ptr<GPUNoiseLayerGenerator>> gpuNoiseLayers;
+    std::vector<std::unique_ptr<CPUNodeEditor>> cpuNodeEditors;
 };
 
 

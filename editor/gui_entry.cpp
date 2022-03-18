@@ -75,6 +75,7 @@ void GUIEntry::renderImGui(const wgpu::TextureView& view) {
         sceneCamera->setAspectRatio(globals.viewportSize[0] / globals.viewportSize[1]);
     }
     
+    _meshGenerator->showSettings();
     showMainScene(view);
     
     if (windows.styleEditor) {
