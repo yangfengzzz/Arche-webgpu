@@ -9,9 +9,14 @@
 #include <locale>
 #include <codecvt>
 #include <string>
+#include <muParser.h>
 
 namespace vox {
 namespace editor {
+static void setupParser(mu::Parser *parser) {
+    // TODO
+}
+
 MathFunctionNode::MathFunctionNode() {
     headerColor = ImColor(VALUE_NODE_COLOR);
     inputPins.push_back(new NodeEditorPin());

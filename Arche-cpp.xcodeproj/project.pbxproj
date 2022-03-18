@@ -592,6 +592,7 @@
 		04FDEF3727E44C3300BBE8E4 /* div_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF3527E44C3300BBE8E4 /* div_node.cpp */; };
 		04FDEF3A27E44CDC00BBE8E4 /* duplicate_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF3827E44CDC00BBE8E4 /* duplicate_node.cpp */; };
 		04FDEF3D27E44D5B00BBE8E4 /* hill_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF3B27E44D5B00BBE8E4 /* hill_node.cpp */; };
+		04FDEF4127E4542100BBE8E4 /* math_function_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF3E27E44E3F00BBE8E4 /* math_function_node.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -3218,6 +3219,7 @@
 				047BF1E027AFAF4C003F3599 /* imgui_zmo.cpp in Sources */,
 				04FDEF3A27E44CDC00BBE8E4 /* duplicate_node.cpp in Sources */,
 				04219CC127E323D700F52C74 /* imgui_shapes.cpp in Sources */,
+				04FDEF4127E4542100BBE8E4 /* math_function_node.cpp in Sources */,
 				04219CD227E42B9E00F52C74 /* add_node.cpp in Sources */,
 				04219CC927E411C100F52C74 /* output_node.cpp in Sources */,
 				04219CA127E2DF7000F52C74 /* mesh_generator_manager.cpp in Sources */,
@@ -3915,6 +3917,7 @@
 					../third_party/glog/build,
 					../third_party/ktx/build,
 					../third_party/rttr/build/lib,
+					../third_party/muparser/build,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"./third_party/dawn/cmake-debug/src/dawn",
@@ -3939,6 +3942,7 @@
 					./third_party/ozz/build_debug/src/geometry/runtime,
 					./third_party/rttr/build/lib,
 					./third_party/fastnoise2/build/Release/lib,
+					./third_party/muparser/build,
 				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
@@ -3980,6 +3984,7 @@
 					"/Applications/Autodesk/FBX\\ SDK/2016.1.2/lib/clang/debug/libfbxsdk.a",
 					"-lrttr_core",
 					"-lFastNoise",
+					"-lmuparser",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SYSTEM_HEADER_SEARCH_PATHS = (
@@ -4025,6 +4030,7 @@
 					./third_party/rapidjson/include,
 					./third_party/fastnoise2/include,
 					./third_party/fastnoiselite/Cpp,
+					./third_party/muparser/include,
 				);
 			};
 			name = Debug;
@@ -4059,6 +4065,7 @@
 					../third_party/glog/build,
 					../third_party/ktx/build,
 					../third_party/rttr/build/lib,
+					../third_party/muparser/build,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"./third_party/dawn/cmake-release/src/dawn",
@@ -4083,6 +4090,7 @@
 					./third_party/ozz/build_release/src/geometry/runtime,
 					./third_party/rttr/build/lib,
 					./third_party/fastnoise2/build/Release/lib,
+					./third_party/muparser/build,
 				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
@@ -4124,6 +4132,7 @@
 					"/Applications/Autodesk/FBX\\ SDK/2016.1.2/lib/clang/release/libfbxsdk.a",
 					"-lrttr_core",
 					"-lFastNoise",
+					"-lmuparser",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SYSTEM_HEADER_SEARCH_PATHS = (
@@ -4169,6 +4178,7 @@
 					./third_party/rapidjson/include,
 					./third_party/fastnoise2/include,
 					./third_party/fastnoiselite/Cpp,
+					./third_party/muparser/include,
 				);
 			};
 			name = Release;
