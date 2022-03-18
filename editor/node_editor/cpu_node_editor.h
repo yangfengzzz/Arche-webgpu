@@ -72,8 +72,6 @@ class CPUNodeEditor {
 public:
     CPUNodeEditor();
 
-    ~CPUNodeEditor();
-
     void showSetting(int id);
 
     void update();
@@ -86,7 +84,7 @@ public:
     double time = 0;
     std::string uid;
     std::string name;
-    NodeEditor *editor;
+    std::unique_ptr<NodeEditor> editor{nullptr};
 
     std::mutex m;
 };

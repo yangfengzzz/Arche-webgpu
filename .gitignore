@@ -147,4 +147,5 @@ fabric.properties
 
 apps/imgui.ini
 editor/imgui.ini
+editor/NodeEditor.terr3d
 editor/BasicInteraction.json
