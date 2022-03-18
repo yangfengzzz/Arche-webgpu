@@ -185,6 +185,7 @@
 		04219CC527E4075700F52C74 /* noise_layer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219CB127E3150700F52C74 /* noise_layer.cpp */; };
 		04219CC627E408AD00F52C74 /* layered_noise_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219CB427E31AE300F52C74 /* layered_noise_manager.cpp */; };
 		04219CC927E411C100F52C74 /* output_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219CC727E411C100F52C74 /* output_node.cpp */; };
+		04219CCC27E413FC00F52C74 /* editor_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219CCA27E413FC00F52C74 /* editor_utils.cpp */; };
 		04311AE727D7302B00B918E3 /* multi_light_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04311AE527D7302B00B918E3 /* multi_light_app.cpp */; };
 		043B7B69278C797700D5648F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B68278C797700D5648F /* Cocoa.framework */; };
 		043B7B6B278C798100D5648F /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B6A278C798100D5648F /* CoreFoundation.framework */; };
@@ -853,6 +854,8 @@
 		04219CC327E325FB00F52C74 /* abs_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = abs_node.h; sourceTree = "<group>"; };
 		04219CC727E411C100F52C74 /* output_node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = output_node.cpp; sourceTree = "<group>"; };
 		04219CC827E411C100F52C74 /* output_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = output_node.h; sourceTree = "<group>"; };
+		04219CCA27E413FC00F52C74 /* editor_utils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = editor_utils.cpp; sourceTree = "<group>"; };
+		04219CCB27E413FC00F52C74 /* editor_utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = editor_utils.h; sourceTree = "<group>"; };
 		04311AE527D7302B00B918E3 /* multi_light_app.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = multi_light_app.cpp; sourceTree = "<group>"; };
 		04311AE627D7302B00B918E3 /* multi_light_app.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = multi_light_app.h; sourceTree = "<group>"; };
 		043B7B5A278C4C5A00D5648F /* apps */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = apps; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2131,6 +2134,8 @@
 				047BF1D627AFAF4B003F3599 /* main.cpp */,
 				047BF1C727AFAF4A003F3599 /* editor.h */,
 				047BF1CA27AFAF4A003F3599 /* editor.cpp */,
+				04219CCB27E413FC00F52C74 /* editor_utils.h */,
+				04219CCA27E413FC00F52C74 /* editor_utils.cpp */,
 				04219C9027E1759D00F52C74 /* gui_entry.h */,
 				04219C8F27E1759D00F52C74 /* gui_entry.cpp */,
 			);
@@ -3150,6 +3155,7 @@
 				04219CBD27E31F9F00F52C74 /* node_editor.cpp in Sources */,
 				04219CC627E408AD00F52C74 /* layered_noise_manager.cpp in Sources */,
 				04219CA527E2FC7900F52C74 /* generator_mask.cpp in Sources */,
+				04219CCC27E413FC00F52C74 /* editor_utils.cpp in Sources */,
 				047BF1E327AFAF4C003F3599 /* crude_json.cpp in Sources */,
 				04219CC427E325FB00F52C74 /* abs_node.cpp in Sources */,
 				047BF1E027AFAF4C003F3599 /* imgui_zmo.cpp in Sources */,

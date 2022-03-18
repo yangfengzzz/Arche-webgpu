@@ -31,6 +31,8 @@ struct GPUNoiseLayer {
 
 class GPUNoiseLayerGenerator {
 public:
+    GPUNoiseLayerGenerator();
+    
     virtual void showSetting(int i);
 
     void update();

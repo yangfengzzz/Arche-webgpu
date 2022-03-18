@@ -6,6 +6,7 @@
 
 #include "cpu_noise_layers_generator.h"
 #include "gui_entry.h"
+#include "editor_utils.h"
 
 namespace vox {
 namespace editor {
@@ -13,6 +14,7 @@ int count = 1;
 
 CPUNoiseLayersGenerator::CPUNoiseLayersGenerator():
 maskManager(0) {
+    uid = generateId(32);
     name.reserve(1024);
     name = "CPU Noise Layer " + std::to_string(count++);
 }

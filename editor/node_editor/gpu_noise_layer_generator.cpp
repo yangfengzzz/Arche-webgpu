@@ -6,9 +6,17 @@
 
 #include "gpu_noise_layer_generator.h"
 #include "gui_entry.h"
+#include "editor_utils.h"
 
 namespace vox {
 namespace editor {
+static int count = 1;
+
+GPUNoiseLayerGenerator::GPUNoiseLayerGenerator() {
+    uid = generateId(32);
+    name = "GPU Noise Layer " + std::to_string(count++);
+}
+
 void GPUNoiseLayerGenerator::showSetting(int id) {
     ImGui::Checkbox(("Enabled##GPUNL" + std::to_string(id)).c_str(), &enabled);
     ImGui::DragInt(("Local Work Group Size##GPUNL" + std::to_string(id)).c_str(), &localSize);

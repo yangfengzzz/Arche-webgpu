@@ -5,6 +5,7 @@
 //  property of any third parties.
 
 #include "cpu_node_editor.h"
+#include "editor_utils.h"
 #include "nodes/abs_node.h"
 #include "nodes/output_node.h"
 
@@ -80,7 +81,7 @@ static void showNodeMaker(std::string &uid, NodeEditor *editor) {
 }
 
 CPUNodeEditor::CPUNodeEditor() {
-//    uid = generateId(32);
+    uid = generateId(32);
     name.reserve(1024);
     name = "CPU Node Editor " + std::to_string(count++);
     
