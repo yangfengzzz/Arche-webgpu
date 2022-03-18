@@ -16,6 +16,8 @@
 #include "imgui_zmo.h"
 #include "imgui_node_editor.h"
 
+#include "node_editor/mesh_generator_manager.h"
+
 namespace vox {
 namespace control {
 class OrbitControl;
@@ -156,6 +158,7 @@ private:
     
 private:
     MainMenu* _mainMenu{nullptr};
+    std::unique_ptr<MeshGeneratorManager> _meshGenerator{nullptr};
 };
 
 }

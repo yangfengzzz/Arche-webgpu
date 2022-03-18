@@ -31,6 +31,7 @@ editor::GUIEntry &editor::GUIEntry::getSingleton(void) {
 namespace editor {
 GUIEntry::GUIEntry() {
     _mainMenu = new MainMenu(this);
+    _meshGenerator = std::make_unique<MeshGeneratorManager>();
 }
 
 GUIEntry::~GUIEntry() {

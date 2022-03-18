@@ -11,7 +11,7 @@
 #include <string>
 
 #include "gui/imgui.h"
-#include <FastNoise/FastNoise.h>
+#include <FastNoiseLite.h>
 
 #include "generator_mask.h"
 
@@ -52,6 +52,7 @@ inline float smoothMax(float a, float b, float k) {
 }
 
 //MARK: - MATH UTILS
+static FastNoiseLite noiseGen;
 
 inline void ShowHillMaskSettingS(GeneratorMask *mask, std::string id) {
     ImGui::Text("Mode : Hill");
@@ -92,8 +93,8 @@ inline float EvaluateHillMask(GeneratorMask *mask, float x, float y, float z) {
     X = X * X;
     Y = Y * Y;
 
-    static auto noiseGen = FastNoise::New<FastNoise::OpenSimplex2>(FastSIMD::eLevel::Level_Null);
-    float invR = 1.0f / (mask->d1[0] + noiseGen->GenSingle2D(sin(theta) + mask->d2[0], cos(theta) + mask->d2[1], 0) * mask->d2[3]);
+    noiseGen.SetFrequency(mask->d2[2]);
+    float invR = 1.0f / (mask->d1[0] + noiseGen.GetNoise(sin(theta) + mask->d2[0], cos(theta) + mask->d2[1]) * mask->d2[3]);
     float h = pow(MATH_E, -(X + Y) * invR);
     return h * (mask->d1[1] + mask->pos[1]);
 }
