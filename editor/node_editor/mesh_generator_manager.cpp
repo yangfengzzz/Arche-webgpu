@@ -6,6 +6,7 @@
 
 #include "mesh_generator_manager.h"
 #include "gui_entry.h"
+#include "ui_font_manager.h"
 #include <thread>
 
 namespace vox {
@@ -81,18 +82,18 @@ void MeshGeneratorManager::generateSync() {
 void MeshGeneratorManager::showSettings() {
     if (windowStat) {
         ImGui::Begin("Mesh Generators", &windowStat);
-//        ImGui::PushFont(GetUIFont("OpenSans-Semi-Bold"));
+        ImGui::PushFont(getUIFont("OpenSans-Semi-Bold"));
         ImGui::Text("Base Mesh Generators");
-//        ImGui::PopFont();
+        ImGui::PopFont();
 
         if (ImGui::CollapsingHeader("Auto Base Mesh Gen (GPU)", clearMeshGen->uiActive)) {
             clearMeshGen->showSettings();
         }
 
         ImGui::Separator();
-//        ImGui::PushFont(GetUIFont("OpenSans-Semi-Bold"));
+        ImGui::PushFont(getUIFont("OpenSans-Semi-Bold"));
         ImGui::Text("CPU Noise Layer Generators");
-//        ImGui::PopFont();
+        ImGui::PopFont();
 
         for (int i = 0; i < cpuNoiseLayers.size(); i++) {
             if (ImGui::CollapsingHeader((cpuNoiseLayers[i]->name + "##CPUNL" + std::to_string(i)).c_str())) {
@@ -116,9 +117,9 @@ void MeshGeneratorManager::showSettings() {
         }
 
         ImGui::Separator();
-//        ImGui::PushFont(GetUIFont("OpenSans-Semi-Bold"));
+        ImGui::PushFont(getUIFont("OpenSans-Semi-Bold"));
         ImGui::Text("GPU Noise Layer Generators");
-//        ImGui::PopFont();
+        ImGui::PopFont();
 
         for (int i = 0; i < gpuNoiseLayers.size(); i++) {
             if (ImGui::CollapsingHeader((gpuNoiseLayers[i]->name + "##GPUNL" + std::to_string(i)).c_str())) {
@@ -142,9 +143,9 @@ void MeshGeneratorManager::showSettings() {
         }
 
         ImGui::Separator();
-//        ImGui::PushFont(GetUIFont("OpenSans-Semi-Bold"));
+        ImGui::PushFont(getUIFont("OpenSans-Semi-Bold"));
         ImGui::Text("CPU Node Editor Generators");
-//        ImGui::PopFont();
+        ImGui::PopFont();
 
         for (int i = 0; i < cpuNodeEditors.size(); i++) {
             if (ImGui::CollapsingHeader((cpuNodeEditors[i]->name + "##CPUNE" + std::to_string(i)).c_str())) {

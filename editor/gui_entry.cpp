@@ -17,6 +17,7 @@
 #include "component/main_menu.h"
 #include "component/app_styles.h"
 #include "scene_component/grid.h"
+#include "ui_font_manager.h"
 
 namespace vox {
 editor::GUIEntry *editor::GUIEntry::getSingletonPtr(void) {
@@ -30,6 +31,11 @@ editor::GUIEntry &editor::GUIEntry::getSingleton(void) {
 
 namespace editor {
 GUIEntry::GUIEntry() {
+    // Load Fonts
+    loadUIFont("Open-Sans-Regular", 18, "../assets/Fonts/OpenSans-Regular.ttf");
+    loadUIFont("OpenSans-Bold", 25, "../assets/Fonts/OpenSans-Bold.ttf");
+    loadUIFont("OpenSans-Semi-Bold", 22, "../assets/Fonts/OpenSans-Bold.ttf");
+    
     _mainMenu = new MainMenu(this);
     _meshGenerator = std::make_unique<MeshGeneratorManager>();
 }

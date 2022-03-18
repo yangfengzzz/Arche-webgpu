@@ -6,6 +6,7 @@
 
 #include "node_editor.h"
 #include "imgui_shapes.h"
+#include "ui_font_manager.h"
 
 namespace vox {
 namespace editor {
@@ -148,9 +149,9 @@ void NodeEditorNode::drawHeader(std::string text) {
     ImVec2 start = ImGuiNodeEditor::GetNodeSize(_id);
     ImGui::DrawFilledRect(ImVec2(start.x, 60), headerColor, 13);
     ImGui::SetCursorPos(ImVec2(pos.x + ImGuiNodeEditor::GetStyle().NodePadding.x, pos.y + ImGuiNodeEditor::GetStyle().NodePadding.x));
-//    ImGui::PushFont(GetUIFont("OpenSans-Bold"));
+    ImGui::PushFont(getUIFont("OpenSans-Bold"));
     ImGui::Text(text.c_str());
-//    ImGui::PopFont();
+    ImGui::PopFont();
     ImGui::NewLine();
 }
 
