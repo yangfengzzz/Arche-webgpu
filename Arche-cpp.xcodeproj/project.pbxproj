@@ -610,6 +610,13 @@
 		04FDEF6E27E4B2AC00BBE8E4 /* square_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF6C27E4B2AC00BBE8E4 /* square_node.cpp */; };
 		04FDEF7127E4B31B00BBE8E4 /* sub_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF6F27E4B31B00BBE8E4 /* sub_node.cpp */; };
 		04FDEF7427E4B39700BBE8E4 /* tan_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF7227E4B39700BBE8E4 /* tan_node.cpp */; };
+		04FDEF7727E4B42700BBE8E4 /* texture_coordinates_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF7527E4B42700BBE8E4 /* texture_coordinates_node.cpp */; };
+		04FDEF7D27E4B81500BBE8E4 /* time_based_seed_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF7B27E4B81500BBE8E4 /* time_based_seed_node.cpp */; };
+		04FDEF8027E4B88D00BBE8E4 /* visualizer_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF7E27E4B88D00BBE8E4 /* visualizer_node.cpp */; };
+		04FDEF8527E4B9CF00BBE8E4 /* implot_internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDEF8127E4B9CF00BBE8E4 /* implot_internal.h */; };
+		04FDEF8627E4B9CF00BBE8E4 /* implot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF8227E4B9CF00BBE8E4 /* implot.cpp */; };
+		04FDEF8727E4B9CF00BBE8E4 /* implot_items.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF8327E4B9CF00BBE8E4 /* implot_items.cpp */; };
+		04FDEF8827E4B9CF00BBE8E4 /* implot.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDEF8427E4B9CF00BBE8E4 /* implot.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1405,6 +1412,18 @@
 		04FDEF7027E4B31B00BBE8E4 /* sub_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sub_node.h; sourceTree = "<group>"; };
 		04FDEF7227E4B39700BBE8E4 /* tan_node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tan_node.cpp; sourceTree = "<group>"; };
 		04FDEF7327E4B39700BBE8E4 /* tan_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tan_node.h; sourceTree = "<group>"; };
+		04FDEF7527E4B42700BBE8E4 /* texture_coordinates_node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = texture_coordinates_node.cpp; sourceTree = "<group>"; };
+		04FDEF7627E4B42700BBE8E4 /* texture_coordinates_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = texture_coordinates_node.h; sourceTree = "<group>"; };
+		04FDEF7827E4B78C00BBE8E4 /* texture_node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = texture_node.cpp; sourceTree = "<group>"; };
+		04FDEF7927E4B78C00BBE8E4 /* texture_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = texture_node.h; sourceTree = "<group>"; };
+		04FDEF7B27E4B81500BBE8E4 /* time_based_seed_node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = time_based_seed_node.cpp; sourceTree = "<group>"; };
+		04FDEF7C27E4B81500BBE8E4 /* time_based_seed_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = time_based_seed_node.h; sourceTree = "<group>"; };
+		04FDEF7E27E4B88D00BBE8E4 /* visualizer_node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = visualizer_node.cpp; sourceTree = "<group>"; };
+		04FDEF7F27E4B88D00BBE8E4 /* visualizer_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = visualizer_node.h; sourceTree = "<group>"; };
+		04FDEF8127E4B9CF00BBE8E4 /* implot_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = implot_internal.h; sourceTree = "<group>"; };
+		04FDEF8227E4B9CF00BBE8E4 /* implot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = implot.cpp; sourceTree = "<group>"; };
+		04FDEF8327E4B9CF00BBE8E4 /* implot_items.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = implot_items.cpp; sourceTree = "<group>"; };
+		04FDEF8427E4B9CF00BBE8E4 /* implot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = implot.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1700,6 +1719,10 @@
 				04128452279ED4B00071BD86 /* imstb_rectpack.h */,
 				04128453279ED4B00071BD86 /* imstb_textedit.h */,
 				04128450279ED4B00071BD86 /* imstb_truetype.h */,
+				04FDEF8427E4B9CF00BBE8E4 /* implot.h */,
+				04FDEF8227E4B9CF00BBE8E4 /* implot.cpp */,
+				04FDEF8327E4B9CF00BBE8E4 /* implot_items.cpp */,
+				04FDEF8127E4B9CF00BBE8E4 /* implot_internal.h */,
 				0412844F279ED4B00071BD86 /* imgui_impl_glfw.h */,
 				04128457279ED4B10071BD86 /* imgui_impl_glfw.cpp */,
 				047BF1A527AF9821003F3599 /* imgui_impl_wgpu.h */,
@@ -1850,12 +1873,12 @@
 				04FDEF2927E441FA00BBE8E4 /* clamp_node.cpp */,
 				04FDEF4C27E47D4700BBE8E4 /* min_val_node.h */,
 				04FDEF4B27E47D4700BBE8E4 /* min_val_node.cpp */,
-				04FDEF3927E44CDC00BBE8E4 /* duplicate_node.h */,
-				04FDEF3827E44CDC00BBE8E4 /* duplicate_node.cpp */,
-				04FDEF3C27E44D5B00BBE8E4 /* hill_node.h */,
-				04FDEF3B27E44D5B00BBE8E4 /* hill_node.cpp */,
 				04FDEF3F27E44E3F00BBE8E4 /* math_function_node.h */,
 				04FDEF3E27E44E3F00BBE8E4 /* math_function_node.cpp */,
+				04FDEF7927E4B78C00BBE8E4 /* texture_node.h */,
+				04FDEF7827E4B78C00BBE8E4 /* texture_node.cpp */,
+				04FDEF7627E4B42700BBE8E4 /* texture_coordinates_node.h */,
+				04FDEF7527E4B42700BBE8E4 /* texture_coordinates_node.cpp */,
 				04FDEF4627E47B7600BBE8E4 /* mesh_coordinates_node.h */,
 				04FDEF4527E47B7600BBE8E4 /* mesh_coordinates_node.cpp */,
 				04FDEF4927E47C0700BBE8E4 /* min_mesh_coordinates_node.h */,
@@ -1874,10 +1897,18 @@
 				04FDEF5427E4816900BBE8E4 /* noise_open_simplex2_node.cpp */,
 				04FDEF5827E4AD8F00BBE8E4 /* noise_open_simplex2s_node.h */,
 				04FDEF5727E4AD8F00BBE8E4 /* noise_open_simplex2s_node.cpp */,
+				04FDEF3927E44CDC00BBE8E4 /* duplicate_node.h */,
+				04FDEF3827E44CDC00BBE8E4 /* duplicate_node.cpp */,
+				04FDEF3C27E44D5B00BBE8E4 /* hill_node.h */,
+				04FDEF3B27E44D5B00BBE8E4 /* hill_node.cpp */,
 				04FDEF6427E4B02300BBE8E4 /* pixelate_node.h */,
 				04FDEF6327E4B02300BBE8E4 /* pixelate_node.cpp */,
 				04FDEF6727E4B1C200BBE8E4 /* random_number_node.h */,
 				04FDEF6627E4B1C200BBE8E4 /* random_number_node.cpp */,
+				04FDEF7C27E4B81500BBE8E4 /* time_based_seed_node.h */,
+				04FDEF7B27E4B81500BBE8E4 /* time_based_seed_node.cpp */,
+				04FDEF7F27E4B88D00BBE8E4 /* visualizer_node.h */,
+				04FDEF7E27E4B88D00BBE8E4 /* visualizer_node.cpp */,
 				04219CC827E411C100F52C74 /* output_node.h */,
 				04219CC727E411C100F52C74 /* output_node.cpp */,
 			);
@@ -2724,6 +2755,7 @@
 				04A053C627DF1AA1002D7449 /* wgsl_particle_simulation.h in Headers */,
 				047BF12727ACEBC7003F3599 /* sphere_collider_shape.h in Headers */,
 				0495475827A2868000783C84 /* primitive_mesh.h in Headers */,
+				04FDEF8827E4B9CF00BBE8E4 /* implot.h in Headers */,
 				047BF0A827ABDFC8003F3599 /* wgsl_begin_mobile_frag.h in Headers */,
 				047BF10827ACEBB7003F3599 /* translational_joint.h in Headers */,
 				047BF17D27AE0ECA003F3599 /* skybox_subpass.h in Headers */,
@@ -2747,6 +2779,7 @@
 				047BF0CB27AC0D59003F3599 /* ambient_light.h in Headers */,
 				047BF11F27ACEBC7003F3599 /* plane_collider_shape.h in Headers */,
 				047BF19E27AE718E003F3599 /* gltf_loader.h in Headers */,
+				04FDEF8527E4B9CF00BBE8E4 /* implot_internal.h in Headers */,
 				047BF15A27AD0FF4003F3599 /* wgsl_pbr_helper.h in Headers */,
 				0495472527A23CE100783C84 /* sampled_texture.h in Headers */,
 				047BF14227ACF245003F3599 /* fbx_loader.h in Headers */,
@@ -3051,6 +3084,7 @@
 				047BF08327ABB82B003F3599 /* wgsl_normal_share.cpp in Sources */,
 				047BF07827A6819C003F3599 /* mathlib.cpp in Sources */,
 				047BF1AB27AF9905003F3599 /* gui.cpp in Sources */,
+				04FDEF8727E4B9CF00BBE8E4 /* implot_items.cpp in Sources */,
 				047BF18027AE1A40003F3599 /* wgsl_skybox.cpp in Sources */,
 				0495474F27A2714200783C84 /* buffer_mesh.cpp in Sources */,
 				047BF0E827ACEBAE003F3599 /* physics.cpp in Sources */,
@@ -3058,6 +3092,7 @@
 				04F9E90A27D4657A00BD291B /* particle_renderer.cpp in Sources */,
 				04954691279F8D5E00783C84 /* render_element.cpp in Sources */,
 				04128442279ED3A60071BD86 /* window.cpp in Sources */,
+				04FDEF8627E4B9CF00BBE8E4 /* implot.cpp in Sources */,
 				0443E8E927C4CE210099E13A /* texture_utils.cpp in Sources */,
 				047BF14127ACF245003F3599 /* animator_loader.cpp in Sources */,
 				0400D25727D8457C0018FB52 /* shadow_debug_material.cpp in Sources */,
@@ -3320,14 +3355,17 @@
 				04219CD227E42B9E00F52C74 /* add_node.cpp in Sources */,
 				04219CC927E411C100F52C74 /* output_node.cpp in Sources */,
 				04219CA127E2DF7000F52C74 /* mesh_generator_manager.cpp in Sources */,
+				04FDEF7D27E4B81500BBE8E4 /* time_based_seed_node.cpp in Sources */,
 				04219CAC27E313AF00F52C74 /* cpu_noise_layers_generator.cpp in Sources */,
 				04FDEF7427E4B39700BBE8E4 /* tan_node.cpp in Sources */,
 				04FDEF6B27E4B23E00BBE8E4 /* sin_node.cpp in Sources */,
 				04219C9827E175F400F52C74 /* main_menu.cpp in Sources */,
+				04FDEF8027E4B88D00BBE8E4 /* visualizer_node.cpp in Sources */,
 				04FDEF3127E4435A00BBE8E4 /* curve_node.cpp in Sources */,
 				04FDEF3D27E44D5B00BBE8E4 /* hill_node.cpp in Sources */,
 				04219CC527E4075700F52C74 /* noise_layer.cpp in Sources */,
 				04219C9127E1759D00F52C74 /* gui_entry.cpp in Sources */,
+				04FDEF7727E4B42700BBE8E4 /* texture_coordinates_node.cpp in Sources */,
 				047BF1E127AFAF4C003F3599 /* main.cpp in Sources */,
 				047BF1DF27AFAF4C003F3599 /* imgui_node_editor.cpp in Sources */,
 				04FDEF3727E44C3300BBE8E4 /* div_node.cpp in Sources */,

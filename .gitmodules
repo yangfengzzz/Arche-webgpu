@@ -58,3 +58,6 @@
 [submodule "third_party/muparser"]
 	path = third_party/muparser
 	url = https://github.com/beltoforion/muparser.git
+[submodule "third_party/implot"]
+	path = third_party/implot
+	url = https://github.com/epezent/implot.git
