@@ -6,8 +6,40 @@
 
 #include "cpu_node_editor.h"
 #include "editor_utils.h"
+
 #include "nodes/abs_node.h"
+#include "nodes/add_node.h"
+#include "nodes/sub_node.h"
+#include "nodes/mul_node.h"
+#include "nodes/div_node.h"
+#include "nodes/square_node.h"
+#include "nodes/sin_node.h"
+#include "nodes/cos_node.h"
+#include "nodes/tan_node.h"
+#include "nodes/curve_node.h"
+#include "nodes/blend_node.h"
+#include "nodes/clamp_node.h"
+#include "nodes/min_val_node.h"
+#include "nodes/math_function_node.h"
+//#include "nodes/texture_node.h"
+#include "nodes/texture_coordinates_node.h"
+#include "nodes/mesh_coordinates_node.h"
+#include "nodes/min_mesh_coordinates_node.h"
+#include "nodes/max_mesh_coordinates_node.h"
+#include "nodes/noise_perlin_node.h"
+#include "nodes/noise_cellular_node.h"
+#include "nodes/noise_value_node.h"
+#include "nodes/noise_value_cubic_node.h"
+#include "nodes/noise_open_simplex2_node.h"
+#include "nodes/noise_open_simplex2s_node.h"
+#include "nodes/duplicate_node.h"
+#include "nodes/hill_node.h"
+#include "nodes/pixelate_node.h"
+#include "nodes/random_number_node.h"
+#include "nodes/time_based_seed_node.h"
+#include "nodes/visualizer_node.h"
 #include "nodes/output_node.h"
+
 
 namespace vox {
 namespace editor {
@@ -45,38 +77,37 @@ static void showNodeMaker(std::string &uid, NodeEditor *editor) {
     ImGui::InputTextWithHint("##SearchMeshNodes", "Search ...", data, sizeof(data));
     size_t length = strlen(data);
     ImGui::BeginChild(("##CPUNE" + uid).c_str(), ImVec2(200, 250));
-//    NODE_MAKER_SHOW(DummyNode, "Dummy");
-//    NODE_MAKER_SHOW(MeshCoordinatesNode, "Mesh Coordinates");
-//    NODE_MAKER_SHOW(MaxMeshCoordinatesNode, "Maximum Mesh Coordinates");
-//    NODE_MAKER_SHOW(TextureCoordinatesNode, "Texture Coordinates");
-//    NODE_MAKER_SHOW(MinMeshCoordinatesNode, "Minimum Mesh Coordinates");
-//    NODE_MAKER_SHOW(TimeBasedSeedNode, "Time Based Seed");
-//    NODE_MAKER_SHOW(PixelateNode, "Pixelate");
+    NODE_MAKER_SHOW(MeshCoordinatesNode, "Mesh Coordinates");
+    NODE_MAKER_SHOW(MaxMeshCoordinatesNode, "Maximum Mesh Coordinates");
+    NODE_MAKER_SHOW(TextureCoordinatesNode, "Texture Coordinates");
+    NODE_MAKER_SHOW(MinMeshCoordinatesNode, "Minimum Mesh Coordinates");
+    NODE_MAKER_SHOW(TimeBasedSeedNode, "Time Based Seed");
+    NODE_MAKER_SHOW(PixelateNode, "Pixelate");
 //    NODE_MAKER_SHOW(TextureNode, "Texture");
-//    NODE_MAKER_SHOW(HillNode, "Hill");
-//    NODE_MAKER_SHOW(AddNode, "Add");
-//    NODE_MAKER_SHOW(SubNode, "Subtract");
-//    NODE_MAKER_SHOW(MulNode, "Multiply");
-//    NODE_MAKER_SHOW(DivNode, "Divide");
+    NODE_MAKER_SHOW(HillNode, "Hill");
+    NODE_MAKER_SHOW(AddNode, "Add");
+    NODE_MAKER_SHOW(SubNode, "Subtract");
+    NODE_MAKER_SHOW(MulNode, "Multiply");
+    NODE_MAKER_SHOW(DivNode, "Divide");
     NODE_MAKER_SHOW(AbsNode, "Absolute Value");
-//    NODE_MAKER_SHOW(SinNode, "Sin");
-//    NODE_MAKER_SHOW(CosNode, "Cos");
-//    NODE_MAKER_SHOW(TanNode, "Tan");
-//    NODE_MAKER_SHOW(SquareNode, "Square");
-//    NODE_MAKER_SHOW(BlendNode, "Blend");
-//    NODE_MAKER_SHOW(ClampNode, "Clamp");
-//    NODE_MAKER_SHOW(CurveNode, "Curve Editor");
-//    NODE_MAKER_SHOW(RandomNumberNode, "Random Number");
-//    NODE_MAKER_SHOW(NoisePerlinNode, "Perlin Noise");
-//    NODE_MAKER_SHOW(NoiseCellularNode, "Cellular Noise");
-//    NODE_MAKER_SHOW(NoiseValueNode, "Value Noise");
-//    NODE_MAKER_SHOW(NoiseOpenSimplex2Node, "Open Simplex 2 Noise");
-//    NODE_MAKER_SHOW(NoiseOpenSimplex2SNode, "Open Simplex 2S Noise");
-//    NODE_MAKER_SHOW(NoiseValueCubicNode, "Value Cubic Noise");
-//    NODE_MAKER_SHOW(DuplicateNode, "Duplicate");
-//    NODE_MAKER_SHOW(MathFunctionNode, "Custom Math Funcion");
-//    NODE_MAKER_SHOW(MinValNode, "MinVal");
-//    NODE_MAKER_SHOW(VisualizerNode, "Visualizer");
+    NODE_MAKER_SHOW(SinNode, "Sin");
+    NODE_MAKER_SHOW(CosNode, "Cos");
+    NODE_MAKER_SHOW(TanNode, "Tan");
+    NODE_MAKER_SHOW(SquareNode, "Square");
+    NODE_MAKER_SHOW(BlendNode, "Blend");
+    NODE_MAKER_SHOW(ClampNode, "Clamp");
+    NODE_MAKER_SHOW(CurveNode, "Curve Editor");
+    NODE_MAKER_SHOW(RandomNumberNode, "Random Number");
+    NODE_MAKER_SHOW(NoisePerlinNode, "Perlin Noise");
+    NODE_MAKER_SHOW(NoiseCellularNode, "Cellular Noise");
+    NODE_MAKER_SHOW(NoiseValueNode, "Value Noise");
+    NODE_MAKER_SHOW(NoiseOpenSimplex2Node, "Open Simplex 2 Noise");
+    NODE_MAKER_SHOW(NoiseOpenSimplex2SNode, "Open Simplex 2S Noise");
+    NODE_MAKER_SHOW(NoiseValueCubicNode, "Value Cubic Noise");
+    NODE_MAKER_SHOW(DuplicateNode, "Duplicate");
+    NODE_MAKER_SHOW(MathFunctionNode, "Custom Math Funcion");
+    NODE_MAKER_SHOW(MinValNode, "MinVal");
+    NODE_MAKER_SHOW(VisualizerNode, "Visualizer");
     ImGui::EndChild();
 }
 
