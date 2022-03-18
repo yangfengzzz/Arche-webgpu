@@ -13,8 +13,8 @@ namespace editor {
 int count = 1;
 
 CPUNoiseLayersGenerator::CPUNoiseLayersGenerator():
-maskManager(0) {
-    uid = generateId(32);
+uid(generateId(32)),
+maskManager(uid) {
     name.reserve(1024);
     name = "CPU Noise Layer " + std::to_string(count++);
 }

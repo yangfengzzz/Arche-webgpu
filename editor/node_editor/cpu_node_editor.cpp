@@ -106,7 +106,7 @@ void CPUNodeEditor::update() {
 
         ImGui::SameLine();
 
-//        if (ImGui::Button(("Export##CPUNE" + uid).c_str())) {
+        if (ImGui::Button(("Export##CPUNE" + uid).c_str())) {
 //            std::string file = showSaveFileDialog("*.terr3d");
 //
 //            if (file.size() > 3) {
@@ -116,11 +116,11 @@ void CPUNodeEditor::update() {
 //
 //                SaveToFile(file, editor->save().dump(4));
 //            }
-//        }
+        }
 
         ImGui::SameLine();
 
-//        if (ImGui::Button(("Import##CPUNE" + uid).c_str())) {
+        if (ImGui::Button(("Import##CPUNE" + uid).c_str())) {
 //            std::string file = showOpenFileDialog("*.terr3d");
 //
 //            if (file.size() > 3) {
@@ -128,7 +128,7 @@ void CPUNodeEditor::update() {
 //                editor->reset();
 //                editor->Load(nlohmann::json::parse(ReadShaderSourceFile(file, &tmp)));
 //            }
-//        }
+        }
 
         editor->render();
 

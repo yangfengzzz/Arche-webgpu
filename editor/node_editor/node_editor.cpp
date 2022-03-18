@@ -149,7 +149,7 @@ void NodeEditorNode::drawHeader(std::string text) {
     ImGui::DrawFilledRect(ImVec2(start.x, 60), headerColor, 13);
     ImGui::SetCursorPos(ImVec2(pos.x + ImGuiNodeEditor::GetStyle().NodePadding.x, pos.y + ImGuiNodeEditor::GetStyle().NodePadding.x));
 //    ImGui::PushFont(GetUIFont("OpenSans-Bold"));
-//    ImGui::Text(text.c_str());
+    ImGui::Text(text.c_str());
 //    ImGui::PopFont();
     ImGui::NewLine();
 }
