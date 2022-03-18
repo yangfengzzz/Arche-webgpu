@@ -599,6 +599,11 @@
 		04FDEF4D27E47D4700BBE8E4 /* min_val_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF4B27E47D4700BBE8E4 /* min_val_node.cpp */; };
 		04FDEF5027E47E3200BBE8E4 /* mul_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF4E27E47E3200BBE8E4 /* mul_node.cpp */; };
 		04FDEF5327E47EE200BBE8E4 /* noise_cellular_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF5127E47EE200BBE8E4 /* noise_cellular_node.cpp */; };
+		04FDEF5627E4816900BBE8E4 /* noise_open_simplex2_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF5427E4816900BBE8E4 /* noise_open_simplex2_node.cpp */; };
+		04FDEF5927E4AD8F00BBE8E4 /* noise_open_simplex2s_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF5727E4AD8F00BBE8E4 /* noise_open_simplex2s_node.cpp */; };
+		04FDEF5C27E4AE4000BBE8E4 /* noise_perlin_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF5A27E4AE4000BBE8E4 /* noise_perlin_node.cpp */; };
+		04FDEF5F27E4AED800BBE8E4 /* noise_value_cubic_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF5D27E4AED800BBE8E4 /* noise_value_cubic_node.cpp */; };
+		04FDEF6227E4AF6500BBE8E4 /* noise_value_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF6027E4AF6500BBE8E4 /* noise_value_node.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1372,6 +1377,16 @@
 		04FDEF4F27E47E3200BBE8E4 /* mul_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mul_node.h; sourceTree = "<group>"; };
 		04FDEF5127E47EE200BBE8E4 /* noise_cellular_node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = noise_cellular_node.cpp; sourceTree = "<group>"; };
 		04FDEF5227E47EE200BBE8E4 /* noise_cellular_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = noise_cellular_node.h; sourceTree = "<group>"; };
+		04FDEF5427E4816900BBE8E4 /* noise_open_simplex2_node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = noise_open_simplex2_node.cpp; sourceTree = "<group>"; };
+		04FDEF5527E4816900BBE8E4 /* noise_open_simplex2_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = noise_open_simplex2_node.h; sourceTree = "<group>"; };
+		04FDEF5727E4AD8F00BBE8E4 /* noise_open_simplex2s_node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = noise_open_simplex2s_node.cpp; sourceTree = "<group>"; };
+		04FDEF5827E4AD8F00BBE8E4 /* noise_open_simplex2s_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = noise_open_simplex2s_node.h; sourceTree = "<group>"; };
+		04FDEF5A27E4AE4000BBE8E4 /* noise_perlin_node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = noise_perlin_node.cpp; sourceTree = "<group>"; };
+		04FDEF5B27E4AE4000BBE8E4 /* noise_perlin_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = noise_perlin_node.h; sourceTree = "<group>"; };
+		04FDEF5D27E4AED800BBE8E4 /* noise_value_cubic_node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = noise_value_cubic_node.cpp; sourceTree = "<group>"; };
+		04FDEF5E27E4AED800BBE8E4 /* noise_value_cubic_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = noise_value_cubic_node.h; sourceTree = "<group>"; };
+		04FDEF6027E4AF6500BBE8E4 /* noise_value_node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = noise_value_node.cpp; sourceTree = "<group>"; };
+		04FDEF6127E4AF6500BBE8E4 /* noise_value_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = noise_value_node.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1821,8 +1836,18 @@
 				04FDEF4827E47C0700BBE8E4 /* min_mesh_coordinates_node.cpp */,
 				04FDEF4327E47AB500BBE8E4 /* max_mesh_coordinates_node.h */,
 				04FDEF4227E47AB500BBE8E4 /* max_mesh_coordinates_node.cpp */,
+				04FDEF5B27E4AE4000BBE8E4 /* noise_perlin_node.h */,
+				04FDEF5A27E4AE4000BBE8E4 /* noise_perlin_node.cpp */,
 				04FDEF5227E47EE200BBE8E4 /* noise_cellular_node.h */,
 				04FDEF5127E47EE200BBE8E4 /* noise_cellular_node.cpp */,
+				04FDEF6127E4AF6500BBE8E4 /* noise_value_node.h */,
+				04FDEF6027E4AF6500BBE8E4 /* noise_value_node.cpp */,
+				04FDEF5E27E4AED800BBE8E4 /* noise_value_cubic_node.h */,
+				04FDEF5D27E4AED800BBE8E4 /* noise_value_cubic_node.cpp */,
+				04FDEF5527E4816900BBE8E4 /* noise_open_simplex2_node.h */,
+				04FDEF5427E4816900BBE8E4 /* noise_open_simplex2_node.cpp */,
+				04FDEF5827E4AD8F00BBE8E4 /* noise_open_simplex2s_node.h */,
+				04FDEF5727E4AD8F00BBE8E4 /* noise_open_simplex2s_node.cpp */,
 				04219CC827E411C100F52C74 /* output_node.h */,
 				04219CC727E411C100F52C74 /* output_node.cpp */,
 			);
@@ -3240,15 +3265,18 @@
 				047BF1F227AFB0CF003F3599 /* grid.cpp in Sources */,
 				04219CCF27E41D6A00F52C74 /* ui_font_manager.cpp in Sources */,
 				04219C8C27E1754B00F52C74 /* editor.cpp in Sources */,
+				04FDEF6227E4AF6500BBE8E4 /* noise_value_node.cpp in Sources */,
 				04FDEF4A27E47C0700BBE8E4 /* min_mesh_coordinates_node.cpp in Sources */,
 				04219CBD27E31F9F00F52C74 /* node_editor.cpp in Sources */,
 				04219CC627E408AD00F52C74 /* layered_noise_manager.cpp in Sources */,
 				04219CA527E2FC7900F52C74 /* generator_mask.cpp in Sources */,
 				04219CCC27E413FC00F52C74 /* editor_utils.cpp in Sources */,
+				04FDEF5F27E4AED800BBE8E4 /* noise_value_cubic_node.cpp in Sources */,
 				04FDEF4427E47AB500BBE8E4 /* max_mesh_coordinates_node.cpp in Sources */,
 				04FDEF2B27E441FA00BBE8E4 /* clamp_node.cpp in Sources */,
 				047BF1E327AFAF4C003F3599 /* crude_json.cpp in Sources */,
 				04FDEF4727E47B7600BBE8E4 /* mesh_coordinates_node.cpp in Sources */,
+				04FDEF5C27E4AE4000BBE8E4 /* noise_perlin_node.cpp in Sources */,
 				04219CC427E325FB00F52C74 /* abs_node.cpp in Sources */,
 				04FDEF5327E47EE200BBE8E4 /* noise_cellular_node.cpp in Sources */,
 				047BF1E027AFAF4C003F3599 /* imgui_zmo.cpp in Sources */,
@@ -3269,6 +3297,8 @@
 				04FDEF3727E44C3300BBE8E4 /* div_node.cpp in Sources */,
 				047BF1E427AFAF4C003F3599 /* imgui_canvas.cpp in Sources */,
 				04FDEF4D27E47D4700BBE8E4 /* min_val_node.cpp in Sources */,
+				04FDEF5627E4816900BBE8E4 /* noise_open_simplex2_node.cpp in Sources */,
+				04FDEF5927E4AD8F00BBE8E4 /* noise_open_simplex2s_node.cpp in Sources */,
 				04219CA927E30D5600F52C74 /* clear_mesh_generator.cpp in Sources */,
 				04FDEF2E27E442B300BBE8E4 /* cos_node.cpp in Sources */,
 				04FDEF3427E443F000BBE8E4 /* imgui_curve.cpp in Sources */,
