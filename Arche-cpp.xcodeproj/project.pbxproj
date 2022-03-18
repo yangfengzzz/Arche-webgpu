@@ -183,6 +183,7 @@
 		04219CC127E323D700F52C74 /* imgui_shapes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219CBF27E323D700F52C74 /* imgui_shapes.cpp */; };
 		04219CC427E325FB00F52C74 /* abs_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219CC227E325FB00F52C74 /* abs_node.cpp */; };
 		04219CC527E4075700F52C74 /* noise_layer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219CB127E3150700F52C74 /* noise_layer.cpp */; };
+		04219CC627E408AD00F52C74 /* layered_noise_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219CB427E31AE300F52C74 /* layered_noise_manager.cpp */; };
 		04311AE727D7302B00B918E3 /* multi_light_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04311AE527D7302B00B918E3 /* multi_light_app.cpp */; };
 		043B7B69278C797700D5648F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B68278C797700D5648F /* Cocoa.framework */; };
 		043B7B6B278C798100D5648F /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B6A278C798100D5648F /* CoreFoundation.framework */; };
@@ -3142,6 +3143,7 @@
 				047BF1F227AFB0CF003F3599 /* grid.cpp in Sources */,
 				04219C8C27E1754B00F52C74 /* editor.cpp in Sources */,
 				04219CBD27E31F9F00F52C74 /* node_editor.cpp in Sources */,
+				04219CC627E408AD00F52C74 /* layered_noise_manager.cpp in Sources */,
 				04219CA527E2FC7900F52C74 /* generator_mask.cpp in Sources */,
 				047BF1E327AFAF4C003F3599 /* crude_json.cpp in Sources */,
 				04219CC427E325FB00F52C74 /* abs_node.cpp in Sources */,

@@ -111,7 +111,6 @@ bool EditorApplication::prepare(Engine &engine) {
     bufferDesc.size = 4;
     _stageBuffer = _device.CreateBuffer(&bufferDesc);
     
-    _imageCopyTexture.texture = _colorPickerTexture;
     _imageCopyTexture.mipLevel = 0;
     _imageCopyTexture.aspect = wgpu::TextureAspect::All;
     
@@ -213,6 +212,7 @@ void EditorApplication::_copyRenderTargetToBuffer(wgpu::CommandEncoder& commandE
     const uint32_t left = std::floor(nx * (canvasWidth - 1));
     const uint32_t bottom = std::floor((1 - ny) * (canvasHeight - 1));
     
+    _imageCopyTexture.texture = _colorPickerTexture;
     _imageCopyTexture.origin = wgpu::Origin3D{left, canvasHeight - bottom, 0};
     commandEncoder.CopyTextureToBuffer(&_imageCopyTexture, &_imageCopyBuffer, &_extent);
 }
