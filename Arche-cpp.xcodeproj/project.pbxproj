@@ -596,6 +596,9 @@
 		04FDEF4427E47AB500BBE8E4 /* max_mesh_coordinates_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF4227E47AB500BBE8E4 /* max_mesh_coordinates_node.cpp */; };
 		04FDEF4727E47B7600BBE8E4 /* mesh_coordinates_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF4527E47B7600BBE8E4 /* mesh_coordinates_node.cpp */; };
 		04FDEF4A27E47C0700BBE8E4 /* min_mesh_coordinates_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF4827E47C0700BBE8E4 /* min_mesh_coordinates_node.cpp */; };
+		04FDEF4D27E47D4700BBE8E4 /* min_val_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF4B27E47D4700BBE8E4 /* min_val_node.cpp */; };
+		04FDEF5027E47E3200BBE8E4 /* mul_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF4E27E47E3200BBE8E4 /* mul_node.cpp */; };
+		04FDEF5327E47EE200BBE8E4 /* noise_cellular_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF5127E47EE200BBE8E4 /* noise_cellular_node.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1363,6 +1366,12 @@
 		04FDEF4627E47B7600BBE8E4 /* mesh_coordinates_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mesh_coordinates_node.h; sourceTree = "<group>"; };
 		04FDEF4827E47C0700BBE8E4 /* min_mesh_coordinates_node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = min_mesh_coordinates_node.cpp; sourceTree = "<group>"; };
 		04FDEF4927E47C0700BBE8E4 /* min_mesh_coordinates_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = min_mesh_coordinates_node.h; sourceTree = "<group>"; };
+		04FDEF4B27E47D4700BBE8E4 /* min_val_node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = min_val_node.cpp; sourceTree = "<group>"; };
+		04FDEF4C27E47D4700BBE8E4 /* min_val_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = min_val_node.h; sourceTree = "<group>"; };
+		04FDEF4E27E47E3200BBE8E4 /* mul_node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mul_node.cpp; sourceTree = "<group>"; };
+		04FDEF4F27E47E3200BBE8E4 /* mul_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mul_node.h; sourceTree = "<group>"; };
+		04FDEF5127E47EE200BBE8E4 /* noise_cellular_node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = noise_cellular_node.cpp; sourceTree = "<group>"; };
+		04FDEF5227E47EE200BBE8E4 /* noise_cellular_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = noise_cellular_node.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1786,6 +1795,8 @@
 				04219CC227E325FB00F52C74 /* abs_node.cpp */,
 				04219CD127E42B9E00F52C74 /* add_node.h */,
 				04219CD027E42B9E00F52C74 /* add_node.cpp */,
+				04FDEF4F27E47E3200BBE8E4 /* mul_node.h */,
+				04FDEF4E27E47E3200BBE8E4 /* mul_node.cpp */,
 				04FDEF3627E44C3300BBE8E4 /* div_node.h */,
 				04FDEF3527E44C3300BBE8E4 /* div_node.cpp */,
 				04FDEF2D27E442B300BBE8E4 /* cos_node.h */,
@@ -1796,6 +1807,8 @@
 				04FDEF2627E4402E00BBE8E4 /* blend_node.cpp */,
 				04FDEF2A27E441FA00BBE8E4 /* clamp_node.h */,
 				04FDEF2927E441FA00BBE8E4 /* clamp_node.cpp */,
+				04FDEF4C27E47D4700BBE8E4 /* min_val_node.h */,
+				04FDEF4B27E47D4700BBE8E4 /* min_val_node.cpp */,
 				04FDEF3927E44CDC00BBE8E4 /* duplicate_node.h */,
 				04FDEF3827E44CDC00BBE8E4 /* duplicate_node.cpp */,
 				04FDEF3C27E44D5B00BBE8E4 /* hill_node.h */,
@@ -1808,6 +1821,8 @@
 				04FDEF4827E47C0700BBE8E4 /* min_mesh_coordinates_node.cpp */,
 				04FDEF4327E47AB500BBE8E4 /* max_mesh_coordinates_node.h */,
 				04FDEF4227E47AB500BBE8E4 /* max_mesh_coordinates_node.cpp */,
+				04FDEF5227E47EE200BBE8E4 /* noise_cellular_node.h */,
+				04FDEF5127E47EE200BBE8E4 /* noise_cellular_node.cpp */,
 				04219CC827E411C100F52C74 /* output_node.h */,
 				04219CC727E411C100F52C74 /* output_node.cpp */,
 			);
@@ -3216,6 +3231,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				047BF1F627AFB8A9003F3599 /* wgsl_grid.cpp in Sources */,
+				04FDEF5027E47E3200BBE8E4 /* mul_node.cpp in Sources */,
 				04FDEF2827E4402E00BBE8E4 /* blend_node.cpp in Sources */,
 				047BF1E527AFAF4C003F3599 /* imgui_node_editor_api.cpp in Sources */,
 				04219CAF27E313CE00F52C74 /* gpu_noise_layer_generator.cpp in Sources */,
@@ -3234,6 +3250,7 @@
 				047BF1E327AFAF4C003F3599 /* crude_json.cpp in Sources */,
 				04FDEF4727E47B7600BBE8E4 /* mesh_coordinates_node.cpp in Sources */,
 				04219CC427E325FB00F52C74 /* abs_node.cpp in Sources */,
+				04FDEF5327E47EE200BBE8E4 /* noise_cellular_node.cpp in Sources */,
 				047BF1E027AFAF4C003F3599 /* imgui_zmo.cpp in Sources */,
 				04FDEF3A27E44CDC00BBE8E4 /* duplicate_node.cpp in Sources */,
 				04219CC127E323D700F52C74 /* imgui_shapes.cpp in Sources */,
@@ -3251,6 +3268,7 @@
 				047BF1DF27AFAF4C003F3599 /* imgui_node_editor.cpp in Sources */,
 				04FDEF3727E44C3300BBE8E4 /* div_node.cpp in Sources */,
 				047BF1E427AFAF4C003F3599 /* imgui_canvas.cpp in Sources */,
+				04FDEF4D27E47D4700BBE8E4 /* min_val_node.cpp in Sources */,
 				04219CA927E30D5600F52C74 /* clear_mesh_generator.cpp in Sources */,
 				04FDEF2E27E442B300BBE8E4 /* cos_node.cpp in Sources */,
 				04FDEF3427E443F000BBE8E4 /* imgui_curve.cpp in Sources */,
