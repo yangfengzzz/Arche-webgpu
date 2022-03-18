@@ -182,6 +182,7 @@
 		04219CBE27E320AE00F52C74 /* cpu_node_editor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219CB727E31ED300F52C74 /* cpu_node_editor.cpp */; };
 		04219CC127E323D700F52C74 /* imgui_shapes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219CBF27E323D700F52C74 /* imgui_shapes.cpp */; };
 		04219CC427E325FB00F52C74 /* abs_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219CC227E325FB00F52C74 /* abs_node.cpp */; };
+		04219CC527E4075700F52C74 /* noise_layer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219CB127E3150700F52C74 /* noise_layer.cpp */; };
 		04311AE727D7302B00B918E3 /* multi_light_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04311AE527D7302B00B918E3 /* multi_light_app.cpp */; };
 		043B7B69278C797700D5648F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B68278C797700D5648F /* Cocoa.framework */; };
 		043B7B6B278C798100D5648F /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B7B6A278C798100D5648F /* CoreFoundation.framework */; };
@@ -3149,6 +3150,7 @@
 				04219CA127E2DF7000F52C74 /* mesh_generator_manager.cpp in Sources */,
 				04219CAC27E313AF00F52C74 /* cpu_noise_layers_generator.cpp in Sources */,
 				04219C9827E175F400F52C74 /* main_menu.cpp in Sources */,
+				04219CC527E4075700F52C74 /* noise_layer.cpp in Sources */,
 				04219C9127E1759D00F52C74 /* gui_entry.cpp in Sources */,
 				047BF1E127AFAF4C003F3599 /* main.cpp in Sources */,
 				047BF1DF27AFAF4C003F3599 /* imgui_node_editor.cpp in Sources */,
@@ -3941,6 +3943,7 @@
 					./third_party/rttr/build/src,
 					./third_party/rapidjson/include,
 					./third_party/fastnoise2/include,
+					./third_party/fastnoiselite/Cpp,
 				);
 			};
 			name = Debug;
@@ -4083,6 +4086,7 @@
 					./third_party/rttr/build/src,
 					./third_party/rapidjson/include,
 					./third_party/fastnoise2/include,
+					./third_party/fastnoiselite/Cpp,
 				);
 			};
 			name = Release;

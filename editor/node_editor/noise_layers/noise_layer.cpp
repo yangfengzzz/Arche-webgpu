@@ -10,73 +10,86 @@
 #define MAKE_IMGUI_ID(x) ("##NoiseLayer" + std::to_string(index) + x).c_str()
 #define MAKE_IMGUI_LABEL(x) (x + std::string("##NoiseLayer") + std::to_string(index)).c_str()
 
-static const char *noiseTypes[] = {"Perlin", "Cellular", "OpenSimplex2", "Value"};
-static const char *fractalTypes[] = {"FBm", "Ridged", "PingPong"};
+static const char *noiseTypes[] = {"Perlin", "Cellular", "OpenSimplex2", "OpenSimplex2S", "Value", "Value Cubic"};
+static const char *fractalTypes[] = {"None", "FBm", "Ridged", "PingPong"};
 static const char *distFuncs[] = {"EuclideanSq", "Euclidean", "Manhattan", "Euclidean Manhattan Hybrid"};
 
-static FastNoise::SmartNode<> setNoiseType(int type) {
+static void setNoiseType(FastNoiseLite *noiseGen, int type) {
     switch (type) {
         case 0:
-            return FastNoise::New<FastNoise::Perlin>();
+            noiseGen->SetNoiseType(FastNoiseLite::NoiseType::NoiseType_Perlin);
             break;
 
         case 1:
-            return FastNoise::New<FastNoise::Cellular>();
+            noiseGen->SetNoiseType(FastNoiseLite::NoiseType::NoiseType_Cellular);
             break;
 
         case 2:
-            return FastNoise::New<FastNoise::OpenSimplex2>();
+            noiseGen->SetNoiseType(FastNoiseLite::NoiseType::NoiseType_OpenSimplex2);
             break;
 
         case 3:
-            return FastNoise::New<FastNoise::Value>();
+            noiseGen->SetNoiseType(FastNoiseLite::NoiseType::NoiseType_OpenSimplex2S);
+            break;
+
+        case 4:
+            noiseGen->SetNoiseType(FastNoiseLite::NoiseType::NoiseType_Value);
+            break;
+
+        case 5:
+            noiseGen->SetNoiseType(FastNoiseLite::NoiseType::NoiseType_ValueCubic);
             break;
 
         default:
-            return FastNoise::New<FastNoise::Perlin>();
+            noiseGen->SetNoiseType(FastNoiseLite::NoiseType::NoiseType_Perlin);
             break;
     }
 }
 
-static FastNoise::SmartNode<> setFractalType(int type) {
+static void setFractalType(FastNoiseLite *noiseGen, int type) {
     switch (type) {
         case 0:
-            return FastNoise::New<FastNoise::FractalFBm>();
+            noiseGen->SetFractalType(FastNoiseLite::FractalType::FractalType_None);
             break;
 
         case 1:
-            return FastNoise::New<FastNoise::FractalRidged>();
+            noiseGen->SetFractalType(FastNoiseLite::FractalType::FractalType_FBm);
             break;
 
         case 2:
-            return FastNoise::New<FastNoise::FractalPingPong>();
+            noiseGen->SetFractalType(FastNoiseLite::FractalType::FractalType_Ridged);
+            break;
+
+        case 3:
+            noiseGen->SetFractalType(FastNoiseLite::FractalType::FractalType_PingPong);
             break;
 
         default:
-            return FastNoise::New<FastNoise::FractalFBm>();
+            noiseGen->SetFractalType(FastNoiseLite::FractalType::FractalType_None);
+            break;
     }
 }
 
-static void setDistanceFunc(FastNoise::SmartNode<FastNoise::Cellular> noiseGen, int func) {
+static void setDistanceFunc(FastNoiseLite *noiseGen, int func) {
     switch (func) {
         case 0:
-            noiseGen->SetDistanceFunction(FastNoise::DistanceFunction::EuclideanSquared);
+            noiseGen->SetCellularDistanceFunction(FastNoiseLite::CellularDistanceFunction::CellularDistanceFunction_EuclideanSq);
             break;
 
         case 1:
-            noiseGen->SetDistanceFunction(FastNoise::DistanceFunction::Euclidean);
+            noiseGen->SetCellularDistanceFunction(FastNoiseLite::CellularDistanceFunction::CellularDistanceFunction_Euclidean);
             break;
 
         case 2:
-            noiseGen->SetDistanceFunction(FastNoise::DistanceFunction::Manhattan);
+            noiseGen->SetCellularDistanceFunction(FastNoiseLite::CellularDistanceFunction::CellularDistanceFunction_Manhattan);
             break;
 
         case 3:
-            noiseGen->SetDistanceFunction(FastNoise::DistanceFunction::Hybrid);
+            noiseGen->SetCellularDistanceFunction(FastNoiseLite::CellularDistanceFunction::CellularDistanceFunction_Hybrid);
             break;
 
         default:
-            noiseGen->SetDistanceFunction(FastNoise::DistanceFunction::EuclideanSquared);
+            noiseGen->SetCellularDistanceFunction(FastNoiseLite::CellularDistanceFunction::CellularDistanceFunction_EuclideanSq);
             break;
     }
 }
@@ -96,6 +109,7 @@ NoiseLayer::NoiseLayer() {
     pingPongStrength = 2.0f;
     strength = 1.0f;
     cellularJitter = 1.0f;
+    noiseGen = std::make_unique<FastNoiseLite>();
     name.reserve(1000);
     name = "Noise Layer\0                                        ";
     offset[0] = offset[1] = offset[2] = 0.0f;
@@ -127,7 +141,7 @@ void NoiseLayer::render(int index) {
             if (ImGui::Selectable(noiseTypes[n], isSelected)) {
                 noiseTypeStr = noiseTypes[n];
                 noiseType = n;
-                noiseGen = setNoiseType(noiseType);
+                setNoiseType(noiseGen.get(), noiseType);
 
                 if (isSelected) {
                     ImGui::SetItemDefaultFocus();
@@ -148,7 +162,7 @@ void NoiseLayer::render(int index) {
             if (ImGui::Selectable(fractalTypes[n], isSelected)) {
                 fractalTypeStr = fractalTypes[n];
                 fractalType = n;
-                noiseGen = setFractalType(fractalType);
+                setFractalType(noiseGen.get(), fractalType);
 
                 if (isSelected) {
                     ImGui::SetItemDefaultFocus();
@@ -206,7 +220,7 @@ void NoiseLayer::render(int index) {
                 if (ImGui::Selectable(distFuncs[n], isSelected)) {
                     distFuncStr = distFuncs[n];
                     distanceFunc = n;
-                    SetFractalType(noiseGen, distanceFunc);
+                    setFractalType(noiseGen.get(), distanceFunc);
 
                     if (isSelected) {
                         ImGui::SetItemDefaultFocus();

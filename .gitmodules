@@ -52,3 +52,6 @@
 [submodule "third_party/fastnoise2"]
 	path = third_party/fastnoise2
 	url = https://github.com/Auburn/FastNoise2
+[submodule "third_party/fastnoiselite"]
+	path = third_party/fastnoiselite
+	url = https://github.com/Auburn/FastNoiseLite.git

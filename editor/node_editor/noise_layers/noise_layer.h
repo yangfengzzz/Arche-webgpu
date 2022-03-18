@@ -8,7 +8,7 @@
 #define noise_layer_hpp
 
 #include <string>
-#include <FastNoise/FastNoise.h>
+#include <FastNoiseLite.h>
 
 namespace vox {
 namespace editor {
@@ -31,7 +31,7 @@ public:
     int seed, octaves;
     float frequency, lacunarity, gain, weightedStrength, pingPongStrength, strength, cellularJitter;
     int fractalType, distanceFunc, noiseType;
-    FastNoise::SmartNode<> noiseGen;
+    std::unique_ptr<FastNoiseLite> noiseGen;
     float offset[3];
     bool enabled;
 };
