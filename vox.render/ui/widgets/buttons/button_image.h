@@ -24,7 +24,7 @@ public:
      * @param p_textureID p_textureID
      * @param p_size p_size
      */
-    ButtonImage(wgpu::TextureView p_textureID, const Vector2F& p_size);
+    ButtonImage(wgpu::TextureView p_textureID, const Vector2F &p_size);
     
 protected:
     void _draw_Impl() override;
@@ -32,8 +32,8 @@ protected:
 public:
     bool disabled = false;
     
-    Color background = { 0, 0, 0, 0 };
-    Color tint = { 1, 1, 1, 1 };
+    Color background = {0, 0, 0, 0};
+    Color tint = {1, 1, 1, 1};
     
     wgpu::TextureView textureID;
     Vector2F size;

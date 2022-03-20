@@ -9,9 +9,9 @@
 
 namespace vox {
 namespace ui {
-ButtonSmall::ButtonSmall(const std::string& p_label) :
+ButtonSmall::ButtonSmall(const std::string &p_label) :
 label(p_label) {
-    auto& style = ImGui::GetStyle();
+    auto &style = ImGui::GetStyle();
     
     idleBackgroundColor = Converter::ToColor(style.Colors[ImGuiCol_Button]);
     hoveredBackgroundColor = Converter::ToColor(style.Colors[ImGuiCol_ButtonHovered]);
@@ -20,7 +20,7 @@ label(p_label) {
 }
 
 void ButtonSmall::_draw_Impl() {
-    auto& style = ImGui::GetStyle();
+    auto &style = ImGui::GetStyle();
     
     auto defaultIdleColor = style.Colors[ImGuiCol_Button];
     auto defaultHoveredColor = style.Colors[ImGuiCol_ButtonHovered];

@@ -21,7 +21,7 @@ public:
     /**
      * Constructor
      */
-    ButtonSmall(const std::string& p_label = "");
+    ButtonSmall(const std::string &p_label = "");
     
 protected:
     void _draw_Impl() override;

@@ -25,8 +25,8 @@ public:
      * @param p_size p_size
      * @param p_enableAlpha p_enableAlpha
      */
-    ButtonColored(const std::string& p_label = "", const Color& p_color = {},
-                  const Vector2F& p_size = Vector2F(0.f, 0.f), bool p_enableAlpha = true);
+    ButtonColored(const std::string &p_label = "", const Color &p_color = {},
+                  const Vector2F &p_size = Vector2F(0.f, 0.f), bool p_enableAlpha = true);
     
 protected:
     void _draw_Impl() override;

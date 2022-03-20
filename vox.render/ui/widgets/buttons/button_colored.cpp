@@ -9,8 +9,8 @@
 
 namespace vox {
 namespace ui {
-ButtonColored::ButtonColored(const std::string & p_label, const Color& p_color,
-                             const Vector2F& p_size, bool p_enableAlpha) :
+ButtonColored::ButtonColored(const std::string &p_label, const Color &p_color,
+                             const Vector2F &p_size, bool p_enableAlpha) :
 label(p_label), color(p_color), size(p_size), enableAlpha(p_enableAlpha) {
 }
 

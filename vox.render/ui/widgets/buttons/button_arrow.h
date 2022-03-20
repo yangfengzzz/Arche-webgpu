@@ -14,8 +14,7 @@ namespace ui {
 /**
  * Button widget with an arrow image
  */
-class ButtonArrow : public Button
-{
+class ButtonArrow : public Button {
 public:
     /**
      * Create the button
