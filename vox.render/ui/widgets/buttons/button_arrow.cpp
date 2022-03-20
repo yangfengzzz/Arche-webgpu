@@ -4,23 +4,18 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef button_h
-#define button_h
-
-#include "ui/widgets/widget.h"
-#include "event.h"
+#include "button_arrow.h"
 
 namespace vox {
 namespace ui {
-/**
- * Base class for any button widget
- */
-class Button : public Widget {
-public:
-    Event<> clickedEvent;
-};
+ButtonArrow::ButtonArrow(ImGuiDir p_direction) :
+direction(p_direction) {
+}
 
+void ButtonArrow::_draw_Impl() {
+    if (ImGui::ArrowButton(_widgetID.c_str(), direction))
+        clickedEvent.invoke();
+}
 
 }
 }
-#endif /* button_h */

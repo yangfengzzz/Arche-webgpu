@@ -4,15 +4,14 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "button_simple.h"
+#include "button_small.h"
 #include "ui/widgets/converter.h"
-#include "gui/imgui_internal.h"
 
 namespace vox {
 namespace ui {
-ButtonSimple::ButtonSimple(const std::string &p_label, const Vector2F &p_size, bool p_disabled) :
-label(p_label), size(p_size), disabled(p_disabled) {
-    auto &style = ImGui::GetStyle();
+ButtonSmall::ButtonSmall(const std::string& p_label) :
+label(p_label) {
+    auto& style = ImGui::GetStyle();
     
     idleBackgroundColor = Converter::ToColor(style.Colors[ImGuiCol_Button]);
     hoveredBackgroundColor = Converter::ToColor(style.Colors[ImGuiCol_ButtonHovered]);
@@ -20,8 +19,8 @@ label(p_label), size(p_size), disabled(p_disabled) {
     textColor = Converter::ToColor(style.Colors[ImGuiCol_Text]);
 }
 
-void ButtonSimple::_draw_Impl() {
-    auto &style = ImGui::GetStyle();
+void ButtonSmall::_draw_Impl() {
+    auto& style = ImGui::GetStyle();
     
     auto defaultIdleColor = style.Colors[ImGuiCol_Button];
     auto defaultHoveredColor = style.Colors[ImGuiCol_ButtonHovered];
@@ -33,7 +32,7 @@ void ButtonSimple::_draw_Impl() {
     style.Colors[ImGuiCol_ButtonActive] = Converter::ToImVec4(clickedBackgroundColor);
     style.Colors[ImGuiCol_Text] = Converter::ToImVec4(textColor);
     
-    if (ImGui::ButtonEx((label + _widgetID).c_str(), Converter::ToImVec2(size), disabled ? ImGuiItemFlags_Disabled : 0))
+    if (ImGui::SmallButton((label + _widgetID).c_str()))
         clickedEvent.invoke();
     
     style.Colors[ImGuiCol_Button] = defaultIdleColor;
@@ -41,7 +40,6 @@ void ButtonSimple::_draw_Impl() {
     style.Colors[ImGuiCol_ButtonActive] = defaultClickedColor;
     style.Colors[ImGuiCol_Text] = defaultTextColor;
 }
-
 
 }
 }
