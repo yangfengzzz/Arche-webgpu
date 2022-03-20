@@ -678,6 +678,10 @@
 		04FDF02127E7719900BBE8E4 /* spacing.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF01F27E7719900BBE8E4 /* spacing.h */; };
 		04FDF02427E771F100BBE8E4 /* tree_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF02227E771F100BBE8E4 /* tree_node.cpp */; };
 		04FDF02527E771F100BBE8E4 /* tree_node.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF02327E771F100BBE8E4 /* tree_node.h */; };
+		04FDF02927E773A600BBE8E4 /* menu_item.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF02727E773A600BBE8E4 /* menu_item.cpp */; };
+		04FDF02A27E773A600BBE8E4 /* menu_item.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF02827E773A600BBE8E4 /* menu_item.h */; };
+		04FDF02D27E7743600BBE8E4 /* menu_list.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF02B27E7743600BBE8E4 /* menu_list.cpp */; };
+		04FDF02E27E7743600BBE8E4 /* menu_list.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF02C27E7743600BBE8E4 /* menu_list.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1568,6 +1572,10 @@
 		04FDF01F27E7719900BBE8E4 /* spacing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = spacing.h; sourceTree = "<group>"; };
 		04FDF02227E771F100BBE8E4 /* tree_node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tree_node.cpp; sourceTree = "<group>"; };
 		04FDF02327E771F100BBE8E4 /* tree_node.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tree_node.h; sourceTree = "<group>"; };
+		04FDF02727E773A600BBE8E4 /* menu_item.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = menu_item.cpp; sourceTree = "<group>"; };
+		04FDF02827E773A600BBE8E4 /* menu_item.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = menu_item.h; sourceTree = "<group>"; };
+		04FDF02B27E7743600BBE8E4 /* menu_list.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = menu_list.cpp; sourceTree = "<group>"; };
+		04FDF02C27E7743600BBE8E4 /* menu_list.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = menu_list.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2779,6 +2787,7 @@
 				04FDEFE027E7573C00BBE8E4 /* drags */,
 				04FDEFF227E7614200BBE8E4 /* input_fields */,
 				04FDF00827E7663E00BBE8E4 /* layout */,
+				04FDF02627E7738D00BBE8E4 /* menu */,
 				04FDEF9D27E719E100BBE8E4 /* widget_container.h */,
 				04FDEF9C27E719E100BBE8E4 /* widget_container.cpp */,
 				04FDEFB727E7417300BBE8E4 /* alignment.h */,
@@ -2889,6 +2898,17 @@
 				04FDF01627E770C100BBE8E4 /* group_collapsable.cpp */,
 			);
 			path = layout;
+			sourceTree = "<group>";
+		};
+		04FDF02627E7738D00BBE8E4 /* menu */ = {
+			isa = PBXGroup;
+			children = (
+				04FDF02827E773A600BBE8E4 /* menu_item.h */,
+				04FDF02727E773A600BBE8E4 /* menu_item.cpp */,
+				04FDF02C27E7743600BBE8E4 /* menu_list.h */,
+				04FDF02B27E7743600BBE8E4 /* menu_list.cpp */,
+			);
+			path = menu;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -3048,6 +3068,7 @@
 				0495475027A2714200783C84 /* buffer_mesh.h in Headers */,
 				04954689279F8CD600783C84 /* update_flag_manager.h in Headers */,
 				0412843D279ED3A60071BD86 /* input_events.h in Headers */,
+				04FDF02E27E7743600BBE8E4 /* menu_list.h in Headers */,
 				0495463C279F89E500783C84 /* shader_property.h in Headers */,
 				047BF10427ACEBB7003F3599 /* spherical_joint.h in Headers */,
 				04FDEFDA27E7544400BBE8E4 /* button_image.h in Headers */,
@@ -3205,6 +3226,7 @@
 				047BEFF727A552B9003F3599 /* wgsl_skinning_vert.h in Headers */,
 				0495467C279F8CD600783C84 /* components_manager.h in Headers */,
 				04FDEFCE27E748EB00BBE8E4 /* ui_manager.h in Headers */,
+				04FDF02A27E773A600BBE8E4 /* menu_item.h in Headers */,
 				047BEFFC27A56187003F3599 /* wgsl_uv_vert.h in Headers */,
 				0412846A279EDB2C0071BD86 /* blend_state.h in Headers */,
 				0495463B279F89E500783C84 /* shader_data.h in Headers */,
@@ -3529,6 +3551,7 @@
 				04FDEFDD27E755D700BBE8E4 /* button_small.cpp in Sources */,
 				047BF11327ACEBBF003F3599 /* capsule_character_controller.cpp in Sources */,
 				047BF0C127AC0D19003F3599 /* point_light.cpp in Sources */,
+				04FDF02927E773A600BBE8E4 /* menu_item.cpp in Sources */,
 				04954679279F8CD600783C84 /* transform.cpp in Sources */,
 				047BF14727ACF275003F3599 /* animator.cpp in Sources */,
 				04FDEFFA27E762C100BBE8E4 /* input_float.cpp in Sources */,
@@ -3580,6 +3603,7 @@
 				047BEFDA27A4DB63003F3599 /* wgsl_encoder.cpp in Sources */,
 				047BEFD627A4BFD9003F3599 /* wgsl_common_vert.cpp in Sources */,
 				047BF17427AD6E33003F3599 /* sampled_texturecube.cpp in Sources */,
+				04FDF02D27E7743600BBE8E4 /* menu_list.cpp in Sources */,
 				047BF12327ACEBC7003F3599 /* box_collider_shape.cpp in Sources */,
 				04F9E91227D475D700BD291B /* sampled_texture3d.cpp in Sources */,
 				04954681279F8CD600783C84 /* script.cpp in Sources */,
