@@ -112,8 +112,8 @@ public:
     bool allowInputs = true;
     bool titleBar = true;
     
-    Event<> OpenEvent;
-    Event<> CloseEvent;
+    Event<> openEvent;
+    Event<> closeEvent;
     
 private:
     bool _opened;

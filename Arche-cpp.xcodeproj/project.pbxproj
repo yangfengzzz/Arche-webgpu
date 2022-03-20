@@ -639,6 +639,8 @@
 		04FDEFC227E7452000BBE8E4 /* panel_undecorated.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDEFC027E7452000BBE8E4 /* panel_undecorated.h */; };
 		04FDEFC527E7459900BBE8E4 /* panel_window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEFC327E7459900BBE8E4 /* panel_window.cpp */; };
 		04FDEFC627E7459900BBE8E4 /* panel_window.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDEFC427E7459900BBE8E4 /* panel_window.h */; };
+		04FDEFC927E7477500BBE8E4 /* canvas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEFC727E7477500BBE8E4 /* canvas.cpp */; };
+		04FDEFCA27E7477500BBE8E4 /* canvas.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDEFC827E7477500BBE8E4 /* canvas.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1479,6 +1481,8 @@
 		04FDEFC027E7452000BBE8E4 /* panel_undecorated.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = panel_undecorated.h; sourceTree = "<group>"; };
 		04FDEFC327E7459900BBE8E4 /* panel_window.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = panel_window.cpp; sourceTree = "<group>"; };
 		04FDEFC427E7459900BBE8E4 /* panel_window.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = panel_window.h; sourceTree = "<group>"; };
+		04FDEFC727E7477500BBE8E4 /* canvas.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = canvas.cpp; sourceTree = "<group>"; };
+		04FDEFC827E7477500BBE8E4 /* canvas.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = canvas.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2694,6 +2698,8 @@
 				04FDEFB427E7413800BBE8E4 /* panel_transformable.h */,
 				04FDEFB327E7413800BBE8E4 /* panel_transformable.cpp */,
 				04FDEFBE27E7450600BBE8E4 /* panel_transformables */,
+				04FDEFC827E7477500BBE8E4 /* canvas.h */,
+				04FDEFC727E7477500BBE8E4 /* canvas.cpp */,
 			);
 			path = widgets;
 			sourceTree = "<group>";
@@ -2976,6 +2982,7 @@
 				0495468A279F8CD600783C84 /* script.h in Headers */,
 				047BF01D27A65E7F003F3599 /* stb.h in Headers */,
 				04954708279FCD3C00783C84 /* orbit_control.h in Headers */,
+				04FDEFCA27E7477500BBE8E4 /* canvas.h in Headers */,
 				047BF10627ACEBB7003F3599 /* hinge_joint.h in Headers */,
 				04F9E91727D4817A00BD291B /* particle_manager.h in Headers */,
 				047BF13E27ACF245003F3599 /* animator_loader.h in Headers */,
@@ -3427,6 +3434,7 @@
 				047BF0CD27AC0D59003F3599 /* direct_light.cpp in Sources */,
 				04FDEF9E27E719E100BBE8E4 /* widget_container.cpp in Sources */,
 				047BF0FE27ACEBB7003F3599 /* joint.cpp in Sources */,
+				04FDEFC927E7477500BBE8E4 /* canvas.cpp in Sources */,
 				04F9E90027D2095100BD291B /* compute_pass.cpp in Sources */,
 				04954709279FCD3C00783C84 /* orbit_control.cpp in Sources */,
 				0495473927A2564500783C84 /* pbr_specular_material.cpp in Sources */,

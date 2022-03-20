@@ -32,14 +32,14 @@ _opened(p_opened) {
 void PanelWindow::open() {
     if (!_opened) {
         _opened = true;
-        OpenEvent.invoke();
+        openEvent.invoke();
     }
 }
 
 void PanelWindow::close() {
     if (_opened) {
         _opened = false;
-        CloseEvent.invoke();
+        closeEvent.invoke();
     }
 }
 
@@ -52,9 +52,9 @@ void PanelWindow::setOpened(bool p_value) {
         _opened = p_value;
         
         if (_opened)
-            OpenEvent.invoke();
+            openEvent.invoke();
         else
-            CloseEvent.invoke();
+            closeEvent.invoke();
     }
 }
 
@@ -132,7 +132,7 @@ void PanelWindow::_draw_Impl() {
             _scrolledToTop = scrollY == 0.0f;
             
             if (!_opened)
-                CloseEvent.invoke();
+                closeEvent.invoke();
             
             update();
             
