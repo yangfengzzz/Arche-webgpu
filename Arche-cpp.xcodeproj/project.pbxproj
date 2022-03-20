@@ -653,6 +653,10 @@
 		04FDEFDE27E755D700BBE8E4 /* button_small.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDEFDC27E755D700BBE8E4 /* button_small.h */; };
 		04FDEFE427E757D200BBE8E4 /* drag_double.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEFE227E757D200BBE8E4 /* drag_double.cpp */; };
 		04FDEFE527E757D200BBE8E4 /* drag_double.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDEFE327E757D200BBE8E4 /* drag_double.h */; };
+		04FDEFE827E759A200BBE8E4 /* drag_float.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEFE627E759A200BBE8E4 /* drag_float.cpp */; };
+		04FDEFE927E759A200BBE8E4 /* drag_float.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDEFE727E759A200BBE8E4 /* drag_float.h */; };
+		04FDEFEC27E75A3500BBE8E4 /* drag_int.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEFEA27E75A3500BBE8E4 /* drag_int.cpp */; };
+		04FDEFED27E75A3500BBE8E4 /* drag_int.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDEFEB27E75A3500BBE8E4 /* drag_int.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1509,6 +1513,14 @@
 		04FDEFE127E7575600BBE8E4 /* drag_single_scalar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = drag_single_scalar.h; sourceTree = "<group>"; };
 		04FDEFE227E757D200BBE8E4 /* drag_double.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = drag_double.cpp; sourceTree = "<group>"; };
 		04FDEFE327E757D200BBE8E4 /* drag_double.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = drag_double.h; sourceTree = "<group>"; };
+		04FDEFE627E759A200BBE8E4 /* drag_float.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = drag_float.cpp; sourceTree = "<group>"; };
+		04FDEFE727E759A200BBE8E4 /* drag_float.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = drag_float.h; sourceTree = "<group>"; };
+		04FDEFEA27E75A3500BBE8E4 /* drag_int.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = drag_int.cpp; sourceTree = "<group>"; };
+		04FDEFEB27E75A3500BBE8E4 /* drag_int.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = drag_int.h; sourceTree = "<group>"; };
+		04FDEFEE27E75F7900BBE8E4 /* drag_multiple_scalars.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = drag_multiple_scalars.h; sourceTree = "<group>"; };
+		04FDEFEF27E75FF400BBE8E4 /* drag_multiple_ints.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = drag_multiple_ints.h; sourceTree = "<group>"; };
+		04FDEFF027E7603B00BBE8E4 /* drag_multiple_floats.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = drag_multiple_floats.h; sourceTree = "<group>"; };
+		04FDEFF127E7607300BBE8E4 /* drag_multiple_doubles.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = drag_multiple_doubles.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2776,8 +2788,16 @@
 			isa = PBXGroup;
 			children = (
 				04FDEFE127E7575600BBE8E4 /* drag_single_scalar.h */,
+				04FDEFEB27E75A3500BBE8E4 /* drag_int.h */,
+				04FDEFEA27E75A3500BBE8E4 /* drag_int.cpp */,
+				04FDEFE727E759A200BBE8E4 /* drag_float.h */,
+				04FDEFE627E759A200BBE8E4 /* drag_float.cpp */,
 				04FDEFE327E757D200BBE8E4 /* drag_double.h */,
 				04FDEFE227E757D200BBE8E4 /* drag_double.cpp */,
+				04FDEFEE27E75F7900BBE8E4 /* drag_multiple_scalars.h */,
+				04FDEFEF27E75FF400BBE8E4 /* drag_multiple_ints.h */,
+				04FDEFF027E7603B00BBE8E4 /* drag_multiple_floats.h */,
+				04FDEFF127E7607300BBE8E4 /* drag_multiple_doubles.h */,
 			);
 			path = drags;
 			sourceTree = "<group>";
@@ -2986,7 +3006,9 @@
 				04954654279F8AE900783C84 /* base_material.h in Headers */,
 				047BF10F27ACEBBF003F3599 /* character_controller.h in Headers */,
 				04128472279EED090071BD86 /* stencil_state.h in Headers */,
+				04FDEFE927E759A200BBE8E4 /* drag_float.h in Headers */,
 				04128462279ED4B10071BD86 /* imconfig.h in Headers */,
+				04FDEFED27E75A3500BBE8E4 /* drag_int.h in Headers */,
 				048DBF0327D6DD47003AE9E8 /* wgsl_quad.h in Headers */,
 				04F9E91327D475D700BD291B /* sampled_texture3d.h in Headers */,
 				047BF1A727AF9821003F3599 /* imgui_impl_wgpu.h in Headers */,
@@ -3398,6 +3420,7 @@
 				047BF07A27A6819C003F3599 /* astc_weight_quant_xfer_tables.cpp in Sources */,
 				0495473527A24BE000783C84 /* pbr_material.cpp in Sources */,
 				04954640279F89E500783C84 /* shader.cpp in Sources */,
+				04FDEFEC27E75A3500BBE8E4 /* drag_int.cpp in Sources */,
 				04F9E8FC27D2067400BD291B /* subpass.cpp in Sources */,
 				047BF06727A68190003F3599 /* astc_toplevel.cpp in Sources */,
 				04FDEFB127E72AD300BBE8E4 /* panel.cpp in Sources */,
@@ -3490,6 +3513,7 @@
 				04F9E90E27D465A800BD291B /* particle_material.cpp in Sources */,
 				04128459279ED4B10071BD86 /* imgui_widgets.cpp in Sources */,
 				04954683279F8CD600783C84 /* update_flag.cpp in Sources */,
+				04FDEFE827E759A200BBE8E4 /* drag_float.cpp in Sources */,
 				047BF0CD27AC0D59003F3599 /* direct_light.cpp in Sources */,
 				04FDEF9E27E719E100BBE8E4 /* widget_container.cpp in Sources */,
 				047BF0FE27ACEBB7003F3599 /* joint.cpp in Sources */,
