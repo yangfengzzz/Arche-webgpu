@@ -641,6 +641,8 @@
 		04FDEFC627E7459900BBE8E4 /* panel_window.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDEFC427E7459900BBE8E4 /* panel_window.h */; };
 		04FDEFC927E7477500BBE8E4 /* canvas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEFC727E7477500BBE8E4 /* canvas.cpp */; };
 		04FDEFCA27E7477500BBE8E4 /* canvas.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDEFC827E7477500BBE8E4 /* canvas.h */; };
+		04FDEFCD27E748EB00BBE8E4 /* ui_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEFCB27E748EB00BBE8E4 /* ui_manager.cpp */; };
+		04FDEFCE27E748EB00BBE8E4 /* ui_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDEFCC27E748EB00BBE8E4 /* ui_manager.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1483,6 +1485,8 @@
 		04FDEFC427E7459900BBE8E4 /* panel_window.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = panel_window.h; sourceTree = "<group>"; };
 		04FDEFC727E7477500BBE8E4 /* canvas.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = canvas.cpp; sourceTree = "<group>"; };
 		04FDEFC827E7477500BBE8E4 /* canvas.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = canvas.h; sourceTree = "<group>"; };
+		04FDEFCB27E748EB00BBE8E4 /* ui_manager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ui_manager.cpp; sourceTree = "<group>"; };
+		04FDEFCC27E748EB00BBE8E4 /* ui_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ui_manager.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2664,6 +2668,8 @@
 				04FDEF9027E7121B00BBE8E4 /* drawable.h */,
 				04FDEF9127E7132B00BBE8E4 /* plugins */,
 				04FDEF9727E714EF00BBE8E4 /* widgets */,
+				04FDEFCC27E748EB00BBE8E4 /* ui_manager.h */,
+				04FDEFCB27E748EB00BBE8E4 /* ui_manager.cpp */,
 			);
 			path = ui;
 			sourceTree = "<group>";
@@ -3029,6 +3035,7 @@
 				047BF14927ACF275003F3599 /* animator.h in Headers */,
 				047BEFF727A552B9003F3599 /* wgsl_skinning_vert.h in Headers */,
 				0495467C279F8CD600783C84 /* components_manager.h in Headers */,
+				04FDEFCE27E748EB00BBE8E4 /* ui_manager.h in Headers */,
 				047BEFFC27A56187003F3599 /* wgsl_uv_vert.h in Headers */,
 				0412846A279EDB2C0071BD86 /* blend_state.h in Headers */,
 				0495463B279F89E500783C84 /* shader_data.h in Headers */,
@@ -3376,6 +3383,7 @@
 				04F9E92F27D5ACB200BD291B /* wgsl_particle_draw.cpp in Sources */,
 				0495467A279F8CD600783C84 /* components_manager.cpp in Sources */,
 				0495474227A2640900783C84 /* index_buffer_binding.cpp in Sources */,
+				04FDEFCD27E748EB00BBE8E4 /* ui_manager.cpp in Sources */,
 				04FDEFB527E7413800BBE8E4 /* panel_transformable.cpp in Sources */,
 				047BF07327A6819C003F3599 /* astc_compress_symbolic.cpp in Sources */,
 				047BF08B27ABB9AD003F3599 /* wgsl_begin_normal_vert.cpp in Sources */,
