@@ -5,7 +5,7 @@
 //  property of any third parties.
 
 #include "window.h"
-
+#include "event.h"
 namespace vox {
 Window::Window(const Properties &properties) :
 _properties{properties} {

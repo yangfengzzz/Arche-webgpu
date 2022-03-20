@@ -617,6 +617,8 @@
 		04FDEF8627E4B9CF00BBE8E4 /* implot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF8227E4B9CF00BBE8E4 /* implot.cpp */; };
 		04FDEF8727E4B9CF00BBE8E4 /* implot_items.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF8327E4B9CF00BBE8E4 /* implot_items.cpp */; };
 		04FDEF8827E4B9CF00BBE8E4 /* implot.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDEF8427E4B9CF00BBE8E4 /* implot.h */; };
+		04FDEF8D27E7108900BBE8E4 /* vobject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF8B27E7108900BBE8E4 /* vobject.cpp */; };
+		04FDEF8E27E7108900BBE8E4 /* vobject.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDEF8C27E7108900BBE8E4 /* vobject.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1424,6 +1426,10 @@
 		04FDEF8227E4B9CF00BBE8E4 /* implot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = implot.cpp; sourceTree = "<group>"; };
 		04FDEF8327E4B9CF00BBE8E4 /* implot_items.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = implot_items.cpp; sourceTree = "<group>"; };
 		04FDEF8427E4B9CF00BBE8E4 /* implot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = implot.h; sourceTree = "<group>"; };
+		04FDEF8927E70F2900BBE8E4 /* event.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = event.h; sourceTree = "<group>"; };
+		04FDEF8A27E70F3E00BBE8E4 /* event-inl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "event-inl.h"; sourceTree = "<group>"; };
+		04FDEF8B27E7108900BBE8E4 /* vobject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vobject.cpp; sourceTree = "<group>"; };
+		04FDEF8C27E7108900BBE8E4 /* vobject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vobject.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1635,6 +1641,8 @@
 				047BF01E27A66084003F3599 /* filesystem.cpp */,
 				04128438279ED3A50071BD86 /* timer.h */,
 				04128435279ED3A50071BD86 /* timer.cpp */,
+				04FDEF8927E70F2900BBE8E4 /* event.h */,
+				04FDEF8A27E70F3E00BBE8E4 /* event-inl.h */,
 				04128430279ED3A50071BD86 /* window.h */,
 				04128434279ED3A50071BD86 /* window.cpp */,
 				04128431279ED3A50071BD86 /* glfw_window.h */,
@@ -1644,6 +1652,8 @@
 				0412844B279ED4870071BD86 /* gui */,
 				047BF1AA27AF9905003F3599 /* gui.h */,
 				047BF1A927AF9905003F3599 /* gui.cpp */,
+				04FDEF8C27E7108900BBE8E4 /* vobject.h */,
+				04FDEF8B27E7108900BBE8E4 /* vobject.cpp */,
 				04128439279ED3A50071BD86 /* engine.h */,
 				0412843B279ED3A60071BD86 /* engine.cpp */,
 				0412843C279ED3A60071BD86 /* unix_engine.h */,
@@ -2762,6 +2772,7 @@
 				0495475D27A287CA00783C84 /* mesh_renderer.h in Headers */,
 				047BEFEB27A54561003F3599 /* wgsl_uv_share.h in Headers */,
 				047BF00827A56434003F3599 /* wgsl_unlit.h in Headers */,
+				04FDEF8E27E7108900BBE8E4 /* vobject.h in Headers */,
 				04954641279F89E500783C84 /* shader.h in Headers */,
 				047BF02927A6659E003F3599 /* astc.h in Headers */,
 				047BF18B27AE4ADD003F3599 /* wgsl_skybox_debugger.h in Headers */,
@@ -3081,6 +3092,7 @@
 				047BF1B527AFA105003F3599 /* editor_application.cpp in Sources */,
 				0443E8F627C5C0890099E13A /* wgsl_shadow_vert.cpp in Sources */,
 				04128469279EDB2C0071BD86 /* blend_state.cpp in Sources */,
+				04FDEF8D27E7108900BBE8E4 /* vobject.cpp in Sources */,
 				047BF08327ABB82B003F3599 /* wgsl_normal_share.cpp in Sources */,
 				047BF07827A6819C003F3599 /* mathlib.cpp in Sources */,
 				047BF1AB27AF9905003F3599 /* gui.cpp in Sources */,
@@ -3566,6 +3578,9 @@
 					./third_party/physx/physx/source/foundation/include,
 					./third_party/ozz/include,
 					"/Applications/Autodesk/FBX\\ SDK/2016.1.2/include",
+					./third_party/tinyxml2,
+					./third_party/rttr/src,
+					./third_party/rttr/build/src,
 				);
 			};
 			name = Debug;
@@ -3634,6 +3649,9 @@
 					./third_party/physx/physx/source/foundation/include,
 					./third_party/ozz/include,
 					"/Applications/Autodesk/FBX\\ SDK/2016.1.2/include",
+					./third_party/tinyxml2,
+					./third_party/rttr/src,
+					./third_party/rttr/build/src,
 				);
 			};
 			name = Release;

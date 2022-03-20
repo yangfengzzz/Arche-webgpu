@@ -16,6 +16,7 @@
 
 #include "engine.h"
 #include "gui/imgui_impl_glfw.h"
+#include "gui/implot.h"
 
 namespace vox {
 namespace {
@@ -314,7 +315,8 @@ void GlfwWindow::_createGUIContext(const Window::Properties &properties) {
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-        
+    ImPlot::CreateContext();
+    
     ImGuiIO &io = ImGui::GetIO();
     io.DisplaySize.x = static_cast<float>(properties.extent.width);
     io.DisplaySize.y = static_cast<float>(properties.extent.height);
