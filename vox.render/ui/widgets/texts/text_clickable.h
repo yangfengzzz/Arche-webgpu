@@ -24,7 +24,7 @@ public:
     TextClickable(const std::string &p_content = "");
     
 protected:
-    virtual void _draw_Impl() override;
+    void _draw_Impl() override;
     
 public:
     Event<> clickedEvent;

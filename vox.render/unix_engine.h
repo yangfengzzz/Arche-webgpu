@@ -21,7 +21,7 @@ public:
     virtual ~UnixEngine() = default;
     
 protected:
-    virtual void createWindow(const Window::Properties &properties) override;
+    void createWindow(const Window::Properties &properties) override;
     
 private:
     UnixType _type;

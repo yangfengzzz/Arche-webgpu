@@ -33,7 +33,7 @@ public:
     /**
      * Draw the widget on the panel
      */
-    virtual void draw() override;
+    void draw() override;
     
     /**
      * Link the widget to another one by making its id identical to the given widget

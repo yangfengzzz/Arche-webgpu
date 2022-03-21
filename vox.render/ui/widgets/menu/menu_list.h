@@ -25,7 +25,7 @@ public:
     MenuList(const std::string &p_name, bool p_locked = false);
     
 protected:
-    virtual void _draw_Impl() override;
+    void _draw_Impl() override;
     
 public:
     std::string name;

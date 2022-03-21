@@ -29,7 +29,7 @@ public:
     Color color;
     
 protected:
-    virtual void _draw_Impl() override;
+    void _draw_Impl() override;
 };
 
 

@@ -24,7 +24,7 @@ public:
     TextLabelled(const std::string &p_content = "", const std::string &p_label = "");
     
 protected:
-    virtual void _draw_Impl() override;
+    void _draw_Impl() override;
     
 public:
     std::string label;

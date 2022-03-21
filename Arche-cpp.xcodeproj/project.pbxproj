@@ -720,6 +720,14 @@
 		04FDF07F27E8079800BBE8E4 /* text_selectable.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF07D27E8079800BBE8E4 /* text_selectable.h */; };
 		04FDF08227E8080400BBE8E4 /* text_wrapped.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF08027E8080400BBE8E4 /* text_wrapped.cpp */; };
 		04FDF08327E8080400BBE8E4 /* text_wrapped.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF08127E8080400BBE8E4 /* text_wrapped.h */; };
+		04FDF08727E808E600BBE8E4 /* bullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF08527E808E600BBE8E4 /* bullet.cpp */; };
+		04FDF08827E808E600BBE8E4 /* bullet.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF08627E808E600BBE8E4 /* bullet.h */; };
+		04FDF08B27E809C300BBE8E4 /* image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF08927E809C300BBE8E4 /* image.cpp */; };
+		04FDF08C27E809C300BBE8E4 /* image.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF08A27E809C300BBE8E4 /* image.h */; };
+		04FDF08F27E80A8700BBE8E4 /* progress_bar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF08D27E80A8700BBE8E4 /* progress_bar.cpp */; };
+		04FDF09027E80A8700BBE8E4 /* progress_bar.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF08E27E80A8700BBE8E4 /* progress_bar.h */; };
+		04FDF09327E80B0A00BBE8E4 /* separator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF09127E80B0A00BBE8E4 /* separator.cpp */; };
+		04FDF09427E80B0A00BBE8E4 /* separator.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF09227E80B0A00BBE8E4 /* separator.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1657,6 +1665,14 @@
 		04FDF07D27E8079800BBE8E4 /* text_selectable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = text_selectable.h; sourceTree = "<group>"; };
 		04FDF08027E8080400BBE8E4 /* text_wrapped.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = text_wrapped.cpp; sourceTree = "<group>"; };
 		04FDF08127E8080400BBE8E4 /* text_wrapped.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = text_wrapped.h; sourceTree = "<group>"; };
+		04FDF08527E808E600BBE8E4 /* bullet.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = bullet.cpp; sourceTree = "<group>"; };
+		04FDF08627E808E600BBE8E4 /* bullet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bullet.h; sourceTree = "<group>"; };
+		04FDF08927E809C300BBE8E4 /* image.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = image.cpp; sourceTree = "<group>"; };
+		04FDF08A27E809C300BBE8E4 /* image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = image.h; sourceTree = "<group>"; };
+		04FDF08D27E80A8700BBE8E4 /* progress_bar.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = progress_bar.cpp; sourceTree = "<group>"; };
+		04FDF08E27E80A8700BBE8E4 /* progress_bar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = progress_bar.h; sourceTree = "<group>"; };
+		04FDF09127E80B0A00BBE8E4 /* separator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = separator.cpp; sourceTree = "<group>"; };
+		04FDF09227E80B0A00BBE8E4 /* separator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = separator.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2873,6 +2889,7 @@
 				04FDF03C27E7F8DF00BBE8E4 /* selection */,
 				04FDF05527E800DC00BBE8E4 /* sliders */,
 				04FDF06727E804F600BBE8E4 /* texts */,
+				04FDF08427E808D600BBE8E4 /* visual */,
 				04FDEF9D27E719E100BBE8E4 /* widget_container.h */,
 				04FDEF9C27E719E100BBE8E4 /* widget_container.cpp */,
 				04FDEFB727E7417300BBE8E4 /* alignment.h */,
@@ -3067,6 +3084,21 @@
 			path = texts;
 			sourceTree = "<group>";
 		};
+		04FDF08427E808D600BBE8E4 /* visual */ = {
+			isa = PBXGroup;
+			children = (
+				04FDF08627E808E600BBE8E4 /* bullet.h */,
+				04FDF08527E808E600BBE8E4 /* bullet.cpp */,
+				04FDF08A27E809C300BBE8E4 /* image.h */,
+				04FDF08927E809C300BBE8E4 /* image.cpp */,
+				04FDF09227E80B0A00BBE8E4 /* separator.h */,
+				04FDF09127E80B0A00BBE8E4 /* separator.cpp */,
+				04FDF08E27E80A8700BBE8E4 /* progress_bar.h */,
+				04FDF08D27E80A8700BBE8E4 /* progress_bar.cpp */,
+			);
+			path = visual;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -3199,6 +3231,7 @@
 				04954700279FCD1100783C84 /* forward_application.h in Headers */,
 				04FDEFE527E757D200BBE8E4 /* drag_double.h in Headers */,
 				047BF0CC27AC0D59003F3599 /* spot_light.h in Headers */,
+				04FDF09427E80B0A00BBE8E4 /* separator.h in Headers */,
 				047BF09C27ABC04D003F3599 /* wgsl_common_frag.h in Headers */,
 				0495474B27A2669600783C84 /* mesh.h in Headers */,
 				04FDF06B27E8050A00BBE8E4 /* text.h in Headers */,
@@ -3254,6 +3287,7 @@
 				04FDF04C27E7FAA200BBE8E4 /* combo_box.h in Headers */,
 				0495475D27A287CA00783C84 /* mesh_renderer.h in Headers */,
 				047BEFEB27A54561003F3599 /* wgsl_uv_share.h in Headers */,
+				04FDF09027E80A8700BBE8E4 /* progress_bar.h in Headers */,
 				04FDEFAE27E720D500BBE8E4 /* converter.h in Headers */,
 				047BF00827A56434003F3599 /* wgsl_unlit.h in Headers */,
 				04FDEF8E27E7108900BBE8E4 /* vobject.h in Headers */,
@@ -3275,6 +3309,7 @@
 				047BF16227AD1996003F3599 /* wgsl_direct_irradiance_frag_define.h in Headers */,
 				047BF0CB27AC0D59003F3599 /* ambient_light.h in Headers */,
 				047BF11F27ACEBC7003F3599 /* plane_collider_shape.h in Headers */,
+				04FDF08827E808E600BBE8E4 /* bullet.h in Headers */,
 				047BF19E27AE718E003F3599 /* gltf_loader.h in Headers */,
 				04FDEF8527E4B9CF00BBE8E4 /* implot_internal.h in Headers */,
 				04FDEFFB27E762C100BBE8E4 /* input_float.h in Headers */,
@@ -3292,6 +3327,7 @@
 				04F9E91327D475D700BD291B /* sampled_texture3d.h in Headers */,
 				047BF1A727AF9821003F3599 /* imgui_impl_wgpu.h in Headers */,
 				04FDEFFF27E7633100BBE8E4 /* input_double.h in Headers */,
+				04FDF08C27E809C300BBE8E4 /* image.h in Headers */,
 				0412846E279EEB8B0071BD86 /* raster_state.h in Headers */,
 				04FDF06F27E8059300BBE8E4 /* text_clickable.h in Headers */,
 				047BF00C27A56500003F3599 /* wgsl_cache.h in Headers */,
@@ -3634,6 +3670,7 @@
 				04FDEFC527E7459900BBE8E4 /* panel_window.cpp in Sources */,
 				04F9E92027D4AE0D00BD291B /* wgsl_particle_sdf.cpp in Sources */,
 				0495473227A24A1300783C84 /* pbr_base_material.cpp in Sources */,
+				04FDF08F27E80A8700BBE8E4 /* progress_bar.cpp in Sources */,
 				04FDF04727E7FA2000BBE8E4 /* color_picker.cpp in Sources */,
 				047BF0AB27ABF9A3003F3599 /* wgsl_begin_viewdir_frag.cpp in Sources */,
 				04128479279EEEEC0071BD86 /* render_state.cpp in Sources */,
@@ -3687,6 +3724,7 @@
 				047BF0E327ACEBAE003F3599 /* physics_manager.cpp in Sources */,
 				04FDEFE427E757D200BBE8E4 /* drag_double.cpp in Sources */,
 				047BF10727ACEBB7003F3599 /* spring_joint.cpp in Sources */,
+				04FDF09327E80B0A00BBE8E4 /* separator.cpp in Sources */,
 				047BF00727A56434003F3599 /* wgsl_unlit.cpp in Sources */,
 				0443E90327C5F6330099E13A /* wgsl_shadow_share.cpp in Sources */,
 				047BF1B627AFA242003F3599 /* color_picker_subpass.cpp in Sources */,
@@ -3756,6 +3794,7 @@
 				0495468C279F8CD600783C84 /* component.cpp in Sources */,
 				047BF07027A6819C003F3599 /* astc_partition_tables.cpp in Sources */,
 				047BF16527AD3FE0003F3599 /* wgsl_ibl_frag_define.cpp in Sources */,
+				04FDF08B27E809C300BBE8E4 /* image.cpp in Sources */,
 				047BF19627AE6F74003F3599 /* scene_animation_clip.cpp in Sources */,
 				047BF17C27AE0ECA003F3599 /* skybox_subpass.cpp in Sources */,
 				04FDF01C27E7714B00BBE8E4 /* new_line.cpp in Sources */,
@@ -3811,6 +3850,7 @@
 				047BF1A827AF9821003F3599 /* imgui_impl_wgpu.cpp in Sources */,
 				04FDEFFE27E7633100BBE8E4 /* input_double.cpp in Sources */,
 				047BF0FC27ACEBB7003F3599 /* fixed_joint.cpp in Sources */,
+				04FDF08727E808E600BBE8E4 /* bullet.cpp in Sources */,
 				047BF02827A6659E003F3599 /* astc.cpp in Sources */,
 				04FDF01827E770C100BBE8E4 /* group_collapsable.cpp in Sources */,
 				04954652279F8AE900783C84 /* base_material.cpp in Sources */,

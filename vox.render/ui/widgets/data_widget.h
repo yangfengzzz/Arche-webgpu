@@ -28,7 +28,7 @@ public:
     /**
      * Draw the widget
      */
-    virtual void draw() override;
+    void draw() override;
     
     /**
      * Notify that the widget data has changed to allow the data dispatcher to execute its behaviour

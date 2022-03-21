@@ -26,7 +26,7 @@ public:
                    bool p_selected = false, bool p_disabled = false);
     
 protected:
-    virtual void _draw_Impl() override;
+    void _draw_Impl() override;
     
 public:
     bool selected;

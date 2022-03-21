@@ -4,21 +4,21 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef group_hpp
-#define group_hpp
+#ifndef separator_hpp
+#define separator_hpp
 
-#include "ui/widgets/widget_container.h"
+#include "ui/widgets/widget.h"
 
 namespace vox {
 namespace ui {
 /**
- * Widget that can contains other widgets
+ * Simple widget that display a separator
  */
-class Group : public Widget, public WidgetContainer {
+class Separator : public Widget {
 protected:
     void _draw_Impl() override;
 };
 
 }
 }
-#endif /* group_hpp */
+#endif /* separator_hpp */
