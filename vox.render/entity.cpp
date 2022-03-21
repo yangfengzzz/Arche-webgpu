@@ -9,7 +9,7 @@
 
 #include "component.h"
 #include "script.h"
-//#include "components/transform.h"
+#include "serializer.h"
 
 namespace vox {
 EntityPtr Entity::_findChildByName(Entity *root, const std::string &name) {
@@ -291,6 +291,33 @@ void Entity::_setTransformDirty() {
 
 std::vector<Script *> Entity::scripts() {
     return _scripts;
+}
+
+//MARK: - Reflection
+void Entity::onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_actorsRoot) {
+    tinyxml2::XMLNode* actorNode = p_doc.NewElement("actor");
+    p_actorsRoot->InsertEndChild(actorNode);
+    
+    Serializer::serializeString(p_doc, actorNode, "name", name);
+    
+    tinyxml2::XMLNode* componentsNode = p_doc.NewElement("components");
+    actorNode->InsertEndChild(componentsNode);
+    for (auto& component : _components) {
+        /* Current component root */
+        tinyxml2::XMLNode* componentNode = p_doc.NewElement("component");
+        componentsNode->InsertEndChild(componentNode);
+
+        /* Component type */
+        Serializer::serializeString(p_doc, componentNode, "type", typeid(component).name());
+
+        /* Data node (Will be passed to the component) */
+        tinyxml2::XMLElement* data = p_doc.NewElement("data");
+        componentNode->InsertEndChild(data);
+    }
+}
+
+void Entity::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
 }
 
 }        // namespace vox

@@ -728,6 +728,8 @@
 		04FDF09427E80B0A00BBE8E4 /* separator.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF09227E80B0A00BBE8E4 /* separator.h */; };
 		04FDF09827E80C1C00BBE8E4 /* gui_drawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF09627E80C1C00BBE8E4 /* gui_drawer.h */; };
 		04FDF09B27E80F0E00BBE8E4 /* gui_drawer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF09A27E80F0E00BBE8E4 /* gui_drawer.cpp */; };
+		04FDF09E27E83BF100BBE8E4 /* serializer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF09C27E83BF100BBE8E4 /* serializer.cpp */; };
+		04FDF09F27E83BF100BBE8E4 /* serializer.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF09D27E83BF100BBE8E4 /* serializer.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1674,6 +1676,8 @@
 		04FDF09627E80C1C00BBE8E4 /* gui_drawer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gui_drawer.h; sourceTree = "<group>"; };
 		04FDF09927E80C2B00BBE8E4 /* gui_drawer-inl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "gui_drawer-inl.h"; sourceTree = "<group>"; };
 		04FDF09A27E80F0E00BBE8E4 /* gui_drawer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gui_drawer.cpp; sourceTree = "<group>"; };
+		04FDF09C27E83BF100BBE8E4 /* serializer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = serializer.cpp; sourceTree = "<group>"; };
+		04FDF09D27E83BF100BBE8E4 /* serializer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = serializer.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1895,6 +1899,8 @@
 				0412843A279ED3A60071BD86 /* input_events.cpp */,
 				0412844B279ED4870071BD86 /* gui */,
 				04FDEF8F27E7118F00BBE8E4 /* ui */,
+				04FDF09D27E83BF100BBE8E4 /* serializer.h */,
+				04FDF09C27E83BF100BBE8E4 /* serializer.cpp */,
 				04FDEF8C27E7108900BBE8E4 /* vobject.h */,
 				04FDEF8B27E7108900BBE8E4 /* vobject.cpp */,
 				04FDEFA227E71E3200BBE8E4 /* inspector_item.h */,
@@ -3336,6 +3342,7 @@
 				04954688279F8CD600783C84 /* camera.h in Headers */,
 				0495473127A24A1300783C84 /* pbr_base_material.h in Headers */,
 				04F9E92927D4B56100BD291B /* wgsl_particle_emission.h in Headers */,
+				04FDF09F27E83BF100BBE8E4 /* serializer.h in Headers */,
 				04F9E90127D2095100BD291B /* compute_pass.h in Headers */,
 				04FDEFF727E761FA00BBE8E4 /* input_int.h in Headers */,
 				047BF16E27AD45A6003F3599 /* wgsl_pbr.h in Headers */,
@@ -3699,6 +3706,7 @@
 				047BF0BC27AC086B003F3599 /* light.cpp in Sources */,
 				047BF11427ACEBBF003F3599 /* character_controller.cpp in Sources */,
 				047BF06D27A6819C003F3599 /* astc_encoding_choice_error.cpp in Sources */,
+				04FDF09E27E83BF100BBE8E4 /* serializer.cpp in Sources */,
 				04FDF04B27E7FAA200BBE8E4 /* combo_box.cpp in Sources */,
 				04F9E91627D4817A00BD291B /* particle_manager.cpp in Sources */,
 				0443E8D427C4BB500099E13A /* shadow_material.cpp in Sources */,
@@ -4430,6 +4438,7 @@
 					./third_party/ozz/build_debug/src/base,
 					./third_party/ozz/build_debug/src/animation/runtime,
 					./third_party/ozz/build_debug/src/geometry/runtime,
+					./third_party/tinyxml2/build,
 				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
@@ -4469,6 +4478,7 @@
 					"-lozz_animation_d",
 					"-lozz_geometry_d",
 					"/Applications/Autodesk/FBX\\ SDK/2016.1.2/lib/clang/debug/libfbxsdk.a",
+					"-ltinyxml2",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SYSTEM_HEADER_SEARCH_PATHS = (
@@ -4509,6 +4519,7 @@
 					./third_party/physx/physx/source/foundation/include,
 					./third_party/ozz/include,
 					"/Applications/Autodesk/FBX\\ SDK/2016.1.2/include",
+					./third_party/tinyxml2,
 				);
 				USE_HEADERMAP = NO;
 			};
@@ -4565,6 +4576,7 @@
 					./third_party/ozz/build_release/src/base,
 					./third_party/ozz/build_release/src/animation/runtime,
 					./third_party/ozz/build_release/src/geometry/runtime,
+					./third_party/tinyxml2/build,
 				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
@@ -4604,6 +4616,7 @@
 					"-lozz_animation_r",
 					"-lozz_geometry_r",
 					"/Applications/Autodesk/FBX\\ SDK/2016.1.2/lib/clang/release/libfbxsdk.a",
+					"-ltinyxml2",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SYSTEM_HEADER_SEARCH_PATHS = (
@@ -4644,6 +4657,7 @@
 					./third_party/physx/physx/source/foundation/include,
 					./third_party/ozz/include,
 					"/Applications/Autodesk/FBX\\ SDK/2016.1.2/include",
+					./third_party/tinyxml2,
 				);
 				USE_HEADERMAP = NO;
 			};

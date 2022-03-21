@@ -13,14 +13,13 @@
 #include <vector>
 #include "layer.h"
 #include "transform.h"
-
-//#include "scene_graph/components/transform.h"
+#include "vobject.h"
 
 namespace vox {
 class Component;
 
 /// @brief A leaf of the tree structure which can have children and a single parent.
-class Entity {
+class Entity final : public VObject {
 public:
     /** The name of entity. */
     std::string name;
@@ -179,6 +178,17 @@ public:
      * Destroy self.
      */
     void destroy();
+    
+public:
+    /**
+     * Called when the serialization is asked
+     */
+    void onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) override;
+    
+    /**
+     * Called when the deserialization is asked
+     */
+    void onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) override;
     
 public:
     std::vector<Script *> scripts();
