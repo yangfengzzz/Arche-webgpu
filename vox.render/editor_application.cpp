@@ -9,6 +9,7 @@
 #include "rendering/subpasses/color_picker_subpass.h"
 #include "engine.h"
 #include "camera.h"
+#include "glfw_window.h"
 
 namespace vox {
 EditorApplication::~EditorApplication() {
@@ -21,6 +22,7 @@ bool EditorApplication::prepare(Engine &engine) {
     auto extent = engine.window().extent();
     auto scale = engine.window().contentScaleFactor();
     
+    _gui = std::make_unique<ui::UIManager>(static_cast<GlfwWindow*>(&engine.window())->handle(), _renderContext.get());
     _scene = std::make_unique<Scene>(_device);
     _particleManager = std::make_unique<ParticleManager>(_device);
     _lightManager = std::make_unique<LightManager>(_scene.get());
@@ -130,7 +132,7 @@ void EditorApplication::update(float delta_time) {
     _colorAttachments.view = _sceneTexture.CreateView();
     _depthStencilAttachment.view = _renderContext->depthStencilTexture();
     _scene->update(delta_time);
-
+    
     wgpu::CommandEncoder commandEncoder = _device.CreateCommandEncoder();
     updateGPUTask(commandEncoder);
     _renderPass->draw(commandEncoder, "Lighting & Composition Pass");
@@ -145,15 +147,12 @@ void EditorApplication::update(float delta_time) {
     
     if (_gui) {
         editorUpdate(_colorAttachments.view);
-        ImDrawData *drawData = ImGui::GetDrawData();
-        if (drawData) {
-            _guiColorAttachments.view = _renderContext->currentDrawableTexture();
-            wgpu::RenderPassEncoder encoder = commandEncoder.BeginRenderPass(&_guiPassDescriptor);
-            encoder.PushDebugGroup("GUI Rendering");
-            _gui->draw(drawData, encoder);
-            encoder.PopDebugGroup();
-            encoder.End();
-        }
+        _guiColorAttachments.view = _renderContext->currentDrawableTexture();
+        wgpu::RenderPassEncoder encoder = commandEncoder.BeginRenderPass(&_guiPassDescriptor);
+        encoder.PushDebugGroup("GUI Rendering");
+        _gui->render(encoder);
+        encoder.PopDebugGroup();
+        encoder.End();
     }
     
     // Finalize rendering here & push the command buffer to the GPU

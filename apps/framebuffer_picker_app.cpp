@@ -12,11 +12,16 @@
 #include "camera.h"
 #include "lighting/point_light.h"
 #include "controls/orbit_control.h"
-#include "gui.h"
 
 namespace vox {
+FramebufferPickerApp::FramebufferPickerApp():
+EditorApplication(),
+_panel() {
+}
+
 void FramebufferPickerApp::loadScene() {
-    _gui = std::make_unique<GUI>(_renderContext.get());
+    _gui->setCanvas(_canvas);
+    _canvas.addPanel(_panel);
     
     u = std::uniform_real_distribution<float>(0, 1);
     _scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
@@ -64,13 +69,8 @@ void FramebufferPickerApp::pickFunctor(Renderer *renderer, MeshPtr mesh) {
 }
 
 void FramebufferPickerApp::editorUpdate(const wgpu::TextureView& view) {
-    ImGui::NewFrame();
-    ImGui::Begin("Panel");
-    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-    ImGui::Image((ImTextureID)view.Get(), ImGui::GetWindowSize());
-    ImGui::End();
-    
-    ImGui::Render();
+    _panel.removeAllWidgets();
+    _panel.createWidget<ui::Image>(view, _panel.size());
 }
 
 void FramebufferPickerApp::inputEvent(const InputEvent &inputEvent) {

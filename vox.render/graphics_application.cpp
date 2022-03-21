@@ -49,9 +49,6 @@ bool GraphicsApplication::prepare(Engine &engine) {
 }
 
 void GraphicsApplication::update(float delta_time) {
-    if (_gui) {
-        _gui->newFrame();
-    }
 }
 
 bool GraphicsApplication::resize(uint32_t win_width, uint32_t win_height,

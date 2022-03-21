@@ -34,8 +34,7 @@ public:
     
     std::unique_ptr<BackendBinding> createBackendBinding(wgpu::Device& device) override;
     
-private:
-    void _createGUIContext(const Window::Properties &properties);
+    GLFWwindow *handle();
     
 private:
     GLFWwindow *_handle = nullptr;

@@ -9,7 +9,8 @@
 
 #include <string>
 #include <unordered_map>
-#include "ui/widgets/canvas.h"
+#include "ui/canvas.h"
+#include "rendering/render_context.h"
 
 struct GLFWwindow;
 
@@ -37,7 +38,8 @@ public:
      * @param p_glfwWindow p_glfwWindow
      * @param p_style p_style
      */
-    UIManager(GLFWwindow *p_glfwWindow, Style p_style = Style::IM_DARK_STYLE);
+    UIManager(GLFWwindow *p_glfwWindow,
+              RenderContext* context, Style p_style = Style::IM_DARK_STYLE);
     
     /**
      * Destroy the UI manager. Will handle ImGui destruction internally
@@ -133,7 +135,7 @@ public:
      * Render ImGui current frane
      * @note Should be called once per frame
      */
-    void render();
+    void render(wgpu::RenderPassEncoder& passEncoder);
     
 private:
     void pushCurrentFont();

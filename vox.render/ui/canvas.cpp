@@ -5,13 +5,15 @@
 //  property of any third parties.
 
 #include "canvas.h"
+#include "gui/imgui_impl_glfw.h"
+#include "gui/imgui_impl_wgpu.h"
 
 namespace vox {
 namespace ui {
 void Canvas::draw() {
     if (!_panels.empty()) {
-        // ImGui_ImplOpenGL3_NewFrame();
-        // ImGui_ImplGlfw_NewFrame();
+        ImGui_ImplWGPU_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
         
         if (_isDockspace) {

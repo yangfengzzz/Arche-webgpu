@@ -10,7 +10,7 @@
 #include "application.h"
 #include "rendering/render_pass.h"
 #include "scene.h"
-#include "gui.h"
+#include "ui/ui_manager.h"
 
 namespace vox {
 class GraphicsApplication : public Application {
@@ -52,7 +52,7 @@ protected:
      */
     std::unique_ptr<RenderContext> _renderContext{nullptr};
     
-    std::unique_ptr<GUI> _gui{nullptr};
+    std::unique_ptr<ui::UIManager> _gui{nullptr};
 };
 
 }        // namespace vox

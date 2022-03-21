@@ -6,10 +6,13 @@
 
 #include "ui_manager.h"
 #include <GLFW/glfw3.h>
+#include "gui/imgui_impl_glfw.h"
+#include "gui/imgui_impl_wgpu.h"
 
 namespace vox {
 namespace ui {
-UIManager::UIManager(GLFWwindow *p_glfwWindow, Style p_style) {
+UIManager::UIManager(GLFWwindow *p_glfwWindow,
+                     RenderContext* context, Style p_style) {
     ImGui::CreateContext();
     
     ImGui::GetIO().ConfigWindowsMoveFromTitleBarOnly = true; /* Disable moving windows by dragging another thing than the title bar */
@@ -17,13 +20,14 @@ UIManager::UIManager(GLFWwindow *p_glfwWindow, Style p_style) {
     
     applyStyle(p_style);
     
-    //    ImGui_ImplGlfw_InitForOpenGL(p_glfwWindow, true);
-    //    ImGui_ImplOpenGL3_Init(p_glslVersion.c_str());
+    ImGui_ImplGlfw_InitForOpenGL(p_glfwWindow, true);
+    ImGui_ImplWGPU_Init(context->device().Get(), 3,
+                        (WGPUTextureFormat)context->drawableTextureFormat());
 }
 
 UIManager::~UIManager() {
-    //    ImGui_ImplOpenGL3_Shutdown();
-    //    ImGui_ImplGlfw_Shutdown();
+    ImGui_ImplWGPU_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 }
 
@@ -262,10 +266,10 @@ void UIManager::removeCanvas() {
     _currentCanvas = nullptr;
 }
 
-void UIManager::render() {
+void UIManager::render(wgpu::RenderPassEncoder& passEncoder) {
     if (_currentCanvas) {
         _currentCanvas->draw();
-        //        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        ImGui_ImplWGPU_RenderDrawData(ImGui::GetDrawData(), passEncoder.Get());
     }
 }
 

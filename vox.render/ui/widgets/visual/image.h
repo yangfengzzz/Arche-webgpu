@@ -4,8 +4,8 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef image_hpp
-#define image_hpp
+#ifndef ui_image_hpp
+#define ui_image_hpp
 
 #include "ui/widgets/widget.h"
 #include "vector2.h"
@@ -35,4 +35,4 @@ public:
 
 }
 }
-#endif /* image_hpp */
+#endif /* ui_image_hpp */

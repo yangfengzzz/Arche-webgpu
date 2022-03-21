@@ -21,21 +21,21 @@ public:
      * @param p_tooltip
      * @param p_data
      */
-    DDSource
-    (
-     const std::string &p_identifier,
-     const std::string &p_tooltip,
-     T p_data
-     ) : identifier(p_identifier), tooltip(p_tooltip), data(p_data) {
-     }
+    DDSource(const std::string &p_identifier,
+             const std::string &p_tooltip,
+             T p_data) :
+    identifier(p_identifier), tooltip(p_tooltip), data(p_data) {
+    }
     
     /**
      * Execute the behaviour of the drag and drop source
      */
-    virtual void Execute() override {
+    virtual void execute() override {
         ImGuiDragDropFlags src_flags = 0;
-        src_flags |= ImGuiDragDropFlags_SourceNoDisableHover;     // Keep the source displayed as hovered
-        src_flags |= ImGuiDragDropFlags_SourceNoHoldToOpenOthers; // Because our dragging is local, we disable the feature of opening foreign treenodes/tabs while dragging
+        // Keep the source displayed as hovered
+        src_flags |= ImGuiDragDropFlags_SourceNoDisableHover;
+        // Because our dragging is local, we disable the feature of opening foreign treenodes/tabs while dragging
+        src_flags |= ImGuiDragDropFlags_SourceNoHoldToOpenOthers;
         
         if (!hasTooltip)
             src_flags |= ImGuiDragDropFlags_SourceNoPreviewTooltip; // Hide the tooltip
@@ -61,21 +61,21 @@ public:
     /**
      * Returns true if the drag and drop source is dragged
      */
-    bool IsDragged() const {
-        return m_isDragged;
+    bool isDragged() const {
+        return _isDragged;
     }
     
 public:
     std::string identifier;
     std::string tooltip;
     T data;
-    OvTools::Eventing::Event<> DragStartEvent;
-    OvTools::Eventing::Event<> DragStopEvent;
+    Event<> dragStartEvent;
+    Event<> dragStopEvent;
     
     bool hasTooltip = true;
     
 private:
-    bool m_isDragged;
+    bool _isDragged;
 };
 
 

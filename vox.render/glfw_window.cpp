@@ -15,8 +15,6 @@
 #include <glog/logging.h>
 
 #include "engine.h"
-#include "gui/imgui_impl_glfw.h"
-#include "gui/implot.h"
 
 namespace vox {
 namespace {
@@ -282,12 +280,9 @@ Window(properties) {
     
     glfwSetInputMode(_handle, GLFW_STICKY_KEYS, 1);
     glfwSetInputMode(_handle, GLFW_STICKY_MOUSE_BUTTONS, 1);
-    
-    _createGUIContext(properties);
 }
 
 GlfwWindow::~GlfwWindow() {
-    ImGui_ImplGlfw_Shutdown();
     glfwTerminate();
 }
 
@@ -311,41 +306,12 @@ std::unique_ptr<BackendBinding> GlfwWindow::createBackendBinding(wgpu::Device& d
     return createBinding(backendType, _handle, device);
 }
 
-void GlfwWindow::_createGUIContext(const Window::Properties &properties) {
-    // Setup Dear ImGui context
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImPlot::CreateContext();
-    
-    ImGuiIO &io = ImGui::GetIO();
-    io.DisplaySize.x = static_cast<float>(properties.extent.width);
-    io.DisplaySize.y = static_cast<float>(properties.extent.height);
-    io.FontGlobalScale = 1.0f;
-    io.DisplayFramebufferScale = ImVec2(1.0f, 1.0f);
-    io.Fonts->AddFontFromFileTTF("../assets/Fonts/Roboto-Regular.ttf", 16.0f);
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-    io.ConfigViewportsNoTaskBarIcon = false;
-    io.ConfigViewportsNoAutoMerge = true;
-    ImGui::StyleColorsDark();
-    
-    ImGuiStyle &style = ImGui::GetStyle();
-    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
-        style.WindowRounding = 0.0f;
-        style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-    }
-    
-    ImGui_ImplGlfw_InitForOpenGL(_handle, true);
-}
-
 bool GlfwWindow::shouldClose() {
     return glfwWindowShouldClose(_handle);
 }
 
 void GlfwWindow::processEvents() {
     glfwPollEvents();
-    ImGui_ImplGlfw_NewFrame();
 }
 
 void GlfwWindow::close() {
@@ -380,6 +346,10 @@ float GlfwWindow::contentScaleFactor() const {
     // but non-uniform scaling is very unlikely, and would
     // require significantly more changes in the IMGUI integration
     return static_cast<float>(fb_width) / win_width;
+}
+
+GLFWwindow *GlfwWindow::handle() {
+    return _handle;
 }
 
 }        // namespace vox
