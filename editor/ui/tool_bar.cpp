@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "view.h"
+#include "tool_bar.h"
 
 namespace vox {
 namespace editor {

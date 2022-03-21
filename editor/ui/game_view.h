@@ -22,9 +22,9 @@ public:
      * @param p_opened p_opened
      * @param p_windowSettings p_windowSettings
      */
-    GameView(const std::string& p_title,
+    GameView(const std::string &p_title,
              bool p_opened,
-             const PanelWindowSettings& p_windowSettings);
+             const PanelWindowSettings &p_windowSettings);
     
     /**
      * Update the view
@@ -45,10 +45,10 @@ public:
     /**
      * Returns the game view camera frustum or nothing if the game isn't playing
      */
-//    std::optional<OvRendering::Data::Frustum> GetActiveFrustum() const;
+    //    std::optional<OvRendering::Data::Frustum> GetActiveFrustum() const;
     
 private:
-//    OvCore::SceneSystem::SceneManager& _sceneManager;
+    //    OvCore::SceneSystem::SceneManager& _sceneManager;
     bool _hasCamera = false;
 };
 

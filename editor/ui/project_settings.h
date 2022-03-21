@@ -25,30 +25,30 @@ public:
      * @param p_opened p_opened
      * @param p_windowSettings p_windowSettings
      */
-    ProjectSettings(const std::string& p_title,
+    ProjectSettings(const std::string &p_title,
                     bool p_opened,
-                    const PanelWindowSettings& p_windowSettings);
+                    const PanelWindowSettings &p_windowSettings);
     
     /**
      * Generate a gatherer that will get the value associated to the given key
      * @param p_keyName p_keyName
      */
-    template <typename T>
-    std::function<T()> GenerateGatherer(const std::string& p_keyName) {
-//        return std::bind(&OvTools::Filesystem::IniFile::Get<T>, &m_projectFile, p_keyName);
+    template<typename T>
+    std::function<T()> GenerateGatherer(const std::string &p_keyName) {
+        //        return std::bind(&OvTools::Filesystem::IniFile::Get<T>, &m_projectFile, p_keyName);
     }
     
     /**
      * Generate a provider that will set the value associated to the given key
      * @param p_keyName p_keyName
      */
-    template <typename T>
-    std::function<void(T)> GenerateProvider(const std::string& p_keyName) {
-//        return std::bind(&OvTools::Filesystem::IniFile::Set<T>, &m_projectFile, p_keyName, std::placeholders::_1);
+    template<typename T>
+    std::function<void(T)> GenerateProvider(const std::string &p_keyName) {
+        //        return std::bind(&OvTools::Filesystem::IniFile::Set<T>, &m_projectFile, p_keyName, std::placeholders::_1);
     }
     
 private:
-//    OvTools::Filesystem::IniFile& _projectFile;
+    //    OvTools::Filesystem::IniFile& _projectFile;
 };
 
 

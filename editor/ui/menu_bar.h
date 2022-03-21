@@ -35,25 +35,33 @@ public:
     /**
      * Register a panel to the menu bar window menu
      */
-    void registerPanel(const std::string& p_name, PanelWindow& p_panel);
+    void registerPanel(const std::string &p_name, PanelWindow &p_panel);
     
 private:
     void createFileMenu();
+    
     void createBuildMenu();
+    
     void createWindowMenu();
+    
     void createActorsMenu();
+    
     void createResourcesMenu();
+    
     void createSettingsMenu();
+    
     void createLayoutMenu();
+    
     void createHelpMenu();
     
     void updateToggleableItems();
+    
     void openEveryWindows(bool p_state);
     
 private:
     PanelMap _panels;
     
-    MenuList* _windowMenu{nullptr};
+    MenuList *_windowMenu{nullptr};
 };
 
 }

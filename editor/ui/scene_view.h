@@ -15,8 +15,7 @@ using namespace ui;
 
 namespace editor {
 namespace ui {
-class SceneView : public ViewControllable
-{
+class SceneView : public ViewControllable {
 public:
     /**
      * Constructor
@@ -24,9 +23,9 @@ public:
      * @param p_opened p_opened
      * @param p_windowSettings p_windowSettings
      */
-    SceneView(const std::string& p_title,
+    SceneView(const std::string &p_title,
               bool p_opened,
-              const PanelWindowSettings& p_windowSettings);
+              const PanelWindowSettings &p_windowSettings);
     
     /**
      * Update the scene view

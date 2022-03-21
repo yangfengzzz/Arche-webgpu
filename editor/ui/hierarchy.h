@@ -25,9 +25,9 @@ public:
      * @param p_opened p_opened
      * @param p_windowSettings p_windowSettings
      */
-    Hierarchy(const std::string& p_title,
+    Hierarchy(const std::string &p_title,
               bool p_opened,
-              const PanelWindowSettings& p_windowSettings);
+              const PanelWindowSettings &p_windowSettings);
     
     /**
      * Clear hierarchy nodes
@@ -43,46 +43,46 @@ public:
      * Select the widget corresponding to the given actor
      * @param p_actor p_actor
      */
-    void selectActorByInstance(EntityPtr& p_actor);
+    void selectActorByInstance(EntityPtr &p_actor);
     
     /**
      * Select the widget
      * @param p_widget p_widget
      */
-    void selectActorByWidget(TreeNode& p_widget);
+    void selectActorByWidget(TreeNode &p_widget);
     
     /**
      * Attach the given actor linked widget to its parent widget
      * @param p_actor p_actor
      */
-    void attachActorToParent(EntityPtr& p_actor);
+    void attachActorToParent(EntityPtr &p_actor);
     
     /**
      * Detach the given actor linked widget from its parent widget
      * @param p_actor p_actor
      */
-    void detachFromParent(EntityPtr& p_actor);
+    void detachFromParent(EntityPtr &p_actor);
     
     /**
      * Delete the widget referencing the given actor
      * @param p_actor p_actor
      */
-    void deleteActorByInstance(EntityPtr& p_actor);
+    void deleteActorByInstance(EntityPtr &p_actor);
     
     /**
      * Add a widget referencing the given actor
      * @param p_actor p_actor
      */
-    void AddActorByInstance(EntityPtr& p_actor);
+    void AddActorByInstance(EntityPtr &p_actor);
     
 public:
-    Event<EntityPtr&> actorSelectedEvent;
-    Event<EntityPtr&> actorUnselectedEvent;
+    Event<EntityPtr &> actorSelectedEvent;
+    Event<EntityPtr &> actorUnselectedEvent;
     
 private:
-    TreeNode* m_sceneRoot;
+    TreeNode *m_sceneRoot;
     
-    std::unordered_map<EntityPtr, TreeNode*> _widgetActorLink;
+    std::unordered_map<EntityPtr, TreeNode *> _widgetActorLink;
 };
 
 }

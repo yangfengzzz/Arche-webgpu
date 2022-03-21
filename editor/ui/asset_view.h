@@ -28,28 +28,28 @@ public:
      * @param p_opened p_opened
      * @param p_windowSettings p_windowSettings
      */
-    AssetView(const std::string& p_title,
+    AssetView(const std::string &p_title,
               bool p_opened,
-              const PanelWindowSettings& p_windowSettings);
+              const PanelWindowSettings &p_windowSettings);
     
     /**
      * Custom implementation of the render method
      */
     virtual void _render_Impl() override;
     
-//    /**
-//     * Defines the resource to preview
-//     * @parma p_resource
-//     */
-//    void setResource(ViewableResource p_resource);
-//
-//    /**
-//     * Return the currently previewed resource
-//     */
-//    ViewableResource resource() const;
+    //    /**
+    //     * Defines the resource to preview
+    //     * @parma p_resource
+    //     */
+    //    void setResource(ViewableResource p_resource);
+    //
+    //    /**
+    //     * Return the currently previewed resource
+    //     */
+    //    ViewableResource resource() const;
     
 private:
-//    ViewableResource _resource;
+    //    ViewableResource _resource;
 };
 
 }

@@ -23,9 +23,9 @@ public:
      * @param p_windowSettings p_windowSettings
      * @param p_enableFocusInputs p_enableFocusInputs
      */
-    ViewControllable(const std::string& p_title,
+    ViewControllable(const std::string &p_title,
                      bool p_opened,
-                     const PanelWindowSettings& p_windowSettings,
+                     const PanelWindowSettings &p_windowSettings,
                      bool p_enableFocusInputs = false);
     
     /**
@@ -37,10 +37,10 @@ public:
     /**
      * Returns the camera controller of the controllable view
      */
-//    OvEditor::Core::CameraController& cameraController();
+    //    OvEditor::Core::CameraController& cameraController();
     
 protected:
-//    OvEditor::Core::CameraController m_cameraController;
+    //    OvEditor::Core::CameraController m_cameraController;
 };
 
 }

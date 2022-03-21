@@ -17,8 +17,7 @@ using namespace ui;
 
 namespace editor {
 namespace ui {
-class MaterialEditor : public PanelWindow
-{
+class MaterialEditor : public PanelWindow {
 public:
     /**
      * Constructor
@@ -26,9 +25,9 @@ public:
      * @param p_opened p_opened
      * @param p_windowSettings p_windowSettings
      */
-    MaterialEditor(const std::string& p_title,
+    MaterialEditor(const std::string &p_title,
                    bool p_opened,
-                   const PanelWindowSettings& p_windowSettings);
+                   const PanelWindowSettings &p_windowSettings);
     
     /**
      * Refresh the material editor
@@ -39,12 +38,12 @@ public:
      * Defines the target material of the material editor
      * @param p_newTarget
      */
-//    void setTarget(OvCore::Resources::Material& p_newTarget);
+    //    void setTarget(OvCore::Resources::Material& p_newTarget);
     
     /**
      * Returns the target of the material editor
      */
-//    OvCore::Resources::Material* GetTarget() const;
+    //    OvCore::Resources::Material* GetTarget() const;
     
     /**
      * Remove the target of the material editor (Clear the material editor)
@@ -63,35 +62,40 @@ public:
     
 private:
     void onMaterialDropped();
+    
     void onShaderDropped();
     
     void createHeaderButtons();
+    
     void createMaterialSelector();
+    
     void createShaderSelector();
+    
     void createMaterialSettings();
+    
     void createShaderSettings();
     
     void generateShaderSettingsContent();
+    
     void generateMaterialSettingsContent();
     
 private:
-//    OvCore::Resources::Material* m_target        = nullptr;
-//    OvRendering::Resources::Shader* m_shader    = nullptr;
+    //    OvCore::Resources::Material* m_target        = nullptr;
+    //    OvRendering::Resources::Shader* m_shader    = nullptr;
     
-    Text* _targetMaterialText{nullptr};
-    Text* _shaderText{nullptr};
+    Text *_targetMaterialText{nullptr};
+    Text *_shaderText{nullptr};
     
     Event<> _materialDroppedEvent;
     Event<> _shaderDroppedEvent;
     
-    Group* _settings{nullptr};
-    Group* _materialSettings{nullptr};
-    Group* _shaderSettings{nullptr};
+    Group *_settings{nullptr};
+    Group *_materialSettings{nullptr};
+    Group *_shaderSettings{nullptr};
     
-    Columns<2>* _shaderSettingsColumns{nullptr};
-    Columns<2>* _materialSettingsColumns{nullptr};
+    Columns<2> *_shaderSettingsColumns{nullptr};
+    Columns<2> *_materialSettingsColumns{nullptr};
 };
-
 
 
 }

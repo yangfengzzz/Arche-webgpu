@@ -25,15 +25,15 @@ public:
      * @param p_opened p_opened
      * @param p_windowSettings p_windowSettings
      */
-    Console(const std::string& p_title,
+    Console(const std::string &p_title,
             bool p_opened,
-            const PanelWindowSettings& p_windowSettings);
+            const PanelWindowSettings &p_windowSettings);
     
     /**
      * Method called when a log event occured
      * @param p_logData
      */
-//    void onLogIntercepted(const OvDebug::LogData& p_logData);
+    //    void onLogIntercepted(const OvDebug::LogData& p_logData);
     
     /**
      * Called when the scene plays. It will clear the console if the "Clear on play" settings is on
@@ -58,13 +58,16 @@ public:
     
 private:
     void setShowDefaultLogs(bool p_value);
+    
     void setShowInfoLogs(bool p_value);
+    
     void setShowWarningLogs(bool p_value);
+    
     void setShowErrorLogs(bool p_value);
     
 private:
-    Group* _logGroup;
-    std::unordered_map<TextColored*, google::LogSeverity> m_logTextWidgets;
+    Group *_logGroup;
+    std::unordered_map<TextColored *, google::LogSeverity> m_logTextWidgets;
     
     bool _clearOnPlay = true;
     bool _showDefaultLog = true;
@@ -72,7 +75,6 @@ private:
     bool _showWarningLog = true;
     bool _showErrorLog = true;
 };
-
 
 
 }

@@ -28,9 +28,9 @@ public:
      * @param p_opened p_opened
      * @param p_windowSettings p_windowSettings
      */
-    View(const std::string& p_title,
+    View(const std::string &p_title,
          bool p_opened,
-         const PanelWindowSettings& p_windowSettings);
+         const PanelWindowSettings &p_windowSettings);
     
     /**
      * Update the view
@@ -57,23 +57,23 @@ public:
      * Defines the camera position
      * @param p_position p_position
      */
-    void setCameraPosition(const Vector3F& p_position);
+    void setCameraPosition(const Vector3F &p_position);
     
     /**
      * Defines the camera rotation
      * @param p_rotation p_rotation
      */
-    void setCameraRotation(const QuaternionF& p_rotation);
+    void setCameraRotation(const QuaternionF &p_rotation);
     
     /**
      * Returns the camera position
      */
-    const Vector3F& cameraPosition() const;
+    const Vector3F &cameraPosition() const;
     
     /**
      * Returns the camera rotation
      */
-    const QuaternionF& cameraRotation() const;
+    const QuaternionF &cameraRotation() const;
     
     /**
      * Returns the camera used by this view
@@ -88,13 +88,13 @@ public:
     /**
      * Returns the grid color of the view
      */
-    const Vector3F& gridColor() const;
+    const Vector3F &gridColor() const;
     
     /**
      * Defines the grid color of the view
      * @param p_color p_color
      */
-    void setGridColor(const Vector3F& p_color);
+    void setGridColor(const Vector3F &p_color);
     
     /**
      * Fill the UBO using the view settings
@@ -112,13 +112,12 @@ protected:
     //    OvRendering::LowRenderer::Camera m_camera;
     Vector3F _cameraPosition;
     QuaternionF _cameraRotation;
-    ::vox::ui::Image* image;
+    ::vox::ui::Image *image;
     
-    Vector3F m_gridColor = { 0.176f, 0.176f, 0.176f };
+    Vector3F m_gridColor = {0.176f, 0.176f, 0.176f};
     
     //    OvRendering::Buffers::Framebuffer m_fbo;
 };
-
 
 
 }

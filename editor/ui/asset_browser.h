@@ -31,12 +31,12 @@ public:
      * @param p_projectAssetFolder p_projectAssetFolder
      * @param p_projectScriptFolder p_projectScriptFolder
      */
-    AssetBrowser(const std::string& p_title,
+    AssetBrowser(const std::string &p_title,
                  bool p_opened,
-                 const ::vox::ui::PanelWindowSettings& p_windowSettings,
-                 const std::string& p_engineAssetFolder = "",
-                 const std::string& p_projectAssetFolder = "",
-                 const std::string& p_projectScriptFolder = "");
+                 const ::vox::ui::PanelWindowSettings &p_windowSettings,
+                 const std::string &p_engineAssetFolder = "",
+                 const std::string &p_projectAssetFolder = "",
+                 const std::string &p_projectScriptFolder = "");
     
     /**
      * Fill the asset browser panels with widgets corresponding to elements in the asset folder
@@ -54,9 +54,10 @@ public:
     void refresh();
     
 private:
-    void parseFolder(::vox::ui::TreeNode& p_root, const std::filesystem::directory_entry& p_directory,
+    void parseFolder(::vox::ui::TreeNode &p_root, const std::filesystem::directory_entry &p_directory,
                      bool p_isEngineItem, bool p_scriptFolder = false);
-    void considerItem(::vox::ui::TreeNode* p_root, const std::filesystem::directory_entry& p_entry,
+    
+    void considerItem(::vox::ui::TreeNode *p_root, const std::filesystem::directory_entry &p_entry,
                       bool p_isEngineItem, bool p_autoOpen = false, bool p_scriptFolder = false);
     
 public:
@@ -66,12 +67,9 @@ private:
     std::string _engineAssetFolder;
     std::string _projectAssetFolder;
     std::string _projectScriptFolder;
-    ::vox::ui::Group* _assetList;
-    std::unordered_map<::vox::ui::TreeNode*, std::string> _pathUpdate;
+    ::vox::ui::Group *_assetList;
+    std::unordered_map<::vox::ui::TreeNode *, std::string> _pathUpdate;
 };
-
-
-
 
 
 }

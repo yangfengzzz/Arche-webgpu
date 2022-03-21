@@ -743,6 +743,7 @@
 		04FDF0C127E8780C00BBE8E4 /* menu_bar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0BF27E8780C00BBE8E4 /* menu_bar.cpp */; };
 		04FDF0C427E8799A00BBE8E4 /* project_settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0C227E8799A00BBE8E4 /* project_settings.cpp */; };
 		04FDF0C727E87A2800BBE8E4 /* scene_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0C527E87A2800BBE8E4 /* scene_view.cpp */; };
+		04FDF0CD27E87AFB00BBE8E4 /* tool_bar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0CB27E87AFB00BBE8E4 /* tool_bar.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1717,6 +1718,8 @@
 		04FDF0C327E8799A00BBE8E4 /* project_settings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = project_settings.h; sourceTree = "<group>"; };
 		04FDF0C527E87A2800BBE8E4 /* scene_view.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = scene_view.cpp; sourceTree = "<group>"; };
 		04FDF0C627E87A2800BBE8E4 /* scene_view.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = scene_view.h; sourceTree = "<group>"; };
+		04FDF0CB27E87AFB00BBE8E4 /* tool_bar.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tool_bar.cpp; sourceTree = "<group>"; };
+		04FDF0CC27E87AFB00BBE8E4 /* tool_bar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tool_bar.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3172,6 +3175,8 @@
 				04FDF0B927E875BC00BBE8E4 /* inspector.cpp */,
 				04FDF0BD27E8771F00BBE8E4 /* material_editor.h */,
 				04FDF0BC27E8771F00BBE8E4 /* material_editor.cpp */,
+				04FDF0CC27E87AFB00BBE8E4 /* tool_bar.h */,
+				04FDF0CB27E87AFB00BBE8E4 /* tool_bar.cpp */,
 				04FDF0C027E8780C00BBE8E4 /* menu_bar.h */,
 				04FDF0BF27E8780C00BBE8E4 /* menu_bar.cpp */,
 				04FDF0C327E8799A00BBE8E4 /* project_settings.h */,
@@ -4078,6 +4083,7 @@
 				04219CC527E4075700F52C74 /* noise_layer.cpp in Sources */,
 				04219C9127E1759D00F52C74 /* gui_entry.cpp in Sources */,
 				04FDEF7727E4B42700BBE8E4 /* texture_coordinates_node.cpp in Sources */,
+				04FDF0CD27E87AFB00BBE8E4 /* tool_bar.cpp in Sources */,
 				047BF1E127AFAF4C003F3599 /* main.cpp in Sources */,
 				047BF1DF27AFAF4C003F3599 /* imgui_node_editor.cpp in Sources */,
 				04FDEF3727E44C3300BBE8E4 /* div_node.cpp in Sources */,

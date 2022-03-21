@@ -29,15 +29,15 @@ public:
      * @param p_opened p_opened
      * @param p_windowSettings p_windowSettings
      */
-    AssetProperties(const std::string& p_title,
+    AssetProperties(const std::string &p_title,
                     bool p_opened,
-                    const PanelWindowSettings& p_windowSettings);
+                    const PanelWindowSettings &p_windowSettings);
     
     /**
      * Defines the target of the asset settings editor
      * @param p_path p_path
      */
-    void setTarget(const std::string& p_path);
+    void setTarget(const std::string &p_path);
     
     /**
      * Refresh the panel to show the current target settings
@@ -51,31 +51,36 @@ public:
     
 private:
     void createHeaderButtons();
+    
     void createAssetSelector();
+    
     void createSettings();
+    
     void createInfo();
+    
     void createModelSettings();
+    
     void createTextureSettings();
+    
     void apply();
     
 private:
     std::string _resource;
     
     Event<> _targetChanged;
-    Group* _settings = nullptr;
-    Group* _info = nullptr;
-    Button* _applyButton = nullptr;
-    Button* _revertButton = nullptr;
-    Button* _previewButton = nullptr;
-    Button* _resetButton = nullptr;
-    Widget* _headerSeparator = nullptr;
-    Widget* _headerLineBreak = nullptr;
-    Columns<2>* _settingsColumns = nullptr;
-    Columns<2>* _infoColumns = nullptr;
-    Text* _assetSelector = nullptr;
+    Group *_settings = nullptr;
+    Group *_info = nullptr;
+    Button *_applyButton = nullptr;
+    Button *_revertButton = nullptr;
+    Button *_previewButton = nullptr;
+    Button *_resetButton = nullptr;
+    Widget *_headerSeparator = nullptr;
+    Widget *_headerLineBreak = nullptr;
+    Columns<2> *_settingsColumns = nullptr;
+    Columns<2> *_infoColumns = nullptr;
+    Text *_assetSelector = nullptr;
     // std::unique_ptr<OvTools::Filesystem::IniFile> m_metadata;
 };
-
 
 
 }

@@ -5,3 +5,12 @@
 //  property of any third parties.
 
 #include "asset_properties.h"
+
+namespace vox {
+namespace editor {
+namespace ui {
+
+
+}
+}
+}

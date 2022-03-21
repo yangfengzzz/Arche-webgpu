@@ -31,9 +31,9 @@ public:
      * @param p_opened p_opened
      * @param p_windowSettings p_windowSettings
      */
-    Inspector(const std::string& p_title,
+    Inspector(const std::string &p_title,
               bool p_opened,
-              const PanelWindowSettings& p_windowSettings);
+              const PanelWindowSettings &p_windowSettings);
     
     /**
      * Destructor
@@ -44,7 +44,7 @@ public:
      * Focus the given actor
      * @param p_target p_target
      */
-    void focusActor(EntityPtr& p_target);
+    void focusActor(EntityPtr &p_target);
     
     /**
      * Unfocus the currently targeted actor
@@ -64,12 +64,12 @@ public:
     /**
      * Create the actor inspector for the given actor
      */
-    void createActorInspector(EntityPtr& p_target);
+    void createActorInspector(EntityPtr &p_target);
     
     /**
      * Draw the given component in inspector
      */
-    void drawComponent(Component* p_component);
+    void drawComponent(Component *p_component);
     
     /**
      * Draw the given behaviour in inspector
@@ -83,10 +83,10 @@ public:
     
 private:
     EntityPtr _targetActor{nullptr};
-    Group* _actorInfo;
-    Group* _inspectorHeader;
-    ComboBox* _componentSelectorWidget;
-    InputText* _scriptSelectorWidget;
+    Group *_actorInfo;
+    Group *_inspectorHeader;
+    ComboBox *_componentSelectorWidget;
+    InputText *_scriptSelectorWidget;
     
     uint64_t _componentAddedListener = 0;
     uint64_t _componentRemovedListener = 0;
