@@ -20,5 +20,18 @@ Collider(entity) {
                                                                                    PxQuat(q.x, q.y, q.z, q.w)));
 }
 
+//MARK: - Reflection
+void StaticCollider::onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
+}
+
+void StaticCollider::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
+}
+
+void StaticCollider::onInspector(ui::WidgetContainer& p_root) {
+    
+}
+
 }
 }

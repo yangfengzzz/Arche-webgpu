@@ -312,4 +312,17 @@ void ParticleRenderer::_onDisable() {
     ParticleManager::getSingleton().removeParticle(this);
 }
 
+//MARK: - Reflection
+void ParticleRenderer::onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
+}
+
+void ParticleRenderer::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
+}
+
+void ParticleRenderer::onInspector(ui::WidgetContainer& p_root) {
+    
+}
+
 }

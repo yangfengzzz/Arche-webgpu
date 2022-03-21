@@ -91,4 +91,17 @@ void Animator::_onDisable() {
     scene()->_componentsManager.removeOnUpdateAnimators(this);
 }
 
+//MARK: - Reflection
+void Animator::onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
+}
+
+void Animator::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
+}
+
+void Animator::onInspector(ui::WidgetContainer& p_root) {
+    
+}
+
 }

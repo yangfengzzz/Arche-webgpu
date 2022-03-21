@@ -49,5 +49,18 @@ void GPUSkinnedMeshRenderer::_initJoints() {
     shaderData.enableMacro(HAS_SKIN);
 }
 
+//MARK: - Reflection
+void GPUSkinnedMeshRenderer::onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
+}
+
+void GPUSkinnedMeshRenderer::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
+}
+
+void GPUSkinnedMeshRenderer::onInspector(ui::WidgetContainer& p_root) {
+    
+}
+
 
 }

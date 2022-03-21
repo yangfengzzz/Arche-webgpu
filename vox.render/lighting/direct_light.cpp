@@ -37,4 +37,17 @@ Matrix4x4F DirectLight::shadowProjectionMatrix() {
     throw std::exception();
 }
 
+//MARK: - Reflection
+void DirectLight::onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
+}
+
+void DirectLight::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
+}
+
+void DirectLight::onInspector(ui::WidgetContainer& p_root) {
+    
+}
+
 }

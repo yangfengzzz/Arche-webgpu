@@ -14,13 +14,13 @@ namespace vox {
 /**
  * IInspectorItem is an interface to any class that is serializable and drawable on inspector
  */
-class IInspectorItem : public VObject {
+class InspectorItem : public VObject {
 public:
     /**
      * Called when the inspector needs to create the UI elements for the given IInspectorItem
      * @param p_root p_root
      */
-    virtual void OnInspector(ui::WidgetContainer &p_root) = 0;
+    virtual void onInspector(ui::WidgetContainer &p_root) = 0;
 };
 
 

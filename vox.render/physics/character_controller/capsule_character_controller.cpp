@@ -42,5 +42,18 @@ bool CapsuleCharacterController::setClimbingMode(PxCapsuleClimbingMode::Enum mod
     return static_cast<PxCapsuleController *>(_nativeController)->setClimbingMode(mode);
 }
 
+//MARK: - Reflection
+void CapsuleCharacterController::onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
+}
+
+void CapsuleCharacterController::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
+}
+
+void CapsuleCharacterController::onInspector(ui::WidgetContainer& p_root) {
+    
+}
+
 }
 }

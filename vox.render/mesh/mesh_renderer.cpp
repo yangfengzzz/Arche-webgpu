@@ -92,5 +92,18 @@ void MeshRenderer::_updateBounds(BoundingBox3F &worldBounds) {
     }
 }
 
+//MARK: - Reflection
+void MeshRenderer::onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
+}
+
+void MeshRenderer::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
+}
+
+void MeshRenderer::onInspector(ui::WidgetContainer& p_root) {
+    
+}
+
 
 }

@@ -34,4 +34,17 @@ Matrix4x4F PointLight::shadowProjectionMatrix() {
     return makepPerspective<float>(degreesToRadians(120), 1, 0.1, 100);
 }
 
+//MARK: - Reflection
+void PointLight::onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
+}
+
+void PointLight::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
+}
+
+void PointLight::onInspector(ui::WidgetContainer& p_root) {
+    
+}
+
 }

@@ -37,6 +37,22 @@ public:
     
     int numSoaJoints();
     
+public:
+    /**
+     * Serialize the component
+     */
+    void onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) override;
+    
+    /**
+     * Deserialize the component
+     */
+    void onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) override;
+    
+    /**
+     * Defines how the component should be drawn in the inspector
+     */
+    void onInspector(ui::WidgetContainer& p_root) override;
+    
 private:
     // Computes the bounding box of _skeleton. This is the box that encloses all
     // skeleton's joints in model space.

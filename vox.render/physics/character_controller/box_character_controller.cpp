@@ -42,5 +42,18 @@ bool BoxCharacterController::setHalfForwardExtent(float halfForwardExtent) {
     return static_cast<PxBoxController *>(_nativeController)->setHalfForwardExtent(halfForwardExtent);
 }
 
+//MARK: - Reflection
+void BoxCharacterController::onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
+}
+
+void BoxCharacterController::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
+}
+
+void BoxCharacterController::onInspector(ui::WidgetContainer& p_root) {
+    
+}
+
 }
 }

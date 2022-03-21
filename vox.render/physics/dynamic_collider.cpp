@@ -207,5 +207,18 @@ void DynamicCollider::_onLateUpdate() {
 #endif
 }
 
+//MARK: - Reflection
+void DynamicCollider::onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
+}
+
+void DynamicCollider::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
+}
+
+void DynamicCollider::onInspector(ui::WidgetContainer& p_root) {
+    
+}
+
 }
 }

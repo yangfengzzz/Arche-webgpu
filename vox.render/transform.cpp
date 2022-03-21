@@ -422,4 +422,17 @@ void Transform::_rotateXYZ(float x, float y, float z, bool relativeToLocal) {
     _rotateByQuat(rotQuat, relativeToLocal);
 }
 
+//MARK: - Reflection
+void Transform::onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
+}
+
+void Transform::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
+}
+
+void Transform::onInspector(ui::WidgetContainer& p_root) {
+    
+}
+
 }

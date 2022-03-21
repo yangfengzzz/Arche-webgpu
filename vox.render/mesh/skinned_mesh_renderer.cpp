@@ -518,4 +518,17 @@ int SkinnedMeshRenderer::numSoaJoints() {
     return _skeleton.num_soa_joints();
 }
 
+//MARK: - Reflection
+void SkinnedMeshRenderer::onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
+}
+
+void SkinnedMeshRenderer::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
+}
+
+void SkinnedMeshRenderer::onInspector(ui::WidgetContainer& p_root) {
+    
+}
+
 }

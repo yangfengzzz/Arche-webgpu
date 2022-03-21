@@ -39,4 +39,17 @@ Matrix4x4F SpotLight::shadowProjectionMatrix() {
     return makepPerspective<float>(fov, 1, 0.1, distance + 5);
 }
 
+//MARK: - Reflection
+void SpotLight::onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
+}
+
+void SpotLight::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
+}
+
+void SpotLight::onInspector(ui::WidgetContainer& p_root) {
+    
+}
+
 }

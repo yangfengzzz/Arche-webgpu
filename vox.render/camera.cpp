@@ -306,4 +306,17 @@ uint32_t Camera::framebufferHeight() const {
     return _fbHeight;
 }
 
+//MARK: - Reflection
+void Camera::onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
+}
+
+void Camera::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
+}
+
+void Camera::onInspector(ui::WidgetContainer& p_root) {
+    
+}
+
 }

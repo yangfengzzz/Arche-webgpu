@@ -7,6 +7,7 @@
 #pragma once
 
 #include "scene_forward.h"
+#include "inspector_item.h"
 #include <memory>
 #include <string>
 #include <typeindex>
@@ -16,7 +17,7 @@ namespace vox {
 /**
  * The base class of the components.
  */
-class Component {
+class Component : public InspectorItem {
 public:
     explicit Component(Entity *entity);
     
