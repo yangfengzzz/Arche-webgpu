@@ -700,6 +700,12 @@
 		04FDF05027E7FB1500BBE8E4 /* radio_button.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF04E27E7FB1500BBE8E4 /* radio_button.h */; };
 		04FDF05327E7FFD300BBE8E4 /* radio_button_linker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF05127E7FFD300BBE8E4 /* radio_button_linker.cpp */; };
 		04FDF05427E7FFD300BBE8E4 /* radio_button_linker.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF05227E7FFD300BBE8E4 /* radio_button_linker.h */; };
+		04FDF05927E801AD00BBE8E4 /* slider_int.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF05727E801AD00BBE8E4 /* slider_int.cpp */; };
+		04FDF05A27E801AD00BBE8E4 /* slider_int.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF05827E801AD00BBE8E4 /* slider_int.h */; };
+		04FDF05D27E802AC00BBE8E4 /* slider_float.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF05B27E802AC00BBE8E4 /* slider_float.cpp */; };
+		04FDF05E27E802AC00BBE8E4 /* slider_float.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF05C27E802AC00BBE8E4 /* slider_float.h */; };
+		04FDF06127E8030600BBE8E4 /* slider_double.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF05F27E8030600BBE8E4 /* slider_double.cpp */; };
+		04FDF06227E8030600BBE8E4 /* slider_double.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF06027E8030600BBE8E4 /* slider_double.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1612,6 +1618,17 @@
 		04FDF04E27E7FB1500BBE8E4 /* radio_button.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = radio_button.h; sourceTree = "<group>"; };
 		04FDF05127E7FFD300BBE8E4 /* radio_button_linker.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = radio_button_linker.cpp; sourceTree = "<group>"; };
 		04FDF05227E7FFD300BBE8E4 /* radio_button_linker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = radio_button_linker.h; sourceTree = "<group>"; };
+		04FDF05627E8011F00BBE8E4 /* slider_single_scalar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = slider_single_scalar.h; sourceTree = "<group>"; };
+		04FDF05727E801AD00BBE8E4 /* slider_int.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = slider_int.cpp; sourceTree = "<group>"; };
+		04FDF05827E801AD00BBE8E4 /* slider_int.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = slider_int.h; sourceTree = "<group>"; };
+		04FDF05B27E802AC00BBE8E4 /* slider_float.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = slider_float.cpp; sourceTree = "<group>"; };
+		04FDF05C27E802AC00BBE8E4 /* slider_float.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = slider_float.h; sourceTree = "<group>"; };
+		04FDF05F27E8030600BBE8E4 /* slider_double.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = slider_double.cpp; sourceTree = "<group>"; };
+		04FDF06027E8030600BBE8E4 /* slider_double.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = slider_double.h; sourceTree = "<group>"; };
+		04FDF06327E8039100BBE8E4 /* slider_multiple_scalars.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = slider_multiple_scalars.h; sourceTree = "<group>"; };
+		04FDF06427E803E800BBE8E4 /* slider_multiple_ints.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = slider_multiple_ints.h; sourceTree = "<group>"; };
+		04FDF06527E8043C00BBE8E4 /* slider_multiple_floats.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = slider_multiple_floats.h; sourceTree = "<group>"; };
+		04FDF06627E8046D00BBE8E4 /* slider_multiple_doubles.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = slider_multiple_doubles.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2826,6 +2843,7 @@
 				04FDF02627E7738D00BBE8E4 /* menu */,
 				04FDF02F27E781B900BBE8E4 /* plot */,
 				04FDF03C27E7F8DF00BBE8E4 /* selection */,
+				04FDF05527E800DC00BBE8E4 /* sliders */,
 				04FDEF9D27E719E100BBE8E4 /* widget_container.h */,
 				04FDEF9C27E719E100BBE8E4 /* widget_container.cpp */,
 				04FDEFB727E7417300BBE8E4 /* alignment.h */,
@@ -2981,6 +2999,24 @@
 			path = selection;
 			sourceTree = "<group>";
 		};
+		04FDF05527E800DC00BBE8E4 /* sliders */ = {
+			isa = PBXGroup;
+			children = (
+				04FDF05627E8011F00BBE8E4 /* slider_single_scalar.h */,
+				04FDF05827E801AD00BBE8E4 /* slider_int.h */,
+				04FDF05727E801AD00BBE8E4 /* slider_int.cpp */,
+				04FDF05C27E802AC00BBE8E4 /* slider_float.h */,
+				04FDF05B27E802AC00BBE8E4 /* slider_float.cpp */,
+				04FDF06027E8030600BBE8E4 /* slider_double.h */,
+				04FDF05F27E8030600BBE8E4 /* slider_double.cpp */,
+				04FDF06327E8039100BBE8E4 /* slider_multiple_scalars.h */,
+				04FDF06427E803E800BBE8E4 /* slider_multiple_ints.h */,
+				04FDF06527E8043C00BBE8E4 /* slider_multiple_floats.h */,
+				04FDF06627E8046D00BBE8E4 /* slider_multiple_doubles.h */,
+			);
+			path = sliders;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -3126,6 +3162,7 @@
 				04F9E90B27D4657A00BD291B /* particle_renderer.h in Headers */,
 				047BF16A27AD4339003F3599 /* wgsl_pbr_frag.h in Headers */,
 				047BF17527AD6E33003F3599 /* sampled_texturecube.h in Headers */,
+				04FDF05A27E801AD00BBE8E4 /* slider_int.h in Headers */,
 				047BF09027ABBAF0003F3599 /* wgsl_color_vert.h in Headers */,
 				047BF0CF27AC0D59003F3599 /* direct_light.h in Headers */,
 				04FDF01D27E7714B00BBE8E4 /* new_line.h in Headers */,
@@ -3238,6 +3275,7 @@
 				04FDF01927E770C100BBE8E4 /* group_collapsable.h in Headers */,
 				04FDEFC227E7452000BBE8E4 /* panel_undecorated.h in Headers */,
 				0495473F27A25B1300783C84 /* buffer.h in Headers */,
+				04FDF05E27E802AC00BBE8E4 /* slider_float.h in Headers */,
 				047BF09427ABBBA3003F3599 /* wgsl_normal_vert.h in Headers */,
 				047BF0D027AC0D59003F3599 /* light_manager.h in Headers */,
 				04FDEFB627E7413800BBE8E4 /* panel_transformable.h in Headers */,
@@ -3301,6 +3339,7 @@
 				04F9E90F27D465A800BD291B /* particle_material.h in Headers */,
 				047BF17927AE0623003F3599 /* sampled_texture2d_view.h in Headers */,
 				0495468B279F8CD600783C84 /* std_helpers.h in Headers */,
+				04FDF06227E8030600BBE8E4 /* slider_double.h in Headers */,
 				047BF14927ACF275003F3599 /* animator.h in Headers */,
 				047BEFF727A552B9003F3599 /* wgsl_skinning_vert.h in Headers */,
 				0495467C279F8CD600783C84 /* components_manager.h in Headers */,
@@ -3576,6 +3615,7 @@
 				047BF01C27A65E7F003F3599 /* stb.cpp in Sources */,
 				047BF07427A6819C003F3599 /* astc_ktx_dds.cpp in Sources */,
 				0443E8CF27C4B2F90099E13A /* shadow_subpass.cpp in Sources */,
+				04FDF05927E801AD00BBE8E4 /* slider_int.cpp in Sources */,
 				049546E4279FA7D800783C84 /* backend_binding.cpp in Sources */,
 				0495467B279F8CD600783C84 /* entity.cpp in Sources */,
 				047BF06227A680C3003F3599 /* astc_image_load_store.cpp in Sources */,
@@ -3638,6 +3678,7 @@
 				04954679279F8CD600783C84 /* transform.cpp in Sources */,
 				047BF14727ACF275003F3599 /* animator.cpp in Sources */,
 				04FDEFFA27E762C100BBE8E4 /* input_float.cpp in Sources */,
+				04FDF06127E8030600BBE8E4 /* slider_double.cpp in Sources */,
 				049546FA279FC9B400783C84 /* graphics_application.cpp in Sources */,
 				047BF06C27A6819C003F3599 /* astc_weight_align.cpp in Sources */,
 				047BF13F27ACF245003F3599 /* fbx_mesh.cpp in Sources */,
@@ -3650,6 +3691,7 @@
 				04F9E92427D4AE3E00BD291B /* wgsl_particle_noise.cpp in Sources */,
 				047BF06F27A6819C003F3599 /* astc_quantization.cpp in Sources */,
 				04128443279ED3A60071BD86 /* timer.cpp in Sources */,
+				04FDF05D27E802AC00BBE8E4 /* slider_float.cpp in Sources */,
 				0495468C279F8CD600783C84 /* component.cpp in Sources */,
 				047BF07027A6819C003F3599 /* astc_partition_tables.cpp in Sources */,
 				047BF16527AD3FE0003F3599 /* wgsl_ibl_frag_define.cpp in Sources */,
