@@ -728,6 +728,7 @@
 		04FDF09027E80A8700BBE8E4 /* progress_bar.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF08E27E80A8700BBE8E4 /* progress_bar.h */; };
 		04FDF09327E80B0A00BBE8E4 /* separator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF09127E80B0A00BBE8E4 /* separator.cpp */; };
 		04FDF09427E80B0A00BBE8E4 /* separator.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF09227E80B0A00BBE8E4 /* separator.h */; };
+		04FDF09827E80C1C00BBE8E4 /* gui_drawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF09627E80C1C00BBE8E4 /* gui_drawer.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1673,6 +1674,8 @@
 		04FDF08E27E80A8700BBE8E4 /* progress_bar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = progress_bar.h; sourceTree = "<group>"; };
 		04FDF09127E80B0A00BBE8E4 /* separator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = separator.cpp; sourceTree = "<group>"; };
 		04FDF09227E80B0A00BBE8E4 /* separator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = separator.h; sourceTree = "<group>"; };
+		04FDF09627E80C1C00BBE8E4 /* gui_drawer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gui_drawer.h; sourceTree = "<group>"; };
+		04FDF09927E80C2B00BBE8E4 /* gui_drawer-inl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "gui_drawer-inl.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2856,6 +2859,8 @@
 				04FDEF9727E714EF00BBE8E4 /* widgets */,
 				04FDEFCC27E748EB00BBE8E4 /* ui_manager.h */,
 				04FDEFCB27E748EB00BBE8E4 /* ui_manager.cpp */,
+				04FDF09627E80C1C00BBE8E4 /* gui_drawer.h */,
+				04FDF09927E80C2B00BBE8E4 /* gui_drawer-inl.h */,
 			);
 			path = ui;
 			sourceTree = "<group>";
@@ -3371,6 +3376,7 @@
 				04FDEFB627E7413800BBE8E4 /* panel_transformable.h in Headers */,
 				04FDF02127E7719900BBE8E4 /* spacing.h in Headers */,
 				047BEFE627A53FB8003F3599 /* wgsl_blend_shape_input.h in Headers */,
+				04FDF09827E80C1C00BBE8E4 /* gui_drawer.h in Headers */,
 				047BF19A27AE7004003F3599 /* gpu_skinned_mesh_renderer.h in Headers */,
 				047BF02127A66084003F3599 /* filesystem.h in Headers */,
 				04FDF00327E763F400BBE8E4 /* input_text.h in Headers */,

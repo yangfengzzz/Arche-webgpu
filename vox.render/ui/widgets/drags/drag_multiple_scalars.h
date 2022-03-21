@@ -22,13 +22,13 @@ class DragMultipleScalars : public DataWidget<std::array<T, _Size>> {
 public:
     /**
      * Constructor
-     * @param p_dataType
-     * @param p_min
-     * @param p_max
-     * @param p_value
-     * @param p_speed
-     * @param p_label
-     * @param p_format
+     * @param p_dataType p_dataType
+     * @param p_min p_min
+     * @param p_max p_max
+     * @param p_value p_value
+     * @param p_speed p_speed
+     * @param p_label p_label
+     * @param p_format p_format
      */
     DragMultipleScalars(ImGuiDataType_ p_dataType,
                         T p_min,
@@ -37,7 +37,7 @@ public:
                         float p_speed,
                         const std::string &p_label,
                         const std::string &p_format) :
-    DataWidget<std::array<T, _Size>>(values), m_dataType(p_dataType),
+    DataWidget<std::array<T, _Size>>(values), _dataType(p_dataType),
     min(p_min), max(p_max), speed(p_speed), label(p_label), format(p_format) {
         values.fill(p_value);
     }
@@ -54,9 +54,10 @@ protected:
                 values[i] = max;
         }
         
-        if (ImGui::DragScalarN((label + _widgetID).c_str(), m_dataType, values.data(), _Size, speed, &min, &max, format.c_str())) {
+        if (ImGui::DragScalarN((label + DataWidget<std::array<T, _Size>>::_widgetID).c_str(),
+                               _dataType, values.data(), _Size, speed, &min, &max, format.c_str())) {
             valueChangedEvent.invoke(values);
-            notifyChange();
+            DataWidget<std::array<T, _Size>>::notifyChange();
         }
     }
     
