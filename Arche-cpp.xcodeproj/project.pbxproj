@@ -738,6 +738,11 @@
 		04FDF0B227E8710500BBE8E4 /* console.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0B027E8710500BBE8E4 /* console.cpp */; };
 		04FDF0B527E872FB00BBE8E4 /* game_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0B327E872FB00BBE8E4 /* game_view.cpp */; };
 		04FDF0B827E8741100BBE8E4 /* hierarchy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0B627E8741100BBE8E4 /* hierarchy.cpp */; };
+		04FDF0BB27E875BC00BBE8E4 /* inspector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0B927E875BC00BBE8E4 /* inspector.cpp */; };
+		04FDF0BE27E8771F00BBE8E4 /* material_editor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0BC27E8771F00BBE8E4 /* material_editor.cpp */; };
+		04FDF0C127E8780C00BBE8E4 /* menu_bar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0BF27E8780C00BBE8E4 /* menu_bar.cpp */; };
+		04FDF0C427E8799A00BBE8E4 /* project_settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0C227E8799A00BBE8E4 /* project_settings.cpp */; };
+		04FDF0C727E87A2800BBE8E4 /* scene_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0C527E87A2800BBE8E4 /* scene_view.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1702,6 +1707,16 @@
 		04FDF0B427E872FB00BBE8E4 /* game_view.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = game_view.h; sourceTree = "<group>"; };
 		04FDF0B627E8741100BBE8E4 /* hierarchy.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = hierarchy.cpp; sourceTree = "<group>"; };
 		04FDF0B727E8741100BBE8E4 /* hierarchy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hierarchy.h; sourceTree = "<group>"; };
+		04FDF0B927E875BC00BBE8E4 /* inspector.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = inspector.cpp; sourceTree = "<group>"; };
+		04FDF0BA27E875BC00BBE8E4 /* inspector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = inspector.h; sourceTree = "<group>"; };
+		04FDF0BC27E8771F00BBE8E4 /* material_editor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = material_editor.cpp; sourceTree = "<group>"; };
+		04FDF0BD27E8771F00BBE8E4 /* material_editor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = material_editor.h; sourceTree = "<group>"; };
+		04FDF0BF27E8780C00BBE8E4 /* menu_bar.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = menu_bar.cpp; sourceTree = "<group>"; };
+		04FDF0C027E8780C00BBE8E4 /* menu_bar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = menu_bar.h; sourceTree = "<group>"; };
+		04FDF0C227E8799A00BBE8E4 /* project_settings.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = project_settings.cpp; sourceTree = "<group>"; };
+		04FDF0C327E8799A00BBE8E4 /* project_settings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = project_settings.h; sourceTree = "<group>"; };
+		04FDF0C527E87A2800BBE8E4 /* scene_view.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = scene_view.cpp; sourceTree = "<group>"; };
+		04FDF0C627E87A2800BBE8E4 /* scene_view.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = scene_view.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3147,10 +3162,20 @@
 				04FDF0AA27E86EA700BBE8E4 /* view_controllable.cpp */,
 				04FDF0AE27E86F9200BBE8E4 /* asset_view.h */,
 				04FDF0AD27E86F9200BBE8E4 /* asset_view.cpp */,
+				04FDF0C627E87A2800BBE8E4 /* scene_view.h */,
+				04FDF0C527E87A2800BBE8E4 /* scene_view.cpp */,
 				04FDF0B127E8710500BBE8E4 /* console.h */,
 				04FDF0B027E8710500BBE8E4 /* console.cpp */,
 				04FDF0B727E8741100BBE8E4 /* hierarchy.h */,
 				04FDF0B627E8741100BBE8E4 /* hierarchy.cpp */,
+				04FDF0BA27E875BC00BBE8E4 /* inspector.h */,
+				04FDF0B927E875BC00BBE8E4 /* inspector.cpp */,
+				04FDF0BD27E8771F00BBE8E4 /* material_editor.h */,
+				04FDF0BC27E8771F00BBE8E4 /* material_editor.cpp */,
+				04FDF0C027E8780C00BBE8E4 /* menu_bar.h */,
+				04FDF0BF27E8780C00BBE8E4 /* menu_bar.cpp */,
+				04FDF0C327E8799A00BBE8E4 /* project_settings.h */,
+				04FDF0C227E8799A00BBE8E4 /* project_settings.cpp */,
 			);
 			path = ui;
 			sourceTree = "<group>";
@@ -4011,6 +4036,7 @@
 				04FDEF6227E4AF6500BBE8E4 /* noise_value_node.cpp in Sources */,
 				04FDEF4A27E47C0700BBE8E4 /* min_mesh_coordinates_node.cpp in Sources */,
 				04219CBD27E31F9F00F52C74 /* node_editor.cpp in Sources */,
+				04FDF0BB27E875BC00BBE8E4 /* inspector.cpp in Sources */,
 				04219CC627E408AD00F52C74 /* layered_noise_manager.cpp in Sources */,
 				04219CA527E2FC7900F52C74 /* generator_mask.cpp in Sources */,
 				04FDF0B227E8710500BBE8E4 /* console.cpp in Sources */,
@@ -4027,13 +4053,16 @@
 				04FDEF5327E47EE200BBE8E4 /* noise_cellular_node.cpp in Sources */,
 				047BF1E027AFAF4C003F3599 /* imgui_zmo.cpp in Sources */,
 				04FDF0AC27E86EA700BBE8E4 /* view_controllable.cpp in Sources */,
+				04FDF0C427E8799A00BBE8E4 /* project_settings.cpp in Sources */,
 				04FDEF3A27E44CDC00BBE8E4 /* duplicate_node.cpp in Sources */,
 				04219CC127E323D700F52C74 /* imgui_shapes.cpp in Sources */,
 				04FDF0A627E867AD00BBE8E4 /* asset_properties.cpp in Sources */,
+				04FDF0C727E87A2800BBE8E4 /* scene_view.cpp in Sources */,
 				04FDEF4127E4542100BBE8E4 /* math_function_node.cpp in Sources */,
 				04219CD227E42B9E00F52C74 /* add_node.cpp in Sources */,
 				04219CC927E411C100F52C74 /* output_node.cpp in Sources */,
 				04FDF0B527E872FB00BBE8E4 /* game_view.cpp in Sources */,
+				04FDF0BE27E8771F00BBE8E4 /* material_editor.cpp in Sources */,
 				04219CA127E2DF7000F52C74 /* mesh_generator_manager.cpp in Sources */,
 				04FDEF7D27E4B81500BBE8E4 /* time_based_seed_node.cpp in Sources */,
 				04FDF0A927E868E900BBE8E4 /* view.cpp in Sources */,
@@ -4044,6 +4073,7 @@
 				04219C9827E175F400F52C74 /* main_menu.cpp in Sources */,
 				04FDEF8027E4B88D00BBE8E4 /* visualizer_node.cpp in Sources */,
 				04FDEF3127E4435A00BBE8E4 /* curve_node.cpp in Sources */,
+				04FDF0C127E8780C00BBE8E4 /* menu_bar.cpp in Sources */,
 				04FDEF3D27E44D5B00BBE8E4 /* hill_node.cpp in Sources */,
 				04219CC527E4075700F52C74 /* noise_layer.cpp in Sources */,
 				04219C9127E1759D00F52C74 /* gui_entry.cpp in Sources */,

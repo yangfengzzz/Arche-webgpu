@@ -47,7 +47,7 @@ public:
     
     /**
      * Select the widget
-     * @param p_actor p_actor
+     * @param p_widget p_widget
      */
     void selectActorByWidget(TreeNode& p_widget);
     
