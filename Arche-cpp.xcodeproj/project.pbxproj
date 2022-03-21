@@ -729,6 +729,7 @@
 		04FDF09327E80B0A00BBE8E4 /* separator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF09127E80B0A00BBE8E4 /* separator.cpp */; };
 		04FDF09427E80B0A00BBE8E4 /* separator.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF09227E80B0A00BBE8E4 /* separator.h */; };
 		04FDF09827E80C1C00BBE8E4 /* gui_drawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF09627E80C1C00BBE8E4 /* gui_drawer.h */; };
+		04FDF09B27E80F0E00BBE8E4 /* gui_drawer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF09A27E80F0E00BBE8E4 /* gui_drawer.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1676,6 +1677,7 @@
 		04FDF09227E80B0A00BBE8E4 /* separator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = separator.h; sourceTree = "<group>"; };
 		04FDF09627E80C1C00BBE8E4 /* gui_drawer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gui_drawer.h; sourceTree = "<group>"; };
 		04FDF09927E80C2B00BBE8E4 /* gui_drawer-inl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "gui_drawer-inl.h"; sourceTree = "<group>"; };
+		04FDF09A27E80F0E00BBE8E4 /* gui_drawer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gui_drawer.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2861,6 +2863,7 @@
 				04FDEFCB27E748EB00BBE8E4 /* ui_manager.cpp */,
 				04FDF09627E80C1C00BBE8E4 /* gui_drawer.h */,
 				04FDF09927E80C2B00BBE8E4 /* gui_drawer-inl.h */,
+				04FDF09A27E80F0E00BBE8E4 /* gui_drawer.cpp */,
 			);
 			path = ui;
 			sourceTree = "<group>";
@@ -3838,6 +3841,7 @@
 				04FDF02D27E7743600BBE8E4 /* menu_list.cpp in Sources */,
 				047BF12327ACEBC7003F3599 /* box_collider_shape.cpp in Sources */,
 				04F9E91227D475D700BD291B /* sampled_texture3d.cpp in Sources */,
+				04FDF09B27E80F0E00BBE8E4 /* gui_drawer.cpp in Sources */,
 				04954681279F8CD600783C84 /* script.cpp in Sources */,
 				047BF09F27ABDA3A003F3599 /* wgsl_mobile_material_frag.cpp in Sources */,
 				0495470B279FCD3C00783C84 /* spherical.cpp in Sources */,

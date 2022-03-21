@@ -70,7 +70,7 @@ public:
     T &createWidget(Args &&... p_args) {
         _widgets.emplace_back(new T(p_args...), MemoryMode::INTERNAL_MANAGEMENT);
         T &instance = *reinterpret_cast<T *>(_widgets.back().first);
-        instance.SetParent(this);
+        instance.setParent(this);
         return instance;
     }
     

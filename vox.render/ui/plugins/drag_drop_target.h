@@ -16,25 +16,24 @@ namespace ui {
  * Represents a drag and drop target
  */
 template<typename T>
-class DDTarget : public IPlugin {
+class DDTarget : public Plugin {
 public:
     /**
      * Create the drag and drop target
-     * @param p_identifier
+     * @param p_identifier p_identifier
      */
     DDTarget(const std::string &p_identifier) : identifier(p_identifier) {
     }
     
     /**
      * Execute the drag and drop target behaviour
-     * @param p_identifier
      */
-    virtual void Execute() override {
+    virtual void execute() override {
         if (ImGui::BeginDragDropTarget()) {
-            if (!m_isHovered)
-                HoverStartEvent.Invoke();
+            if (!_isHovered)
+                hoverStartEvent.invoke();
             
-            m_isHovered = true;
+            _isHovered = true;
             
             ImGuiDragDropFlags target_flags = 0;
             // Don't wait until the delivery (release mouse button on a target) to do something
@@ -45,14 +44,14 @@ public:
             
             if (const ImGuiPayload *payload = ImGui::AcceptDragDropPayload(identifier.c_str(), target_flags)) {
                 T data = *(T *) payload->Data;
-                DataReceivedEvent.Invoke(data);
+                dataReceivedEvent.invoke(data);
             }
             ImGui::EndDragDropTarget();
         } else {
-            if (m_isHovered)
-                HoverEndEvent.Invoke();
+            if (_isHovered)
+                hoverEndEvent.invoke();
             
-            m_isHovered = false;
+            _isHovered = false;
         }
     }
     
@@ -60,19 +59,19 @@ public:
      * Returns true if the drag and drop target is hovered by a drag and drop source
      */
     bool IsHovered() const {
-        return m_isHovered;
+        return _isHovered;
     }
     
 public:
     std::string identifier;
-    Event<T> DataReceivedEvent;
-    Event<> HoverStartEvent;
-    Event<> HoverEndEvent;
+    Event<T> dataReceivedEvent;
+    Event<> hoverStartEvent;
+    Event<> hoverEndEvent;
     
     bool showYellowRect = true;
     
 private:
-    bool m_isHovered;
+    bool _isHovered;
 };
 
 
