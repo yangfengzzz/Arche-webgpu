@@ -737,6 +737,7 @@
 		04FDF0AF27E86F9200BBE8E4 /* asset_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0AD27E86F9200BBE8E4 /* asset_view.cpp */; };
 		04FDF0B227E8710500BBE8E4 /* console.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0B027E8710500BBE8E4 /* console.cpp */; };
 		04FDF0B527E872FB00BBE8E4 /* game_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0B327E872FB00BBE8E4 /* game_view.cpp */; };
+		04FDF0B827E8741100BBE8E4 /* hierarchy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0B627E8741100BBE8E4 /* hierarchy.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1699,6 +1700,8 @@
 		04FDF0B127E8710500BBE8E4 /* console.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = console.h; sourceTree = "<group>"; };
 		04FDF0B327E872FB00BBE8E4 /* game_view.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = game_view.cpp; sourceTree = "<group>"; };
 		04FDF0B427E872FB00BBE8E4 /* game_view.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = game_view.h; sourceTree = "<group>"; };
+		04FDF0B627E8741100BBE8E4 /* hierarchy.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = hierarchy.cpp; sourceTree = "<group>"; };
+		04FDF0B727E8741100BBE8E4 /* hierarchy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hierarchy.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3146,6 +3149,8 @@
 				04FDF0AD27E86F9200BBE8E4 /* asset_view.cpp */,
 				04FDF0B127E8710500BBE8E4 /* console.h */,
 				04FDF0B027E8710500BBE8E4 /* console.cpp */,
+				04FDF0B727E8741100BBE8E4 /* hierarchy.h */,
+				04FDF0B627E8741100BBE8E4 /* hierarchy.cpp */,
 			);
 			path = ui;
 			sourceTree = "<group>";
@@ -4052,6 +4057,7 @@
 				04FDEF5627E4816900BBE8E4 /* noise_open_simplex2_node.cpp in Sources */,
 				04FDEF5927E4AD8F00BBE8E4 /* noise_open_simplex2s_node.cpp in Sources */,
 				04219CA927E30D5600F52C74 /* clear_mesh_generator.cpp in Sources */,
+				04FDF0B827E8741100BBE8E4 /* hierarchy.cpp in Sources */,
 				04FDEF2E27E442B300BBE8E4 /* cos_node.cpp in Sources */,
 				04FDEF3427E443F000BBE8E4 /* imgui_curve.cpp in Sources */,
 			);
