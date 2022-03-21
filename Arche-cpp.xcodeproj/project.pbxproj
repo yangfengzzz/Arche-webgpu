@@ -688,6 +688,18 @@
 		04FDF03727E7829C00BBE8E4 /* plot_lines.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF03527E7829C00BBE8E4 /* plot_lines.h */; };
 		04FDF03A27E7839D00BBE8E4 /* plot_histogram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF03827E7839D00BBE8E4 /* plot_histogram.cpp */; };
 		04FDF03B27E7839D00BBE8E4 /* plot_histogram.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF03927E7839D00BBE8E4 /* plot_histogram.h */; };
+		04FDF03F27E7F8F800BBE8E4 /* check_box.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF03D27E7F8F800BBE8E4 /* check_box.cpp */; };
+		04FDF04027E7F8F800BBE8E4 /* check_box.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF03E27E7F8F800BBE8E4 /* check_box.h */; };
+		04FDF04327E7F98F00BBE8E4 /* color_edit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF04127E7F98F00BBE8E4 /* color_edit.cpp */; };
+		04FDF04427E7F98F00BBE8E4 /* color_edit.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF04227E7F98F00BBE8E4 /* color_edit.h */; };
+		04FDF04727E7FA2000BBE8E4 /* color_picker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF04527E7FA2000BBE8E4 /* color_picker.cpp */; };
+		04FDF04827E7FA2000BBE8E4 /* color_picker.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF04627E7FA2000BBE8E4 /* color_picker.h */; };
+		04FDF04B27E7FAA200BBE8E4 /* combo_box.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF04927E7FAA200BBE8E4 /* combo_box.cpp */; };
+		04FDF04C27E7FAA200BBE8E4 /* combo_box.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF04A27E7FAA200BBE8E4 /* combo_box.h */; };
+		04FDF04F27E7FB1500BBE8E4 /* radio_button.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF04D27E7FB1500BBE8E4 /* radio_button.cpp */; };
+		04FDF05027E7FB1500BBE8E4 /* radio_button.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF04E27E7FB1500BBE8E4 /* radio_button.h */; };
+		04FDF05327E7FFD300BBE8E4 /* radio_button_linker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF05127E7FFD300BBE8E4 /* radio_button_linker.cpp */; };
+		04FDF05427E7FFD300BBE8E4 /* radio_button_linker.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF05227E7FFD300BBE8E4 /* radio_button_linker.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1588,6 +1600,18 @@
 		04FDF03527E7829C00BBE8E4 /* plot_lines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = plot_lines.h; sourceTree = "<group>"; };
 		04FDF03827E7839D00BBE8E4 /* plot_histogram.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = plot_histogram.cpp; sourceTree = "<group>"; };
 		04FDF03927E7839D00BBE8E4 /* plot_histogram.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = plot_histogram.h; sourceTree = "<group>"; };
+		04FDF03D27E7F8F800BBE8E4 /* check_box.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = check_box.cpp; sourceTree = "<group>"; };
+		04FDF03E27E7F8F800BBE8E4 /* check_box.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = check_box.h; sourceTree = "<group>"; };
+		04FDF04127E7F98F00BBE8E4 /* color_edit.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = color_edit.cpp; sourceTree = "<group>"; };
+		04FDF04227E7F98F00BBE8E4 /* color_edit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = color_edit.h; sourceTree = "<group>"; };
+		04FDF04527E7FA2000BBE8E4 /* color_picker.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = color_picker.cpp; sourceTree = "<group>"; };
+		04FDF04627E7FA2000BBE8E4 /* color_picker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = color_picker.h; sourceTree = "<group>"; };
+		04FDF04927E7FAA200BBE8E4 /* combo_box.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = combo_box.cpp; sourceTree = "<group>"; };
+		04FDF04A27E7FAA200BBE8E4 /* combo_box.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = combo_box.h; sourceTree = "<group>"; };
+		04FDF04D27E7FB1500BBE8E4 /* radio_button.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = radio_button.cpp; sourceTree = "<group>"; };
+		04FDF04E27E7FB1500BBE8E4 /* radio_button.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = radio_button.h; sourceTree = "<group>"; };
+		04FDF05127E7FFD300BBE8E4 /* radio_button_linker.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = radio_button_linker.cpp; sourceTree = "<group>"; };
+		04FDF05227E7FFD300BBE8E4 /* radio_button_linker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = radio_button_linker.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2801,6 +2825,7 @@
 				04FDF00827E7663E00BBE8E4 /* layout */,
 				04FDF02627E7738D00BBE8E4 /* menu */,
 				04FDF02F27E781B900BBE8E4 /* plot */,
+				04FDF03C27E7F8DF00BBE8E4 /* selection */,
 				04FDEF9D27E719E100BBE8E4 /* widget_container.h */,
 				04FDEF9C27E719E100BBE8E4 /* widget_container.cpp */,
 				04FDEFB727E7417300BBE8E4 /* alignment.h */,
@@ -2937,6 +2962,25 @@
 			path = plot;
 			sourceTree = "<group>";
 		};
+		04FDF03C27E7F8DF00BBE8E4 /* selection */ = {
+			isa = PBXGroup;
+			children = (
+				04FDF03E27E7F8F800BBE8E4 /* check_box.h */,
+				04FDF03D27E7F8F800BBE8E4 /* check_box.cpp */,
+				04FDF04227E7F98F00BBE8E4 /* color_edit.h */,
+				04FDF04127E7F98F00BBE8E4 /* color_edit.cpp */,
+				04FDF04627E7FA2000BBE8E4 /* color_picker.h */,
+				04FDF04527E7FA2000BBE8E4 /* color_picker.cpp */,
+				04FDF04A27E7FAA200BBE8E4 /* combo_box.h */,
+				04FDF04927E7FAA200BBE8E4 /* combo_box.cpp */,
+				04FDF04E27E7FB1500BBE8E4 /* radio_button.h */,
+				04FDF04D27E7FB1500BBE8E4 /* radio_button.cpp */,
+				04FDF05227E7FFD300BBE8E4 /* radio_button_linker.h */,
+				04FDF05127E7FFD300BBE8E4 /* radio_button_linker.cpp */,
+			);
+			path = selection;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -3064,6 +3108,7 @@
 				047BF12427ACEBC7003F3599 /* box_collider_shape.h in Headers */,
 				04128447279ED3A60071BD86 /* engine.h in Headers */,
 				047BF09827ABBEEA003F3599 /* wgsl_worldpos_vert.h in Headers */,
+				04FDF05027E7FB1500BBE8E4 /* radio_button.h in Headers */,
 				04954700279FCD1100783C84 /* forward_application.h in Headers */,
 				04FDEFE527E757D200BBE8E4 /* drag_double.h in Headers */,
 				047BF0CC27AC0D59003F3599 /* spot_light.h in Headers */,
@@ -3107,6 +3152,7 @@
 				047BF08827ABB8F7003F3599 /* wgsl_worldpos_share.h in Headers */,
 				049546F7279FC92B00783C84 /* forward_subpass.h in Headers */,
 				04A053C627DF1AA1002D7449 /* wgsl_particle_simulation.h in Headers */,
+				04FDF05427E7FFD300BBE8E4 /* radio_button_linker.h in Headers */,
 				047BF12727ACEBC7003F3599 /* sphere_collider_shape.h in Headers */,
 				04FDEFC627E7459900BBE8E4 /* panel_window.h in Headers */,
 				0495475827A2868000783C84 /* primitive_mesh.h in Headers */,
@@ -3116,6 +3162,7 @@
 				04FDEFAA27E71F8500BBE8E4 /* button_simple.h in Headers */,
 				047BF10827ACEBB7003F3599 /* translational_joint.h in Headers */,
 				047BF17D27AE0ECA003F3599 /* skybox_subpass.h in Headers */,
+				04FDF04C27E7FAA200BBE8E4 /* combo_box.h in Headers */,
 				0495475D27A287CA00783C84 /* mesh_renderer.h in Headers */,
 				047BEFEB27A54561003F3599 /* wgsl_uv_share.h in Headers */,
 				04FDEFAE27E720D500BBE8E4 /* converter.h in Headers */,
@@ -3149,6 +3196,7 @@
 				04128472279EED090071BD86 /* stencil_state.h in Headers */,
 				04FDEFE927E759A200BBE8E4 /* drag_float.h in Headers */,
 				04128462279ED4B10071BD86 /* imconfig.h in Headers */,
+				04FDF04427E7F98F00BBE8E4 /* color_edit.h in Headers */,
 				04FDEFED27E75A3500BBE8E4 /* drag_int.h in Headers */,
 				048DBF0327D6DD47003AE9E8 /* wgsl_quad.h in Headers */,
 				04F9E91327D475D700BD291B /* sampled_texture3d.h in Headers */,
@@ -3239,6 +3287,7 @@
 				047BF01427A58872003F3599 /* wgsl_reflect.h in Headers */,
 				04128444279ED3A60071BD86 /* application.h in Headers */,
 				047BF13C27ACF245003F3599 /* fbx_mesh.h in Headers */,
+				04FDF04827E7FA2000BBE8E4 /* color_picker.h in Headers */,
 				04954685279F8CD600783C84 /* scene.h in Headers */,
 				04FDEFA427E71E3200BBE8E4 /* inspector_item.h in Headers */,
 				04FDEF9F27E719E100BBE8E4 /* widget_container.h in Headers */,
@@ -3247,6 +3296,7 @@
 				047BEFD727A4BFD9003F3599 /* wgsl_common_vert.h in Headers */,
 				0495474327A2640900783C84 /* index_buffer_binding.h in Headers */,
 				047BF19327AE6F74003F3599 /* scene_animator.h in Headers */,
+				04FDF04027E7F8F800BBE8E4 /* check_box.h in Headers */,
 				04128460279ED4B10071BD86 /* imgui_internal.h in Headers */,
 				04F9E90F27D465A800BD291B /* particle_material.h in Headers */,
 				047BF17927AE0623003F3599 /* sampled_texture2d_view.h in Headers */,
@@ -3487,6 +3537,7 @@
 				04FDEFC527E7459900BBE8E4 /* panel_window.cpp in Sources */,
 				04F9E92027D4AE0D00BD291B /* wgsl_particle_sdf.cpp in Sources */,
 				0495473227A24A1300783C84 /* pbr_base_material.cpp in Sources */,
+				04FDF04727E7FA2000BBE8E4 /* color_picker.cpp in Sources */,
 				047BF0AB27ABF9A3003F3599 /* wgsl_begin_viewdir_frag.cpp in Sources */,
 				04128479279EEEEC0071BD86 /* render_state.cpp in Sources */,
 				047BF07F27ABB6F3003F3599 /* wgsl_color_share.cpp in Sources */,
@@ -3502,6 +3553,7 @@
 				0443E8FA27C5C2ED0099E13A /* wgsl_shadow_frag.cpp in Sources */,
 				047BF0A727ABDFC8003F3599 /* wgsl_begin_mobile_frag.cpp in Sources */,
 				047BF15D27AD1435003F3599 /* wgsl_brdf.cpp in Sources */,
+				04FDF03F27E7F8F800BBE8E4 /* check_box.cpp in Sources */,
 				04FDEFF627E761FA00BBE8E4 /* input_int.cpp in Sources */,
 				047BF0FB27ACEBB7003F3599 /* hinge_joint.cpp in Sources */,
 				049546E5279FA7D800783C84 /* metal_binding.mm in Sources */,
@@ -3511,6 +3563,7 @@
 				047BF0BC27AC086B003F3599 /* light.cpp in Sources */,
 				047BF11427ACEBBF003F3599 /* character_controller.cpp in Sources */,
 				047BF06D27A6819C003F3599 /* astc_encoding_choice_error.cpp in Sources */,
+				04FDF04B27E7FAA200BBE8E4 /* combo_box.cpp in Sources */,
 				04F9E91627D4817A00BD291B /* particle_manager.cpp in Sources */,
 				0443E8D427C4BB500099E13A /* shadow_material.cpp in Sources */,
 				047BF16127AD1996003F3599 /* wgsl_direct_irradiance_frag_define.cpp in Sources */,
@@ -3557,6 +3610,7 @@
 				0495478627A403C700783C84 /* wgsl.cpp in Sources */,
 				0495472827A2405400783C84 /* sampled_texture2d.cpp in Sources */,
 				047BF17827AE0623003F3599 /* sampled_texture2d_view.cpp in Sources */,
+				04FDF04327E7F98F00BBE8E4 /* color_edit.cpp in Sources */,
 				047BF00327A562F4003F3599 /* wgsl_common.cpp in Sources */,
 				048DBF0227D6DD47003AE9E8 /* wgsl_quad.cpp in Sources */,
 				047BF0CE27AC0D59003F3599 /* ambient_light.cpp in Sources */,
@@ -3669,6 +3723,7 @@
 				04F9E92827D4B56100BD291B /* wgsl_particle_emission.cpp in Sources */,
 				047BF06A27A6819C003F3599 /* astc_pick_best_endpoint_format.cpp in Sources */,
 				0443E8FE27C5C7C40099E13A /* wgsl_shadow_common.cpp in Sources */,
+				04FDF05327E7FFD300BBE8E4 /* radio_button_linker.cpp in Sources */,
 				047BF10027ACEBB7003F3599 /* spherical_joint.cpp in Sources */,
 				049D2FF127DC856A0037DC6A /* wireframe_primitive_mesh.cpp in Sources */,
 				0495475327A2750900783C84 /* model_mesh.cpp in Sources */,
@@ -3697,6 +3752,7 @@
 				04FDF03227E781D800BBE8E4 /* plot.cpp in Sources */,
 				047BF01827A640A3003F3599 /* image.cpp in Sources */,
 				047BF09727ABBEEA003F3599 /* wgsl_worldpos_vert.cpp in Sources */,
+				04FDF04F27E7FB1500BBE8E4 /* radio_button.cpp in Sources */,
 				04FDEFC127E7452000BBE8E4 /* panel_undecorated.cpp in Sources */,
 				04954687279F8CD600783C84 /* camera.cpp in Sources */,
 				04128463279ED4B10071BD86 /* imgui_impl_glfw.cpp in Sources */,
