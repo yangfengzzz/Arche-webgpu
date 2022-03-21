@@ -313,11 +313,38 @@ void Entity::onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_acto
         /* Data node (Will be passed to the component) */
         tinyxml2::XMLElement* data = p_doc.NewElement("data");
         componentNode->InsertEndChild(data);
+        
+        /* Data serialization of the component */
+        component->onSerialize(p_doc, data);
     }
 }
 
-void Entity::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+void Entity::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_actorsRoot) {
+    Serializer::deserializeString(p_doc, p_actorsRoot, "name", name);
     
+    {
+        tinyxml2::XMLNode* componentsRoot = p_actorsRoot->FirstChildElement("components");
+        if (componentsRoot) {
+            tinyxml2::XMLElement* currentComponent = componentsRoot->FirstChildElement("component");
+
+            while (currentComponent) {
+                std::string componentType = currentComponent->FirstChildElement("type")->GetText();
+                currentComponent = currentComponent->NextSiblingElement("component");
+            }
+        }
+    }
+    
+    {
+        tinyxml2::XMLNode* behavioursRoot = p_actorsRoot->FirstChildElement("behaviours");
+
+        if (behavioursRoot) {
+            tinyxml2::XMLElement* currentBehaviour = behavioursRoot->FirstChildElement("behaviour");
+
+            while (currentBehaviour) {
+                std::string behaviourType = currentBehaviour->FirstChildElement("type")->GetText();
+            }
+        }
+    }
 }
 
 }        // namespace vox

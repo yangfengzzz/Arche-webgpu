@@ -2557,19 +2557,19 @@
 				04219CC027E323D700F52C74 /* imgui_shapes.h */,
 				04219CBF27E323D700F52C74 /* imgui_shapes.cpp */,
 				047BF1C527AFAF02003F3599 /* editor.entitlements */,
-				047BF1F327AFB885003F3599 /* shaderlib */,
-				04219C9E27E2DF4A00F52C74 /* node_editor */,
-				04219C9227E175CD00F52C74 /* component */,
-				04219CA227E2F53900F52C74 /* scene_component */,
 				04219CCE27E41D6A00F52C74 /* ui_font_manager.h */,
 				04219CCD27E41D6A00F52C74 /* ui_font_manager.cpp */,
-				047BF1D627AFAF4B003F3599 /* main.cpp */,
-				047BF1C727AFAF4A003F3599 /* editor.h */,
-				047BF1CA27AFAF4A003F3599 /* editor.cpp */,
 				04219CCB27E413FC00F52C74 /* editor_utils.h */,
 				04219CCA27E413FC00F52C74 /* editor_utils.cpp */,
 				04219C9027E1759D00F52C74 /* gui_entry.h */,
 				04219C8F27E1759D00F52C74 /* gui_entry.cpp */,
+				047BF1F327AFB885003F3599 /* shaderlib */,
+				04219C9E27E2DF4A00F52C74 /* node_editor */,
+				04219C9227E175CD00F52C74 /* component */,
+				04219CA227E2F53900F52C74 /* scene_component */,
+				047BF1D627AFAF4B003F3599 /* main.cpp */,
+				047BF1C727AFAF4A003F3599 /* editor.h */,
+				047BF1CA27AFAF4A003F3599 /* editor.cpp */,
 			);
 			path = editor;
 			sourceTree = "<group>";
@@ -4723,6 +4723,7 @@
 					./third_party/rttr/build/lib,
 					./third_party/fastnoise2/build/Release/lib,
 					./third_party/muparser/build,
+					./third_party/tinyxml2/build,
 				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
@@ -4765,6 +4766,7 @@
 					"-lrttr_core",
 					"-lFastNoise",
 					"-lmuparser",
+					"-ltinyxml2",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SYSTEM_HEADER_SEARCH_PATHS = (
@@ -4811,6 +4813,7 @@
 					./third_party/fastnoise2/include,
 					./third_party/fastnoiselite/Cpp,
 					./third_party/muparser/include,
+					./third_party/tinyxml2,
 				);
 			};
 			name = Debug;
@@ -4871,6 +4874,7 @@
 					./third_party/rttr/build/lib,
 					./third_party/fastnoise2/build/Release/lib,
 					./third_party/muparser/build,
+					./third_party/tinyxml2/build,
 				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
@@ -4913,6 +4917,7 @@
 					"-lrttr_core",
 					"-lFastNoise",
 					"-lmuparser",
+					"-ltinyxml2",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SYSTEM_HEADER_SEARCH_PATHS = (
@@ -4959,6 +4964,7 @@
 					./third_party/fastnoise2/include,
 					./third_party/fastnoiselite/Cpp,
 					./third_party/muparser/include,
+					./third_party/tinyxml2,
 				);
 			};
 			name = Release;

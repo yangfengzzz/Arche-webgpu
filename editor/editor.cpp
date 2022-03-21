@@ -23,7 +23,6 @@ void Editor::loadScene() {
     _scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
     
     auto rootEntity = _scene->createRootEntity();
-    _gui = std::make_unique<GUI>(_renderContext.get());
     _entry = std::make_unique<editor::GUIEntry>();
     _entry->setRootEntity(rootEntity->createChild("UI"));
     _mainCamera = _entry->sceneCamera;
