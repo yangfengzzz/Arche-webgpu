@@ -12,9 +12,11 @@
 
 namespace vox {
 SkyboxSubpass::SkyboxSubpass(RenderContext* renderContext,
+                             wgpu::TextureFormat depthStencilTextureFormat,
                              Scene* scene,
                              Camera* camera):
 Subpass(renderContext, scene, camera),
+_depthStencilTextureFormat(depthStencilTextureFormat),
 _vpMatrix(renderContext->device(), sizeof(Matrix4x4F),
           wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst){
     createCuboid();
@@ -42,7 +44,7 @@ void SkyboxSubpass::setTextureCubeMap(SampledTextureCubePtr v) {
 
 //MARK: - Render
 void SkyboxSubpass::prepare() {
-    _depthStencil.format = _renderContext->depthStencilTextureFormat();
+    _depthStencil.format = _depthStencilTextureFormat;
     _depthStencil.depthWriteEnabled = false;
     _depthStencil.depthCompare = wgpu::CompareFunction::LessEqual;
     _forwardPipelineDescriptor.depthStencil = &_depthStencil;

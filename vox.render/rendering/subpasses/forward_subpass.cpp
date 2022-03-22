@@ -14,13 +14,15 @@
 
 namespace vox {
 ForwardSubpass::ForwardSubpass(RenderContext* renderContext,
+                               wgpu::TextureFormat depthStencilTextureFormat,
                                Scene* scene,
                                Camera* camera):
-Subpass(renderContext, scene, camera) {
+Subpass(renderContext, scene, camera),
+_depthStencilTextureFormat(depthStencilTextureFormat) {
 }
 
 void ForwardSubpass::prepare() {
-    _depthStencil.format = _renderContext->depthStencilTextureFormat();
+    _depthStencil.format = _depthStencilTextureFormat;
     _forwardPipelineDescriptor.depthStencil = &_depthStencil;
     _colorTargetState.format = _renderContext->drawableTextureFormat();
     _fragment.targetCount = 1;

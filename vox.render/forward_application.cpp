@@ -32,6 +32,7 @@ bool ForwardApplication::prepare(Engine &engine) {
         auto factor = engine.window().contentScaleFactor();
         scene->updateSize(extent.width, extent.height, factor * extent.width, factor * extent.height);
         _mainCamera->resize(extent.width, extent.height, factor * extent.width, factor * extent.height);
+        _depthStencilTexture = _createDepthStencilView(factor * extent.width, factor * extent.height);
     }
     _lightManager->setCamera(_mainCamera);
     _shadowManager = std::make_unique<ShadowManager>(scene, _mainCamera);
@@ -52,7 +53,8 @@ bool ForwardApplication::prepare(Engine &engine) {
     _depthStencilAttachment.stencilLoadOp = wgpu::LoadOp::Clear;
     _depthStencilAttachment.stencilStoreOp = wgpu::StoreOp::Discard;
     _renderPass = std::make_unique<RenderPass>(_device, _renderPassDescriptor);
-    _renderPass->addSubpass(std::make_unique<ForwardSubpass>(_renderContext.get(), scene, _mainCamera));
+    _renderPass->addSubpass(std::make_unique<ForwardSubpass>(_renderContext.get(), _depthStencilTextureFormat,
+                                                             scene, _mainCamera));
     
     return true;
 }
@@ -66,7 +68,7 @@ void ForwardApplication::update(float delta_time) {
     
     // Render the lighting and composition pass
     _colorAttachments.view = _renderContext->currentDrawableTexture();
-    _depthStencilAttachment.view = _renderContext->depthStencilTexture();
+    _depthStencilAttachment.view = _depthStencilTexture;
     
     _renderPass->draw(commandEncoder, "Lighting & Composition Pass");
     // Finalize rendering here & push the command buffer to the GPU
@@ -84,6 +86,8 @@ void ForwardApplication::updateGPUTask(wgpu::CommandEncoder& commandEncoder) {
 bool ForwardApplication::resize(uint32_t win_width, uint32_t win_height,
                                 uint32_t fb_width, uint32_t fb_height) {
     GraphicsApplication::resize(win_width, win_height, fb_width, fb_height);
+    _depthStencilTexture = _createDepthStencilView(fb_width, fb_height);
+
     _sceneManager->currentScene()->updateSize(win_width, win_height, fb_width, fb_height);
     _mainCamera->resize(win_width, win_height, fb_width, fb_height);
     return true;
@@ -92,6 +96,20 @@ bool ForwardApplication::resize(uint32_t win_width, uint32_t win_height,
 void ForwardApplication::inputEvent(const InputEvent &inputEvent) {
     GraphicsApplication::inputEvent(inputEvent);
     _sceneManager->currentScene()->updateInputEvent(inputEvent);
+}
+
+wgpu::TextureView ForwardApplication::_createDepthStencilView(uint32_t width, uint32_t height) {
+    wgpu::TextureDescriptor descriptor;
+    descriptor.dimension = wgpu::TextureDimension::e2D;
+    descriptor.size.width = width;
+    descriptor.size.height = height;
+    descriptor.size.depthOrArrayLayers = 1;
+    descriptor.sampleCount = 1;
+    descriptor.format = _depthStencilTextureFormat;
+    descriptor.mipLevelCount = 1;
+    descriptor.usage = wgpu::TextureUsage::RenderAttachment;
+    auto depthStencilTexture = _device.CreateTexture(&descriptor);
+    return depthStencilTexture.CreateView();
 }
 
 }

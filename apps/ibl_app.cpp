@@ -17,7 +17,8 @@ bool IBLApp::prepare(Engine &engine) {
     ForwardApplication::prepare(engine);
     
     auto scene = _sceneManager->currentScene();
-    auto skybox = std::make_unique<SkyboxSubpass>(_renderContext.get(), scene, _mainCamera);
+    auto skybox = std::make_unique<SkyboxSubpass>(_renderContext.get(), _depthStencilTextureFormat,
+                                                  scene, _mainCamera);
     skybox->createCuboid();
     skybox->setTextureCubeMap(_cubeMap);
     _renderPass->addSubpass(std::move(skybox));

@@ -678,6 +678,7 @@
 		04FDF0D627E9546A00BBE8E4 /* grid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1D727AFAF4B003F3599 /* grid.cpp */; };
 		04FDF0D727E9548C00BBE8E4 /* wgsl_grid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1F427AFB8A9003F3599 /* wgsl_grid.cpp */; };
 		04FDF0D927E95DDB00BBE8E4 /* view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0A727E868E900BBE8E4 /* view.cpp */; };
+		04FDF0DA27E95F9800BBE8E4 /* game_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0B327E872FB00BBE8E4 /* game_view.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1632,8 +1633,6 @@
 		04FDF0A527E867AD00BBE8E4 /* asset_properties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = asset_properties.h; sourceTree = "<group>"; };
 		04FDF0A727E868E900BBE8E4 /* view.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = view.cpp; sourceTree = "<group>"; };
 		04FDF0A827E868E900BBE8E4 /* view.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = view.h; sourceTree = "<group>"; };
-		04FDF0AA27E86EA700BBE8E4 /* view_controllable.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = view_controllable.cpp; sourceTree = "<group>"; };
-		04FDF0AB27E86EA700BBE8E4 /* view_controllable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = view_controllable.h; sourceTree = "<group>"; };
 		04FDF0AD27E86F9200BBE8E4 /* asset_view.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = asset_view.cpp; sourceTree = "<group>"; };
 		04FDF0AE27E86F9200BBE8E4 /* asset_view.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = asset_view.h; sourceTree = "<group>"; };
 		04FDF0B027E8710500BBE8E4 /* console.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = console.cpp; sourceTree = "<group>"; };
@@ -3113,8 +3112,6 @@
 				04FDF0A727E868E900BBE8E4 /* view.cpp */,
 				04FDF0B427E872FB00BBE8E4 /* game_view.h */,
 				04FDF0B327E872FB00BBE8E4 /* game_view.cpp */,
-				04FDF0AB27E86EA700BBE8E4 /* view_controllable.h */,
-				04FDF0AA27E86EA700BBE8E4 /* view_controllable.cpp */,
 				04FDF0AE27E86F9200BBE8E4 /* asset_view.h */,
 				04FDF0AD27E86F9200BBE8E4 /* asset_view.cpp */,
 				04FDF0C627E87A2800BBE8E4 /* scene_view.h */,
@@ -3967,6 +3964,7 @@
 				04FDF0D427E953E900BBE8E4 /* main.cpp in Sources */,
 				04FDF0D527E953E900BBE8E4 /* editor_application.cpp in Sources */,
 				04FDF0D927E95DDB00BBE8E4 /* view.cpp in Sources */,
+				04FDF0DA27E95F9800BBE8E4 /* game_view.cpp in Sources */,
 				04FDF0D627E9546A00BBE8E4 /* grid.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

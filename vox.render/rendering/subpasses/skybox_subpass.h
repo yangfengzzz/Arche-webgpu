@@ -14,6 +14,7 @@ namespace vox {
 class SkyboxSubpass: public Subpass {
 public:
     SkyboxSubpass(RenderContext* renderContext,
+                  wgpu::TextureFormat depthStencilTextureFormat,
                   Scene* scene,
                   Camera* camera);
     
@@ -61,6 +62,8 @@ private:
     wgpu::PipelineLayout _pipelineLayout;
     
     wgpu::RenderPipeline _renderPipeline;
+    
+    wgpu::TextureFormat _depthStencilTextureFormat;
 };
 
 }

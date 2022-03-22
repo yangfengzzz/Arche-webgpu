@@ -22,33 +22,24 @@ public:
      * @param p_opened p_opened
      * @param p_windowSettings p_windowSettings
      */
-    GameView(const std::string &p_title,
-             bool p_opened,
+    GameView(wgpu::Device &device, Scene* scene,
+             const std::string &p_title, bool p_opened,
              const PanelWindowSettings &p_windowSettings);
     
     /**
      * Update the view
      * @param p_deltaTime p_deltaTimes
      */
-    virtual void update(float p_deltaTime) override;
+    void update(float p_deltaTime) override;
     
     /**
      * Custom implementation of the render method
      */
-    virtual void _render_Impl() override;
-    
-    /**
-     * Returns true if the game view has a camera
-     */
-    bool hasCamera() const;
-    
-    /**
-     * Returns the game view camera frustum or nothing if the game isn't playing
-     */
-    //    std::optional<OvRendering::Data::Frustum> GetActiveFrustum() const;
+    void render(wgpu::CommandEncoder& commandEncoder) override;
     
 private:
-    //    OvCore::SceneSystem::SceneManager& _sceneManager;
+    Camera* _mainCamera{nullptr};
+    Scene* _scene{nullptr};
     bool _hasCamera = false;
 };
 

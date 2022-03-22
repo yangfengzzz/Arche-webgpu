@@ -14,6 +14,7 @@ namespace vox {
 class ColorPickerSubpass: public Subpass {
 public:
     ColorPickerSubpass(RenderContext* renderContext,
+                       wgpu::TextureFormat depthStencilTextureFormat,
                        Scene* scene,
                        Camera* camera);
     
@@ -63,6 +64,8 @@ private:
     std::unordered_map<size_t, std::pair<Renderer *, MeshPtr>> _primitivesMap;
     std::vector<Buffer> _bufferPool;
     std::shared_ptr<UnlitMaterial> _material{nullptr};
+    
+    wgpu::TextureFormat _depthStencilTextureFormat;
 };
 
 }

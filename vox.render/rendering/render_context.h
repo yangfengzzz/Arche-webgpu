@@ -21,15 +21,8 @@ public:
     wgpu::TextureView currentDrawableTexture();
     
     wgpu::TextureFormat drawableTextureFormat();
-
-    wgpu::TextureView depthStencilTexture();
-    
-    wgpu::TextureFormat depthStencilTextureFormat();
     
     void present();
-        
-private:
-    wgpu::TextureView _createDepthStencilView(uint32_t width, uint32_t height);
     
 private:
     BackendBinding* _binding{nullptr};
@@ -37,8 +30,6 @@ private:
     uint32_t _height;
     
     wgpu::SwapChain _swapchain;
-    wgpu::TextureView _depthStencilTexture;
-    wgpu::TextureFormat _depthStencilTextureFormat = wgpu::TextureFormat::Depth24PlusStencil8;
 };
 
 }

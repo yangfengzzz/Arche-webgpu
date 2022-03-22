@@ -13,6 +13,7 @@ namespace vox {
 class ForwardSubpass: public Subpass {
 public:
     ForwardSubpass(RenderContext* renderContext,
+                   wgpu::TextureFormat depthStencilTextureFormat,
                    Scene* scene,
                    Camera* camera);
     
@@ -46,6 +47,8 @@ private:
     
     wgpu::PipelineLayoutDescriptor _pipelineLayoutDescriptor;
     wgpu::PipelineLayout _pipelineLayout;
+    
+    wgpu::TextureFormat _depthStencilTextureFormat;
 };
 
 }

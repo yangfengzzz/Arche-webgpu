@@ -13,14 +13,16 @@
 
 namespace vox {
 ColorPickerSubpass::ColorPickerSubpass(RenderContext* renderContext,
+                                       wgpu::TextureFormat depthStencilTextureFormat,
                                        Scene* scene,
                                        Camera* camera):
-Subpass(renderContext, scene, camera) {
+Subpass(renderContext, scene, camera),
+_depthStencilTextureFormat(depthStencilTextureFormat) {
     _material = std::make_shared<UnlitMaterial>(renderContext->device());
 }
 
 void ColorPickerSubpass::prepare() {
-    _depthStencil.format = _renderContext->depthStencilTextureFormat();
+    _depthStencil.format = _depthStencilTextureFormat;
     _forwardPipelineDescriptor.depthStencil = &_depthStencil;
     _colorTargetState.format = wgpu::TextureFormat::BGRA8Unorm;
     _fragment.targetCount = 1;

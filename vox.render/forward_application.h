@@ -60,6 +60,11 @@ protected:
     std::unique_ptr<ShadowManager> _shadowManager{nullptr};
     std::unique_ptr<LightManager> _lightManager{nullptr};
     std::unique_ptr<ParticleManager> _particleManager{nullptr};
+    
+protected:
+    wgpu::TextureView _depthStencilTexture;
+    wgpu::TextureFormat _depthStencilTextureFormat = wgpu::TextureFormat::Depth24PlusStencil8;
+    wgpu::TextureView _createDepthStencilView(uint32_t width, uint32_t height);
 };
 
 }
