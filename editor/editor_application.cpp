@@ -12,6 +12,7 @@
 #include "ui/menu_bar.h"
 #include "view/game_view.h"
 #include "view/scene_view.h"
+#include "view/asset_view.h"
 
 namespace vox {
 namespace editor {
@@ -71,6 +72,8 @@ void EditorApplication::setupUI() {
                                              _renderContext.get(), _sceneManager->currentScene());
     _panelsManager.createPanel<ui::SceneView>("Scene View", true, settings,
                                              _renderContext.get(), _sceneManager->currentScene());
+    _panelsManager.createPanel<ui::AssetView>("Asset View", true, settings,
+                                             _renderContext.get(), _sceneManager->currentScene());
     
     _canvas.makeDockspace(true);
     _gui->setCanvas(_canvas);
@@ -79,11 +82,13 @@ void EditorApplication::setupUI() {
 void EditorApplication::renderViews(float deltaTime, wgpu::CommandEncoder& commandEncoder) {
     auto& gameView = _panelsManager.getPanelAs<ui::GameView>("Game View");
     auto& sceneView = _panelsManager.getPanelAs<ui::SceneView>("Scene View");
+    auto& assetView = _panelsManager.getPanelAs<ui::AssetView>("Asset View");
 
     {
         // PROFILER_SPY("Editor Views Update");
         gameView.update(deltaTime);
         sceneView.update(deltaTime);
+        assetView.update(deltaTime);
     }
     
     if (gameView.isOpened()) {
@@ -94,6 +99,11 @@ void EditorApplication::renderViews(float deltaTime, wgpu::CommandEncoder& comma
     if (sceneView.isOpened()) {
         // PROFILER_SPY("Scene View Rendering");
         sceneView.render(commandEncoder);
+    }
+    
+    if (assetView.isOpened()) {
+        // PROFILER_SPY("Game View Rendering");
+        assetView.render(commandEncoder);
     }
 }
 

@@ -690,6 +690,7 @@
 		04FDF0E827E9A1F200BBE8E4 /* imgui_zmo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1D327AFAF4B003F3599 /* imgui_zmo.cpp */; };
 		04FDF0E927E9A1F200BBE8E4 /* imgui_curve.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF3227E443F000BBE8E4 /* imgui_curve.cpp */; };
 		04FDF0EA27E9A1F200BBE8E4 /* imgui_shapes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219CBF27E323D700F52C74 /* imgui_shapes.cpp */; };
+		04FDF0EB27E9D0C900BBE8E4 /* asset_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0AD27E86F9200BBE8E4 /* asset_view.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -3986,6 +3987,7 @@
 				04FDF0EA27E9A1F200BBE8E4 /* imgui_shapes.cpp in Sources */,
 				04FDF0D927E95DDB00BBE8E4 /* view.cpp in Sources */,
 				04FDF0DD27E9723100BBE8E4 /* editor_application.cpp in Sources */,
+				04FDF0EB27E9D0C900BBE8E4 /* asset_view.cpp in Sources */,
 				04FDF0DA27E95F9800BBE8E4 /* game_view.cpp in Sources */,
 				04FDF0E727E9A1F200BBE8E4 /* imgui_node_editor.cpp in Sources */,
 				04FDF0E227E97C5500BBE8E4 /* editor_utils.cpp in Sources */,

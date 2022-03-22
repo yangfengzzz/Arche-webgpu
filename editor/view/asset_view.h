@@ -8,7 +8,8 @@
 #define asset_view_hpp
 
 #include <variant>
-#include "view_controllable.h"
+#include "view.h"
+#include "controls/orbit_control.h"
 
 namespace vox {
 using namespace ui;
@@ -18,38 +19,34 @@ namespace ui {
 /**
  * Provide a view for assets
  */
-class AssetView : public ViewControllable {
+class AssetView : public View {
 public:
-    //    using ViewableResource = std::variant<OvRendering::Resources::Model*, OvRendering::Resources::Texture*, OvCore::Resources::Material*>;
-    
     /**
      * Constructor
      * @param p_title p_title
      * @param p_opened p_opened
      * @param p_windowSettings p_windowSettings
      */
-    AssetView(const std::string &p_title,
-              bool p_opened,
-              const PanelWindowSettings &p_windowSettings);
+    AssetView(const std::string &p_title, bool p_opened,
+              const PanelWindowSettings &p_windowSettings,
+              RenderContext* renderContext, Scene* scene);
+    
+    /**
+     * Update the scene view
+     */
+    void update(float p_deltaTime) override;
     
     /**
      * Custom implementation of the render method
      */
-    virtual void _render_Impl() override;
+    void render(wgpu::CommandEncoder& commandEncoder) override;
     
-    //    /**
-    //     * Defines the resource to preview
-    //     * @parma p_resource
-    //     */
-    //    void setResource(ViewableResource p_resource);
-    //
-    //    /**
-    //     * Return the currently previewed resource
-    //     */
-    //    ViewableResource resource() const;
+    void loadScene(EntityPtr& rootEntity);
     
 private:
-    //    ViewableResource _resource;
+    Camera* _mainCamera{nullptr};
+    Scene* _scene{nullptr};
+    control::OrbitControl* _cameraControl{nullptr};
 };
 
 }
