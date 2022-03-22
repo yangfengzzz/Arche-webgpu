@@ -29,8 +29,8 @@ public:
      * @param p_opened p_opened
      * @param p_windowSettings p_windowSettings
      */
-    View(const std::string &p_title,
-         bool p_opened,
+    View(wgpu::Device &device,
+         const std::string &p_title, bool p_opened,
          const PanelWindowSettings &p_windowSettings);
     
     /**
@@ -45,41 +45,9 @@ public:
     void _draw_Impl() override;
     
     /**
-     * Custom implementation of the render method to define in dervied classes
-     */
-    virtual void _render_Impl() = 0;
-    
-    /**
      * Render the view
      */
-    void render();
-    
-    /**
-     * Defines the camera position
-     * @param p_position p_position
-     */
-    void setCameraPosition(const Vector3F &p_position);
-    
-    /**
-     * Defines the camera rotation
-     * @param p_rotation p_rotation
-     */
-    void setCameraRotation(const QuaternionF &p_rotation);
-    
-    /**
-     * Returns the camera position
-     */
-    const Vector3F &cameraPosition() const;
-    
-    /**
-     * Returns the camera rotation
-     */
-    const QuaternionF &cameraRotation() const;
-    
-    /**
-     * Returns the camera used by this view
-     */
-    // Camera& camera();
+    virtual void render(wgpu::CommandEncoder& commandEncoder) = 0;
     
     /**
      * Returns the size of the panel ignoring its titlebar height
@@ -97,26 +65,13 @@ public:
      */
     void setGridColor(const Vector3F &p_color);
     
-    /**
-     * Fill the UBO using the view settings
-     */
-    void fillEngineUBO();
-    
 protected:
-    /**
-     * Update camera matrices
-     */
-    void prepareCamera();
-    
-protected:
-    Vector3F _cameraPosition;
-    QuaternionF _cameraRotation;
-    Image *image;
-    
-    Vector3F m_gridColor = {0.176f, 0.176f, 0.176f};
+    wgpu::Device &_device;
+    Vector3F _gridColor = {0.176f, 0.176f, 0.176f};
     
     std::unique_ptr<RenderPass> _renderPass{nullptr};
     
+    Image *_image{nullptr};
     wgpu::TextureDescriptor _textureDesc;
     wgpu::Texture _texture;
     wgpu::RenderPassDescriptor _renderPassDescriptor;

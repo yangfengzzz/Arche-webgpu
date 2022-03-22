@@ -677,6 +677,7 @@
 		04FDF0D527E953E900BBE8E4 /* editor_application.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1AE27AF9C0C003F3599 /* editor_application.cpp */; };
 		04FDF0D627E9546A00BBE8E4 /* grid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1D727AFAF4B003F3599 /* grid.cpp */; };
 		04FDF0D727E9548C00BBE8E4 /* wgsl_grid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1F427AFB8A9003F3599 /* wgsl_grid.cpp */; };
+		04FDF0D927E95DDB00BBE8E4 /* view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0A727E868E900BBE8E4 /* view.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -2535,6 +2536,7 @@
 				04219CC027E323D700F52C74 /* imgui_shapes.h */,
 				04219CBF27E323D700F52C74 /* imgui_shapes.cpp */,
 				04FDF0A027E865B400BBE8E4 /* ui */,
+				04FDF0D827E9562700BBE8E4 /* view */,
 				047BF1F327AFB885003F3599 /* shaderlib */,
 				047BF1C627AFAF4A003F3599 /* grid.h */,
 				047BF1D727AFAF4B003F3599 /* grid.cpp */,
@@ -3086,16 +3088,6 @@
 				04FDF0A127E865E400BBE8E4 /* asset_browser.cpp */,
 				04FDF0A527E867AD00BBE8E4 /* asset_properties.h */,
 				04FDF0A427E867AD00BBE8E4 /* asset_properties.cpp */,
-				04FDF0A827E868E900BBE8E4 /* view.h */,
-				04FDF0A727E868E900BBE8E4 /* view.cpp */,
-				04FDF0B427E872FB00BBE8E4 /* game_view.h */,
-				04FDF0B327E872FB00BBE8E4 /* game_view.cpp */,
-				04FDF0AB27E86EA700BBE8E4 /* view_controllable.h */,
-				04FDF0AA27E86EA700BBE8E4 /* view_controllable.cpp */,
-				04FDF0AE27E86F9200BBE8E4 /* asset_view.h */,
-				04FDF0AD27E86F9200BBE8E4 /* asset_view.cpp */,
-				04FDF0C627E87A2800BBE8E4 /* scene_view.h */,
-				04FDF0C527E87A2800BBE8E4 /* scene_view.cpp */,
 				04FDF0B127E8710500BBE8E4 /* console.h */,
 				04FDF0B027E8710500BBE8E4 /* console.cpp */,
 				04FDF0B727E8741100BBE8E4 /* hierarchy.h */,
@@ -3112,6 +3104,23 @@
 				04FDF0C227E8799A00BBE8E4 /* project_settings.cpp */,
 			);
 			path = ui;
+			sourceTree = "<group>";
+		};
+		04FDF0D827E9562700BBE8E4 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				04FDF0A827E868E900BBE8E4 /* view.h */,
+				04FDF0A727E868E900BBE8E4 /* view.cpp */,
+				04FDF0B427E872FB00BBE8E4 /* game_view.h */,
+				04FDF0B327E872FB00BBE8E4 /* game_view.cpp */,
+				04FDF0AB27E86EA700BBE8E4 /* view_controllable.h */,
+				04FDF0AA27E86EA700BBE8E4 /* view_controllable.cpp */,
+				04FDF0AE27E86F9200BBE8E4 /* asset_view.h */,
+				04FDF0AD27E86F9200BBE8E4 /* asset_view.cpp */,
+				04FDF0C627E87A2800BBE8E4 /* scene_view.h */,
+				04FDF0C527E87A2800BBE8E4 /* scene_view.cpp */,
+			);
+			path = view;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -3957,6 +3966,7 @@
 				04FDF0D727E9548C00BBE8E4 /* wgsl_grid.cpp in Sources */,
 				04FDF0D427E953E900BBE8E4 /* main.cpp in Sources */,
 				04FDF0D527E953E900BBE8E4 /* editor_application.cpp in Sources */,
+				04FDF0D927E95DDB00BBE8E4 /* view.cpp in Sources */,
 				04FDF0D627E9546A00BBE8E4 /* grid.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
