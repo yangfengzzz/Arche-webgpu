@@ -23,18 +23,20 @@ bool EditorApplication::prepare(Engine &engine) {
     auto scale = engine.window().contentScaleFactor();
     
     _gui = std::make_unique<ui::UIManager>(static_cast<GlfwWindow*>(&engine.window())->handle(), _renderContext.get());
-    _scene = std::make_unique<Scene>(_device);
+    _sceneManager = std::make_unique<SceneManager>(_device);
+    auto scene = _sceneManager->currentScene();
+
     _particleManager = std::make_unique<ParticleManager>(_device);
-    _lightManager = std::make_unique<LightManager>(_scene.get());
+    _lightManager = std::make_unique<LightManager>(scene);
     {
         loadScene();
         auto extent = engine.window().extent();
         auto factor = engine.window().contentScaleFactor();
-        _scene->updateSize(extent.width, extent.height, factor * extent.width, factor * extent.height);
+        scene->updateSize(extent.width, extent.height, factor * extent.width, factor * extent.height);
         _mainCamera->resize(extent.width, extent.height, factor * extent.width, factor * extent.height);
     }
     _lightManager->setCamera(_mainCamera);
-    _shadowManager = std::make_unique<ShadowManager>(_scene.get(), _mainCamera);
+    _shadowManager = std::make_unique<ShadowManager>(scene, _mainCamera);
     
     // scene render target
     {
@@ -55,7 +57,7 @@ bool EditorApplication::prepare(Engine &engine) {
         
         _colorAttachments.storeOp = wgpu::StoreOp::Store;
         _colorAttachments.loadOp = wgpu::LoadOp::Clear;
-        auto& color = _scene->background.solidColor;
+        auto& color = scene->background.solidColor;
         _colorAttachments.clearValue = wgpu::Color{color.r, color.g, color.b, color.a};
         _depthStencilAttachment.depthLoadOp = wgpu::LoadOp::Clear;
         _depthStencilAttachment.depthClearValue = 1.0;
@@ -64,7 +66,7 @@ bool EditorApplication::prepare(Engine &engine) {
         _depthStencilAttachment.stencilStoreOp = wgpu::StoreOp::Discard;
         
         _renderPass = std::make_unique<RenderPass>(_device, _renderPassDescriptor);
-        _renderPass->addSubpass(std::make_unique<ForwardSubpass>(_renderContext.get(), _scene.get(), _mainCamera));
+        _renderPass->addSubpass(std::make_unique<ForwardSubpass>(_renderContext.get(), scene, _mainCamera));
     }
     
     // color picker render target
@@ -92,7 +94,7 @@ bool EditorApplication::prepare(Engine &engine) {
         _colorPickerDepthStencilAttachment.stencilStoreOp = wgpu::StoreOp::Discard;
         
         _colorPickerRenderPass = std::make_unique<RenderPass>(_device, _colorPickerPassDescriptor);
-        auto colorPickerSubpass = std::make_unique<ColorPickerSubpass>(_renderContext.get(), _scene.get(), _mainCamera);
+        auto colorPickerSubpass = std::make_unique<ColorPickerSubpass>(_renderContext.get(), scene, _mainCamera);
         _colorPickerSubpass = colorPickerSubpass.get();
         _colorPickerRenderPass->addSubpass(std::move(colorPickerSubpass));
     }
@@ -131,7 +133,7 @@ void EditorApplication::update(float delta_time) {
     // Render the lighting and composition pass
     _colorAttachments.view = _sceneTexture.CreateView();
     _depthStencilAttachment.view = _renderContext->depthStencilTexture();
-    _scene->update(delta_time);
+    _sceneManager->currentScene()->update(delta_time);
     
     wgpu::CommandEncoder commandEncoder = _device.CreateCommandEncoder();
     updateGPUTask(commandEncoder);
