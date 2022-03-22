@@ -55,7 +55,6 @@ public:
     void updateEditorPanels(float deltaTime);
     
 protected:
-    bool _elapsedFrames{true};
     ::vox::ui::Canvas _canvas;
     ui::PanelsManager _panelsManager;
     

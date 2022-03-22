@@ -12,6 +12,11 @@
 namespace vox {
 class ForwardSubpass: public Subpass {
 public:
+    enum class RenderMode {
+        AUTO,
+        MANUAL
+    };
+    
     ForwardSubpass(RenderContext* renderContext,
                    wgpu::TextureFormat depthStencilTextureFormat,
                    Scene* scene,
@@ -22,7 +27,13 @@ public:
     void draw(wgpu::RenderPassEncoder& passEncoder) override;
     
 public:
-    void setRenderElement(std::optional<RenderElement> element);
+    RenderMode renderMode() const;
+    
+    void setRenderMode(RenderMode mode);
+    
+    void addRenderElement(const RenderElement& element);
+    
+    void clearAllRenderElement();
     
 private:
     void _drawMeshes(wgpu::RenderPassEncoder &passEncoder);
@@ -53,7 +64,8 @@ private:
     
     wgpu::TextureFormat _depthStencilTextureFormat;
     
-    std::optional<RenderElement> _element{std::nullopt};
+    RenderMode _mode = RenderMode::AUTO;
+    std::vector<RenderElement> _elements{};
 };
 
 }

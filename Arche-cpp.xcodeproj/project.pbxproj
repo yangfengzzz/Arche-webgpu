@@ -674,7 +674,6 @@
 		04FDF0D127E8C73A00BBE8E4 /* scene_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0CF27E8C73A00BBE8E4 /* scene_manager.cpp */; };
 		04FDF0D227E8C73A00BBE8E4 /* scene_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF0D027E8C73A00BBE8E4 /* scene_manager.h */; };
 		04FDF0D427E953E900BBE8E4 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1D627AFAF4B003F3599 /* main.cpp */; };
-		04FDF0D627E9546A00BBE8E4 /* grid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1D727AFAF4B003F3599 /* grid.cpp */; };
 		04FDF0D727E9548C00BBE8E4 /* wgsl_grid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1F427AFB8A9003F3599 /* wgsl_grid.cpp */; };
 		04FDF0D927E95DDB00BBE8E4 /* view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0A727E868E900BBE8E4 /* view.cpp */; };
 		04FDF0DA27E95F9800BBE8E4 /* game_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0B327E872FB00BBE8E4 /* game_view.cpp */; };
@@ -1227,7 +1226,6 @@
 		047BF1B827AFA525003F3599 /* framebuffer_picker_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = framebuffer_picker_app.cpp; sourceTree = "<group>"; };
 		047BF1BE27AFAE81003F3599 /* editor */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = editor; sourceTree = BUILT_PRODUCTS_DIR; };
 		047BF1C527AFAF02003F3599 /* editor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = editor.entitlements; sourceTree = "<group>"; };
-		047BF1C627AFAF4A003F3599 /* grid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = grid.h; sourceTree = "<group>"; };
 		047BF1C727AFAF4A003F3599 /* editor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = editor.h; sourceTree = "<group>"; };
 		047BF1C827AFAF4A003F3599 /* crude_json.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crude_json.h; sourceTree = "<group>"; };
 		047BF1C927AFAF4A003F3599 /* editor_component.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = editor_component.h; sourceTree = "<group>"; };
@@ -1244,7 +1242,6 @@
 		047BF1D427AFAF4B003F3599 /* imgui_canvas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imgui_canvas.h; sourceTree = "<group>"; };
 		047BF1D527AFAF4B003F3599 /* imgui_zmo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imgui_zmo.h; sourceTree = "<group>"; };
 		047BF1D627AFAF4B003F3599 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		047BF1D727AFAF4B003F3599 /* grid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = grid.cpp; sourceTree = "<group>"; };
 		047BF1D827AFAF4B003F3599 /* crude_json.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = crude_json.cpp; sourceTree = "<group>"; };
 		047BF1D927AFAF4C003F3599 /* imgui_extra_math.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = imgui_extra_math.inl; sourceTree = "<group>"; };
 		047BF1DA27AFAF4C003F3599 /* imgui_canvas.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_canvas.cpp; sourceTree = "<group>"; };
@@ -2555,8 +2552,6 @@
 				04FDF0DF27E974D400BBE8E4 /* panels_manager.h */,
 				04FDF0DE27E974D400BBE8E4 /* panels_manager.cpp */,
 				047BF1F327AFB885003F3599 /* shaderlib */,
-				047BF1C627AFAF4A003F3599 /* grid.h */,
-				047BF1D727AFAF4B003F3599 /* grid.cpp */,
 				047BF1C527AFAF02003F3599 /* editor.entitlements */,
 				047BF1D627AFAF4B003F3599 /* main.cpp */,
 				04FDF0DC27E9723100BBE8E4 /* editor_application.h */,
@@ -3995,7 +3990,6 @@
 				04FDF0E627E9A1F200BBE8E4 /* imgui_node_editor_api.cpp in Sources */,
 				04FDF0E427E9A1F200BBE8E4 /* crude_json.cpp in Sources */,
 				04FDF0E127E97B1500BBE8E4 /* menu_bar.cpp in Sources */,
-				04FDF0D627E9546A00BBE8E4 /* grid.cpp in Sources */,
 				04FDF0E327E997A500BBE8E4 /* scene_view.cpp in Sources */,
 				04FDF0E927E9A1F200BBE8E4 /* imgui_curve.cpp in Sources */,
 			);

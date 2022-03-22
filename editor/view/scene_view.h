@@ -61,6 +61,7 @@ private:
     void editTransform(float *cameraView, float *cameraProjection, float *matrix);
 
 private:
+    bool _elapsedFrames{true};
     Camera* _mainCamera{nullptr};
     Scene* _scene{nullptr};
     control::OrbitControl* _cameraControl{nullptr};

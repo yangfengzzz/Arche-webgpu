@@ -48,7 +48,7 @@ private:
     Camera* _mainCamera{nullptr};
     Scene* _scene{nullptr};
     ForwardSubpass* _subpass{nullptr};
-    MeshRenderer* _renderer{nullptr};
+    std::vector<RenderElement> _elements{};
     
     control::OrbitControl* _cameraControl{nullptr};
 };

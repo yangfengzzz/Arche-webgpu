@@ -21,8 +21,20 @@ Subpass(renderContext, scene, camera),
 _depthStencilTextureFormat(depthStencilTextureFormat) {
 }
 
-void ForwardSubpass::setRenderElement(std::optional<RenderElement> element) {
-    _element = element;
+ForwardSubpass::RenderMode ForwardSubpass::renderMode() const {
+    return _mode;
+}
+
+void ForwardSubpass::setRenderMode(RenderMode mode) {
+    _mode = mode;
+}
+
+void ForwardSubpass::addRenderElement(const RenderElement& element) {
+    _elements.emplace_back(element);
+}
+
+void ForwardSubpass::clearAllRenderElement() {
+    _elements.clear();
 }
 
 void ForwardSubpass::prepare() {
@@ -41,11 +53,11 @@ void ForwardSubpass::prepare() {
 
 void ForwardSubpass::draw(wgpu::RenderPassEncoder& passEncoder) {
     passEncoder.PushDebugGroup("Draw Element");
-    if (_element) {
+    if (_mode == RenderMode::MANUAL) {
         auto compileMacros = ShaderMacroCollection();
         _scene->shaderData.mergeMacro(compileMacros, compileMacros);
         _camera->shaderData.mergeMacro(compileMacros, compileMacros);
-        _drawElement(passEncoder, {_element.value()}, compileMacros);
+        _drawElement(passEncoder, _elements, compileMacros);
     } else {
         _drawMeshes(passEncoder);
     }

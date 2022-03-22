@@ -8,7 +8,6 @@
 #include "camera.h"
 #include "rendering/subpasses/forward_subpass.h"
 #include "rendering/subpasses/color_picker_subpass.h"
-#include "grid.h"
 
 #include "lighting/point_light.h"
 #include "mesh/primitive_mesh.h"
@@ -94,9 +93,12 @@ void SceneView::loadScene(EntityPtr& rootEntity) {
     auto cameraEntity = rootEntity->createChild("MainCamera");
     cameraEntity->transform->setPosition(10, 10, 10);
     cameraEntity->transform->lookAt(Point3F(0, 0, 0));
-    rootEntity->addComponent<editor::Grid>();
     _mainCamera = cameraEntity->addComponent<Camera>();
     _cameraControl = cameraEntity->addComponent<control::OrbitControl>();
+    
+    auto grid = rootEntity->addComponent<MeshRenderer>();
+    grid->setMesh(createPlane(_renderContext->device()));
+    grid->setMaterial(std::make_shared<GridMaterial>(_renderContext->device()));
 
     // init point light
     auto light = rootEntity->createChild("light");
@@ -139,7 +141,14 @@ void SceneView::render(wgpu::CommandEncoder& commandEncoder) {
         _cameraControl->setEnabled(false);
     }
     
+    // Let the first frame happen and then make the scene view the first seen view
+    if (_elapsedFrames) {
+        focus();
+    }
+    
     if (_texture && isFocused()) {
+        _elapsedFrames = false;
+
         _renderPassColorAttachments.view = _texture.CreateView();
         _renderPassDepthStencilAttachment.view = _depthStencilTexture;
         _renderPass->draw(commandEncoder);

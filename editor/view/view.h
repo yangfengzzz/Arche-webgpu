@@ -12,6 +12,7 @@
 #include "vector3.h"
 #include "quaternion.h"
 #include "rendering/render_pass.h"
+#include "material/base_material.h"
 
 namespace vox {
 using namespace ui;
@@ -54,6 +55,9 @@ public:
      */
     std::pair<uint16_t, uint16_t> safeSize() const;
     
+public:
+    ModelMeshPtr createPlane(wgpu::Device& device);
+
     /**
      * Returns the grid color of the view
      */
@@ -81,6 +85,14 @@ protected:
     wgpu::RenderPassDescriptor _renderPassDescriptor;
     wgpu::RenderPassColorAttachment _renderPassColorAttachments;
     wgpu::RenderPassDepthStencilAttachment _renderPassDepthStencilAttachment;
+};
+
+//MARK: - Grid
+class GridMaterial : public BaseMaterial {
+public:
+    GridMaterial(wgpu::Device& device) : BaseMaterial(device, Shader::find("editor-grid")) {
+        setIsTransparent(true);
+    }
 };
 
 

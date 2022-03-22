@@ -14,11 +14,14 @@
 #include "view/scene_view.h"
 #include "view/asset_view.h"
 
+#include "shaderlib/wgsl_grid.h"
+
 namespace vox {
 namespace editor {
 EditorApplication::EditorApplication():
 GraphicsApplication(),
 _panelsManager(_canvas) {
+    Shader::create("editor-grid", std::make_unique<WGSLGridVertex>(), std::make_unique<WGSLGridFragment>());
 }
 
 bool EditorApplication::prepare(Engine &engine) {
@@ -86,9 +89,14 @@ void EditorApplication::renderViews(float deltaTime, wgpu::CommandEncoder& comma
 
     {
         // PROFILER_SPY("Editor Views Update");
+        assetView.update(deltaTime);
         gameView.update(deltaTime);
         sceneView.update(deltaTime);
-        assetView.update(deltaTime);
+    }
+    
+    if (assetView.isOpened()) {
+        // PROFILER_SPY("Game View Rendering");
+        assetView.render(commandEncoder);
     }
     
     if (gameView.isOpened()) {
@@ -100,24 +108,11 @@ void EditorApplication::renderViews(float deltaTime, wgpu::CommandEncoder& comma
         // PROFILER_SPY("Scene View Rendering");
         sceneView.render(commandEncoder);
     }
-    
-    if (assetView.isOpened()) {
-        // PROFILER_SPY("Game View Rendering");
-        assetView.render(commandEncoder);
-    }
 }
 
 void EditorApplication::updateEditorPanels(float deltaTime) {
     auto& menuBar = _panelsManager.getPanelAs<ui::MenuBar>("Menu Bar");
-    auto& sceneView = _panelsManager.getPanelAs<ui::SceneView>("Scene View");
-
     menuBar.handleShortcuts(deltaTime);
-
-    // Let the first frame happen and then make the scene view the first seen view
-    if (_elapsedFrames) {
-        sceneView.focus();
-        _elapsedFrames = false;
-    }
 }
 
 void EditorApplication::update(float deltaTime) {
@@ -126,6 +121,7 @@ void EditorApplication::update(float deltaTime) {
     
     wgpu::CommandEncoder commandEncoder = _device.CreateCommandEncoder();
     updateGPUTask(commandEncoder);
+    updateEditorPanels(deltaTime);
     renderViews(deltaTime, commandEncoder);
     
     // Render the gui

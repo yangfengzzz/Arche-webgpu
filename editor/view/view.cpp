@@ -5,6 +5,8 @@
 //  property of any third parties.
 
 #include "view.h"
+#include "mesh_renderer.h"
+#include "mesh/model_mesh.h"
 
 namespace vox {
 namespace editor {
@@ -22,7 +24,7 @@ void View::update(float p_deltaTime) {
     
     if (winWidth > 0) {
         if (!_image) {
-            _image = &createWidget<Image>(nullptr, Vector2F{ 0.f, 0.f });
+            _image = &createWidget<::vox::ui::Image>(nullptr, Vector2F{ 0.f, 0.f });
         }
         
         _image->size = Vector2F(static_cast<float>(winWidth), static_cast<float>(winHeight));
@@ -41,14 +43,6 @@ void View::_draw_Impl() {
 std::pair<uint16_t, uint16_t> View::safeSize() const {
     auto result = size() - Vector2F{ 0.f, 25.f }; // 25 == title bar height
     return { static_cast<uint16_t>(result.x), static_cast<uint16_t>(result.y) };
-}
-
-const Vector3F& View::gridColor() const {
-    return _gridColor;
-}
-
-void View::setGridColor(const Vector3F& p_color) {
-    _gridColor = p_color;
 }
 
 bool View::_createRenderTexture(uint32_t width, uint32_t height) {
@@ -70,6 +64,39 @@ bool View::_createRenderTexture(uint32_t width, uint32_t height) {
     } else {
         return false;
     }
+}
+
+//MARK: - Grid
+const Vector3F& View::gridColor() const {
+    return _gridColor;
+}
+
+void View::setGridColor(const Vector3F& p_color) {
+    _gridColor = p_color;
+}
+
+ModelMeshPtr View::createPlane(wgpu::Device &device) {
+    auto mesh = std::make_shared<ModelMesh>(device);
+    
+    auto positions = std::vector<Vector3F>(4);
+    positions[0] = Vector3F(-1, -1, 0);
+    positions[1] = Vector3F(1, -1, 0);
+    positions[2] = Vector3F(-1, 1, 0);
+    positions[3] = Vector3F(1, 1, 0);
+    
+    auto indices = std::vector<uint32_t>(6);
+    indices[0] = 1;
+    indices[1] = 2;
+    indices[2] = 0;
+    indices[3] = 1;
+    indices[4] = 3;
+    indices[5] = 2;
+    
+    mesh->setPositions(positions);
+    mesh->setIndices(indices);
+    mesh->uploadData(true);
+    mesh->addSubMesh(0, 6, wgpu::PrimitiveTopology::TriangleList);
+    return mesh;
 }
 
 }

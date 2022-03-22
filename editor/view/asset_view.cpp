@@ -6,7 +6,6 @@
 
 #include "asset_view.h"
 #include "camera.h"
-#include "grid.h"
 
 #include "mesh/primitive_mesh.h"
 #include "mesh/mesh_renderer.h"
@@ -16,8 +15,8 @@ namespace vox {
 namespace editor {
 namespace ui {
 AssetView::AssetView(const std::string & p_title, bool p_opened,
-                   const PanelWindowSettings & p_windowSettings,
-                   RenderContext* renderContext, Scene* scene) :
+                     const PanelWindowSettings & p_windowSettings,
+                     RenderContext* renderContext, Scene* scene) :
 View(p_title, p_opened, p_windowSettings, renderContext),
 _scene(scene) {
     scene->background.solidColor = Color(0.2, 0.4, 0.6, 1.0);
@@ -48,31 +47,41 @@ _scene(scene) {
         auto subpass = std::make_unique<ForwardSubpass>(_renderContext, _depthStencilTextureFormat,
                                                         scene, _mainCamera);
         _subpass = subpass.get();
+        _subpass->setRenderMode(ForwardSubpass::RenderMode::MANUAL);
         _renderPass->addSubpass(std::move(subpass));
     }
-    
-    _subpass->setRenderElement(RenderElement(_renderer, _renderer->mesh(),
-                                             _renderer->mesh()->subMesh(), _renderer->getMaterial()));
+
+    _subpass->addRenderElement(_elements[0]);
+    _subpass->addRenderElement(_elements[1]);
 }
 
 void AssetView::loadScene(EntityPtr& rootEntity) {
     auto cameraEntity = rootEntity->createChild("MainCamera");
     cameraEntity->transform->setPosition(10, 10, 10);
     cameraEntity->transform->lookAt(Point3F(0, 0, 0));
-    rootEntity->addComponent<editor::Grid>();
     _mainCamera = cameraEntity->addComponent<Camera>();
     _cameraControl = cameraEntity->addComponent<control::OrbitControl>();
+    
+    auto grid = rootEntity->addComponent<MeshRenderer>();
+    grid->setMesh(createPlane(_renderContext->device()));
+    grid->setMaterial(std::make_shared<GridMaterial>(_renderContext->device()));
+    grid->setEnabled(false);
+    _elements.push_back(RenderElement(grid, grid->mesh(),
+                                      grid->mesh()->subMesh(), grid->getMaterial()));
     
     // create box test entity
     float radius = 2.0;
     auto sphereEntity = rootEntity->createChild("SphereEntity");
     auto sphereMtl = std::make_shared<BlinnPhongMaterial>(_renderContext->device());
     sphereMtl->setBaseColor(Color(0.8, 0.3, 0.3, 1.0));
-    _renderer = sphereEntity->addComponent<MeshRenderer>();
+    auto _renderer = sphereEntity->addComponent<MeshRenderer>();
     _renderer->setMesh(PrimitiveMesh::createSphere(_renderContext->device(), radius));
     _renderer->setMaterial(sphereMtl);
     _renderer->shaderData.enableMacro(HAS_UV);
     _renderer->shaderData.enableMacro(HAS_NORMAL);
+    _renderer->setEnabled(false);
+    _elements.push_back(RenderElement(_renderer, _renderer->mesh(),
+                                      _renderer->mesh()->subMesh(), _renderer->getMaterial()));
 }
 
 void AssetView::update(float deltaTime) {
@@ -86,7 +95,7 @@ void AssetView::update(float deltaTime) {
 }
 
 void AssetView::render(wgpu::CommandEncoder& commandEncoder) {
-    if (_texture && isFocused()) {
+    if (_texture) {
         _renderPassColorAttachments.view = _texture.CreateView();
         _renderPassDepthStencilAttachment.view = _depthStencilTexture;
         _renderPass->draw(commandEncoder);
