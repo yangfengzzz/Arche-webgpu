@@ -8,6 +8,7 @@
 #include "camera.h"
 #include "rendering/subpasses/forward_subpass.h"
 #include "rendering/subpasses/color_picker_subpass.h"
+#include "grid.h"
 
 #include "lighting/point_light.h"
 #include "mesh/primitive_mesh.h"
@@ -93,6 +94,7 @@ void SceneView::loadScene(EntityPtr& rootEntity) {
     auto cameraEntity = rootEntity->createChild("MainCamera");
     cameraEntity->transform->setPosition(10, 10, 10);
     cameraEntity->transform->lookAt(Point3F(0, 0, 0));
+    rootEntity->addComponent<editor::Grid>();
     _mainCamera = cameraEntity->addComponent<Camera>();
     _cameraControl = cameraEntity->addComponent<control::OrbitControl>();
 
@@ -116,7 +118,8 @@ void SceneView::update(float deltaTime) {
     View::update(deltaTime);
     
     auto [winWidth, winHeight] = safeSize();
-    if (winWidth > 0) {
+    if (winWidth > 0 && _colorPickerTextureDesc.size.width != winWidth * 2) {
+        _mainCamera->setAspectRatio(float(winWidth) / float(winHeight));
         _mainCamera->resize(winWidth, winHeight, winWidth * 2, winHeight * 2);
         _colorPickerTextureDesc.format = wgpu::TextureFormat::BGRA8Unorm;
         _colorPickerTextureDesc.size.width = winWidth * 2;
@@ -136,7 +139,7 @@ void SceneView::render(wgpu::CommandEncoder& commandEncoder) {
         _cameraControl->setEnabled(false);
     }
     
-    if (_texture) {
+    if (_texture && isFocused()) {
         _renderPassColorAttachments.view = _texture.CreateView();
         _renderPassDepthStencilAttachment.view = _depthStencilTexture;
         _renderPass->draw(commandEncoder);

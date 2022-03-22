@@ -44,7 +44,7 @@ _scene(scene) {
 }
 
 void GameView::render(wgpu::CommandEncoder& commandEncoder) {
-    if (_texture) {
+    if (_texture && isFocused()) {
         _renderPassColorAttachments.view = _texture.CreateView();
         _renderPassDepthStencilAttachment.view = _depthStencilTexture;
         _renderPass->draw(commandEncoder);
@@ -56,6 +56,7 @@ void GameView::update(float deltaTime) {
     
     auto [winWidth, winHeight] = safeSize();
     if (winWidth > 0) {
+        _mainCamera->setAspectRatio(float(winWidth) / float(winHeight));
         _mainCamera->resize(winWidth, winHeight, winWidth * 2, winHeight * 2);
     }
 }
