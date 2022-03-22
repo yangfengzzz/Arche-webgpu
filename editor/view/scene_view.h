@@ -7,15 +7,15 @@
 #ifndef scene_view_hpp
 #define scene_view_hpp
 
-#include "view_controllable.h"
-//#include "OvEditor/Core/GizmoBehaviour.h"
+#include "view.h"
 
 namespace vox {
 using namespace ui;
+class ColorPickerSubpass;
 
 namespace editor {
 namespace ui {
-class SceneView : public ViewControllable {
+class SceneView : public View {
 public:
     /**
      * Constructor
@@ -23,44 +23,52 @@ public:
      * @param p_opened p_opened
      * @param p_windowSettings p_windowSettings
      */
-    SceneView(const std::string &p_title,
-              bool p_opened,
-              const PanelWindowSettings &p_windowSettings);
+    SceneView(const std::string &p_title, bool p_opened,
+              const PanelWindowSettings &p_windowSettings,
+              RenderContext* renderContext, Scene* scene);
     
     /**
      * Update the scene view
      */
-    virtual void update(float p_deltaTime) override;
+    void update(float p_deltaTime) override;
     
     /**
      * Custom implementation of the render method
      */
-    virtual void _render_Impl() override;
+    void render(wgpu::CommandEncoder& commandEncoder) override;
     
     /**
-     * Render the actual scene
-     * @param p_defaultRenderState p_defaultRenderState
+     * Pick the object at the screen coordinate position.
+     * @param offsetX Relative X coordinate of the canvas
+     * @param offsetY Relative Y coordinate of the canvas
      */
-    void renderScene(uint8_t p_defaultRenderState);
-    
-    /**
-     * Render the scene for actor picking (Using unlit colors)
-     */
-    void renderSceneForActorPicking();
-    
-    /**
-     * Render the scene for actor picking and handle the logic behind it
-     */
-    void handleActorPicking();
-    
+    void pick(float offsetX, float offsetY);
+        
 private:
-    //    OvCore::SceneSystem::SceneManager& m_sceneManager;
-    //    OvRendering::Buffers::Framebuffer m_actorPickingFramebuffer;
-    //    OvEditor::Core::GizmoBehaviour m_gizmoOperations;
-    //    OvEditor::Core::EGizmoOperation m_currentOperation = OvEditor::Core::EGizmoOperation::TRANSLATE;
+    Camera* _mainCamera{nullptr};
+    Scene* _scene{nullptr};
     
-    //    std::optional<std::reference_wrapper<OvCore::ECS::Actor>> m_highlightedActor;
-    //    std::optional<OvEditor::Core::GizmoBehaviour::EDirection> m_highlightedGizmoDirection;
+    bool _needPick;
+    Vector2F _pickPos;
+    
+    wgpu::TextureDescriptor _colorPickerTextureDesc;
+    wgpu::Texture _colorPickerTexture;
+    wgpu::RenderPassDescriptor _colorPickerPassDescriptor;
+    wgpu::RenderPassColorAttachment _colorPickerColorAttachments;
+    wgpu::RenderPassDepthStencilAttachment _colorPickerDepthStencilAttachment;
+    
+    std::unique_ptr<RenderPass> _colorPickerRenderPass{nullptr};
+    ColorPickerSubpass* _colorPickerSubpass{nullptr};
+    std::pair<Renderer *, MeshPtr> _pickResult;
+    
+    std::array<uint8_t, 4> _pixel{};
+    wgpu::Buffer _stageBuffer;
+    void _copyRenderTargetToBuffer(wgpu::CommandEncoder& commandEncoder);
+    void _readColorFromRenderTarget();
+    
+    wgpu::ImageCopyTexture _imageCopyTexture;
+    wgpu::ImageCopyBuffer _imageCopyBuffer;
+    wgpu::Extent3D _extent;
 };
 
 

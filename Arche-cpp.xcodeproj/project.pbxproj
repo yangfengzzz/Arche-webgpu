@@ -682,6 +682,14 @@
 		04FDF0E027E974D400BBE8E4 /* panels_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0DE27E974D400BBE8E4 /* panels_manager.cpp */; };
 		04FDF0E127E97B1500BBE8E4 /* menu_bar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0BF27E8780C00BBE8E4 /* menu_bar.cpp */; };
 		04FDF0E227E97C5500BBE8E4 /* editor_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219CCA27E413FC00F52C74 /* editor_utils.cpp */; };
+		04FDF0E327E997A500BBE8E4 /* scene_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0C527E87A2800BBE8E4 /* scene_view.cpp */; };
+		04FDF0E427E9A1F200BBE8E4 /* crude_json.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1D827AFAF4B003F3599 /* crude_json.cpp */; };
+		04FDF0E527E9A1F200BBE8E4 /* imgui_canvas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1DA27AFAF4C003F3599 /* imgui_canvas.cpp */; };
+		04FDF0E627E9A1F200BBE8E4 /* imgui_node_editor_api.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1DB27AFAF4C003F3599 /* imgui_node_editor_api.cpp */; };
+		04FDF0E727E9A1F200BBE8E4 /* imgui_node_editor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1D127AFAF4B003F3599 /* imgui_node_editor.cpp */; };
+		04FDF0E827E9A1F200BBE8E4 /* imgui_zmo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1D327AFAF4B003F3599 /* imgui_zmo.cpp */; };
+		04FDF0E927E9A1F200BBE8E4 /* imgui_curve.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF3227E443F000BBE8E4 /* imgui_curve.cpp */; };
+		04FDF0EA27E9A1F200BBE8E4 /* imgui_shapes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219CBF27E323D700F52C74 /* imgui_shapes.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -3123,10 +3131,10 @@
 				04FDF0A727E868E900BBE8E4 /* view.cpp */,
 				04FDF0B427E872FB00BBE8E4 /* game_view.h */,
 				04FDF0B327E872FB00BBE8E4 /* game_view.cpp */,
-				04FDF0AE27E86F9200BBE8E4 /* asset_view.h */,
-				04FDF0AD27E86F9200BBE8E4 /* asset_view.cpp */,
 				04FDF0C627E87A2800BBE8E4 /* scene_view.h */,
 				04FDF0C527E87A2800BBE8E4 /* scene_view.cpp */,
+				04FDF0AE27E86F9200BBE8E4 /* asset_view.h */,
+				04FDF0AD27E86F9200BBE8E4 /* asset_view.cpp */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -3971,15 +3979,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04FDF0E827E9A1F200BBE8E4 /* imgui_zmo.cpp in Sources */,
 				04FDF0D727E9548C00BBE8E4 /* wgsl_grid.cpp in Sources */,
 				04FDF0E027E974D400BBE8E4 /* panels_manager.cpp in Sources */,
 				04FDF0D427E953E900BBE8E4 /* main.cpp in Sources */,
+				04FDF0EA27E9A1F200BBE8E4 /* imgui_shapes.cpp in Sources */,
 				04FDF0D927E95DDB00BBE8E4 /* view.cpp in Sources */,
 				04FDF0DD27E9723100BBE8E4 /* editor_application.cpp in Sources */,
 				04FDF0DA27E95F9800BBE8E4 /* game_view.cpp in Sources */,
+				04FDF0E727E9A1F200BBE8E4 /* imgui_node_editor.cpp in Sources */,
 				04FDF0E227E97C5500BBE8E4 /* editor_utils.cpp in Sources */,
+				04FDF0E527E9A1F200BBE8E4 /* imgui_canvas.cpp in Sources */,
+				04FDF0E627E9A1F200BBE8E4 /* imgui_node_editor_api.cpp in Sources */,
+				04FDF0E427E9A1F200BBE8E4 /* crude_json.cpp in Sources */,
 				04FDF0E127E97B1500BBE8E4 /* menu_bar.cpp in Sources */,
 				04FDF0D627E9546A00BBE8E4 /* grid.cpp in Sources */,
+				04FDF0E327E997A500BBE8E4 /* scene_view.cpp in Sources */,
+				04FDF0E927E9A1F200BBE8E4 /* imgui_curve.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -37,7 +37,7 @@ public:
                         uint32_t mipLevel = 0, uint32_t offset = 0,
                         uint32_t x = 0, uint32_t y = 0);
     
-    void setImageSource(const Image* data);
+    void setImageSource(const ::vox::Image* data);
     
 protected:
     SampledTexture2D(wgpu::Device& device);

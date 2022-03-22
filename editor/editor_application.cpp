@@ -11,6 +11,7 @@
 
 #include "ui/menu_bar.h"
 #include "view/game_view.h"
+#include "view/scene_view.h"
 
 namespace vox {
 namespace editor {
@@ -69,6 +70,8 @@ void EditorApplication::setupUI() {
     _panelsManager.createPanel<ui::MenuBar>("Menu Bar");
     _panelsManager.createPanel<ui::GameView>("Game View", true, settings,
                                              _renderContext.get(), _sceneManager->currentScene());
+    _panelsManager.createPanel<ui::SceneView>("Scene View", true, settings,
+                                             _renderContext.get(), _sceneManager->currentScene());
     
     _canvas.makeDockspace(true);
     _gui->setCanvas(_canvas);
@@ -76,14 +79,35 @@ void EditorApplication::setupUI() {
 
 void EditorApplication::renderViews(float deltaTime, wgpu::CommandEncoder& commandEncoder) {
     auto& gameView = _panelsManager.getPanelAs<ui::GameView>("Game View");
+    auto& sceneView = _panelsManager.getPanelAs<ui::SceneView>("Scene View");
+
     {
         // PROFILER_SPY("Editor Views Update");
         gameView.update(deltaTime);
+        sceneView.update(deltaTime);
     }
     
     if (gameView.isOpened()) {
         // PROFILER_SPY("Game View Rendering");
         gameView.render(commandEncoder);
+    }
+    
+    if (sceneView.isOpened()) {
+        // PROFILER_SPY("Scene View Rendering");
+        sceneView.render(commandEncoder);
+    }
+}
+
+void EditorApplication::updateEditorPanels(float deltaTime) {
+    auto& menuBar = _panelsManager.getPanelAs<ui::MenuBar>("Menu Bar");
+    auto& sceneView = _panelsManager.getPanelAs<ui::SceneView>("Scene View");
+
+    menuBar.handleShortcuts(deltaTime);
+
+    // Let the first frame happen and then make the scene view the first seen view
+    if (_elapsedFrames) {
+        sceneView.focus();
+        _elapsedFrames = false;
     }
 }
 

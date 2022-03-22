@@ -34,7 +34,6 @@ public:
 private:
     Camera* _mainCamera{nullptr};
     Scene* _scene{nullptr};
-    bool _hasCamera = false;
 };
 
 
