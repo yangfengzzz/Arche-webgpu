@@ -5,15 +5,16 @@
 //  property of any third parties.
 
 #include "game_view.h"
+#include "camera.h"
 #include "rendering/subpasses/forward_subpass.h"
 
 namespace vox {
 namespace editor {
 namespace ui {
-GameView::GameView(wgpu::Device &device, Scene* scene,
+GameView::GameView(RenderContext* renderContext, Scene* scene,
                    const std::string & p_title, bool p_opened,
                    const PanelWindowSettings & p_windowSettings) :
-View(device, p_title, p_opened, p_windowSettings),
+View(renderContext, p_title, p_opened, p_windowSettings),
 _scene(scene) {
     auto editorRoot = _scene->findEntityByName("GameRoot");
     if (!editorRoot) {
@@ -38,8 +39,9 @@ _scene(scene) {
     _renderPassDepthStencilAttachment.depthStoreOp = wgpu::StoreOp::Discard;
     _renderPassDepthStencilAttachment.stencilLoadOp = wgpu::LoadOp::Clear;
     _renderPassDepthStencilAttachment.stencilStoreOp = wgpu::StoreOp::Discard;
-    _renderPass = std::make_unique<RenderPass>(_device, _renderPassDescriptor);
-    _renderPass->addSubpass(std::make_unique<ForwardSubpass>(_renderContext.get(), scene, _mainCamera));
+    _renderPass = std::make_unique<RenderPass>(renderContext->device(), _renderPassDescriptor);
+    _renderPass->addSubpass(std::make_unique<ForwardSubpass>(_renderContext, _depthStencilTextureFormat,
+                                                             scene, _mainCamera));
 }
 
 void GameView::update(float p_deltaTime) {

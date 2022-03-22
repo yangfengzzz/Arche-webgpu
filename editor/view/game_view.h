@@ -22,7 +22,7 @@ public:
      * @param p_opened p_opened
      * @param p_windowSettings p_windowSettings
      */
-    GameView(wgpu::Device &device, Scene* scene,
+    GameView(RenderContext* renderContext, Scene* scene,
              const std::string &p_title, bool p_opened,
              const PanelWindowSettings &p_windowSettings);
     

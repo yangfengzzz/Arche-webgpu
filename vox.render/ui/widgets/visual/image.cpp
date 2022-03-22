@@ -14,6 +14,10 @@ textureID{p_textureID}, size(p_size) {
     
 }
 
+void Image::setTextureView(wgpu::TextureView p_textureID) {
+    textureID = p_textureID;
+}
+
 void Image::_draw_Impl() {
     ImGui::Image(textureID.Get(), Converter::ToImVec2(size),
                  ImVec2(0.f, 0.f), ImVec2(1.f, 1.f));

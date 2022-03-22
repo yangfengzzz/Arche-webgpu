@@ -29,7 +29,7 @@ public:
      * @param p_opened p_opened
      * @param p_windowSettings p_windowSettings
      */
-    View(wgpu::Device &device,
+    View(RenderContext* renderContext,
          const std::string &p_title, bool p_opened,
          const PanelWindowSettings &p_windowSettings);
     
@@ -66,14 +66,18 @@ public:
     void setGridColor(const Vector3F &p_color);
     
 protected:
-    wgpu::Device &_device;
+    RenderContext* _renderContext{nullptr};
     Vector3F _gridColor = {0.176f, 0.176f, 0.176f};
     
     std::unique_ptr<RenderPass> _renderPass{nullptr};
     
     Image *_image{nullptr};
-    wgpu::TextureDescriptor _textureDesc;
     wgpu::Texture _texture;
+    wgpu::TextureDescriptor _textureDesc;
+    wgpu::TextureView _depthStencilTexture;
+    wgpu::TextureFormat _depthStencilTextureFormat = wgpu::TextureFormat::Depth24PlusStencil8;
+    bool _createRenderTexture(uint32_t width, uint32_t height);
+    
     wgpu::RenderPassDescriptor _renderPassDescriptor;
     wgpu::RenderPassColorAttachment _renderPassColorAttachments;
     wgpu::RenderPassDepthStencilAttachment _renderPassDepthStencilAttachment;

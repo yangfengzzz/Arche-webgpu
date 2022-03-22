@@ -674,7 +674,6 @@
 		04FDF0D127E8C73A00BBE8E4 /* scene_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0CF27E8C73A00BBE8E4 /* scene_manager.cpp */; };
 		04FDF0D227E8C73A00BBE8E4 /* scene_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FDF0D027E8C73A00BBE8E4 /* scene_manager.h */; };
 		04FDF0D427E953E900BBE8E4 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1D627AFAF4B003F3599 /* main.cpp */; };
-		04FDF0D527E953E900BBE8E4 /* editor_application.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1AE27AF9C0C003F3599 /* editor_application.cpp */; };
 		04FDF0D627E9546A00BBE8E4 /* grid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1D727AFAF4B003F3599 /* grid.cpp */; };
 		04FDF0D727E9548C00BBE8E4 /* wgsl_grid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1F427AFB8A9003F3599 /* wgsl_grid.cpp */; };
 		04FDF0D927E95DDB00BBE8E4 /* view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0A727E868E900BBE8E4 /* view.cpp */; };
@@ -3962,7 +3961,6 @@
 			files = (
 				04FDF0D727E9548C00BBE8E4 /* wgsl_grid.cpp in Sources */,
 				04FDF0D427E953E900BBE8E4 /* main.cpp in Sources */,
-				04FDF0D527E953E900BBE8E4 /* editor_application.cpp in Sources */,
 				04FDF0D927E95DDB00BBE8E4 /* view.cpp in Sources */,
 				04FDF0DA27E95F9800BBE8E4 /* game_view.cpp in Sources */,
 				04FDF0D627E9546A00BBE8E4 /* grid.cpp in Sources */,

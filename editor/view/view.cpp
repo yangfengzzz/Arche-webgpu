@@ -9,25 +9,26 @@
 namespace vox {
 namespace editor {
 namespace ui {
-View::View(wgpu::Device &device,
+View::View(RenderContext* renderContext,
            const std::string& p_title,
            bool p_opened,
            const PanelWindowSettings& p_windowSettings) :
 PanelWindow(p_title, p_opened, p_windowSettings),
-_device(device) {
-    _image = &createWidget<Image>(_texture.CreateView().Get(), Vector2F{ 0.f, 0.f });
-    
+_renderContext(renderContext) {
     scrollable = false;
 }
 
 void View::update(float p_deltaTime) {
     auto[winWidth, winHeight] = safeSize();
     
-    _image->size = Vector2F(static_cast<float>(winWidth), static_cast<float>(winHeight));
+    if (!_image) {
+        _image = &createWidget<Image>(_texture.CreateView(), Vector2F{ 0.f, 0.f });
+    }
     
-    _textureDesc.size.width = winWidth;
-    _textureDesc.size.height = winHeight;
-    _texture = _device.CreateTexture(&_textureDesc);
+    _image->size = Vector2F(static_cast<float>(winWidth), static_cast<float>(winHeight));
+    if (_createRenderTexture(winWidth, winHeight)) {
+        _image->setTextureView(_texture.CreateView());
+    }
 }
 
 void View::_draw_Impl() {
@@ -47,6 +48,27 @@ const Vector3F& View::gridColor() const {
 
 void View::setGridColor(const Vector3F& p_color) {
     _gridColor = p_color;
+}
+
+bool View::_createRenderTexture(uint32_t width, uint32_t height) {
+    if (width != _textureDesc.size.width || height != _textureDesc.size.height) {
+        _textureDesc.dimension = wgpu::TextureDimension::e2D;
+        _textureDesc.size.width = width;
+        _textureDesc.size.height = height;
+        _textureDesc.size.depthOrArrayLayers = 1;
+        _textureDesc.sampleCount = 1;
+        _textureDesc.format = _renderContext->drawableTextureFormat();
+        _textureDesc.mipLevelCount = 1;
+        _textureDesc.usage = wgpu::TextureUsage::RenderAttachment;
+        _texture = _renderContext->device().CreateTexture(&_textureDesc);
+        
+        _textureDesc.format = _depthStencilTextureFormat;
+        _depthStencilTexture = _renderContext->device().CreateTexture(&_textureDesc).CreateView();
+        
+        return true;
+    } else {
+        return false;
+    }
 }
 
 }

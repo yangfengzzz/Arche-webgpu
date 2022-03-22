@@ -25,6 +25,8 @@ public:
      */
     Image(wgpu::TextureView p_textureID, const Vector2F &p_size);
     
+    void setTextureView(wgpu::TextureView p_textureID);
+    
 protected:
     void _draw_Impl() override;
     
