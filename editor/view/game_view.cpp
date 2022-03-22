@@ -44,12 +44,8 @@ _scene(scene) {
                                                              scene, _mainCamera));
 }
 
-void GameView::update(float p_deltaTime) {
-    
-}
-
 void GameView::render(wgpu::CommandEncoder& commandEncoder) {
-    
+    _renderPass->draw(commandEncoder);
 }
 
 }

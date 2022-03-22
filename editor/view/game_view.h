@@ -27,12 +27,6 @@ public:
              const PanelWindowSettings &p_windowSettings);
     
     /**
-     * Update the view
-     * @param p_deltaTime p_deltaTimes
-     */
-    void update(float p_deltaTime) override;
-    
-    /**
      * Custom implementation of the render method
      */
     void render(wgpu::CommandEncoder& commandEncoder) override;

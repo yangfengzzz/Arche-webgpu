@@ -2009,6 +2009,8 @@
 		04219C8D27E1756E00F52C74 /* test */ = {
 			isa = PBXGroup;
 			children = (
+				047BF1AD27AF9C0C003F3599 /* editor_application.h */,
+				047BF1AE27AF9C0C003F3599 /* editor_application.cpp */,
 				047BF1C927AFAF4A003F3599 /* editor_component.h */,
 				047BF1DC27AFAF4C003F3599 /* entry.h */,
 				047BF1CC27AFAF4A003F3599 /* entry.cpp */,
@@ -2540,8 +2542,6 @@
 				047BF1D727AFAF4B003F3599 /* grid.cpp */,
 				047BF1C527AFAF02003F3599 /* editor.entitlements */,
 				047BF1D627AFAF4B003F3599 /* main.cpp */,
-				047BF1AD27AF9C0C003F3599 /* editor_application.h */,
-				047BF1AE27AF9C0C003F3599 /* editor_application.cpp */,
 			);
 			path = editor;
 			sourceTree = "<group>";
