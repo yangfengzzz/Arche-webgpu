@@ -147,6 +147,34 @@ void SceneView::render(wgpu::CommandEncoder& commandEncoder) {
             _colorPickerRenderPass->draw(commandEncoder, "color Picker Pass");
             _copyRenderTargetToBuffer(commandEncoder);
         }
+        
+        _renderContext->device().GetQueue().OnSubmittedWorkDone(0, [](WGPUQueueWorkDoneStatus status, void * userdata) {
+            if (status == WGPUQueueWorkDoneStatus_Success) {
+                SceneView* app = static_cast<SceneView*>(userdata);
+                if (app->_needPick) {
+                    app->_readColorFromRenderTarget();
+                    app->_needPick = false;
+                }
+            }
+        }, this);
+    }
+}
+
+void SceneView::_draw_Impl() {
+    View::_draw_Impl();
+    if (_pickResult.first != nullptr) {
+        if (ImGuizmo::IsOver()) {
+            _cameraControl->setEnabled(false);
+        }
+        
+        auto renderer = _pickResult.first;
+        auto cameraProjection = _mainCamera->projectionMatrix();
+        auto cameraView = _mainCamera->viewMatrix();
+        auto modelMat = renderer->entity()->transform->localMatrix();
+        editTransform(cameraView.data(), cameraProjection.data(), modelMat.data());
+        renderer->entity()->transform->setLocalMatrix(modelMat);
+        cameraView.invert();
+        _mainCamera->entity()->transform->setWorldMatrix(cameraView);
     }
 }
 
@@ -196,16 +224,37 @@ void SceneView::inputEvent(const InputEvent &inputEvent) {
             auto width = _mainCamera->width();
             auto height = _mainCamera->height();
             
-            auto pickerUnitPosX = mouse_button.pos_x() - position().x;
-            auto pickerUnitPosY = mouse_button.pos_y() - position().y;
+            auto pickerPosX = mouse_button.pos_x() - position().x;
+            auto pickerPosY = mouse_button.pos_y() - position().y;
 
-            if (pickerUnitPosX <= 1 && pickerUnitPosX > 0 && pickerUnitPosY <= 1 && pickerUnitPosY > 0) {
-                pick(pickerUnitPosX * width, pickerUnitPosY * height);
+            if (pickerPosX <= width && pickerPosX > 0 && pickerPosY <= height && pickerPosY > 0) {
+                pick(pickerPosX, pickerPosY);
             }
         }
     }
 }
 
+void SceneView::editTransform(float *cameraView, float *cameraProjection, float *matrix) {
+    static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::LOCAL);
+    static bool useSnap = false;
+    static float snap[3] = {1.f, 1.f, 1.f};
+    static float bounds[] = {-0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f};
+    static float boundsSnap[] = {0.1f, 0.1f, 0.1f};
+    static bool boundSizing = false;
+    static bool boundSizingSnap = false;
+    
+    auto [winWidth, winHeight] = safeSize();
+    auto viewportPos = position();
+    float viewManipulateRight = winWidth;
+    float viewManipulateTop = viewportPos.y;
+    ImGuizmo::SetRect(viewportPos.x, viewportPos.y, winWidth, winHeight);
+    ImGuizmo::SetDrawlist(ImGui::GetWindowDrawList());
+
+    ImGuizmo::Manipulate(cameraView, cameraProjection, _currentGizmoOperation, mCurrentGizmoMode,
+                         matrix, NULL, useSnap ? &snap[0] : NULL, boundSizing ? bounds : NULL, boundSizingSnap ? boundsSnap : NULL);
+    
+    ImGuizmo::ViewManipulate(cameraView, _camDistance, ImVec2(viewManipulateRight - 128, viewManipulateTop), ImVec2(128, 128), 0x10101010);
+}
 
 }
 }

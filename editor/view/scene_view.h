@@ -9,6 +9,7 @@
 
 #include "view.h"
 #include "controls/orbit_control.h"
+#include "imgui_zmo.h"
 
 namespace vox {
 using namespace ui;
@@ -27,6 +28,11 @@ public:
     SceneView(const std::string &p_title, bool p_opened,
               const PanelWindowSettings &p_windowSettings,
               RenderContext* renderContext, Scene* scene);
+    
+    /**
+     * Custom implementation of the draw method
+     */
+    void _draw_Impl() override;
     
     /**
      * Update the scene view
@@ -48,12 +54,18 @@ public:
     void inputEvent(const InputEvent &inputEvent);
     
     void loadScene(EntityPtr& rootEntity);
-        
+    
+private:
+    float _camDistance = 8.f;
+    ImGuizmo::OPERATION _currentGizmoOperation = ImGuizmo::TRANSLATE;
+    void editTransform(float *cameraView, float *cameraProjection, float *matrix);
+
 private:
     Camera* _mainCamera{nullptr};
     Scene* _scene{nullptr};
     control::OrbitControl* _cameraControl{nullptr};
     
+private:
     bool _needPick;
     Vector2F _pickPos;
     
