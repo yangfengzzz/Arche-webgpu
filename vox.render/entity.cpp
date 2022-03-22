@@ -211,7 +211,7 @@ void Entity::_addScript(Script *script) {
 }
 
 void Entity::_removeScript(Script *script) {
-    std::remove(_scripts.begin(), _scripts.end(), script);
+    _scripts.erase(std::remove(_scripts.begin(), _scripts.end(), script), _scripts.end());
     script->_entityCacheIndex = -1;
 }
 

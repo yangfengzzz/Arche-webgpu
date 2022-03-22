@@ -95,6 +95,12 @@ void AssetView::update(float deltaTime) {
 }
 
 void AssetView::render(wgpu::CommandEncoder& commandEncoder) {
+    if (isFocused()) {
+        _cameraControl->onEnable();
+    } else {
+        _cameraControl->onDisable();
+    }
+    
     if (_texture) {
         _renderPassColorAttachments.view = _texture.CreateView();
         _renderPassDepthStencilAttachment.view = _depthStencilTexture;

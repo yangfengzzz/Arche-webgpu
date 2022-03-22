@@ -136,9 +136,9 @@ void SceneView::update(float deltaTime) {
 
 void SceneView::render(wgpu::CommandEncoder& commandEncoder) {
     if (isFocused()) {
-        _cameraControl->setEnabled(true);
+        _cameraControl->onEnable();
     } else {
-        _cameraControl->setEnabled(false);
+        _cameraControl->onDisable();
     }
     
     // Let the first frame happen and then make the scene view the first seen view
