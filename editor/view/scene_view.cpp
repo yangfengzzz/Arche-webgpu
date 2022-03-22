@@ -162,20 +162,38 @@ void SceneView::render(wgpu::CommandEncoder& commandEncoder) {
 
 void SceneView::_draw_Impl() {
     View::_draw_Impl();
-    if (_pickResult.first != nullptr) {
-        if (ImGuizmo::IsOver()) {
-            _cameraControl->setEnabled(false);
+    int windowFlags = ImGuiWindowFlags_None;
+    
+    if (!resizable) windowFlags |= ImGuiWindowFlags_NoResize;
+    if (!movable) windowFlags |= ImGuiWindowFlags_NoMove;
+    if (!dockable) windowFlags |= ImGuiWindowFlags_NoDocking;
+    if (hideBackground) windowFlags |= ImGuiWindowFlags_NoBackground;
+    if (forceHorizontalScrollbar) windowFlags |= ImGuiWindowFlags_AlwaysHorizontalScrollbar;
+    if (forceVerticalScrollbar) windowFlags |= ImGuiWindowFlags_AlwaysVerticalScrollbar;
+    if (allowHorizontalScrollbar) windowFlags |= ImGuiWindowFlags_HorizontalScrollbar;
+    if (!bringToFrontOnFocus) windowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
+    if (!collapsable) windowFlags |= ImGuiWindowFlags_NoCollapse;
+    if (!allowInputs) windowFlags |= ImGuiWindowFlags_NoInputs;
+    if (!scrollable) windowFlags |= ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar;
+    if (!titleBar) windowFlags |= ImGuiWindowFlags_NoTitleBar;
+    
+    if (ImGui::Begin((name + _panelID).c_str(), nullptr, windowFlags)) {
+        if (_pickResult.first != nullptr) {
+            if (ImGuizmo::IsOver()) {
+                _cameraControl->setEnabled(false);
+            }
+            
+            auto renderer = _pickResult.first;
+            auto cameraProjection = _mainCamera->projectionMatrix();
+            auto cameraView = _mainCamera->viewMatrix();
+            auto modelMat = renderer->entity()->transform->localMatrix();
+            editTransform(cameraView.data(), cameraProjection.data(), modelMat.data());
+            renderer->entity()->transform->setLocalMatrix(modelMat);
+            cameraView.invert();
+            _mainCamera->entity()->transform->setWorldMatrix(cameraView);
         }
-        
-        auto renderer = _pickResult.first;
-        auto cameraProjection = _mainCamera->projectionMatrix();
-        auto cameraView = _mainCamera->viewMatrix();
-        auto modelMat = renderer->entity()->transform->localMatrix();
-        editTransform(cameraView.data(), cameraProjection.data(), modelMat.data());
-        renderer->entity()->transform->setLocalMatrix(modelMat);
-        cameraView.invert();
-        _mainCamera->entity()->transform->setWorldMatrix(cameraView);
     }
+    ImGui::End();
 }
 
 void SceneView::pick(float offsetX, float offsetY) {
@@ -211,7 +229,10 @@ void SceneView::_readColorFromRenderTarget() {
         if (status == WGPUBufferMapAsyncStatus_Success) {
             SceneView* app = static_cast<SceneView*>(userdata);
             memcpy(app->_pixel.data(), app->_stageBuffer.GetConstMappedRange(0, 4), 4);
-            app->_pickResult = app->_colorPickerSubpass->getObjectByColor(app->_pixel);
+            auto result = app->_colorPickerSubpass->getObjectByColor(app->_pixel);
+            if (result.first) {
+                app->_pickResult = result;
+            }
             app->_stageBuffer.Unmap();
         }
     }, this);
@@ -245,8 +266,8 @@ void SceneView::editTransform(float *cameraView, float *cameraProjection, float 
     
     auto [winWidth, winHeight] = safeSize();
     auto viewportPos = position();
-    float viewManipulateRight = winWidth;
-    float viewManipulateTop = viewportPos.y;
+    float viewManipulateRight = winWidth + viewportPos.x;
+    float viewManipulateTop = viewportPos.y + 25;
     ImGuizmo::SetRect(viewportPos.x, viewportPos.y, winWidth, winHeight);
     ImGuizmo::SetDrawlist(ImGui::GetWindowDrawList());
 
