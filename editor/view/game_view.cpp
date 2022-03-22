@@ -11,10 +11,10 @@
 namespace vox {
 namespace editor {
 namespace ui {
-GameView::GameView(RenderContext* renderContext, Scene* scene,
-                   const std::string & p_title, bool p_opened,
-                   const PanelWindowSettings & p_windowSettings) :
-View(renderContext, p_title, p_opened, p_windowSettings),
+GameView::GameView(const std::string & p_title, bool p_opened,
+                   const PanelWindowSettings & p_windowSettings,
+                   RenderContext* renderContext, Scene* scene) :
+View(p_title, p_opened, p_windowSettings, renderContext),
 _scene(scene) {
     auto editorRoot = _scene->findEntityByName("GameRoot");
     if (!editorRoot) {

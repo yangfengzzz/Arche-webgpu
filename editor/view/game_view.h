@@ -22,9 +22,9 @@ public:
      * @param p_opened p_opened
      * @param p_windowSettings p_windowSettings
      */
-    GameView(RenderContext* renderContext, Scene* scene,
-             const std::string &p_title, bool p_opened,
-             const PanelWindowSettings &p_windowSettings);
+    GameView(const std::string &p_title, bool p_opened,
+             const PanelWindowSettings &p_windowSettings,
+             RenderContext* renderContext, Scene* scene);
     
     /**
      * Custom implementation of the render method

@@ -29,9 +29,9 @@ public:
      * @param p_opened p_opened
      * @param p_windowSettings p_windowSettings
      */
-    View(RenderContext* renderContext,
-         const std::string &p_title, bool p_opened,
-         const PanelWindowSettings &p_windowSettings);
+    View(const std::string &p_title, bool p_opened,
+         const PanelWindowSettings &p_windowSettings,
+         RenderContext* renderContext);
     
     /**
      * Update the view

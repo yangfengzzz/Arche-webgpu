@@ -9,10 +9,9 @@
 namespace vox {
 namespace editor {
 namespace ui {
-View::View(RenderContext* renderContext,
-           const std::string& p_title,
-           bool p_opened,
-           const PanelWindowSettings& p_windowSettings) :
+View::View(const std::string& p_title, bool p_opened,
+           const PanelWindowSettings& p_windowSettings,
+           RenderContext* renderContext) :
 PanelWindow(p_title, p_opened, p_windowSettings),
 _renderContext(renderContext) {
     scrollable = false;
