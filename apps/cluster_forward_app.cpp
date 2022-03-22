@@ -16,9 +16,10 @@
 
 namespace vox {
 void ClusterForwardApp::loadScene() {
-    _scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
+    auto scene = _sceneManager->currentScene();
+    scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
     
-    auto rootEntity = _scene->createRootEntity();
+    auto rootEntity = scene->createRootEntity();
     rootEntity->addComponent<SpriteDebug>();
     
     auto cameraEntity = rootEntity->createChild("camera");

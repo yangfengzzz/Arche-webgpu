@@ -11,6 +11,7 @@
 #include "shadow/shadow_manager.h"
 #include "lighting/light_manager.h"
 #include "particle/particle_manager.h"
+#include "scene_manager.h"
 
 namespace vox {
 class ForwardApplication: public GraphicsApplication {
@@ -43,11 +44,6 @@ public:
 protected:
     Camera* _mainCamera{nullptr};
     
-    /**
-     * @brief Holds all scene information
-     */
-    std::unique_ptr<Scene> _scene{nullptr};
-    
     wgpu::RenderPassDescriptor _renderPassDescriptor;
     wgpu::RenderPassColorAttachment _colorAttachments;
     wgpu::RenderPassDepthStencilAttachment _depthStencilAttachment;
@@ -57,6 +53,10 @@ protected:
      */
     std::unique_ptr<RenderPass> _renderPass{nullptr};
     
+    /**
+     * @brief Holds all scene information
+     */
+    std::unique_ptr<SceneManager> _sceneManager{nullptr};
     std::unique_ptr<ShadowManager> _shadowManager{nullptr};
     std::unique_ptr<LightManager> _lightManager{nullptr};
     std::unique_ptr<ParticleManager> _particleManager{nullptr};

@@ -24,7 +24,7 @@
 namespace vox {
 /// @brief A collection of entities organized in a tree structure.
 ///		   It can contain more than one root entity.
-class Scene {
+class Scene : public VObject {
 public:
     /** Scene name. */
     std::string name;
@@ -117,6 +117,17 @@ public:
                     uint32_t fb_width, uint32_t fb_height);
     
     void updateShaderData();
+    
+public:
+    /**
+     * Called when the serialization is asked
+     */
+    void onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) override;
+    
+    /**
+     * Called when the deserialization is asked
+     */
+    void onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) override;
     
 private:
     void _processActive(bool active);

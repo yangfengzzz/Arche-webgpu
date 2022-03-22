@@ -21,18 +21,20 @@ ForwardApplication::~ForwardApplication() {
 bool ForwardApplication::prepare(Engine &engine) {
     GraphicsApplication::prepare(engine);
     
-    _scene = std::make_unique<Scene>(_device);
+    _sceneManager = std::make_unique<SceneManager>(_device);
+    auto scene = _sceneManager->currentScene();
+    
     _particleManager = std::make_unique<ParticleManager>(_device);
-    _lightManager = std::make_unique<LightManager>(_scene.get());
+    _lightManager = std::make_unique<LightManager>(scene);
     {
         loadScene();
         auto extent = engine.window().extent();
         auto factor = engine.window().contentScaleFactor();
-        _scene->updateSize(extent.width, extent.height, factor * extent.width, factor * extent.height);
+        scene->updateSize(extent.width, extent.height, factor * extent.width, factor * extent.height);
         _mainCamera->resize(extent.width, extent.height, factor * extent.width, factor * extent.height);
     }
     _lightManager->setCamera(_mainCamera);
-    _shadowManager = std::make_unique<ShadowManager>(_scene.get(), _mainCamera);
+    _shadowManager = std::make_unique<ShadowManager>(scene, _mainCamera);
     
     // Create a render pass descriptor for thelighting and composition pass
     // Whatever rendered in the final pass needs to be stored so it can be displayed
@@ -42,7 +44,7 @@ bool ForwardApplication::prepare(Engine &engine) {
     
     _colorAttachments.storeOp = wgpu::StoreOp::Store;
     _colorAttachments.loadOp = wgpu::LoadOp::Clear;
-    auto& color = _scene->background.solidColor;
+    auto& color = scene->background.solidColor;
     _colorAttachments.clearValue = wgpu::Color{color.r, color.g, color.b, color.a};
     _depthStencilAttachment.depthLoadOp = wgpu::LoadOp::Clear;
     _depthStencilAttachment.depthClearValue = 1.0;
@@ -50,14 +52,14 @@ bool ForwardApplication::prepare(Engine &engine) {
     _depthStencilAttachment.stencilLoadOp = wgpu::LoadOp::Clear;
     _depthStencilAttachment.stencilStoreOp = wgpu::StoreOp::Discard;
     _renderPass = std::make_unique<RenderPass>(_device, _renderPassDescriptor);
-    _renderPass->addSubpass(std::make_unique<ForwardSubpass>(_renderContext.get(), _scene.get(), _mainCamera));
+    _renderPass->addSubpass(std::make_unique<ForwardSubpass>(_renderContext.get(), scene, _mainCamera));
     
     return true;
 }
 
 void ForwardApplication::update(float delta_time) {
     GraphicsApplication::update(delta_time);
-    _scene->update(delta_time);
+    _sceneManager->currentScene()->update(delta_time);
     
     wgpu::CommandEncoder commandEncoder = _device.CreateCommandEncoder();
     updateGPUTask(commandEncoder);
@@ -82,14 +84,14 @@ void ForwardApplication::updateGPUTask(wgpu::CommandEncoder& commandEncoder) {
 bool ForwardApplication::resize(uint32_t win_width, uint32_t win_height,
                                 uint32_t fb_width, uint32_t fb_height) {
     GraphicsApplication::resize(win_width, win_height, fb_width, fb_height);
-    _scene->updateSize(win_width, win_height, fb_width, fb_height);
+    _sceneManager->currentScene()->updateSize(win_width, win_height, fb_width, fb_height);
     _mainCamera->resize(win_width, win_height, fb_width, fb_height);
     return true;
 }
 
 void ForwardApplication::inputEvent(const InputEvent &inputEvent) {
     GraphicsApplication::inputEvent(inputEvent);
-    _scene->updateInputEvent(inputEvent);
+    _sceneManager->currentScene()->updateInputEvent(inputEvent);
 }
 
 }

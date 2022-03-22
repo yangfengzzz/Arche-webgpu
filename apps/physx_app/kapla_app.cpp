@@ -71,9 +71,10 @@ void KaplaApp::createCylindricalTower(EntityPtr entity,
 
 
 void KaplaApp::loadScene() {
-    _scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
+    auto scene = _sceneManager->currentScene();
+    scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
     
-    auto rootEntity = _scene->createRootEntity();
+    auto rootEntity = scene->createRootEntity();
     auto cameraEntity = rootEntity->createChild("camera");
     cameraEntity->transform->setPosition(10, 10, 10);
     cameraEntity->transform->lookAt(Point3F(0, 0, 0));

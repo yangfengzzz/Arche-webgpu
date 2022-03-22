@@ -21,7 +21,8 @@
 
 namespace vox {
 void AnimationApp::loadScene() {
-    auto rootEntity = _scene->createRootEntity();
+    auto scene = _sceneManager->currentScene();
+    auto rootEntity = scene->createRootEntity();
     
     auto cameraEntity = rootEntity->createChild();
     cameraEntity->transform->setPosition(10, 10, 10);

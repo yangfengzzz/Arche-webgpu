@@ -105,7 +105,8 @@ private:
 void AtomicComputeApp::loadScene() {
     Shader::create("atomicRender", std::make_unique<WGSLUnlitVertex>(), std::make_unique<WGSLAtomicFragment>());
     
-    auto rootEntity = _scene->createRootEntity();
+    auto scene = _sceneManager->currentScene();
+    auto rootEntity = scene->createRootEntity();
     
     auto cameraEntity = rootEntity->createChild();
     cameraEntity->transform->setPosition(10, 10, 10);

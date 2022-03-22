@@ -85,9 +85,10 @@ public:
 
 void PhysXDynamicApp::loadScene() {
     u = std::uniform_real_distribution<float>(0, 1);
-    _scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
+    auto scene = _sceneManager->currentScene();
+    scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
     
-    _rootEntity = _scene->createRootEntity();
+    _rootEntity = scene->createRootEntity();
     auto cameraEntity = _rootEntity->createChild("camera");
     cameraEntity->transform->setPosition(20, 20, 20);
     cameraEntity->transform->lookAt(Point3F(0, 0, 0));
@@ -222,7 +223,7 @@ void PhysXDynamicApp::inputEvent(const InputEvent &inputEvent) {
             Ray ray = _mainCamera->screenPointToRay(Vector2F(mouse_button.pos_x(), mouse_button.pos_y()));
             
             physics::HitResult hit;
-            auto result = _scene->_physicsManager.raycast(ray, std::numeric_limits<float>::max(), Layer::Layer0, hit);
+            auto result = _sceneManager->currentScene()->_physicsManager.raycast(ray, std::numeric_limits<float>::max(), Layer::Layer0, hit);
             if (result) {
                 auto mtl = std::make_shared<BlinnPhongMaterial>(_device);
                 mtl->setBaseColor(Color(u(e), u(e), u(e), 1));

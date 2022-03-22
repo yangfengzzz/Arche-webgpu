@@ -30,7 +30,8 @@ bool SkyboxApp::prepare(Engine &engine) {
                                                         images[0]->format());
     cubeMap->setPixelBuffer(imagePtr);
     
-    auto skybox = std::make_unique<SkyboxSubpass>(_renderContext.get(), _scene.get(), _mainCamera);
+    auto scene = _sceneManager->currentScene();
+    auto skybox = std::make_unique<SkyboxSubpass>(_renderContext.get(), scene, _mainCamera);
     skybox->createCuboid();
     skybox->setTextureCubeMap(cubeMap);
     _renderPass->addSubpass(std::move(skybox));
@@ -39,7 +40,8 @@ bool SkyboxApp::prepare(Engine &engine) {
 }
 
 void SkyboxApp::loadScene() {
-    auto rootEntity = _scene->createRootEntity();
+    auto scene = _sceneManager->currentScene();
+    auto rootEntity = scene->createRootEntity();
     
     auto cameraEntity = rootEntity->createChild();
     cameraEntity->transform->setPosition(10, 10, 10);

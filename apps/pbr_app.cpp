@@ -30,7 +30,8 @@ void PBRApp::loadScene() {
     const int materialIndex = 0;
     Material mat = _materials[materialIndex];
     
-    auto rootEntity = _scene->createRootEntity();
+    auto scene = _sceneManager->currentScene();
+    auto rootEntity = scene->createRootEntity();
     
     auto cameraEntity = rootEntity->createChild();
     cameraEntity->transform->setPosition(10, 10, 10);

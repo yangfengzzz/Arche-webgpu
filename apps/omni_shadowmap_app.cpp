@@ -38,7 +38,8 @@ public:
 }
 
 void OminiShadowMapApp::loadScene() {
-    auto rootEntity = _scene->createRootEntity();
+    auto scene = _sceneManager->currentScene();
+    auto rootEntity = scene->createRootEntity();
     
     auto cameraEntity = rootEntity->createChild();
     cameraEntity->transform->setPosition(0, 0, 20);

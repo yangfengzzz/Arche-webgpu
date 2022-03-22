@@ -16,7 +16,6 @@
 #include "ibl_app.h"
 #include "gltf_app.h"
 #include "scene_animation_app.h"
-#include "framebuffer_picker_app.h"
 #include "shadowmap_app.h"
 #include "cascade_shadowmap_app.h"
 #include "omni_shadowmap_app.h"

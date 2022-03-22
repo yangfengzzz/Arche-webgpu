@@ -48,7 +48,8 @@ private:
 };
 
 void IrradianceApp::loadScene() {
-    auto rootEntity = _scene->createRootEntity();
+    auto scene = _sceneManager->currentScene();
+    auto rootEntity = scene->createRootEntity();
     Shader::create("cubemapDebugger", std::make_unique<WGSLSkyboxDebuggerVertex>(), std::make_unique<WGSLSkyboxDebuggerFragment>());
     
     auto cameraEntity = rootEntity->createChild();
@@ -101,7 +102,7 @@ void IrradianceApp::loadScene() {
                                                     images[0]->extent().width, images[0]->extent().height, 1,
                                                     images[0]->format());
     _cubeMap->setPixelBuffer(imagePtr);
-    _scene->ambientLight().setSpecularTexture(_cubeMap);
+    scene->ambientLight().setSpecularTexture(_cubeMap);
     
     auto changeMip = [&](uint32_t mipLevel) {
         for (uint32_t i = 0; i < 6; i++) {

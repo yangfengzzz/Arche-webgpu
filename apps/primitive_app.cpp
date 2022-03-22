@@ -32,8 +32,9 @@ private:
 }
 
 void PrimitiveApp::loadScene() {
-    _scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
-    auto rootEntity = _scene->createRootEntity();
+    auto scene = _sceneManager->currentScene();
+    scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
+    auto rootEntity = scene->createRootEntity();
     
     auto cameraEntity = rootEntity->createChild();
     cameraEntity->transform->setPosition(10, 10, 10);

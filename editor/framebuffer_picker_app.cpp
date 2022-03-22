@@ -24,9 +24,10 @@ void FramebufferPickerApp::loadScene() {
     _canvas.addPanel(_panel);
     
     u = std::uniform_real_distribution<float>(0, 1);
-    _scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
+    auto scene = _sceneManager->currentScene();
+    scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
     
-    auto rootEntity = _scene->createRootEntity();
+    auto rootEntity = scene->createRootEntity();
     
     auto cameraEntity = rootEntity->createChild("camera");
     cameraEntity->transform->setPosition(10, 10, 10);

@@ -11,6 +11,7 @@
 #include "ui/widgets/visual/image.h"
 #include "vector3.h"
 #include "quaternion.h"
+#include "rendering/render_pass.h"
 
 namespace vox {
 using namespace ui;
@@ -108,15 +109,19 @@ protected:
     void prepareCamera();
     
 protected:
-    //    OvEditor::Core::EditorRenderer& m_editorRenderer;
-    //    OvRendering::LowRenderer::Camera m_camera;
     Vector3F _cameraPosition;
     QuaternionF _cameraRotation;
-    ::vox::ui::Image *image;
+    Image *image;
     
     Vector3F m_gridColor = {0.176f, 0.176f, 0.176f};
     
-    //    OvRendering::Buffers::Framebuffer m_fbo;
+    std::unique_ptr<RenderPass> _renderPass{nullptr};
+    
+    wgpu::TextureDescriptor _textureDesc;
+    wgpu::Texture _texture;
+    wgpu::RenderPassDescriptor _renderPassDescriptor;
+    wgpu::RenderPassColorAttachment _renderPassColorAttachments;
+    wgpu::RenderPassDepthStencilAttachment _renderPassDepthStencilAttachment;
 };
 
 

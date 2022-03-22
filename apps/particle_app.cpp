@@ -15,8 +15,9 @@
 
 namespace vox {
 void ParticleApp::loadScene() {
-    _scene->background.solidColor = Color(0, 0, 0, 1);
-    auto rootEntity = _scene->createRootEntity();
+    auto scene = _sceneManager->currentScene();
+    scene->background.solidColor = Color(0, 0, 0, 1);
+    auto rootEntity = scene->createRootEntity();
     
     auto cameraEntity = rootEntity->createChild();
     cameraEntity->transform->setPosition(-30, 30, 30);

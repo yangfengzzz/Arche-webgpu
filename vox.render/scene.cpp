@@ -186,4 +186,13 @@ void Scene::updateSize(uint32_t win_width, uint32_t win_height,
                                         fb_width, fb_height);
 }
 
+//MARK: - Reflection
+void Scene::onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
+}
+
+void Scene::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+    
+}
+
 }        // namespace vox

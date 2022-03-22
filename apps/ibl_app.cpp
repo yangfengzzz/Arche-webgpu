@@ -16,7 +16,8 @@ namespace vox {
 bool IBLApp::prepare(Engine &engine) {
     ForwardApplication::prepare(engine);
     
-    auto skybox = std::make_unique<SkyboxSubpass>(_renderContext.get(), _scene.get(), _mainCamera);
+    auto scene = _sceneManager->currentScene();
+    auto skybox = std::make_unique<SkyboxSubpass>(_renderContext.get(), scene, _mainCamera);
     skybox->createCuboid();
     skybox->setTextureCubeMap(_cubeMap);
     _renderPass->addSubpass(std::move(skybox));
@@ -55,10 +56,11 @@ void IBLApp::loadScene() {
                                                     images[0]->format());
     _cubeMap->setPixelBuffer(imagePtr);
     
-    _scene->ambientLight().setSpecularTexture(_cubeMap);
-    _scene->ambientLight().setDiffuseTexture(_cubeMap);
+    auto scene = _sceneManager->currentScene();
+    scene->ambientLight().setSpecularTexture(_cubeMap);
+    scene->ambientLight().setDiffuseTexture(_cubeMap);
     
-    auto rootEntity = _scene->createRootEntity();
+    auto rootEntity = scene->createRootEntity();
     auto cameraEntity = rootEntity->createChild();
     cameraEntity->transform->setPosition(10, 10, 10);
     cameraEntity->transform->lookAt(Point3F(0, 0, 0));
