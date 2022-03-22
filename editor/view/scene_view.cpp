@@ -117,10 +117,10 @@ void SceneView::update(float deltaTime) {
     
     auto [winWidth, winHeight] = safeSize();
     if (winWidth > 0) {
-        _mainCamera->resize(winWidth/2, winHeight/2, winWidth, winHeight);
+        _mainCamera->resize(winWidth, winHeight, winWidth * 2, winHeight * 2);
         _colorPickerTextureDesc.format = wgpu::TextureFormat::BGRA8Unorm;
-        _colorPickerTextureDesc.size.width = winWidth;
-        _colorPickerTextureDesc.size.height = winHeight;
+        _colorPickerTextureDesc.size.width = winWidth * 2;
+        _colorPickerTextureDesc.size.height = winHeight * 2;
         _colorPickerTextureDesc.mipLevelCount = 1;
         _colorPickerTextureDesc.dimension = wgpu::TextureDimension::e2D;
         _colorPickerTextureDesc.usage = wgpu::TextureUsage::RenderAttachment | wgpu::TextureUsage::CopySrc;

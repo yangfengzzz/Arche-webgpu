@@ -23,9 +23,6 @@ _inputStructName(inputStructName) {
     _rendererStruct = "struct RendererData {\n";
     _rendererStruct += " u_localMat: mat4x4<f32>;\n";
     _rendererStruct += " u_modelMat: mat4x4<f32>;\n";
-    _rendererStruct += " u_MVMat: mat4x4<f32>;\n";
-    _rendererStruct += " u_MVPMat: mat4x4<f32>;\n";
-    _rendererStruct += " u_MVInvMat: mat4x4<f32>;\n";
     _rendererStruct += " u_normalMat: mat4x4<f32>;\n";
     _rendererStruct += "}\n";
 }

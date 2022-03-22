@@ -23,9 +23,6 @@ public:
     struct RendererData {
         Matrix4x4F u_localMat;
         Matrix4x4F u_modelMat;
-        Matrix4x4F u_MVMat;
-        Matrix4x4F u_MVPMat;
-        Matrix4x4F u_MVInvMat;
         Matrix4x4F u_normalMat;
     };
     
@@ -109,8 +106,7 @@ public:
     
     float distanceForSort();
     
-    void updateShaderData(const Matrix4x4F& viewMat,
-                          const Matrix4x4F& projMat);
+    void updateShaderData();
     
 protected:
     void _onEnable() override;
@@ -144,17 +140,8 @@ private:
     ShaderProperty _rendererProperty;
     
     std::unique_ptr<UpdateFlag> _transformChangeFlag;
-    // @deepClone
     BoundingBox3F _bounds = BoundingBox3F();
-    // @ignoreClone
-    Matrix4x4F _mvMatrix = Matrix4x4F();
-    // @ignoreClone
-    Matrix4x4F _mvpMatrix = Matrix4x4F();
-    // @ignoreClone
-    Matrix4x4F _mvInvMatrix = Matrix4x4F();
-    // @ignoreClone
     Matrix4x4F _normalMatrix = Matrix4x4F();
-    // @ignoreClone
     std::vector<bool> _materialsInstanced;
 };
 

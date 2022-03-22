@@ -26,7 +26,7 @@ void View::update(float p_deltaTime) {
         }
         
         _image->size = Vector2F(static_cast<float>(winWidth), static_cast<float>(winHeight));
-        if (_createRenderTexture(winWidth, winHeight)) {
+        if (_createRenderTexture(winWidth * 2, winHeight * 2)) {
             _image->setTextureView(_texture.CreateView());
         }
     }

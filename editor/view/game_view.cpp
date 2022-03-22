@@ -21,9 +21,7 @@ _scene(scene) {
     if (!editorRoot) {
         editorRoot = _scene->createRootEntity("GameRoot");
     }
-    
-    editorRoot->createChild("MainCamera");
-    _mainCamera = editorRoot->addComponent<Camera>();
+    loadScene(editorRoot);
     
     // Create a render pass descriptor for thelighting and composition pass
     // Whatever rendered in the final pass needs to be stored so it can be displayed
@@ -51,6 +49,22 @@ void GameView::render(wgpu::CommandEncoder& commandEncoder) {
         _renderPassDepthStencilAttachment.view = _depthStencilTexture;
         _renderPass->draw(commandEncoder);
     }
+}
+
+void GameView::update(float deltaTime) {
+    View::update(deltaTime);
+    
+    auto [winWidth, winHeight] = safeSize();
+    if (winWidth > 0) {
+        _mainCamera->resize(winWidth, winHeight, winWidth * 2, winHeight * 2);
+    }
+}
+
+void GameView::loadScene(EntityPtr& rootEntity) {
+    auto cameraEntity = rootEntity->createChild("MainCamera");
+    cameraEntity->transform->setPosition(10, 0, 0);
+    cameraEntity->transform->lookAt(Point3F(0, 0, 0));
+    _mainCamera = cameraEntity->addComponent<Camera>();
 }
 
 }

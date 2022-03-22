@@ -74,7 +74,7 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
             renderer->shaderData.enableMacro(CUBE_SHADOW_MAP_COUNT, cubeShadowCount);
         }
         
-        renderer->updateShaderData(_camera->viewMatrix(), _camera->projectionMatrix());
+        renderer->updateShaderData();
         renderer->shaderData.mergeMacro(macros, macros);
         auto& material = element.material;
         material->shaderData.mergeMacro(macros, macros);

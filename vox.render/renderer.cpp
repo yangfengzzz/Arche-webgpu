@@ -161,20 +161,13 @@ float Renderer::distanceForSort() {
     return _distanceForSort;
 }
 
-void Renderer::updateShaderData(const Matrix4x4F& viewMat,
-                                const Matrix4x4F& projMat) {
+void Renderer::updateShaderData() {
     auto worldMatrix = entity()->transform->worldMatrix();
-    _mvMatrix = viewMat * worldMatrix;
-    _mvpMatrix = projMat * viewMat * worldMatrix;
-    _mvInvMatrix = _mvMatrix.inverse();
     _normalMatrix = worldMatrix.inverse();
     _normalMatrix = _normalMatrix.transposed();
     
     _rendererData.u_localMat = entity()->transform->localMatrix();
     _rendererData.u_modelMat = worldMatrix;
-    _rendererData.u_MVMat = _mvMatrix;
-    _rendererData.u_MVPMat = _mvpMatrix;
-    _rendererData.u_MVInvMat = _mvInvMatrix;
     _rendererData.u_normalMat = _normalMatrix;
     shaderData.setData(Renderer::_rendererProperty, _rendererData);
 }

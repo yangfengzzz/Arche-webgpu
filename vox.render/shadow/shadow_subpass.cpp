@@ -73,7 +73,7 @@ void ShadowSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
         auto macros = compileMacros;
         auto& renderer = element.renderer;
         if (renderer->castShadow) {
-            renderer->updateShaderData(_camera->viewMatrix(), _camera->projectionMatrix());
+            renderer->updateShaderData();
             renderer->shaderData.mergeMacro(macros, macros);
             auto& mesh = element.mesh;
             auto& subMesh = element.subMesh;

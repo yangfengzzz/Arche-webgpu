@@ -27,9 +27,16 @@ public:
              RenderContext* renderContext, Scene* scene);
     
     /**
+     * Update the scene view
+     */
+    void update(float p_deltaTime) override;
+    
+    /**
      * Custom implementation of the render method
      */
     void render(wgpu::CommandEncoder& commandEncoder) override;
+    
+    void loadScene(EntityPtr& rootEntity);
     
 private:
     Camera* _mainCamera{nullptr};

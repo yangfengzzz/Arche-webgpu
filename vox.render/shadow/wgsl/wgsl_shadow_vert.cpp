@@ -15,7 +15,7 @@ _output(output) {
 
 void WGSLShadowVert::operator()(std::string& source, const ShaderMacroCollection& macros) {
     if (macros.contains(SHADOW_MAP_COUNT)) {
-        source += fmt::format("{}.view_pos = (u_rendererData.u_MVMat * position).xyz;\n", _output);
+        source += fmt::format("{}.view_pos = (u_cameraData.u_viewMat * u_rendererData.u_modelMat * position).xyz;\n", _output);
     }
 }
 
