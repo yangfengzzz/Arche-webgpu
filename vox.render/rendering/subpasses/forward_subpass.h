@@ -21,6 +21,9 @@ public:
     
     void draw(wgpu::RenderPassEncoder& passEncoder) override;
     
+public:
+    void setRenderElement(std::optional<RenderElement> element);
+    
 private:
     void _drawMeshes(wgpu::RenderPassEncoder &passEncoder);
     
@@ -49,6 +52,8 @@ private:
     wgpu::PipelineLayout _pipelineLayout;
     
     wgpu::TextureFormat _depthStencilTextureFormat;
+    
+    std::optional<RenderElement> _element{std::nullopt};
 };
 
 }

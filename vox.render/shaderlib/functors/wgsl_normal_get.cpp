@@ -34,10 +34,10 @@ void WGSLNormalGet::operator()(WGSLEncoder& encoder,
 
     if (macros.contains(HAS_NORMAL_TEXTURE)) {
         if (!macros.contains(HAS_TANGENT)) {
-            source += fmt::format("var pos_dx = dfdx({}.v_pos);\n", _paramName);
-            source += fmt::format("var pos_dy = dfdy({}.v_pos);\n", _paramName);
-            source += fmt::format("var tex_dx = dfdx(vec3<f32>({}.v_uv, 0.0));\n", _paramName);
-            source += fmt::format("var tex_dy = dfdy(vec3<f32>({}.v_uv, 0.0));\n", _paramName);
+            source += fmt::format("var pos_dx = dpdx({}.v_pos);\n", _paramName);
+            source += fmt::format("var pos_dy = dpdy({}.v_pos);\n", _paramName);
+            source += fmt::format("var tex_dx = dpdx(vec3<f32>({}.v_uv, 0.0));\n", _paramName);
+            source += fmt::format("var tex_dy = dpdy(vec3<f32>({}.v_uv, 0.0));\n", _paramName);
             source += "var t = (tex_dy.t * pos_dx - tex_dx.t * pos_dy) / (tex_dx.s * tex_dy.t - tex_dy.s * tex_dx.t);\n";
             if (macros.contains(HAS_NORMAL)) {
                 source += "var ng = normalize(v_normal);\n";

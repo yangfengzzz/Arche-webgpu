@@ -10,6 +10,7 @@
 #include <variant>
 #include "view.h"
 #include "controls/orbit_control.h"
+#include "rendering/subpasses/forward_subpass.h"
 
 namespace vox {
 using namespace ui;
@@ -46,6 +47,9 @@ public:
 private:
     Camera* _mainCamera{nullptr};
     Scene* _scene{nullptr};
+    ForwardSubpass* _subpass{nullptr};
+    MeshRenderer* _renderer{nullptr};
+    
     control::OrbitControl* _cameraControl{nullptr};
 };
 

@@ -6,7 +6,6 @@
 
 #include "asset_view.h"
 #include "camera.h"
-#include "rendering/subpasses/forward_subpass.h"
 #include "grid.h"
 
 #include "mesh/primitive_mesh.h"
@@ -46,9 +45,14 @@ _scene(scene) {
         _renderPassDepthStencilAttachment.stencilLoadOp = wgpu::LoadOp::Clear;
         _renderPassDepthStencilAttachment.stencilStoreOp = wgpu::StoreOp::Discard;
         _renderPass = std::make_unique<RenderPass>(renderContext->device(), _renderPassDescriptor);
-        _renderPass->addSubpass(std::make_unique<ForwardSubpass>(_renderContext, _depthStencilTextureFormat,
-                                                                 scene, _mainCamera));
+        auto subpass = std::make_unique<ForwardSubpass>(_renderContext, _depthStencilTextureFormat,
+                                                        scene, _mainCamera);
+        _subpass = subpass.get();
+        _renderPass->addSubpass(std::move(subpass));
     }
+    
+    _subpass->setRenderElement(RenderElement(_renderer, _renderer->mesh(),
+                                             _renderer->mesh()->subMesh(), _renderer->getMaterial()));
 }
 
 void AssetView::loadScene(EntityPtr& rootEntity) {
@@ -60,13 +64,15 @@ void AssetView::loadScene(EntityPtr& rootEntity) {
     _cameraControl = cameraEntity->addComponent<control::OrbitControl>();
     
     // create box test entity
-    float cubeSize = 2.0;
-    auto boxEntity = rootEntity->createChild("BoxEntity");
-    auto boxMtl = std::make_shared<BlinnPhongMaterial>(_renderContext->device());
-    auto boxRenderer = boxEntity->addComponent<MeshRenderer>();
-    boxMtl->setBaseColor(Color(0.8, 0.3, 0.3, 1.0));
-    boxRenderer->setMesh(PrimitiveMesh::createCuboid(_renderContext->device(), cubeSize, cubeSize, cubeSize));
-    boxRenderer->setMaterial(boxMtl);
+    float radius = 2.0;
+    auto sphereEntity = rootEntity->createChild("SphereEntity");
+    auto sphereMtl = std::make_shared<BlinnPhongMaterial>(_renderContext->device());
+    sphereMtl->setBaseColor(Color(0.8, 0.3, 0.3, 1.0));
+    _renderer = sphereEntity->addComponent<MeshRenderer>();
+    _renderer->setMesh(PrimitiveMesh::createSphere(_renderContext->device(), radius));
+    _renderer->setMaterial(sphereMtl);
+    _renderer->shaderData.enableMacro(HAS_UV);
+    _renderer->shaderData.enableMacro(HAS_NORMAL);
 }
 
 void AssetView::update(float deltaTime) {
@@ -80,12 +86,6 @@ void AssetView::update(float deltaTime) {
 }
 
 void AssetView::render(wgpu::CommandEncoder& commandEncoder) {
-    if (isFocused()) {
-        _cameraControl->setEnabled(true);
-    } else {
-        _cameraControl->setEnabled(false);
-    }
-    
     if (_texture && isFocused()) {
         _renderPassColorAttachments.view = _texture.CreateView();
         _renderPassDepthStencilAttachment.view = _depthStencilTexture;
