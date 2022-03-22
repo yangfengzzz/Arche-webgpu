@@ -9,6 +9,7 @@
 #include "camera.h"
 #include "glfw_window.h"
 
+#include "ui/menu_bar.h"
 #include "view/game_view.h"
 
 namespace vox {
@@ -22,6 +23,14 @@ bool EditorApplication::prepare(Engine &engine) {
     GraphicsApplication::prepare(engine);
     
     _gui = std::make_unique<::vox::ui::UIManager>(static_cast<GlfwWindow*>(&engine.window())->handle(), _renderContext.get());
+    _gui->loadFont("Ruda_Big", "../assets/Fonts/Ruda-Bold.ttf", 16);
+    _gui->loadFont("Ruda_Small", "../assets/Fonts/Ruda-Bold.ttf", 12);
+    _gui->loadFont("Ruda_Medium", "../assets/Fonts/Ruda-Bold.ttf", 14);
+    _gui->useFont("Ruda_Medium");
+    _gui->setEditorLayoutAutosaveFrequency(60.0f);
+    _gui->enableEditorLayoutSave(true);
+    _gui->enableDocking(true);
+    
     _sceneManager = std::make_unique<SceneManager>(_device);
     auto scene = _sceneManager->currentScene();
     
@@ -46,6 +55,8 @@ bool EditorApplication::prepare(Engine &engine) {
     auto& color = scene->background.solidColor;
     _colorAttachments.clearValue = wgpu::Color{color.r, color.g, color.b, color.a};
     
+    setupUI();
+    
     return true;
 }
 
@@ -55,16 +66,34 @@ void EditorApplication::setupUI() {
     settings.collapsable = true;
     settings.dockable = true;
     
+    _panelsManager.createPanel<ui::MenuBar>("Menu Bar");
     _panelsManager.createPanel<ui::GameView>("Game View", true, settings,
                                              _renderContext.get(), _sceneManager->currentScene());
+    
+    _canvas.makeDockspace(true);
+    _gui->setCanvas(_canvas);
 }
 
-void EditorApplication::update(float delta_time) {
-    GraphicsApplication::update(delta_time);
-    _sceneManager->currentScene()->update(delta_time);
+void EditorApplication::renderViews(float deltaTime, wgpu::CommandEncoder& commandEncoder) {
+    auto& gameView = _panelsManager.getPanelAs<ui::GameView>("Game View");
+    {
+        // PROFILER_SPY("Editor Views Update");
+        gameView.update(deltaTime);
+    }
+    
+    if (gameView.isOpened()) {
+        // PROFILER_SPY("Game View Rendering");
+        gameView.render(commandEncoder);
+    }
+}
+
+void EditorApplication::update(float deltaTime) {
+    GraphicsApplication::update(deltaTime);
+    _sceneManager->currentScene()->update(deltaTime);
     
     wgpu::CommandEncoder commandEncoder = _device.CreateCommandEncoder();
     updateGPUTask(commandEncoder);
+    renderViews(deltaTime, commandEncoder);
     
     // Render the gui
     _colorAttachments.view = _renderContext->currentDrawableTexture();

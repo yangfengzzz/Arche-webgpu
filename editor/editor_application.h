@@ -20,7 +20,7 @@ namespace editor {
 class EditorApplication: public GraphicsApplication {
 public:
     EditorApplication();
-        
+    
     /**
      * @brief Additional sample initialization
      */
@@ -35,13 +35,18 @@ public:
                 uint32_t fb_width, uint32_t fb_height) override;
     
     void inputEvent(const InputEvent &inputEvent) override;
-        
+    
     virtual void updateGPUTask(wgpu::CommandEncoder& commandEncoder);
     
     /**
-    * Handle panels creation and canvas binding
-    */
+     * Handle panels creation and canvas binding
+     */
     void setupUI();
+    
+    /**
+     * Render every views (Scene View, Game View, Asset View)
+     */
+    void renderViews(float deltaTime, wgpu::CommandEncoder& commandEncoder);
     
 protected:
     ::vox::ui::Canvas _canvas;

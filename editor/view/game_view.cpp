@@ -16,6 +16,7 @@ GameView::GameView(const std::string & p_title, bool p_opened,
                    RenderContext* renderContext, Scene* scene) :
 View(p_title, p_opened, p_windowSettings, renderContext),
 _scene(scene) {
+    scene->background.solidColor = Color(0.2, 0.4, 0.6, 1.0);
     auto editorRoot = _scene->findEntityByName("GameRoot");
     if (!editorRoot) {
         editorRoot = _scene->createRootEntity("GameRoot");
@@ -45,7 +46,11 @@ _scene(scene) {
 }
 
 void GameView::render(wgpu::CommandEncoder& commandEncoder) {
-    _renderPass->draw(commandEncoder);
+    if (_texture) {
+        _renderPassColorAttachments.view = _texture.CreateView();
+        _renderPassDepthStencilAttachment.view = _depthStencilTexture;
+        _renderPass->draw(commandEncoder);
+    }
 }
 
 }

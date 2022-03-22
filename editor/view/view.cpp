@@ -18,15 +18,17 @@ _renderContext(renderContext) {
 }
 
 void View::update(float p_deltaTime) {
-    auto[winWidth, winHeight] = safeSize();
+    auto [winWidth, winHeight] = safeSize();
     
-    if (!_image) {
-        _image = &createWidget<Image>(_texture.CreateView(), Vector2F{ 0.f, 0.f });
-    }
-    
-    _image->size = Vector2F(static_cast<float>(winWidth), static_cast<float>(winHeight));
-    if (_createRenderTexture(winWidth, winHeight)) {
-        _image->setTextureView(_texture.CreateView());
+    if (winWidth > 0) {
+        if (!_image) {
+            _image = &createWidget<Image>(nullptr, Vector2F{ 0.f, 0.f });
+        }
+        
+        _image->size = Vector2F(static_cast<float>(winWidth), static_cast<float>(winHeight));
+        if (_createRenderTexture(winWidth, winHeight)) {
+            _image->setTextureView(_texture.CreateView());
+        }
     }
 }
 
@@ -58,7 +60,7 @@ bool View::_createRenderTexture(uint32_t width, uint32_t height) {
         _textureDesc.sampleCount = 1;
         _textureDesc.format = _renderContext->drawableTextureFormat();
         _textureDesc.mipLevelCount = 1;
-        _textureDesc.usage = wgpu::TextureUsage::RenderAttachment;
+        _textureDesc.usage = wgpu::TextureUsage::RenderAttachment | wgpu::TextureUsage::TextureBinding;
         _texture = _renderContext->device().CreateTexture(&_textureDesc);
         
         _textureDesc.format = _depthStencilTextureFormat;
