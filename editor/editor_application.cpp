@@ -41,7 +41,6 @@ bool EditorApplication::prepare(Engine &engine) {
         auto extent = engine.window().extent();
         auto factor = engine.window().contentScaleFactor();
         scene->updateSize(extent.width, extent.height, factor * extent.width, factor * extent.height);
-        // _mainCamera->resize(extent.width, extent.height, factor * extent.width, factor * extent.height);
     }
     _lightManager->setCamera(_mainCamera);
     _shadowManager = std::make_unique<ShadowManager>(scene, _mainCamera);
@@ -144,13 +143,15 @@ bool EditorApplication::resize(uint32_t win_width, uint32_t win_height,
     GraphicsApplication::resize(win_width, win_height, fb_width, fb_height);
 
     _sceneManager->currentScene()->updateSize(win_width, win_height, fb_width, fb_height);
-    // _mainCamera->resize(win_width, win_height, fb_width, fb_height);
     return true;
 }
 
 void EditorApplication::inputEvent(const InputEvent &inputEvent) {
     GraphicsApplication::inputEvent(inputEvent);
     _sceneManager->currentScene()->updateInputEvent(inputEvent);
+    
+    auto& sceneView = _panelsManager.getPanelAs<ui::SceneView>("Scene View");
+    sceneView.inputEvent(inputEvent);
 }
 
 }

@@ -8,6 +8,7 @@
 #define scene_view_hpp
 
 #include "view.h"
+#include "controls/orbit_control.h"
 
 namespace vox {
 using namespace ui;
@@ -43,10 +44,15 @@ public:
      * @param offsetY Relative Y coordinate of the canvas
      */
     void pick(float offsetX, float offsetY);
+    
+    void inputEvent(const InputEvent &inputEvent);
+    
+    void loadScene(EntityPtr& rootEntity);
         
 private:
     Camera* _mainCamera{nullptr};
     Scene* _scene{nullptr};
+    control::OrbitControl* _cameraControl{nullptr};
     
     bool _needPick;
     Vector2F _pickPos;
