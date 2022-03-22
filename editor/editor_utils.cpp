@@ -8,6 +8,11 @@
 
 namespace vox {
 namespace editor {
+void openURL(std::string url) {
+    std::string op = std::string("open ").append(url);
+    system(op.c_str());
+}
+
 std::string generateId(uint32_t length) {
     std::string id;
     srand(static_cast<uint32_t>(time(NULL)));

@@ -680,6 +680,8 @@
 		04FDF0DA27E95F9800BBE8E4 /* game_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0B327E872FB00BBE8E4 /* game_view.cpp */; };
 		04FDF0DD27E9723100BBE8E4 /* editor_application.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0DB27E9723100BBE8E4 /* editor_application.cpp */; };
 		04FDF0E027E974D400BBE8E4 /* panels_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0DE27E974D400BBE8E4 /* panels_manager.cpp */; };
+		04FDF0E127E97B1500BBE8E4 /* menu_bar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0BF27E8780C00BBE8E4 /* menu_bar.cpp */; };
+		04FDF0E227E97C5500BBE8E4 /* editor_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219CCA27E413FC00F52C74 /* editor_utils.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -2515,8 +2517,6 @@
 				047BF1B827AFA525003F3599 /* framebuffer_picker_app.cpp */,
 				04219CCE27E41D6A00F52C74 /* ui_font_manager.h */,
 				04219CCD27E41D6A00F52C74 /* ui_font_manager.cpp */,
-				04219CCB27E413FC00F52C74 /* editor_utils.h */,
-				04219CCA27E413FC00F52C74 /* editor_utils.cpp */,
 				04219C9027E1759D00F52C74 /* gui_entry.h */,
 				04219C8F27E1759D00F52C74 /* gui_entry.cpp */,
 				04219C8D27E1756E00F52C74 /* test */,
@@ -2552,6 +2552,8 @@
 				047BF1D627AFAF4B003F3599 /* main.cpp */,
 				04FDF0DC27E9723100BBE8E4 /* editor_application.h */,
 				04FDF0DB27E9723100BBE8E4 /* editor_application.cpp */,
+				04219CCB27E413FC00F52C74 /* editor_utils.h */,
+				04219CCA27E413FC00F52C74 /* editor_utils.cpp */,
 			);
 			path = editor;
 			sourceTree = "<group>";
@@ -3975,6 +3977,8 @@
 				04FDF0D927E95DDB00BBE8E4 /* view.cpp in Sources */,
 				04FDF0DD27E9723100BBE8E4 /* editor_application.cpp in Sources */,
 				04FDF0DA27E95F9800BBE8E4 /* game_view.cpp in Sources */,
+				04FDF0E227E97C5500BBE8E4 /* editor_utils.cpp in Sources */,
+				04FDF0E127E97B1500BBE8E4 /* menu_bar.cpp in Sources */,
 				04FDF0D627E9546A00BBE8E4 /* grid.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
