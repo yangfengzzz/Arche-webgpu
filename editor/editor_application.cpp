@@ -12,6 +12,9 @@
 #include "ui/menu_bar.h"
 #include "ui/hierarchy.h"
 #include "ui/inspector.h"
+#include "ui/profiler_window.h"
+#include "ui/tool_bar.h"
+#include "ui/project_settings.h"
 #include "view/game_view.h"
 #include "view/scene_view.h"
 #include "view/asset_view.h"
@@ -20,11 +23,17 @@
 
 namespace vox {
 namespace editor {
-EditorApplication::EditorApplication():
+EditorApplication::EditorApplication(const std::string& projectPath, const std::string& projectName):
 GraphicsApplication(),
+projectPath(projectPath),
+projectName(projectName),
+projectFilePath(projectPath + projectName + ".project"),
+engineAssetsPath(std::filesystem::canonical("./Data").string() + "/"),
+projectAssetsPath(projectPath + "/Assets/"),
+projectScriptsPath(projectPath + "/Scripts/"),
+editorAssetsPath("/Data/Editor/"),
 _panelsManager(_canvas) {
     Shader::create("editor-grid", std::make_unique<WGSLGridVertex>(), std::make_unique<WGSLGridFragment>());
-    _editorActions = std::make_unique<EditorActions>(_panelsManager);
 }
 
 bool EditorApplication::prepare(Engine &engine) {
@@ -62,6 +71,8 @@ bool EditorApplication::prepare(Engine &engine) {
     auto& color = scene->background.solidColor;
     _colorAttachments.clearValue = wgpu::Color{color.r, color.g, color.b, color.a};
     
+    _editorActions = std::make_unique<EditorActions>(_panelsManager);
+    _editorResources = std::make_unique<EditorResources>(_device, editorAssetsPath);
     setupUI();
     
     return true;
@@ -74,14 +85,18 @@ void EditorApplication::setupUI() {
     settings.dockable = true;
     
     _panelsManager.createPanel<ui::MenuBar>("Menu Bar");
-    _panelsManager.createPanel<ui::GameView>("Game View", true, settings,
-                                             _renderContext.get(), _sceneManager->currentScene());
-    _panelsManager.createPanel<ui::SceneView>("Scene View", true, settings,
-                                             _renderContext.get(), _sceneManager->currentScene());
-    _panelsManager.createPanel<ui::AssetView>("Asset View", true, settings,
-                                             _renderContext.get(), _sceneManager->currentScene());
+    _panelsManager.createPanel<ui::ProfilerWindow>("Profiler", true, settings, 0.25f);
     _panelsManager.createPanel<ui::Hierarchy>("Hierarchy", true, settings);
     _panelsManager.createPanel<ui::Inspector>("Inspector", true, settings);
+    _panelsManager.createPanel<ui::SceneView>("Scene View", true, settings,
+                                             _renderContext.get(), _sceneManager->currentScene());
+    _panelsManager.createPanel<ui::GameView>("Game View", true, settings,
+                                             _renderContext.get(), _sceneManager->currentScene());
+
+    _panelsManager.createPanel<ui::AssetView>("Asset View", true, settings,
+                                             _renderContext.get(), _sceneManager->currentScene());
+    _panelsManager.createPanel<ui::Toolbar>("Toolbar", true, settings, _editorResources.get());
+    _panelsManager.createPanel<ui::ProjectSettings>("Project Settings", false, settings, projectPath, projectName);
 
     _canvas.makeDockspace(true);
     _gui->setCanvas(_canvas);

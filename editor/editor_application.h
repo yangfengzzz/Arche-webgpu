@@ -15,12 +15,13 @@
 
 #include "panels_manager.h"
 #include "editor_actions.h"
+#include "editor_resources.h"
 
 namespace vox {
 namespace editor {
 class EditorApplication: public GraphicsApplication {
 public:
-    EditorApplication();
+    EditorApplication(const std::string& projectPath, const std::string& projectName);
     
     /**
      * @brief Additional sample initialization
@@ -55,9 +56,18 @@ public:
      */
     void updateEditorPanels(float deltaTime);
     
-protected:
+private:
+    const std::string projectPath;
+    const std::string projectName;
+    const std::string projectFilePath;
+    const std::string engineAssetsPath;
+    const std::string projectAssetsPath;
+    const std::string projectScriptsPath;
+    const std::string editorAssetsPath;
+    
     ::vox::ui::Canvas _canvas;
     ui::PanelsManager _panelsManager;
+    std::unique_ptr<EditorResources> _editorResources{nullptr};
     std::unique_ptr<EditorActions> _editorActions{nullptr};
 
     Camera* _mainCamera{nullptr};
