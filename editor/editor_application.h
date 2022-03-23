@@ -14,6 +14,7 @@
 #include "scene_manager.h"
 
 #include "panels_manager.h"
+#include "editor_actions.h"
 
 namespace vox {
 namespace editor {
@@ -57,7 +58,8 @@ public:
 protected:
     ::vox::ui::Canvas _canvas;
     ui::PanelsManager _panelsManager;
-    
+    std::unique_ptr<EditorActions> _editorActions{nullptr};
+
     Camera* _mainCamera{nullptr};
     
     wgpu::RenderPassDescriptor _renderPassDescriptor;

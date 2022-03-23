@@ -10,6 +10,7 @@
 #include "glfw_window.h"
 
 #include "ui/menu_bar.h"
+#include "ui/hierarchy.h"
 #include "view/game_view.h"
 #include "view/scene_view.h"
 #include "view/asset_view.h"
@@ -22,6 +23,7 @@ EditorApplication::EditorApplication():
 GraphicsApplication(),
 _panelsManager(_canvas) {
     Shader::create("editor-grid", std::make_unique<WGSLGridVertex>(), std::make_unique<WGSLGridFragment>());
+    _editorActions = std::make_unique<EditorActions>(_panelsManager);
 }
 
 bool EditorApplication::prepare(Engine &engine) {
@@ -77,7 +79,8 @@ void EditorApplication::setupUI() {
                                              _renderContext.get(), _sceneManager->currentScene());
     _panelsManager.createPanel<ui::AssetView>("Asset View", true, settings,
                                              _renderContext.get(), _sceneManager->currentScene());
-    
+    _panelsManager.createPanel<ui::Hierarchy>("Hierarchy", true, settings);
+
     _canvas.makeDockspace(true);
     _gui->setCanvas(_canvas);
 }
