@@ -63,8 +63,6 @@ private:
     
     void setShowErrorLogs(bool p_value);
     
-    void setShowFatalLogs(bool p_value);
-    
 private:
     Group *_logGroup{nullptr};
     std::unique_ptr<google::LogSink> _consoleSink{nullptr};
@@ -74,7 +72,6 @@ private:
     bool _showInfoLog = true;
     bool _showWarningLog = true;
     bool _showErrorLog = true;
-    bool _showFatalLog = true;
 };
 
 

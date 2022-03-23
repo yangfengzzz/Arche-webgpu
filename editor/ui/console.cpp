@@ -62,13 +62,11 @@ PanelWindow(p_title, p_opened, p_windowSettings) {
     auto &enableInfo = createWidget<CheckBox>(true, "Info");
     auto &enableWarning = createWidget<CheckBox>(true, "Warning");
     auto &enableError = createWidget<CheckBox>(true, "Error");
-    auto &enableFatal = createWidget<CheckBox>(true, "Default");
     
     clearOnPlay.lineBreak = false;
     enableInfo.lineBreak = false;
     enableWarning.lineBreak = false;
     enableError.lineBreak = true;
-    enableFatal.lineBreak = true;
     
     clearOnPlay.valueChangedEvent += [this](bool p_value) {
         _clearOnPlay = p_value;
@@ -76,7 +74,6 @@ PanelWindow(p_title, p_opened, p_windowSettings) {
     enableInfo.valueChangedEvent += std::bind(&Console::setShowInfoLogs, this, std::placeholders::_1);
     enableWarning.valueChangedEvent += std::bind(&Console::setShowWarningLogs, this, std::placeholders::_1);
     enableError.valueChangedEvent += std::bind(&Console::setShowErrorLogs, this, std::placeholders::_1);
-    enableFatal.valueChangedEvent += std::bind(&Console::setShowFatalLogs, this, std::placeholders::_1);
     
     createWidget<Separator>();
     
@@ -90,15 +87,18 @@ void Console::onLogIntercepted(google::LogSeverity logLevel,
                                const std::string &message) {
     Color logColor;
     switch (logLevel) {
-        default:
         case google::INFO:
-            logColor = {1.f, 1.f, 1.f, 1.f};
-        case google::WARNING:
             logColor = {0.f, 1.f, 1.f, 1.f};
-        case google::ERROR:
+            break;
+        case google::WARNING:
             logColor = {1.f, 1.f, 0.f, 1.f};
-        case google::FATAL:
+            break;
+        case google::ERROR:
             logColor = {1.f, 0.f, 0.f, 1.f};
+            break;
+        default:
+            logColor = {1.f, 1.f, 1.f, 1.f};
+            break;
     }
     auto &consoleItem1 = _logGroup->createWidget<TextColored>(message, logColor);
     consoleItem1.enabled = isAllowedByFilter(logLevel);
@@ -128,8 +128,6 @@ bool Console::isAllowedByFilter(google::LogSeverity logLevel) {
             return _showWarningLog;
         case google::ERROR:
             return _showErrorLog;
-        case google::FATAL:
-            return _showFatalLog;
     }
     
     return false;
@@ -147,11 +145,6 @@ void Console::setShowWarningLogs(bool p_value) {
 
 void Console::setShowErrorLogs(bool p_value) {
     _showErrorLog = p_value;
-    filterLogs();
-}
-
-void Console::setShowFatalLogs(bool p_value) {
-    _showFatalLog = p_value;
     filterLogs();
 }
 

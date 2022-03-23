@@ -15,6 +15,7 @@
 #include "ui/profiler_window.h"
 #include "ui/tool_bar.h"
 #include "ui/project_settings.h"
+#include "ui/console.h"
 #include "view/game_view.h"
 #include "view/scene_view.h"
 #include "view/asset_view.h"
@@ -86,6 +87,7 @@ void EditorApplication::setupUI() {
     
     _panelsManager.createPanel<ui::MenuBar>("Menu Bar");
     _panelsManager.createPanel<ui::ProfilerWindow>("Profiler", true, settings, 0.25f);
+    _panelsManager.createPanel<ui::Console>("Console", true, settings);
     _panelsManager.createPanel<ui::Hierarchy>("Hierarchy", true, settings);
     _panelsManager.createPanel<ui::Inspector>("Inspector", true, settings);
     _panelsManager.createPanel<ui::SceneView>("Scene View", true, settings,
