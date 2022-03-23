@@ -30,10 +30,10 @@ public:
             const PanelWindowSettings &p_windowSettings);
     
     /**
-     * Method called when a log event occured
-     * @param p_logData
+     * Method called when a log event occurred
      */
-    //    void onLogIntercepted(const OvDebug::LogData& p_logData);
+    void onLogIntercepted(google::LogSeverity logLevel,
+                          const std::string &message);
     
     /**
      * Called when the scene plays. It will clear the console if the "Clear on play" settings is on
@@ -57,23 +57,24 @@ public:
     bool isAllowedByFilter(google::LogSeverity p_logLevel);
     
 private:
-    void setShowDefaultLogs(bool p_value);
-    
     void setShowInfoLogs(bool p_value);
     
     void setShowWarningLogs(bool p_value);
     
     void setShowErrorLogs(bool p_value);
     
+    void setShowFatalLogs(bool p_value);
+    
 private:
-    Group *_logGroup;
-    std::unordered_map<TextColored *, google::LogSeverity> m_logTextWidgets;
+    Group *_logGroup{nullptr};
+    std::unique_ptr<google::LogSink> _consoleSink{nullptr};
+    std::unordered_map<TextColored *, google::LogSeverity> _logTextWidgets{};
     
     bool _clearOnPlay = true;
-    bool _showDefaultLog = true;
     bool _showInfoLog = true;
     bool _showWarningLog = true;
     bool _showErrorLog = true;
+    bool _showFatalLog = true;
 };
 
 
