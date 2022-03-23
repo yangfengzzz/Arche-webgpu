@@ -28,11 +28,11 @@ ui::PanelsManager& EditorActions::panelsManager() {
 }
 
 //MARK: - SETTINGS
-void EditorActions::setActorSpawnAtOrigin(bool value) {
+void EditorActions::setEntitySpawnAtOrigin(bool value) {
     
 }
 
-void EditorActions::setActorSpawnMode(ActorSpawnMode value) {
+void EditorActions::setEntitySpawnMode(EntitySpawnMode value) {
     
 }
 
@@ -90,42 +90,42 @@ void EditorActions::nextFrame() {
 }
 
 //MARK: - Entity_CREATION_DESTRUCTION
-Vector3F EditorActions::calculateActorSpawnPoint(float p_distanceToCamera) {
+Vector3F EditorActions::calculateEntitySpawnPoint(float p_distanceToCamera) {
     return Vector3F();
 }
 
-EntityPtr EditorActions::createEmptyActor(bool p_focusOnCreation, EntityPtr p_parent, const std::string& p_name) {
+EntityPtr EditorActions::createEmptyEntity(bool p_focusOnCreation, EntityPtr p_parent, const std::string& p_name) {
     return nullptr;
 }
 
 
-EntityPtr EditorActions::createActorWithModel(const std::string& p_path, bool p_focusOnCreation,
+EntityPtr EditorActions::createEntityWithModel(const std::string& p_path, bool p_focusOnCreation,
                                               EntityPtr p_parent, const std::string& p_name) {
     return nullptr;
 }
 
-bool EditorActions::destroyActor(EntityPtr p_actor) {
+bool EditorActions::destroyEntity(EntityPtr entity) {
     return false;
 }
 
-void EditorActions::duplicateActor(EntityPtr p_toDuplicate, EntityPtr p_forcedParent, bool p_focus) {
+void EditorActions::duplicateEntity(EntityPtr p_toDuplicate, EntityPtr p_forcedParent, bool p_focus) {
     
 }
 
 //MARK: - ENTITY_MANIPULATION
-void EditorActions::selectActor(EntityPtr& p_target) {
+void EditorActions::selectEntity(EntityPtr& p_target) {
     
 }
 
-void EditorActions::unselectActor() {
+void EditorActions::unselectEntity() {
     
 }
 
-bool EditorActions::isAnyActorSelected() const {
+bool EditorActions::isAnyEntitySelected() const {
     return false;
 }
 
-EntityPtr EditorActions::getSelectedActor() const {
+EntityPtr EditorActions::getSelectedEntity() const {
     return nullptr;
 }
 

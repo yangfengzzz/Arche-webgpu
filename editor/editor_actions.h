@@ -40,19 +40,19 @@ public:
     //MARK: - SETTINGS
 public:
     /**
-     * A simple enumeration that define two actor spawn modes
+     * A simple enumeration that define two entity spawn modes
      */
-    enum class ActorSpawnMode { ORIGIN, FRONT };
+    enum class EntitySpawnMode { ORIGIN, FRONT };
     
     /**
-     * Defines if new actors should be spawned at origin
+     * Defines if new entities should be spawned at origin
      */
-    void setActorSpawnAtOrigin(bool value);
+    void setEntitySpawnAtOrigin(bool value);
     
     /**
-     * Defines how new actors should be spawned
+     * Defines how new entities should be spawned
      */
-    void setActorSpawnMode(ActorSpawnMode value);
+    void setEntitySpawnMode(EntitySpawnMode value);
     
     /**
      * Reset the editor layout
@@ -129,65 +129,65 @@ public:
     //MARK: - Entity_CREATION_DESTRUCTION
 public:
     /**
-     * Create an actor with the given component type
+     * Create an entity with the given component type
      */
     template<typename T>
-    EntityPtr createMonoComponentActor(bool p_focusOnCreation = true, EntityPtr p_parent = nullptr);
+    EntityPtr createMonoComponentEntity(bool p_focusOnCreation = true, EntityPtr p_parent = nullptr);
     
     /**
-     * Calculate the position where to spawn the actor using the current camera position and forward
+     * Calculate the position where to spawn the entity using the current camera position and forward
      */
-    Vector3F calculateActorSpawnPoint(float p_distanceToCamera);
+    Vector3F calculateEntitySpawnPoint(float p_distanceToCamera);
     
     /**
-     * Create an empty actor
+     * Create an empty entity
      */
-    EntityPtr createEmptyActor(bool p_focusOnCreation = true,
+    EntityPtr createEmptyEntity(bool p_focusOnCreation = true,
                                EntityPtr p_parent = nullptr, const std::string& p_name = "");
     
     /**
-     * Create an actor with a model renderer and a material renderer. The model renderer with use the model identified
+     * Create an entity with a model renderer and a material renderer. The model renderer with use the model identified
      * by the given path
      */
-    EntityPtr createActorWithModel(const std::string& p_path, bool p_focusOnCreation = true,
+    EntityPtr createEntityWithModel(const std::string& p_path, bool p_focusOnCreation = true,
                                    EntityPtr p_parent = nullptr, const std::string& p_name = "");
     
     /**
-     * Destroy an actor from his scene
+     * Destroy an entity from his scene
      */
-    bool destroyActor(EntityPtr p_actor);
+    bool destroyEntity(EntityPtr p_entity);
     
     /**
-     * Duplicate an actor
+     * Duplicate an entity
      */
-    void duplicateActor(EntityPtr p_toDuplicate, EntityPtr p_forcedParent = nullptr, bool p_focus = true);
+    void duplicateEntity(EntityPtr p_toDuplicate, EntityPtr p_forcedParent = nullptr, bool p_focus = true);
     
     
     //MARK: - ENTITY_MANIPULATION
 public:
     /**
-     * Select an actor and show him in inspector
+     * Select an entity and show him in inspector
      */
-    void selectActor(EntityPtr& p_target);
+    void selectEntity(EntityPtr& p_target);
     
     /**
-     * Unselect any selected actor and clearing the inspector
+     * Unselect any selected entity and clearing the inspector
      */
-    void unselectActor();
+    void unselectEntity();
     
     /**
-     * Returns true if any actor is selected
+     * Returns true if any entity is selected
      */
-    bool isAnyActorSelected() const;
+    bool isAnyEntitySelected() const;
     
     /**
-     * Returns the selected actor. Make sur you verified that an actor is selected
-     * with IsAnyActorSelected() before calling this method
+     * Returns the selected entity. Make sur you verified that an entity is selected
+     * with IsAnyEntitySelected() before calling this method
      */
-    EntityPtr getSelectedActor() const;
+    EntityPtr getSelectedEntity() const;
     
     /**
-     * Moves the camera to the target actor
+     * Moves the camera to the target entity
      */
     void moveToTarget(EntityPtr& p_target);
     
@@ -324,15 +324,15 @@ public:
     void executeDelayedActions();
     
 public:
-    Event<EntityPtr> actorSelectedEvent;
-    Event<EntityPtr> actorUnselectedEvent;
+    Event<EntityPtr> entitySelectedEvent;
+    Event<EntityPtr> entityUnselectedEvent;
     Event<EditorMode> editorModeChangedEvent;
     Event<> playEvent;
     
 private:
     ui::PanelsManager& _panelsManager;
     
-    ActorSpawnMode _actorSpawnMode = ActorSpawnMode::ORIGIN;
+    EntitySpawnMode _entitySpawnMode = EntitySpawnMode::ORIGIN;
     EditorMode _editorMode = EditorMode::EDIT;
     
     std::vector<std::pair<uint32_t, std::function<void()>>> _delayedActions;

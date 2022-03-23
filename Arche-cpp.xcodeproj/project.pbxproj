@@ -701,6 +701,9 @@
 		04FE6BBB27EABF0700D7DB2D /* ini_file.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FE6BB927EABF0700D7DB2D /* ini_file.h */; };
 		04FE6BBD27EAC35100D7DB2D /* asset_properties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0A427E867AD00BBE8E4 /* asset_properties.cpp */; };
 		04FE6BC027EAE5E800D7DB2D /* size_converter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FE6BBE27EAE5E800D7DB2D /* size_converter.cpp */; };
+		04FE6BC127EAE8B200D7DB2D /* hierarchy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0B627E8741100BBE8E4 /* hierarchy.cpp */; };
+		04FE6BC427EAE99300D7DB2D /* contextual_menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FE6BC227EAE99300D7DB2D /* contextual_menu.cpp */; };
+		04FE6BC527EAE99300D7DB2D /* contextual_menu.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FE6BC327EAE99300D7DB2D /* contextual_menu.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1698,6 +1701,8 @@
 		04FE6BBC27EABF8A00D7DB2D /* ini_file-inl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ini_file-inl.h"; sourceTree = "<group>"; };
 		04FE6BBE27EAE5E800D7DB2D /* size_converter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = size_converter.cpp; sourceTree = "<group>"; };
 		04FE6BBF27EAE5E800D7DB2D /* size_converter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = size_converter.h; sourceTree = "<group>"; };
+		04FE6BC227EAE99300D7DB2D /* contextual_menu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = contextual_menu.cpp; sourceTree = "<group>"; };
+		04FE6BC327EAE99300D7DB2D /* contextual_menu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = contextual_menu.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2911,6 +2916,8 @@
 				04FDEF9427E713F800BBE8E4 /* drag_drop_target.h */,
 				04FDEF9527E7145C00BBE8E4 /* drag_drop_source.h */,
 				04FDEF9627E7149800BBE8E4 /* data_dispatcher.h */,
+				04FE6BC327EAE99300D7DB2D /* contextual_menu.h */,
+				04FE6BC227EAE99300D7DB2D /* contextual_menu.cpp */,
 			);
 			path = plugins;
 			sourceTree = "<group>";
@@ -3485,6 +3492,7 @@
 				047BF13D27ACF245003F3599 /* fbx.h in Headers */,
 				0412844A279ED3A60071BD86 /* unix_engine.h in Headers */,
 				0412843F279ED3A60071BD86 /* glfw_window.h in Headers */,
+				04FE6BC527EAE99300D7DB2D /* contextual_menu.h in Headers */,
 				04F9E92527D4AE3E00BD291B /* wgsl_particle_noise.h in Headers */,
 				048DBF0C27D70C5F003AE9E8 /* sprite_debug.h in Headers */,
 				0400D25827D8457C0018FB52 /* shadow_debug_material.h in Headers */,
@@ -3812,6 +3820,7 @@
 				04FDF05927E801AD00BBE8E4 /* slider_int.cpp in Sources */,
 				049546E4279FA7D800783C84 /* backend_binding.cpp in Sources */,
 				04FDF0D127E8C73A00BBE8E4 /* scene_manager.cpp in Sources */,
+				04FE6BC427EAE99300D7DB2D /* contextual_menu.cpp in Sources */,
 				0495467B279F8CD600783C84 /* entity.cpp in Sources */,
 				047BF06227A680C3003F3599 /* astc_image_load_store.cpp in Sources */,
 				047BF09B27ABC04D003F3599 /* wgsl_common_frag.cpp in Sources */,
@@ -4055,6 +4064,7 @@
 				04FDF0E227E97C5500BBE8E4 /* editor_utils.cpp in Sources */,
 				04FDF0E527E9A1F200BBE8E4 /* imgui_canvas.cpp in Sources */,
 				04FDF0E627E9A1F200BBE8E4 /* imgui_node_editor_api.cpp in Sources */,
+				04FE6BC127EAE8B200D7DB2D /* hierarchy.cpp in Sources */,
 				04FE6BC027EAE5E800D7DB2D /* size_converter.cpp in Sources */,
 				04FDF0E427E9A1F200BBE8E4 /* crude_json.cpp in Sources */,
 				04FDF0E127E97B1500BBE8E4 /* menu_bar.cpp in Sources */,

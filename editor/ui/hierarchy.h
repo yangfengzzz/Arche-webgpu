@@ -80,7 +80,7 @@ public:
     Event<EntityPtr &> actorUnselectedEvent;
     
 private:
-    TreeNode *m_sceneRoot;
+    TreeNode *_sceneRoot;
     
     std::unordered_map<EntityPtr, TreeNode *> _widgetActorLink;
 };

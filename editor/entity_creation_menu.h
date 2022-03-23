@@ -14,21 +14,21 @@
 namespace vox {
 namespace editor {
 /**
- * Class exposing tools to generate an actor creation menu
+ * Class exposing tools to generate an entity creation menu
  */
-class ActorCreationMenu {
+class EntityCreationMenu {
 public:
     /**
      * Disabled constructor
      */
-    ActorCreationMenu() = delete;
+    EntityCreationMenu() = delete;
     
     /**
-     * Generates an actor creation menu under the given MenuList item.
+     * Generates an entity creation menu under the given MenuList item.
      * Also handles custom additionnal OnClick callback
      */
-    static void generateActorCreationMenu(::vox::ui::MenuList& menuList, EntityPtr p_parent = nullptr,
-                                          std::optional<std::function<void()>> onItemClicked = {});
+    static void generateEntityCreationMenu(::vox::ui::MenuList& menuList, EntityPtr p_parent = nullptr,
+                                           std::optional<std::function<void()>> onItemClicked = {});
 };
 
 }

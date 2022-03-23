@@ -13,13 +13,10 @@ namespace ui {
  * Represents a drag and drop source
  */
 template<typename T>
-class DDSource : public IPlugin {
+class DDSource : public Plugin {
 public:
     /**
      * Create the drag and drop source
-     * @param p_identifier
-     * @param p_tooltip
-     * @param p_data
      */
     DDSource(const std::string &p_identifier,
              const std::string &p_tooltip,
@@ -41,20 +38,20 @@ public:
             src_flags |= ImGuiDragDropFlags_SourceNoPreviewTooltip; // Hide the tooltip
         
         if (ImGui::BeginDragDropSource(src_flags)) {
-            if (!m_isDragged)
-                DragStartEvent.Invoke();
+            if (!_isDragged)
+                dragStartEvent.invoke();
             
-            m_isDragged = true;
+            _isDragged = true;
             
             if (!(src_flags & ImGuiDragDropFlags_SourceNoPreviewTooltip))
                 ImGui::Text(tooltip.c_str());
             ImGui::SetDragDropPayload(identifier.c_str(), &data, sizeof(data));
             ImGui::EndDragDropSource();
         } else {
-            if (m_isDragged)
-                DragStopEvent.Invoke();
+            if (_isDragged)
+                dragStopEvent.invoke();
             
-            m_isDragged = false;
+            _isDragged = false;
         }
     }
     
