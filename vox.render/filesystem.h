@@ -144,12 +144,35 @@ void writeImage(const uint8_t *data, const std::string &filename,
  */
 bool writeJson(nlohmann::json &data, const std::string &filename);
 
+//MARK: - extension
+enum class FileType {
+    UNKNOWN,
+    MODEL,
+    TEXTURE,
+    SHADER,
+    MATERIAL,
+    SOUND,
+    SCENE,
+    SCRIPT,
+    FONT
+};
+
 /**
  * @brief Extracts the extension from an uri
  * @param uri An uniform Resource Identifier
  * @return The extension
  */
 std::string extraExtension(const std::string &uri);
+
+/**
+ * @brief Convert the EFileType value to a string
+ */
+std::string fileTypeToString(FileType fileType);
+
+/**
+ * @brief Returns the file type of the file identified by the given path
+ */
+FileType extraFileType(const std::string& path);
 
 }        // namespace fs
 }        // namespace vox

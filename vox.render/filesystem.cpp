@@ -195,6 +195,9 @@ bool writeJson(nlohmann::json &data, const std::string &filename) {
     return true;
 }
 
+//MARK: - Extension
+
+
 std::string extraExtension(const std::string &uri) {
     auto dot_pos = uri.find_last_of('.');
     if (dot_pos == std::string::npos) {
@@ -202,6 +205,38 @@ std::string extraExtension(const std::string &uri) {
     }
     
     return uri.substr(dot_pos + 1);
+}
+
+
+std::string fileTypeToString(FileType fileType) {
+    switch (fileType) {
+        case FileType::MODEL:      return "Model";
+        case FileType::TEXTURE:    return "Texture";
+        case FileType::SHADER:     return "Shader";
+        case FileType::MATERIAL:   return "Material";
+        case FileType::SOUND:      return "Sound";
+        case FileType::SCENE:      return "Scene";
+        case FileType::SCRIPT:     return "Script";
+        case FileType::FONT:       return "Font";
+        default:                   return "Unknown";
+    }
+}
+
+
+FileType extraFileType(const std::string& path) {
+    std::string ext = extraExtension(path);
+    std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
+
+    if (ext == "fbx" || ext == "obj" || ext == "gltf")                          return FileType::MODEL;
+    else if (ext == "png" || ext == "jpeg" || ext == "jpg" || ext == "tga")     return FileType::TEXTURE;
+    else if (ext == "wgsl")                                                     return FileType::SHADER;
+    else if (ext == "ovmat")                                                    return FileType::MATERIAL;
+    else if (ext == "wav" || ext == "mp3" || ext == "ogg")                      return FileType::SOUND;
+    else if (ext == "ovscene")                                                  return FileType::SCENE;
+    else if (ext == "lua")                                                      return FileType::SCRIPT;
+    else if (ext == "ttf")                                                      return FileType::FONT;
+
+    return FileType::UNKNOWN;
 }
 
 }        // namespace fs

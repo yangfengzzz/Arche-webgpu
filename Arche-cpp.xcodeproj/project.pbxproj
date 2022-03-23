@@ -690,6 +690,7 @@
 		04FDF0E927E9A1F200BBE8E4 /* imgui_curve.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDEF3227E443F000BBE8E4 /* imgui_curve.cpp */; };
 		04FDF0EA27E9A1F200BBE8E4 /* imgui_shapes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219CBF27E323D700F52C74 /* imgui_shapes.cpp */; };
 		04FDF0EB27E9D0C900BBE8E4 /* asset_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0AD27E86F9200BBE8E4 /* asset_view.cpp */; };
+		04FDF0EF27EA9AC500BBE8E4 /* editor_resources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0ED27EA9AC500BBE8E4 /* editor_resources.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1668,6 +1669,9 @@
 		04FDF0DC27E9723100BBE8E4 /* editor_application.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = editor_application.h; sourceTree = "<group>"; };
 		04FDF0DE27E974D400BBE8E4 /* panels_manager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = panels_manager.cpp; sourceTree = "<group>"; };
 		04FDF0DF27E974D400BBE8E4 /* panels_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = panels_manager.h; sourceTree = "<group>"; };
+		04FDF0EC27EA9AB500BBE8E4 /* raw_icon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = raw_icon.h; sourceTree = "<group>"; };
+		04FDF0ED27EA9AC500BBE8E4 /* editor_resources.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = editor_resources.cpp; sourceTree = "<group>"; };
+		04FDF0EE27EA9AC500BBE8E4 /* editor_resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = editor_resources.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2558,6 +2562,9 @@
 				04FDF0DB27E9723100BBE8E4 /* editor_application.cpp */,
 				04219CCB27E413FC00F52C74 /* editor_utils.h */,
 				04219CCA27E413FC00F52C74 /* editor_utils.cpp */,
+				04FDF0EC27EA9AB500BBE8E4 /* raw_icon.h */,
+				04FDF0EE27EA9AC500BBE8E4 /* editor_resources.h */,
+				04FDF0ED27EA9AC500BBE8E4 /* editor_resources.cpp */,
 			);
 			path = editor;
 			sourceTree = "<group>";
@@ -3977,6 +3984,7 @@
 			files = (
 				04FDF0E827E9A1F200BBE8E4 /* imgui_zmo.cpp in Sources */,
 				04FDF0D727E9548C00BBE8E4 /* wgsl_grid.cpp in Sources */,
+				04FDF0EF27EA9AC500BBE8E4 /* editor_resources.cpp in Sources */,
 				04FDF0E027E974D400BBE8E4 /* panels_manager.cpp in Sources */,
 				04FDF0D427E953E900BBE8E4 /* main.cpp in Sources */,
 				04FDF0EA27E9A1F200BBE8E4 /* imgui_shapes.cpp in Sources */,
