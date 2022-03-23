@@ -704,6 +704,7 @@
 		04FE6BC127EAE8B200D7DB2D /* hierarchy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0B627E8741100BBE8E4 /* hierarchy.cpp */; };
 		04FE6BC427EAE99300D7DB2D /* contextual_menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FE6BC227EAE99300D7DB2D /* contextual_menu.cpp */; };
 		04FE6BC527EAE99300D7DB2D /* contextual_menu.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FE6BC327EAE99300D7DB2D /* contextual_menu.h */; };
+		04FE6BC627EAF82200D7DB2D /* inspector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0B927E875BC00BBE8E4 /* inspector.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -4052,6 +4053,7 @@
 				04FDF0D727E9548C00BBE8E4 /* wgsl_grid.cpp in Sources */,
 				04FDF0EF27EA9AC500BBE8E4 /* editor_resources.cpp in Sources */,
 				04FDF0E027E974D400BBE8E4 /* panels_manager.cpp in Sources */,
+				04FE6BC627EAF82200D7DB2D /* inspector.cpp in Sources */,
 				04FDF0D427E953E900BBE8E4 /* main.cpp in Sources */,
 				04FDF0EA27E9A1F200BBE8E4 /* imgui_shapes.cpp in Sources */,
 				04FDF0D927E95DDB00BBE8E4 /* view.cpp in Sources */,

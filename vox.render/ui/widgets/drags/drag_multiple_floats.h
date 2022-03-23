@@ -12,20 +12,11 @@
 namespace vox {
 namespace ui {
 /**
- * Drag widget of multiple type int
+ * Drag widget of multiple type float
  */
 template<size_t _Size>
 class DragMultipleFloats : public DragMultipleScalars<int, _Size> {
 public:
-    /**
-     * Constructor
-     * @param p_min
-     * @param p_max
-     * @param p_value
-     * @param p_speed
-     * @param p_label
-     * @param p_format
-     */
     DragMultipleFloats(float p_min = 0.0f,
                        float p_max = 1.0f,
                        float p_value = 0.5f,

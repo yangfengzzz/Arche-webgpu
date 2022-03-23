@@ -14,12 +14,26 @@
 #include "layer.h"
 #include "transform.h"
 #include "vobject.h"
+#include "event.h"
 
 namespace vox {
 class Component;
 
 /// @brief A leaf of the tree structure which can have children and a single parent.
 class Entity final : public VObject {
+public:
+    /* Some events that are triggered when an action occur on the actor instance */
+    Event<Component*> componentAddedEvent;
+    Event<Component*> componentRemovedEvent;
+    Event<Component*> behaviourAddedEvent;
+    Event<Component*> behaviourRemovedEvent;
+
+    /* Some events that are triggered when an action occur on any actor */
+    static Event<EntityPtr> destroyedEvent;
+    static Event<EntityPtr> createdEvent;
+    static Event<EntityPtr, EntityPtr> attachEvent;
+    static Event<EntityPtr> dettachEvent;
+    
 public:
     /** The name of entity. */
     std::string name;

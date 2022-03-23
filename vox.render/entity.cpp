@@ -12,6 +12,11 @@
 #include "serializer.h"
 
 namespace vox {
+Event<EntityPtr> Entity::destroyedEvent;
+Event<EntityPtr> Entity::createdEvent;
+Event<EntityPtr, EntityPtr> Entity::attachEvent;
+Event<EntityPtr> Entity::dettachEvent;
+
 EntityPtr Entity::_findChildByName(Entity *root, const std::string &name) {
     const auto &children = root->_children;
     for (size_t i = 0; i < children.size(); i++) {
@@ -306,10 +311,10 @@ void Entity::onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_acto
         /* Current component root */
         tinyxml2::XMLNode* componentNode = p_doc.NewElement("component");
         componentsNode->InsertEndChild(componentNode);
-
+        
         /* Component type */
         Serializer::serializeString(p_doc, componentNode, "type", typeid(component).name());
-
+        
         /* Data node (Will be passed to the component) */
         tinyxml2::XMLElement* data = p_doc.NewElement("data");
         componentNode->InsertEndChild(data);
@@ -326,7 +331,7 @@ void Entity::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_ac
         tinyxml2::XMLNode* componentsRoot = p_actorsRoot->FirstChildElement("components");
         if (componentsRoot) {
             tinyxml2::XMLElement* currentComponent = componentsRoot->FirstChildElement("component");
-
+            
             while (currentComponent) {
                 std::string componentType = currentComponent->FirstChildElement("type")->GetText();
                 currentComponent = currentComponent->NextSiblingElement("component");
@@ -336,10 +341,10 @@ void Entity::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_ac
     
     {
         tinyxml2::XMLNode* behavioursRoot = p_actorsRoot->FirstChildElement("behaviours");
-
+        
         if (behavioursRoot) {
             tinyxml2::XMLElement* currentBehaviour = behavioursRoot->FirstChildElement("behaviour");
-
+            
             while (currentBehaviour) {
                 std::string behaviourType = currentBehaviour->FirstChildElement("type")->GetText();
             }

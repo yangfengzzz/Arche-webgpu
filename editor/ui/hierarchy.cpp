@@ -144,11 +144,11 @@ PanelWindow(p_title, p_opened, p_windowSettings) {
     
     EditorActions::getSingleton().entityUnselectedEvent += std::bind(&Hierarchy::unselectEntitiesWidgets, this);
     //    EDITOR_CONTEXT(sceneManager).SceneUnloadEvent += std::bind(&Hierarchy::clear, this);
-    //    EntityPtr::CreatedEvent += std::bind(&Hierarchy::addEntityByInstance, this, std::placeholders::_1);
-    //    EntityPtr::DestroyedEvent += std::bind(&Hierarchy::deleteEntityByInstance, this, std::placeholders::_1);
+    Entity::createdEvent += std::bind(&Hierarchy::addEntityByInstance, this, std::placeholders::_1);
+    Entity::destroyedEvent += std::bind(&Hierarchy::deleteEntityByInstance, this, std::placeholders::_1);
     EditorActions::getSingleton().entitySelectedEvent += std::bind(&Hierarchy::selectEntityByInstance, this, std::placeholders::_1);
-    //    EntityPtr::AttachEvent += std::bind(&Hierarchy::attachEntityToParent, this, std::placeholders::_1);
-    //    EntityPtr::DettachEvent += std::bind(&Hierarchy::detachFromParent, this, std::placeholders::_1);
+    Entity::attachEvent += std::bind(&Hierarchy::attachEntityToParent, this, std::placeholders::_1);
+    Entity::dettachEvent += std::bind(&Hierarchy::detachFromParent, this, std::placeholders::_1);
 }
 
 void Hierarchy::clear() {
@@ -179,7 +179,7 @@ void Hierarchy::selectEntityByWidget(TreeNode &p_widget) {
     }
 }
 
-void Hierarchy::attachEntityToParent(EntityPtr &p_entity) {
+void Hierarchy::attachEntityToParent(EntityPtr p_entity) {
     auto entityWidget = _widgetEntityLink.find(p_entity);
     
     if (entityWidget != _widgetEntityLink.end()) {
@@ -198,7 +198,7 @@ void Hierarchy::attachEntityToParent(EntityPtr &p_entity) {
     }
 }
 
-void Hierarchy::detachFromParent(EntityPtr &p_entity) {
+void Hierarchy::detachFromParent(EntityPtr p_entity) {
     if (auto entityWidget = _widgetEntityLink.find(p_entity); entityWidget != _widgetEntityLink.end()) {
         if (p_entity->parent() && p_entity->parent()->children().size() == 1) {
             auto parentWidget = std::find_if(_widgetEntityLink.begin(), _widgetEntityLink.end(), [&](std::pair<EntityPtr, TreeNode *> entity) {
@@ -219,7 +219,7 @@ void Hierarchy::detachFromParent(EntityPtr &p_entity) {
     }
 }
 
-void Hierarchy::deleteEntityByInstance(EntityPtr &p_entity) {
+void Hierarchy::deleteEntityByInstance(EntityPtr p_entity) {
     if (auto result = _widgetEntityLink.find(p_entity); result != _widgetEntityLink.end()) {
         if (result->second) {
             result->second->destroy();
@@ -229,7 +229,7 @@ void Hierarchy::deleteEntityByInstance(EntityPtr &p_entity) {
     }
 }
 
-void Hierarchy::addEntityByInstance(EntityPtr &p_entity) {
+void Hierarchy::addEntityByInstance(EntityPtr p_entity) {
     auto &textSelectable = _sceneRoot->createWidget<TreeNode>(p_entity->name, true);
     textSelectable.leaf = true;
     textSelectable.addPlugin<HierarchyContextualMenu>(p_entity, textSelectable);
