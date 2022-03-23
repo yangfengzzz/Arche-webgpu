@@ -709,6 +709,7 @@
 		04FE6BCA27EB04B400D7DB2D /* behaviour.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FE6BC827EB04B300D7DB2D /* behaviour.h */; };
 		04FE6BCB27EB0E9E00D7DB2D /* project_settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0C227E8799A00BBE8E4 /* project_settings.cpp */; };
 		04FE6BCE27EB19E600D7DB2D /* profiler_window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FE6BCC27EB19E600D7DB2D /* profiler_window.cpp */; };
+		04FE6BCF27EB1F2A00D7DB2D /* tool_bar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0CB27E87AFB00BBE8E4 /* tool_bar.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -4082,6 +4083,7 @@
 				04FDF0E227E97C5500BBE8E4 /* editor_utils.cpp in Sources */,
 				04FDF0E527E9A1F200BBE8E4 /* imgui_canvas.cpp in Sources */,
 				04FDF0E627E9A1F200BBE8E4 /* imgui_node_editor_api.cpp in Sources */,
+				04FE6BCF27EB1F2A00D7DB2D /* tool_bar.cpp in Sources */,
 				04FE6BC127EAE8B200D7DB2D /* hierarchy.cpp in Sources */,
 				04FE6BC027EAE5E800D7DB2D /* size_converter.cpp in Sources */,
 				04FDF0E427E9A1F200BBE8E4 /* crude_json.cpp in Sources */,

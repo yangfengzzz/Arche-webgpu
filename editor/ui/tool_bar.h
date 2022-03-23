@@ -14,6 +14,8 @@ namespace vox {
 using namespace ui;
 
 namespace editor {
+class EditorResources;
+
 namespace ui {
 class Toolbar : public PanelWindow {
 public:
@@ -23,9 +25,9 @@ public:
      * @param p_opened p_opened
      * @param p_windowSettings p_windowSettings
      */
-    Toolbar(const std::string &p_title,
-            bool p_opened,
-            const PanelWindowSettings &p_windowSettings);
+    Toolbar(const std::string &p_title, bool p_opened,
+            const PanelWindowSettings &p_windowSettings,
+            EditorResources *resource);
     
     /**
      * Custom implementation of the draw method
@@ -33,10 +35,11 @@ public:
     void _draw_Impl() override;
     
 private:
-    ButtonImage *m_playButton;
-    ButtonImage *m_pauseButton;
-    ButtonImage *m_stopButton;
-    ButtonImage *m_nextButton;
+    EditorResources *_resource{nullptr};
+    ButtonImage *_playButton{nullptr};
+    ButtonImage *_pauseButton{nullptr};
+    ButtonImage *_stopButton{nullptr};
+    ButtonImage *_nextButton{nullptr};
 };
 
 }
