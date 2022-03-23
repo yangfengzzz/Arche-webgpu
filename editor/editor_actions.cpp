@@ -7,6 +7,15 @@
 #include "editor_actions.h"
 
 namespace vox {
+editor::EditorActions *editor::EditorActions::getSingletonPtr(void) {
+    return msSingleton;
+}
+
+editor::EditorActions &editor::EditorActions::getSingleton(void) {
+    assert(msSingleton);
+    return (*msSingleton);
+}
+
 namespace editor {
 EditorActions::EditorActions(ui::PanelsManager& p_panelsManager):
 _panelsManager(p_panelsManager){

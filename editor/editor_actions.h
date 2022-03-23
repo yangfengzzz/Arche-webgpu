@@ -11,6 +11,7 @@
 #include "vector3.h"
 #include "filesystem.h"
 #include "scene_forward.h"
+#include "singleton.h"
 #include <tinyxml2.h>
 
 namespace vox {
@@ -18,8 +19,12 @@ namespace editor {
 /**
  * A set of editor actions
  */
-class EditorActions {
+class EditorActions : public Singleton<EditorActions> {
 public:
+    static EditorActions &getSingleton(void);
+    
+    static EditorActions *getSingletonPtr(void);
+    
     /**
      * Constructor
      */
@@ -335,8 +340,8 @@ private:
     tinyxml2::XMLDocument _sceneBackup;
 };
 
-
 }
+template<> inline editor::EditorActions* Singleton<editor::EditorActions>::msSingleton{nullptr};
 }
 #include "editor_actions-inl.h"
 
