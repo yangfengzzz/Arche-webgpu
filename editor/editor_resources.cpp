@@ -22,7 +22,7 @@ _device(device) {
         _textures["Button_Next"] = _createFromPixelBuffer(BUTTON_NEXT, 64);
         _textures["Button_Refresh"] = _createFromPixelBuffer(BUTTON_REFRESH, 64);
     }
-
+    
     /* Icons */
     {
         _textures["Icon_Unknown"] = _createFromPixelBuffer(ICON_FILE, 16);
@@ -41,7 +41,7 @@ _device(device) {
         _textures["Bill_Directional_Light"] = _createFromPixelBuffer(BILL_DLIGHT, 128);
         _textures["Bill_Ambient_Box_Light"] = _createFromPixelBuffer(BILL_ABLIGHT, 128);
         _textures["Bill_Ambient_Sphere_Light"] = _createFromPixelBuffer(BILL_ASLIGHT, 128);
-
+        
     }
 }
 
@@ -57,7 +57,7 @@ wgpu::TextureView EditorResources::getFileIcon(const std::string& p_filename) {
 wgpu::TextureView EditorResources::getTexture(const std::string& p_id) {
     if (_textures.find(p_id) != _textures.end())
         return _textures.at(p_id).CreateView();
-
+    
     return nullptr;
 }
 
@@ -72,34 +72,12 @@ wgpu::Texture EditorResources::_createFromPixelBuffer(const std::vector<uint64_t
     textureDesc.mipLevelCount = 1;
     auto nativeTexture = _device.CreateTexture(&textureDesc);
     
-    wgpu::BufferDescriptor descriptor;
-    descriptor.size = data.size();
-    descriptor.usage = wgpu::BufferUsage::CopySrc | wgpu::BufferUsage::CopyDst;
-    wgpu::Buffer stagingBuffer = _device.CreateBuffer(&descriptor);
-    _device.GetQueue().WriteBuffer(stagingBuffer, 0, data.data(), data.size() * sizeof(uint64_t));
-    
-    wgpu::ImageCopyBuffer imageCopyBuffer = _createImageCopyBuffer(stagingBuffer, 0, 4 * width);
     wgpu::ImageCopyTexture imageCopyTexture = _createImageCopyTexture(nativeTexture, 0, {0, 0, 0});
+    wgpu::TextureDataLayout textureLayout = _createTextureDataLayout(0, 4 * width, wgpu::kCopyStrideUndefined);
     wgpu::Extent3D copySize = {width, width, 1};
-    
-    wgpu::CommandEncoder encoder = _device.CreateCommandEncoder();
-    encoder.CopyBufferToTexture(&imageCopyBuffer, &imageCopyTexture, &copySize);
-    
-    wgpu::CommandBuffer copy = encoder.Finish();
-    _device.GetQueue().Submit(1, &copy);
+    _device.GetQueue().WriteTexture(&imageCopyTexture, data.data(), sizeof(uint64_t) * data.size(), &textureLayout, &copySize);
     
     return nativeTexture;
-}
-
-wgpu::ImageCopyBuffer EditorResources::_createImageCopyBuffer(wgpu::Buffer buffer,
-                                                              uint64_t offset,
-                                                              uint32_t bytesPerRow,
-                                                              uint32_t rowsPerImage) {
-    wgpu::ImageCopyBuffer imageCopyBuffer = {};
-    imageCopyBuffer.buffer = buffer;
-    imageCopyBuffer.layout = _createTextureDataLayout(offset, bytesPerRow, rowsPerImage);
-    
-    return imageCopyBuffer;
 }
 
 wgpu::ImageCopyTexture EditorResources::_createImageCopyTexture(wgpu::Texture texture,

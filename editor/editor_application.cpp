@@ -89,15 +89,15 @@ void EditorApplication::setupUI() {
     _panelsManager.createPanel<ui::Hierarchy>("Hierarchy", true, settings);
     _panelsManager.createPanel<ui::Inspector>("Inspector", true, settings);
     _panelsManager.createPanel<ui::SceneView>("Scene View", true, settings,
-                                             _renderContext.get(), _sceneManager->currentScene());
+                                              _renderContext.get(), _sceneManager->currentScene());
     _panelsManager.createPanel<ui::GameView>("Game View", true, settings,
                                              _renderContext.get(), _sceneManager->currentScene());
-
+    
     _panelsManager.createPanel<ui::AssetView>("Asset View", true, settings,
-                                             _renderContext.get(), _sceneManager->currentScene());
+                                              _renderContext.get(), _sceneManager->currentScene());
     _panelsManager.createPanel<ui::Toolbar>("Toolbar", true, settings, _editorResources.get());
     _panelsManager.createPanel<ui::ProjectSettings>("Project Settings", false, settings, projectPath, projectName);
-
+    
     _canvas.makeDockspace(true);
     _gui->setCanvas(_canvas);
 }
@@ -106,7 +106,7 @@ void EditorApplication::renderViews(float deltaTime, wgpu::CommandEncoder& comma
     auto& gameView = _panelsManager.getPanelAs<ui::GameView>("Game View");
     auto& sceneView = _panelsManager.getPanelAs<ui::SceneView>("Scene View");
     auto& assetView = _panelsManager.getPanelAs<ui::AssetView>("Asset View");
-
+    
     {
         // PROFILER_SPY("Editor Views Update");
         assetView.update(deltaTime);
@@ -151,7 +151,7 @@ void EditorApplication::update(float deltaTime) {
     _gui->render(encoder);
     encoder.PopDebugGroup();
     encoder.End();
-
+    
     // Finalize rendering here & push the command buffer to the GPU
     wgpu::CommandBuffer commands = commandEncoder.Finish();
     _device.GetQueue().Submit(1, &commands);
@@ -165,9 +165,9 @@ void EditorApplication::updateGPUTask(wgpu::CommandEncoder& commandEncoder) {
 }
 
 bool EditorApplication::resize(uint32_t win_width, uint32_t win_height,
-                                uint32_t fb_width, uint32_t fb_height) {
+                               uint32_t fb_width, uint32_t fb_height) {
     GraphicsApplication::resize(win_width, win_height, fb_width, fb_height);
-
+    
     _sceneManager->currentScene()->updateSize(win_width, win_height, fb_width, fb_height);
     return true;
 }

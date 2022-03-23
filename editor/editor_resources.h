@@ -48,12 +48,6 @@ private:
     
     wgpu::Texture _createFromPixelBuffer(const std::vector<uint64_t>& data, uint8_t width);
     
-    wgpu::ImageCopyBuffer
-    _createImageCopyBuffer(wgpu::Buffer buffer,
-                           uint64_t offset,
-                           uint32_t bytesPerRow,
-                           uint32_t rowsPerImage = wgpu::kCopyStrideUndefined);
-    
     wgpu::ImageCopyTexture
     _createImageCopyTexture(wgpu::Texture texture,
                             uint32_t level,

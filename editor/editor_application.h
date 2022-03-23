@@ -69,7 +69,7 @@ private:
     ui::PanelsManager _panelsManager;
     std::unique_ptr<EditorResources> _editorResources{nullptr};
     std::unique_ptr<EditorActions> _editorActions{nullptr};
-
+    
     Camera* _mainCamera{nullptr};
     
     wgpu::RenderPassDescriptor _renderPassDescriptor;
