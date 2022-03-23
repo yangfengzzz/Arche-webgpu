@@ -22,7 +22,7 @@ namespace editor {
 namespace ui {
 AssetProperties::AssetProperties(const std::string &p_title, bool p_opened,
                                  const PanelWindowSettings &p_windowSettings,
-                                 AssetView& view) :
+                                 AssetView &view) :
 PanelWindow(p_title, p_opened, p_windowSettings),
 _assetView(view) {
     _targetChanged += [this]() {
@@ -59,7 +59,7 @@ void AssetProperties::setTarget(const std::string &p_path) {
 
 void AssetProperties::refresh() {
     _metadata = std::make_unique<::vox::fs::IniFile>(EditorActions::getSingleton().getRealPath(_resource) + ".meta");
-        
+    
     createSettings();
     createInfo();
     
@@ -132,7 +132,7 @@ void AssetProperties::createHeaderButtons() {
 }
 
 void AssetProperties::createAssetSelector() {
-    auto &columns = createWidget<Columns<2>> ();
+    auto &columns = createWidget<Columns<2>>();
     columns.widths[0] = 150;
     // assetSelector = &OvCore::Helpers::GUIDrawer::DrawAsset(columns, "Target", resource, &targetChanged);
 }
@@ -165,8 +165,8 @@ void AssetProperties::createInfo() {
         _infoColumns->createWidget<Text>(realPath);
         
         GUIDrawer::createTitle(*_infoColumns, "Size");
-        const auto [size, unit] = SizeConverter::convertToOptimalUnit(static_cast<float>(std::filesystem::file_size(realPath)),
-                                                                      SizeConverter::SizeUnit::BYTE);
+        const auto[size, unit] = SizeConverter::convertToOptimalUnit(static_cast<float>(std::filesystem::file_size(realPath)),
+                                                                     SizeConverter::SizeUnit::BYTE);
         _infoColumns->createWidget<Text>(std::to_string(size) + " " + SizeConverter::unitToString(unit));
         
         GUIDrawer::createTitle(*_infoColumns, "Metadata");

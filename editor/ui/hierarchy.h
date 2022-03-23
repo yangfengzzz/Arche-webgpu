@@ -37,52 +37,52 @@ public:
     /**
      * Unselect every widgets
      */
-    void unselectActorsWidgets();
+    void unselectEntitiesWidgets();
     
     /**
-     * Select the widget corresponding to the given actor
-     * @param p_actor p_actor
+     * Select the widget corresponding to the given entity
+     * @param p_entity p_entity
      */
-    void selectActorByInstance(EntityPtr &p_actor);
+    void selectEntityByInstance(EntityPtr p_entity);
     
     /**
      * Select the widget
      * @param p_widget p_widget
      */
-    void selectActorByWidget(TreeNode &p_widget);
+    void selectEntityByWidget(TreeNode &p_widget);
     
     /**
-     * Attach the given actor linked widget to its parent widget
-     * @param p_actor p_actor
+     * Attach the given entity linked widget to its parent widget
+     * @param p_entity p_entity
      */
-    void attachActorToParent(EntityPtr &p_actor);
+    void attachEntityToParent(EntityPtr &p_entity);
     
     /**
-     * Detach the given actor linked widget from its parent widget
-     * @param p_actor p_actor
+     * Detach the given entity linked widget from its parent widget
+     * @param p_entity p_entity
      */
-    void detachFromParent(EntityPtr &p_actor);
+    void detachFromParent(EntityPtr &p_entity);
     
     /**
-     * Delete the widget referencing the given actor
-     * @param p_actor p_actor
+     * Delete the widget referencing the given entity
+     * @param p_entity p_entity
      */
-    void deleteActorByInstance(EntityPtr &p_actor);
+    void deleteEntityByInstance(EntityPtr &p_entity);
     
     /**
-     * Add a widget referencing the given actor
-     * @param p_actor p_actor
+     * Add a widget referencing the given entity
+     * @param p_entity p_entity
      */
-    void AddActorByInstance(EntityPtr &p_actor);
+    void addEntityByInstance(EntityPtr &p_entity);
     
 public:
-    Event<EntityPtr &> actorSelectedEvent;
-    Event<EntityPtr &> actorUnselectedEvent;
+    Event<EntityPtr &> entitySelectedEvent;
+    Event<EntityPtr &> entityUnselectedEvent;
     
 private:
     TreeNode *_sceneRoot;
     
-    std::unordered_map<EntityPtr, TreeNode *> _widgetActorLink;
+    std::unordered_map<EntityPtr, TreeNode *> _widgetEntityLink;
 };
 
 }

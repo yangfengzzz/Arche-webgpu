@@ -32,7 +32,7 @@ public:
      */
     AssetProperties(const std::string &p_title, bool p_opened,
                     const PanelWindowSettings &p_windowSettings,
-                    AssetView& view);
+                    AssetView &view);
     
     /**
      * Defines the target of the asset settings editor
@@ -66,7 +66,7 @@ private:
     void apply();
     
 private:
-    AssetView& _assetView;
+    AssetView &_assetView;
     std::string _resource;
     
     Event<> _targetChanged;
