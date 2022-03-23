@@ -26,7 +26,7 @@ public:
      */
     ProjectSettings(const std::string &p_title, bool p_opened,
                     const PanelWindowSettings &p_windowSettings,
-                    const std::string& p_projectPath, const std::string& p_projectName);
+                    const std::string &p_projectPath, const std::string &p_projectName);
     
     /**
      * Generate a gatherer that will get the value associated to the given key
@@ -64,8 +64,8 @@ public:
     void applyProjectSettings();
     
     
-    fs::IniFile& projectSettings();
-
+    fs::IniFile &projectSettings();
+    
 private:
     fs::IniFile _projectSettings;
 };

@@ -21,9 +21,8 @@ public:
     public:
         /**
          * Creates the property with a default value
-         * @param p_value
          */
-        Property(T p_value) : m_value(p_value) {}
+        Property(T p_value) : _value(p_value) {}
         
         /**
          * Event called when the property value changes
@@ -32,20 +31,18 @@ public:
         
         /**
          * Assign a new value to the property
-         * @param p_value
          */
         inline T& operator=(T p_value) {
             set(p_value);
-            return m_value;
+            return _value;
         }
         
         /**
          * Assign a new valeu to the property
-         * @param p_value
          */
         inline void set(T p_value) {
             _value = p_value;
-            onValueChanged.invoke(m_value);
+            onValueChanged.invoke(_value);
         }
         
         inline operator T() {

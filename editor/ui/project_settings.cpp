@@ -15,13 +15,13 @@
 namespace vox {
 namespace editor {
 namespace ui {
-ProjectSettings::ProjectSettings(const std::string & p_title, bool p_opened,
-                                 const PanelWindowSettings & p_windowSettings,
-                                 const std::string& p_projectPath, const std::string& p_projectName) :
+ProjectSettings::ProjectSettings(const std::string &p_title, bool p_opened,
+                                 const PanelWindowSettings &p_windowSettings,
+                                 const std::string &p_projectPath, const std::string &p_projectName) :
 PanelWindow(p_title, p_opened, p_windowSettings),
 _projectSettings(p_projectPath + p_projectName + ".project") {
-    auto& saveButton = createWidget<ButtonSimple>("Apply");
-    saveButton.idleBackgroundColor = { 0.0f, 0.5f, 0.0f };
+    auto &saveButton = createWidget<ButtonSimple>("Apply");
+    saveButton.idleBackgroundColor = {0.0f, 0.5f, 0.0f};
     saveButton.clickedEvent += [this] {
         applyProjectSettings();
         _projectSettings.rewrite();
@@ -29,8 +29,8 @@ _projectSettings(p_projectPath + p_projectName + ".project") {
     
     saveButton.lineBreak = false;
     
-    auto& resetButton = createWidget<ButtonSimple>("Reset");
-    resetButton.idleBackgroundColor = { 0.5f, 0.0f, 0.0f };
+    auto &resetButton = createWidget<ButtonSimple>("Reset");
+    resetButton.idleBackgroundColor = {0.5f, 0.0f, 0.0f};
     resetButton.clickedEvent += [this] {
         resetProjectSettings();
     };
@@ -39,8 +39,8 @@ _projectSettings(p_projectPath + p_projectName + ".project") {
     
     {
         /* Physics settings */
-        auto& root = createWidget<GroupCollapsable>("Physics");
-        auto& columns = root.createWidget<Columns<2>>();
+        auto &root = createWidget<GroupCollapsable>("Physics");
+        auto &columns = root.createWidget<Columns<2>>();
         columns.widths[0] = 125;
         
         GUIDrawer::drawScalar<float>(columns, "Gravity", generateGatherer<float>("gravity"),
@@ -49,8 +49,8 @@ _projectSettings(p_projectPath + p_projectName + ".project") {
     
     {
         /* Build settings */
-        auto& generationRoot = createWidget<GroupCollapsable>("Build");
-        auto& columns = generationRoot.createWidget<Columns<2>>();
+        auto &generationRoot = createWidget<GroupCollapsable>("Build");
+        auto &columns = generationRoot.createWidget<Columns<2>>();
         columns.widths[0] = 125;
         
         GUIDrawer::drawBoolean(columns, "Development build", generateGatherer<bool>("dev_build"),
@@ -59,8 +59,8 @@ _projectSettings(p_projectPath + p_projectName + ".project") {
     
     {
         /* Windowing settings */
-        auto& windowingRoot = createWidget<GroupCollapsable>("Windowing");
-        auto& columns = windowingRoot.createWidget<Columns<2>>();
+        auto &windowingRoot = createWidget<GroupCollapsable>("Windowing");
+        auto &columns = windowingRoot.createWidget<Columns<2>>();
         columns.widths[0] = 125;
         
         GUIDrawer::drawScalar<int>(columns, "Resolution X", generateGatherer<int>("x_resolution"),
@@ -75,8 +75,8 @@ _projectSettings(p_projectPath + p_projectName + ".project") {
     
     {
         /* Rendering settings */
-        auto& renderingRoot = createWidget<GroupCollapsable>("Rendering");
-        auto& columns = renderingRoot.createWidget<Columns<2>>();
+        auto &renderingRoot = createWidget<GroupCollapsable>("Rendering");
+        auto &columns = renderingRoot.createWidget<Columns<2>>();
         columns.widths[0] = 125;
         
         GUIDrawer::drawBoolean(columns, "Vertical Sync.", generateGatherer<bool>("vsync"),
@@ -93,8 +93,8 @@ _projectSettings(p_projectPath + p_projectName + ".project") {
     
     {
         /* Scene Management settings */
-        auto& gameRoot = createWidget<GroupCollapsable>("Scene Management");
-        auto& columns = gameRoot.createWidget<Columns<2>>();
+        auto &gameRoot = createWidget<GroupCollapsable>("Scene Management");
+        auto &columns = gameRoot.createWidget<Columns<2>>();
         columns.widths[0] = 125;
         
         GUIDrawer::drawDDString(columns, "Start scene", generateGatherer<std::string>("start_scene"),
@@ -134,7 +134,7 @@ bool ProjectSettings::isProjectSettingsIntegrityVerified() {
     _projectSettings.isKeyExisting("dev_build");
 }
 
-fs::IniFile& ProjectSettings::projectSettings() {
+fs::IniFile &ProjectSettings::projectSettings() {
     return _projectSettings;
 }
 
