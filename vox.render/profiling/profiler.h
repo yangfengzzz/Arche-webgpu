@@ -7,7 +7,7 @@
 #ifndef profiler_hpp
 #define profiler_hpp
 
-#include "profiler_report.h"
+#include "profiling/profiler_report.h"
 #include <unordered_map>
 #include <chrono>
 #include <mutex>

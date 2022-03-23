@@ -708,6 +708,7 @@
 		04FE6BC927EB04B300D7DB2D /* behaviour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FE6BC727EB04B300D7DB2D /* behaviour.cpp */; };
 		04FE6BCA27EB04B400D7DB2D /* behaviour.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FE6BC827EB04B300D7DB2D /* behaviour.h */; };
 		04FE6BCB27EB0E9E00D7DB2D /* project_settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0C227E8799A00BBE8E4 /* project_settings.cpp */; };
+		04FE6BCE27EB19E600D7DB2D /* profiler_window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FE6BCC27EB19E600D7DB2D /* profiler_window.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1709,6 +1710,8 @@
 		04FE6BC327EAE99300D7DB2D /* contextual_menu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = contextual_menu.h; sourceTree = "<group>"; };
 		04FE6BC727EB04B300D7DB2D /* behaviour.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = behaviour.cpp; sourceTree = "<group>"; };
 		04FE6BC827EB04B300D7DB2D /* behaviour.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = behaviour.h; sourceTree = "<group>"; };
+		04FE6BCC27EB19E600D7DB2D /* profiler_window.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = profiler_window.cpp; sourceTree = "<group>"; };
+		04FE6BCD27EB19E600D7DB2D /* profiler_window.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = profiler_window.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3162,6 +3165,8 @@
 				04FDF0A427E867AD00BBE8E4 /* asset_properties.cpp */,
 				04FDF0A227E865E400BBE8E4 /* asset_browser.h */,
 				04FDF0A127E865E400BBE8E4 /* asset_browser.cpp */,
+				04FE6BCD27EB19E600D7DB2D /* profiler_window.h */,
+				04FE6BCC27EB19E600D7DB2D /* profiler_window.cpp */,
 				04FDF0B127E8710500BBE8E4 /* console.h */,
 				04FDF0B027E8710500BBE8E4 /* console.cpp */,
 				04FDF0B727E8741100BBE8E4 /* hierarchy.h */,
@@ -4073,6 +4078,7 @@
 				04FE6BB727EAB68C00D7DB2D /* entity_creation_menu.cpp in Sources */,
 				04FDF0DA27E95F9800BBE8E4 /* game_view.cpp in Sources */,
 				04FDF0E727E9A1F200BBE8E4 /* imgui_node_editor.cpp in Sources */,
+				04FE6BCE27EB19E600D7DB2D /* profiler_window.cpp in Sources */,
 				04FDF0E227E97C5500BBE8E4 /* editor_utils.cpp in Sources */,
 				04FDF0E527E9A1F200BBE8E4 /* imgui_canvas.cpp in Sources */,
 				04FDF0E627E9A1F200BBE8E4 /* imgui_node_editor_api.cpp in Sources */,
