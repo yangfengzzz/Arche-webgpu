@@ -11,6 +11,7 @@
 
 #include "ui/menu_bar.h"
 #include "ui/hierarchy.h"
+#include "ui/inspector.h"
 #include "view/game_view.h"
 #include "view/scene_view.h"
 #include "view/asset_view.h"
@@ -80,6 +81,7 @@ void EditorApplication::setupUI() {
     _panelsManager.createPanel<ui::AssetView>("Asset View", true, settings,
                                              _renderContext.get(), _sceneManager->currentScene());
     _panelsManager.createPanel<ui::Hierarchy>("Hierarchy", true, settings);
+    _panelsManager.createPanel<ui::Inspector>("Inspector", true, settings);
 
     _canvas.makeDockspace(true);
     _gui->setCanvas(_canvas);
