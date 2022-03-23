@@ -691,6 +691,10 @@
 		04FDF0EA27E9A1F200BBE8E4 /* imgui_shapes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04219CBF27E323D700F52C74 /* imgui_shapes.cpp */; };
 		04FDF0EB27E9D0C900BBE8E4 /* asset_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0AD27E86F9200BBE8E4 /* asset_view.cpp */; };
 		04FDF0EF27EA9AC500BBE8E4 /* editor_resources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0ED27EA9AC500BBE8E4 /* editor_resources.cpp */; };
+		04FE6BAA27EAA99A00D7DB2D /* profiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FE6BA827EAA99A00D7DB2D /* profiler.cpp */; };
+		04FE6BAB27EAA99A00D7DB2D /* profiler.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FE6BA927EAA99A00D7DB2D /* profiler.h */; };
+		04FE6BAE27EAAA1C00D7DB2D /* profiler_spy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FE6BAC27EAAA1C00D7DB2D /* profiler_spy.cpp */; };
+		04FE6BAF27EAAA1C00D7DB2D /* profiler_spy.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FE6BAD27EAAA1C00D7DB2D /* profiler_spy.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1672,6 +1676,11 @@
 		04FDF0EC27EA9AB500BBE8E4 /* raw_icon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = raw_icon.h; sourceTree = "<group>"; };
 		04FDF0ED27EA9AC500BBE8E4 /* editor_resources.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = editor_resources.cpp; sourceTree = "<group>"; };
 		04FDF0EE27EA9AC500BBE8E4 /* editor_resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = editor_resources.h; sourceTree = "<group>"; };
+		04FE6BA727EAA94F00D7DB2D /* profiler_report.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = profiler_report.h; sourceTree = "<group>"; };
+		04FE6BA827EAA99A00D7DB2D /* profiler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = profiler.cpp; sourceTree = "<group>"; };
+		04FE6BA927EAA99A00D7DB2D /* profiler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = profiler.h; sourceTree = "<group>"; };
+		04FE6BAC27EAAA1C00D7DB2D /* profiler_spy.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = profiler_spy.cpp; sourceTree = "<group>"; };
+		04FE6BAD27EAAA1C00D7DB2D /* profiler_spy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = profiler_spy.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1883,6 +1892,7 @@
 				047BF01E27A66084003F3599 /* filesystem.cpp */,
 				04128438279ED3A50071BD86 /* timer.h */,
 				04128435279ED3A50071BD86 /* timer.cpp */,
+				04FE6BA627EAA92F00D7DB2D /* profiling */,
 				04FDEF8927E70F2900BBE8E4 /* event.h */,
 				04FDEF8A27E70F3E00BBE8E4 /* event-inl.h */,
 				04128430279ED3A50071BD86 /* window.h */,
@@ -3142,6 +3152,18 @@
 			path = view;
 			sourceTree = "<group>";
 		};
+		04FE6BA627EAA92F00D7DB2D /* profiling */ = {
+			isa = PBXGroup;
+			children = (
+				04FE6BA727EAA94F00D7DB2D /* profiler_report.h */,
+				04FE6BA927EAA99A00D7DB2D /* profiler.h */,
+				04FE6BA827EAA99A00D7DB2D /* profiler.cpp */,
+				04FE6BAD27EAAA1C00D7DB2D /* profiler_spy.h */,
+				04FE6BAC27EAAA1C00D7DB2D /* profiler_spy.cpp */,
+			);
+			path = profiling;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -3267,6 +3289,7 @@
 				047BF02527A66590003F3599 /* ktx_image.h in Headers */,
 				0443E8F727C5C0890099E13A /* wgsl_shadow_vert.h in Headers */,
 				047BF12427ACEBC7003F3599 /* box_collider_shape.h in Headers */,
+				04FE6BAB27EAA99A00D7DB2D /* profiler.h in Headers */,
 				04128447279ED3A60071BD86 /* engine.h in Headers */,
 				04FDF07727E8069700BBE8E4 /* text_disabled.h in Headers */,
 				047BF09827ABBEEA003F3599 /* wgsl_worldpos_vert.h in Headers */,
@@ -3395,6 +3418,7 @@
 				047BF00427A562F4003F3599 /* wgsl_common.h in Headers */,
 				047BF0AC27ABF9A3003F3599 /* wgsl_begin_viewdir_frag.h in Headers */,
 				047BF15E27AD1435003F3599 /* wgsl_brdf.h in Headers */,
+				04FE6BAF27EAAA1C00D7DB2D /* profiler_spy.h in Headers */,
 				047BF0EA27ACEBAE003F3599 /* collider.h in Headers */,
 				047BF16627AD3FE0003F3599 /* wgsl_ibl_frag_define.h in Headers */,
 				04F9E93D27D5D67E00BD291B /* wgsl_cluster_common.h in Headers */,
@@ -3821,6 +3845,7 @@
 				04954679279F8CD600783C84 /* transform.cpp in Sources */,
 				047BF14727ACF275003F3599 /* animator.cpp in Sources */,
 				04FDEFFA27E762C100BBE8E4 /* input_float.cpp in Sources */,
+				04FE6BAE27EAAA1C00D7DB2D /* profiler_spy.cpp in Sources */,
 				04FDF06127E8030600BBE8E4 /* slider_double.cpp in Sources */,
 				049546FA279FC9B400783C84 /* graphics_application.cpp in Sources */,
 				047BF06C27A6819C003F3599 /* astc_weight_align.cpp in Sources */,
@@ -3934,6 +3959,7 @@
 				047BF07527A6819C003F3599 /* astc_compute_variance.cpp in Sources */,
 				047BF14027ACF245003F3599 /* fbx_loader.cpp in Sources */,
 				047BF0B727ABFE2F003F3599 /* wgsl_normal_get.cpp in Sources */,
+				04FE6BAA27EAA99A00D7DB2D /* profiler.cpp in Sources */,
 				0495467D279F8CD600783C84 /* update_flag_manager.cpp in Sources */,
 				04128448279ED3A60071BD86 /* input_events.cpp in Sources */,
 				047BF14827ACF275003F3599 /* animator_controller.cpp in Sources */,
