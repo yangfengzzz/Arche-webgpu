@@ -10,6 +10,10 @@
 
 namespace vox {
 namespace physics {
+std::string StaticCollider::name() {
+    return "StaticCollider";
+}
+
 StaticCollider::StaticCollider(Entity *entity) :
 Collider(entity) {
     const auto &p = entity->transform->worldPosition();

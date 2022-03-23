@@ -14,6 +14,11 @@ namespace vox {
 namespace physics {
 class DynamicCollider : public Collider {
 public:
+    /**
+     * Returns the name of the component
+     */
+    std::string name() override;
+    
     DynamicCollider(Entity *entity);
     
     /**

@@ -17,6 +17,11 @@
 namespace vox {
 class SkinnedMeshRenderer : public Renderer {
 public:
+    /**
+     * Returns the name of the component
+     */
+    std::string name() override;
+
     SkinnedMeshRenderer(Entity *entity);
     
     void _render(std::vector<RenderElement> &opaqueQueue,

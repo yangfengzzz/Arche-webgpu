@@ -11,6 +11,10 @@
 #include <iostream>
 
 namespace vox {
+std::string SceneAnimator::name() {
+    return "SceneAnimator";
+}
+
 SceneAnimator::SceneAnimator(Entity *entity) :
 Component(entity) {
 }

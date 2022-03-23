@@ -10,6 +10,10 @@
 #include "lighting/light_manager.h"
 
 namespace vox {
+std::string SpriteDebug::name() {
+    return "SpriteDebug";
+}
+
 SpriteDebug::SpriteDebug(Entity* entity):
 Script(entity) {
     Shader::create("spotlight_sprite_debug", std::make_unique<WGSLSpriteDebugVertex>(true),

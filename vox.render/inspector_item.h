@@ -17,6 +17,11 @@ namespace vox {
 class InspectorItem : public VObject {
 public:
     /**
+     * Returns the name of the component
+     */
+    virtual std::string name() = 0;
+    
+    /**
      * Called when the inspector needs to create the UI elements for the given IInspectorItem
      * @param p_root p_root
      */

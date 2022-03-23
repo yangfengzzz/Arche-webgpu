@@ -9,6 +9,10 @@
 #include "scene.h"
 
 namespace vox {
+std::string Script::name() {
+    return "Script";
+}
+
 Script::Script(Entity *entity) :
 Component(entity) {
     

@@ -12,6 +12,11 @@
 namespace vox {
 class MeshRenderer: public Renderer {
 public:
+    /**
+     * Returns the name of the component
+     */
+    std::string name() override;
+    
     explicit MeshRenderer(Entity *entity);
 
     /**

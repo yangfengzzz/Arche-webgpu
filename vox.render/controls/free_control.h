@@ -19,6 +19,11 @@ namespace control {
  */
 class FreeControl : public Script {
 public:
+    /**
+     * Returns the name of the component
+     */
+    std::string name() override;
+    
     FreeControl(Entity *entity);
     
     void onDisable() override;

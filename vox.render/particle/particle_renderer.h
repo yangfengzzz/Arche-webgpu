@@ -16,6 +16,11 @@
 namespace vox {
 class ParticleRenderer : public Renderer {
 public:
+    /**
+     * Returns the name of the component
+     */
+    std::string name() override;
+    
     // [USER DEFINED]
     static constexpr float kDefaultSimulationVolumeSize = 32.0f;
     static constexpr uint32_t kMaxParticleCount = (1u << 15u);

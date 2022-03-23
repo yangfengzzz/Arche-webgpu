@@ -13,6 +13,11 @@
 namespace vox {
 class SpriteDebug : public Script {
 public:
+    /**
+     * Returns the name of the component
+     */
+    std::string name() override;
+    
     SpriteDebug(Entity* entity);
     
     void onUpdate(float deltaTime) override;

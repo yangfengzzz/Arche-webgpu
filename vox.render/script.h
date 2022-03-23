@@ -22,6 +22,11 @@ using ColliderShapePtr = std::shared_ptr<ColliderShape>;
  */
 class Script : public Component {
 public:
+    /**
+     * Returns the name of the component
+     */
+    std::string name() override;
+    
     explicit Script(Entity *entity);
     
     /**

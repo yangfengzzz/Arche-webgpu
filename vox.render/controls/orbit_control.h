@@ -20,6 +20,11 @@ namespace control {
  */
 class OrbitControl : public Script {
 public:
+    /**
+     * Returns the name of the component
+     */
+    std::string name() override;
+    
     struct STATE {
         enum Enum {
             NONE = -1,

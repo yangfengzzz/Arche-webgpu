@@ -17,6 +17,10 @@
 #include "animator.h"
 
 namespace vox {
+std::string SkinnedMeshRenderer::name() {
+    return "SkinnedMeshRenderer";
+}
+
 SkinnedMeshRenderer::SkinnedMeshRenderer(Entity *entity) :
 Renderer(entity) {
     _threshold = ozz::animation::BlendingJob().threshold;

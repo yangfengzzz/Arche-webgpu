@@ -16,6 +16,11 @@ namespace vox {
  */
 class DirectLight : public Light {
 public:
+    /**
+     * Returns the name of the component
+     */
+    std::string name() override;
+    
     struct DirectLightData {
         Vector3F color;
         float _colorPad; // for align

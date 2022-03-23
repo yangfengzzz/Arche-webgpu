@@ -9,6 +9,10 @@
 #include "light_manager.h"
 
 namespace vox {
+std::string DirectLight::name() {
+    return "DirectLight";
+}
+
 DirectLight::DirectLight(Entity *entity) :
 Light(entity) {
 }

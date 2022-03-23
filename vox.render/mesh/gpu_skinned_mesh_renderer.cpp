@@ -10,6 +10,10 @@
 #include "shader/shader.h"
 
 namespace vox {
+std::string GPUSkinnedMeshRenderer::name() {
+    return "GPUSkinnedMeshRenderer";
+}
+
 GPUSkinnedMeshRenderer::GPUSkinnedMeshRenderer(Entity *entity) :
 MeshRenderer(entity),
 _jointMatrixProperty(Shader::createProperty("u_jointMatrix", ShaderDataGroup::Renderer)) {

@@ -20,6 +20,11 @@
 namespace vox {
 class Animator : public Component {
 public:
+    /**
+     * Returns the name of the component
+     */
+    std::string name() override;
+    
     // Sampler structure contains all the data required to sample a single
     // animation.
     struct AnimationClip {

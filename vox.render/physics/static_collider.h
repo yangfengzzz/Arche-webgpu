@@ -13,6 +13,11 @@ namespace vox {
 namespace physics {
 class StaticCollider : public Collider {
 public:
+    /**
+     * Returns the name of the component
+     */
+    std::string name() override;
+    
     StaticCollider(Entity *entity);
     
 public:

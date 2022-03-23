@@ -33,6 +33,11 @@ enum class CameraClearFlags {
  */
 class Camera : public Component {
 public:
+    /**
+     * Returns the name of the component
+     */
+    std::string name() override;
+    
     struct CameraData {
         Matrix4x4F u_viewMat;
         Matrix4x4F u_projMat;

@@ -16,6 +16,11 @@ namespace physics {
  */
 class CapsuleCharacterController : public CharacterController {
 public:
+    /**
+     * Returns the name of the component
+     */
+    std::string name() override;
+    
     CapsuleCharacterController(Entity *entity);
     
     void setDesc(const PxCapsuleControllerDesc &desc);

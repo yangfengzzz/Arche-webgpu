@@ -10,6 +10,10 @@
 #include "entity.h"
 
 namespace vox {
+std::string Transform::name() {
+    return "Transform";
+}
+
 Transform::Transform(Entity *entity) : Component(entity) {
 }
 

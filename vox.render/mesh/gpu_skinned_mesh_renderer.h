@@ -13,6 +13,11 @@ namespace vox {
 
 class GPUSkinnedMeshRenderer : public MeshRenderer {
 public:
+    /**
+     * Returns the name of the component
+     */
+    std::string name() override;
+
     struct Skin {
         std::string name;
         std::vector<Matrix4x4F> inverseBindMatrices;

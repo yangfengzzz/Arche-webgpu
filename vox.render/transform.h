@@ -46,6 +46,11 @@ enum TransformFlag {
  */
 class Transform : public Component {
 public:
+    /**
+     * Returns the name of the component
+     */
+    std::string name() override;
+    
     Transform(Entity *entity);
     
     /**

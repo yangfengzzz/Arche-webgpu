@@ -16,6 +16,11 @@ namespace vox {
  */
 class PointLight : public Light {
 public:
+    /**
+     * Returns the name of the component
+     */
+    std::string name() override;
+    
     struct PointLightData {
         Vector3F color;
         float _colorPad; // for align

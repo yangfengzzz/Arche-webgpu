@@ -10,6 +10,10 @@
 #include "entity.h"
 
 namespace vox {
+std::string MeshRenderer::name() {
+    return "MeshRenderer";
+}
+
 MeshRenderer::MeshRenderer(Entity *entity) :
 Renderer(entity) {
     

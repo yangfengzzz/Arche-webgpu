@@ -23,6 +23,10 @@ uint32_t closestPowerOfTwo(uint32_t const n) {
 
 uint32_t const ParticleRenderer::kBatchEmitCount;
 
+std::string ParticleRenderer::name() {
+    return "ParticleRenderer";
+}
+
 ParticleRenderer::ParticleRenderer(Entity *entity) :
 Renderer(entity),
 _randomBufferProp(Shader::createProperty("u_randomBuffer", ShaderDataGroup::Renderer)),

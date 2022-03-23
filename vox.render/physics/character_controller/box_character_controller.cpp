@@ -5,11 +5,15 @@
 //  property of any third parties.
 
 #include "box_character_controller.h"
-#include "../../entity.h"
-#include "../../scene.h"
+#include "entity.h"
+#include "scene.h"
 
 namespace vox {
 namespace physics {
+std::string BoxCharacterController::name() {
+    return "BoxCharacterController";
+}
+
 BoxCharacterController::BoxCharacterController(Entity *entity) :
 CharacterController(entity) {
 }

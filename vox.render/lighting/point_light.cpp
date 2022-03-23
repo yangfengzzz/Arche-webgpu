@@ -10,6 +10,10 @@
 #include "light_manager.h"
 
 namespace vox {
+std::string PointLight::name() {
+    return "PointLight";
+}
+
 PointLight::PointLight(Entity *entity) :
 Light(entity) {
 }

@@ -41,30 +41,30 @@ public:
     ~Inspector();
     
     /**
-     * Focus the given actor
+     * Focus the given entity
      * @param p_target p_target
      */
-    void focusActor(EntityPtr &p_target);
+    void focusEntity(EntityPtr p_target);
     
     /**
-     * Unfocus the currently targeted actor
+     * Unfocus the currently targeted entity
      */
     void unFocus();
     
     /**
-     * Unfocus the currently targeted actor without removing listeners attached to this actor
+     * Unfocus the currently targeted entity without removing listeners attached to this entity
      */
     void softUnFocus();
     
     /**
-     * Returns the currently selected actor
+     * Returns the currently selected entity
      */
-    EntityPtr targetActor() const;
+    EntityPtr targetEntity() const;
     
     /**
-     * Create the actor inspector for the given actor
+     * Create the entity inspector for the given entity
      */
-    void createActorInspector(EntityPtr &p_target);
+    void createEntityInspector(EntityPtr &p_target);
     
     /**
      * Draw the given component in inspector
@@ -74,7 +74,7 @@ public:
     /**
      * Draw the given behaviour in inspector
      */
-    //    void drawBehaviour(OvCore::ECS::Components::Behaviour& p_behaviour);
+    void drawBehaviour(Behaviour *p_behaviour);
     
     /**
      * Refresh the inspector
@@ -82,8 +82,8 @@ public:
     void refresh();
     
 private:
-    EntityPtr _targetActor{nullptr};
-    Group *_actorInfo;
+    EntityPtr _targetEntity{nullptr};
+    Group *_entityInfo;
     Group *_inspectorHeader;
     ComboBox *_componentSelectorWidget;
     InputText *_scriptSelectorWidget;

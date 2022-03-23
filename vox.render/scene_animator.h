@@ -16,6 +16,11 @@
 namespace vox {
 class SceneAnimator : public Component {
 public:
+    /**
+     * Returns the name of the component
+     */
+    std::string name() override;
+    
     SceneAnimator(Entity *entity);
     
     void update(float deltaTime);

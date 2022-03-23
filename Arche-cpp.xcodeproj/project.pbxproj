@@ -705,6 +705,8 @@
 		04FE6BC427EAE99300D7DB2D /* contextual_menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FE6BC227EAE99300D7DB2D /* contextual_menu.cpp */; };
 		04FE6BC527EAE99300D7DB2D /* contextual_menu.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FE6BC327EAE99300D7DB2D /* contextual_menu.h */; };
 		04FE6BC627EAF82200D7DB2D /* inspector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0B927E875BC00BBE8E4 /* inspector.cpp */; };
+		04FE6BC927EB04B300D7DB2D /* behaviour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FE6BC727EB04B300D7DB2D /* behaviour.cpp */; };
+		04FE6BCA27EB04B400D7DB2D /* behaviour.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FE6BC827EB04B300D7DB2D /* behaviour.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1704,6 +1706,8 @@
 		04FE6BBF27EAE5E800D7DB2D /* size_converter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = size_converter.h; sourceTree = "<group>"; };
 		04FE6BC227EAE99300D7DB2D /* contextual_menu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = contextual_menu.cpp; sourceTree = "<group>"; };
 		04FE6BC327EAE99300D7DB2D /* contextual_menu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = contextual_menu.h; sourceTree = "<group>"; };
+		04FE6BC727EB04B300D7DB2D /* behaviour.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = behaviour.cpp; sourceTree = "<group>"; };
+		04FE6BC827EB04B300D7DB2D /* behaviour.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = behaviour.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1981,6 +1985,8 @@
 				04954674279F8CD600783C84 /* script.h */,
 				0495466B279F8CD500783C84 /* script.cpp */,
 				049546FC279FCD0600783C84 /* controls */,
+				04FE6BC827EB04B300D7DB2D /* behaviour.h */,
+				04FE6BC727EB04B300D7DB2D /* behaviour.cpp */,
 				047BF0D327ACEB44003F3599 /* physics */,
 				047BF13227ACF1C0003F3599 /* loader */,
 				047BF14527ACF274003F3599 /* animator.h */,
@@ -3358,6 +3364,7 @@
 				047BF11027ACEBBF003F3599 /* box_character_controller.h in Headers */,
 				0412843E279ED3A60071BD86 /* window.h in Headers */,
 				047BEFF327A5519C003F3599 /* wgsl_blend_shape_vert.h in Headers */,
+				04FE6BCA27EB04B400D7DB2D /* behaviour.h in Headers */,
 				047BF0A427ABDD09003F3599 /* wgsl_light_frag_define.h in Headers */,
 				047BF1B327AFA079003F3599 /* color_picker_subpass.h in Headers */,
 				0495475027A2714200783C84 /* buffer_mesh.h in Headers */,
@@ -3820,6 +3827,7 @@
 				04FDF07A27E8072000BBE8E4 /* text_labelled.cpp in Sources */,
 				04FDF05927E801AD00BBE8E4 /* slider_int.cpp in Sources */,
 				049546E4279FA7D800783C84 /* backend_binding.cpp in Sources */,
+				04FE6BC927EB04B300D7DB2D /* behaviour.cpp in Sources */,
 				04FDF0D127E8C73A00BBE8E4 /* scene_manager.cpp in Sources */,
 				04FE6BC427EAE99300D7DB2D /* contextual_menu.cpp in Sources */,
 				0495467B279F8CD600783C84 /* entity.cpp in Sources */,

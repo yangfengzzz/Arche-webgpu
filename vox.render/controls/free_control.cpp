@@ -10,6 +10,10 @@
 
 namespace vox {
 namespace control {
+std::string FreeControl::name() {
+    return "FreeControl";
+}
+
 FreeControl::FreeControl(Entity *entity) :
 Script(entity) {
     // init spherical

@@ -11,6 +11,10 @@
 #include "shader/shader.h"
 
 namespace vox {
+std::string Camera::name() {
+    return "Camera";
+}
+
 Camera::Camera(Entity *entity) :
 Component(entity),
 shaderData(entity->scene()->device()),

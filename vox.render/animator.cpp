@@ -11,6 +11,10 @@
 #include <string>
 
 namespace vox {
+std::string Animator::name() {
+    return "Animator";
+}
+
 Animator::Animator(Entity *entity) :
 Component(entity) {
 }

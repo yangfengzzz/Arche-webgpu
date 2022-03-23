@@ -5,11 +5,15 @@
 //  property of any third parties.
 
 #include "capsule_character_controller.h"
-#include "../../entity.h"
-#include "../../scene.h"
+#include "entity.h"
+#include "scene.h"
 
 namespace vox {
 namespace physics {
+std::string CapsuleCharacterController::name() {
+    return "CapsuleCharacterController";
+}
+
 CapsuleCharacterController::CapsuleCharacterController(Entity *entity) :
 CharacterController(entity) {
 }

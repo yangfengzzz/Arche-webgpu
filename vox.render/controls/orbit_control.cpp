@@ -9,6 +9,10 @@
 
 namespace vox {
 namespace control {
+std::string OrbitControl::name() {
+    return "OrbitControl";
+}
+
 OrbitControl::OrbitControl(Entity *entity) :
 Script(entity),
 _cameraEntity(entity) {

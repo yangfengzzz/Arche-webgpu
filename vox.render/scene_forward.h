@@ -60,13 +60,15 @@ class GPUSkinnedMeshRenderer;
 
 class Script;
 
+class Behaviour;
+
 class Animator;
 
 class SceneAnimator;
 
 class Light;
 
-//class PointLight;
+class PointLight;
 
 class SpotLight;
 
