@@ -697,6 +697,8 @@
 		04FE6BAF27EAAA1C00D7DB2D /* profiler_spy.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FE6BAD27EAAA1C00D7DB2D /* profiler_spy.h */; };
 		04FE6BB227EAAC7400D7DB2D /* editor_actions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FE6BB027EAAC7400D7DB2D /* editor_actions.cpp */; };
 		04FE6BB727EAB68C00D7DB2D /* entity_creation_menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FE6BB527EAB68C00D7DB2D /* entity_creation_menu.cpp */; };
+		04FE6BBA27EABF0700D7DB2D /* ini_file.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FE6BB827EABF0700D7DB2D /* ini_file.cpp */; };
+		04FE6BBB27EABF0700D7DB2D /* ini_file.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FE6BB927EABF0700D7DB2D /* ini_file.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1689,6 +1691,9 @@
 		04FE6BB427EAB5F400D7DB2D /* editor_settings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = editor_settings.h; sourceTree = "<group>"; };
 		04FE6BB527EAB68C00D7DB2D /* entity_creation_menu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = entity_creation_menu.cpp; sourceTree = "<group>"; };
 		04FE6BB627EAB68C00D7DB2D /* entity_creation_menu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = entity_creation_menu.h; sourceTree = "<group>"; };
+		04FE6BB827EABF0700D7DB2D /* ini_file.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ini_file.cpp; sourceTree = "<group>"; };
+		04FE6BB927EABF0700D7DB2D /* ini_file.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ini_file.h; sourceTree = "<group>"; };
+		04FE6BBC27EABF8A00D7DB2D /* ini_file-inl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ini_file-inl.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1896,6 +1901,9 @@
 			children = (
 				04954675279F8CD600783C84 /* std_helpers.h */,
 				04F9E91827D481A000BD291B /* singleton.h */,
+				04FE6BB927EABF0700D7DB2D /* ini_file.h */,
+				04FE6BBC27EABF8A00D7DB2D /* ini_file-inl.h */,
+				04FE6BB827EABF0700D7DB2D /* ini_file.cpp */,
 				047BF01F27A66084003F3599 /* filesystem.h */,
 				047BF01E27A66084003F3599 /* filesystem.cpp */,
 				04128438279ED3A50071BD86 /* timer.h */,
@@ -3503,6 +3511,7 @@
 				04FDF0D227E8C73A00BBE8E4 /* scene_manager.h in Headers */,
 				04954685279F8CD600783C84 /* scene.h in Headers */,
 				04FDEFA427E71E3200BBE8E4 /* inspector_item.h in Headers */,
+				04FE6BBB27EABF0700D7DB2D /* ini_file.h in Headers */,
 				04FDEF9F27E719E100BBE8E4 /* widget_container.h in Headers */,
 				0443E8FF27C5C7C40099E13A /* wgsl_shadow_common.h in Headers */,
 				047BEFD727A4BFD9003F3599 /* wgsl_common_vert.h in Headers */,
@@ -3967,6 +3976,7 @@
 				04FDEFC927E7477500BBE8E4 /* canvas.cpp in Sources */,
 				04F9E90027D2095100BD291B /* compute_pass.cpp in Sources */,
 				04FDF00F27E7670E00BBE8E4 /* dummy.cpp in Sources */,
+				04FE6BBA27EABF0700D7DB2D /* ini_file.cpp in Sources */,
 				04FDF02427E771F100BBE8E4 /* tree_node.cpp in Sources */,
 				04954709279FCD3C00783C84 /* orbit_control.cpp in Sources */,
 				0495473927A2564500783C84 /* pbr_specular_material.cpp in Sources */,
