@@ -8,11 +8,14 @@
 #define asset_properties_hpp
 
 #include "event.h"
+#include "ini_file.h"
 
 #include "ui/widgets/texts/text.h"
 #include "ui/widgets/panel_transformables/panel_window.h"
 #include "ui/widgets/layout/group.h"
 #include "ui/widgets/layout/columns.h"
+#include "ui/widgets/buttons/button_simple.h"
+#include "view/asset_view.h"
 
 namespace vox {
 using namespace ui;
@@ -21,17 +24,15 @@ namespace editor {
 namespace ui {
 class AssetProperties : public PanelWindow {
 public:
-    // using EditableAssets = std::variant<OvRendering::Resources::Model*, OvRendering::Resources::Texture*>;
-    
     /**
      * Constructor
      * @param p_title p_title
      * @param p_opened p_opened
      * @param p_windowSettings p_windowSettings
      */
-    AssetProperties(const std::string &p_title,
-                    bool p_opened,
-                    const PanelWindowSettings &p_windowSettings);
+    AssetProperties(const std::string &p_title, bool p_opened,
+                    const PanelWindowSettings &p_windowSettings,
+                    AssetView& view);
     
     /**
      * Defines the target of the asset settings editor
@@ -65,21 +66,22 @@ private:
     void apply();
     
 private:
+    AssetView& _assetView;
     std::string _resource;
     
     Event<> _targetChanged;
-    Group *_settings = nullptr;
-    Group *_info = nullptr;
-    Button *_applyButton = nullptr;
-    Button *_revertButton = nullptr;
-    Button *_previewButton = nullptr;
-    Button *_resetButton = nullptr;
-    Widget *_headerSeparator = nullptr;
-    Widget *_headerLineBreak = nullptr;
-    Columns<2> *_settingsColumns = nullptr;
-    Columns<2> *_infoColumns = nullptr;
-    Text *_assetSelector = nullptr;
-    // std::unique_ptr<OvTools::Filesystem::IniFile> m_metadata;
+    Group *_settings{nullptr};
+    Group *_info{nullptr};
+    ButtonSimple *_applyButton{nullptr};
+    ButtonSimple *_revertButton{nullptr};
+    ButtonSimple *_previewButton{nullptr};
+    ButtonSimple *_resetButton{nullptr};
+    Widget *_headerSeparator{nullptr};
+    Widget *_headerLineBreak{nullptr};
+    Columns<2> *_settingsColumns{nullptr};
+    Columns<2> *_infoColumns{nullptr};
+    Text *_assetSelector{nullptr};
+    std::unique_ptr<fs::IniFile> _metadata{nullptr};
 };
 
 
