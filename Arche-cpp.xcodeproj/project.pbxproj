@@ -4285,6 +4285,7 @@
 					./third_party/tinyxml2,
 					./third_party/rttr/src,
 					./third_party/rttr/build/src,
+					./third_party/nlohmann/single_include,
 				);
 			};
 			name = Debug;
@@ -4356,6 +4357,7 @@
 					./third_party/tinyxml2,
 					./third_party/rttr/src,
 					./third_party/rttr/build/src,
+					./third_party/nlohmann/single_include,
 				);
 			};
 			name = Release;
@@ -4608,6 +4610,7 @@
 					./third_party/ozz/include,
 					"/Applications/Autodesk/FBX\\ SDK/2016.1.2/include",
 					./third_party/tinyxml2,
+					./third_party/nlohmann/single_include,
 				);
 				USE_HEADERMAP = NO;
 			};
@@ -4746,6 +4749,7 @@
 					./third_party/ozz/include,
 					"/Applications/Autodesk/FBX\\ SDK/2016.1.2/include",
 					./third_party/tinyxml2,
+					./third_party/nlohmann/single_include,
 				);
 				USE_HEADERMAP = NO;
 			};
@@ -4897,11 +4901,11 @@
 					"/Applications/Autodesk/FBX\\ SDK/2016.1.2/include",
 					./third_party/rttr/src,
 					./third_party/rttr/build/src,
-					./third_party/rapidjson/include,
 					./third_party/fastnoise2/include,
 					./third_party/fastnoiselite/Cpp,
 					./third_party/muparser/include,
 					./third_party/tinyxml2,
+					./third_party/nlohmann/single_include,
 				);
 			};
 			name = Debug;
@@ -5048,11 +5052,11 @@
 					"/Applications/Autodesk/FBX\\ SDK/2016.1.2/include",
 					./third_party/rttr/src,
 					./third_party/rttr/build/src,
-					./third_party/rapidjson/include,
 					./third_party/fastnoise2/include,
 					./third_party/fastnoiselite/Cpp,
 					./third_party/muparser/include,
 					./third_party/tinyxml2,
+					./third_party/nlohmann/single_include,
 				);
 			};
 			name = Release;

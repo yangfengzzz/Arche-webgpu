@@ -46,9 +46,6 @@
 [submodule "third_party/rttr"]
 	path = third_party/rttr
 	url = https://github.com/rttrorg/rttr.git
-[submodule "third_party/rapidjson"]
-	path = third_party/rapidjson
-	url = https://github.com/Tencent/rapidjson.git
 [submodule "third_party/fastnoise2"]
 	path = third_party/fastnoise2
 	url = https://github.com/Auburn/FastNoise2
@@ -64,3 +61,9 @@
 [submodule "third_party/tinyxml2"]
 	path = third_party/tinyxml2
 	url = https://github.com/leethomason/tinyxml2.git
+[submodule "third_party/nlohmann"]
+	path = third_party/nlohmann
+	url = https://github.com/nlohmann/json.git
+[submodule "third_party/sol2"]
+	path = third_party/sol2
+	url = https://github.com/ThePhD/sol2.git
