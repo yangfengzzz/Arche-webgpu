@@ -707,6 +707,7 @@
 		04FE6BC627EAF82200D7DB2D /* inspector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0B927E875BC00BBE8E4 /* inspector.cpp */; };
 		04FE6BC927EB04B300D7DB2D /* behaviour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FE6BC727EB04B300D7DB2D /* behaviour.cpp */; };
 		04FE6BCA27EB04B400D7DB2D /* behaviour.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FE6BC827EB04B300D7DB2D /* behaviour.h */; };
+		04FE6BCB27EB0E9E00D7DB2D /* project_settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0C227E8799A00BBE8E4 /* project_settings.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -4063,6 +4064,7 @@
 				04FDF0E027E974D400BBE8E4 /* panels_manager.cpp in Sources */,
 				04FE6BC627EAF82200D7DB2D /* inspector.cpp in Sources */,
 				04FDF0D427E953E900BBE8E4 /* main.cpp in Sources */,
+				04FE6BCB27EB0E9E00D7DB2D /* project_settings.cpp in Sources */,
 				04FDF0EA27E9A1F200BBE8E4 /* imgui_shapes.cpp in Sources */,
 				04FDF0D927E95DDB00BBE8E4 /* view.cpp in Sources */,
 				04FDF0DD27E9723100BBE8E4 /* editor_application.cpp in Sources */,

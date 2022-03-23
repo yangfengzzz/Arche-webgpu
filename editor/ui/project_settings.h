@@ -9,8 +9,7 @@
 
 #include "ui/widgets/texts/text.h"
 #include "ui/widgets/panel_transformables/panel_window.h"
-
-//#include <OvTools/Filesystem/IniFile.h>
+#include "ini_file.h"
 
 namespace vox {
 using namespace ui;
@@ -25,17 +24,17 @@ public:
      * @param p_opened p_opened
      * @param p_windowSettings p_windowSettings
      */
-    ProjectSettings(const std::string &p_title,
-                    bool p_opened,
-                    const PanelWindowSettings &p_windowSettings);
+    ProjectSettings(const std::string &p_title, bool p_opened,
+                    const PanelWindowSettings &p_windowSettings,
+                    const std::string& p_projectPath, const std::string& p_projectName);
     
     /**
      * Generate a gatherer that will get the value associated to the given key
      * @param p_keyName p_keyName
      */
     template<typename T>
-    std::function<T()> GenerateGatherer(const std::string &p_keyName) {
-        //        return std::bind(&OvTools::Filesystem::IniFile::Get<T>, &m_projectFile, p_keyName);
+    std::function<T()> generateGatherer(const std::string &p_keyName) {
+        return std::bind(&fs::IniFile::get<T>, &_projectSettings, p_keyName);
     }
     
     /**
@@ -43,12 +42,32 @@ public:
      * @param p_keyName p_keyName
      */
     template<typename T>
-    std::function<void(T)> GenerateProvider(const std::string &p_keyName) {
-        //        return std::bind(&OvTools::Filesystem::IniFile::Set<T>, &m_projectFile, p_keyName, std::placeholders::_1);
+    std::function<void(T)> generateProvider(const std::string &p_keyName) {
+        return std::bind(&fs::IniFile::set<T>, &_projectSettings, p_keyName, std::placeholders::_1);
     }
     
+public:
+    /**
+     * Reset project settings ini file
+     */
+    void resetProjectSettings();
+    
+    /**
+     * Verify that project settings are complete (No missing key).
+     * Returns true if the integrity is verified
+     */
+    bool isProjectSettingsIntegrityVerified();
+    
+    /**
+     * Apply project settings to the ini file
+     */
+    void applyProjectSettings();
+    
+    
+    fs::IniFile& projectSettings();
+
 private:
-    //    OvTools::Filesystem::IniFile& _projectFile;
+    fs::IniFile _projectSettings;
 };
 
 
