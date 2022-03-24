@@ -4,23 +4,22 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef lua_math_binder_hpp
-#define lua_math_binder_hpp
+#ifndef lua_binder_hpp
+#define lua_binder_hpp
 
 #include <sol/sol.hpp>
 
 namespace vox {
 /**
- * Handle lua maths binding
+ * Handle lua binding
  */
-class LuaMathsBinder {
+class LuaBinder {
 public:
     /**
-     * Bind engine maths-related features to lua
+     * Bind engine features to lua
      */
-    static void bindMaths(sol::state& luaState);
+    static void callBinders(sol::state& luaState);
 };
 
-
 }
-#endif /* lua_math_binder_hpp */
+#endif /* lua_binder_hpp */

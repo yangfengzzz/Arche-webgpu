@@ -713,6 +713,8 @@
 		04FE6BD027EB40C100D7DB2D /* console.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0B027E8710500BBE8E4 /* console.cpp */; };
 		04FE6BD527EBE7AA00D7DB2D /* lua_math_binder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FE6BD327EBE7AA00D7DB2D /* lua_math_binder.cpp */; };
 		04FE6BD627EBE7AA00D7DB2D /* lua_math_binder.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FE6BD427EBE7AA00D7DB2D /* lua_math_binder.h */; };
+		04FE6BD927EC79B900D7DB2D /* lua_binder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FE6BD727EC79B900D7DB2D /* lua_binder.cpp */; };
+		04FE6BDA27EC79B900D7DB2D /* lua_binder.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FE6BD827EC79B900D7DB2D /* lua_binder.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1718,6 +1720,8 @@
 		04FE6BCD27EB19E600D7DB2D /* profiler_window.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = profiler_window.h; sourceTree = "<group>"; };
 		04FE6BD327EBE7AA00D7DB2D /* lua_math_binder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lua_math_binder.cpp; sourceTree = "<group>"; };
 		04FE6BD427EBE7AA00D7DB2D /* lua_math_binder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = lua_math_binder.h; sourceTree = "<group>"; };
+		04FE6BD727EC79B900D7DB2D /* lua_binder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lua_binder.cpp; sourceTree = "<group>"; };
+		04FE6BD827EC79B900D7DB2D /* lua_binder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = lua_binder.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3222,6 +3226,8 @@
 		04FE6BD227EBE78000D7DB2D /* lua */ = {
 			isa = PBXGroup;
 			children = (
+				04FE6BD827EC79B900D7DB2D /* lua_binder.h */,
+				04FE6BD727EC79B900D7DB2D /* lua_binder.cpp */,
 				04FE6BD427EBE7AA00D7DB2D /* lua_math_binder.h */,
 				04FE6BD327EBE7AA00D7DB2D /* lua_math_binder.cpp */,
 			);
@@ -3561,6 +3567,7 @@
 				0443E8FF27C5C7C40099E13A /* wgsl_shadow_common.h in Headers */,
 				047BEFD727A4BFD9003F3599 /* wgsl_common_vert.h in Headers */,
 				0495474327A2640900783C84 /* index_buffer_binding.h in Headers */,
+				04FE6BDA27EC79B900D7DB2D /* lua_binder.h in Headers */,
 				047BF19327AE6F74003F3599 /* scene_animator.h in Headers */,
 				04FDF04027E7F8F800BBE8E4 /* check_box.h in Headers */,
 				04128460279ED4B10071BD86 /* imgui_internal.h in Headers */,
@@ -3882,6 +3889,7 @@
 				047BEFEE27A54663003F3599 /* wgsl_begin_position_vert.cpp in Sources */,
 				047BF19427AE6F74003F3599 /* scene_animator.cpp in Sources */,
 				04FDEFA927E71F8500BBE8E4 /* button_simple.cpp in Sources */,
+				04FE6BD927EC79B900D7DB2D /* lua_binder.cpp in Sources */,
 				0495471327A15BEE00783C84 /* shader_macro_collection.cpp in Sources */,
 				047BF0A327ABDD09003F3599 /* wgsl_light_frag_define.cpp in Sources */,
 				0495478627A403C700783C84 /* wgsl.cpp in Sources */,
