@@ -8,6 +8,8 @@
 #define behaviour_hpp
 
 #include "script.h"
+#include "event.h"
+#include <sol/sol.hpp>
 
 namespace vox {
 /**
@@ -15,6 +17,11 @@ namespace vox {
  */
 class Behaviour : public Script {
 public:
+    static Event<Behaviour *> createdEvent;
+    static Event<Behaviour *> destroyedEvent;
+    
+    std::string scriptName;
+    
     /**
      * Returns the name of the component
      */
@@ -22,6 +29,35 @@ public:
     
     explicit Behaviour(Entity *entity);
     
+    /**
+     * Register the behaviour to lua
+     * Returns true on success
+     */
+    bool registerToLuaContext(sol::state &p_luaState, const std::string &p_scriptFolder);
+    
+    /**
+     * Register the behaviour to lua
+     * Returns true on success
+     */
+    void unregisterFromLuaContext();
+    
+    /**
+     * Call a lua function for this behaviour
+     */
+    template<typename... Args>
+    void luaCall(const std::string &p_functionName, Args &&... p_args);
+    
+    /**
+     * Return the lua table attached to this behaviour
+     */
+    sol::table &table();
+    
+    /**
+     * Destructor
+     */
+    ~Behaviour();
+    
+public:
     /**
      * Called when be enabled first time, only once.
      */
@@ -95,7 +131,18 @@ public:
     
     void resize(uint32_t win_width, uint32_t win_height,
                 uint32_t fb_width, uint32_t fb_height) override;
+    
+    /**
+     * Defines how the component should be drawn in the inspector
+     */
+    void onInspector(ui::WidgetContainer &p_root) override;
+    
+private:
+    sol::table _object = sol::lua_nil;
 };
 
 }
+
+#include "behaviour-inl.h"
+
 #endif /* behaviour_hpp */
