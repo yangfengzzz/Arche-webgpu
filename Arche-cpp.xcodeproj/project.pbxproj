@@ -711,6 +711,8 @@
 		04FE6BCE27EB19E600D7DB2D /* profiler_window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FE6BCC27EB19E600D7DB2D /* profiler_window.cpp */; };
 		04FE6BCF27EB1F2A00D7DB2D /* tool_bar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0CB27E87AFB00BBE8E4 /* tool_bar.cpp */; };
 		04FE6BD027EB40C100D7DB2D /* console.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FDF0B027E8710500BBE8E4 /* console.cpp */; };
+		04FE6BD527EBE7AA00D7DB2D /* lua_math_binder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FE6BD327EBE7AA00D7DB2D /* lua_math_binder.cpp */; };
+		04FE6BD627EBE7AA00D7DB2D /* lua_math_binder.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FE6BD427EBE7AA00D7DB2D /* lua_math_binder.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1714,6 +1716,8 @@
 		04FE6BC827EB04B300D7DB2D /* behaviour.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = behaviour.h; sourceTree = "<group>"; };
 		04FE6BCC27EB19E600D7DB2D /* profiler_window.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = profiler_window.cpp; sourceTree = "<group>"; };
 		04FE6BCD27EB19E600D7DB2D /* profiler_window.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = profiler_window.h; sourceTree = "<group>"; };
+		04FE6BD327EBE7AA00D7DB2D /* lua_math_binder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lua_math_binder.cpp; sourceTree = "<group>"; };
+		04FE6BD427EBE7AA00D7DB2D /* lua_math_binder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = lua_math_binder.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1993,8 +1997,7 @@
 				049546FC279FCD0600783C84 /* controls */,
 				04FE6BC827EB04B300D7DB2D /* behaviour.h */,
 				04FE6BC727EB04B300D7DB2D /* behaviour.cpp */,
-				047BF0D327ACEB44003F3599 /* physics */,
-				047BF13227ACF1C0003F3599 /* loader */,
+				04FE6BD227EBE78000D7DB2D /* lua */,
 				047BF14527ACF274003F3599 /* animator.h */,
 				047BF14327ACF274003F3599 /* animator.cpp */,
 				047BF14627ACF275003F3599 /* animator_controller.h */,
@@ -2003,6 +2006,8 @@
 				047BF19027AE6F74003F3599 /* scene_animator.cpp */,
 				047BF19127AE6F74003F3599 /* scene_animation_clip.h */,
 				047BF19227AE6F74003F3599 /* scene_animation_clip.cpp */,
+				047BF13227ACF1C0003F3599 /* loader */,
+				047BF0D327ACEB44003F3599 /* physics */,
 				049546FE279FCD1100783C84 /* forward_application.h */,
 				049546FD279FCD1100783C84 /* forward_application.cpp */,
 			);
@@ -3214,6 +3219,15 @@
 			path = profiling;
 			sourceTree = "<group>";
 		};
+		04FE6BD227EBE78000D7DB2D /* lua */ = {
+			isa = PBXGroup;
+			children = (
+				04FE6BD427EBE7AA00D7DB2D /* lua_math_binder.h */,
+				04FE6BD327EBE7AA00D7DB2D /* lua_math_binder.cpp */,
+			);
+			path = lua;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -3432,6 +3446,7 @@
 				047BF15A27AD0FF4003F3599 /* wgsl_pbr_helper.h in Headers */,
 				0495472527A23CE100783C84 /* sampled_texture.h in Headers */,
 				047BF14227ACF245003F3599 /* fbx_loader.h in Headers */,
+				04FE6BD627EBE7AA00D7DB2D /* lua_math_binder.h in Headers */,
 				04954654279F8AE900783C84 /* base_material.h in Headers */,
 				047BF10F27ACEBBF003F3599 /* character_controller.h in Headers */,
 				04128472279EED090071BD86 /* stencil_state.h in Headers */,
@@ -4021,6 +4036,7 @@
 				047BF14827ACF275003F3599 /* animator_controller.cpp in Sources */,
 				0412845D279ED4B10071BD86 /* imgui.cpp in Sources */,
 				047BF19927AE7004003F3599 /* gpu_skinned_mesh_renderer.cpp in Sources */,
+				04FE6BD527EBE7AA00D7DB2D /* lua_math_binder.cpp in Sources */,
 				04FDF06A27E8050A00BBE8E4 /* text.cpp in Sources */,
 				04FDF03227E781D800BBE8E4 /* plot.cpp in Sources */,
 				047BF01827A640A3003F3599 /* image.cpp in Sources */,
@@ -4286,6 +4302,8 @@
 					./third_party/rttr/src,
 					./third_party/rttr/build/src,
 					./third_party/nlohmann/single_include,
+					./third_party/sol2/single/include,
+					/usr/local/Cellar/lua/5.4.4/include/lua,
 				);
 			};
 			name = Debug;
@@ -4358,6 +4376,8 @@
 					./third_party/rttr/src,
 					./third_party/rttr/build/src,
 					./third_party/nlohmann/single_include,
+					./third_party/sol2/single/include,
+					/usr/local/Cellar/lua/5.4.4/include/lua,
 				);
 			};
 			name = Release;
@@ -4611,6 +4631,8 @@
 					"/Applications/Autodesk/FBX\\ SDK/2016.1.2/include",
 					./third_party/tinyxml2,
 					./third_party/nlohmann/single_include,
+					./third_party/sol2/single/include,
+					/usr/local/Cellar/lua/5.4.4/include/lua,
 				);
 				USE_HEADERMAP = NO;
 			};
@@ -4750,6 +4772,8 @@
 					"/Applications/Autodesk/FBX\\ SDK/2016.1.2/include",
 					./third_party/tinyxml2,
 					./third_party/nlohmann/single_include,
+					./third_party/sol2/single/include,
+					/usr/local/Cellar/lua/5.4.4/include/lua,
 				);
 				USE_HEADERMAP = NO;
 			};
@@ -4906,6 +4930,8 @@
 					./third_party/muparser/include,
 					./third_party/tinyxml2,
 					./third_party/nlohmann/single_include,
+					./third_party/sol2/single/include,
+					/usr/local/Cellar/lua/5.4.4/include/lua,
 				);
 			};
 			name = Debug;
@@ -5057,6 +5083,8 @@
 					./third_party/muparser/include,
 					./third_party/tinyxml2,
 					./third_party/nlohmann/single_include,
+					./third_party/sol2/single/include,
+					/usr/local/Cellar/lua/5.4.4/include/lua,
 				);
 			};
 			name = Release;
