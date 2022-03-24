@@ -8,7 +8,7 @@
 #include "lua_binder.h"
 
 namespace vox {
-ScriptInterpreter::ScriptInterpreter(const std::string& scriptRootFolder) :
+ScriptInterpreter::ScriptInterpreter(const std::string &scriptRootFolder) :
 _scriptRootFolder(scriptRootFolder) {
     createLuaContextAndBindGlobals();
     
@@ -21,7 +21,62 @@ ScriptInterpreter::~ScriptInterpreter() {
     destroyLuaContext();
 }
 
+void ScriptInterpreter::createLuaContextAndBindGlobals() {
+    if (!_luaState) {
+        _luaState = std::make_unique<sol::state>();
+        _luaState->open_libraries(sol::lib::base, sol::lib::math);
+        LuaBinder::callBinders(*_luaState);
+        _isOk = true;
+        
+        std::for_each(_behaviours.begin(), _behaviours.end(), [this](Behaviour *behaviour) {
+            if (!behaviour->registerToLuaContext(*_luaState, _scriptRootFolder))
+                _isOk = false;
+        });
+        
+        if (!_isOk)
+            LOG(ERROR) << "Script interpreter failed to register scripts. Check your lua scripts\n";
+    }
+}
 
+void ScriptInterpreter::destroyLuaContext() {
+    if (_luaState) {
+        std::for_each(_behaviours.begin(), _behaviours.end(), [this](Behaviour *behaviour) {
+            behaviour->unregisterFromLuaContext();
+        });
+        
+        _luaState.reset();
+        _isOk = false;
+    }
+}
+
+void ScriptInterpreter::consider(Behaviour *p_toConsider) {
+    if (_luaState) {
+        _behaviours.push_back(p_toConsider);
+        
+        if (!p_toConsider->registerToLuaContext(*_luaState, _scriptRootFolder))
+            _isOk = false;
+    }
+}
+
+void ScriptInterpreter::unconsider(Behaviour *p_toUnconsider) {
+    if (_luaState)
+        p_toUnconsider->unregisterFromLuaContext();
+    
+    _behaviours.erase(std::remove_if(_behaviours.begin(), _behaviours.end(), [p_toUnconsider](Behaviour *behaviour) {
+        return p_toUnconsider == behaviour;
+    }));
+    
+    refreshAll(); // Unconsidering a script is impossible with Lua, we have to reparse every behaviours
+}
+
+void ScriptInterpreter::refreshAll() {
+    destroyLuaContext();
+    createLuaContextAndBindGlobals();
+}
+
+bool ScriptInterpreter::isOk() const {
+    return _isOk;
+}
 
 
 }

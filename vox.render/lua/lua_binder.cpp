@@ -6,10 +6,16 @@
 
 #include "lua_binder.h"
 #include "lua/lua_math_binder.h"
+#include "lua/lua_entity_binder.h"
+#include "lua/lua_component_binder.h"
+#include "lua/lua_global_binder.h"
 
 namespace vox {
 void LuaBinder::callBinders(sol::state& luaState) {
     LuaMathsBinder::bindMaths(luaState);
+    LuaEntityBinder::bindEntity(luaState);
+    LuaComponentBinder::bindComponent(luaState);
+    LuaGlobalsBinder::bindGlobals(luaState);
 }
 
 }

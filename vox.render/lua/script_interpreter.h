@@ -21,7 +21,7 @@ public:
     /**
      * Constructor
      */
-    ScriptInterpreter(const std::string& scriptRootFolder);
+    ScriptInterpreter(const std::string &scriptRootFolder);
     
     /**
      * Destructor
@@ -41,12 +41,12 @@ public:
     /**
      * Consider a behaviour
      */
-    void consider(Behaviour* toConsider);
+    void consider(Behaviour *toConsider);
     
     /**
      * Unconsider a behaviour
      */
-    void unconsider(Behaviour* toUnconsider);
+    void unconsider(Behaviour *toUnconsider);
     
     /**
      * Refresh every scripts
@@ -61,7 +61,7 @@ public:
 private:
     std::unique_ptr<sol::state> _luaState{nullptr};
     std::string _scriptRootFolder;
-    std::vector<Behaviour*> _behaviours;
+    std::vector<Behaviour *> _behaviours;
     bool _isOk;
 };
 
