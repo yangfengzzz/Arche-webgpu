@@ -13,7 +13,7 @@
 namespace vox {
 namespace editor {
 template<typename T>
-inline EntityPtr EditorActions::createMonoComponentEntity(bool p_focusOnCreation, EntityPtr p_parent) {
+inline EntityPtr EditorActions::createMonoComponentEntity(bool p_focusOnCreation, Entity* p_parent) {
     auto instance = createEmptyEntity(false, p_parent);
 
     T* component = instance->addComponent<T>();
@@ -21,7 +21,7 @@ inline EntityPtr EditorActions::createMonoComponentEntity(bool p_focusOnCreation
     instance->name = component->name();
 
     if (p_focusOnCreation)
-        selectEntity(instance);
+        selectEntity(instance.get());
 
     return instance;
 }

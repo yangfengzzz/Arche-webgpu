@@ -21,20 +21,20 @@ std::function<void()> combine(std::function<void()> p_a, std::optional<std::func
 }
 
 template<class T>
-std::function<void()> entityWithComponentCreationHandler(EntityPtr parent,
+std::function<void()> entityWithComponentCreationHandler(Entity* parent,
                                                         std::optional<std::function<void()>> onItemClicked) {
     return combine(std::bind(&EditorActions::createMonoComponentEntity<T>, EditorActions::getSingletonPtr(),
                              true, parent), onItemClicked);
 }
 
-std::function<void()> entityWithModelComponentCreationHandler(EntityPtr parent, const std::string& modelName,
+std::function<void()> entityWithModelComponentCreationHandler(Entity* parent, const std::string& modelName,
                                                              std::optional<std::function<void()>> onItemClicked) {
     return combine(std::bind(&EditorActions::createEntityWithModel, EditorActions::getSingletonPtr(),
                              ":Models/" + modelName + ".fbx", true, parent, modelName), onItemClicked);
 }
 
 
-void EntityCreationMenu::generateEntityCreationMenu(::vox::ui::MenuList& menuList, EntityPtr parent,
+void EntityCreationMenu::generateEntityCreationMenu(::vox::ui::MenuList& menuList, Entity* parent,
                                                     std::optional<std::function<void()>> onItemClicked) {
     menuList.createWidget<MenuItem>("Create Empty").clickedEvent
     += combine(std::bind(&::vox::editor::EditorActions::createEmptyEntity,

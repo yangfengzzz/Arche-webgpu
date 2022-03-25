@@ -132,7 +132,7 @@ public:
      * Create an entity with the given component type
      */
     template<typename T>
-    EntityPtr createMonoComponentEntity(bool p_focusOnCreation = true, EntityPtr p_parent = nullptr);
+    EntityPtr createMonoComponentEntity(bool p_focusOnCreation = true, Entity* p_parent = nullptr);
     
     /**
      * Calculate the position where to spawn the entity using the current camera position and forward
@@ -142,25 +142,25 @@ public:
     /**
      * Create an empty entity
      */
-    EntityPtr createEmptyEntity(bool p_focusOnCreation = true,
-                               EntityPtr p_parent = nullptr, const std::string& p_name = "");
+    EntityPtr createEmptyEntity(bool p_focusOnCreation = true, Entity* p_parent = nullptr,
+                                const std::string& p_name = "");
     
     /**
      * Create an entity with a model renderer and a material renderer. The model renderer with use the model identified
      * by the given path
      */
     EntityPtr createEntityWithModel(const std::string& p_path, bool p_focusOnCreation = true,
-                                   EntityPtr p_parent = nullptr, const std::string& p_name = "");
+                                   Entity* p_parent = nullptr, const std::string& p_name = "");
     
     /**
      * Destroy an entity from his scene
      */
-    bool destroyEntity(EntityPtr p_entity);
+    bool destroyEntity(Entity* p_entity);
     
     /**
      * Duplicate an entity
      */
-    void duplicateEntity(EntityPtr p_toDuplicate, EntityPtr p_forcedParent = nullptr, bool p_focus = true);
+    void duplicateEntity(Entity* p_toDuplicate, Entity* p_forcedParent = nullptr, bool p_focus = true);
     
     
     //MARK: - ENTITY_MANIPULATION
@@ -168,7 +168,7 @@ public:
     /**
      * Select an entity and show him in inspector
      */
-    void selectEntity(EntityPtr& p_target);
+    void selectEntity(Entity* p_target);
     
     /**
      * Unselect any selected entity and clearing the inspector
@@ -189,7 +189,7 @@ public:
     /**
      * Moves the camera to the target entity
      */
-    void moveToTarget(EntityPtr& p_target);
+    void moveToTarget(Entity* p_target);
     
     //MARK: - RESOURCE_MANAGEMENT
 public:

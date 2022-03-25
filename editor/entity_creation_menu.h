@@ -27,7 +27,7 @@ public:
      * Generates an entity creation menu under the given MenuList item.
      * Also handles custom additionnal OnClick callback
      */
-    static void generateEntityCreationMenu(::vox::ui::MenuList& menuList, EntityPtr p_parent = nullptr,
+    static void generateEntityCreationMenu(::vox::ui::MenuList& menuList, Entity* p_parent = nullptr,
                                            std::optional<std::function<void()>> onItemClicked = {});
 };
 

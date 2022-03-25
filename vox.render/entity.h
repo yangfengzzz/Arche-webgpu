@@ -29,10 +29,10 @@ public:
     Event<Component*> behaviourRemovedEvent;
 
     /* Some events that are triggered when an action occur on any actor */
-    static Event<EntityPtr> destroyedEvent;
-    static Event<EntityPtr> createdEvent;
-    static Event<EntityPtr, EntityPtr> attachEvent;
-    static Event<EntityPtr> dettachEvent;
+    static Event<Entity*> destroyedEvent;
+    static Event<Entity*> createdEvent;
+    static Event<Entity*, Entity*> attachEvent;
+    static Event<Entity*> dettachEvent;
     
 public:
     /** The name of entity. */

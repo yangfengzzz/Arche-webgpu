@@ -94,26 +94,26 @@ Vector3F EditorActions::calculateEntitySpawnPoint(float p_distanceToCamera) {
     return Vector3F();
 }
 
-EntityPtr EditorActions::createEmptyEntity(bool p_focusOnCreation, EntityPtr p_parent, const std::string& p_name) {
+EntityPtr EditorActions::createEmptyEntity(bool p_focusOnCreation, Entity* p_parent, const std::string& p_name) {
     return nullptr;
 }
 
 
 EntityPtr EditorActions::createEntityWithModel(const std::string& p_path, bool p_focusOnCreation,
-                                              EntityPtr p_parent, const std::string& p_name) {
+                                              Entity* p_parent, const std::string& p_name) {
     return nullptr;
 }
 
-bool EditorActions::destroyEntity(EntityPtr entity) {
+bool EditorActions::destroyEntity(Entity* entity) {
     return false;
 }
 
-void EditorActions::duplicateEntity(EntityPtr p_toDuplicate, EntityPtr p_forcedParent, bool p_focus) {
+void EditorActions::duplicateEntity(Entity* p_toDuplicate, Entity* p_forcedParent, bool p_focus) {
     
 }
 
 //MARK: - ENTITY_MANIPULATION
-void EditorActions::selectEntity(EntityPtr& p_target) {
+void EditorActions::selectEntity(Entity* p_target) {
     
 }
 
@@ -129,7 +129,7 @@ EntityPtr EditorActions::getSelectedEntity() const {
     return nullptr;
 }
 
-void EditorActions::moveToTarget(EntityPtr& p_target) {
+void EditorActions::moveToTarget(Entity* p_target) {
     
 }
 

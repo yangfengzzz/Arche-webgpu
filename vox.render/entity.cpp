@@ -12,10 +12,10 @@
 #include "serializer.h"
 
 namespace vox {
-Event<EntityPtr> Entity::destroyedEvent;
-Event<EntityPtr> Entity::createdEvent;
-Event<EntityPtr, EntityPtr> Entity::attachEvent;
-Event<EntityPtr> Entity::dettachEvent;
+Event<Entity*> Entity::destroyedEvent;
+Event<Entity*> Entity::createdEvent;
+Event<Entity*, Entity*> Entity::attachEvent;
+Event<Entity*> Entity::dettachEvent;
 
 EntityPtr Entity::_findChildByName(Entity *root, const std::string &name) {
     const auto &children = root->_children;
@@ -39,6 +39,8 @@ void Entity::_traverseSetOwnerScene(Entity *entity, Scene *scene) {
 Entity::Entity(std::string name) : name(name) {
     transform = addComponent<Transform>();
     _inverseWorldMatFlag = transform->registerWorldChangeFlag();
+    
+    createdEvent.invoke(this);
 }
 
 bool Entity::isActive() {

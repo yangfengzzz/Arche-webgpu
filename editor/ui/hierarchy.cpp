@@ -22,7 +22,7 @@ namespace ui {
 namespace {
 class HierarchyContextualMenu : public ContextualMenu {
 public:
-    HierarchyContextualMenu(EntityPtr p_target, TreeNode &p_treeNode, bool p_panelMenu = false) :
+    HierarchyContextualMenu(Entity* p_target, TreeNode &p_treeNode, bool p_panelMenu = false) :
     _target(p_target),
     _treeNode(p_treeNode) {
         if (_target) {
@@ -53,7 +53,7 @@ public:
     }
     
 private:
-    EntityPtr _target;
+    Entity* _target;
     TreeNode &_treeNode;
 };
 
@@ -164,7 +164,12 @@ void Hierarchy::unselectEntitiesWidgets() {
 }
 
 void Hierarchy::selectEntityByInstance(EntityPtr p_entity) {
-    if (auto result = _widgetEntityLink.find(p_entity); result != _widgetEntityLink.end())
+    auto result = std::find_if(_widgetEntityLink.begin(), _widgetEntityLink.end(),
+                               [p_entity](const std::pair<Entity*, TreeNode *>& link){
+        return link.first == p_entity.get();
+    });
+    
+    if (result != _widgetEntityLink.end())
         if (result->second)
             selectEntityByWidget(*result->second);
 }
@@ -179,7 +184,7 @@ void Hierarchy::selectEntityByWidget(TreeNode &p_widget) {
     }
 }
 
-void Hierarchy::attachEntityToParent(EntityPtr p_entity) {
+void Hierarchy::attachEntityToParent(Entity* p_entity) {
     auto entityWidget = _widgetEntityLink.find(p_entity);
     
     if (entityWidget != _widgetEntityLink.end()) {
@@ -189,8 +194,8 @@ void Hierarchy::attachEntityToParent(EntityPtr p_entity) {
             widget->parent()->unconsiderWidget(*widget);
         
         if (p_entity->parent()) {
-            auto parentWidget = std::find_if(_widgetEntityLink.begin(), _widgetEntityLink.end(), [&](std::pair<EntityPtr, TreeNode *> entity) {
-                return entity.first.get() == p_entity->parent();
+            auto parentWidget = std::find_if(_widgetEntityLink.begin(), _widgetEntityLink.end(), [&](std::pair<Entity*, TreeNode *> entity) {
+                return entity.first == p_entity->parent();
             });
             parentWidget->second->leaf = false;
             parentWidget->second->considerWidget(*widget);
@@ -198,11 +203,11 @@ void Hierarchy::attachEntityToParent(EntityPtr p_entity) {
     }
 }
 
-void Hierarchy::detachFromParent(EntityPtr p_entity) {
+void Hierarchy::detachFromParent(Entity* p_entity) {
     if (auto entityWidget = _widgetEntityLink.find(p_entity); entityWidget != _widgetEntityLink.end()) {
         if (p_entity->parent() && p_entity->parent()->children().size() == 1) {
-            auto parentWidget = std::find_if(_widgetEntityLink.begin(), _widgetEntityLink.end(), [&](std::pair<EntityPtr, TreeNode *> entity) {
-                return entity.first.get() == p_entity->parent();
+            auto parentWidget = std::find_if(_widgetEntityLink.begin(), _widgetEntityLink.end(), [&](std::pair<Entity*, TreeNode *> entity) {
+                return entity.first == p_entity->parent();
             });
             
             if (parentWidget != _widgetEntityLink.end()) {
@@ -219,7 +224,7 @@ void Hierarchy::detachFromParent(EntityPtr p_entity) {
     }
 }
 
-void Hierarchy::deleteEntityByInstance(EntityPtr p_entity) {
+void Hierarchy::deleteEntityByInstance(Entity* p_entity) {
     if (auto result = _widgetEntityLink.find(p_entity); result != _widgetEntityLink.end()) {
         if (result->second) {
             result->second->destroy();
@@ -229,11 +234,11 @@ void Hierarchy::deleteEntityByInstance(EntityPtr p_entity) {
     }
 }
 
-void Hierarchy::addEntityByInstance(EntityPtr p_entity) {
+void Hierarchy::addEntityByInstance(Entity* p_entity) {
     auto &textSelectable = _sceneRoot->createWidget<TreeNode>(p_entity->name, true);
     textSelectable.leaf = true;
     textSelectable.addPlugin<HierarchyContextualMenu>(p_entity, textSelectable);
-    textSelectable.addPlugin<DDSource<std::pair<EntityPtr, TreeNode *>>>("Entity", "Attach to...", std::make_pair(p_entity, &textSelectable));
+    textSelectable.addPlugin<DDSource<std::pair<Entity*, TreeNode *>>>("Entity", "Attach to...", std::make_pair(p_entity, &textSelectable));
     textSelectable.addPlugin<DDTarget<std::pair<EntityPtr, TreeNode *>>>("Entity").dataReceivedEvent +=
     [p_entity, &textSelectable](std::pair<EntityPtr, TreeNode *> p_element) {
         if (p_element.second->parent())
@@ -245,7 +250,7 @@ void Hierarchy::addEntityByInstance(EntityPtr p_entity) {
     };
     auto &dispatcher = textSelectable.addPlugin<DataDispatcher<std::string>>();
     
-    EntityPtr targetPtr = p_entity;
+    Entity* targetPtr = p_entity;
     dispatcher.registerGatherer([targetPtr] {
         return targetPtr->name;
     });

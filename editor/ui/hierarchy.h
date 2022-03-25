@@ -55,25 +55,25 @@ public:
      * Attach the given entity linked widget to its parent widget
      * @param p_entity p_entity
      */
-    void attachEntityToParent(EntityPtr p_entity);
+    void attachEntityToParent(Entity* p_entity);
     
     /**
      * Detach the given entity linked widget from its parent widget
      * @param p_entity p_entity
      */
-    void detachFromParent(EntityPtr p_entity);
+    void detachFromParent(Entity* p_entity);
     
     /**
      * Delete the widget referencing the given entity
      * @param p_entity p_entity
      */
-    void deleteEntityByInstance(EntityPtr p_entity);
+    void deleteEntityByInstance(Entity* p_entity);
     
     /**
      * Add a widget referencing the given entity
      * @param p_entity p_entity
      */
-    void addEntityByInstance(EntityPtr p_entity);
+    void addEntityByInstance(Entity* p_entity);
     
 public:
     Event<EntityPtr &> entitySelectedEvent;
@@ -82,7 +82,7 @@ public:
 private:
     TreeNode *_sceneRoot;
     
-    std::unordered_map<EntityPtr, TreeNode *> _widgetEntityLink;
+    std::unordered_map<Entity*, TreeNode *> _widgetEntityLink;
 };
 
 }
