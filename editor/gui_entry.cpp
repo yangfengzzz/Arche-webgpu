@@ -44,7 +44,7 @@ GUIEntry::~GUIEntry() {
     delete _mainMenu;
 }
 
-void GUIEntry::setRootEntity(EntityPtr root) {
+void GUIEntry::setRootEntity(Entity* root) {
     _root = root;
     _root->transform->setPosition(10, 10, 10);
     _root->transform->lookAt(Point3F(0, 0, 0));

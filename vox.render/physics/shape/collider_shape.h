@@ -60,9 +60,9 @@ public:
     
 public:
 #ifdef _DEBUG
-    virtual void setEntity(EntityPtr value);
+    virtual void setEntity(Entity* value);
 
-    void removeEntity(EntityPtr value);
+    void removeEntity(Entity* value);
     
     Point3F getLocalTranslation();
 #endif
@@ -81,7 +81,7 @@ protected:
     static constexpr float halfSqrt = 0.70710678118655;
     
 #ifdef _DEBUG
-    EntityPtr _entity{nullptr};
+    Entity* _entity{nullptr};
 #endif
 };
 

@@ -44,7 +44,7 @@ public:
      * Focus the given entity
      * @param p_target p_target
      */
-    void focusEntity(EntityPtr p_target);
+    void focusEntity(Entity* p_target);
     
     /**
      * Unfocus the currently targeted entity
@@ -59,12 +59,12 @@ public:
     /**
      * Returns the currently selected entity
      */
-    EntityPtr targetEntity() const;
+    Entity* targetEntity() const;
     
     /**
      * Create the entity inspector for the given entity
      */
-    void createEntityInspector(EntityPtr &p_target);
+    void createEntityInspector(Entity* &p_target);
     
     /**
      * Draw the given component in inspector
@@ -82,7 +82,7 @@ public:
     void refresh();
     
 private:
-    EntityPtr _targetEntity{nullptr};
+    Entity* _targetEntity{nullptr};
     Group *_entityInfo;
     Group *_inspectorHeader;
     ComboBox *_componentSelectorWidget;

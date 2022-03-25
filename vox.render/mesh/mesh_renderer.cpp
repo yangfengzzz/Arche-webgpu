@@ -23,7 +23,7 @@ void MeshRenderer::setMesh(const MeshPtr &newValue) {
     auto &lastMesh = _mesh;
     if (lastMesh != newValue) {
         if (lastMesh != nullptr) {
-            _meshUpdateFlag->destroy();
+            _meshUpdateFlag.reset();
         }
         if (newValue != nullptr) {
             _meshUpdateFlag = newValue->registerUpdateFlag();

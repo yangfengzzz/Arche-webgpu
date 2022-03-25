@@ -19,37 +19,59 @@
 namespace vox {
 Scene::Scene(wgpu::Device &device) :
 _device(device),
-shaderData(device),
-_ambientLight(this) {
+shaderData(device) {
+    setAmbientLight(std::make_shared<AmbientLight>());
+}
+
+Scene::~Scene() {
+    _rootEntities.clear();
 }
 
 wgpu::Device &Scene::device() {
     return _device;
 }
 
-AmbientLight &Scene::ambientLight() {
+const std::shared_ptr<AmbientLight> &Scene::ambientLight() const {
     return _ambientLight;
+}
+
+void Scene::setAmbientLight(const std::shared_ptr<AmbientLight> &light) {
+    if (!light) {
+        LOG(ERROR) << "The scene must have one ambient light\n";
+        return;
+    }
+    
+    auto lastAmbientLight = _ambientLight;
+    if (lastAmbientLight != light) {
+        light->setScene(this);
+        _ambientLight = light;
+    }
 }
 
 size_t Scene::rootEntitiesCount() {
     return _rootEntities.size();
 }
 
-const std::vector<EntityPtr> &Scene::rootEntities() {
+const std::vector<std::unique_ptr<Entity>> &Scene::rootEntities() const {
     return _rootEntities;
 }
 
-bool Scene::destroyed() {
-    return _destroyed;
+void Scene::play() {
+    _processActive(true);
 }
 
-EntityPtr Scene::createRootEntity(std::string name) {
-    const auto entity = std::make_shared<Entity>(name);
-    addRootEntity(entity);
-    return entity;
+bool Scene::isPlaying() const {
+    return _isActiveInEngine;
 }
 
-void Scene::addRootEntity(EntityPtr entity) {
+Entity *Scene::createRootEntity(std::string name) {
+    auto entity = std::make_unique<Entity>(name);
+    auto entityPtr = entity.get();
+    addRootEntity(std::move(entity));
+    return entityPtr;
+}
+
+void Scene::addRootEntity(std::unique_ptr<Entity> &&entity) {
     const auto isRoot = entity->_isRoot;
     
     // let entity become root
@@ -59,41 +81,50 @@ void Scene::addRootEntity(EntityPtr entity) {
     }
     
     // add or remove from scene's rootEntities
+    Entity *entityPtr = entity.get();
     const auto oldScene = entity->_scene;
     if (oldScene != this) {
         if (oldScene && isRoot) {
-            oldScene->_removeEntity(entity);
+            oldScene->_removeEntity(entityPtr);
         }
-        _rootEntities.push_back(entity);
-        Entity::_traverseSetOwnerScene(entity.get(), this);
+        Entity::_traverseSetOwnerScene(entityPtr, this);
+        _rootEntities.emplace_back(std::move(entity));
     } else if (!isRoot) {
-        _rootEntities.push_back(entity);
+        _rootEntities.emplace_back(std::move(entity));
     }
     
     // process entity active/inActive
-    if (!entity->_isActiveInHierarchy && entity->_isActive) {
-        entity->_processActive();
+    if (_isActiveInEngine) {
+        if (!entityPtr->_isActiveInHierarchy && entityPtr->_isActive) {
+            entityPtr->_processActive();
+        }
+    } else {
+        if (entityPtr->_isActiveInHierarchy) {
+            entityPtr->_processInActive();
+        }
     }
 }
 
-void Scene::removeRootEntity(EntityPtr entity) {
+void Scene::removeRootEntity(Entity *entity) {
     if (entity->_isRoot && entity->_scene == this) {
         _removeEntity(entity);
-        entity->_processInActive();
-        Entity::_traverseSetOwnerScene(entity.get(), nullptr);
+        if (_isActiveInEngine) {
+            entity->_processInActive();
+        }
+        Entity::_traverseSetOwnerScene(entity, nullptr);
     }
 }
 
-EntityPtr Scene::getRootEntity(size_t index) {
-    return _rootEntities[index];
+Entity *Scene::getRootEntity(size_t index) {
+    return _rootEntities[index].get();
 }
 
-EntityPtr Scene::findEntityByName(const std::string &name) {
+Entity *Scene::findEntityByName(const std::string &name) {
     const auto &children = _rootEntities;
     for (size_t i = 0; i < children.size(); i++) {
         const auto &child = children[i];
         if (child->name == name) {
-            return child;
+            return child.get();
         }
     }
     
@@ -105,17 +136,6 @@ EntityPtr Scene::findEntityByName(const std::string &name) {
         }
     }
     return nullptr;
-}
-
-void Scene::destroy() {
-    if (_destroyed) {
-        return;
-    }
-    for (size_t i = 0, n = rootEntitiesCount(); i < n; i++) {
-        _rootEntities[i]->destroy();
-    }
-    _rootEntities.clear();
-    _destroyed = true;
 }
 
 void Scene::attachRenderCamera(Camera *camera) {
@@ -135,6 +155,7 @@ void Scene::detachRenderCamera(Camera *camera) {
 }
 
 void Scene::_processActive(bool active) {
+    _isActiveInEngine = active;
     const auto &rootEntities = _rootEntities;
     for (size_t i = 0; i < rootEntities.size(); i++) {
         const auto &entity = rootEntities[i];
@@ -144,16 +165,18 @@ void Scene::_processActive(bool active) {
     }
 }
 
-void Scene::_removeEntity(EntityPtr entity) {
+void Scene::_removeEntity(Entity *entity) {
     auto &oldRootEntities = _rootEntities;
-    oldRootEntities.erase(std::remove(oldRootEntities.begin(),
-                                      oldRootEntities.end(), entity), oldRootEntities.end());
+    oldRootEntities.erase(std::remove_if(oldRootEntities.begin(),
+                                         oldRootEntities.end(), [entity](auto &oldEntity) {
+        return oldEntity.get() == entity;
+    }), oldRootEntities.end());
 }
 
 //MARK: - Update Loop
 void Scene::updateShaderData() {
     // union scene and camera macro.
-    for (auto& camera : _activeCameras) {
+    for (auto &camera: _activeCameras) {
         camera->update();
     }
 }
@@ -187,11 +210,11 @@ void Scene::updateSize(uint32_t win_width, uint32_t win_height,
 }
 
 //MARK: - Reflection
-void Scene::onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+void Scene::onSerialize(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node) {
     
 }
 
-void Scene::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+void Scene::onDeserialize(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node) {
     
 }
 

@@ -14,6 +14,15 @@ namespace vox {
 Component::Component(Entity *entity) : _entity(entity) {
 }
 
+Component::~Component() {
+    if (_entity->isActiveInHierarchy()) {
+        if (_enabled) {
+            _onDisable();
+        }
+        _onInActive();
+    }
+}
+
 bool Component::enabled() {
     return _enabled;
 }
@@ -34,31 +43,12 @@ void Component::setEnabled(bool value) {
     }
 }
 
-bool Component::destroyed() {
-    return _destroyed;
-}
-
 Entity *Component::entity() const {
     return _entity;
 }
 
 Scene *Component::scene() {
     return _entity->scene();
-}
-
-void Component::destroy() {
-    if (_destroyed) {
-        return;
-    }
-    _entity->_removeComponent(this);
-    if (_entity->isActiveInHierarchy()) {
-        if (_enabled) {
-            _onDisable();
-        }
-        _onInActive();
-    }
-    _destroyed = true;
-    _onDestroy();
 }
 
 void Component::_setActive(bool value) {

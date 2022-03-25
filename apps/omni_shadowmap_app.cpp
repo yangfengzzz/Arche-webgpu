@@ -120,6 +120,8 @@ void OminiShadowMapApp::loadScene() {
     boxRenderer->setMesh(boxMesh);
     boxRenderer->setMaterial(boxMtl);
     boxRenderer->castShadow = true;
+    
+    scene->play();
 }
 
 }

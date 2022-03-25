@@ -113,8 +113,6 @@ protected:
     
     void _onDisable() override;
     
-    void _onDestroy() override;
-    
     virtual void _render(std::vector<RenderElement> &opaqueQueue,
                          std::vector<RenderElement> &alphaTestQueue,
                          std::vector<RenderElement> &transparentQueue) = 0;

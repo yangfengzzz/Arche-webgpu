@@ -94,12 +94,12 @@ Vector3F EditorActions::calculateEntitySpawnPoint(float p_distanceToCamera) {
     return Vector3F();
 }
 
-EntityPtr EditorActions::createEmptyEntity(bool p_focusOnCreation, Entity* p_parent, const std::string& p_name) {
+Entity* EditorActions::createEmptyEntity(bool p_focusOnCreation, Entity* p_parent, const std::string& p_name) {
     return nullptr;
 }
 
 
-EntityPtr EditorActions::createEntityWithModel(const std::string& p_path, bool p_focusOnCreation,
+Entity* EditorActions::createEntityWithModel(const std::string& p_path, bool p_focusOnCreation,
                                               Entity* p_parent, const std::string& p_name) {
     return nullptr;
 }
@@ -125,7 +125,7 @@ bool EditorActions::isAnyEntitySelected() const {
     return false;
 }
 
-EntityPtr EditorActions::getSelectedEntity() const {
+Entity* EditorActions::getSelectedEntity() const {
     return nullptr;
 }
 

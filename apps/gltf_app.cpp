@@ -29,6 +29,8 @@ void GLTFApp::loadScene() {
     auto modelEntity = rootEntity->createChild();
     auto loader = loader::GLTFLoader(_device);
     loader.loadFromFile("Models/sponza/sponza.gltf", modelEntity);
+    
+    scene->play();
 }
 
 }

@@ -89,7 +89,7 @@ _scene(scene) {
     _extent.height = 1;
 }
 
-void SceneView::loadScene(EntityPtr& rootEntity) {
+void SceneView::loadScene(Entity* rootEntity) {
     auto cameraEntity = rootEntity->createChild("MainCamera");
     cameraEntity->transform->setPosition(10, 10, 10);
     cameraEntity->transform->lookAt(Point3F(0, 0, 0));

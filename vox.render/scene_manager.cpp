@@ -29,7 +29,7 @@ void SceneManager::loadAndPlayDelayed(const std::string &p_path, bool p_absolute
         std::string previousSourcePath = currentSceneSourcePath();
         loadScene(p_path, p_absolute);
         storeCurrentSceneSourcePath(previousSourcePath);
-        // currentScene()->play();
+        currentScene()->play();
     };
 }
 
@@ -37,6 +37,7 @@ void SceneManager::loadEmptyScene() {
     unloadCurrentScene();
     
     _currentScene = std::make_unique<Scene>(_device);
+    _currentScene->_processActive(false);
     
     sceneLoadEvent.invoke();
 }
@@ -74,6 +75,7 @@ bool SceneManager::loadSceneFromMemory(tinyxml2::XMLDocument &p_doc) {
 void SceneManager::unloadCurrentScene() {
     if (_currentScene) {
         _currentScene.reset();
+        _currentScene = nullptr;
         sceneUnloadEvent.invoke();
     }
     

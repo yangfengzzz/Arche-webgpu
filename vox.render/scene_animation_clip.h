@@ -18,7 +18,7 @@ public:
             TRANSLATION, ROTATION, SCALE
         };
         PathType path;
-        EntityPtr node;
+        Entity *node;
         uint32_t samplerIndex;
     };
     

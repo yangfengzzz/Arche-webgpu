@@ -72,6 +72,8 @@ void AnimationApp::loadScene() {
     planeRenderer->setMesh(PrimitiveMesh::createPlane(_device, 10, 10));
     planeRenderer->setMaterial(planeMtl);
     planeRenderer->receiveShadow = true;
+    
+    scene->play();
 }
 
 }

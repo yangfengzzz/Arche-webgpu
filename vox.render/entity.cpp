@@ -10,19 +10,20 @@
 #include "component.h"
 #include "script.h"
 #include "serializer.h"
+#include <glog/logging.h>
 
 namespace vox {
-Event<Entity*> Entity::destroyedEvent;
-Event<Entity*> Entity::createdEvent;
-Event<Entity*, Entity*> Entity::attachEvent;
-Event<Entity*> Entity::dettachEvent;
+Event<Entity *> Entity::destroyedEvent;
+Event<Entity *> Entity::createdEvent;
+Event<Entity *, Entity *> Entity::attachEvent;
+Event<Entity *> Entity::dettachEvent;
 
-EntityPtr Entity::_findChildByName(Entity *root, const std::string &name) {
+Entity *Entity::_findChildByName(Entity *root, const std::string &name) {
     const auto &children = root->_children;
     for (size_t i = 0; i < children.size(); i++) {
         const auto &child = children[i];
         if (child->name == name) {
-            return child;
+            return child.get();
         }
     }
     return nullptr;
@@ -41,6 +42,14 @@ Entity::Entity(std::string name) : name(name) {
     _inverseWorldMatFlag = transform->registerWorldChangeFlag();
     
     createdEvent.invoke(this);
+}
+
+Entity::~Entity() {
+    if (_parent) {
+        LOG(ERROR) << "use removeChild instead! \n";
+    }
+    _components.clear();
+    _children.clear();
 }
 
 bool Entity::isActive() {
@@ -72,7 +81,7 @@ Entity *Entity::parent() {
     return _parent;
 }
 
-const std::vector<EntityPtr> Entity::children() const {
+const std::vector<std::unique_ptr<Entity>> &Entity::children() const {
     return _children;
 }
 
@@ -84,11 +93,10 @@ Scene *Entity::scene() {
     return _scene;
 }
 
-void Entity::addChild(EntityPtr child) {
+void Entity::addChild(std::unique_ptr<Entity> &&child) {
     if (child->_parent != this) {
         child->_removeFromParent();
         child->_parent = this;
-        _children.push_back(child);
         if (child->_scene != _scene) {
             Entity::_traverseSetOwnerScene(child.get(), _scene);
         }
@@ -103,10 +111,11 @@ void Entity::addChild(EntityPtr child) {
             }
         }
         child->_setTransformDirty();
+        _children.emplace_back(std::move(child));
     }
 }
 
-void Entity::removeChild(EntityPtr child) {
+void Entity::removeChild(Entity *child) {
     if (child->_parent == this) {
         child->_removeFromParent();
         child->_parent = nullptr;
@@ -114,16 +123,16 @@ void Entity::removeChild(EntityPtr child) {
         if (child->_isActiveInHierarchy) {
             child->_processInActive();
         }
-        Entity::_traverseSetOwnerScene(child.get(), nullptr);
+        Entity::_traverseSetOwnerScene(child, nullptr);
         child->_setTransformDirty();
     }
 }
 
-EntityPtr Entity::getChild(int index) {
-    return _children[index];
+Entity *Entity::getChild(int index) {
+    return _children[index].get();
 }
 
-EntityPtr Entity::findByName(const std::string &name) {
+Entity *Entity::findByName(const std::string &name) {
     const auto &children = _children;
     const auto child = Entity::_findChildByName(this, name);
     if (child) return child;
@@ -137,11 +146,12 @@ EntityPtr Entity::findByName(const std::string &name) {
     return nullptr;
 }
 
-EntityPtr Entity::createChild(const std::string &name) {
-    auto child = std::make_shared<Entity>(name);
+Entity *Entity::createChild(const std::string &name) {
+    auto child = std::make_unique<Entity>(name);
+    auto childPtr = child.get();
     child->layer = layer;
-    addChild(child);
-    return child;
+    addChild(std::move(child));
+    return childPtr;
 }
 
 void Entity::clearChildren() {
@@ -157,8 +167,16 @@ void Entity::clearChildren() {
     children.clear();
 }
 
-EntityPtr Entity::clone() {
-    auto cloneEntity = std::make_shared<Entity>(name);
+void Entity::removeComponent(Component *component) {
+    // ComponentsDependencies._removeCheck(this, component.constructor as any);
+    _components.erase(std::remove_if(_components.begin(),
+                                     _components.end(), [&](const std::unique_ptr<Component> &x) {
+        return x.get() == component;
+    }), _components.end());
+}
+
+std::unique_ptr<Entity> Entity::clone() {
+    auto cloneEntity = std::make_unique<Entity>(name);
     
     cloneEntity->_isActive = _isActive;
     cloneEntity->transform->setLocalMatrix(transform->localMatrix());
@@ -178,38 +196,6 @@ EntityPtr Entity::clone() {
     }
     
     return cloneEntity;
-}
-
-void Entity::destroy() {
-    auto &abilityArray = _components;
-    for (size_t i = 0; i < abilityArray.size(); i++) {
-        abilityArray[i]->destroy();
-    }
-    _components.clear();
-    
-    const auto &children = _children;
-    for (size_t i = 0; i < children.size(); i++) {
-        children[i]->destroy();
-    }
-    _children.clear();
-    
-    if (_parent != nullptr) {
-        auto &parentChildren = _parent->_children;
-        parentChildren.erase(std::remove_if(parentChildren.begin(), parentChildren.end(),
-                                            [&](const auto &child) {
-            return child.get() == this;
-        }), parentChildren.end());
-    }
-    _parent = nullptr;
-}
-
-void Entity::_removeComponent(Component *component) {
-    // ComponentsDependencies._removeCheck(this, component.constructor as any);
-    auto &components = _components;
-    components.erase(std::remove_if(components.begin(),
-                                    components.end(), [&](const std::unique_ptr<Component> &x) {
-        return x.get() == component;
-    }), components.end());
 }
 
 void Entity::_addScript(Script *script) {
@@ -301,24 +287,24 @@ std::vector<Script *> Entity::scripts() {
 }
 
 //MARK: - Reflection
-void Entity::onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_actorsRoot) {
-    tinyxml2::XMLNode* actorNode = p_doc.NewElement("actor");
+void Entity::onSerialize(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_actorsRoot) {
+    tinyxml2::XMLNode *actorNode = p_doc.NewElement("actor");
     p_actorsRoot->InsertEndChild(actorNode);
     
     Serializer::serializeString(p_doc, actorNode, "name", name);
     
-    tinyxml2::XMLNode* componentsNode = p_doc.NewElement("components");
+    tinyxml2::XMLNode *componentsNode = p_doc.NewElement("components");
     actorNode->InsertEndChild(componentsNode);
-    for (auto& component : _components) {
+    for (auto &component: _components) {
         /* Current component root */
-        tinyxml2::XMLNode* componentNode = p_doc.NewElement("component");
+        tinyxml2::XMLNode *componentNode = p_doc.NewElement("component");
         componentsNode->InsertEndChild(componentNode);
         
         /* Component type */
         Serializer::serializeString(p_doc, componentNode, "type", typeid(component).name());
         
         /* Data node (Will be passed to the component) */
-        tinyxml2::XMLElement* data = p_doc.NewElement("data");
+        tinyxml2::XMLElement *data = p_doc.NewElement("data");
         componentNode->InsertEndChild(data);
         
         /* Data serialization of the component */
@@ -326,13 +312,13 @@ void Entity::onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_acto
     }
 }
 
-void Entity::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_actorsRoot) {
+void Entity::onDeserialize(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_actorsRoot) {
     Serializer::deserializeString(p_doc, p_actorsRoot, "name", name);
     
     {
-        tinyxml2::XMLNode* componentsRoot = p_actorsRoot->FirstChildElement("components");
+        tinyxml2::XMLNode *componentsRoot = p_actorsRoot->FirstChildElement("components");
         if (componentsRoot) {
-            tinyxml2::XMLElement* currentComponent = componentsRoot->FirstChildElement("component");
+            tinyxml2::XMLElement *currentComponent = componentsRoot->FirstChildElement("component");
             
             while (currentComponent) {
                 std::string componentType = currentComponent->FirstChildElement("type")->GetText();
@@ -342,10 +328,10 @@ void Entity::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_ac
     }
     
     {
-        tinyxml2::XMLNode* behavioursRoot = p_actorsRoot->FirstChildElement("behaviours");
+        tinyxml2::XMLNode *behavioursRoot = p_actorsRoot->FirstChildElement("behaviours");
         
         if (behavioursRoot) {
-            tinyxml2::XMLElement* currentBehaviour = behavioursRoot->FirstChildElement("behaviour");
+            tinyxml2::XMLElement *currentBehaviour = behavioursRoot->FirstChildElement("behaviour");
             
             while (currentBehaviour) {
                 std::string behaviourType = currentBehaviour->FirstChildElement("type")->GetText();

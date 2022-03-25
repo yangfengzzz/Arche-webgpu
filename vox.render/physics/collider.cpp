@@ -16,6 +16,10 @@ Component(entity) {
     _updateFlag = entity->transform->registerWorldChangeFlag();
 }
 
+Collider::~Collider() {
+    clearShapes();
+}
+
 PxRigidActor *Collider::handle() {
     return _nativeActor;
 }
@@ -94,10 +98,6 @@ void Collider::_onEnable() {
 
 void Collider::_onDisable() {
     entity()->scene()->_physicsManager._removeCollider(this);
-}
-
-void Collider::_onDestroy() {
-    clearShapes();
 }
 
 }

@@ -12,6 +12,7 @@
 #include "texture/sampled_texture2d.h"
 
 #define TINYGLTF_NO_STB_IMAGE_WRITE
+
 #include <tiny_gltf.h>
 
 namespace vox {
@@ -25,32 +26,32 @@ public:
     std::vector<std::vector<std::pair<MeshPtr, MaterialPtr>>> renderers;
     std::vector<GPUSkinnedMeshRenderer::SkinPtr> skins;
     
-    GLTFLoader(wgpu::Device& device);
+    GLTFLoader(wgpu::Device &device);
     
-    void loadFromFile(std::string filename, EntityPtr defaultSceneRoot, float scale = 1.0f);
-
+    void loadFromFile(std::string filename, Entity *defaultSceneRoot, float scale = 1.0f);
+    
 private:
-    void loadScene(tinygltf::Model& gltfModel);
+    void loadScene(tinygltf::Model &gltfModel);
     
-    void loadNode(EntityPtr parent, const tinygltf::Node& node, uint32_t nodeIndex,
-                  const tinygltf::Model& model);
-
-    void loadImages(tinygltf::Model& gltfModel);
+    void loadNode(Entity *parent, const tinygltf::Node &node, uint32_t nodeIndex,
+                  const tinygltf::Model &model);
+    
+    void loadImages(tinygltf::Model &gltfModel);
     
     void loadSampler(const tinygltf::Sampler &gltf_sampler, SampledTexture2DPtr texture) const;
     
-    void loadTextures(tinygltf::Model& gltfModel);
-
-    void loadMaterials(tinygltf::Model& gltfModel);
-
-    void loadMeshes(tinygltf::Model& gltfModel);
+    void loadTextures(tinygltf::Model &gltfModel);
     
-    void loadSkins(tinygltf::Model& gltfModel);
+    void loadMaterials(tinygltf::Model &gltfModel);
     
-    void loadAnimations(tinygltf::Model& gltfModel);
+    void loadMeshes(tinygltf::Model &gltfModel);
+    
+    void loadSkins(tinygltf::Model &gltfModel);
+    
+    void loadAnimations(tinygltf::Model &gltfModel);
     
 private:
-    wgpu::Device& _device;
+    wgpu::Device &_device;
     
     std::string _path{};
     
@@ -73,10 +74,10 @@ private:
     tinygltf::Value *getExtension(tinygltf::ExtensionMap &tinygltf_extensions, const std::string &extension);
     
 private:
-    std::map<uint32_t, std::pair<EntityPtr, int32_t>> _linearNodes{};//index, (entity, skinIndex)
+    std::map<uint32_t, std::pair<Entity *, int32_t>> _linearNodes{};//index, (entity, skinIndex)
     bool _metallicRoughnessWorkflow = true;
     
-    EntityPtr _defaultSceneRoot{nullptr};    
+    Entity *_defaultSceneRoot{nullptr};
 };
 
 

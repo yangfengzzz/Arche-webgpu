@@ -21,13 +21,10 @@ public:
     
     UpdateFlag(UpdateFlagManager *_flags);
     
-    /**
-     * Destroy.
-     */
-    void destroy();
+    ~UpdateFlag();
     
 private:
-    UpdateFlagManager *_flags;
+    UpdateFlagManager *_flags{nullptr};
 };
 
 }        // namespace vox

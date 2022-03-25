@@ -18,15 +18,15 @@ public:
      */
     std::string name() override;
     
-    SpriteDebug(Entity* entity);
+    SpriteDebug(Entity *entity);
     
     void onUpdate(float deltaTime) override;
     
 private:
-    EntityPtr _spotEntity{nullptr};
+    Entity *_spotEntity{nullptr};
     std::shared_ptr<BufferMesh> _spotLightMesh{nullptr};
     
-    EntityPtr _pointEntity{nullptr};
+    Entity *_pointEntity{nullptr};
     std::shared_ptr<BufferMesh> _pointLightMesh{nullptr};
 };
 }

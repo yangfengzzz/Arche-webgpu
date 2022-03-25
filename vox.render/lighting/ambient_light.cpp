@@ -9,7 +9,7 @@
 #include "scene.h"
 
 namespace vox {
-AmbientLight::AmbientLight(Scene *value):
+AmbientLight::AmbientLight() :
 _envMapProperty(Shader::createProperty("u_envMapLight", ShaderDataGroup::Scene)),
 _diffuseSHProperty(Shader::createProperty("u_env_sh", ShaderDataGroup::Scene)),
 _diffuseTextureProperty(Shader::createProperty("u_env_diffuseTexture", ShaderDataGroup::Scene)),
@@ -18,6 +18,9 @@ _specularTextureProperty(Shader::createProperty("u_env_specularTexture", ShaderD
 _specularSamplerProperty(Shader::createProperty("u_env_specularSampler", ShaderDataGroup::Scene)),
 _brdfTextureProperty(Shader::createProperty("u_env_brdfTexture", ShaderDataGroup::Scene)),
 _brdfSamplerProperty(Shader::createProperty("u_env_brdfSampler", ShaderDataGroup::Scene)) {
+}
+
+void AmbientLight::setScene(Scene *value) {
     _scene = value;
     if (!value) return;
     

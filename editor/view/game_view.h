@@ -36,7 +36,7 @@ public:
      */
     void render(wgpu::CommandEncoder& commandEncoder) override;
     
-    void loadScene(EntityPtr& rootEntity);
+    void loadScene(Entity* rootEntity);
     
 private:
     Camera* _mainCamera{nullptr};

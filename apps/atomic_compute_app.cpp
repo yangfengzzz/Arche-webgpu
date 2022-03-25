@@ -125,6 +125,8 @@ void AtomicComputeApp::loadScene() {
     renderer->setMesh(PrimitiveMesh::createCuboid(_device, 1));
     _material = std::make_shared<AtomicMaterial>(_device);
     renderer->setMaterial(_material);
+    
+    scene->play();
 }
 
 bool AtomicComputeApp::prepare(Engine &engine) {

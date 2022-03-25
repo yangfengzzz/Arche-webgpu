@@ -18,18 +18,18 @@ namespace vox {
  * Diffuse mode.
  */
 enum class DiffuseMode {
-        /** Solid color mode. */
-        SolidColor,
-        
-        /** Texture mode. */
-        Texture,
-        
-        /**
-         * SH mode
-         * @remarks
-         * Use SH3 to represent irradiance environment maps efficiently, allowing for interactive rendering of diffuse objects under distant illumination.
-         */
-        SphericalHarmonics
+    /** Solid color mode. */
+    SolidColor,
+    
+    /** Texture mode. */
+    Texture,
+    
+    /**
+     * SH mode
+     * @remarks
+     * Use SH3 to represent irradiance environment maps efficiently, allowing for interactive rendering of diffuse objects under distant illumination.
+     */
+    SphericalHarmonics
 };
 
 /**
@@ -45,8 +45,10 @@ public:
         float _pad1, _pad2;
     };
     
-    AmbientLight(Scene *value);
-        
+    AmbientLight();
+    
+    void setScene(Scene *value);
+    
     /**
      * Diffuse mode of ambient light.
      */
@@ -135,11 +137,11 @@ private:
     std::shared_ptr<SampledTexture> _specularReflection{nullptr};
     ShaderProperty _specularTextureProperty;
     ShaderProperty _specularSamplerProperty;
-
+    
     std::shared_ptr<SampledTexture> _brdfLutTexture{nullptr};
     ShaderProperty _brdfTextureProperty;
     ShaderProperty _brdfSamplerProperty;
-
+    
     Scene *_scene;
     DiffuseMode _diffuseMode = DiffuseMode::SolidColor;
 };

@@ -25,7 +25,7 @@ void FramebufferPickerApp::loadScene() {
     
     u = std::uniform_real_distribution<float>(0, 1);
     auto scene = _sceneManager->currentScene();
-    scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
+    scene->ambientLight()->setDiffuseSolidColor(Color(1, 1, 1));
     
     auto rootEntity = scene->createRootEntity();
     

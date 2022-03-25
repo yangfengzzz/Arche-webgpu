@@ -34,6 +34,8 @@ void SceneAnimationApp::loadScene() {
     
     auto animator = modelEntity->getComponent<SceneAnimator>();
     animator->play("0");
+    
+    scene->play();
 }
 
 }

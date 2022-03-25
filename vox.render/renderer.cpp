@@ -41,14 +41,6 @@ void Renderer::_onDisable() {
     componentsManager.removeRenderer(this);
 }
 
-void Renderer::_onDestroy() {
-    auto &flag = _transformChangeFlag;
-    if (flag != nullptr) {
-        flag->destroy();
-        _transformChangeFlag.reset();
-    }
-}
-
 MaterialPtr Renderer::getInstanceMaterial(size_t index) {
     const auto &materials = _materials;
     if (materials.size() > index) {

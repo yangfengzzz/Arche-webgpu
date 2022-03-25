@@ -43,7 +43,7 @@ public:
      * Select the widget corresponding to the given entity
      * @param p_entity p_entity
      */
-    void selectEntityByInstance(EntityPtr p_entity);
+    void selectEntityByInstance(Entity* p_entity);
     
     /**
      * Select the widget
@@ -76,8 +76,8 @@ public:
     void addEntityByInstance(Entity* p_entity);
     
 public:
-    Event<EntityPtr &> entitySelectedEvent;
-    Event<EntityPtr &> entityUnselectedEvent;
+    Event<Entity* &> entitySelectedEvent;
+    Event<Entity* &> entityUnselectedEvent;
     
 private:
     TreeNode *_sceneRoot;

@@ -58,6 +58,8 @@ void CascadeShadowMapApp::loadScene() {
     planeRenderer->setMaterial(planeMtl);
     // planeRenderer->setMaterial(shadowDebug);
     planeRenderer->receiveShadow = true;
+    
+    scene->play();
 }
 
 }

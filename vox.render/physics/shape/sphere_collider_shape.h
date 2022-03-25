@@ -28,7 +28,7 @@ public:
     void setWorldScale(const Vector3F &scale) override;
     
 #ifdef _DEBUG
-    void setEntity(EntityPtr value) override;
+    void setEntity(Entity* value) override;
     
     void _syncSphereGeometry();
 #endif

@@ -14,13 +14,13 @@ std::string SpriteDebug::name() {
     return "SpriteDebug";
 }
 
-SpriteDebug::SpriteDebug(Entity* entity):
+SpriteDebug::SpriteDebug(Entity *entity) :
 Script(entity) {
     Shader::create("spotlight_sprite_debug", std::make_unique<WGSLSpriteDebugVertex>(true),
                    std::make_unique<WGSLSpriteDebugFragment>());
     Shader::create("pointlight_sprite_debug", std::make_unique<WGSLSpriteDebugVertex>(false),
                    std::make_unique<WGSLSpriteDebugFragment>());
-
+    
     _spotLightMesh = std::make_shared<BufferMesh>();
     _spotLightMesh->addSubMesh(0, 4, wgpu::PrimitiveTopology::TriangleStrip);
     _spotEntity = entity->createChild();

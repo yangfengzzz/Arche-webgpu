@@ -64,6 +64,8 @@ void ParticleApp::loadScene() {
     auto material = std::make_shared<BlinnPhongMaterial>(_device);
     material->setBaseColor(Color(0.4, 0.6, 0.6));
     renderer->setMaterial(material);
+    
+    scene->play();
 }
 
 }

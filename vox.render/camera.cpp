@@ -233,11 +233,6 @@ void Camera::_onInActive() {
     entity()->scene()->detachRenderCamera(this);
 }
 
-void Camera::_onDestroy() {
-    _isInvViewProjDirty->destroy();
-    _isViewMatrixDirty->destroy();
-}
-
 void Camera::_projMatChange() {
     _isFrustumProjectDirty = true;
     _isProjectionDirty = true;
@@ -262,7 +257,7 @@ void Camera::update() {
     _cameraData.u_projInvMat = inverseProjectionMatrix();
     _cameraData.u_cameraPos = _transform->worldPosition();
     shaderData.setData(Camera::_cameraProperty, _cameraData);
-
+    
     if (enableFrustumCulling && (_frustumViewChangeFlag->flag || _isFrustumProjectDirty)) {
         _frustum.calculateFromMatrix(_cameraData.u_VPMat);
         _frustumViewChangeFlag->flag = false;
@@ -311,15 +306,15 @@ uint32_t Camera::framebufferHeight() const {
 }
 
 //MARK: - Reflection
-void Camera::onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+void Camera::onSerialize(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node) {
     
 }
 
-void Camera::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+void Camera::onDeserialize(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node) {
     
 }
 
-void Camera::onInspector(ui::WidgetContainer& p_root) {
+void Camera::onInspector(ui::WidgetContainer &p_root) {
     
 }
 

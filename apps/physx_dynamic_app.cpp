@@ -26,7 +26,7 @@ namespace vox {
 namespace {
 class ControllerScript : public Script {
 private:
-    EntityPtr _camera{nullptr};
+    Entity* _camera{nullptr};
     physics::CharacterController* _character = nullptr;
     Vector3F _displacement = Vector3F();
     
@@ -35,7 +35,7 @@ public:
         _character = entity->getComponent<physics::CapsuleCharacterController>();
     }
     
-    void targetCamera(EntityPtr camera) {
+    void targetCamera(Entity* camera) {
         _camera = camera;
     }
     
@@ -86,7 +86,7 @@ public:
 void PhysXDynamicApp::loadScene() {
     u = std::uniform_real_distribution<float>(0, 1);
     auto scene = _sceneManager->currentScene();
-    scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
+    scene->ambientLight()->setDiffuseSolidColor(Color(1, 1, 1));
     
     _rootEntity = scene->createRootEntity();
     auto cameraEntity = _rootEntity->createChild("camera");
@@ -212,6 +212,8 @@ void PhysXDynamicApp::loadScene() {
         }
     }
     createChain(Point3F(0.0, 25.0, -10.0), QuaternionF(), 10, 2.0);
+    
+    scene->play();
 }
 
 void PhysXDynamicApp::inputEvent(const InputEvent &inputEvent) {
@@ -252,7 +254,7 @@ void PhysXDynamicApp::inputEvent(const InputEvent &inputEvent) {
     }
 }
 
-EntityPtr PhysXDynamicApp::addSphere(float radius, const Point3F &position,
+Entity* PhysXDynamicApp::addSphere(float radius, const Point3F &position,
                                      const QuaternionF &rotation, const Vector3F &velocity) {
     auto mtl = std::make_shared<BlinnPhongMaterial>(_device);
     mtl->setBaseColor(Color(u(e), u(e), u(e), 1.0));
@@ -279,7 +281,7 @@ EntityPtr PhysXDynamicApp::addSphere(float radius, const Point3F &position,
     return sphereEntity;
 };
 
-EntityPtr PhysXDynamicApp::addCapsule(float radius, float height,
+Entity* PhysXDynamicApp::addCapsule(float radius, float height,
                                       const Point3F &position, const QuaternionF &rotation) {
     auto mtl = std::make_shared<BlinnPhongMaterial>(_device);
     mtl->setBaseColor(Color(u(e), u(e), u(e), 1.0));

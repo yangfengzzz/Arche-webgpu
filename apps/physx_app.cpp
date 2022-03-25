@@ -66,7 +66,7 @@ public:
 
 void PhysXApp::loadScene() {
     auto scene = _sceneManager->currentScene();
-    scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
+    scene->ambientLight()->setDiffuseSolidColor(Color(1, 1, 1));
     
     auto rootEntity = scene->createRootEntity();
     auto cameraEntity = rootEntity->createChild("camera");
@@ -117,6 +117,8 @@ void PhysXApp::loadScene() {
     
     sphereEntity->addComponent<CollisionScript>();
     sphereEntity->addComponent<MoveScript>();
+    
+    scene->play();
 }
 
 }

@@ -120,7 +120,7 @@ void CapsuleColliderShape::setWorldScale(const Vector3F &scale) {
 }
 
 #ifdef _DEBUG
-void CapsuleColliderShape::setEntity(EntityPtr value) {
+void CapsuleColliderShape::setEntity(Entity* value) {
     ColliderShape::setEntity(value);
     
     _renderer = _entity->addComponent<MeshRenderer>();

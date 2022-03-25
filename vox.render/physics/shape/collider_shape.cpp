@@ -101,12 +101,12 @@ void ColliderShape::setSceneQuery(bool isQuery) {
 }
 
 #ifdef _DEBUG
-void ColliderShape::setEntity(EntityPtr value) {
+void ColliderShape::setEntity(Entity* value) {
     _entity = value->createChild();
     _entity->transform->setPosition(getLocalTranslation());
 }
 
-void ColliderShape::removeEntity(EntityPtr value) {
+void ColliderShape::removeEntity(Entity* value) {
     value->removeChild(_entity);
     _entity = nullptr;
 }

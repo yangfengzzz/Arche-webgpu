@@ -33,7 +33,7 @@ private:
 
 void PrimitiveApp::loadScene() {
     auto scene = _sceneManager->currentScene();
-    scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
+    scene->ambientLight()->setDiffuseSolidColor(Color(1, 1, 1));
     auto rootEntity = scene->createRootEntity();
     
     auto cameraEntity = rootEntity->createChild();
@@ -65,6 +65,8 @@ void PrimitiveApp::loadScene() {
 
     auto texture = Image::load("Textures/wood.png")->createSampledTexture(_device);
     texturedMaterial->setBaseTexture(texture);
+    
+    scene->play();
 }
 
 }

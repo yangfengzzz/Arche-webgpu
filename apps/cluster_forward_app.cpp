@@ -17,7 +17,7 @@
 namespace vox {
 void ClusterForwardApp::loadScene() {
     auto scene = _sceneManager->currentScene();
-    scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
+    scene->ambientLight()->setDiffuseSolidColor(Color(1, 1, 1));
     
     auto rootEntity = scene->createRootEntity();
     rootEntity->addComponent<SpriteDebug>();
@@ -44,6 +44,8 @@ void ClusterForwardApp::loadScene() {
     auto boxRenderer = boxEntity->addComponent<MeshRenderer>();
     boxRenderer->setMesh(PrimitiveMesh::createPlane(_device, cubeSize, cubeSize));
     boxRenderer->setMaterial(boxMtl);
+    
+    scene->play();
 }
 
 }

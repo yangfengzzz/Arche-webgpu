@@ -55,7 +55,7 @@ _scene(scene) {
     _subpass->addRenderElement(_elements[1]);
 }
 
-void AssetView::loadScene(EntityPtr& rootEntity) {
+void AssetView::loadScene(Entity* rootEntity) {
     auto cameraEntity = rootEntity->createChild("MainCamera");
     cameraEntity->transform->setPosition(10, 10, 10);
     cameraEntity->transform->lookAt(Point3F(0, 0, 0));

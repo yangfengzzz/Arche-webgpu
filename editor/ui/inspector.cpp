@@ -59,7 +59,7 @@ Inspector::~Inspector() {
     unFocus();
 }
 
-void Inspector::focusEntity(EntityPtr p_target) {
+void Inspector::focusEntity(Entity* p_target) {
     if (_targetEntity)
         unFocus();
     
@@ -119,11 +119,11 @@ void Inspector::softUnFocus() {
     }
 }
 
-EntityPtr Inspector::targetEntity() const {
+Entity* Inspector::targetEntity() const {
     return _targetEntity;
 }
 
-void Inspector::createEntityInspector(EntityPtr &p_target) {
+void Inspector::createEntityInspector(Entity* &p_target) {
     std::map<std::string, Component *> components;
     
 //    for (auto &component: p_target->_components)

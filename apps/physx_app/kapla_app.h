@@ -14,7 +14,7 @@ class KaplaApp : public ForwardApplication {
 public:
     void loadScene() override;
     
-    void createCylindricalTower(EntityPtr entity, uint32_t nbRadialPoints, float maxRadius, float minRadius, uint32_t height,
+    void createCylindricalTower(Entity* entity, uint32_t nbRadialPoints, float maxRadius, float minRadius, uint32_t height,
                                 const Vector3F& dims, const Vector3F& centerPos, physics::PxMaterial *material,
                                 physics::PxFilterData &simFilterData, physics::PxFilterData &queryFilterData,
                                 float density = 1.f, bool bUseSweeps = false, bool bStartAsleep = false);

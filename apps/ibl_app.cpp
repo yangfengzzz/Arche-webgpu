@@ -58,8 +58,8 @@ void IBLApp::loadScene() {
     _cubeMap->setPixelBuffer(imagePtr);
     
     auto scene = _sceneManager->currentScene();
-    scene->ambientLight().setSpecularTexture(_cubeMap);
-    scene->ambientLight().setDiffuseTexture(_cubeMap);
+    scene->ambientLight()->setSpecularTexture(_cubeMap);
+    scene->ambientLight()->setDiffuseTexture(_cubeMap);
     
     auto rootEntity = scene->createRootEntity();
     auto cameraEntity = rootEntity->createChild();
@@ -89,6 +89,8 @@ void IBLApp::loadScene() {
             sphereRenderer->setMaterial(sphereMtl);
         }
     }
+    
+    scene->play();
 }
 
 }

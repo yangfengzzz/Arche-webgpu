@@ -69,7 +69,7 @@ void IrradianceApp::loadScene() {
     renderer->setMaterial(sphereMaterial);
     
     // Create planes
-    std::array<EntityPtr, 6> planes{};
+    std::array<Entity*, 6> planes{};
     std::array<std::shared_ptr<BakerMaterial>, 6> planeMaterials{};
     
     for (int i = 0; i < 6; i++) {
@@ -102,7 +102,7 @@ void IrradianceApp::loadScene() {
                                                     images[0]->extent().width, images[0]->extent().height, 1,
                                                     images[0]->format());
     _cubeMap->setPixelBuffer(imagePtr);
-    scene->ambientLight().setSpecularTexture(_cubeMap);
+    scene->ambientLight()->setSpecularTexture(_cubeMap);
     
     auto changeMip = [&](uint32_t mipLevel) {
         for (uint32_t i = 0; i < 6; i++) {
@@ -112,6 +112,8 @@ void IrradianceApp::loadScene() {
         }
     };
     changeMip(0);
+    
+    scene->play();
 }
 
 }

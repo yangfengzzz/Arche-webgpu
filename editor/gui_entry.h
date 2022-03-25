@@ -117,7 +117,7 @@ public:
     
     ~GUIEntry();
     
-    void setRootEntity(EntityPtr root);
+    void setRootEntity(Entity* root);
     
     void setRenderer(Renderer *render);
         
@@ -145,7 +145,7 @@ public:
     void showMainScene(const wgpu::TextureView& view);
     
 private:
-    EntityPtr _root{nullptr};
+    Entity* _root{nullptr};
     control::OrbitControl* _cameraControl{nullptr};
     
     //selected

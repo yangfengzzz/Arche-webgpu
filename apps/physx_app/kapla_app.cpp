@@ -25,7 +25,7 @@
 namespace vox {
 int DEFAULT_SOLVER_ITERATIONS = 8;
 
-void KaplaApp::createCylindricalTower(EntityPtr entity,
+void KaplaApp::createCylindricalTower(Entity* entity,
                                       uint32_t nbRadialPoints, float maxRadius, float minRadius, uint32_t height,
                                       const Vector3F& dims, const Vector3F& centerPos, physics::PxMaterial *material,
                                       physics::PxFilterData &simFilterData, physics::PxFilterData &queryFilterData,
@@ -72,7 +72,7 @@ void KaplaApp::createCylindricalTower(EntityPtr entity,
 
 void KaplaApp::loadScene() {
     auto scene = _sceneManager->currentScene();
-    scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
+    scene->ambientLight()->setDiffuseSolidColor(Color(1, 1, 1));
     
     auto rootEntity = scene->createRootEntity();
     auto cameraEntity = rootEntity->createChild("camera");
@@ -118,6 +118,7 @@ void KaplaApp::loadScene() {
     };
     addPlane(Vector2F(30, 30), Point3F(), QuaternionF());
 
+    scene->play();
 }
 
 }

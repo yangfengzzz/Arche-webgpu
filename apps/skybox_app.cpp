@@ -56,6 +56,8 @@ void SkyboxApp::loadScene() {
     auto material = std::make_shared<UnlitMaterial>(_device);
     material->setBaseColor(Color(0.6, 0.4, 0.7, 1.0));
     renderer->setMaterial(material);
+    
+    scene->play();
 }
 
 }

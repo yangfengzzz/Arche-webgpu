@@ -18,14 +18,14 @@ public:
     void inputEvent(const InputEvent &inputEvent) override;
     
 private:
-    EntityPtr addSphere(float radius, const Point3F &position,
+    Entity* addSphere(float radius, const Point3F &position,
                         const QuaternionF &rotation, const Vector3F &velocity);
     
-    EntityPtr addCapsule(float radius, float height,
+    Entity* addCapsule(float radius, float height,
                          const Point3F &position, const QuaternionF &rotation);
     
 private:
-    EntityPtr _rootEntity{nullptr};
+    Entity* _rootEntity{nullptr};
     std::default_random_engine e;
     std::uniform_real_distribution<float> u;
 };

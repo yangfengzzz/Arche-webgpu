@@ -20,7 +20,7 @@
 namespace vox {
 void Editor::loadScene() {
     _scene->background.solidColor = Color(0.9, 0.9, 0.9, 1.0);
-    _scene->ambientLight().setDiffuseSolidColor(Color(1, 1, 1));
+    _scene->ambientLight()->setDiffuseSolidColor(Color(1, 1, 1));
     
     auto rootEntity = _scene->createRootEntity();
     _entry = std::make_unique<editor::GUIEntry>();

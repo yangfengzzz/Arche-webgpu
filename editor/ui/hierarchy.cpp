@@ -128,8 +128,8 @@ PanelWindow(p_title, p_opened, p_windowSettings) {
     
     _sceneRoot = &createWidget<TreeNode>("Root", true);
     static_cast<TreeNode *>(_sceneRoot)->open();
-    _sceneRoot->addPlugin<DDTarget<std::pair<EntityPtr, TreeNode *>>>("Entity").dataReceivedEvent +=
-    [this](std::pair<EntityPtr, TreeNode *> p_element) {
+    _sceneRoot->addPlugin<DDTarget<std::pair<Entity*, TreeNode *>>>("Entity").dataReceivedEvent +=
+    [this](std::pair<Entity*, TreeNode *> p_element) {
         if (p_element.second->hasParent())
             p_element.second->parent()->unconsiderWidget(*p_element.second);
         
@@ -163,7 +163,7 @@ void Hierarchy::unselectEntitiesWidgets() {
         widget.second->selected = false;
 }
 
-void Hierarchy::selectEntityByInstance(EntityPtr p_entity) {
+void Hierarchy::selectEntityByInstance(Entity* p_entity) {
     auto result = std::find_if(_widgetEntityLink.begin(), _widgetEntityLink.end(),
                                [p_entity](const std::pair<Entity*, TreeNode *>& link){
         return link.first == p_entity.get();
@@ -239,8 +239,8 @@ void Hierarchy::addEntityByInstance(Entity* p_entity) {
     textSelectable.leaf = true;
     textSelectable.addPlugin<HierarchyContextualMenu>(p_entity, textSelectable);
     textSelectable.addPlugin<DDSource<std::pair<Entity*, TreeNode *>>>("Entity", "Attach to...", std::make_pair(p_entity, &textSelectable));
-    textSelectable.addPlugin<DDTarget<std::pair<EntityPtr, TreeNode *>>>("Entity").dataReceivedEvent +=
-    [p_entity, &textSelectable](std::pair<EntityPtr, TreeNode *> p_element) {
+    textSelectable.addPlugin<DDTarget<std::pair<Entity*, TreeNode *>>>("Entity").dataReceivedEvent +=
+    [p_entity, &textSelectable](std::pair<Entity*, TreeNode *> p_element) {
         if (p_element.second->parent())
             p_element.second->parent()->unconsiderWidget(*p_element.second);
         

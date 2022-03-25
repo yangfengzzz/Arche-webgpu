@@ -18,6 +18,10 @@ Component(entity) {
     
 }
 
+Script::~Script() {
+    entity()->scene()->_componentsManager.addDestroyComponent(this);
+}
+
 void Script::_onAwake() {
     onAwake();
 }
@@ -48,20 +52,16 @@ void Script::_onDisable() {
     onDisable();
 }
 
-void Script::_onDestroy() {
-    entity()->scene()->_componentsManager.addDestroyComponent(this);
-}
-
 //MARK: - Reflection
-void Script::onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+void Script::onSerialize(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node) {
     
 }
 
-void Script::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+void Script::onDeserialize(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node) {
     
 }
 
-void Script::onInspector(ui::WidgetContainer& p_root) {
+void Script::onInspector(ui::WidgetContainer &p_root) {
     
 }
 

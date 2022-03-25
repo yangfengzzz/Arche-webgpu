@@ -61,7 +61,7 @@ void GameView::update(float deltaTime) {
     }
 }
 
-void GameView::loadScene(EntityPtr& rootEntity) {
+void GameView::loadScene(Entity* rootEntity) {
     auto cameraEntity = rootEntity->createChild("MainCamera");
     cameraEntity->transform->setPosition(10, 0, 0);
     cameraEntity->transform->lookAt(Point3F(0, 0, 0));

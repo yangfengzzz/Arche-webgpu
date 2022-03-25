@@ -18,6 +18,8 @@ class Collider : public Component {
 public:
     Collider(Entity *entity);
     
+    ~Collider() override;
+    
     void addShape(const ColliderShapePtr &shape);
     
     void removeShape(const ColliderShapePtr &shape);
@@ -36,11 +38,9 @@ public:
     
     void _onDisable() override;
     
-    void _onDestroy() override;
-    
 public:
 #ifdef _DEBUG
-    EntityPtr debugEntity{nullptr};;
+    Entity* debugEntity{nullptr};;
 #endif
     
 protected:

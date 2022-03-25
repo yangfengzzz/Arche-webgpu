@@ -61,6 +61,8 @@ void PBRApp::loadScene() {
             sphereRenderer->setMaterial(sphereMtl);
         }
     }
+    
+    scene->play();
 }
 
 }

@@ -132,7 +132,7 @@ public:
      * Create an entity with the given component type
      */
     template<typename T>
-    EntityPtr createMonoComponentEntity(bool p_focusOnCreation = true, Entity* p_parent = nullptr);
+    Entity* createMonoComponentEntity(bool p_focusOnCreation = true, Entity* p_parent = nullptr);
     
     /**
      * Calculate the position where to spawn the entity using the current camera position and forward
@@ -142,14 +142,14 @@ public:
     /**
      * Create an empty entity
      */
-    EntityPtr createEmptyEntity(bool p_focusOnCreation = true, Entity* p_parent = nullptr,
+    Entity* createEmptyEntity(bool p_focusOnCreation = true, Entity* p_parent = nullptr,
                                 const std::string& p_name = "");
     
     /**
      * Create an entity with a model renderer and a material renderer. The model renderer with use the model identified
      * by the given path
      */
-    EntityPtr createEntityWithModel(const std::string& p_path, bool p_focusOnCreation = true,
+    Entity* createEntityWithModel(const std::string& p_path, bool p_focusOnCreation = true,
                                    Entity* p_parent = nullptr, const std::string& p_name = "");
     
     /**
@@ -184,7 +184,7 @@ public:
      * Returns the selected entity. Make sur you verified that an entity is selected
      * with IsAnyEntitySelected() before calling this method
      */
-    EntityPtr getSelectedEntity() const;
+    Entity* getSelectedEntity() const;
     
     /**
      * Moves the camera to the target entity
@@ -324,8 +324,8 @@ public:
     void executeDelayedActions();
     
 public:
-    Event<EntityPtr> entitySelectedEvent;
-    Event<EntityPtr> entityUnselectedEvent;
+    Event<Entity*> entitySelectedEvent;
+    Event<Entity*> entityUnselectedEvent;
     Event<EditorMode> editorModeChangedEvent;
     Event<> playEvent;
     

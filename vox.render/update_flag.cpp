@@ -12,7 +12,7 @@ UpdateFlag::UpdateFlag(UpdateFlagManager *_flags) : _flags(_flags) {
     _flags->_updateFlags.push_back(this);
 }
 
-void UpdateFlag::destroy() {
+UpdateFlag::~UpdateFlag() {
     _flags->_updateFlags.erase(std::remove(_flags->_updateFlags.begin(),
                                            _flags->_updateFlags.end(), this), _flags->_updateFlags.end());
 }

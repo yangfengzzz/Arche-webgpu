@@ -53,7 +53,7 @@ void BoxColliderShape::setWorldScale(const Vector3F &scale) {
 }
 
 #ifdef _DEBUG
-void BoxColliderShape::setEntity(EntityPtr value) {
+void BoxColliderShape::setEntity(Entity* value) {
     ColliderShape::setEntity(value);
     
     auto renderer = _entity->addComponent<MeshRenderer>();

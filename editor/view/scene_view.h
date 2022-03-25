@@ -53,7 +53,7 @@ public:
     
     void inputEvent(const InputEvent &inputEvent);
     
-    void loadScene(EntityPtr& rootEntity);
+    void loadScene(Entity* rootEntity);
     
 private:
     float _camDistance = 8.f;

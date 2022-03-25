@@ -16,8 +16,6 @@ using ScenePtr = std::shared_ptr<Scene>;
 
 class Entity;
 
-using EntityPtr = std::shared_ptr<Entity>;
-
 class Component;
 
 class ComponentManager;

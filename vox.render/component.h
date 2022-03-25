@@ -23,7 +23,7 @@ public:
     
     Component(Component &&other) = default;
     
-    virtual ~Component() = default;
+    virtual ~Component();
     
     /**
      * Indicates whether the component is enabled.
@@ -31,11 +31,6 @@ public:
     bool enabled();
     
     void setEnabled(bool value);
-    
-    /**
-     * Indicates whether the component is destroyed.
-     */
-    bool destroyed();
     
     /**
      * The entity which the component belongs to.
@@ -47,11 +42,6 @@ public:
      */
     Scene *scene();
     
-    /**
-     * Destroy this instance.
-     */
-    void destroy();
-    
 public:
     virtual void _onAwake() {
     }
@@ -60,9 +50,6 @@ public:
     }
     
     virtual void _onDisable() {
-    }
-    
-    virtual void _onDestroy() {
     }
     
     virtual void _onActive() {
@@ -77,7 +64,6 @@ protected:
     void _setActive(bool value);
     
     Entity *_entity;
-    bool _destroyed = false;
     
 private:
     bool _enabled = true;

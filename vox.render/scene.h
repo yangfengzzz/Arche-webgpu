@@ -44,12 +44,16 @@ public:
      */
     Scene(wgpu::Device &device);
     
+    ~Scene();
+    
     wgpu::Device &device();
     
     /**
      * Ambient light.
      */
-    AmbientLight &ambientLight();
+    const std::shared_ptr<AmbientLight> &ambientLight() const;
+    
+    void setAmbientLight(const std::shared_ptr<AmbientLight> &light);
     
     /**
      * Count of root entities.
@@ -59,50 +63,50 @@ public:
     /**
      * Root entity collection.
      */
-    const std::vector<EntityPtr> &rootEntities();
+    const std::vector<std::unique_ptr<Entity>> &rootEntities() const;
     
     /**
-     * Whether it's destroyed.
+     * Play the scene
      */
-    bool destroyed();
+    void play();
+    
+    /**
+     * Returns true if the scene is playing
+     */
+    bool isPlaying() const;
     
     /**
      * Create root entity.
      * @param name - Entity name
      * @returns Entity
      */
-    EntityPtr createRootEntity(std::string name = "");
+    Entity *createRootEntity(std::string name = "");
     
     /**
      * Append an entity.
      * @param entity - The root entity to add
      */
-    void addRootEntity(EntityPtr entity);
+    void addRootEntity(std::unique_ptr<Entity> &&entity);
     
     /**
      * Remove an entity.
      * @param entity - The root entity to remove
      */
-    void removeRootEntity(EntityPtr entity);
+    void removeRootEntity(Entity *entity);
     
     /**
      * Get root entity from index.
      * @param index - Index
      * @returns Entity
      */
-    EntityPtr getRootEntity(size_t index = 0);
+    Entity *getRootEntity(size_t index = 0);
     
     /**
      * Find entity globally by name.
      * @param name - Entity name
      * @returns Entity
      */
-    EntityPtr findEntityByName(const std::string &name);
-    
-    /**
-     * Destroy this scene.
-     */
-    void destroy();
+    Entity *findEntityByName(const std::string &name);
     
     void attachRenderCamera(Camera *camera);
     
@@ -122,23 +126,26 @@ public:
     /**
      * Called when the serialization is asked
      */
-    void onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) override;
+    void onSerialize(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node) override;
     
     /**
      * Called when the deserialization is asked
      */
-    void onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) override;
+    void onDeserialize(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node) override;
     
 private:
+    friend class SceneManager;
+    
     void _processActive(bool active);
-        
-    void _removeEntity(EntityPtr entity);
     
-    std::vector<Camera *> _activeCameras;
+    void _removeEntity(Entity *entity);
     
-    bool _destroyed = false;
-    std::vector<EntityPtr> _rootEntities;
-    AmbientLight _ambientLight;
+    std::vector<Camera *> _activeCameras{};
+    
+    bool _isActiveInEngine = false;
+    
+    std::vector<std::unique_ptr<Entity>> _rootEntities;
+    std::shared_ptr<AmbientLight> _ambientLight;
     
     wgpu::Device &_device;
 };

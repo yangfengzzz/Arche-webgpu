@@ -19,20 +19,22 @@
 namespace vox {
 class Component;
 
+class Behaviour;
+
 /// @brief A leaf of the tree structure which can have children and a single parent.
 class Entity final : public VObject {
 public:
     /* Some events that are triggered when an action occur on the actor instance */
-    Event<Component*> componentAddedEvent;
-    Event<Component*> componentRemovedEvent;
-    Event<Component*> behaviourAddedEvent;
-    Event<Component*> behaviourRemovedEvent;
-
+    Event<Component *> componentAddedEvent;
+    Event<Component *> componentRemovedEvent;
+    Event<Behaviour *> behaviourAddedEvent;
+    Event<Behaviour *> behaviourRemovedEvent;
+    
     /* Some events that are triggered when an action occur on any actor */
-    static Event<Entity*> destroyedEvent;
-    static Event<Entity*> createdEvent;
-    static Event<Entity*, Entity*> attachEvent;
-    static Event<Entity*> dettachEvent;
+    static Event<Entity *> destroyedEvent;
+    static Event<Entity *> createdEvent;
+    static Event<Entity *, Entity *> attachEvent;
+    static Event<Entity *> dettachEvent;
     
 public:
     /** The name of entity. */
@@ -46,6 +48,8 @@ public:
      * Create a entity.
      */
     Entity(std::string name = "");
+    
+    ~Entity();
     
     /**
      * Whether to activate locally.
@@ -63,6 +67,11 @@ public:
      * The parent entity.
      */
     Entity *parent();
+        
+    /**
+     * The children entities
+     */
+    const std::vector<std::unique_ptr<Entity>> &children() const;
     
     /**
      * Number of the children entities
@@ -73,11 +82,6 @@ public:
      * The scene the entity belongs to.
      */
     Scene *scene();
-    
-    /**
-     * The children entities
-     */
-    const std::vector<EntityPtr> children() const;
     
     /**
      * Add component based on the component type.
@@ -141,85 +145,80 @@ public:
      * Add child entity.
      * @param child - The child entity which want to be added.
      */
-    void addChild(EntityPtr child);
+    void addChild(std::unique_ptr<Entity> &&child);
     
     /**
      * Remove child entity.
      * @param child - The child entity which want to be removed.
      */
-    void removeChild(EntityPtr child);
+    void removeChild(Entity *child);
     
     /**
      * Find child entity by index.
      * @param index - The index of the child entity.
      * @returns    The component which be found.
      */
-    EntityPtr getChild(int index);
+    Entity *getChild(int index);
     
     /**
      * Find child entity by name.
      * @param name - The name of the entity which want to be found.
      * @returns The component which be found.
      */
-    EntityPtr findByName(const std::string &name);
+    Entity *findByName(const std::string &name);
     
     /**
      * Find the entity by path.
      * @param path - The path fo the entity eg: /entity.
      * @returns The component which be found.
      */
-    EntityPtr findByPath(const std::string &path);
+    Entity *findByPath(const std::string &path);
     
     /**
      * Create child entity.
      * @param name - The child entity's name.
      * @returns The child entity.
      */
-    EntityPtr createChild(const std::string &name = "");
+    Entity *createChild(const std::string &name = "");
     
     /**
      * Clear children entities.
      */
     void clearChildren();
     
-    /**
+    void removeComponent(Component *component);
+    
+    /**fre
      * Clone
      * @returns Cloned entity.
      */
-    EntityPtr clone();
-    
-    /**
-     * Destroy self.
-     */
-    void destroy();
+    std::unique_ptr<Entity> clone();
     
 public:
     /**
      * Called when the serialization is asked
      */
-    void onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) override;
+    void onSerialize(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node) override;
     
     /**
      * Called when the deserialization is asked
      */
-    void onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) override;
+    void onDeserialize(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node) override;
     
 public:
     std::vector<Script *> scripts();
     
 private:
     friend class ComponentsManager;
-
+    
     friend class Component;
-
+    
     friend class Transform;
     
     friend class Script;
     
     friend class Scene;
-    
-    void _removeComponent(Component *component);
-    
+        
     void _addScript(Script *script);
     
     void _removeScript(Script *script);
@@ -251,14 +250,14 @@ private:
     
     void _setTransformDirty();
     
-    static EntityPtr _findChildByName(Entity *root, const std::string &name);
+    static Entity *_findChildByName(Entity *root, const std::string &name);
     
     static void _traverseSetOwnerScene(Entity *entity, Scene *scene);
     
     bool _isActiveInHierarchy = false;
     std::vector<std::unique_ptr<Component>> _components{};
     std::vector<Script *> _scripts{};
-    std::vector<EntityPtr> _children{};
+    std::vector<std::unique_ptr<Entity>> _children{};
     Scene *_scene = nullptr;
     bool _isRoot = false;
     bool _isActive = true;
