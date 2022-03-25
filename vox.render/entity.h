@@ -19,16 +19,14 @@
 namespace vox {
 class Component;
 
-class Behaviour;
-
 /// @brief A leaf of the tree structure which can have children and a single parent.
 class Entity final : public VObject {
 public:
     /* Some events that are triggered when an action occur on the actor instance */
     Event<Component *> componentAddedEvent;
     Event<Component *> componentRemovedEvent;
-    Event<Behaviour *> behaviourAddedEvent;
-    Event<Behaviour *> behaviourRemovedEvent;
+    Event<Script *> behaviourAddedEvent;
+    Event<Script *> behaviourRemovedEvent;
     
     /* Some events that are triggered when an action occur on any actor */
     static Event<Entity *> destroyedEvent;
@@ -87,12 +85,13 @@ public:
      * Add component based on the component type.
      * @returns    The component which has been added.
      */
-    template<typename T>
-    T *addComponent() {
+    template<typename T, typename ... Args>
+    T *addComponent(Args&&... args) {
         // ComponentsDependencies._addCheck(this, type);
-        auto component = std::make_unique<T>(this);
+        auto component = std::make_unique<T>(this, args...);
         T *componentPtr = component.get();
         _components.emplace_back(std::move(component));
+        componentAddedEvent.invoke(componentPtr);
         if (_isActiveInHierarchy) {
             componentPtr->_setActive(true);
         }

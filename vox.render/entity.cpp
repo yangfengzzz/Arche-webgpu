@@ -50,6 +50,14 @@ Entity::~Entity() {
         LOG(ERROR) << "use removeChild instead! \n";
     }
     
+    destroyedEvent.invoke(this);
+    std::for_each(_components.begin(), _components.end(), [&](std::unique_ptr<Component>& component) {
+        componentRemovedEvent.invoke(component.get());
+    });
+    std::for_each(_scripts.begin(), _scripts.end(), [&](auto& behaviour) {
+        behaviourRemovedEvent.invoke(std::ref(behaviour));
+    });
+    
     for (size_t i = 0, n = _children.size(); i < n; i++) {
         removeChild(_children[i].get());
     }
@@ -106,6 +114,8 @@ void Entity::addChild(std::unique_ptr<Entity> &&child) {
     if (child->_parent != this) {
         child->_removeFromParent();
         child->_parent = this;
+        attachEvent.invoke(child.get(), this);
+
         if (child->_scene != _scene) {
             Entity::_traverseSetOwnerScene(child.get(), _scene);
         }
@@ -178,6 +188,8 @@ void Entity::clearChildren() {
 }
 
 void Entity::removeComponent(Component *component) {
+    componentRemovedEvent.invoke(component);
+
     // ComponentsDependencies._removeCheck(this, component.constructor as any);
     _components.erase(std::remove_if(_components.begin(),
                                      _components.end(), [&](const std::unique_ptr<Component> &x) {
@@ -209,6 +221,8 @@ std::unique_ptr<Entity> Entity::clone() {
 }
 
 void Entity::_addScript(Script *script) {
+    behaviourAddedEvent.invoke(script);
+    
     auto iter = std::find(_scripts.begin(), _scripts.end(), script);
     if (iter == _scripts.end()) {
         _scripts.push_back(script);
@@ -220,6 +234,7 @@ void Entity::_addScript(Script *script) {
 void Entity::_removeScript(Script *script) {
     auto iter = std::find(_scripts.begin(), _scripts.end(), script);
     if (iter != _scripts.end()) {
+        behaviourRemovedEvent.invoke(*iter);
         _scripts.erase(iter);
     }
 }
@@ -234,6 +249,7 @@ std::unique_ptr<Entity> Entity::_removeFromParent() {
         });
         mem = std::move(*iter);
         _parent = nullptr;
+        dettachEvent.invoke(this);
     }
     return mem;
 }
