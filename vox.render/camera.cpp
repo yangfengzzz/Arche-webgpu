@@ -26,6 +26,10 @@ _cameraProperty(Shader::createProperty("u_cameraData", ShaderDataGroup::Camera))
     _frustumViewChangeFlag = transform->registerWorldChangeFlag();
 }
 
+const BoundingFrustum &Camera::frustum() const {
+    return _frustum;
+}
+
 float Camera::nearClipPlane() const {
     return _nearClipPlane;
 }

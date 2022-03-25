@@ -7,6 +7,7 @@
 #include "shadow_manager.h"
 #include "shader/shader.h"
 #include "camera.h"
+#include "entity.h"
 #include "matrix_utils.h"
 #include "texture/texture_utils.h"
 #include "texture/sampled_texture2d.h"

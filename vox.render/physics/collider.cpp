@@ -6,8 +6,9 @@
 
 #include "collider.h"
 #include "shape/collider_shape.h"
-#include "../entity.h"
-#include "../scene.h"
+#include "physics_manager.h"
+#include "entity.h"
+#include "scene.h"
 
 namespace vox {
 namespace physics {
@@ -31,7 +32,7 @@ void Collider::addShape(const ColliderShapePtr &shape) {
             oldCollider->removeShape(shape);
         }
         _shapes.push_back(shape);
-        entity()->scene()->_physicsManager._addColliderShape(shape);
+        PhysicsManager::getSingleton()._addColliderShape(shape);
         _nativeActor->attachShape(*shape->_nativeShape);
         shape->_collider = this;
     }
@@ -49,7 +50,7 @@ void Collider::removeShape(const ColliderShapePtr &shape) {
     if (iter != _shapes.end()) {
         _shapes.erase(iter);
         _nativeActor->detachShape(*shape->_nativeShape);
-        entity()->scene()->_physicsManager._removeColliderShape(shape);
+        PhysicsManager::getSingleton()._removeColliderShape(shape);
         shape->_collider = nullptr;
     }
     
@@ -63,7 +64,7 @@ void Collider::removeShape(const ColliderShapePtr &shape) {
 void Collider::clearShapes() {
     for (size_t i = 0; i < _shapes.size(); i++) {
         _nativeActor->detachShape(*_shapes[i]->_nativeShape);
-        entity()->scene()->_physicsManager._removeColliderShape(_shapes[i]);
+        PhysicsManager::getSingleton()._removeColliderShape(_shapes[i]);
     }
     _shapes.clear();
 }
@@ -93,11 +94,11 @@ void Collider::_onUpdate() {
 }
 
 void Collider::_onEnable() {
-    entity()->scene()->_physicsManager._addCollider(this);
+    PhysicsManager::getSingleton()._addCollider(this);
 }
 
 void Collider::_onDisable() {
-    entity()->scene()->_physicsManager._removeCollider(this);
+    PhysicsManager::getSingleton()._removeCollider(this);
 }
 
 }

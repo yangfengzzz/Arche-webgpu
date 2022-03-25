@@ -81,9 +81,6 @@ private:
     void _onDisable() override;
     
 private:
-    friend class ComponentsManager;
-    
-    ssize_t _onUpdateIndex = -1;
     ozz::vector<ozz::unique_ptr<AnimationClip>> _clips;
     ozz::vector<ozz::animation::BlendingJob::Layer> _layers;
 };

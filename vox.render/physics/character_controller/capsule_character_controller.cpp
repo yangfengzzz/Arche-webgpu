@@ -5,6 +5,7 @@
 //  property of any third parties.
 
 #include "capsule_character_controller.h"
+#include "physics_manager.h"
 #include "entity.h"
 #include "scene.h"
 
@@ -19,7 +20,7 @@ CharacterController(entity) {
 }
 
 void CapsuleCharacterController::setDesc(const PxCapsuleControllerDesc &desc) {
-    _nativeController = entity()->scene()->_physicsManager._nativeCharacterControllerManager->createController(desc);
+    _nativeController = PhysicsManager::getSingleton()._nativeCharacterControllerManager->createController(desc);
 }
 
 float CapsuleCharacterController::radius() const {

@@ -7,6 +7,7 @@
 #include "script.h"
 #include "entity.h"
 #include "scene.h"
+#include "components_manager.h"
 
 namespace vox {
 std::string Script::name() {
@@ -19,7 +20,15 @@ Component(entity) {
 }
 
 Script::~Script() {
-    entity()->scene()->_componentsManager.addDestroyComponent(this);
+    ComponentsManager::getSingleton().addDestroyComponent(this);
+}
+
+void Script::setIsStarted(bool value) {
+    _started = value;
+}
+
+bool Script::isStarted() {
+    return _started;
 }
 
 void Script::_onAwake() {
@@ -27,28 +36,20 @@ void Script::_onAwake() {
 }
 
 void Script::_onEnable() {
-    auto &componentsManager = entity()->scene()->_componentsManager;
+    auto componentsManager = ComponentsManager::getSingletonPtr();
     if (!_started) {
-        componentsManager.addOnStartScript(this);
+        componentsManager->addOnStartScript(this);
     }
-    componentsManager.addOnUpdateScript(this);
+    componentsManager->addOnUpdateScript(this);
     _entity->_addScript(this);
     onEnable();
 }
 
 void Script::_onDisable() {
-    auto &componentsManager = entity()->scene()->_componentsManager;
-    // Use "xxIndex" is more safe.
-    // When call onDisable it maybe it still not in script queue,for example write "entity.isActive = false" in onWake().
-    if (_onStartIndex != -1) {
-        componentsManager.removeOnStartScript(this);
-    }
-    if (_onUpdateIndex != -1) {
-        componentsManager.removeOnUpdateScript(this);
-    }
-    if (_entityCacheIndex != -1) {
-        _entity->_removeScript(this);
-    }
+    auto componentsManager = ComponentsManager::getSingletonPtr();
+    componentsManager->removeOnStartScript(this);
+    componentsManager->removeOnUpdateScript(this);
+    _entity->_removeScript(this);
     onDisable();
 }
 

@@ -8,6 +8,7 @@
 #include "scene.h"
 
 #include "component.h"
+#include "components_manager.h"
 #include "script.h"
 #include "serializer.h"
 #include <glog/logging.h>
@@ -48,8 +49,16 @@ Entity::~Entity() {
     if (_parent) {
         LOG(ERROR) << "use removeChild instead! \n";
     }
-    _components.clear();
+    
+    for (size_t i = 0, n = _children.size(); i < n; i++) {
+        removeChild(_children[i].get());
+    }
     _children.clear();
+    
+    for (size_t i = 0, n = _components.size(); i < n; i++) {
+        removeComponent(_components[i].get());
+    }
+    _components.clear();
 }
 
 bool Entity::isActive() {
@@ -115,16 +124,17 @@ void Entity::addChild(std::unique_ptr<Entity> &&child) {
     }
 }
 
-void Entity::removeChild(Entity *child) {
+std::unique_ptr<Entity> Entity::removeChild(Entity *child) {
     if (child->_parent == this) {
-        child->_removeFromParent();
-        child->_parent = nullptr;
-        
+        auto mem = child->_removeFromParent();
         if (child->_isActiveInHierarchy) {
             child->_processInActive();
         }
         Entity::_traverseSetOwnerScene(child, nullptr);
         child->_setTransformDirty();
+        return mem;
+    } else {
+        return nullptr;
     }
 }
 
@@ -199,36 +209,43 @@ std::unique_ptr<Entity> Entity::clone() {
 }
 
 void Entity::_addScript(Script *script) {
-    script->_entityCacheIndex = _scripts.size();
-    _scripts.push_back(script);
+    auto iter = std::find(_scripts.begin(), _scripts.end(), script);
+    if (iter == _scripts.end()) {
+        _scripts.push_back(script);
+    } else {
+        LOG(ERROR) << "Script already attached." << std::endl;;
+    }
 }
 
 void Entity::_removeScript(Script *script) {
-    _scripts.erase(std::remove(_scripts.begin(), _scripts.end(), script), _scripts.end());
-    script->_entityCacheIndex = -1;
+    auto iter = std::find(_scripts.begin(), _scripts.end(), script);
+    if (iter != _scripts.end()) {
+        _scripts.erase(iter);
+    }
 }
 
-Entity *Entity::_removeFromParent() {
-    auto oldParent = _parent;
-    if (oldParent != nullptr) {
-        auto &oldParentChildren = oldParent->_children;
-        oldParentChildren.erase(std::remove_if(oldParentChildren.begin(), oldParentChildren.end(),
-                                               [&](const auto &child) {
+std::unique_ptr<Entity> Entity::_removeFromParent() {
+    std::unique_ptr<Entity> mem{nullptr};
+    if (_parent != nullptr) {
+        auto &oldParentChildren = _parent->_children;
+        auto iter = std::find_if(oldParentChildren.begin(), oldParentChildren.end(),
+                                 [&](const auto &child) {
             return child.get() == this;
-        }), oldParentChildren.end());
+        });
+        mem = std::move(*iter);
         _parent = nullptr;
     }
-    return oldParent;
+    return mem;
 }
 
 void Entity::_processActive() {
-    _activeChangedComponents = _scene->_componentsManager.getActiveChangedTempList();
+    _activeChangedComponents = ComponentsManager::getSingleton().getActiveChangedTempList();
     _setActiveInHierarchy(_activeChangedComponents);
     _setActiveComponents(true);
 }
 
 void Entity::_processInActive() {
-    _activeChangedComponents = _scene->_componentsManager.getActiveChangedTempList();
+    _activeChangedComponents = ComponentsManager::getSingleton().getActiveChangedTempList();
     _setInActiveInHierarchy(_activeChangedComponents);
     _setActiveComponents(false);
 }
@@ -238,7 +255,7 @@ void Entity::_setActiveComponents(bool isActive) {
     for (size_t i = 0, length = activeChangedComponents.size(); i < length; ++i) {
         activeChangedComponents[i]->_setActive(isActive);
     }
-    _scene->_componentsManager.putActiveChangedTempList(activeChangedComponents);
+    ComponentsManager::getSingleton().putActiveChangedTempList(activeChangedComponents);
     _activeChangedComponents.clear();
 }
 

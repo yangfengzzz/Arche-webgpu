@@ -35,6 +35,7 @@ void AnimationApp::loadScene() {
     light->transform->setPosition(0, 10, 0);
     light->transform->lookAt(Point3F(0, 0, 0), Vector3F(1, 0, 0));
     auto spotLight = light->addComponent<SpotLight>();
+    spotLight->distance = 100;
     spotLight->intensity = 0.8;
     spotLight->setShadowIntensity(0.05);
     spotLight->setEnableShadow(true);

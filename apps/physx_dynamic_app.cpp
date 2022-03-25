@@ -21,6 +21,7 @@
 #include "lighting/point_light.h"
 #include "lighting/direct_light.h"
 #include "controls/orbit_control.h"
+#include "physics/physics_manager.h"
 
 namespace vox {
 namespace {
@@ -225,7 +226,7 @@ void PhysXDynamicApp::inputEvent(const InputEvent &inputEvent) {
             Ray ray = _mainCamera->screenPointToRay(Vector2F(mouse_button.pos_x(), mouse_button.pos_y()));
             
             physics::HitResult hit;
-            auto result = _sceneManager->currentScene()->_physicsManager.raycast(ray, std::numeric_limits<float>::max(), Layer::Layer0, hit);
+            auto result = physics::PhysicsManager::getSingleton().raycast(ray, std::numeric_limits<float>::max(), Layer::Layer0, hit);
             if (result) {
                 auto mtl = std::make_shared<BlinnPhongMaterial>(_device);
                 mtl->setBaseColor(Color(u(e), u(e), u(e), 1));

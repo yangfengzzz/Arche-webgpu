@@ -11,12 +11,12 @@
 #include "renderer.h"
 #include "rendering/render_pass.h"
 #include "shadow/shadow_manager.h"
+#include "components_manager.h"
 
 namespace vox {
-ForwardSubpass::ForwardSubpass(RenderContext* renderContext,
+ForwardSubpass::ForwardSubpass(RenderContext *renderContext,
                                wgpu::TextureFormat depthStencilTextureFormat,
-                               Scene* scene,
-                               Camera* camera):
+                               Scene *scene, Camera *camera) :
 Subpass(renderContext, scene, camera),
 _depthStencilTextureFormat(depthStencilTextureFormat) {
 }
@@ -29,7 +29,7 @@ void ForwardSubpass::setRenderMode(RenderMode mode) {
     _mode = mode;
 }
 
-void ForwardSubpass::addRenderElement(const RenderElement& element) {
+void ForwardSubpass::addRenderElement(const RenderElement &element) {
     _elements.emplace_back(element);
 }
 
@@ -51,7 +51,7 @@ void ForwardSubpass::prepare() {
     }
 }
 
-void ForwardSubpass::draw(wgpu::RenderPassEncoder& passEncoder) {
+void ForwardSubpass::draw(wgpu::RenderPassEncoder &passEncoder) {
     passEncoder.PushDebugGroup("Draw Element");
     if (_mode == RenderMode::MANUAL) {
         auto compileMacros = ShaderMacroCollection();
@@ -72,7 +72,7 @@ void ForwardSubpass::_drawMeshes(wgpu::RenderPassEncoder &passEncoder) {
     std::vector<RenderElement> opaqueQueue;
     std::vector<RenderElement> alphaTestQueue;
     std::vector<RenderElement> transparentQueue;
-    _scene->_componentsManager.callRender(_camera, opaqueQueue, alphaTestQueue, transparentQueue);
+    ComponentsManager::getSingleton().callRender(_camera, opaqueQueue, alphaTestQueue, transparentQueue);
     std::sort(opaqueQueue.begin(), opaqueQueue.end(), _compareFromNearToFar);
     std::sort(alphaTestQueue.begin(), alphaTestQueue.end(), _compareFromNearToFar);
     std::sort(transparentQueue.begin(), transparentQueue.end(), _compareFromFarToNear);
@@ -84,10 +84,10 @@ void ForwardSubpass::_drawMeshes(wgpu::RenderPassEncoder &passEncoder) {
 
 void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
                                   const std::vector<RenderElement> &items,
-                                  const ShaderMacroCollection& compileMacros) {
-    for (auto &element : items) {
+                                  const ShaderMacroCollection &compileMacros) {
+    for (auto &element: items) {
         auto macros = compileMacros;
-        auto& renderer = element.renderer;
+        auto &renderer = element.renderer;
         uint32_t shadowCount = ShadowManager::shadowCount();
         if (renderer->receiveShadow && shadowCount != 0) {
             renderer->shaderData.enableMacro(SHADOW_MAP_COUNT, shadowCount);
@@ -99,28 +99,28 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
         
         renderer->updateShaderData();
         renderer->shaderData.mergeMacro(macros, macros);
-        auto& material = element.material;
+        auto &material = element.material;
         material->shaderData.mergeMacro(macros, macros);
-        auto& mesh = element.mesh;
-        auto& subMesh = element.subMesh;
+        auto &mesh = element.mesh;
+        auto &subMesh = element.subMesh;
         
         // PSO
         {
-            const std::string& vertexSource = material->shader->vertexSource(macros);
+            const std::string &vertexSource = material->shader->vertexSource(macros);
             // std::cout<<vertexSource<<std::endl;
-            const std::string& fragmentSource = material->shader->fragmentSource(macros);
+            const std::string &fragmentSource = material->shader->fragmentSource(macros);
             // std::cout<<fragmentSource<<std::endl;
             _forwardPipelineDescriptor.vertex.module = _pass->resourceCache().requestShader(vertexSource);
             _fragment.module = _pass->resourceCache().requestShader(fragmentSource);
             
             auto bindGroupLayoutDescriptors = material->shader->bindGroupLayoutDescriptors(macros);
             std::vector<wgpu::BindGroupLayout> bindGroupLayouts;
-            for (auto& layoutDesc : bindGroupLayoutDescriptors) {
+            for (auto &layoutDesc: bindGroupLayoutDescriptors) {
                 wgpu::BindGroupLayout bindGroupLayout = _pass->resourceCache().requestBindGroupLayout(layoutDesc.second);
                 _bindGroupEntries.clear();
                 _bindGroupEntries.resize(layoutDesc.second.entryCount);
                 for (uint32_t i = 0; i < layoutDesc.second.entryCount; i++) {
-                    auto& entry = layoutDesc.second.entries[i];
+                    auto &entry = layoutDesc.second.entries[i];
                     _bindGroupEntries[i].binding = entry.binding;
                     if (entry.buffer.type != wgpu::BufferBindingType::Undefined) {
                         _bindingData(_bindGroupEntries[i], material, renderer);
@@ -158,7 +158,7 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
         
         // Draw Call
         for (uint32_t j = 0; j < mesh->vertexBufferBindings().size(); j++) {
-            auto vertexBufferBinding =  mesh->vertexBufferBindings()[j];
+            auto vertexBufferBinding = mesh->vertexBufferBindings()[j];
             if (vertexBufferBinding) {
                 passEncoder.SetVertexBuffer(j, mesh->vertexBufferBindings()[j]->handle());
             }
@@ -173,8 +173,8 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
     }
 }
 
-void ForwardSubpass::_bindingData(wgpu::BindGroupEntry& entry,
-                                  MaterialPtr mat, Renderer* renderer) {
+void ForwardSubpass::_bindingData(wgpu::BindGroupEntry &entry,
+                                  MaterialPtr mat, Renderer *renderer) {
     auto group = Shader::getShaderPropertyGroup(entry.binding);
     if (group.has_value()) {
         switch (*group) {
@@ -204,8 +204,8 @@ void ForwardSubpass::_bindingData(wgpu::BindGroupEntry& entry,
     }
 }
 
-void ForwardSubpass::_bindingTexture(wgpu::BindGroupEntry& entry,
-                                     MaterialPtr mat, Renderer* renderer) {
+void ForwardSubpass::_bindingTexture(wgpu::BindGroupEntry &entry,
+                                     MaterialPtr mat, Renderer *renderer) {
     auto group = Shader::getShaderPropertyGroup(entry.binding);
     if (group.has_value()) {
         switch (*group) {
@@ -231,8 +231,8 @@ void ForwardSubpass::_bindingTexture(wgpu::BindGroupEntry& entry,
     }
 }
 
-void ForwardSubpass::_bindingSampler(wgpu::BindGroupEntry& entry,
-                                     MaterialPtr mat, Renderer* renderer) {
+void ForwardSubpass::_bindingSampler(wgpu::BindGroupEntry &entry,
+                                     MaterialPtr mat, Renderer *renderer) {
     auto group = Shader::getShaderPropertyGroup(entry.binding);
     if (group.has_value()) {
         switch (*group) {

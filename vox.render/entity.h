@@ -67,7 +67,7 @@ public:
      * The parent entity.
      */
     Entity *parent();
-        
+    
     /**
      * The children entities
      */
@@ -151,7 +151,7 @@ public:
      * Remove child entity.
      * @param child - The child entity which want to be removed.
      */
-    void removeChild(Entity *child);
+    std::unique_ptr<Entity> removeChild(Entity *child);
     
     /**
      * Find child entity by index.
@@ -209,8 +209,6 @@ public:
     std::vector<Script *> scripts();
     
 private:
-    friend class ComponentsManager;
-    
     friend class Component;
     
     friend class Transform;
@@ -218,12 +216,12 @@ private:
     friend class Script;
     
     friend class Scene;
-        
+    
     void _addScript(Script *script);
     
     void _removeScript(Script *script);
     
-    Entity *_removeFromParent();
+    std::unique_ptr<Entity> _removeFromParent();
     
     void _processActive();
     

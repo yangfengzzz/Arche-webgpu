@@ -10,12 +10,13 @@
 #include "graphics/mesh.h"
 #include "renderer.h"
 #include "camera.h"
+#include "components_manager.h"
 
 namespace vox {
-ColorPickerSubpass::ColorPickerSubpass(RenderContext* renderContext,
+ColorPickerSubpass::ColorPickerSubpass(RenderContext *renderContext,
                                        wgpu::TextureFormat depthStencilTextureFormat,
-                                       Scene* scene,
-                                       Camera* camera):
+                                       Scene *scene,
+                                       Camera *camera) :
 Subpass(renderContext, scene, camera),
 _depthStencilTextureFormat(depthStencilTextureFormat) {
     _material = std::make_shared<UnlitMaterial>(renderContext->device());
@@ -35,7 +36,7 @@ void ColorPickerSubpass::prepare() {
     }
 }
 
-void ColorPickerSubpass::draw(wgpu::RenderPassEncoder& passEncoder) {
+void ColorPickerSubpass::draw(wgpu::RenderPassEncoder &passEncoder) {
     _currentId = 0;
     _primitivesMap.clear();
     
@@ -52,7 +53,7 @@ void ColorPickerSubpass::_drawMeshes(wgpu::RenderPassEncoder &passEncoder) {
     std::vector<RenderElement> opaqueQueue;
     std::vector<RenderElement> alphaTestQueue;
     std::vector<RenderElement> transparentQueue;
-    _scene->_componentsManager.callRender(_camera, opaqueQueue, alphaTestQueue, transparentQueue);
+    ComponentsManager::getSingleton().callRender(_camera, opaqueQueue, alphaTestQueue, transparentQueue);
     std::sort(opaqueQueue.begin(), opaqueQueue.end(), _compareFromNearToFar);
     std::sort(alphaTestQueue.begin(), alphaTestQueue.end(), _compareFromNearToFar);
     std::sort(transparentQueue.begin(), transparentQueue.end(), _compareFromFarToNear);
@@ -71,39 +72,39 @@ void ColorPickerSubpass::_drawMeshes(wgpu::RenderPassEncoder &passEncoder) {
 
 void ColorPickerSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
                                       const std::vector<RenderElement> &items,
-                                      const ShaderMacroCollection& compileMacros) {
-    for (auto &element : items) {
+                                      const ShaderMacroCollection &compileMacros) {
+    for (auto &element: items) {
         auto macros = compileMacros;
-        auto& renderer = element.renderer;
+        auto &renderer = element.renderer;
         renderer->updateShaderData();
         renderer->shaderData.mergeMacro(macros, macros);
-        auto& mesh = element.mesh;
-        auto& subMesh = element.subMesh;
+        auto &mesh = element.mesh;
+        auto &subMesh = element.subMesh;
         
         _primitivesMap[_currentId] = std::make_pair(renderer, mesh);
         Vector3F color = id2Color(_currentId);
         auto reverseColor = Color(color.z, color.y, color.x, 1);
-        Buffer& buffer = _bufferPool[_currentId];
+        Buffer &buffer = _bufferPool[_currentId];
         buffer.uploadData(_renderContext->device(), &reverseColor, sizeof(Color));
         _currentId += 1;
-
+        
         // PSO
         {
-            const std::string& vertexSource = _material->shader->vertexSource(macros);
+            const std::string &vertexSource = _material->shader->vertexSource(macros);
             // std::cout<<vertexSource<<std::endl;
-            const std::string& fragmentSource = _material->shader->fragmentSource(macros);
+            const std::string &fragmentSource = _material->shader->fragmentSource(macros);
             // std::cout<<fragmentSource<<std::endl;
             _forwardPipelineDescriptor.vertex.module = _pass->resourceCache().requestShader(vertexSource);
             _fragment.module = _pass->resourceCache().requestShader(fragmentSource);
             
             auto bindGroupLayoutDescriptors = _material->shader->bindGroupLayoutDescriptors(macros);
             std::vector<wgpu::BindGroupLayout> bindGroupLayouts;
-            for (auto& layoutDesc : bindGroupLayoutDescriptors) {
+            for (auto &layoutDesc: bindGroupLayoutDescriptors) {
                 wgpu::BindGroupLayout bindGroupLayout = _pass->resourceCache().requestBindGroupLayout(layoutDesc.second);
                 _bindGroupEntries.clear();
                 _bindGroupEntries.resize(layoutDesc.second.entryCount);
                 for (uint32_t i = 0; i < layoutDesc.second.entryCount; i++) {
-                    auto& entry = layoutDesc.second.entries[i];
+                    auto &entry = layoutDesc.second.entries[i];
                     _bindGroupEntries[i].binding = entry.binding;
                     if (entry.buffer.type != wgpu::BufferBindingType::Undefined) {
                         _bindingData(_bindGroupEntries[i], buffer, renderer);
@@ -136,7 +137,7 @@ void ColorPickerSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
         
         // Draw Call
         for (uint32_t j = 0; j < mesh->vertexBufferBindings().size(); j++) {
-            auto vertexBufferBinding =  mesh->vertexBufferBindings()[j];
+            auto vertexBufferBinding = mesh->vertexBufferBindings()[j];
             if (vertexBufferBinding) {
                 passEncoder.SetVertexBuffer(j, mesh->vertexBufferBindings()[j]->handle());
             }
@@ -149,8 +150,8 @@ void ColorPickerSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
     }
 }
 
-void ColorPickerSubpass::_bindingData(wgpu::BindGroupEntry& entry,
-                                      Buffer& buffer, Renderer* renderer) {
+void ColorPickerSubpass::_bindingData(wgpu::BindGroupEntry &entry,
+                                      Buffer &buffer, Renderer *renderer) {
     auto group = Shader::getShaderPropertyGroup(entry.binding);
     if (group.has_value()) {
         switch (*group) {

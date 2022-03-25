@@ -12,15 +12,20 @@
 #include <vector>
 #include "ray3.h"
 #include "hit_result.h"
-#include "../layer.h"
+#include "layer.h"
+#include "singleton.h"
 
 namespace vox {
 namespace physics {
 /**
  * A physics manager is a collection of bodies and constraints which can interact.
  */
-class PhysicsManager {
+class PhysicsManager : public Singleton<PhysicsManager> {
 public:
+    static PhysicsManager &getSingleton(void);
+    
+    static PhysicsManager *getSingletonPtr(void);
+    
     static uint32_t _idGenerator;
     static Physics _nativePhysics;
     
@@ -158,6 +163,6 @@ private:
 };
 
 }
+template<> inline physics::PhysicsManager* Singleton<physics::PhysicsManager>::msSingleton{nullptr};
 }
-
 #endif /* physics_manager_hpp */

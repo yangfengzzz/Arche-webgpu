@@ -8,6 +8,7 @@
 #include "sprite_debug_material.h"
 #include "mesh/mesh_renderer.h"
 #include "lighting/light_manager.h"
+#include "entity.h"
 
 namespace vox {
 std::string SpriteDebug::name() {

@@ -9,6 +9,7 @@
 #include "scene.h"
 #include "shader/shader.h"
 #include "material/material.h"
+#include "components_manager.h"
 
 namespace vox {
 size_t Renderer::materialCount() {
@@ -32,13 +33,11 @@ _rendererProperty(Shader::createProperty("u_rendererData", ShaderDataGroup::Rend
 }
 
 void Renderer::_onEnable() {
-    auto &componentsManager = entity()->scene()->_componentsManager;
-    componentsManager.addRenderer(this);
+    ComponentsManager::getSingleton().addRenderer(this);
 }
 
 void Renderer::_onDisable() {
-    auto &componentsManager = entity()->scene()->_componentsManager;
-    componentsManager.removeRenderer(this);
+    ComponentsManager::getSingleton().removeRenderer(this);
 }
 
 MaterialPtr Renderer::getInstanceMaterial(size_t index) {

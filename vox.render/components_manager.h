@@ -12,7 +12,7 @@
 #include "input_events.h"
 #include "scene_forward.h"
 #include "rendering/render_element.h"
-#include <typeindex>
+#include "singleton.h"
 #include <unordered_map>
 #include <vector>
 
@@ -20,8 +20,12 @@ namespace vox {
 /**
  * The manager of the components.
  */
-class ComponentsManager {
+class ComponentsManager : public Singleton<ComponentsManager> {
 public:
+    static ComponentsManager &getSingleton(void);
+    
+    static ComponentsManager *getSingletonPtr(void);
+    
     void addOnStartScript(Script *script);
     
     void removeOnStartScript(Script *script);
@@ -52,7 +56,7 @@ public:
     
     void callRendererOnUpdate(float deltaTime);
     
-    void callRender(Camera* camera,
+    void callRender(Camera *camera,
                     std::vector<RenderElement> &opaqueQueue,
                     std::vector<RenderElement> &alphaTestQueue,
                     std::vector<RenderElement> &transparentQueue);
@@ -66,13 +70,13 @@ public:
     void addOnUpdateAnimators(Animator *animator);
     
     void removeOnUpdateAnimators(Animator *animator);
-
+    
     void callAnimatorUpdate(float deltaTime);
-
+    
     void addOnUpdateSceneAnimators(SceneAnimator *animator);
-
+    
     void removeOnUpdateSceneAnimators(SceneAnimator *animator);
-
+    
     void callSceneAnimatorUpdate(float deltaTime);
     
 public:
@@ -101,6 +105,7 @@ private:
     std::vector<SceneAnimator *> _onUpdateSceneAnimators;
 };
 
-}        // namespace vox
+template<> inline ComponentsManager *Singleton<ComponentsManager>::msSingleton{nullptr};
 
+}        // namespace vox
 #endif /* component_manager_hpp */

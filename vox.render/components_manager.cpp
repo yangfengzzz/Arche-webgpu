@@ -11,26 +11,48 @@
 #include "camera.h"
 #include "animator.h"
 #include "scene_animator.h"
+#include <glog/logging.h>
 
 namespace vox {
+ComponentsManager *ComponentsManager::getSingletonPtr(void) {
+    return msSingleton;
+}
+
+ComponentsManager &ComponentsManager::getSingleton(void) {
+    assert(msSingleton);
+    return (*msSingleton);
+}
+
 void ComponentsManager::addOnStartScript(Script *script) {
-    script->_onStartIndex = _onStartScripts.size();
-    _onStartScripts.push_back(script);
+    auto iter = std::find(_onStartScripts.begin(), _onStartScripts.end(), script);
+    if (iter == _onStartScripts.end()) {
+        _onStartScripts.push_back(script);
+    } else {
+        LOG(ERROR) << "Script already attached." << std::endl;;
+    }
 }
 
 void ComponentsManager::removeOnStartScript(Script *script) {
-    _onStartScripts.erase(_onStartScripts.begin() + script->_onStartIndex);
-    script->_onStartIndex = -1;
+    auto iter = std::find(_onStartScripts.begin(), _onStartScripts.end(), script);
+    if (iter != _onStartScripts.end()) {
+        _onStartScripts.erase(iter);
+    }
 }
 
 void ComponentsManager::addOnUpdateScript(Script *script) {
-    script->_onUpdateIndex = _onUpdateScripts.size();
-    _onUpdateScripts.push_back(script);
+    auto iter = std::find(_onUpdateScripts.begin(), _onUpdateScripts.end(), script);
+    if (iter == _onUpdateScripts.end()) {
+        _onUpdateScripts.push_back(script);
+    } else {
+        LOG(ERROR) << "Script already attached." << std::endl;;
+    }
 }
 
 void ComponentsManager::removeOnUpdateScript(Script *script) {
-    _onUpdateScripts.erase(_onUpdateScripts.begin() + script->_onUpdateIndex);
-    script->_onUpdateIndex = -1;
+    auto iter = std::find(_onUpdateScripts.begin(), _onUpdateScripts.end(), script);
+    if (iter != _onUpdateScripts.end()) {
+        _onUpdateScripts.erase(iter);
+    }
 }
 
 void ComponentsManager::addDestroyComponent(Script *component) {
@@ -51,8 +73,7 @@ void ComponentsManager::callScriptOnStart() {
         // The 'onStartScripts.length' maybe add if you add some Script with addComponent() in some Script's onStart()
         for (size_t i = 0; i < _onStartScripts.size(); i++) {
             const auto &script = _onStartScripts[i];
-            script->_started = true;
-            script->_onStartIndex = -1;
+            script->setIsStarted(true);
             script->onStart();
         }
         _onStartScripts.clear();
@@ -62,7 +83,7 @@ void ComponentsManager::callScriptOnStart() {
 void ComponentsManager::callScriptOnUpdate(float deltaTime) {
     for (size_t i = 0; i < _onUpdateScripts.size(); i++) {
         const auto &element = _onUpdateScripts[i];
-        if (element->_started) {
+        if (element->isStarted()) {
             element->onUpdate(deltaTime);
         }
     }
@@ -71,7 +92,7 @@ void ComponentsManager::callScriptOnUpdate(float deltaTime) {
 void ComponentsManager::callScriptOnLateUpdate(float deltaTime) {
     for (size_t i = 0; i < _onUpdateScripts.size(); i++) {
         const auto &element = _onUpdateScripts[i];
-        if (element->_started) {
+        if (element->isStarted()) {
             element->onLateUpdate(deltaTime);
         }
     }
@@ -80,7 +101,7 @@ void ComponentsManager::callScriptOnLateUpdate(float deltaTime) {
 void ComponentsManager::callScriptInputEvent(const InputEvent &inputEvent) {
     for (size_t i = 0; i < _onUpdateScripts.size(); i++) {
         const auto &element = _onUpdateScripts[i];
-        if (element->_started) {
+        if (element->isStarted()) {
             element->inputEvent(inputEvent);
         }
     }
@@ -90,21 +111,27 @@ void ComponentsManager::callScriptResize(uint32_t win_width, uint32_t win_height
                                          uint32_t fb_width, uint32_t fb_height) {
     for (size_t i = 0; i < _onUpdateScripts.size(); i++) {
         const auto &element = _onUpdateScripts[i];
-        if (element->_started) {
+        if (element->isStarted()) {
             element->resize(win_width, win_height, fb_width, fb_height);
         }
     }
 }
 
-//MARK: -
+//MARK: - Renderer
 void ComponentsManager::addRenderer(Renderer *renderer) {
-    renderer->_rendererIndex = _renderers.size();
-    _renderers.push_back(renderer);
+    auto iter = std::find(_renderers.begin(), _renderers.end(), renderer);
+    if (iter == _renderers.end()) {
+        _renderers.push_back(renderer);
+    } else {
+        LOG(ERROR) << "Renderer already attached." << std::endl;;
+    }
 }
 
 void ComponentsManager::removeRenderer(Renderer *renderer) {
-    _renderers.erase(_renderers.begin() + renderer->_rendererIndex);
-    renderer->_rendererIndex = -1;
+    auto iter = std::find(_renderers.begin(), _renderers.end(), renderer);
+    if (iter != _renderers.end()) {
+        _renderers.erase(iter);
+    }
 }
 
 void ComponentsManager::callRendererOnUpdate(float deltaTime) {
@@ -113,7 +140,7 @@ void ComponentsManager::callRendererOnUpdate(float deltaTime) {
     }
 }
 
-void ComponentsManager::callRender(Camera* camera,
+void ComponentsManager::callRender(Camera *camera,
                                    std::vector<RenderElement> &opaqueQueue,
                                    std::vector<RenderElement> &alphaTestQueue,
                                    std::vector<RenderElement> &transparentQueue) {
@@ -127,7 +154,7 @@ void ComponentsManager::callRender(Camera* camera,
         
         // filter by camera frustum.
         if (camera->enableFrustumCulling) {
-            element->isCulled = !camera->_frustum.intersectsBox(element->bounds());
+            element->isCulled = !camera->frustum().intersectsBox(element->bounds());
             if (element->isCulled) {
                 continue;
             }
@@ -143,7 +170,7 @@ void ComponentsManager::callRender(Camera* camera,
         } else {
             element->setDistanceForSort(center.distanceSquaredTo(position));
         }
-                
+        
         element->_render(opaqueQueue, alphaTestQueue, transparentQueue);
     }
 }
@@ -161,26 +188,18 @@ void ComponentsManager::callRender(const BoundingFrustum &frustrum,
     }
 }
 
-//MARK: - 
+//MARK: - Camera
 void ComponentsManager::callCameraOnBeginRender(Camera *camera) {
-    const auto &camComps = camera->entity()->_components;
+    const auto &camComps = camera->entity()->scripts();
     for (size_t i = 0; i < camComps.size(); i++) {
-        const auto &camComp = camComps[i].get();
-        auto pointer = dynamic_cast<Script *>(camComp);
-        if (pointer != nullptr) {
-            pointer->onBeginRender(camera);
-        }
+        camComps[i]->onBeginRender(camera);
     }
 }
 
 void ComponentsManager::callCameraOnEndRender(Camera *camera) {
-    const auto &camComps = camera->entity()->_components;
+    const auto &camComps = camera->entity()->scripts();
     for (size_t i = 0; i < camComps.size(); i++) {
-        const auto &camComp = camComps[i].get();
-        auto pointer = dynamic_cast<Script *>(camComp);
-        if (pointer != nullptr) {
-            pointer->onEndRender(camera);
-        }
+        camComps[i]->onEndRender(camera);
     }
 }
 
@@ -195,13 +214,19 @@ void ComponentsManager::putActiveChangedTempList(std::vector<Component *> &compo
 
 //MARK: - Animation
 void ComponentsManager::addOnUpdateAnimators(Animator *animator) {
-    animator->_onUpdateIndex = _onUpdateAnimators.size();
-    _onUpdateAnimators.push_back(animator);
+    auto iter = std::find(_onUpdateAnimators.begin(), _onUpdateAnimators.end(), animator);
+    if (iter == _onUpdateAnimators.end()) {
+        _onUpdateAnimators.push_back(animator);
+    } else {
+        LOG(ERROR) << "Animator already attached." << std::endl;;
+    }
 }
 
 void ComponentsManager::removeOnUpdateAnimators(Animator *animator) {
-    _onUpdateAnimators.erase(_onUpdateAnimators.begin() + animator->_onUpdateIndex);
-    animator->_onUpdateIndex = -1;
+    auto iter = std::find(_onUpdateAnimators.begin(), _onUpdateAnimators.end(), animator);
+    if (iter != _onUpdateAnimators.end()) {
+        _onUpdateAnimators.erase(iter);
+    }
 }
 
 void ComponentsManager::callAnimatorUpdate(float deltaTime) {
@@ -212,14 +237,21 @@ void ComponentsManager::callAnimatorUpdate(float deltaTime) {
 }
 
 void ComponentsManager::addOnUpdateSceneAnimators(SceneAnimator *animator) {
-    animator->_onUpdateIndex = _onUpdateSceneAnimators.size();
-    _onUpdateSceneAnimators.push_back(animator);
+    auto iter = std::find(_onUpdateSceneAnimators.begin(), _onUpdateSceneAnimators.end(), animator);
+    if (iter == _onUpdateSceneAnimators.end()) {
+        _onUpdateSceneAnimators.push_back(animator);
+    } else {
+        LOG(ERROR) << "SceneAnimator already attached." << std::endl;;
+    }
 }
 
 void ComponentsManager::removeOnUpdateSceneAnimators(SceneAnimator *animator) {
-    _onUpdateSceneAnimators.erase(_onUpdateSceneAnimators.begin() + animator->_onUpdateIndex);
-    animator->_onUpdateIndex = -1;
+    auto iter = std::find(_onUpdateSceneAnimators.begin(), _onUpdateSceneAnimators.end(), animator);
+    if (iter != _onUpdateSceneAnimators.end()) {
+        _onUpdateSceneAnimators.erase(iter);
+    }
 }
+
 void ComponentsManager::callSceneAnimatorUpdate(float deltaTime) {
     const auto &elements = _onUpdateSceneAnimators;
     for (size_t i = 0; i < _onUpdateSceneAnimators.size(); i++) {

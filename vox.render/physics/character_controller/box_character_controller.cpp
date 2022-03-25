@@ -7,6 +7,7 @@
 #include "box_character_controller.h"
 #include "entity.h"
 #include "scene.h"
+#include "physics_manager.h"
 
 namespace vox {
 namespace physics {
@@ -19,7 +20,7 @@ CharacterController(entity) {
 }
 
 void BoxCharacterController::setDesc(const PxBoxControllerDesc &desc) {
-    _nativeController = entity()->scene()->_physicsManager._nativeCharacterControllerManager->createController(desc);
+    _nativeController = PhysicsManager::getSingleton()._nativeCharacterControllerManager->createController(desc);
 }
 
 float BoxCharacterController::halfHeight() const {

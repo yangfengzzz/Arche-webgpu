@@ -51,9 +51,6 @@ private:
     void _onDisable() override;
     
 private:
-    friend class ComponentsManager;
-    
-    ssize_t _onUpdateIndex = -1;
     ssize_t _activeAnimation = -1;
     std::vector<std::unique_ptr<SceneAnimationClip>> _animationClips;
 };

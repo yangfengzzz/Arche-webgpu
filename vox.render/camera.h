@@ -75,6 +75,8 @@ public:
      */
     Camera(Entity *entity);
     
+    const BoundingFrustum &frustum() const;
+    
     /**
      * Near clip plane - the closest point to the camera when rendering occurs.
      */
@@ -262,8 +264,6 @@ public:
     void onInspector(ui::WidgetContainer &p_root) override;
     
 private:
-    friend class ComponentsManager;
-    
     void _projMatChange();
     
     Point3F _innerViewportToWorldPoint(const Vector3F &point, const Matrix4x4F &invViewProjMat);

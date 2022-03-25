@@ -56,6 +56,10 @@ public:
     }
     
 public:
+    void setIsStarted(bool value);
+    
+    bool isStarted();
+    
     /**
      * Called before the frame-level loop start for the first time, only once.
      */
@@ -136,10 +140,6 @@ public:
     void onInspector(ui::WidgetContainer &p_root) override;
     
 protected:
-    friend class Entity;
-    
-    friend class ComponentsManager;
-    
     void _onAwake() override;
     
     void _onEnable() override;
@@ -147,9 +147,6 @@ protected:
     void _onDisable() override;
     
     bool _started = false;
-    ssize_t _onStartIndex = -1;
-    ssize_t _onUpdateIndex = -1;
-    ssize_t _entityCacheIndex = -1;
 };
 
 }

@@ -8,6 +8,7 @@
 #include "scene_animator.h"
 #include "entity.h"
 #include "scene.h"
+#include "components_manager.h"
 #include <iostream>
 
 namespace vox {
@@ -41,11 +42,11 @@ void SceneAnimator::play(const std::string &name) {
 }
 
 void SceneAnimator::_onEnable() {
-    scene()->_componentsManager.addOnUpdateSceneAnimators(this);
+    ComponentsManager::getSingleton().addOnUpdateSceneAnimators(this);
 }
 
 void SceneAnimator::_onDisable() {
-    scene()->_componentsManager.removeOnUpdateSceneAnimators(this);
+    ComponentsManager::getSingleton().removeOnUpdateSceneAnimators(this);
 }
 
 //MARK: - Reflection

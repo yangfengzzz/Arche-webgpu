@@ -18,7 +18,7 @@ class Entity;
 
 class Component;
 
-class ComponentManager;
+class ComponentsManager;
 
 class Transform;
 

@@ -16,11 +16,21 @@ Camera* ForwardApplication::mainCamera() {
 
 ForwardApplication::~ForwardApplication() {
     _renderPass.reset();
+    // release first
+    _sceneManager.reset();
+
+    _componentsManager.reset();
+    _physicsManager.reset();
+    _lightManager.reset();
+    _shadowManager.reset();
+    _particleManager.reset();
 }
 
 bool ForwardApplication::prepare(Engine &engine) {
     GraphicsApplication::prepare(engine);
     
+    _componentsManager = std::make_unique<ComponentsManager>();
+    _physicsManager = std::make_unique<physics::PhysicsManager>();
     _sceneManager = std::make_unique<SceneManager>(_device);
     auto scene = _sceneManager->currentScene();
     
@@ -30,7 +40,7 @@ bool ForwardApplication::prepare(Engine &engine) {
         loadScene();
         auto extent = engine.window().extent();
         auto factor = engine.window().contentScaleFactor();
-        scene->updateSize(extent.width, extent.height, factor * extent.width, factor * extent.height);
+        _componentsManager->callScriptResize(extent.width, extent.height, factor * extent.width, factor * extent.height);
         _mainCamera->resize(extent.width, extent.height, factor * extent.width, factor * extent.height);
         _depthStencilTexture = _createDepthStencilView(factor * extent.width, factor * extent.height);
     }
@@ -59,9 +69,24 @@ bool ForwardApplication::prepare(Engine &engine) {
     return true;
 }
 
-void ForwardApplication::update(float delta_time) {
-    GraphicsApplication::update(delta_time);
-    _sceneManager->currentScene()->update(delta_time);
+void ForwardApplication::update(float deltaTime) {
+    GraphicsApplication::update(deltaTime);
+    {
+        _componentsManager->callScriptOnStart();
+        
+        _physicsManager->callColliderOnUpdate();
+        _physicsManager->update(deltaTime);
+        _physicsManager->callColliderOnLateUpdate();
+        _physicsManager->callCharacterControllerOnLateUpdate();
+        
+        _componentsManager->callScriptOnUpdate(deltaTime);
+        _componentsManager->callAnimatorUpdate(deltaTime);
+        _componentsManager->callSceneAnimatorUpdate(deltaTime);
+        _componentsManager->callScriptOnLateUpdate(deltaTime);
+        
+        _componentsManager->callRendererOnUpdate(deltaTime);
+        _sceneManager->currentScene()->updateShaderData();
+    }
     
     wgpu::CommandEncoder commandEncoder = _device.CreateCommandEncoder();
     updateGPUTask(commandEncoder);
@@ -88,14 +113,14 @@ bool ForwardApplication::resize(uint32_t win_width, uint32_t win_height,
     GraphicsApplication::resize(win_width, win_height, fb_width, fb_height);
     _depthStencilTexture = _createDepthStencilView(fb_width, fb_height);
 
-    _sceneManager->currentScene()->updateSize(win_width, win_height, fb_width, fb_height);
+    _componentsManager->callScriptResize(win_width, win_height, fb_width, fb_height);    
     _mainCamera->resize(win_width, win_height, fb_width, fb_height);
     return true;
 }
 
 void ForwardApplication::inputEvent(const InputEvent &inputEvent) {
     GraphicsApplication::inputEvent(inputEvent);
-    _sceneManager->currentScene()->updateInputEvent(inputEvent);
+    _componentsManager->callScriptInputEvent(inputEvent);
 }
 
 wgpu::TextureView ForwardApplication::_createDepthStencilView(uint32_t width, uint32_t height) {

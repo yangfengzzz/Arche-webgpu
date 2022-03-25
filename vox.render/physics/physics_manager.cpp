@@ -12,6 +12,15 @@
 #include "../script.h"
 
 namespace vox {
+physics::PhysicsManager *physics::PhysicsManager::getSingletonPtr(void) {
+    return msSingleton;
+}
+
+physics::PhysicsManager &physics::PhysicsManager::getSingleton(void) {
+    assert(msSingleton);
+    return (*msSingleton);
+}
+
 namespace physics {
 namespace {
 class PxSimulationEventCallbackWrapper : public PxSimulationEventCallback {

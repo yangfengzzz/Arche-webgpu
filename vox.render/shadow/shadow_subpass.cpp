@@ -11,6 +11,7 @@
 #include "renderer.h"
 #include "rendering/render_pass.h"
 #include "shadow_manager.h"
+#include "components_manager.h"
 
 namespace vox {
 ShadowSubpass::ShadowSubpass(RenderContext* renderContext,
@@ -55,8 +56,8 @@ void ShadowSubpass::_drawMeshes(wgpu::RenderPassEncoder &passEncoder) {
     std::vector<RenderElement> opaqueQueue;
     std::vector<RenderElement> alphaTestQueue;
     std::vector<RenderElement> transparentQueue;
-    _scene->_componentsManager.callRender(BoundingFrustum(_material->viewProjectionMatrix()),
-                                          opaqueQueue, alphaTestQueue, transparentQueue);
+    ComponentsManager::getSingleton().callRender(BoundingFrustum(_material->viewProjectionMatrix()),
+                                                 opaqueQueue, alphaTestQueue, transparentQueue);
     std::sort(opaqueQueue.begin(), opaqueQueue.end(), _compareFromNearToFar);
     std::sort(alphaTestQueue.begin(), alphaTestQueue.end(), _compareFromNearToFar);
     std::sort(transparentQueue.begin(), transparentQueue.end(), _compareFromFarToNear);

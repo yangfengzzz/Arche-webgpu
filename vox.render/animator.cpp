@@ -8,6 +8,8 @@
 #include "mesh/skinned_mesh_renderer.h"
 #include "loader/animator_loader.h"
 #include "scene.h"
+#include "entity.h"
+#include "components_manager.h"
 #include <string>
 
 namespace vox {
@@ -88,11 +90,11 @@ ozz::span<ozz::animation::BlendingJob::Layer> Animator::layers() {
 }
 
 void Animator::_onEnable() {
-    scene()->_componentsManager.addOnUpdateAnimators(this);
+   ComponentsManager::getSingleton().addOnUpdateAnimators(this);
 }
 
 void Animator::_onDisable() {
-    scene()->_componentsManager.removeOnUpdateAnimators(this);
+    ComponentsManager::getSingleton().removeOnUpdateAnimators(this);
 }
 
 //MARK: - Reflection

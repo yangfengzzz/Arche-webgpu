@@ -5,8 +5,9 @@
 //  property of any third parties.
 
 #include "character_controller.h"
-#include "../../entity.h"
-#include "../../scene.h"
+#include "physics_manager.h"
+#include "entity.h"
+#include "scene.h"
 
 namespace vox {
 namespace physics {
@@ -98,11 +99,11 @@ void CharacterController::_onLateUpdate() {
 }
 
 void CharacterController::_onEnable() {
-    entity()->scene()->_physicsManager._addCharacterController(this);
+    PhysicsManager::getSingleton()._addCharacterController(this);
 }
 
 void CharacterController::_onDisable() {
-    entity()->scene()->_physicsManager._removeCharacterController(this);
+    PhysicsManager::getSingleton()._removeCharacterController(this);
 }
 
 }

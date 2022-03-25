@@ -181,34 +181,6 @@ void Scene::updateShaderData() {
     }
 }
 
-void Scene::update(float deltaTime) {
-    _componentsManager.callScriptOnStart();
-    
-    _physicsManager.callColliderOnUpdate();
-    _physicsManager.update(deltaTime);
-    _physicsManager.callColliderOnLateUpdate();
-    _physicsManager.callCharacterControllerOnLateUpdate();
-    
-    _componentsManager.callScriptOnUpdate(deltaTime);
-    _componentsManager.callAnimatorUpdate(deltaTime);
-    _componentsManager.callSceneAnimatorUpdate(deltaTime);
-    _componentsManager.callScriptOnLateUpdate(deltaTime);
-    
-    _componentsManager.callRendererOnUpdate(deltaTime);
-    
-    updateShaderData();
-}
-
-void Scene::updateInputEvent(const InputEvent &inputEvent) {
-    _componentsManager.callScriptInputEvent(inputEvent);
-}
-
-void Scene::updateSize(uint32_t win_width, uint32_t win_height,
-                       uint32_t fb_width, uint32_t fb_height) {
-    _componentsManager.callScriptResize(win_width, win_height,
-                                        fb_width, fb_height);
-}
-
 //MARK: - Reflection
 void Scene::onSerialize(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node) {
     

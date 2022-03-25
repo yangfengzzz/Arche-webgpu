@@ -15,11 +15,11 @@
 #include <webgpu/webgpu_cpp.h>
 
 #include "scene_forward.h"
-#include "components_manager.h"
-#include "physics/physics_manager.h"
+#include "vobject.h"
 #include "lighting/ambient_light.h"
 #include "shader/shader_data.h"
 #include "background.h"
+#include "input_events.h"
 
 namespace vox {
 /// @brief A collection of entities organized in a tree structure.
@@ -28,9 +28,6 @@ class Scene : public VObject {
 public:
     /** Scene name. */
     std::string name;
-    
-    ComponentsManager _componentsManager;
-    physics::PhysicsManager _physicsManager;
     
     /** The background of the scene. */
     Background background = Background();
@@ -113,13 +110,6 @@ public:
     void detachRenderCamera(Camera *camera);
     
 public:
-    void update(float deltaTime);
-    
-    void updateInputEvent(const InputEvent &inputEvent);
-    
-    void updateSize(uint32_t win_width, uint32_t win_height,
-                    uint32_t fb_width, uint32_t fb_height);
-    
     void updateShaderData();
     
 public:

@@ -132,7 +132,6 @@ private:
     friend class ComponentsManager;
     
     float _distanceForSort = 0;
-    ssize_t _rendererIndex = -1;
     
     RendererData _rendererData;
     ShaderProperty _rendererProperty;
