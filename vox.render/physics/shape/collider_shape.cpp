@@ -23,9 +23,11 @@ void ColliderShape::setLocalPose(const Transform3F &pose) {
     const auto &p = pose.translation();
     const auto &q = pose.orientation();
     _nativeShape->setLocalPose(PxTransform(PxVec3(p.x, p.y, p.z), PxQuat(q.x, q.y, q.z, q.w)));
+#ifdef _DEBUG
     if (_entity) {
         _entity->transform->setPosition(getLocalTranslation());
     }
+#endif
 }
 
 Transform3F ColliderShape::localPose() const {

@@ -522,7 +522,6 @@
 		04F9E8FD27D2067400BD291B /* subpass.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E8FB27D2067400BD291B /* subpass.h */; };
 		04F9E90027D2095100BD291B /* compute_pass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E8FE27D2095100BD291B /* compute_pass.cpp */; };
 		04F9E90127D2095100BD291B /* compute_pass.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E8FF27D2095100BD291B /* compute_pass.h */; };
-		04F9E90527D2E0BC00BD291B /* wgsl_reflect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF01127A58872003F3599 /* wgsl_reflect.cpp */; };
 		04F9E90627D3684E00BD291B /* atomic_compute_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E90227D2157B00BD291B /* atomic_compute_app.cpp */; };
 		04F9E90A27D4657A00BD291B /* particle_renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E90827D4657A00BD291B /* particle_renderer.cpp */; };
 		04F9E90B27D4657A00BD291B /* particle_renderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E90927D4657A00BD291B /* particle_renderer.h */; };
@@ -3880,7 +3879,6 @@
 				04F9E91627D4817A00BD291B /* particle_manager.cpp in Sources */,
 				0443E8D427C4BB500099E13A /* shadow_material.cpp in Sources */,
 				047BF16127AD1996003F3599 /* wgsl_direct_irradiance_frag_define.cpp in Sources */,
-				04F9E90527D2E0BC00BD291B /* wgsl_reflect.cpp in Sources */,
 				047BF00B27A56500003F3599 /* wgsl_cache.cpp in Sources */,
 				047BF07C27A6819C003F3599 /* astc_averages_and_directions.cpp in Sources */,
 				04FDF08227E8080400BBE8E4 /* text_wrapped.cpp in Sources */,
