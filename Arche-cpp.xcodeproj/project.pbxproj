@@ -197,6 +197,9 @@
 		0443E8FF27C5C7C40099E13A /* wgsl_shadow_common.h in Headers */ = {isa = PBXBuildFile; fileRef = 0443E8FD27C5C7C40099E13A /* wgsl_shadow_common.h */; };
 		0443E90327C5F6330099E13A /* wgsl_shadow_share.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0443E90127C5F6330099E13A /* wgsl_shadow_share.cpp */; };
 		0443E90427C5F6330099E13A /* wgsl_shadow_share.h in Headers */ = {isa = PBXBuildFile; fileRef = 0443E90227C5F6330099E13A /* wgsl_shadow_share.h */; };
+		047BB5972800142D00CD5749 /* voxel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BB5952800142D00CD5749 /* voxel.cpp */; };
+		047BB5982800142D00CD5749 /* voxel.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BB5962800142D00CD5749 /* voxel.h */; };
+		047BB59B2800148600CD5749 /* libvox.math.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 041282EC279ECF3D0071BD86 /* libvox.math.a */; };
 		047BEFD627A4BFD9003F3599 /* wgsl_common_vert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BEFD427A4BFD9003F3599 /* wgsl_common_vert.cpp */; };
 		047BEFD727A4BFD9003F3599 /* wgsl_common_vert.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BEFD527A4BFD9003F3599 /* wgsl_common_vert.h */; };
 		047BEFDA27A4DB63003F3599 /* wgsl_encoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BEFD827A4DB63003F3599 /* wgsl_encoder.cpp */; };
@@ -733,6 +736,13 @@
 			remoteGlobalIDString = 041282EB279ECF3D0071BD86;
 			remoteInfo = vox.math;
 		};
+		047BB5992800148200CD5749 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 043B7B52278C4C5A00D5648F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 041282EB279ECF3D0071BD86;
+			remoteInfo = vox.math;
+		};
 		047BF1E627AFAFDF003F3599 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 043B7B52278C4C5A00D5648F /* Project object */;
@@ -1038,6 +1048,9 @@
 		0443E8FD27C5C7C40099E13A /* wgsl_shadow_common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_shadow_common.h; sourceTree = "<group>"; };
 		0443E90127C5F6330099E13A /* wgsl_shadow_share.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_shadow_share.cpp; sourceTree = "<group>"; };
 		0443E90227C5F6330099E13A /* wgsl_shadow_share.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_shadow_share.h; sourceTree = "<group>"; };
+		047BB58A2800140A00CD5749 /* libvox.geometry.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libvox.geometry.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		047BB5952800142D00CD5749 /* voxel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = voxel.cpp; sourceTree = "<group>"; };
+		047BB5962800142D00CD5749 /* voxel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voxel.h; sourceTree = "<group>"; };
 		047BEFD427A4BFD9003F3599 /* wgsl_common_vert.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_common_vert.cpp; sourceTree = "<group>"; };
 		047BEFD527A4BFD9003F3599 /* wgsl_common_vert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_common_vert.h; sourceTree = "<group>"; };
 		047BEFD827A4DB63003F3599 /* wgsl_encoder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_encoder.cpp; sourceTree = "<group>"; };
@@ -1780,6 +1793,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		047BB5882800140A00CD5749 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				047BB59B2800148600CD5749 /* libvox.math.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		047BF1BB27AFAE81003F3599 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -2245,6 +2266,7 @@
 			children = (
 				0412841F279ED26A0071BD86 /* README.md */,
 				041282ED279ECF3D0071BD86 /* vox.math */,
+				047BB58B2800140A00CD5749 /* vox.geometry */,
 				04128425279ED3510071BD86 /* vox.render */,
 				041283B1279ED0D60071BD86 /* unit_tests */,
 				043B7B5C278C4C5A00D5648F /* apps */,
@@ -2262,6 +2284,7 @@
 				041283B0279ED0D60071BD86 /* unit_tests */,
 				04128424279ED3510071BD86 /* libvox.render.a */,
 				047BF1BE27AFAE81003F3599 /* editor */,
+				047BB58A2800140A00CD5749 /* libvox.geometry.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2360,6 +2383,15 @@
 				0400D25127D840810018FB52 /* wgsl_shadow_debug.cpp */,
 			);
 			path = wgsl;
+			sourceTree = "<group>";
+		};
+		047BB58B2800140A00CD5749 /* vox.geometry */ = {
+			isa = PBXGroup;
+			children = (
+				047BB5962800142D00CD5749 /* voxel.h */,
+				047BB5952800142D00CD5749 /* voxel.cpp */,
+			);
+			path = vox.geometry;
 			sourceTree = "<group>";
 		};
 		047BEFE727A53FC2003F3599 /* functors */ = {
@@ -3621,6 +3653,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		047BB5862800140A00CD5749 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				047BB5982800142D00CD5749 /* voxel.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -3695,6 +3735,24 @@
 			productReference = 043B7B5A278C4C5A00D5648F /* apps */;
 			productType = "com.apple.product-type.tool";
 		};
+		047BB5892800140A00CD5749 /* vox.geometry */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 047BB5922800140A00CD5749 /* Build configuration list for PBXNativeTarget "vox.geometry" */;
+			buildPhases = (
+				047BB5862800140A00CD5749 /* Headers */,
+				047BB5872800140A00CD5749 /* Sources */,
+				047BB5882800140A00CD5749 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				047BB59A2800148200CD5749 /* PBXTargetDependency */,
+			);
+			name = vox.geometry;
+			productName = vox.geometry;
+			productReference = 047BB58A2800140A00CD5749 /* libvox.geometry.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		047BF1BD27AFAE81003F3599 /* editor */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 047BF1C227AFAE81003F3599 /* Build configuration list for PBXNativeTarget "editor" */;
@@ -3735,6 +3793,9 @@
 					043B7B59278C4C5A00D5648F = {
 						CreatedOnToolsVersion = 13.2.1;
 					};
+					047BB5892800140A00CD5749 = {
+						CreatedOnToolsVersion = 13.3;
+					};
 					047BF1BD27AFAE81003F3599 = {
 						CreatedOnToolsVersion = 13.2.1;
 					};
@@ -3754,6 +3815,7 @@
 			projectRoot = "";
 			targets = (
 				041282EB279ECF3D0071BD86 /* vox.math */,
+				047BB5892800140A00CD5749 /* vox.geometry */,
 				04128423279ED3510071BD86 /* vox.render */,
 				041283AF279ED0D60071BD86 /* unit_tests */,
 				043B7B59278C4C5A00D5648F /* apps */,
@@ -4120,6 +4182,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		047BB5872800140A00CD5749 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				047BB5972800142D00CD5749 /* voxel.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		047BF1BA27AFAE81003F3599 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -4162,6 +4232,11 @@
 			isa = PBXTargetDependency;
 			target = 041282EB279ECF3D0071BD86 /* vox.math */;
 			targetProxy = 0412841B279ED1E40071BD86 /* PBXContainerItemProxy */;
+		};
+		047BB59A2800148200CD5749 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 041282EB279ECF3D0071BD86 /* vox.math */;
+			targetProxy = 047BB5992800148200CD5749 /* PBXContainerItemProxy */;
 		};
 		047BF1E727AFAFDF003F3599 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4819,6 +4894,42 @@
 			};
 			name = Release;
 		};
+		047BB5932800140A00CD5749 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4SL5L673UU;
+				EXECUTABLE_PREFIX = lib;
+				GCC_ENABLE_CPP_EXCEPTIONS = YES;
+				GCC_ENABLE_CPP_RTTI = YES;
+				HEADER_SEARCH_PATHS = (
+					./vox.math,
+					./vox.geometry,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		047BB5942800140A00CD5749 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4SL5L673UU;
+				EXECUTABLE_PREFIX = lib;
+				GCC_ENABLE_CPP_EXCEPTIONS = YES;
+				GCC_ENABLE_CPP_RTTI = YES;
+				HEADER_SEARCH_PATHS = (
+					./vox.math,
+					./vox.geometry,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 		047BF1C327AFAE81003F3599 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -5171,6 +5282,15 @@
 			buildConfigurations = (
 				043B7B62278C4C5A00D5648F /* Debug */,
 				043B7B63278C4C5A00D5648F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		047BB5922800140A00CD5749 /* Build configuration list for PBXNativeTarget "vox.geometry" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				047BB5932800140A00CD5749 /* Debug */,
+				047BB5942800140A00CD5749 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
