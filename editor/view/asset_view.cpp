@@ -6,7 +6,7 @@
 
 #include "asset_view.h"
 #include "camera.h"
-
+#include "entity.h"
 #include "mesh/primitive_mesh.h"
 #include "mesh/mesh_renderer.h"
 #include "material/blinn_phong_material.h"

@@ -4311,11 +4311,10 @@
 					./third_party/glog/build,
 					./third_party/glog/src,
 					./third_party/gflags/builds/include,
+					./third_party/dawn,
 					./third_party/dawn/include,
 					"./third_party/dawn/cmake-debug/gen/include",
 					./third_party/dawn/third_party/glfw/include,
-					./third_party/dawn/third_party/tint,
-					./third_party/dawn/third_party/tint/include,
 					./third_party/fmt/include,
 					./third_party/stb,
 					./third_party/tinyobj,
@@ -4349,7 +4348,7 @@
 					./third_party/rttr/build/src,
 					./third_party/nlohmann/single_include,
 					./third_party/sol2/single/include,
-					/usr/local/Cellar/lua/5.4.4/include/lua,
+					/usr/local/include/lua,
 				);
 			};
 			name = Debug;
@@ -4385,11 +4384,10 @@
 					./third_party/glog/build,
 					./third_party/glog/src,
 					./third_party/gflags/builds/include,
+					./third_party/dawn,
 					./third_party/dawn/include,
 					"./third_party/dawn/cmake-release/gen/include",
 					./third_party/dawn/third_party/glfw/include,
-					./third_party/dawn/third_party/tint,
-					./third_party/dawn/third_party/tint/include,
 					./third_party/fmt/include,
 					./third_party/stb,
 					./third_party/tinyobj,
@@ -4423,7 +4421,7 @@
 					./third_party/rttr/build/src,
 					./third_party/nlohmann/single_include,
 					./third_party/sol2/single/include,
-					/usr/local/Cellar/lua/5.4.4/include/lua,
+					/usr/local/include/lua,
 				);
 			};
 			name = Release;
@@ -4579,7 +4577,7 @@
 					"./third_party/dawn/cmake-debug/src/dawn/native",
 					"./third_party/dawn/cmake-debug/src/dawn/platform",
 					"./third_party/dawn/cmake-debug/src/dawn/wire",
-					"./third_party/dawn/cmake-debug/third_party/tint/src/tint",
+					"./third_party/dawn/cmake-debug/src/tint",
 					"./third_party/dawn/cmake-debug/third_party/spirv-tools/source",
 					"./third_party/dawn/cmake-debug/third_party/spirv-tools/source/opt",
 					"./third_party/dawn/cmake-debug/third_party/abseil/absl/strings",
@@ -4642,11 +4640,10 @@
 					./third_party/glog/build,
 					./third_party/glog/src,
 					./third_party/gflags/builds/include,
+					./third_party/dawn,
 					./third_party/dawn/include,
 					./third_party/dawn/third_party/glfw/include,
 					"./third_party/dawn/cmake-debug/gen/include",
-					./third_party/dawn/third_party/tint,
-					./third_party/dawn/third_party/tint/include,
 					./third_party/fmt/include,
 					./third_party/stb,
 					./third_party/tinyobj,
@@ -4678,7 +4675,7 @@
 					./third_party/tinyxml2,
 					./third_party/nlohmann/single_include,
 					./third_party/sol2/single/include,
-					/usr/local/Cellar/lua/5.4.4/include/lua,
+					/usr/local/include/lua,
 				);
 				USE_HEADERMAP = NO;
 			};
@@ -4720,7 +4717,7 @@
 					"./third_party/dawn/cmake-release/src/dawn/native",
 					"./third_party/dawn/cmake-release/src/dawn/platform",
 					"./third_party/dawn/cmake-release/src/dawn/wire",
-					"./third_party/dawn/cmake-release/third_party/tint/src/tint",
+					"./third_party/dawn/cmake-release/src/tint",
 					"./third_party/dawn/cmake-release/third_party/spirv-tools/source",
 					"./third_party/dawn/cmake-release/third_party/spirv-tools/source/opt",
 					"./third_party/dawn/cmake-release/third_party/abseil/absl/strings",
@@ -4783,11 +4780,10 @@
 					./third_party/glog/build,
 					./third_party/glog/src,
 					./third_party/gflags/builds/include,
+					./third_party/dawn,
 					./third_party/dawn/include,
 					"./third_party/dawn/cmake-release/gen/include",
 					./third_party/dawn/third_party/glfw/include,
-					./third_party/dawn/third_party/tint,
-					./third_party/dawn/third_party/tint/include,
 					./third_party/fmt/include,
 					./third_party/stb,
 					./third_party/tinyobj,
@@ -4819,7 +4815,7 @@
 					./third_party/tinyxml2,
 					./third_party/nlohmann/single_include,
 					./third_party/sol2/single/include,
-					/usr/local/Cellar/lua/5.4.4/include/lua,
+					/usr/local/include/lua,
 				);
 				USE_HEADERMAP = NO;
 			};
@@ -4867,7 +4863,7 @@
 					"./third_party/dawn/cmake-debug/src/dawn/native",
 					"./third_party/dawn/cmake-debug/src/dawn/platform",
 					"./third_party/dawn/cmake-debug/src/dawn/wire",
-					"./third_party/dawn/cmake-debug/third_party/tint/src/tint",
+					"./third_party/dawn/cmake-debug/src/tint",
 					"./third_party/dawn/cmake-debug/third_party/spirv-tools/source",
 					"./third_party/dawn/cmake-debug/third_party/spirv-tools/source/opt",
 					"./third_party/dawn/cmake-debug/third_party/abseil/absl/strings",
@@ -4936,11 +4932,10 @@
 					./third_party/glog/build,
 					./third_party/glog/src,
 					./third_party/gflags/builds/include,
+					./third_party/dawn,
 					./third_party/dawn/include,
 					"./third_party/dawn/cmake-debug/gen/include",
 					./third_party/dawn/third_party/glfw/include,
-					./third_party/dawn/third_party/tint,
-					./third_party/dawn/third_party/tint/include,
 					./third_party/fmt/include,
 					./third_party/stb,
 					./third_party/tinyobj,
@@ -4977,7 +4972,7 @@
 					./third_party/tinyxml2,
 					./third_party/nlohmann/single_include,
 					./third_party/sol2/single/include,
-					/usr/local/Cellar/lua/5.4.4/include/lua,
+					/usr/local/include/lua,
 				);
 			};
 			name = Debug;
@@ -5020,7 +5015,7 @@
 					"./third_party/dawn/cmake-release/src/dawn/native",
 					"./third_party/dawn/cmake-release/src/dawn/platform",
 					"./third_party/dawn/cmake-release/src/dawn/wire",
-					"./third_party/dawn/cmake-release/third_party/tint/src/tint",
+					"./third_party/dawn/cmake-release/src/tint",
 					"./third_party/dawn/cmake-release/third_party/spirv-tools/source",
 					"./third_party/dawn/cmake-release/third_party/spirv-tools/source/opt",
 					"./third_party/dawn/cmake-release/third_party/abseil/absl/strings",
@@ -5089,11 +5084,10 @@
 					./third_party/glog/build,
 					./third_party/glog/src,
 					./third_party/gflags/builds/include,
+					./third_party/dawn,
 					./third_party/dawn/include,
 					"./third_party/dawn/cmake-release/gen/include",
 					./third_party/dawn/third_party/glfw/include,
-					./third_party/dawn/third_party/tint,
-					./third_party/dawn/third_party/tint/include,
 					./third_party/fmt/include,
 					./third_party/stb,
 					./third_party/tinyobj,
@@ -5130,7 +5124,7 @@
 					./third_party/tinyxml2,
 					./third_party/nlohmann/single_include,
 					./third_party/sol2/single/include,
-					/usr/local/Cellar/lua/5.4.4/include/lua,
+					/usr/local/include/lua,
 				);
 			};
 			name = Release;

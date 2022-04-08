@@ -21,7 +21,7 @@ inline Entity* EditorActions::createMonoComponentEntity(bool p_focusOnCreation, 
     instance->name = component->name();
 
     if (p_focusOnCreation)
-        selectEntity(instance.get());
+        selectEntity(instance);
 
     return instance;
 }

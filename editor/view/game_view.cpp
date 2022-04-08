@@ -6,6 +6,7 @@
 
 #include "game_view.h"
 #include "camera.h"
+#include "entity.h"
 #include "rendering/subpasses/forward_subpass.h"
 
 namespace vox {

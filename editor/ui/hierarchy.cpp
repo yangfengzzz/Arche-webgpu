@@ -166,7 +166,7 @@ void Hierarchy::unselectEntitiesWidgets() {
 void Hierarchy::selectEntityByInstance(Entity* p_entity) {
     auto result = std::find_if(_widgetEntityLink.begin(), _widgetEntityLink.end(),
                                [p_entity](const std::pair<Entity*, TreeNode *>& link){
-        return link.first == p_entity.get();
+        return link.first == p_entity;
     });
     
     if (result != _widgetEntityLink.end())
