@@ -206,6 +206,8 @@
 		047BB5A72800FA6F00CD5749 /* random.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BB5A52800FA6F00CD5749 /* random.h */; };
 		047BB5AB28016D3100CD5749 /* raw_volume.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BB5A928016D3100CD5749 /* raw_volume.cpp */; };
 		047BB5AC28016D3100CD5749 /* raw_volume.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BB5AA28016D3100CD5749 /* raw_volume.h */; };
+		047BB5B12801774900CD5749 /* paged_volume.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BB5AF2801774900CD5749 /* paged_volume.cpp */; };
+		047BB5B22801774900CD5749 /* paged_volume.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BB5B02801774900CD5749 /* paged_volume.h */; };
 		047BEFD627A4BFD9003F3599 /* wgsl_common_vert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BEFD427A4BFD9003F3599 /* wgsl_common_vert.cpp */; };
 		047BEFD727A4BFD9003F3599 /* wgsl_common_vert.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BEFD527A4BFD9003F3599 /* wgsl_common_vert.h */; };
 		047BEFDA27A4DB63003F3599 /* wgsl_encoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BEFD827A4DB63003F3599 /* wgsl_encoder.cpp */; };
@@ -1064,6 +1066,10 @@
 		047BB5A82800FB0100CD5749 /* algorithm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = algorithm.h; sourceTree = "<group>"; };
 		047BB5A928016D3100CD5749 /* raw_volume.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = raw_volume.cpp; sourceTree = "<group>"; };
 		047BB5AA28016D3100CD5749 /* raw_volume.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = raw_volume.h; sourceTree = "<group>"; };
+		047BB5AD2801769A00CD5749 /* raw_volume_move_wrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = raw_volume_move_wrapper.h; sourceTree = "<group>"; };
+		047BB5AE280176E400CD5749 /* raw_volume_wrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = raw_volume_wrapper.h; sourceTree = "<group>"; };
+		047BB5AF2801774900CD5749 /* paged_volume.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = paged_volume.cpp; sourceTree = "<group>"; };
+		047BB5B02801774900CD5749 /* paged_volume.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = paged_volume.h; sourceTree = "<group>"; };
 		047BEFD427A4BFD9003F3599 /* wgsl_common_vert.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_common_vert.cpp; sourceTree = "<group>"; };
 		047BEFD527A4BFD9003F3599 /* wgsl_common_vert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_common_vert.h; sourceTree = "<group>"; };
 		047BEFD827A4DB63003F3599 /* wgsl_encoder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_encoder.cpp; sourceTree = "<group>"; };
@@ -2410,6 +2416,10 @@
 				047BB5A02800F6FC00CD5749 /* region.cpp */,
 				047BB5AA28016D3100CD5749 /* raw_volume.h */,
 				047BB5A928016D3100CD5749 /* raw_volume.cpp */,
+				047BB5AE280176E400CD5749 /* raw_volume_wrapper.h */,
+				047BB5AD2801769A00CD5749 /* raw_volume_move_wrapper.h */,
+				047BB5B02801774900CD5749 /* paged_volume.h */,
+				047BB5AF2801774900CD5749 /* paged_volume.cpp */,
 			);
 			path = vox.geometry;
 			sourceTree = "<group>";
@@ -3680,6 +3690,7 @@
 			files = (
 				047BB5A32800F6FC00CD5749 /* region.h in Headers */,
 				047BB5AC28016D3100CD5749 /* raw_volume.h in Headers */,
+				047BB5B22801774900CD5749 /* paged_volume.h in Headers */,
 				047BB5982800142D00CD5749 /* voxel.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4211,6 +4222,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				047BB5AB28016D3100CD5749 /* raw_volume.cpp in Sources */,
+				047BB5B12801774900CD5749 /* paged_volume.cpp in Sources */,
 				047BB5972800142D00CD5749 /* voxel.cpp in Sources */,
 				047BB5A22800F6FC00CD5749 /* region.cpp in Sources */,
 			);
