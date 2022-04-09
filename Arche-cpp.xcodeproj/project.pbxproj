@@ -208,6 +208,8 @@
 		047BB5AC28016D3100CD5749 /* raw_volume.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BB5AA28016D3100CD5749 /* raw_volume.h */; };
 		047BB5B12801774900CD5749 /* paged_volume.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BB5AF2801774900CD5749 /* paged_volume.cpp */; };
 		047BB5B22801774900CD5749 /* paged_volume.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BB5B02801774900CD5749 /* paged_volume.h */; };
+		047BB5B528017A0700CD5749 /* paged_volume_wrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BB5B328017A0700CD5749 /* paged_volume_wrapper.cpp */; };
+		047BB5B628017A0700CD5749 /* paged_volume_wrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BB5B428017A0700CD5749 /* paged_volume_wrapper.h */; };
 		047BEFD627A4BFD9003F3599 /* wgsl_common_vert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BEFD427A4BFD9003F3599 /* wgsl_common_vert.cpp */; };
 		047BEFD727A4BFD9003F3599 /* wgsl_common_vert.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BEFD527A4BFD9003F3599 /* wgsl_common_vert.h */; };
 		047BEFDA27A4DB63003F3599 /* wgsl_encoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BEFD827A4DB63003F3599 /* wgsl_encoder.cpp */; };
@@ -1070,6 +1072,9 @@
 		047BB5AE280176E400CD5749 /* raw_volume_wrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = raw_volume_wrapper.h; sourceTree = "<group>"; };
 		047BB5AF2801774900CD5749 /* paged_volume.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = paged_volume.cpp; sourceTree = "<group>"; };
 		047BB5B02801774900CD5749 /* paged_volume.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = paged_volume.h; sourceTree = "<group>"; };
+		047BB5B328017A0700CD5749 /* paged_volume_wrapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = paged_volume_wrapper.cpp; sourceTree = "<group>"; };
+		047BB5B428017A0700CD5749 /* paged_volume_wrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = paged_volume_wrapper.h; sourceTree = "<group>"; };
+		047BB5B728017B0F00CD5749 /* morton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = morton.h; sourceTree = "<group>"; };
 		047BEFD427A4BFD9003F3599 /* wgsl_common_vert.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_common_vert.cpp; sourceTree = "<group>"; };
 		047BEFD527A4BFD9003F3599 /* wgsl_common_vert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_common_vert.h; sourceTree = "<group>"; };
 		047BEFD827A4DB63003F3599 /* wgsl_encoder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_encoder.cpp; sourceTree = "<group>"; };
@@ -2410,6 +2415,7 @@
 		047BB58B2800140A00CD5749 /* vox.geometry */ = {
 			isa = PBXGroup;
 			children = (
+				047BB5B728017B0F00CD5749 /* morton.h */,
 				047BB5962800142D00CD5749 /* voxel.h */,
 				047BB5952800142D00CD5749 /* voxel.cpp */,
 				047BB5A12800F6FC00CD5749 /* region.h */,
@@ -2420,6 +2426,8 @@
 				047BB5AD2801769A00CD5749 /* raw_volume_move_wrapper.h */,
 				047BB5B02801774900CD5749 /* paged_volume.h */,
 				047BB5AF2801774900CD5749 /* paged_volume.cpp */,
+				047BB5B428017A0700CD5749 /* paged_volume_wrapper.h */,
+				047BB5B328017A0700CD5749 /* paged_volume_wrapper.cpp */,
 			);
 			path = vox.geometry;
 			sourceTree = "<group>";
@@ -3691,6 +3699,7 @@
 				047BB5A32800F6FC00CD5749 /* region.h in Headers */,
 				047BB5AC28016D3100CD5749 /* raw_volume.h in Headers */,
 				047BB5B22801774900CD5749 /* paged_volume.h in Headers */,
+				047BB5B628017A0700CD5749 /* paged_volume_wrapper.h in Headers */,
 				047BB5982800142D00CD5749 /* voxel.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4224,6 +4233,7 @@
 				047BB5AB28016D3100CD5749 /* raw_volume.cpp in Sources */,
 				047BB5B12801774900CD5749 /* paged_volume.cpp in Sources */,
 				047BB5972800142D00CD5749 /* voxel.cpp in Sources */,
+				047BB5B528017A0700CD5749 /* paged_volume_wrapper.cpp in Sources */,
 				047BB5A22800F6FC00CD5749 /* region.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
