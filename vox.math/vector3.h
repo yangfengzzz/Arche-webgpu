@@ -24,9 +24,6 @@ namespace vox {
 template<typename T>
 class Vector<T, 3> final {
 public:
-    static_assert(std::is_floating_point<T>::value,
-                  "Vector only can be instantiated with floating point types");
-    
     //! X (or the first) component of the vector.
     T x;
     

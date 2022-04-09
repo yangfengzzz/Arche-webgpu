@@ -200,6 +200,10 @@
 		047BB5972800142D00CD5749 /* voxel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BB5952800142D00CD5749 /* voxel.cpp */; };
 		047BB5982800142D00CD5749 /* voxel.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BB5962800142D00CD5749 /* voxel.h */; };
 		047BB59B2800148600CD5749 /* libvox.math.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 041282EC279ECF3D0071BD86 /* libvox.math.a */; };
+		047BB5A22800F6FC00CD5749 /* region.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BB5A02800F6FC00CD5749 /* region.cpp */; };
+		047BB5A32800F6FC00CD5749 /* region.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BB5A12800F6FC00CD5749 /* region.h */; };
+		047BB5A62800FA6F00CD5749 /* random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BB5A42800FA6F00CD5749 /* random.cpp */; };
+		047BB5A72800FA6F00CD5749 /* random.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BB5A52800FA6F00CD5749 /* random.h */; };
 		047BEFD627A4BFD9003F3599 /* wgsl_common_vert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BEFD427A4BFD9003F3599 /* wgsl_common_vert.cpp */; };
 		047BEFD727A4BFD9003F3599 /* wgsl_common_vert.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BEFD527A4BFD9003F3599 /* wgsl_common_vert.h */; };
 		047BEFDA27A4DB63003F3599 /* wgsl_encoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BEFD827A4DB63003F3599 /* wgsl_encoder.cpp */; };
@@ -1051,6 +1055,11 @@
 		047BB58A2800140A00CD5749 /* libvox.geometry.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libvox.geometry.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		047BB5952800142D00CD5749 /* voxel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = voxel.cpp; sourceTree = "<group>"; };
 		047BB5962800142D00CD5749 /* voxel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voxel.h; sourceTree = "<group>"; };
+		047BB5A02800F6FC00CD5749 /* region.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = region.cpp; sourceTree = "<group>"; };
+		047BB5A12800F6FC00CD5749 /* region.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = region.h; sourceTree = "<group>"; };
+		047BB5A42800FA6F00CD5749 /* random.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = random.cpp; sourceTree = "<group>"; };
+		047BB5A52800FA6F00CD5749 /* random.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = random.h; sourceTree = "<group>"; };
+		047BB5A82800FB0100CD5749 /* algorithm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = algorithm.h; sourceTree = "<group>"; };
 		047BEFD427A4BFD9003F3599 /* wgsl_common_vert.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_common_vert.cpp; sourceTree = "<group>"; };
 		047BEFD527A4BFD9003F3599 /* wgsl_common_vert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wgsl_common_vert.h; sourceTree = "<group>"; };
 		047BEFD827A4DB63003F3599 /* wgsl_encoder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wgsl_encoder.cpp; sourceTree = "<group>"; };
@@ -1832,6 +1841,9 @@
 				041282FF279ECF6B0071BD86 /* functors.h */,
 				04128331279ECF6D0071BD86 /* math_utils.h */,
 				04128317279ECF6C0071BD86 /* math_utils-inl.h */,
+				047BB5A82800FB0100CD5749 /* algorithm.h */,
+				047BB5A52800FA6F00CD5749 /* random.h */,
+				047BB5A42800FA6F00CD5749 /* random.cpp */,
 				0412834D279ECF6E0071BD86 /* vector_expression.h */,
 				04128302279ECF6B0071BD86 /* vector_expression-inl.h */,
 				04128309279ECF6B0071BD86 /* vector.h */,
@@ -2390,6 +2402,8 @@
 			children = (
 				047BB5962800142D00CD5749 /* voxel.h */,
 				047BB5952800142D00CD5749 /* voxel.cpp */,
+				047BB5A12800F6FC00CD5749 /* region.h */,
+				047BB5A02800F6FC00CD5749 /* region.cpp */,
 			);
 			path = vox.geometry;
 			sourceTree = "<group>";
@@ -3310,6 +3324,7 @@
 				04128351279ECF6E0071BD86 /* level_set_utils-inl.h in Headers */,
 				04128393279ECF6E0071BD86 /* vector3.h in Headers */,
 				04128357279ECF6E0071BD86 /* bounding_plane2-inl.h in Headers */,
+				047BB5A72800FA6F00CD5749 /* random.h in Headers */,
 				04128386279ECF6E0071BD86 /* point3.h in Headers */,
 				04128364279ECF6E0071BD86 /* vector3-inl.h in Headers */,
 				04128362279ECF6E0071BD86 /* list_query_engine3.h in Headers */,
@@ -3657,6 +3672,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				047BB5A32800F6FC00CD5749 /* region.h in Headers */,
 				047BB5982800142D00CD5749 /* voxel.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3831,6 +3847,7 @@
 			files = (
 				04FE6BE127EC9E5E00D7DB2D /* color.cpp in Sources */,
 				04128358279ECF6E0071BD86 /* bounding_frustum.cpp in Sources */,
+				047BB5A62800FA6F00CD5749 /* random.cpp in Sources */,
 				04128353279ECF6E0071BD86 /* collision_utils.cpp in Sources */,
 				04128390279ECF6E0071BD86 /* parallel.cpp in Sources */,
 				04128378279ECF6E0071BD86 /* spherical_harmonics3.cpp in Sources */,
@@ -4187,6 +4204,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				047BB5972800142D00CD5749 /* voxel.cpp in Sources */,
+				047BB5A22800F6FC00CD5749 /* region.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4909,6 +4927,10 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					./third_party/glog/build,
+					./third_party/glog/src,
+				);
 			};
 			name = Debug;
 		};
@@ -4927,6 +4949,10 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					./third_party/glog/build,
+					./third_party/glog/src,
+				);
 			};
 			name = Release;
 		};
