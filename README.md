@@ -2,9 +2,13 @@
 
 This project is a part of its WebGPU development, if you want to know about the implementation of web
 WebGPU ([WebGPU](https://github.com/gpuweb/types))
-Engine, please refer to [Oasis-WebGPU](https://github.com/yangfengzzz/Oasis-WebGPU) and is currently mainly adapted to
+Engine, please refer to [Arche.js](https://github.com/ArcheGraphics/Arche.js) and is currently mainly adapted to
 the [Canary version of Chrome](https://www.google.com/intl/zh-CN/chrome/canary/). This repository is about the
 implementation of Native WebGPU ([Dawn](https://dawn.googlesource.com/dawn)) Engine.
+
+Since the WGSL shading language cannot meet the needs of advanced features, a cross-platform engine [DigitalVox5](https://github.com/yangfengzzz/DigitalVox5) is re-implemented based on Vulkan. The engine is based on the capabilities provided by SPIRV as a shader for cross-platform compilation and reflection, and is built with Cmake, which truly enables cross-platform compilation and execution.
+
+**In the future, Vulkan will be used as the core bottom layer of the Native engine, and WebGPU will continue to be developed as the core bottom layer of the Web engine.**
 
 ## Motivation
 
