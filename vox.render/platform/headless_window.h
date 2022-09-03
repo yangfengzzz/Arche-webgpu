@@ -18,17 +18,7 @@ public:
 
     ~HeadlessWindow() override = default;
 
-    /**
-     * @brief A direct window doesn't have a surface
-     * @returns VK_NULL_HANDLE
-     */
-    VkSurfaceKHR CreateSurface(Instance &instance) override;
-
-    /**
-     * @brief A direct window doesn't have a surface
-     * @returns nullptr
-     */
-    VkSurfaceKHR CreateSurface(VkInstance instance, VkPhysicalDevice physical_device) override;
+    std::unique_ptr<BackendBinding> createBackendBinding(wgpu::Device &device) override { return nullptr; }
 
     bool ShouldClose() override;
 

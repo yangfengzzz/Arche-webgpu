@@ -12,7 +12,6 @@
 
 #include "vox.render/helper.h"
 #include "vox.math/vector3.h"
-#include "vox.render/error.h"
 
 namespace vox {
 namespace field {
@@ -42,7 +41,7 @@ struct Static : public Base {
 
     ~Static() override = default;
 
-    std::string to_string() override { return vox::ToString(value); }
+    std::string to_string() override { return utility::ToString(value); }
 };
 
 /**
@@ -58,7 +57,7 @@ struct Dynamic : public Base {
 
     ~Dynamic() override = default;
 
-    std::string to_string() override { return vox::ToString(value); }
+    std::string to_string() override { return utility::ToString(value); }
 };
 
 /**
@@ -77,7 +76,7 @@ struct Vector final : public Static<T> {
     virtual ~Vector() = default;
 
     std::string to_string() override {
-        return "x: " + vox::ToString(x) + " " + "y: " + vox::ToString(y) + " " + "z: " + vox::ToString(z);
+        return "x: " + utility::ToString(x) + " " + "y: " + utility::ToString(y) + " " + "z: " + utility::ToString(z);
     }
 };
 
@@ -107,8 +106,8 @@ struct MinMax final : public Dynamic<T> {
             min = Dynamic<T>::value;
         }
 
-        return "current: " + vox::ToString(Dynamic<T>::value) + " min: " + vox::ToString(min) +
-               " max: " + vox::ToString(max);
+        return "current: " + utility::ToString(Dynamic<T>::value) + " min: " + utility::ToString(min) +
+               " max: " + utility::ToString(max);
     }
 };
 }  // namespace field

@@ -6,15 +6,9 @@
 
 #include "vox.render/platform/filesystem.h"
 
-#include "vox.render/error.h"
-
-VKBP_DISABLE_WARNINGS()
-
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 
 #include <stb_image_write.h>
-
-VKBP_ENABLE_WARNINGS()
 
 #include "vox.render/platform/platform.h"
 

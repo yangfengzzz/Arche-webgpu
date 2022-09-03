@@ -138,35 +138,11 @@ void Platform::Update() {
     }
 }
 
-std::unique_ptr<RenderContext> Platform::CreateRenderContext(
-        Device &device, VkSurfaceKHR surface, const std::vector<VkSurfaceFormatKHR> &surface_format_priority) const {
-    assert(!surface_format_priority.empty() &&
-           "Surface format priority list must contain at least one preferred surface format");
-
+std::unique_ptr<RenderContext> Platform::CreateRenderContext(wgpu::Device& device) {
+    binding_ = window_->createBackendBinding(device);
     auto extent = window_->GetExtent();
-    auto context = std::make_unique<RenderContext>(device, surface, extent.width, extent.height);
-
-    context->SetSurfaceFormatPriority(surface_format_priority);
-
-    context->RequestImageFormat(surface_format_priority[0].format);
-
-    context->SetPresentModePriority({
-            VK_PRESENT_MODE_MAILBOX_KHR,
-            VK_PRESENT_MODE_FIFO_KHR,
-            VK_PRESENT_MODE_IMMEDIATE_KHR,
-    });
-
-    switch (window_properties_.vsync) {
-        case Window::Vsync::ON:
-            context->RequestPresentMode(VK_PRESENT_MODE_FIFO_KHR);
-            break;
-        case Window::Vsync::OFF:
-        default:
-            context->RequestPresentMode(VK_PRESENT_MODE_MAILBOX_KHR);
-            break;
-    }
-
-    return context;
+    auto scale = window_->GetContentScaleFactor();
+    return std::make_unique<RenderContext>(binding_.get(), extent.width * scale, extent.height * scale);
 }
 
 void Platform::Terminate(ExitCode code) {

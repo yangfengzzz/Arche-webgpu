@@ -5,16 +5,10 @@
 //  property of any third parties.
 
 #include "vox.render/platform/unix/unix_platform.h"
-
-#include "vox.render/error.h"
 #include "vox.render/platform/glfw_window.h"
 #include "vox.render/platform/headless_window.h"
-
-VKBP_DISABLE_WARNINGS()
-
 #include <spdlog/sinks/stdout_color_sinks.h>
 
-VKBP_ENABLE_WARNINGS()
 
 #ifndef VK_MVK_MACOS_SURFACE_EXTENSION_NAME
 #define VK_MVK_MACOS_SURFACE_EXTENSION_NAME "VK_MVK_macos_surface"

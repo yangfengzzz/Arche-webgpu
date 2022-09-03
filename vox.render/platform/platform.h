@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 
-#include "vox.render/core/device.h"
 #include "vox.render/platform/application.h"
 #include "vox.render/platform/filesystem.h"
 #include "vox.render/platform/parser.h"
@@ -18,7 +17,7 @@
 #include "vox.render/platform/window.h"
 #include "vox.render/rendering/render_context.h"
 #include "vox.render/utils.h"
-#include "vox.render/vk_common.h"
+#include "vox.base/logging.h"
 
 #if defined(VK_USE_PLATFORM_XLIB_KHR)
 #undef Success
@@ -67,14 +66,14 @@ public:
      * @brief Requests to close the platform at the next available point
      */
     virtual void Close();
-
-    virtual std::unique_ptr<RenderContext> CreateRenderContext(
-            Device &device, VkSurfaceKHR surface, const std::vector<VkSurfaceFormatKHR> &surface_format_priority) const;
-
-    virtual void Resize(uint32_t win_width, uint32_t win_height, uint32_t fb_width, uint32_t fb_height);
-
-    virtual void InputEvent(const InputEvent &input_event);
-
+    
+    virtual void Resize(uint32_t win_width, uint32_t win_height,
+                        uint32_t fb_width, uint32_t fb_height);
+        
+    virtual void InputEvent(const InputEvent &inputEvent);
+    
+    virtual std::unique_ptr<RenderContext> CreateRenderContext(wgpu::Device& device);
+        
 public:
     Window &GetWindow();
 
@@ -143,6 +142,8 @@ protected:
     std::unique_ptr<Window> window_{nullptr};
 
     std::unique_ptr<Application> active_app_{nullptr};
+
+    std::unique_ptr<BackendBinding> binding_{nullptr};
 
     virtual std::vector<spdlog::sink_ptr> GetPlatformSinks();
 

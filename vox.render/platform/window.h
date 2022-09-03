@@ -6,8 +6,10 @@
 
 #pragma once
 
-#include "vox.render/core/instance.h"
-#include "vox.render/vk_common.h"
+#include <optional>
+#include <string>
+
+#include "utils/backend_binding.h"
 
 namespace vox {
 /**
@@ -53,20 +55,7 @@ public:
 
     virtual ~Window() = default;
 
-    /**
-     * @brief Gets a handle_ from the platform's Vulkan surface
-     * @param instance A Vulkan instance
-     * @returns A VkSurfaceKHR handle_, for use by the application
-     */
-    virtual VkSurfaceKHR CreateSurface(Instance &instance) = 0;
-
-    /**
-     * @brief Gets a handle_ from the platform's Vulkan surface
-     * @param instance A Vulkan instance
-     * @param physical_device A Vulkan PhysicalDevice
-     * @returns A VkSurfaceKHR handle_, for use by the application
-     */
-    virtual VkSurfaceKHR CreateSurface(VkInstance instance, VkPhysicalDevice physical_device) = 0;
+    virtual std::unique_ptr<BackendBinding> createBackendBinding(wgpu::Device &device) = 0;
 
     /**
      * @brief Checks if the window should be closed

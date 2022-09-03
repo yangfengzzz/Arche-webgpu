@@ -9,10 +9,6 @@
 namespace vox {
 HeadlessWindow::HeadlessWindow(const Window::Properties &properties) : Window(properties) {}
 
-VkSurfaceKHR HeadlessWindow::CreateSurface(Instance &instance) { return VK_NULL_HANDLE; }
-
-VkSurfaceKHR HeadlessWindow::CreateSurface(VkInstance, VkPhysicalDevice) { return VK_NULL_HANDLE; }
-
 bool HeadlessWindow::ShouldClose() { return closed_; }
 
 void HeadlessWindow::Close() { closed_ = true; }

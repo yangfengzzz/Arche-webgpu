@@ -181,6 +181,12 @@ set(CORE_FILES
         core/shader_binding_table.cpp
         core/vulkan_resource.cpp)
 
+set(DAWN_FILES
+        utils/backend_binding.h
+        utils/backend_binding.cpp
+        utils/metal_binding.mm
+        utils/null_binding.cpp)
+
 set(PLATFORM_FILES
         # Header Files
         platform/application.h
@@ -584,7 +590,8 @@ source_group("stats\\" FILES ${STATS_FILES})
 source_group("graphing\\" FILES ${GRAPHING_FILES})
 
 set(PROJECT_FILES
-#        ${PLATFORM_FILES}
+        ${DAWN_FILES}
+        ${PLATFORM_FILES}
 #        ${PARSER_FILES}
 #        ${COMMON_FILES}
 #        ${FRAMEWORK_FILES}
@@ -604,7 +611,7 @@ set(PROJECT_FILES
 #        ${LIGHT_FILE}
 #        ${SHADOW_FILE}
 #        ${PARTICLE_FILE}
-#        ${PLUGINS_FILE}
+        ${PLUGINS_FILE}
 #        ${GRAPHING_FILES}
 #        ${LUA_FILES}
         )
@@ -676,18 +683,21 @@ endif ()
 
 target_include_directories(${PROJECT_NAME} PUBLIC ../
         ${CMAKE_CURRENT_SOURCE_DIR} ${LOADER_SOURCE} ${LUA_SOURCE}
-        ../third_party/nlohmann/include)
+        ../third_party/nlohmann/include
+        ../third_party/dawn/cmake-release/gen/include
+        ../third_party/dawn/include
+        ../third_party/dawn)
+
+target_compile_definitions(${PROJECT_NAME} PUBLIC DAWN_ENABLE_BACKEND_METAL DAWN_ENABLE_BACKEND_NULL TINT_BUILD_WGSL_READER)
 
 # Link third party libraries
 target_link_libraries(${PROJECT_NAME} PUBLIC
-        volk
         ktx
         stb
         astc
         imgui
         glslang
         SPIRV
-        vma
         hwcpipe
         spirv-cross-glsl
         glslang-default-resource-limits

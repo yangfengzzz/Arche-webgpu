@@ -15,8 +15,8 @@
 #ifndef UTILS_BACKENDBINDING_H_
 #define UTILS_BACKENDBINDING_H_
 
-#include <webgpu/webgpu_cpp.h>
 #include <dawn/native/DawnNative.h>
+#include <webgpu/webgpu_cpp.h>
 
 struct GLFWwindow;
 
@@ -24,23 +24,21 @@ namespace vox {
 class BackendBinding {
 public:
     virtual ~BackendBinding() = default;
-    
+
     virtual uint64_t swapChainImplementation() = 0;
-    
+
     virtual wgpu::TextureFormat preferredSwapChainTextureFormat() = 0;
-    
+
     wgpu::Device& device();
-    
+
 protected:
     BackendBinding(GLFWwindow* window, wgpu::Device& device);
-    
+
     GLFWwindow* _window = nullptr;
     wgpu::Device& _device;
 };
 
-void discoverAdapter(dawn::native::Instance* instance,
-                     GLFWwindow* window,
-                     wgpu::BackendType type);
+void discoverAdapter(dawn::native::Instance* instance, GLFWwindow* window, wgpu::BackendType type);
 std::unique_ptr<BackendBinding> createBinding(wgpu::BackendType type, GLFWwindow* window, wgpu::Device& device);
 
 }  // namespace vox

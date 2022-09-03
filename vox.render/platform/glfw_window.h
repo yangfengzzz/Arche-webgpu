@@ -7,7 +7,6 @@
 #pragma once
 
 #include "vox.render/platform/window.h"
-#include "vox.render/vk_common.h"
 
 struct GLFWwindow;
 
@@ -23,9 +22,7 @@ public:
 
     ~GlfwWindow() override;
 
-    VkSurfaceKHR CreateSurface(Instance &instance) override;
-
-    VkSurfaceKHR CreateSurface(VkInstance instance, VkPhysicalDevice physical_device) override;
+    std::unique_ptr<BackendBinding> createBackendBinding(wgpu::Device& device) override;
 
     bool ShouldClose() override;
 
