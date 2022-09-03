@@ -8,51 +8,14 @@ cmake_minimum_required(VERSION 3.12)
 
 project(vox.render LANGUAGES C CXX)
 
-set(FRAMEWORK_FILES
-        # Header Files
-        buffer_pool.h
-        debug_info.h
-        fence_pool.h
-        semaphore_pool.h
-        resource_binding_state.h
-        resource_cache.h
-        resource_record.h
-        resource_replay.h
-        graphics_application.h
-        forward_application.h
-        camera.h
-        scene_animator.h
-        scene_animation_clip.h
-        # Source Files
-        debug_info.cpp
-        buffer_pool.cpp
-        fence_pool.cpp
-        semaphore_pool.cpp
-        resource_binding_state.cpp
-        resource_cache.cpp
-        resource_record.cpp
-        resource_replay.cpp
-        graphics_application.cpp
-        forward_application.cpp
-        camera.cpp
-        scene_animator.cpp
-        scene_animation_clip.cpp
-        )
-
 set(COMMON_FILES
         # Header Files
         event.h
         event-inl.h
-        vk_common.h
-        vk_initializers.h
-        resource_caching.h
-        error.h
         utils.h
         strings.h
         tags.h
         # Source Files
-        error.cpp
-        vk_common.cpp
         utils.cpp
         strings.cpp)
 
@@ -77,31 +40,11 @@ set(RENDERING_FILES
         rendering/subpasses/skybox_subpass.h
         rendering/subpasses/skybox_subpass.cpp)
 
-set(SCENE_RESOURCE_FILES
-        # Header Files
-        renderer.h
-        texture_manager.h
-        texture.h
-        texture/astc_tex.h
-        texture/ktx_tex.h
-        texture/stb_tex.h
-        # Source Files
-        renderer.cpp
-        texture_manager.cpp
-        texture.cpp
-        texture/astc_tex.cpp
-        texture/ktx_tex.cpp
-        texture/stb_tex.cpp)
+file(GLOB IMAGE_FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/image/*.cpp)
 
-set(RENDERING_SUBPASSES_FILES
-        # Header files
-        rendering/subpasses/color_picker_subpass.h
-        rendering/subpasses/skybox_subpass.h
-        rendering/subpasses/geometry_subpass.h
-        # Source files
-        rendering/subpasses/color_picker_subpass.cpp
-        rendering/subpasses/skybox_subpass.cpp
-        rendering/subpasses/geometry_subpass.cpp)
+file(GLOB TEXTURE_FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/texture/*.cpp)
 
 set(STATS_FILES
         # Header Files
@@ -116,63 +59,6 @@ set(STATS_FILES
         stats/stats_provider.cpp
         stats/frame_time_stats_provider.cpp
         stats/hwcpipe_stats_provider.cpp)
-
-set(CORE_FILES
-        # Header Files
-        core/instance.h
-        core/physical_device.h
-        core/device.h
-        core/debug.h
-        core/pipeline_layout.h
-        core/pipeline.h
-        core/descriptor_set_layout.h
-        core/descriptor_pool.h
-        core/descriptor_set.h
-        core/queue.h
-        core/command_pool.h
-        core/swapchain.h
-        core/command_buffer.h
-        core/buffer.h
-        core/image.h
-        core/image_view.h
-        core/sampled_image.h
-        core/instance.h
-        core/sampler.h
-        core/framebuffer.h
-        core/render_pass.h
-        core/query_pool.h
-        core/scratch_buffer.h
-        core/acceleration_structure.h
-        core/shader_binding_table.h
-        core/vulkan_resource.h
-        # Source Files
-        core/instance.cpp
-        core/physical_device.cpp
-        core/device.cpp
-        core/debug.cpp
-        core/image.cpp
-        core/pipeline_layout.cpp
-        core/pipeline.cpp
-        core/descriptor_set_layout.cpp
-        core/descriptor_pool.cpp
-        core/descriptor_set.cpp
-        core/queue.cpp
-        core/command_pool.cpp
-        core/swapchain.cpp
-        core/command_buffer.cpp
-        core/buffer.cpp
-        core/image.cpp
-        core/image_view.cpp
-        core/sampled_image.cpp
-        core/instance.cpp
-        core/sampler.cpp
-        core/framebuffer.cpp
-        core/render_pass.cpp
-        core/query_pool.cpp
-        core/scratch_buffer.cpp
-        core/acceleration_structure.cpp
-        core/shader_binding_table.cpp
-        core/vulkan_resource.cpp)
 
 set(DAWN_FILES
         utils/backend_binding.h
@@ -400,6 +286,8 @@ set(SCENE_FILES
         transform.cpp
         camera.h
         camera.cpp
+        renderer.h
+        renderer.cpp
         script.h
         script.cpp
         behaviour.h
@@ -609,7 +497,6 @@ set(LINUX_D2D_FILES
         platform/unix/unix_d2d_platform.cpp
         platform/unix/direct_window.cpp)
 
-source_group("\\" FILES ${FRAMEWORK_FILES})
 source_group("common\\" FILES ${COMMON_FILES})
 source_group("platform\\" FILES ${PLATFORM_FILES})
 source_group("platform\\" FILES ${GLFW_FILES})
@@ -618,24 +505,21 @@ source_group("platform\\windows" FILES ${WINDOWS_FILES})
 source_group("platform\\android" FILES ${ANDROID_FILES})
 source_group("platform\\unix" FILES ${UNIX_FILES})
 source_group("platform\\unix" FILES ${LINUX_D2D_FILES})
-source_group("core\\" FILES ${CORE_FILES})
 source_group("rendering\\" FILES ${RENDERING_FILES})
-source_group("rendering\\subpasses" FILES ${RENDERING_SUBPASSES_FILES})
 source_group("\\" FILES ${SCENE_RESOURCE_FILES})
 source_group("stats\\" FILES ${STATS_FILES})
 
 set(PROJECT_FILES
         ${DAWN_FILES}
         ${PLATFORM_FILES}
-        #        ${PARSER_FILES}
-        #        ${COMMON_FILES}
-        #        ${FRAMEWORK_FILES}
-        #        ${CORE_FILES}
+        ${PARSER_FILES}
+        ${COMMON_FILES}
         ${RENDERING_FILES}
-        #        ${RENDERING_SUBPASSES_FILES}
         #        ${SCENE_RESOURCE_FILES}
         ${STATS_FILES}
         ${UI_FILES}
+        ${IMAGE_FILES}
+        ${TEXTURE_FILES}
         ${SCENE_FILES}
         ${CONTROL_FILES}
         ${MESH_FILES}

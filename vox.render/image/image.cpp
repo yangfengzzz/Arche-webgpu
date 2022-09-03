@@ -6,7 +6,7 @@
 
 #include "image.h"
 
-#include "filesystem.h"
+#include "platform/filesystem.h"
 #include "std_helpers.h"
 
 #define STB_IMAGE_RESIZE_IMPLEMENTATION
@@ -115,10 +115,10 @@ void Image::setOffsets(const std::vector<std::vector<uint64_t>> &o) { _offsets =
 std::unique_ptr<Image> Image::load(const std::string &uri, bool flipY) {
     std::unique_ptr<Image> image{nullptr};
 
-    auto data = fs::readAsset(uri);
+    auto data = fs::ReadAsset(uri);
 
     // Get extension
-    auto extension = fs::extraExtension(uri);
+    auto extension = fs::ExtraExtension(uri);
     if (extension == "png" || extension == "jpg") {
         image = std::make_unique<Stb>(data, flipY);
     } else if (extension == "astc") {
