@@ -1,0 +1,9 @@
+BasedOnStyle: Google
+IndentWidth: 4
+ColumnLimit: 120
+UseTab: Never
+Standard: c++17
+ContinuationIndentWidth: 8
+AccessModifierOffset: -4
+BinPackParameters: false
+SortIncludes: "CaseInsensitive"

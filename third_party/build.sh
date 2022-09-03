@@ -18,40 +18,22 @@ cmake -DCMAKE_BUILD_TYPE=Debug ..
 make -j5
 cd ../..
 
-# Google Flags ##############################
-cd gflags
-mkdir builds
-cd builds
-cmake ..
+# Assimp ##################################
+cd assimp
+mkdir build_release
+cd build_release
+cmake -DCMAKE_BUILD_TYPE=Release ..
+make -j5
+cd ..
+
+mkdir build_debug
+cd build_debug
+cmake -DCMAKE_BUILD_TYPE=Debug ..
 make -j5
 cd ../..
 
-# Google Log ##############################
-cd glog
-mkdir build
-cd build
-cmake ..
-make -j5
-cd ../..
-
-# GLFW ####################################
-cd glfw
-mkdir build
-cd build
-cmake ..
-make -j5
-cd ../..
-
-# fmt #####################################
-cd fmt
-mkdir build
-cd build
-cmake ..
-make -j5
-cd ../..
-
-# ktx #####################################
-cd ktx
+# GoogleTest ###############################
+cd googletest
 mkdir build
 cd build
 cmake ..
