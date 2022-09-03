@@ -9,7 +9,6 @@
 
 #include "graphics_application.h"
 #include "components_manager.h"
-#include "physics/physics_manager.h"
 #include "shadow/shadow_manager.h"
 #include "lighting/light_manager.h"
 #include "particle/particle_manager.h"
@@ -59,7 +58,6 @@ protected:
      * @brief Holds all scene information
      */
     std::unique_ptr<ComponentsManager> _componentsManager{nullptr};
-    std::unique_ptr<physics::PhysicsManager> _physicsManager{nullptr};
     std::unique_ptr<SceneManager> _sceneManager{nullptr};
     std::unique_ptr<ShadowManager> _shadowManager{nullptr};
     std::unique_ptr<LightManager> _lightManager{nullptr};

@@ -5,6 +5,7 @@
 //  property of any third parties.
 
 #include "ibl_app.h"
+#include "entity.h"
 #include "mesh/primitive_mesh.h"
 #include "mesh/mesh_renderer.h"
 #include "material/pbr_material.h"

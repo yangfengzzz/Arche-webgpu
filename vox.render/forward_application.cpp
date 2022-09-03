@@ -20,7 +20,6 @@ ForwardApplication::~ForwardApplication() {
     _sceneManager.reset();
 
     _componentsManager.reset();
-    _physicsManager.reset();
     _lightManager.reset();
     _shadowManager.reset();
     _particleManager.reset();
@@ -30,7 +29,6 @@ bool ForwardApplication::prepare(Engine &engine) {
     GraphicsApplication::prepare(engine);
     
     _componentsManager = std::make_unique<ComponentsManager>();
-    _physicsManager = std::make_unique<physics::PhysicsManager>();
     _sceneManager = std::make_unique<SceneManager>(_device);
     auto scene = _sceneManager->currentScene();
     
@@ -74,13 +72,7 @@ void ForwardApplication::update(float deltaTime) {
     {
         _componentsManager->callScriptOnStart();
         
-        _physicsManager->callColliderOnUpdate();
-        _physicsManager->update(deltaTime);
-        _physicsManager->callColliderOnLateUpdate();
-        _physicsManager->callCharacterControllerOnLateUpdate();
-        
         _componentsManager->callScriptOnUpdate(deltaTime);
-        _componentsManager->callAnimatorUpdate(deltaTime);
         _componentsManager->callSceneAnimatorUpdate(deltaTime);
         _componentsManager->callScriptOnLateUpdate(deltaTime);
         

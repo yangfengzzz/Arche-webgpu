@@ -20,10 +20,6 @@
 #include "cascade_shadowmap_app.h"
 #include "omni_shadowmap_app.h"
 
-#include "physx_app.h"
-#include "physx_dynamic_app.h"
-#include "physx_app/kapla_app.h"
-
 #include "atomic_compute_app.h"
 #include "cluster_forward_app.h"
 #include "multi_light_app.h"
@@ -34,7 +30,7 @@ int main(int argc, char * argv[]) {
         
     auto code = engine.initialize();
     if (code == vox::ExitCode::Success) {
-        engine.setApp(std::make_unique<vox::PhysXDynamicApp>());
+        engine.setApp(std::make_unique<vox::PrimitiveApp>());
         utils::ScopedAutoreleasePool pool;
         code = engine.mainLoop();
     }

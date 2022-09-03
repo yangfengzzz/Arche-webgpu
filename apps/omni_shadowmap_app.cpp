@@ -5,6 +5,7 @@
 //  property of any third parties.
 
 #include "omni_shadowmap_app.h"
+#include "entity.h"
 #include "mesh/primitive_mesh.h"
 #include "mesh/mesh_renderer.h"
 #include "material/blinn_phong_material.h"

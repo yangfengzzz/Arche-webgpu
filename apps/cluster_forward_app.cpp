@@ -8,6 +8,7 @@
 #include "mesh/primitive_mesh.h"
 #include "mesh/mesh_renderer.h"
 #include "camera.h"
+#include "entity.h"
 #include "controls/orbit_control.h"
 #include "lighting/point_light.h"
 #include "lighting/cluster_debug_material.h"

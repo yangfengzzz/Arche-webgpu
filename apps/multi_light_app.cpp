@@ -5,6 +5,7 @@
 //  property of any third parties.
 
 #include "multi_light_app.h"
+#include "entity.h"
 #include "mesh/primitive_mesh.h"
 #include "mesh/mesh_renderer.h"
 #include "camera.h"

@@ -66,13 +66,7 @@ public:
                     std::vector<RenderElement> &alphaTestQueue,
                     std::vector<RenderElement> &transparentQueue);
     
-public:
-    void addOnUpdateAnimators(Animator *animator);
-    
-    void removeOnUpdateAnimators(Animator *animator);
-    
-    void callAnimatorUpdate(float deltaTime);
-    
+public:    
     void addOnUpdateSceneAnimators(SceneAnimator *animator);
     
     void removeOnUpdateSceneAnimators(SceneAnimator *animator);
@@ -101,7 +95,6 @@ private:
     std::vector<std::vector<Component *>> _componentsContainerPool;
     
     // Animatior
-    std::vector<Animator *> _onUpdateAnimators;
     std::vector<SceneAnimator *> _onUpdateSceneAnimators;
 };
 

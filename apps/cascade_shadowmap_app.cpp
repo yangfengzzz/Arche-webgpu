@@ -9,6 +9,7 @@
 #include "mesh/mesh_renderer.h"
 #include "material/blinn_phong_material.h"
 #include "camera.h"
+#include "entity.h"
 #include "controls/orbit_control.h"
 #include "lighting/direct_light.h"
 #include "shadow/shadow_debug_material.h"

@@ -9,7 +9,6 @@
 #include "renderer.h"
 #include "entity.h"
 #include "camera.h"
-#include "animator.h"
 #include "scene_animator.h"
 #include <glog/logging.h>
 
@@ -213,29 +212,6 @@ void ComponentsManager::putActiveChangedTempList(std::vector<Component *> &compo
 }
 
 //MARK: - Animation
-void ComponentsManager::addOnUpdateAnimators(Animator *animator) {
-    auto iter = std::find(_onUpdateAnimators.begin(), _onUpdateAnimators.end(), animator);
-    if (iter == _onUpdateAnimators.end()) {
-        _onUpdateAnimators.push_back(animator);
-    } else {
-        LOG(ERROR) << "Animator already attached." << std::endl;;
-    }
-}
-
-void ComponentsManager::removeOnUpdateAnimators(Animator *animator) {
-    auto iter = std::find(_onUpdateAnimators.begin(), _onUpdateAnimators.end(), animator);
-    if (iter != _onUpdateAnimators.end()) {
-        _onUpdateAnimators.erase(iter);
-    }
-}
-
-void ComponentsManager::callAnimatorUpdate(float deltaTime) {
-    const auto &elements = _onUpdateAnimators;
-    for (size_t i = 0; i < _onUpdateAnimators.size(); i++) {
-        elements[i]->update(deltaTime);
-    }
-}
-
 void ComponentsManager::addOnUpdateSceneAnimators(SceneAnimator *animator) {
     auto iter = std::find(_onUpdateSceneAnimators.begin(), _onUpdateSceneAnimators.end(), animator);
     if (iter == _onUpdateSceneAnimators.end()) {

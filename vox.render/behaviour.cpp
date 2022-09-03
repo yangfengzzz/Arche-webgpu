@@ -86,15 +86,6 @@ void Behaviour::onBeginRender(Camera *camera) {
 void Behaviour::onEndRender(Camera *camera) {
 }
 
-void Behaviour::onTriggerEnter(physics::ColliderShapePtr other) {
-}
-
-void Behaviour::onTriggerExit(physics::ColliderShapePtr other) {
-}
-
-void Behaviour::onTriggerStay(physics::ColliderShapePtr other) {
-}
-
 void Behaviour::inputEvent(const InputEvent &inputEvent) {
 }
 

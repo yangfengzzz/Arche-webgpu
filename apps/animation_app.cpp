@@ -10,6 +10,7 @@
 #include "mesh/skinned_mesh_renderer.h"
 #include "mesh/primitive_mesh.h"
 #include "animator.h"
+#include "entity.h"
 #include "material/unlit_material.h"
 #include "material/blinn_phong_material.h"
 #include "material/pbr_material.h"

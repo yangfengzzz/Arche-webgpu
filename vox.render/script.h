@@ -94,28 +94,6 @@ public:
     virtual void onEndRender(Camera *camera) {
     }
     
-    /**
-     * Called when the collision enter.
-     * @param other ColliderShape
-     */
-    virtual void onTriggerEnter(physics::ColliderShapePtr other) {
-    }
-    
-    /**
-     * Called when the collision stay.
-     * @remarks onTriggerStay is called every frame while the collision stay.
-     * @param other ColliderShape
-     */
-    virtual void onTriggerExit(physics::ColliderShapePtr other) {
-    }
-    
-    /**
-     * Called when the collision exit.
-     * @param other ColliderShape
-     */
-    virtual void onTriggerStay(physics::ColliderShapePtr other) {
-    }
-    
     virtual void inputEvent(const InputEvent &inputEvent) {
     }
     
