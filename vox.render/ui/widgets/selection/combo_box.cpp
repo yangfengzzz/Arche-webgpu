@@ -4,37 +4,30 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "combo_box.h"
+#include "vox.render/ui/widgets/selection/combo_box.h"
 
-namespace vox {
-namespace ui {
-ComboBox::ComboBox(int p_currentChoice) :
-DataWidget<int>(currentChoice), currentChoice(p_currentChoice) {
-    
-}
+namespace vox::ui {
+ComboBox::ComboBox(int current_choice) : DataWidget<int>(current_choice_), current_choice_(current_choice) {}
 
-void ComboBox::_draw_Impl() {
-    if (choices.find(currentChoice) == choices.end())
-        currentChoice = choices.begin()->first;
-    
-    if (ImGui::BeginCombo(_widgetID.c_str(), choices[currentChoice].c_str())) {
-        for (const auto&[key, value]: choices) {
-            bool selected = key == currentChoice;
-            
-            if (ImGui::Selectable(value.c_str(), selected)) {
+void ComboBox::DrawImpl() {
+    if (choices_.find(current_choice_) == choices_.end()) current_choice_ = choices_.begin()->first;
+
+    if (ImGui::BeginCombo(widget_id_.c_str(), choices_[current_choice_].c_str())) {
+        for (const auto &[kEy, kValue] : choices_) {
+            bool selected = kEy == current_choice_;
+
+            if (ImGui::Selectable(kValue.c_str(), selected)) {
                 if (!selected) {
                     ImGui::SetItemDefaultFocus();
-                    currentChoice = key;
-                    valueChangedEvent.invoke(currentChoice);
-                    notifyChange();
+                    current_choice_ = kEy;
+                    value_changed_event_.Invoke(current_choice_);
+                    NotifyChange();
                 }
             }
         }
-        
+
         ImGui::EndCombo();
     }
 }
 
-
-}
-}
+}  // namespace vox::ui

@@ -4,130 +4,116 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "panel_transformable.h"
-#include "ui/widgets/converter.h"
+#include "vox.render/ui/widgets/panel_transformable.h"
 
-namespace vox {
-namespace ui {
-PanelTransformable::PanelTransformable(const Vector2F &p_defaultPosition,
-                                       const Vector2F &p_defaultSize,
-                                       HorizontalAlignment p_defaultHorizontalAlignment,
-                                       VerticalAlignment p_defaultVerticalAlignment,
-                                       bool p_ignoreConfigFile) :
-_defaultPosition(p_defaultPosition),
-_defaultSize(p_defaultSize),
-_defaultHorizontalAlignment(p_defaultHorizontalAlignment),
-_defaultVerticalAlignment(p_defaultVerticalAlignment),
-_ignoreConfigFile(p_ignoreConfigFile) {
+#include "vox.render/ui/widgets/converter.h"
+
+namespace vox::ui {
+PanelTransformable::PanelTransformable(const Vector2F &default_position,
+                                       const Vector2F &default_size,
+                                       HorizontalAlignment default_horizontal_alignment,
+                                       VerticalAlignment default_vertical_alignment,
+                                       bool ignore_config_file)
+    : default_position_(default_position),
+      default_size_(default_size),
+      default_horizontal_alignment_(default_horizontal_alignment),
+      default_vertical_alignment_(default_vertical_alignment),
+      ignore_config_file_(ignore_config_file) {}
+
+void PanelTransformable::SetPosition(const Vector2F &position) {
+    position_ = position;
+    position_changed_ = true;
 }
 
-void PanelTransformable::setPosition(const Vector2F &p_position) {
-    _position = p_position;
-    _positionChanged = true;
+void PanelTransformable::SetSize(const Vector2F &size) {
+    size_ = size;
+    size_changed_ = true;
 }
 
-void PanelTransformable::setSize(const Vector2F &p_size) {
-    _size = p_size;
-    _sizeChanged = true;
+void PanelTransformable::SetAlignment(HorizontalAlignment horizontal_alignment, VerticalAlignment vertical_alignment) {
+    horizontal_alignment_ = horizontal_alignment;
+    vertical_alignment_ = vertical_alignment;
+    alignment_changed_ = true;
 }
 
-void PanelTransformable::setAlignment(HorizontalAlignment p_horizontalAlignment, VerticalAlignment p_verticalAligment) {
-    _horizontalAlignment = p_horizontalAlignment;
-    _verticalAlignment = p_verticalAligment;
-    _alignmentChanged = true;
-}
+const Vector2F &PanelTransformable::Position() const { return position_; }
 
-const Vector2F &PanelTransformable::position() const {
-    return _position;
-}
+const Vector2F &PanelTransformable::Size() const { return size_; }
 
-const Vector2F &PanelTransformable::size() const {
-    return _size;
-}
+HorizontalAlignment PanelTransformable::GetHorizontalAlignment() const { return horizontal_alignment_; }
 
-HorizontalAlignment PanelTransformable::horizontalAlignment() const {
-    return _horizontalAlignment;
-}
+VerticalAlignment PanelTransformable::GetVerticalAlignment() const { return vertical_alignment_; }
 
-VerticalAlignment PanelTransformable::verticalAlignment() const {
-    return _verticalAlignment;
-}
-
-void PanelTransformable::updatePosition() {
-    if (_defaultPosition.x != -1.f && _defaultPosition.y != 1.f) {
-        Vector2F offsettedDefaultPos = _defaultPosition + calculatePositionAlignmentOffset(true);
-        ImGui::SetWindowPos(Converter::ToImVec2(offsettedDefaultPos), _ignoreConfigFile ? ImGuiCond_Once : ImGuiCond_FirstUseEver);
+void PanelTransformable::UpdatePosition() {
+    if (default_position_.x != -1.f && default_position_.y != 1.f) {
+        Vector2F offsetted_default_pos = default_position_ + CalculatePositionAlignmentOffset(true);
+        ImGui::SetWindowPos(Converter::ToImVec2(offsetted_default_pos),
+                            ignore_config_file_ ? ImGuiCond_Once : ImGuiCond_FirstUseEver);
     }
-    
-    if (_positionChanged || _alignmentChanged) {
-        Vector2F offset = calculatePositionAlignmentOffset(false);
-        Vector2F offsettedPos(_position.x + offset.x, _position.y + offset.y);
-        ImGui::SetWindowPos(Converter::ToImVec2(offsettedPos), ImGuiCond_Always);
-        _positionChanged = false;
-        _alignmentChanged = false;
+
+    if (position_changed_ || alignment_changed_) {
+        Vector2F offset = CalculatePositionAlignmentOffset(false);
+        Vector2F offsetted_pos(position_.x + offset.x, position_.y + offset.y);
+        ImGui::SetWindowPos(Converter::ToImVec2(offsetted_pos), ImGuiCond_Always);
+        position_changed_ = false;
+        alignment_changed_ = false;
     }
 }
 
-void PanelTransformable::updateSize() {
+void PanelTransformable::UpdateSize() {
     /*
      if (_defaultSize.x != -1.f && _defaultSize.y != 1.f)
-     ImGui::SetWindowSize(Internal::Converter::ToImVec2(_defaultSize), _ignoreConfigFile ? ImGuiCond_Once : ImGuiCond_FirstUseEver);
+     ImGui::SetWindowSize(Internal::Converter::to_imVec2(_defaultSize), _ignoreConfigFile ? ImGuiCond_Once :
+     ImGuiCond_FirstUseEver);
      */
-    if (_sizeChanged) {
-        ImGui::SetWindowSize(Converter::ToImVec2(_size), ImGuiCond_Always);
-        _sizeChanged = false;
+    if (size_changed_) {
+        ImGui::SetWindowSize(Converter::ToImVec2(size_), ImGuiCond_Always);
+        size_changed_ = false;
     }
 }
 
-void PanelTransformable::copyImGuiPosition() {
-    _position = Converter::ToVector2F(ImGui::GetWindowPos());
-}
+void PanelTransformable::CopyImGuiPosition() { position_ = Converter::ToVector2F(ImGui::GetWindowPos()); }
 
-void PanelTransformable::copyImGuiSize() {
-    _size = Converter::ToVector2F(ImGui::GetWindowSize());
-}
+void PanelTransformable::CopyImGuiSize() { size_ = Converter::ToVector2F(ImGui::GetWindowSize()); }
 
-void PanelTransformable::update() {
-    if (!_firstFrame) {
-        if (!autoSize)
-            updateSize();
-        copyImGuiSize();
-        
-        updatePosition();
-        copyImGuiPosition();
+void PanelTransformable::Update() {
+    if (!first_frame_) {
+        if (!auto_size_) UpdateSize();
+        CopyImGuiSize();
+
+        UpdatePosition();
+        CopyImGuiPosition();
     }
-    
-    _firstFrame = false;
+
+    first_frame_ = false;
 }
 
-Vector2F PanelTransformable::calculatePositionAlignmentOffset(bool p_default) {
+Vector2F PanelTransformable::CalculatePositionAlignmentOffset(bool is_default) {
     Vector2F result(0.0f, 0.0f);
-    
-    switch (p_default ? _defaultHorizontalAlignment : _horizontalAlignment) {
+
+    switch (is_default ? default_horizontal_alignment_ : horizontal_alignment_) {
         case HorizontalAlignment::CENTER:
-            result.x -= _size.x / 2.0f;
+            result.x -= size_.x / 2.0f;
             break;
         case HorizontalAlignment::RIGHT:
-            result.x -= _size.x;
+            result.x -= size_.x;
             break;
         default:
             break;
     }
-    
-    switch (p_default ? _defaultVerticalAlignment : _verticalAlignment) {
+
+    switch (is_default ? default_vertical_alignment_ : vertical_alignment_) {
         case VerticalAlignment::MIDDLE:
-            result.y -= _size.y / 2.0f;
+            result.y -= size_.y / 2.0f;
             break;
         case VerticalAlignment::BOTTOM:
-            result.y -= _size.y;
+            result.y -= size_.y;
             break;
         default:
             break;
     }
-    
+
     return result;
 }
 
-
-}
-}
+}  // namespace vox::ui

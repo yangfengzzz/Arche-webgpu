@@ -4,49 +4,45 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef event_inl_h
-#define event_inl_h
+#pragma once
 
-#include "event.h"
+#include "vox.render/event.h"
 
 namespace vox {
-template<class... ArgTypes>
-ListenerID Event<ArgTypes...>::addListener(Callback p_callback) {
-    ListenerID listenerID = _availableListenerID++;
-    _callbacks.emplace(listenerID, p_callback);
-    return listenerID;
+template <class... ArgTypes>
+ListenerId Event<ArgTypes...>::AddListener(Callback p_callback) {
+    ListenerId listener_id = available_listener_id_++;
+    callbacks_.emplace(listener_id, p_callback);
+    return listener_id;
 }
 
-template<class... ArgTypes>
-ListenerID Event<ArgTypes...>::operator+=(Callback p_callback) {
-    return addListener(p_callback);
+template <class... ArgTypes>
+ListenerId Event<ArgTypes...>::operator+=(Callback p_callback) {
+    return AddListener(p_callback);
 }
 
-template<class... ArgTypes>
-bool Event<ArgTypes...>::removeListener(ListenerID p_listenerID) {
-    return _callbacks.erase(p_listenerID) != 0;
+template <class... ArgTypes>
+bool Event<ArgTypes...>::RemoveListener(ListenerId p_listener_id) {
+    return callbacks_.erase(p_listener_id) != 0;
 }
 
-template<class... ArgTypes>
-bool Event<ArgTypes...>::operator-=(ListenerID p_listenerID) {
-    return removeListener(p_listenerID);
+template <class... ArgTypes>
+bool Event<ArgTypes...>::operator-=(ListenerId p_listener_id) {
+    return RemoveListener(p_listener_id);
 }
 
-template<class... ArgTypes>
-void Event<ArgTypes...>::removeAllListeners() {
-    _callbacks.clear();
+template <class... ArgTypes>
+void Event<ArgTypes...>::RemoveAllListeners() {
+    callbacks_.clear();
 }
 
-template<class... ArgTypes>
-uint64_t Event<ArgTypes...>::listenerCount() {
-    return _callbacks.size();
+template <class... ArgTypes>
+uint64_t Event<ArgTypes...>::ListenerCount() {
+    return callbacks_.size();
 }
 
-template<class... ArgTypes>
-void Event<ArgTypes...>::invoke(ArgTypes... p_args) {
-    for (auto const& [key, value] : _callbacks)
-        value(p_args...);
+template <class... ArgTypes>
+void Event<ArgTypes...>::Invoke(ArgTypes... p_args) {
+    for (auto const& [kEy, kValue] : callbacks_) kValue(p_args...);
 }
-}
-
-#endif /* event_inl_h */
+}  // namespace vox

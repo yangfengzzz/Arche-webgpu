@@ -4,22 +4,17 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef new_line_hpp
-#define new_line_hpp
+#pragma once
 
-#include "ui/widgets/widget.h"
+#include "vox.render/ui/widgets/widget.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Widget that adds an empty line to the panel
  */
 class NewLine : public Widget {
 protected:
-    void _draw_Impl() override;
+    void DrawImpl() override;
 };
 
-
-}
-}
-#endif /* new_line_hpp */
+}  // namespace vox::ui

@@ -4,36 +4,22 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef slider_float_hpp
-#define slider_float_hpp
+#pragma once
 
-#include "slider_single_scalar.h"
+#include "vox.render/ui/widgets/sliders/slider_single_scalar.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Slider widget of type float
  */
 class SliderFloat : public SliderSingleScalar<float> {
 public:
-    /**
-     * Constructor
-     * @param p_min p_min
-     * @param p_max p_max
-     * @param p_value p_value
-     * @param p_orientation p_orientation
-     * @param p_label p_label
-     * @param p_format p_format
-     */
-    SliderFloat(float p_min = 0.0f,
-                float p_max = 1.0f,
-                float p_value = 0.5f,
-                SliderOrientation p_orientation = SliderOrientation::HORIZONTAL,
-                const std::string &p_label = "",
-                const std::string &p_format = "%.3f");
+    explicit SliderFloat(float min = 0.0f,
+                         float max = 1.0f,
+                         float value = 0.5f,
+                         SliderOrientation orientation = SliderOrientation::HORIZONTAL,
+                         const std::string &label = "",
+                         const std::string &format = "%.3f");
 };
 
-
-}
-}
-#endif /* slider_float_hpp */
+}  // namespace vox::ui

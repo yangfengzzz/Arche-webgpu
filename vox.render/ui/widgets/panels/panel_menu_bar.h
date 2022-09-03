@@ -4,22 +4,17 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef panel_menu_bar_hpp
-#define panel_menu_bar_hpp
+#pragma once
 
-#include "ui/widgets/panel.h"
+#include "vox.render/ui/widgets/panel.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * A simple panel that will be displayed on the top side of the canvas
  */
 class PanelMenuBar : public Panel {
 protected:
-    void _draw_Impl() override;
+    void DrawImpl() override;
 };
 
-
-}
-}
-#endif /* panel_menu_bar_hpp */
+}  // namespace vox::ui

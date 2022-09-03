@@ -4,92 +4,75 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef data_dispatcher_h
-#define data_dispatcher_h
+#pragma once
 
 #include <functional>
 
-#include "ui/plugins/plugin.h"
+#include "vox.render/ui/plugins/plugin.h"
 
-namespace vox {
-namespace ui {
-#define TRY_GATHER(type, output)   if (auto plugin = getPlugin<DataDispatcher<type>>(); plugin) output = plugin->gather();
-#define TRY_PROVIDE(type, output)  if (auto plugin = getPlugin<DataDispatcher<type>>(); plugin) plugin->provide(output);
-#define TRY_NOTIFY_CHANGE(type)    if (auto plugin = getPlugin<DataDispatcher<type>>(); plugin) plugin->notifyChange();
+namespace vox::ui {
+#define TRY_GATHER(type, output) \
+    if (auto plugin = GetPlugin<DataDispatcher<type>>(); plugin) output = plugin->Gather();
+#define TRY_PROVIDE(type, output) \
+    if (auto plugin = GetPlugin<DataDispatcher<type>>(); plugin) plugin->Provide(output);
+#define TRY_NOTIFY_CHANGE(type) \
+    if (auto plugin = GetPlugin<DataDispatcher<type>>(); plugin) plugin->NotifyChange();
 
 /**
  * Plugin that allow automatic data update of any DataWidget
  */
-template<typename T>
+template <typename T>
 class DataDispatcher : public Plugin {
 public:
     /**
      * Register a reference
-     * @param p_reference p_reference
      */
-    void registerReference(T &p_reference) {
-        _dataPointer = &p_reference;
-    }
-    
+    void RegisterReference(T &reference) { data_pointer_ = &reference; }
+
     /**
      * Register a provider (Which function should be called when the widget data is modified)
-     * @param p_provider p_provider
      */
-    void registerProvider(std::function<void(T)> p_provider) {
-        _provider = p_provider;
-    }
-    
+    void RegisterProvider(std::function<void(T)> provider) { provider_ = provider; }
+
     /**
      * Register a gather (Which function should be called when the widget data needs to be updated)
-     * @param p_gatherer p_gatherer
      */
-    void registerGatherer(std::function<T(void)> p_gatherer) {
-        _gatherer = p_gatherer;
-    }
-    
+    void RegisterGatherer(std::function<T(void)> gatherer) { gatherer_ = gatherer; }
+
     /**
      * Provide data to the dispatcher
-     * @param p_data p_data
      */
-    void provide(T p_data) {
-        if (_valueChanged) {
-            if (_dataPointer)
-                *_dataPointer = p_data;
+    void Provide(T data) {
+        if (value_changed_) {
+            if (data_pointer_)
+                *data_pointer_ = data;
             else
-                _provider(p_data);
-            
-            _valueChanged = false;
+                provider_(data);
+
+            value_changed_ = false;
         }
     }
-    
+
     /**
-     * Notify that a change occured
+     * Notify that a change occurred
      */
-    void notifyChange() {
-        _valueChanged = true;
-    }
-    
+    void NotifyChange() { value_changed_ = true; }
+
     /**
      * Returns the data from the dispatcher
      */
-    T gather() {
-        return _dataPointer ? *_dataPointer : _gatherer();
-    }
-    
+    T Gather() { return data_pointer_ ? *data_pointer_ : gatherer_(); }
+
     /**
      * Execute the data dispatcher behaviour (No effect)
      */
-    virtual void execute() override {
-    }
-    
+    void Execute() override {}
+
 private:
-    bool _valueChanged = false;
-    T *_dataPointer = nullptr;
-    std::function<void(T)> _provider;
-    std::function<T(void)> _gatherer;
+    bool value_changed_ = false;
+    T *data_pointer_ = nullptr;
+    std::function<void(T)> provider_;
+    std::function<T(void)> gatherer_;
 };
 
-
-}
-}
-#endif /* data_dispatcher_h */
+}  // namespace vox::ui

@@ -4,24 +4,17 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "panel.h"
+#include "vox.render/ui/widgets/panel.h"
 
-namespace vox {
-namespace ui {
-uint64_t Panel::__PANEL_ID_INCREMENT = 0;
+namespace vox::ui {
+uint64_t Panel::panel_id_increment_ = 0;
 
-Panel::Panel() {
-    _panelID = "##" + std::to_string(__PANEL_ID_INCREMENT++);
+Panel::Panel() { panel_id_ = "##" + std::to_string(panel_id_increment_++); }
+
+void Panel::Draw() {
+    if (enabled_) DrawImpl();
 }
 
-void Panel::draw() {
-    if (enabled)
-        _draw_Impl();
-}
+const std::string &Panel::PanelId() const { return panel_id_; }
 
-const std::string &Panel::panelID() const {
-    return _panelID;
-}
-
-}
-}
+}  // namespace vox::ui

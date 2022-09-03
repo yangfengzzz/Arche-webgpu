@@ -4,21 +4,17 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef separator_hpp
-#define separator_hpp
+#pragma once
 
-#include "ui/widgets/widget.h"
+#include "vox.render/ui/widgets/widget.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Simple widget that display a separator
  */
 class Separator : public Widget {
 protected:
-    void _draw_Impl() override;
+    void DrawImpl() override;
 };
 
-}
-}
-#endif /* separator_hpp */
+}  // namespace vox::ui

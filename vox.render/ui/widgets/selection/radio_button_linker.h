@@ -4,13 +4,11 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef radio_button_linker_hpp
-#define radio_button_linker_hpp
+#pragma once
 
-#include "radio_button.h"
+#include "vox.render/ui/widgets/selection/radio_button.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Handle the link of radio buttons. Necessary to enable the correct behaviour
  * of radio buttons
@@ -21,37 +19,35 @@ public:
      * Constructor
      */
     RadioButtonLinker();
-    
+
     /**
      * Link the given radio button
      */
-    void link(RadioButton &p_radioButton);
-    
+    void Link(RadioButton &radio_button);
+
     /**
      * Unlink the given radio button
      */
-    void unlink(RadioButton &p_radioButton);
-    
+    void Unlink(RadioButton &radio_button);
+
     /**
      * Returns the id of the selected radio button
      */
-    int selected() const;
-    
+    [[nodiscard]] int Selected() const;
+
 protected:
-    void _draw_Impl() override;
-    
+    void DrawImpl() override;
+
 private:
-    void onRadioButtonClicked(int p_radioID);
-    
+    void OnRadioButtonClicked(int radio_id);
+
 public:
-    Event<int> valueChangedEvent;
-    
+    Event<int> value_changed_event_;
+
 private:
-    int _availableRadioID = 0;
-    int _selected = -1;
-    std::vector<std::pair<ListenerID, std::reference_wrapper<RadioButton>>> _radioButtons;
+    int available_radio_id_ = 0;
+    int selected_ = -1;
+    std::vector<std::pair<ListenerId, std::reference_wrapper<RadioButton>>> radio_buttons_;
 };
 
-}
-}
-#endif /* radio_button_linker_hpp */
+}  // namespace vox::ui

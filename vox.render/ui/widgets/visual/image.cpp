@@ -4,24 +4,16 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "image.h"
-#include "ui/widgets/converter.h"
+#include "vox.render/ui/widgets/visual/image.h"
 
-namespace vox {
-namespace ui {
-Image::Image(wgpu::TextureView p_textureID, const Vector2F &p_size) :
-textureID{p_textureID}, size(p_size) {
-    
-}
+#include <utility>
 
-void Image::setTextureView(wgpu::TextureView p_textureID) {
-    textureID = p_textureID;
-}
+#include "vox.render/ui/widgets/converter.h"
 
-void Image::_draw_Impl() {
-    ImGui::Image(textureID.Get(), Converter::ToImVec2(size),
-                 ImVec2(0.f, 0.f), ImVec2(1.f, 1.f));
-}
+namespace vox::ui {
+Image::Image(wgpu::TextureView p_textureID, const Vector2F &p_size) : textureID{std::move(p_textureID)}, size(p_size) {}
 
-}
-}
+void Image::SetTextureView(wgpu::TextureView p_textureID) { textureID = std::move(p_textureID); }
+
+void Image::DrawImpl() { ImGui::Image(textureID.Get(), Converter::ToImVec2(size), ImVec2(0.f, 0.f), ImVec2(1.f, 1.f)); }
+}  // namespace vox::ui

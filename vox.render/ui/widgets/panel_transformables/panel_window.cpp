@@ -4,155 +4,136 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "panel_window.h"
-#include "ui/widgets/converter.h"
-#include "gui/imgui_internal.h"
+#include "vox.render/ui/widgets/panel_transformables/panel_window.h"
 
-namespace vox {
-namespace ui {
-PanelWindow::PanelWindow(const std::string &p_name, bool p_opened,
-                         const PanelWindowSettings &p_floatingPanelSettings) :
-name(p_name),
-resizable(p_floatingPanelSettings.resizable),
-closable(p_floatingPanelSettings.closable),
-movable(p_floatingPanelSettings.movable),
-scrollable(p_floatingPanelSettings.scrollable),
-dockable(p_floatingPanelSettings.dockable),
-hideBackground(p_floatingPanelSettings.hideBackground),
-forceHorizontalScrollbar(p_floatingPanelSettings.forceHorizontalScrollbar),
-forceVerticalScrollbar(p_floatingPanelSettings.forceVerticalScrollbar),
-allowHorizontalScrollbar(p_floatingPanelSettings.allowHorizontalScrollbar),
-bringToFrontOnFocus(p_floatingPanelSettings.bringToFrontOnFocus),
-collapsable(p_floatingPanelSettings.collapsable),
-allowInputs(p_floatingPanelSettings.allowInputs),
-_opened(p_opened) {
-    autoSize = p_floatingPanelSettings.autoSize;
+#include <imgui_internal.h>
+
+#include <utility>
+
+#include "vox.render/ui/widgets/converter.h"
+
+namespace vox::ui {
+PanelWindow::PanelWindow(std::string name, bool opened, const PanelWindowSettings &panel_settings)
+    : name_(std::move(name)),
+      resizable_(panel_settings.resizable),
+      closable_(panel_settings.closable),
+      movable_(panel_settings.movable),
+      scrollable_(panel_settings.scrollable),
+      dockable_(panel_settings.dockable),
+      hide_background_(panel_settings.hide_background),
+      force_horizontal_scrollbar_(panel_settings.force_horizontal_scrollbar),
+      force_vertical_scrollbar_(panel_settings.force_vertical_scrollbar),
+      allow_horizontal_scrollbar_(panel_settings.allow_horizontal_scrollbar),
+      bring_to_front_on_focus_(panel_settings.bring_to_front_on_focus),
+      collapsable_(panel_settings.collapsable),
+      allow_inputs_(panel_settings.allow_inputs),
+      opened_(opened) {
+    auto_size_ = panel_settings.auto_size;
 }
 
-void PanelWindow::open() {
-    if (!_opened) {
-        _opened = true;
-        openEvent.invoke();
+void PanelWindow::Open() {
+    if (!opened_) {
+        opened_ = true;
+        open_event_.Invoke();
     }
 }
 
-void PanelWindow::close() {
-    if (_opened) {
-        _opened = false;
-        closeEvent.invoke();
+void PanelWindow::Close() {
+    if (opened_) {
+        opened_ = false;
+        close_event_.Invoke();
     }
 }
 
-void PanelWindow::focus() {
-    ImGui::SetWindowFocus((name + _panelID).c_str());
-}
+void PanelWindow::Focus() { ImGui::SetWindowFocus((name_ + panel_id_).c_str()); }
 
-void PanelWindow::setOpened(bool p_value) {
-    if (p_value != _opened) {
-        _opened = p_value;
-        
-        if (_opened)
-            openEvent.invoke();
+void PanelWindow::SetOpened(bool value) {
+    if (value != opened_) {
+        opened_ = value;
+
+        if (opened_)
+            open_event_.Invoke();
         else
-            closeEvent.invoke();
+            close_event_.Invoke();
     }
 }
 
-bool PanelWindow::isOpened() const {
-    return _opened;
-}
+bool PanelWindow::IsOpened() const { return opened_; }
 
-bool PanelWindow::isHovered() const {
-    return _hovered;
-}
+bool PanelWindow::IsHovered() const { return hovered_; }
 
-bool PanelWindow::isFocused() const {
-    return _focused;
-}
+bool PanelWindow::IsFocused() const { return focused_; }
 
-bool PanelWindow::isAppearing() const {
-    if (auto window = ImGui::FindWindowByName((name + panelID()).c_str()); window)
+bool PanelWindow::IsAppearing() const {
+    if (auto window = ImGui::FindWindowByName((name_ + PanelId()).c_str()); window)
         return window->Appearing;
     else
         return false;
 }
 
-void PanelWindow::scrollToBottom() {
-    _mustScrollToBottom = true;
-}
+void PanelWindow::ScrollToBottom() { must_scroll_to_bottom_ = true; }
 
-void PanelWindow::scrollToTop() {
-    _mustScrollToTop = true;
-}
+void PanelWindow::ScrollToTop() { must_scroll_to_top_ = true; }
 
-bool PanelWindow::isScrolledToBottom() const {
-    return _scrolledToBottom;
-}
+bool PanelWindow::IsScrolledToBottom() const { return scrolled_to_bottom_; }
 
-bool PanelWindow::isScrolledToTop() const {
-    return _scrolledToTop;
-}
+bool PanelWindow::IsScrolledToTop() const { return scrolled_to_top_; }
 
-void PanelWindow::_draw_Impl() {
-    if (_opened) {
-        int windowFlags = ImGuiWindowFlags_None;
-        
-        if (!resizable) windowFlags |= ImGuiWindowFlags_NoResize;
-        if (!movable) windowFlags |= ImGuiWindowFlags_NoMove;
-        if (!dockable) windowFlags |= ImGuiWindowFlags_NoDocking;
-        if (hideBackground) windowFlags |= ImGuiWindowFlags_NoBackground;
-        if (forceHorizontalScrollbar) windowFlags |= ImGuiWindowFlags_AlwaysHorizontalScrollbar;
-        if (forceVerticalScrollbar) windowFlags |= ImGuiWindowFlags_AlwaysVerticalScrollbar;
-        if (allowHorizontalScrollbar) windowFlags |= ImGuiWindowFlags_HorizontalScrollbar;
-        if (!bringToFrontOnFocus) windowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
-        if (!collapsable) windowFlags |= ImGuiWindowFlags_NoCollapse;
-        if (!allowInputs) windowFlags |= ImGuiWindowFlags_NoInputs;
-        if (!scrollable) windowFlags |= ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar;
-        if (!titleBar) windowFlags |= ImGuiWindowFlags_NoTitleBar;
-        
-        ImVec2 minSizeConstraint = Converter::ToImVec2(minSize);
-        ImVec2 maxSizeConstraint = Converter::ToImVec2(maxSize);
-        
+void PanelWindow::DrawImpl() {
+    if (opened_) {
+        int window_flags = ImGuiWindowFlags_None;
+
+        if (!resizable_) window_flags |= ImGuiWindowFlags_NoResize;
+        if (!movable_) window_flags |= ImGuiWindowFlags_NoMove;
+        if (!dockable_) window_flags |= ImGuiWindowFlags_NoDocking;
+        if (hide_background_) window_flags |= ImGuiWindowFlags_NoBackground;
+        if (force_horizontal_scrollbar_) window_flags |= ImGuiWindowFlags_AlwaysHorizontalScrollbar;
+        if (force_vertical_scrollbar_) window_flags |= ImGuiWindowFlags_AlwaysVerticalScrollbar;
+        if (allow_horizontal_scrollbar_) window_flags |= ImGuiWindowFlags_HorizontalScrollbar;
+        if (!bring_to_front_on_focus_) window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
+        if (!collapsable_) window_flags |= ImGuiWindowFlags_NoCollapse;
+        if (!allow_inputs_) window_flags |= ImGuiWindowFlags_NoInputs;
+        if (!scrollable_) window_flags |= ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar;
+        if (!title_bar_) window_flags |= ImGuiWindowFlags_NoTitleBar;
+
+        ImVec2 min_size_constraint = Converter::ToImVec2(min_size_);
+        ImVec2 max_size_constraint = Converter::ToImVec2(max_size_);
+
         /* Cancel constraint if x or y is <= 0.f */
-        if (minSizeConstraint.x <= 0.f || minSizeConstraint.y <= 0.f)
-            minSizeConstraint = {0.0f, 0.0f};
-        
-        if (maxSizeConstraint.x <= 0.f || maxSizeConstraint.y <= 0.f)
-            maxSizeConstraint = {10000.f, 10000.f};
-        
-        ImGui::SetNextWindowSizeConstraints(minSizeConstraint, maxSizeConstraint);
-        
-        if (ImGui::Begin((name + _panelID).c_str(), closable ? &_opened : nullptr, windowFlags)) {
-            _hovered = ImGui::IsWindowHovered();
-            _focused = ImGui::IsWindowFocused();
-            
-            auto scrollY = ImGui::GetScrollY();
-            
-            _scrolledToBottom = scrollY == ImGui::GetScrollMaxY();
-            _scrolledToTop = scrollY == 0.0f;
-            
-            if (!_opened)
-                closeEvent.invoke();
-            
-            update();
-            
-            if (_mustScrollToBottom) {
+        if (min_size_constraint.x <= 0.f || min_size_constraint.y <= 0.f) min_size_constraint = {0.0f, 0.0f};
+
+        if (max_size_constraint.x <= 0.f || max_size_constraint.y <= 0.f) max_size_constraint = {10000.f, 10000.f};
+
+        ImGui::SetNextWindowSizeConstraints(min_size_constraint, max_size_constraint);
+
+        if (ImGui::Begin((name_ + panel_id_).c_str(), closable_ ? &opened_ : nullptr, window_flags)) {
+            hovered_ = ImGui::IsWindowHovered();
+            focused_ = ImGui::IsWindowFocused();
+
+            auto scroll_y = ImGui::GetScrollY();
+
+            scrolled_to_bottom_ = scroll_y == ImGui::GetScrollMaxY();
+            scrolled_to_top_ = scroll_y == 0.0f;
+
+            if (!opened_) close_event_.Invoke();
+
+            Update();
+
+            if (must_scroll_to_bottom_) {
                 ImGui::SetScrollY(ImGui::GetScrollMaxY());
-                _mustScrollToBottom = false;
+                must_scroll_to_bottom_ = false;
             }
-            
-            if (_mustScrollToTop) {
+
+            if (must_scroll_to_top_) {
                 ImGui::SetScrollY(0.0f);
-                _mustScrollToTop = false;
+                must_scroll_to_top_ = false;
             }
-            
-            drawWidgets();
+
+            DrawWidgets();
         }
-        
+
         ImGui::End();
     }
 }
 
-
-}
-}
+}  // namespace vox::ui

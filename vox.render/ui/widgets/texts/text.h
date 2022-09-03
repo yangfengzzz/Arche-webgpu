@@ -4,31 +4,23 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef text_hpp
-#define text_hpp
+#pragma once
 
-#include "ui/widgets/data_widget.h"
+#include "vox.render/ui/widgets/data_widget.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Simple widget to display text on a panel
  */
 class Text : public DataWidget<std::string> {
 public:
-    /**
-     * Constructor
-     * @param p_content p_content
-     */
-    Text(const std::string &p_content = "");
-    
+    explicit Text(std::string content = "");
+
 protected:
-    void _draw_Impl() override;
-    
+    void DrawImpl() override;
+
 public:
-    std::string content;
+    std::string content_;
 };
 
-}
-}
-#endif /* text_hpp */
+}  // namespace vox::ui

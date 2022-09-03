@@ -4,28 +4,28 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "menu_item.h"
+#include "vox.render/ui/widgets/menu/menu_item.h"
 
-namespace vox {
-namespace ui {
-MenuItem::MenuItem(const std::string &p_name, const std::string &p_shortcut,
-                   bool p_checkable, bool p_checked) :
-DataWidget(m_selected), name(p_name), shortcut(p_shortcut),
-checkable(p_checkable), checked(p_checked) {
-}
+#include <utility>
 
-void MenuItem::_draw_Impl() {
-    bool previousValue = checked;
-    
-    if (ImGui::MenuItem((name + _widgetID).c_str(), shortcut.c_str(),
-                        checkable ? &checked : nullptr, enabled))
-        clickedEvent.invoke();
-    
-    if (checked != previousValue) {
-        valueChangedEvent.invoke(checked);
-        notifyChange();
+namespace vox::ui {
+MenuItem::MenuItem(std::string name, std::string shortcut, bool checkable, bool checked)
+    : DataWidget(selected_),
+      name_(std::move(name)),
+      shortcut_(std::move(shortcut)),
+      checkable_(checkable),
+      checked_(checked) {}
+
+void MenuItem::DrawImpl() {
+    bool previous_value = checked_;
+
+    if (ImGui::MenuItem((name_ + widget_id_).c_str(), shortcut_.c_str(), checkable_ ? &checked_ : nullptr, enabled_))
+        clicked_event_.Invoke();
+
+    if (checked_ != previous_value) {
+        value_changed_event_.Invoke(checked_);
+        NotifyChange();
     }
 }
 
-}
-}
+}  // namespace vox::ui

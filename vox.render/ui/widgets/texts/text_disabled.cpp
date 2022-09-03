@@ -4,17 +4,11 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "text_disabled.h"
+#include "vox.render/ui/widgets/texts/text_disabled.h"
 
-namespace vox {
-namespace ui {
-TextDisabled::TextDisabled(const std::string &p_content) :
-Text(p_content) {
-}
+namespace vox::ui {
+TextDisabled::TextDisabled(const std::string &content) : Text(content) {}
 
-void TextDisabled::_draw_Impl() {
-    ImGui::TextDisabled(content.c_str());
-}
+void TextDisabled::DrawImpl() { ImGui::TextDisabled("%s", content_.c_str()); }
 
-}
-}
+}  // namespace vox::ui

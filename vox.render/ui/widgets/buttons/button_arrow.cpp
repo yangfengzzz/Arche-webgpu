@@ -4,18 +4,13 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "button_arrow.h"
+#include "vox.render/ui/widgets/buttons/button_arrow.h"
 
-namespace vox {
-namespace ui {
-ButtonArrow::ButtonArrow(ImGuiDir p_direction) :
-direction(p_direction) {
-}
+namespace vox::ui {
+ButtonArrow::ButtonArrow(ImGuiDir direction) : direction_(direction) {}
 
-void ButtonArrow::_draw_Impl() {
-    if (ImGui::ArrowButton(_widgetID.c_str(), direction))
-        clickedEvent.invoke();
+void ButtonArrow::DrawImpl() {
+    if (ImGui::ArrowButton(widget_id_.c_str(), direction_)) clicked_event_.Invoke();
 }
 
-}
-}
+}  // namespace vox::ui

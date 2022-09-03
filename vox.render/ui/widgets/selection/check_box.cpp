@@ -4,26 +4,22 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "check_box.h"
+#include "vox.render/ui/widgets/selection/check_box.h"
 
+#include <utility>
 
-namespace vox {
-namespace ui {
-CheckBox::CheckBox(bool p_value, const std::string &p_label) :
-DataWidget<bool>(value), value(p_value), label(p_label) {
-}
+namespace vox::ui {
+CheckBox::CheckBox(bool value, std::string label) : DataWidget<bool>(value_), value_(value), label_(std::move(label)) {}
 
-void CheckBox::_draw_Impl() {
-    bool previousValue = value;
-    
-    ImGui::Checkbox((label + _widgetID).c_str(), &value);
-    
-    if (value != previousValue) {
-        valueChangedEvent.invoke(value);
-        notifyChange();
+void CheckBox::DrawImpl() {
+    bool previous_value = value_;
+
+    ImGui::Checkbox((label_ + widget_id_).c_str(), &value_);
+
+    if (value_ != previous_value) {
+        value_changed_event_.Invoke(value_);
+        NotifyChange();
     }
 }
 
-
-}
-}
+}  // namespace vox::ui

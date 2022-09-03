@@ -4,23 +4,18 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef button_h
-#define button_h
+#pragma once
 
-#include "ui/widgets/widget.h"
-#include "event.h"
+#include "vox.render/event.h"
+#include "vox.render/ui/widgets/widget.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Base class for any button widget
  */
 class Button : public Widget {
 public:
-    Event<> clickedEvent;
+    Event<> clicked_event_;
 };
 
-
-}
-}
-#endif /* button_h */
+}  // namespace vox::ui

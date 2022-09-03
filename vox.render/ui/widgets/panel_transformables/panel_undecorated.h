@@ -4,25 +4,20 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef panel_undecorated_hpp
-#define panel_undecorated_hpp
+#pragma once
 
-#include "ui/widgets/panel_transformable.h"
+#include "vox.render/ui/widgets/panel_transformable.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * A simple panel that is transformable and without decorations (No background)
  */
 class PanelUndecorated : public PanelTransformable {
 public:
-    void _draw_Impl() override;
-    
+    void DrawImpl() override;
+
 private:
-    int collectFlags();
+    int CollectFlags();
 };
 
-
-}
-}
-#endif /* panel_undecorated_hpp */
+}  // namespace vox::ui

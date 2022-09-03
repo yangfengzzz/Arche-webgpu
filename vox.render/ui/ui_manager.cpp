@@ -4,36 +4,46 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "ui_manager.h"
+#include "vox.render/ui/ui_manager.h"
+
 #include <GLFW/glfw3.h>
-#include "gui/imgui_impl_glfw.h"
-#include "gui/imgui_impl_wgpu.h"
+
+#include "vox.math/matrix4x4.h"
+#include "vox.render/platform/filesystem.h"
+#include "vox.render/ui/imgui_impl_glfw.h"
+#include "vox.render/ui/imgui_impl_wgpu.h"
 
 namespace vox {
-namespace ui {
-UIManager::UIManager(GLFWwindow *p_glfwWindow,
-                     RenderContext* context, Style p_style) {
-    ImGui::CreateContext();
-    
-    ImGui::GetIO().ConfigWindowsMoveFromTitleBarOnly = true; /* Disable moving windows by dragging another thing than the title bar */
-    enableDocking(false);
-    
-    applyStyle(p_style);
-    
-    ImGui_ImplGlfw_InitForOpenGL(p_glfwWindow, true);
-    ImGui_ImplWGPU_Init(context->device().Get(), 3,
-                        (WGPUTextureFormat)context->drawableTextureFormat());
+ui::UiManager *ui::UiManager::GetSingletonPtr() { return ms_singleton; }
+
+ui::UiManager &ui::UiManager::GetSingleton() {
+    assert(ms_singleton);
+    return (*ms_singleton);
 }
 
-UIManager::~UIManager() {
+namespace ui {
+UiManager::UiManager(GLFWwindow *p_glfwWindow, RenderContext *context, Style p_style) {
+    ImGui::CreateContext();
+
+    ImGui::GetIO().ConfigWindowsMoveFromTitleBarOnly =
+            true; /* Disable moving windows by dragging another thing than the title bar */
+    EnableDocking(false);
+
+    ApplyStyle(p_style);
+
+    ImGui_ImplGlfw_InitForOpenGL(p_glfwWindow, true);
+    ImGui_ImplWGPU_Init(context->device().Get(), 3, (WGPUTextureFormat)context->drawableTextureFormat());
+}
+
+UiManager::~UiManager() {
     ImGui_ImplWGPU_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 }
 
-void UIManager::applyStyle(Style p_style) {
+void UiManager::ApplyStyle(Style p_style) {
     ImGuiStyle *style = &ImGui::GetStyle();
-    
+
     switch (p_style) {
         case Style::IM_CLASSIC_STYLE:
             ImGui::StyleColorsClassic();
@@ -47,7 +57,7 @@ void UIManager::applyStyle(Style p_style) {
         default:
             break;
     }
-    
+
     if (p_style == Style::DUNE_DARK) {
         style->WindowPadding = ImVec2(15, 15);
         style->WindowRounding = 5.0f;
@@ -60,7 +70,7 @@ void UIManager::applyStyle(Style p_style) {
         style->ScrollbarRounding = 9.0f;
         style->GrabMinSize = 5.0f;
         style->GrabRounding = 3.0f;
-        
+
         style->Colors[ImGuiCol_Text] = ImVec4(0.80f, 0.80f, 0.83f, 1.00f);
         style->Colors[ImGuiCol_TextDisabled] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
         style->Colors[ImGuiCol_WindowBg] = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
@@ -100,7 +110,7 @@ void UIManager::applyStyle(Style p_style) {
         style->Colors[ImGuiCol_PlotHistogramHovered] = ImVec4(0.25f, 1.00f, 0.00f, 1.00f);
         style->Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.25f, 1.00f, 0.00f, 0.43f);
         style->Colors[ImGuiCol_ModalWindowDimBg] = ImVec4(1.00f, 0.98f, 0.95f, 0.73f);
-        
+
         style->Colors[ImGuiCol_Tab] = style->Colors[ImGuiCol_TabUnfocused];
     } else if (p_style == Style::ALTERNATIVE_DARK) {
         style->WindowPadding = ImVec2(15, 15);
@@ -117,11 +127,11 @@ void UIManager::applyStyle(Style p_style) {
         style->TabRounding = 0.0f;
         style->ChildRounding = 0.0f;
         style->PopupRounding = 0.0f;
-        
+
         style->WindowBorderSize = 1.0f;
         style->FrameBorderSize = 0.0f;
         style->PopupBorderSize = 1.0f;
-        
+
         ImVec4 *colors = ImGui::GetStyle().Colors;
         colors[ImGuiCol_Text] = ImVec4(0.96f, 0.96f, 0.99f, 1.00f);
         colors[ImGuiCol_TextDisabled] = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
@@ -176,110 +186,91 @@ void UIManager::applyStyle(Style p_style) {
     }
 }
 
-bool UIManager::loadFont(const std::string &p_id, const std::string &p_path, float p_fontSize) {
-    if (_fonts.find(p_id) == _fonts.end()) {
+bool UiManager::LoadFont(const std::string &p_id, const std::string &p_path, float p_fontSize) {
+    if (fonts_.find(p_id) == fonts_.end()) {
         auto &io = ImGui::GetIO();
         ImFont *fontInstance = io.Fonts->AddFontFromFileTTF(p_path.c_str(), p_fontSize);
-        
+
         if (fontInstance) {
-            _fonts[p_id] = fontInstance;
+            fonts_[p_id] = fontInstance;
             return true;
         }
     }
-    
+
     return false;
 }
 
-bool UIManager::unloadFont(const std::string &p_id) {
-    if (_fonts.find(p_id) != _fonts.end()) {
-        _fonts.erase(p_id);
+bool UiManager::UnloadFont(const std::string &p_id) {
+    if (fonts_.find(p_id) != fonts_.end()) {
+        fonts_.erase(p_id);
         return true;
     }
-    
+
     return false;
 }
 
-bool UIManager::useFont(const std::string &p_id) {
-    auto foundFont = _fonts.find(p_id);
-    
-    if (foundFont != _fonts.end()) {
+bool UiManager::UseFont(const std::string &p_id) {
+    auto foundFont = fonts_.find(p_id);
+
+    if (foundFont != fonts_.end()) {
         ImGui::GetIO().FontDefault = foundFont->second;
         return true;
     }
-    
+
     return false;
 }
 
-void UIManager::useDefaultFont() {
-    ImGui::GetIO().FontDefault = nullptr;
-}
+void UiManager::UseDefaultFont() { ImGui::GetIO().FontDefault = nullptr; }
 
-void UIManager::enableEditorLayoutSave(bool p_value) {
+void UiManager::EnableEditorLayoutSave(bool p_value) {
     if (p_value)
-        ImGui::GetIO().IniFilename = _layoutSaveFilename.c_str();
+        ImGui::GetIO().IniFilename = layout_save_filename_.c_str();
     else
         ImGui::GetIO().IniFilename = nullptr;
 }
 
-bool UIManager::isEditorLayoutSaveEnabled() const {
-    return ImGui::GetIO().IniFilename != nullptr;
+bool UiManager::IsEditorLayoutSaveEnabled() { return ImGui::GetIO().IniFilename != nullptr; }
+
+void UiManager::SetEditorLayoutSaveFilename(const std::string &p_filename) {
+    layout_save_filename_ = p_filename;
+    if (IsEditorLayoutSaveEnabled()) ImGui::GetIO().IniFilename = layout_save_filename_.c_str();
 }
 
-void UIManager::setEditorLayoutSaveFilename(const std::string &p_filename) {
-    _layoutSaveFilename = p_filename;
-    if (isEditorLayoutSaveEnabled())
-        ImGui::GetIO().IniFilename = _layoutSaveFilename.c_str();
-}
+void UiManager::SetEditorLayoutAutosaveFrequency(float p_frequency) { ImGui::GetIO().IniSavingRate = p_frequency; }
 
-void UIManager::setEditorLayoutAutosaveFrequency(float p_frequency) {
-    ImGui::GetIO().IniSavingRate = p_frequency;
-}
+float UiManager::EditorLayoutAutosaveFrequency(float p_frequeny) { return ImGui::GetIO().IniSavingRate; }
 
-float UIManager::editorLayoutAutosaveFrequency(float p_frequeny) {
-    return ImGui::GetIO().IniSavingRate;
-}
+void UiManager::EnableDocking(bool p_value) {
+    docking_state_ = p_value;
 
-void UIManager::enableDocking(bool p_value) {
-    _dockingState = p_value;
-    
     if (p_value)
         ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     else
         ImGui::GetIO().ConfigFlags &= ~ImGuiConfigFlags_DockingEnable;
 }
 
-void UIManager::resetLayout(const std::string &p_config) const {
-    ImGui::LoadIniSettingsFromDisk(p_config.c_str());
+void UiManager::ResetLayout(const std::string &p_config) { ImGui::LoadIniSettingsFromDisk(p_config.c_str()); }
+
+bool UiManager::IsDockingEnabled() const { return docking_state_; }
+
+void UiManager::SetCanvas(Canvas &p_canvas) {
+    RemoveCanvas();
+
+    current_canvas_ = &p_canvas;
 }
 
-bool UIManager::isDockingEnabled() const {
-    return _dockingState;
-}
+void UiManager::RemoveCanvas() { current_canvas_ = nullptr; }
 
-void UIManager::setCanvas(Canvas &p_canvas) {
-    removeCanvas();
-    
-    _currentCanvas = &p_canvas;
-}
-
-void UIManager::removeCanvas() {
-    _currentCanvas = nullptr;
-}
-
-void UIManager::render(wgpu::RenderPassEncoder& passEncoder) {
-    if (_currentCanvas) {
-        _currentCanvas->draw();
+void UiManager::Render(wgpu::RenderPassEncoder &passEncoder) {
+    if (current_canvas_) {
+        current_canvas_->Draw();
         ImGui_ImplWGPU_RenderDrawData(ImGui::GetDrawData(), passEncoder.Get());
     }
 }
 
-void UIManager::pushCurrentFont() {
-    
-}
+void UiManager::PushCurrentFont() {}
 
-void UIManager::popCurrentFont() {
-    
-}
+void UiManager::PopCurrentFont() {}
 
-}
-}
+}  // namespace ui
+}  // namespace vox

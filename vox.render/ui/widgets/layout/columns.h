@@ -4,61 +4,53 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef columns_hpp
-#define columns_hpp
+#pragma once
 
 #include <array>
 
-#include "ui/widgets/widget_container.h"
+#include "vox.render/ui/widgets/widget_container.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Widget that allow columnification
  */
-template<size_t _Size>
+template <size_t Size>
 class Columns : public Widget, public WidgetContainer {
 public:
     /**
      * Constructor
      */
-    Columns() {
-        widths.fill(-1.f);
-    }
-    
+    Columns() { widths_.fill(-1.f); }
+
 protected:
-    virtual void _draw_Impl() override {
-        ImGui::Columns(static_cast<int>(_Size), ("##" + _widgetID).c_str(), false);
-        
+    void DrawImpl() override {
+        ImGui::Columns(static_cast<int>(Size), ("##" + widget_id_).c_str(), false);
+
         int counter = 0;
-        
-        collectGarbages();
-        
-        for (auto it = _widgets.begin(); it != _widgets.end();) {
-            it->first->draw();
-            
+
+        CollectGarbage();
+
+        for (auto it = widgets_.begin(); it != widgets_.end();) {
+            it->first->Draw();
+
             ++it;
-            
-            if (it != _widgets.end()) {
-                if (widths[counter] != -1.f)
-                    ImGui::SetColumnWidth(counter, widths[counter]);
-                
+
+            if (it != widgets_.end()) {
+                if (widths_[counter] != -1.f) ImGui::SetColumnWidth(counter, widths_[counter]);
+
                 ImGui::NextColumn();
             }
-            
+
             ++counter;
-            
-            if (counter == _Size)
-                counter = 0;
+
+            if (counter == Size) counter = 0;
         }
-        
-        ImGui::Columns(1); // Necessary to not break the layout for following widget
+
+        ImGui::Columns(1);  // Necessary to not break the layout for following widget
     }
-    
+
 public:
-    std::array<float, _Size> widths;
+    std::array<float, Size> widths_;
 };
 
-}
-}
-#endif /* columns_hpp */
+}  // namespace vox::ui

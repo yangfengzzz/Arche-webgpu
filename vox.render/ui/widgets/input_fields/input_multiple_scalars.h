@@ -4,92 +4,78 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef input_multiple_scalars_h
-#define input_multiple_scalars_h
+#pragma once
 
-#include "ui/widgets/data_widget.h"
-#include "event.h"
+#include <utility>
 
-namespace vox {
-namespace ui {
+#include "vox.render/event.h"
+#include "vox.render/ui/widgets/data_widget.h"
+
+namespace vox::ui {
 /**
  * Input widget of multiple generic type
  */
-template<typename T, size_t _Size>
-class InputMultipleScalars : public DataWidget<std::array<T, _Size>> {
-    static_assert(_Size > 1, "Invalid InputMultipleScalars _Size (2 or more requiered)");
+template <typename T, size_t Size>
+class InputMultipleScalars : public DataWidget<std::array<T, Size>> {
+    using DataWidget<std::array<T, Size>>::widget_id_;
+
+    static_assert(Size > 1, "Invalid InputMultipleScalars _Size (2 or more required)");
     static_assert(std::is_scalar<T>::value, "Invalid InputMultipleScalars T (Scalar expected)");
-    
+
 public:
-    /**
-     * Constructor
-     * @param p_dataType
-     * @param p_defaultValue
-     * @param p_step
-     * @param p_fastStep
-     * @param p_label
-     * @param p_format
-     * @param p_selectAllOnClick
-     */
-    InputMultipleScalars(ImGuiDataType p_dataType,
-                         T p_defaultValue,
-                         T p_step,
-                         T p_fastStep,
-                         const std::string &p_label,
-                         const std::string &p_format,
-                         bool p_selectAllOnClick) :
-    DataWidget<std::array<T, _Size>>(values),
-    m_dataType(p_dataType),
-    step(p_step),
-    fastStep(p_fastStep),
-    label(p_label),
-    format(p_format),
-    selectAllOnClick(p_selectAllOnClick) {
-        values.fill(p_defaultValue);
+    InputMultipleScalars(ImGuiDataType data_type,
+                         T default_value,
+                         T step,
+                         T fast_step,
+                         std::string label,
+                         std::string format,
+                         bool select_all_on_click)
+        : DataWidget<std::array<T, Size>>(values_),
+          data_type_(data_type),
+          step_(step),
+          fast_step_(fast_step),
+          label_(std::move(label)),
+          format_(std::move(format)),
+          select_all_on_click_(select_all_on_click) {
+        values_.fill(default_value);
     }
-    
+
 protected:
-    void _draw_Impl() override {
-        std::array<T, _Size> previousValue = values;
-        
+    void DrawImpl() override {
+        std::array<T, Size> previous_value = values_;
+
         ImGuiInputTextFlags flags = ImGuiInputTextFlags_EnterReturnsTrue;
-        if (selectAllOnClick)
-            flags |= ImGuiInputTextFlags_AutoSelectAll;
-        
-        bool enterPressed = ImGui::InputScalarN((label + _widgetID).c_str(), m_dataType, values.data(),
-                                                _Size, step != 0.0f ? &step : nullptr,
-                                                fastStep != 0.0f ? &fastStep : nullptr, format.c_str(), flags);
-        
-        bool hasChanged = false;
-        
-        for (size_t i = 0; i < _Size; ++i)
-            if (previousValue[i] != values[i])
-                hasChanged = true;
-        
-        if (hasChanged) {
-            ContentChangedEvent.Invoke(values);
+        if (select_all_on_click_) flags |= ImGuiInputTextFlags_AutoSelectAll;
+
+        bool enter_pressed = ImGui::InputScalarN((label_ + widget_id_).c_str(), data_type_, values_.data(), Size,
+                                                 step_ != 0.0f ? &step_ : nullptr,
+                                                 fast_step_ != 0.0f ? &fast_step_ : nullptr, format_.c_str(), flags);
+
+        bool has_changed = false;
+
+        for (size_t i = 0; i < Size; ++i)
+            if (previous_value[i] != values_[i]) has_changed = true;
+
+        if (has_changed) {
+            content_changed_event_.Invoke(values_);
             this->NotifyChange();
         }
-        
-        if (enterPressed)
-            EnterPressedEvent.Invoke(values);
+
+        if (enter_pressed) enter_pressed_event_.Invoke(values_);
     }
-    
+
 public:
-    std::array<T, _Size> values;
-    T step;
-    T fastStep;
-    std::string label;
-    std::string format;
-    bool selectAllOnClick;
-    Event<std::array<T, _Size> &> contentChangedEvent;
-    Event<std::array<T, _Size> &> enterPressedEvent;
-    
+    std::array<T, Size> values_;
+    T step_;
+    T fast_step_;
+    std::string label_;
+    std::string format_;
+    bool select_all_on_click_;
+    Event<std::array<T, Size> &> content_changed_event_;
+    Event<std::array<T, Size> &> enter_pressed_event_;
+
 private:
-    ImGuiDataType _dataType;
+    ImGuiDataType data_type_;
 };
 
-
-}
-}
-#endif /* input_multiple_scalars_h */
+}  // namespace vox::ui

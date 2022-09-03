@@ -4,8 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef singleton_h
-#define singleton_h
+#pragma once
 
 #include <cassert>
 
@@ -13,39 +12,35 @@ namespace vox {
 /*
  * Template class for creating single-instance global classes.
  */
-template<typename T>
+template <typename T>
 class Singleton {
-private:
-    /** @brief Explicit private copy constructor. This is a forbidden operation.*/
-    Singleton(const Singleton<T> &);
-    
-    /** @brief Private operator= . This is a forbidden operation. */
-    Singleton &operator=(const Singleton<T> &);
-    
-protected:
-    
-    static T *msSingleton;
-    
 public:
-    Singleton(void) {
-        assert(!msSingleton);
-        msSingleton = static_cast< T * >( this );
+    /** @brief Explicit private copy constructor. This is a forbidden operation.*/
+    Singleton(const Singleton<T> &) = delete;
+
+    /** @brief Private operator= . This is a forbidden operation. */
+    Singleton &operator=(const Singleton<T> &) = delete;
+
+protected:
+    static T *ms_singleton;
+
+public:
+    Singleton() {
+        assert(!ms_singleton);
+        ms_singleton = static_cast<T *>(this);
     }
-    
-    ~Singleton(void) {
-        assert(msSingleton);
-        msSingleton = 0;
+
+    ~Singleton() {
+        assert(ms_singleton);
+        ms_singleton = 0;
     }
-    
-    static T &getSingleton(void) {
-        assert(msSingleton);
-        return (*msSingleton);
+
+    static T &GetSingleton() {
+        assert(ms_singleton);
+        return (*ms_singleton);
     }
-    
-    static T *getSingletonPtr(void) {
-        return msSingleton;
-    }
+
+    static T *GetSingletonPtr() { return ms_singleton; }
 };
 
-}
-#endif /* singleton_h */
+}  // namespace vox

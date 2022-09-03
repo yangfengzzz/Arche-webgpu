@@ -4,119 +4,100 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef panel_transformable_hpp
-#define panel_transformable_hpp
+#pragma once
 
-#include <vector>
 #include <memory>
+#include <vector>
 
-#include "vector2.h"
-#include "event.h"
+#include "vox.math/vector2.h"
+#include "vox.render/event.h"
+#include "vox.render/ui/widgets/alignment.h"
+#include "vox.render/ui/widgets/panel.h"
 
-#include "ui/widgets/panel.h"
-#include "ui/widgets/alignment.h"
-
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * APanelTransformable is a panel that is localized in the canvas
  */
 class PanelTransformable : public Panel {
 public:
-    /**
-     * Create a APanelTransformable
-     * @param p_defaultPosition p_defaultPosition
-     * @param p_defaultSize p_defaultSize
-     * @param p_defaultHorizontalAlignment p_defaultHorizontalAlignment
-     * @param p_defaultVerticalAlignment p_defaultVerticalAlignment
-     * @param p_ignoreConfigFile p_ignoreConfigFile
-     */
-    PanelTransformable(const Vector2F &p_defaultPosition = Vector2F(-1.f, -1.f),
-                       const Vector2F &p_defaultSize = Vector2F(-1.f, -1.f),
-                       HorizontalAlignment p_defaultHorizontalAlignment = HorizontalAlignment::LEFT,
-                       VerticalAlignment p_defaultVerticalAlignment = VerticalAlignment::TOP,
-                       bool p_ignoreConfigFile = false);
-    
+    explicit PanelTransformable(const Vector2F &default_position = Vector2F(-1.f, -1.f),
+                                const Vector2F &default_size = Vector2F(-1.f, -1.f),
+                                HorizontalAlignment default_horizontal_alignment = HorizontalAlignment::LEFT,
+                                VerticalAlignment default_vertical_alignment = VerticalAlignment::TOP,
+                                bool ignore_config_file = false);
+
     /**
      * Defines the position of the panel
-     * @param p_position p_position
      */
-    void setPosition(const Vector2F &p_position);
-    
+    void SetPosition(const Vector2F &position);
+
     /**
      * Defines the size of the panel
-     * @param p_size p_size
      */
-    void setSize(const Vector2F &p_size);
-    
+    void SetSize(const Vector2F &size);
+
     /**
      * Defines the alignment of the panel
-     * @param p_horizontalAlignment p_horizontalAlignment
-     * @param p_verticalAligment p_verticalAligment
      */
-    void setAlignment(HorizontalAlignment p_horizontalAlignment,
-                      VerticalAlignment p_verticalAligment);
-    
+    void SetAlignment(HorizontalAlignment horizontal_alignment, VerticalAlignment vertical_alignment);
+
     /**
      * Returns the current position of the panel
      */
-    const Vector2F &position() const;
-    
+    [[nodiscard]] const Vector2F &Position() const;
+
     /**
      * Returns the current size of the panel
      */
-    const Vector2F &size() const;
-    
+    [[nodiscard]] const Vector2F &Size() const;
+
     /**
      * Returns the current horizontal alignment of the panel
      */
-    HorizontalAlignment horizontalAlignment() const;
-    
+    [[nodiscard]] HorizontalAlignment GetHorizontalAlignment() const;
+
     /**
      * Returns the current vertical alignment of the panel
      */
-    VerticalAlignment verticalAlignment() const;
-    
+    [[nodiscard]] VerticalAlignment GetVerticalAlignment() const;
+
 protected:
-    void update();
-    
-    virtual void _draw_Impl() = 0;
-    
+    void Update();
+
+    void DrawImpl() override = 0;
+
 private:
-    Vector2F calculatePositionAlignmentOffset(bool p_default = false);
-    
-    void updatePosition();
-    
-    void updateSize();
-    
-    void copyImGuiPosition();
-    
-    void copyImGuiSize();
-    
+    Vector2F CalculatePositionAlignmentOffset(bool is_default = false);
+
+    void UpdatePosition();
+
+    void UpdateSize();
+
+    void CopyImGuiPosition();
+
+    void CopyImGuiSize();
+
 public:
-    bool autoSize = true;
-    
+    bool auto_size_ = true;
+
 protected:
-    Vector2F _defaultPosition;
-    Vector2F _defaultSize;
-    HorizontalAlignment _defaultHorizontalAlignment;
-    VerticalAlignment _defaultVerticalAlignment;
-    bool _ignoreConfigFile;
-    
-    Vector2F _position = Vector2F(0.0f, 0.0f);
-    Vector2F _size = Vector2F(0.0f, 0.0f);
-    
-    bool _positionChanged = false;
-    bool _sizeChanged = false;
-    
-    HorizontalAlignment _horizontalAlignment = HorizontalAlignment::LEFT;
-    VerticalAlignment _verticalAlignment = VerticalAlignment::TOP;
-    
-    bool _alignmentChanged = false;
-    bool _firstFrame = true;
+    Vector2F default_position_;
+    Vector2F default_size_;
+    HorizontalAlignment default_horizontal_alignment_;
+    VerticalAlignment default_vertical_alignment_;
+    bool ignore_config_file_;
+
+    Vector2F position_ = Vector2F(0.0f, 0.0f);
+    Vector2F size_ = Vector2F(0.0f, 0.0f);
+
+    bool position_changed_ = false;
+    bool size_changed_ = false;
+
+    HorizontalAlignment horizontal_alignment_ = HorizontalAlignment::LEFT;
+    VerticalAlignment vertical_alignment_ = VerticalAlignment::TOP;
+
+    bool alignment_changed_ = false;
+    bool first_frame_ = true;
 };
 
-
-}
-}
-#endif /* panel_transformable_hpp */
+}  // namespace vox::ui

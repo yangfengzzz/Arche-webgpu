@@ -4,29 +4,24 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef plugin_h
-#define plugin_h
+#pragma once
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Interface to any plugin of UI.
  * A plugin is basically a behaviour that you can plug to a widget
  */
 class Plugin {
 public:
-    virtual ~Plugin() {
-    }
-    
+    virtual ~Plugin() = default;
+
     /**
      * Execute the plugin behaviour
      */
-    virtual void execute() = 0;
-    
+    virtual void Execute() = 0;
+
     /* Feel free to store any data you want here */
-    void *userData = nullptr;
+    void *user_data_ = nullptr;
 };
 
-}
-}
-#endif /* plugin_h */
+}  // namespace vox::ui

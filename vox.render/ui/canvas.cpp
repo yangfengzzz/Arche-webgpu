@@ -4,19 +4,19 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "canvas.h"
-#include "gui/imgui_impl_glfw.h"
-#include "gui/imgui_impl_wgpu.h"
+#include "vox.render/ui/canvas.h"
 
-namespace vox {
-namespace ui {
-void Canvas::draw() {
-    if (!_panels.empty()) {
+#include "vox.render/ui/imgui_impl_glfw.h"
+#include "vox.render/ui/imgui_impl_wgpu.h"
+
+namespace vox::ui {
+void Canvas::Draw() {
+    if (!panels_.empty()) {
         ImGui_ImplWGPU_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-        
-        if (_isDockspace) {
+
+        if (is_dockspace_) {
             ImGuiViewport *viewport = ImGui::GetMainViewport();
             ImGui::SetNextWindowPos(viewport->Pos);
             ImGui::SetNextWindowSize(viewport->Size);
@@ -24,51 +24,39 @@ void Canvas::draw() {
             ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
             ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
             ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-            
+
             ImGui::Begin("##dockspace", nullptr,
-                         ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize
-                         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus
-                         | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking);
+                         ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize |
+                                 ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus |
+                                 ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking);
             ImGuiID dockspace_id = ImGui::GetID("MyDockspace");
             ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_PassthruCentralNode);
             ImGui::SetWindowPos({0.f, 0.f});
-            ImVec2 displaySize = ImGui::GetIO().DisplaySize;
-            ImGui::SetWindowSize({(float) displaySize.x, (float) displaySize.y});
+            ImVec2 display_size = ImGui::GetIO().DisplaySize;
+            ImGui::SetWindowSize({(float)display_size.x, (float)display_size.y});
             ImGui::End();
-            
+
             ImGui::PopStyleVar(3);
         }
-        
-        for (auto &panel: _panels)
-            panel.get().draw();
-        
+
+        for (auto &panel : panels_) panel.get().Draw();
+
         ImGui::Render();
     }
 }
 
-void Canvas::addPanel(Panel &p_panel) {
-    _panels.push_back(std::ref(p_panel));
+void Canvas::AddPanel(Panel &panel) { panels_.push_back(std::ref(panel)); }
+
+void Canvas::RemovePanel(Panel &panel) {
+    panels_.erase(std::remove_if(panels_.begin(), panels_.end(),
+                                 [&panel](std::reference_wrapper<Panel> &item) { return &panel == &item.get(); }),
+                  panels_.end());
 }
 
-void Canvas::removePanel(Panel &p_panel) {
-    _panels.erase(std::remove_if(_panels.begin(), _panels.end(),
-                                 [&p_panel](std::reference_wrapper<Panel> &p_item) {
-        return &p_panel == &p_item.get();
-    }));
-}
+void Canvas::RemoveAllPanels() { panels_.clear(); }
 
-void Canvas::removeAllPanels() {
-    _panels.clear();
-}
+void Canvas::MakeDockSpace(bool state) { is_dockspace_ = state; }
 
-void Canvas::makeDockspace(bool p_state) {
-    _isDockspace = p_state;
-}
+bool Canvas::IsDockSpace() const { return is_dockspace_; }
 
-bool Canvas::isDockspace() const {
-    return _isDockspace;
-}
-
-
-}
-}
+}  // namespace vox::ui

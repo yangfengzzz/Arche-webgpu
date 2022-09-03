@@ -4,78 +4,72 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef drag_drop_source_h
-#define drag_drop_source_h
+#pragma once
 
-namespace vox {
-namespace ui {
+#include <imgui.h>
+
+#include <string>
+#include <utility>
+
+#include "vox.render/event.h"
+#include "vox.render/ui/plugins/plugin.h"
+
+namespace vox::ui {
 /**
  * Represents a drag and drop source
  */
-template<typename T>
+template <typename T>
 class DDSource : public Plugin {
 public:
     /**
      * Create the drag and drop source
      */
-    DDSource(const std::string &p_identifier,
-             const std::string &p_tooltip,
-             T p_data) :
-    identifier(p_identifier), tooltip(p_tooltip), data(p_data) {
-    }
-    
+    DDSource(std::string identifier, std::string tooltip, T data)
+        : identifier_(std::move(identifier)), tooltip_(std::move(tooltip)), data_(data) {}
+
     /**
      * Execute the behaviour of the drag and drop source
      */
-    virtual void execute() override {
+    void Execute() override {
         ImGuiDragDropFlags src_flags = 0;
         // Keep the source displayed as hovered
         src_flags |= ImGuiDragDropFlags_SourceNoDisableHover;
         // Because our dragging is local, we disable the feature of opening foreign treenodes/tabs while dragging
         src_flags |= ImGuiDragDropFlags_SourceNoHoldToOpenOthers;
-        
-        if (!hasTooltip)
-            src_flags |= ImGuiDragDropFlags_SourceNoPreviewTooltip; // Hide the tooltip
-        
+
+        if (!has_tooltip_) src_flags |= ImGuiDragDropFlags_SourceNoPreviewTooltip;  // Hide the tooltip
+
         if (ImGui::BeginDragDropSource(src_flags)) {
-            if (!_isDragged)
-                dragStartEvent.invoke();
-            
-            _isDragged = true;
-            
-            if (!(src_flags & ImGuiDragDropFlags_SourceNoPreviewTooltip))
-                ImGui::Text(tooltip.c_str());
-            ImGui::SetDragDropPayload(identifier.c_str(), &data, sizeof(data));
+            if (!is_dragged_) drag_start_event_.Invoke();
+
+            is_dragged_ = true;
+
+            if (!(src_flags & ImGuiDragDropFlags_SourceNoPreviewTooltip)) ImGui::Text("%s", tooltip_.c_str());
+            ImGui::SetDragDropPayload(identifier_.c_str(), &data_, sizeof(data_));
             ImGui::EndDragDropSource();
         } else {
-            if (_isDragged)
-                dragStopEvent.invoke();
-            
-            _isDragged = false;
+            if (is_dragged_) drag_stop_event_.Invoke();
+
+            is_dragged_ = false;
         }
     }
-    
+
     /**
      * Returns true if the drag and drop source is dragged
      */
-    bool isDragged() const {
-        return _isDragged;
-    }
-    
+    [[nodiscard]] bool IsDragged() const { return is_dragged_; }
+
 public:
-    std::string identifier;
-    std::string tooltip;
-    T data;
-    Event<> dragStartEvent;
-    Event<> dragStopEvent;
-    
-    bool hasTooltip = true;
-    
+    std::string identifier_;
+    std::string tooltip_;
+    T data_;
+    Event<> drag_start_event_;
+    Event<> drag_stop_event_;
+
+    bool has_tooltip_ = true;
+
 private:
-    bool _isDragged;
+    bool is_dragged_{};
 };
 
-
-}
-}
-#endif /* drag_drop_source_h */
+}  // namespace vox::ui

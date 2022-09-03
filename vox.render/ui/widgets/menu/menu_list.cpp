@@ -4,27 +4,25 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "menu_list.h"
+#include "vox.render/ui/widgets/menu/menu_list.h"
 
-namespace vox {
-namespace ui {
-MenuList::MenuList(const std::string &p_name, bool p_locked) :
-name(p_name), locked(p_locked) {
-}
+#include <utility>
 
-void MenuList::_draw_Impl() {
-    if (ImGui::BeginMenu(name.c_str(), !locked)) {
-        if (!m_opened) {
-            clickedEvent.invoke();
-            m_opened = true;
+namespace vox::ui {
+MenuList::MenuList(std::string name, bool locked) : name_(std::move(name)), locked_(locked) {}
+
+void MenuList::DrawImpl() {
+    if (ImGui::BeginMenu(name_.c_str(), !locked_)) {
+        if (!opened_) {
+            clicked_event_.Invoke();
+            opened_ = true;
         }
-        
-        drawWidgets();
+
+        DrawWidgets();
         ImGui::EndMenu();
     } else {
-        m_opened = false;
+        opened_ = false;
     }
 }
 
-}
-}
+}  // namespace vox::ui

@@ -4,21 +4,17 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef bullet_hpp
-#define bullet_hpp
+#pragma once
 
-#include "ui/widgets/widget.h"
+#include "vox.render/ui/widgets/widget.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Simple widget that display a bullet point
  */
 class Bullet : public Widget {
 protected:
-    void _draw_Impl() override;
+    void DrawImpl() override;
 };
 
-}
-}
-#endif /* bullet_hpp */
+}  // namespace vox::ui

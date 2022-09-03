@@ -4,29 +4,20 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef text_disabled_hpp
-#define text_disabled_hpp
+#pragma once
 
-#include "text.h"
+#include "vox.render/ui/widgets/texts/text.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Widget to display a disabled text on a panel
  */
 class TextDisabled : public Text {
 public:
-    /**
-     * Constructor
-     * @param p_content p_content
-     */
-    TextDisabled(const std::string &p_content = "");
-    
+    explicit TextDisabled(const std::string &content = "");
+
 protected:
-    void _draw_Impl() override;
+    void DrawImpl() override;
 };
 
-
-}
-}
-#endif /* text_disabled_hpp */
+}  // namespace vox::ui

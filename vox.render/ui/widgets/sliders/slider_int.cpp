@@ -4,20 +4,11 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "slider_int.h"
+#include "vox.render/ui/widgets/sliders/slider_int.h"
 
-namespace vox {
-namespace ui {
-SliderInt::SliderInt(int p_min,
-                     int p_max,
-                     int p_value,
-                     SliderOrientation p_orientation,
-                     const std::string &p_label,
-                     const std::string &p_format) :
-SliderSingleScalar<int>(ImGuiDataType_::ImGuiDataType_S32, p_min, p_max, p_value,
-                        p_orientation, p_label, p_format) {
-}
+namespace vox::ui {
+SliderInt::SliderInt(
+        int min, int max, int value, SliderOrientation orientation, const std::string &label, const std::string &format)
+    : SliderSingleScalar<int>(ImGuiDataType_::ImGuiDataType_S32, min, max, value, orientation, label, format) {}
 
-
-}
-}
+}  // namespace vox::ui

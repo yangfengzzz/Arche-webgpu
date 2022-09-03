@@ -4,13 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "group.h"
+#include "vox.render/ui/widgets/layout/group.h"
 
-namespace vox {
-namespace ui {
-void Group::_draw_Impl() {
-    drawWidgets();
-}
+namespace vox::ui {
+void Group::DrawImpl() { DrawWidgets(); }
 
-}
-}
+}  // namespace vox::ui

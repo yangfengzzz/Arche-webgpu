@@ -4,13 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "new_line.h"
+#include "vox.render/ui/widgets/layout/new_line.h"
 
-namespace vox {
-namespace ui {
-void NewLine::_draw_Impl() {
-    ImGui::NewLine();
-}
+namespace vox::ui {
+void NewLine::DrawImpl() { ImGui::NewLine(); }
 
-}
-}
+}  // namespace vox::ui

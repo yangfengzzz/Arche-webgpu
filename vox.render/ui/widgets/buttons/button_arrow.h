@@ -4,13 +4,11 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef button_arrow_hpp
-#define button_arrow_hpp
+#pragma once
 
-#include "button.h"
+#include "vox.render/ui/widgets/buttons/button.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Button widget with an arrow image
  */
@@ -19,16 +17,13 @@ public:
     /**
      * Create the button
      */
-    ButtonArrow(ImGuiDir p_direction = ImGuiDir_None);
-    
+    explicit ButtonArrow(ImGuiDir direction = ImGuiDir_None);
+
 protected:
-    void _draw_Impl() override;
-    
+    void DrawImpl() override;
+
 public:
-    ImGuiDir direction;
+    ImGuiDir direction_;
 };
 
-
-}
-}
-#endif /* button_arrow_hpp */
+}  // namespace vox::ui

@@ -4,38 +4,29 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef menu_list_hpp
-#define menu_list_hpp
+#pragma once
 
-#include "ui/widgets/layout/group.h"
-#include "event.h"
+#include "vox.render/event.h"
+#include "vox.render/ui/widgets/layout/group.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Widget that behave like a group with a menu display
  */
 class MenuList : public Group {
 public:
-    /**
-     * Constructor
-     * @param p_name p_name
-     * @param p_locked p_locked
-     */
-    MenuList(const std::string &p_name, bool p_locked = false);
-    
+    explicit MenuList(std::string name, bool locked = false);
+
 protected:
-    void _draw_Impl() override;
-    
+    void DrawImpl() override;
+
 public:
-    std::string name;
-    bool locked;
-    Event<> clickedEvent;
-    
+    std::string name_;
+    bool locked_;
+    Event<> clicked_event_;
+
 private:
-    bool m_opened;
+    bool opened_{};
 };
 
-}
-}
-#endif /* menu_list_hpp */
+}  // namespace vox::ui

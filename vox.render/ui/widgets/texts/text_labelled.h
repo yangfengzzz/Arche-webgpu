@@ -4,32 +4,23 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef text_labelled_hpp
-#define text_labelled_hpp
+#pragma once
 
-#include "text.h"
+#include "vox.render/ui/widgets/texts/text.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Simple widget to display a labelled text on a panel
  */
 class TextLabelled : public Text {
 public:
-    /**
-     * Constructor
-     * @param p_content p_content
-     * @param p_label p_label
-     */
-    TextLabelled(const std::string &p_content = "", const std::string &p_label = "");
-    
+    explicit TextLabelled(const std::string &content = "", std::string label = "");
+
 protected:
-    void _draw_Impl() override;
-    
+    void DrawImpl() override;
+
 public:
-    std::string label;
+    std::string label_;
 };
 
-}
-}
-#endif /* text_labelled_hpp */
+}  // namespace vox::ui

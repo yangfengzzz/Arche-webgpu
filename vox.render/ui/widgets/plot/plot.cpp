@@ -4,19 +4,23 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "plot.h"
+#include "vox.render/ui/widgets/plot/plot.h"
 
-namespace vox {
-namespace ui {
-Plot::Plot(const std::vector<float> &p_data,
-           float p_minScale,
-           float p_maxScale,
-           const Vector2F &p_size,
-           const std::string &p_overlay,
-           const std::string &p_label) :
-DataWidget(data), data(p_data), minScale(p_minScale), maxScale(p_maxScale),
-size(p_size), overlay(p_overlay), label(p_label) {
-}
+#include <utility>
 
-}
-}
+namespace vox::ui {
+Plot::Plot(std::vector<float> data,
+           float min_scale,
+           float max_scale,
+           const Vector2F &size,
+           std::string overlay,
+           std::string label)
+    : DataWidget(data_),
+      data_(std::move(data)),
+      min_scale_(min_scale),
+      max_scale_(max_scale),
+      size_(size),
+      overlay_(std::move(overlay)),
+      label_(std::move(label)) {}
+
+}  // namespace vox::ui

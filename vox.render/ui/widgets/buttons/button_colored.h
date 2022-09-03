@@ -4,41 +4,31 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef button_colored_hpp
-#define button_colored_hpp
+#pragma once
 
-#include "button.h"
-#include "vector2.h"
-#include "color.h"
+#include "vox.math/color.h"
+#include "vox.math/vector2.h"
+#include "vox.render/ui/widgets/buttons/button.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Button widget of a single color (Color palette element)
  */
 class ButtonColored : public Button {
 public:
-    /**
-     * Constructor
-     * @param p_label p_label
-     * @param p_color p_color
-     * @param p_size p_size
-     * @param p_enableAlpha p_enableAlpha
-     */
-    ButtonColored(const std::string &p_label = "", const Color &p_color = {},
-                  const Vector2F &p_size = Vector2F(0.f, 0.f), bool p_enableAlpha = true);
-    
+    explicit ButtonColored(std::string label = "",
+                           const Color &color = {},
+                           const Vector2F &size = Vector2F(0.f, 0.f),
+                           bool enable_alpha = true);
+
 protected:
-    void _draw_Impl() override;
-    
+    void DrawImpl() override;
+
 public:
-    std::string label;
-    Color color;
-    Vector2F size;
-    bool enableAlpha;
+    std::string label_;
+    Color color_;
+    Vector2F size_;
+    bool enable_alpha_;
 };
 
-
-}
-}
-#endif /* button_colored_hpp */
+}  // namespace vox::ui

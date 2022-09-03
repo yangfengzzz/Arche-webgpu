@@ -4,52 +4,33 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "widget.h"
+#include "vox.render/ui/widgets/widget.h"
 
-namespace vox {
-namespace ui {
-uint64_t Widget::__WIDGET_ID_INCREMENT = 0;
+namespace vox::ui {
+uint64_t Widget::widget_id_increment_ = 0;
 
-Widget::Widget() {
-    _widgetID = "##" + std::to_string(__WIDGET_ID_INCREMENT++);
-}
+Widget::Widget() { widget_id_ = "##" + std::to_string(widget_id_increment_++); }
 
-void Widget::linkTo(const Widget &p_widget) {
-    _widgetID = p_widget._widgetID;
-}
+void Widget::LinkTo(const Widget &widget) { widget_id_ = widget.widget_id_; }
 
-void Widget::destroy() {
-    _destroyed = true;
-}
+void Widget::Destroy() { destroyed_ = true; }
 
-bool Widget::isDestroyed() const {
-    return _destroyed;
-}
+bool Widget::IsDestroyed() const { return destroyed_; }
 
-void Widget::setParent(WidgetContainer *p_parent) {
-    _parent = p_parent;
-}
+void Widget::SetParent(WidgetContainer *parent) { parent_ = parent; }
 
-bool Widget::hasParent() const {
-    return _parent != nullptr;
-}
+bool Widget::HasParent() const { return parent_ != nullptr; }
 
-WidgetContainer *Widget::parent() {
-    return _parent;
-}
+WidgetContainer *Widget::Parent() { return parent_; }
 
-void Widget::draw() {
-    if (enabled) {
-        _draw_Impl();
-        
-        if (_autoExecutePlugins)
-            executePlugins();
-        
-        if (!lineBreak)
-            ImGui::SameLine();
+void Widget::Draw() {
+    if (enabled_) {
+        DrawImpl();
+
+        if (auto_execute_plugins_) ExecutePlugins();
+
+        if (!line_break_) ImGui::SameLine();
     }
 }
 
-
-}
-}
+}  // namespace vox::ui

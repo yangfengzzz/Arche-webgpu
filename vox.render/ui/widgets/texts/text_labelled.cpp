@@ -4,17 +4,13 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "text_labelled.h"
+#include "vox.render/ui/widgets/texts/text_labelled.h"
 
-namespace vox {
-namespace ui {
-TextLabelled::TextLabelled(const std::string &p_content, const std::string &p_label) :
-Text(p_content), label(p_label) {
-}
+#include <utility>
 
-void TextLabelled::_draw_Impl() {
-    ImGui::LabelText((label + _widgetID).c_str(), content.c_str());
-}
+namespace vox::ui {
+TextLabelled::TextLabelled(const std::string &content, std::string label) : Text(content), label_(std::move(label)) {}
 
-}
-}
+void TextLabelled::DrawImpl() { ImGui::LabelText((label_ + widget_id_).c_str(), "%s", content_.c_str()); }
+
+}  // namespace vox::ui

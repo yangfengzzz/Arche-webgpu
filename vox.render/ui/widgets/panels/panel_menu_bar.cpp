@@ -4,17 +4,14 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "panel_menu_bar.h"
+#include "vox.render/ui/widgets/panels/panel_menu_bar.h"
 
-
-namespace vox {
-namespace ui {
-void PanelMenuBar::_draw_Impl() {
-    if (!_widgets.empty() && ImGui::BeginMainMenuBar()) {
-        drawWidgets();
+namespace vox::ui {
+void PanelMenuBar::DrawImpl() {
+    if (!widgets_.empty() && ImGui::BeginMainMenuBar()) {
+        DrawWidgets();
         ImGui::EndMainMenuBar();
     }
 }
 
-}
-}
+}  // namespace vox::ui

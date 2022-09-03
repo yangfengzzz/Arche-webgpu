@@ -4,37 +4,28 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef input_text_hpp
-#define input_text_hpp
+#pragma once
 
-#include "ui/widgets/data_widget.h"
-#include "event.h"
+#include "vox.render/event.h"
+#include "vox.render/ui/widgets/data_widget.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Input widget of type string
  */
 class InputText : public DataWidget<std::string> {
 public:
-    /**
-     * Constructor
-     * @param p_content p_content
-     * @param p_label p_label
-     */
-    InputText(const std::string &p_content = "", const std::string &p_label = "");
-    
+    explicit InputText(std::string content = "", std::string label = "");
+
 protected:
-    void _draw_Impl() override;
-    
+    void DrawImpl() override;
+
 public:
-    std::string content;
-    std::string label;
-    bool selectAllOnClick = false;
-    Event<std::string> contentChangedEvent;
-    Event<std::string> enterPressedEvent;
+    std::string content_;
+    std::string label_;
+    bool select_all_on_click_ = false;
+    Event<std::string> content_changed_event_;
+    Event<std::string> enter_pressed_event_;
 };
 
-}
-}
-#endif /* input_text_hpp */
+}  // namespace vox::ui

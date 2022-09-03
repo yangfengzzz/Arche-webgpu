@@ -4,15 +4,13 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef button_small_hpp
-#define button_small_hpp
+#pragma once
 
-#include "button.h"
-#include "vector2.h"
-#include "color.h"
+#include "vox.math/color.h"
+#include "vox.math/vector2.h"
+#include "vox.render/ui/widgets/buttons/button.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Small button widget
  */
@@ -21,21 +19,19 @@ public:
     /**
      * Constructor
      */
-    ButtonSmall(const std::string &p_label = "");
-    
+    explicit ButtonSmall(std::string label = "");
+
 protected:
-    void _draw_Impl() override;
-    
+    void DrawImpl() override;
+
 public:
-    std::string label;
-    
-    Color idleBackgroundColor;
-    Color hoveredBackgroundColor;
-    Color clickedBackgroundColor;
-    
-    Color textColor;
+    std::string label_;
+
+    Color idle_background_color_;
+    Color hovered_background_color_;
+    Color clicked_background_color_;
+
+    Color text_color_;
 };
 
-}
-}
-#endif /* button_small_hpp */
+}  // namespace vox::ui

@@ -4,63 +4,53 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef tree_node_hpp
-#define tree_node_hpp
+#pragma once
 
-#include "ui/widgets/widget_container.h"
-#include "ui/widgets/data_widget.h"
-#include "event.h"
+#include "vox.render/event.h"
+#include "vox.render/ui/widgets/data_widget.h"
+#include "vox.render/ui/widgets/widget_container.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Widget that allow columnification
  */
 class TreeNode : public DataWidget<std::string>, public WidgetContainer {
 public:
-    /**
-     * Constructor
-     * @param p_name p_name
-     * @param p_arrowClickToOpen p_arrowClickToOpen
-     */
-    TreeNode(const std::string &p_name = "", bool p_arrowClickToOpen = false);
-    
+    explicit TreeNode(std::string name = "", bool arrow_click_to_open = false);
+
     /**
      * Open the tree node
      */
-    void open();
-    
+    void Open();
+
     /**
      * Close the tree node
      */
-    void close();
-    
+    void Close();
+
     /**
      * Returns true if the TreeNode is currently opened
      */
-    bool isOpened() const;
-    
+    [[nodiscard]] bool IsOpened() const;
+
 protected:
-    void _draw_Impl() override;
-    
+    void DrawImpl() override;
+
 public:
-    std::string name;
-    bool selected = false;
-    bool leaf = false;
-    
-    Event<> clickedEvent;
-    Event<> doubleClickedEvent;
-    Event<> openedEvent;
-    Event<> closedEvent;
-    
+    std::string name_;
+    bool selected_ = false;
+    bool leaf_ = false;
+
+    Event<> clicked_event_;
+    Event<> double_clicked_event_;
+    Event<> opened_event_;
+    Event<> closed_event_;
+
 private:
-    bool _arrowClickToOpen = false;
-    bool _shouldOpen = false;
-    bool _shouldClose = false;
-    bool _opened = false;
+    bool arrow_click_to_open_ = false;
+    bool should_open_ = false;
+    bool should_close_ = false;
+    bool opened_ = false;
 };
 
-
-}
-}
-#endif /* tree_node_hpp */
+}  // namespace vox::ui

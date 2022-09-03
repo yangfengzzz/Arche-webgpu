@@ -4,15 +4,16 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "input_int.h"
+#include "vox.render/ui/widgets/input_fields/input_int.h"
 
-namespace vox {
-namespace ui {
-InputInt::InputInt(int p_defaultValue, int p_step, int p_fastStep,
-                   const std::string &p_label, const std::string &p_format, bool p_selectAllOnClick)
-: InputSingleScalar<int>(ImGuiDataType_::ImGuiDataType_S32, p_defaultValue,
-                         p_step, p_fastStep, p_label, p_format, p_selectAllOnClick) {
-}
+namespace vox::ui {
+InputInt::InputInt(int default_value,
+                   int step,
+                   int fast_step,
+                   const std::string &label,
+                   const std::string &format,
+                   bool select_all_on_click)
+    : InputSingleScalar<int>(
+              ImGuiDataType_::ImGuiDataType_S32, default_value, step, fast_step, label, format, select_all_on_click) {}
 
-}
-}
+}  // namespace vox::ui

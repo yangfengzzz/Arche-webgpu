@@ -4,40 +4,28 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef text_selectable_hpp
-#define text_selectable_hpp
+#pragma once
 
-#include "text.h"
+#include "vox.render/ui/widgets/texts/text.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Simple widget to display a selectable text on a panel
  */
 class TextSelectable : public Text {
 public:
-    /**
-     * Constructor
-     * @param p_content p_content
-     * @param p_selected p_selected
-     * @param p_disabled p_disabled
-     */
-    TextSelectable(const std::string &p_content = "",
-                   bool p_selected = false, bool p_disabled = false);
-    
+    explicit TextSelectable(const std::string &content = "", bool selected = false, bool disabled = false);
+
 protected:
-    void _draw_Impl() override;
-    
+    void DrawImpl() override;
+
 public:
-    bool selected;
-    bool disabled;
-    
-    Event<bool> clickedEvent;
-    Event<> selectedEvent;
-    Event<> unselectedEvent;
+    bool selected_;
+    bool disabled_;
+
+    Event<bool> clicked_event_;
+    Event<> selected_event_;
+    Event<> unselected_event_;
 };
 
-
-}
-}
-#endif /* text_selectable_hpp */
+}  // namespace vox::ui

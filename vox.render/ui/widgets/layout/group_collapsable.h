@@ -4,35 +4,28 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef group_collapsable_hpp
-#define group_collapsable_hpp
+#pragma once
 
-#include "group.h"
-#include "event.h"
+#include "vox.render/event.h"
+#include "vox.render/ui/widgets/layout/group.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Widget that can contains other widgets and is collapsable
  */
 class GroupCollapsable : public Group {
 public:
-    /**
-     * Constructor
-     */
-    GroupCollapsable(const std::string &p_name = "");
-    
+    explicit GroupCollapsable(std::string name = "");
+
 protected:
-    void _draw_Impl() override;
-    
+    void DrawImpl() override;
+
 public:
-    std::string name;
-    bool closable = false;
-    bool opened = true;
-    Event<> closeEvent;
-    Event<> openEvent;
+    std::string name_;
+    bool closable_ = false;
+    bool opened_ = true;
+    Event<> close_event_;
+    Event<> open_event_;
 };
 
-}
-}
-#endif /* group_collapsable_hpp */
+}  // namespace vox::ui

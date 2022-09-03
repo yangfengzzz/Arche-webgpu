@@ -4,28 +4,21 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "text_clickable.h"
+#include "vox.render/ui/widgets/texts/text_clickable.h"
 
+namespace vox::ui {
+TextClickable::TextClickable(const std::string &content) : Text(content) {}
 
-namespace vox {
-namespace ui {
-TextClickable::TextClickable(const std::string &p_content) :
-Text(p_content) {
-}
-
-void TextClickable::_draw_Impl() {
+void TextClickable::DrawImpl() {
     bool useless = false;
-    
-    if (ImGui::Selectable((content + _widgetID).c_str(), &useless,
-                          ImGuiSelectableFlags_AllowDoubleClick)) {
+
+    if (ImGui::Selectable((content_ + widget_id_).c_str(), &useless, ImGuiSelectableFlags_AllowDoubleClick)) {
         if (ImGui::IsMouseDoubleClicked(0)) {
-            doubleClickedEvent.invoke();
+            double_clicked_event_.Invoke();
         } else {
-            clickedEvent.invoke();
+            clicked_event_.Invoke();
         }
     }
 }
 
-
-}
-}
+}  // namespace vox::ui

@@ -235,8 +235,8 @@ set(UI_FILES ui/canvas.h
         ui/gui_drawer.cpp
         ui/imgui_impl_glfw.h
         ui/imgui_impl_glfw.cpp
-        ui/imgui_impl_vulkan.cpp
-        ui/imgui_impl_vulkan.h
+        ui/imgui_impl_wgpu.h
+        ui/imgui_impl_wgpu.cpp
         ui/ui_manager.h
         ui/ui_manager.cpp
 
@@ -600,7 +600,7 @@ set(PROJECT_FILES
 #        ${RENDERING_SUBPASSES_FILES}
 #        ${SCENE_RESOURCE_FILES}
 #        ${STATS_FILES}
-#        ${UI_FILES}
+        ${UI_FILES}
 #        ${SCENE_FILES}
 #        ${CONTROL_FILES}
 #        ${MESH_FILES}

@@ -4,46 +4,33 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef button_simple_hpp
-#define button_simple_hpp
+#pragma once
 
-#include "button.h"
-#include "vector2.h"
-#include "color.h"
+#include "vox.math/color.h"
+#include "vox.math/vector2.h"
+#include "vox.render/ui/widgets/buttons/button.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Simple button widget
  */
 class ButtonSimple : public Button {
 public:
-    /**
-     * Constructor
-     * @param p_label p_label
-     * @param p_size p_size
-     * @param p_disabled p_disabled
-     */
-    ButtonSimple(const std::string &p_label = "",
-                 const Vector2F &p_size = Vector2F(0.f, 0.f),
-                 bool p_disabled = false);
-    
+    explicit ButtonSimple(std::string label = "", const Vector2F &size = Vector2F(0.f, 0.f), bool disabled = false);
+
 protected:
-    void _draw_Impl() override;
-    
+    void DrawImpl() override;
+
 public:
-    std::string label;
-    Vector2F size;
-    bool disabled = false;
-    
-    Color idleBackgroundColor;
-    Color hoveredBackgroundColor;
-    Color clickedBackgroundColor;
-    
-    Color textColor;
+    std::string label_;
+    Vector2F size_;
+    bool disabled_ = false;
+
+    Color idle_background_color_;
+    Color hovered_background_color_;
+    Color clicked_background_color_;
+
+    Color text_color_;
 };
 
-
-}
-}
-#endif /* button_simple_hpp */
+}  // namespace vox::ui

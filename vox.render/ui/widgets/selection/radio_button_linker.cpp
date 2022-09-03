@@ -4,54 +4,48 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "radio_button_linker.h"
+#include "vox.render/ui/widgets/selection/radio_button_linker.h"
 
-namespace vox {
-namespace ui {
-RadioButtonLinker::RadioButtonLinker() : DataWidget<int>(_selected) {
+namespace vox::ui {
+RadioButtonLinker::RadioButtonLinker() : DataWidget<int>(selected_) {}
+
+void RadioButtonLinker::Link(RadioButton &radio_button) {
+    radio_button.radio_id_ = available_radio_id_++;
+    auto listener_id = radio_button.clicked_event_ +=
+            std::bind(&RadioButtonLinker::OnRadioButtonClicked, this, std::placeholders::_1);
+
+    if (radio_button.IsSelected() && selected_ == -1) selected_ = radio_button.radio_id_;
+
+    radio_buttons_.emplace_back(listener_id, std::ref(radio_button));
 }
 
-void RadioButtonLinker::link(RadioButton &p_radioButton) {
-    p_radioButton._radioID = _availableRadioID++;
-    auto listenerID = p_radioButton.clickedEvent += std::bind(&RadioButtonLinker::onRadioButtonClicked, this, std::placeholders::_1);
-    
-    if (p_radioButton.isSelected() && _selected == -1)
-        _selected = p_radioButton._radioID;
-    
-    _radioButtons.emplace_back(listenerID, std::ref(p_radioButton));
-}
+void RadioButtonLinker::Unlink(RadioButton &radio_button) {
+    auto it = std::find_if(radio_buttons_.begin(), radio_buttons_.end(),
+                           [&radio_button](std::pair<ListenerId, std::reference_wrapper<RadioButton>> &pair) {
+                               return &pair.second.get() == &radio_button;
+                           });
 
-void RadioButtonLinker::unlink(RadioButton &p_radioButton) {
-    auto it = std::find_if(_radioButtons.begin(), _radioButtons.end(),
-                           [&p_radioButton](std::pair<ListenerID, std::reference_wrapper<RadioButton>> &p_pair) {
-        return &p_pair.second.get() == &p_radioButton;
-    });
-    
-    if (it != _radioButtons.end()) {
-        it->second.get().clickedEvent.removeListener(it->first);
-        _radioButtons.erase(it);
+    if (it != radio_buttons_.end()) {
+        it->second.get().clicked_event_.RemoveListener(it->first);
+        radio_buttons_.erase(it);
     }
 }
 
-int RadioButtonLinker::selected() const {
-    return _selected;
-}
+int RadioButtonLinker::Selected() const { return selected_; }
 
-void RadioButtonLinker::_draw_Impl() {
+void RadioButtonLinker::DrawImpl() {
     // The RadioButtonLinker is special, it has nothing to display :)
 }
 
-void RadioButtonLinker::onRadioButtonClicked(int p_radioID) {
-    if (p_radioID != _selected) {
-        _selected = p_radioID;
-        valueChangedEvent.invoke(_selected);
-        notifyChange();
-        
-        for (const auto&[listener, radioButton]: _radioButtons)
-            radioButton.get()._selected = radioButton.get()._radioID == _selected;
+void RadioButtonLinker::OnRadioButtonClicked(int radio_id) {
+    if (radio_id != selected_) {
+        selected_ = radio_id;
+        value_changed_event_.Invoke(selected_);
+        NotifyChange();
+
+        for (const auto &[kListener, kRadioButton] : radio_buttons_)
+            kRadioButton.get().selected_ = kRadioButton.get().radio_id_ == selected_;
     }
 }
 
-
-}
-}
+}  // namespace vox::ui

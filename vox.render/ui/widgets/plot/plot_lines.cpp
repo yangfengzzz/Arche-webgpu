@@ -4,25 +4,22 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "plot_lines.h"
-#include "ui/widgets/converter.h"
+#include "vox.render/ui/widgets/plot/plot_lines.h"
 
-namespace vox {
-namespace ui {
-PlotLines::PlotLines(const std::vector<float> &p_data,
-                     float p_minScale,
-                     float p_maxScale,
-                     const Vector2F &p_size,
-                     const std::string &p_overlay,
-                     const std::string &p_label) :
-Plot(p_data, p_minScale, p_maxScale, p_size,
-     p_overlay, p_label) {
-}
+#include "vox.render/ui/widgets/converter.h"
 
-void PlotLines::_draw_Impl() {
-    ImGui::PlotLines((label + _widgetID).c_str(), data.data(), static_cast<int>(data.size()), 0,
-                     overlay.c_str(), minScale, maxScale, Converter::ToImVec2(size), sizeof(float));
+namespace vox::ui {
+PlotLines::PlotLines(const std::vector<float> &data,
+                     float min_scale,
+                     float max_scale,
+                     const Vector2F &size,
+                     const std::string &overlay,
+                     const std::string &label)
+    : Plot(data, min_scale, max_scale, size, overlay, label) {}
+
+void PlotLines::DrawImpl() {
+    ImGui::PlotLines((label_ + widget_id_).c_str(), data_.data(), static_cast<int>(data_.size()), 0, overlay_.c_str(),
+                     min_scale_, max_scale_, Converter::ToImVec2(size_), sizeof(float));
 }
 
-}
-}
+}  // namespace vox::ui

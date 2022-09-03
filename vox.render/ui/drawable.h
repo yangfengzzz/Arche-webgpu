@@ -4,23 +4,18 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef drawable_h
-#define drawable_h
+#pragma once
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Interface for any drawable class
  */
 class Drawable {
 public:
-    virtual void draw() = 0;
-    
+    virtual void Draw() = 0;
+
 protected:
     virtual ~Drawable() = default;
 };
 
-
-}
-}
-#endif /* drawable_h */
+}  // namespace vox::ui

@@ -4,36 +4,26 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef check_box_hpp
-#define check_box_hpp
+#pragma once
 
-#include "ui/widgets/data_widget.h"
-#include "event.h"
+#include "vox.render/event.h"
+#include "vox.render/ui/widgets/data_widget.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Checkbox widget that can be checked or not
  */
 class CheckBox : public DataWidget<bool> {
 public:
-    /**
-     * Constructor
-     * @param p_value p_value
-     * @param p_label p_label
-     */
-    CheckBox(bool p_value = false, const std::string &p_label = "");
-    
+    explicit CheckBox(bool value = false, std::string label = "");
+
 protected:
-    void _draw_Impl() override;
-    
+    void DrawImpl() override;
+
 public:
-    bool value;
-    std::string label;
-    Event<bool> valueChangedEvent;
+    bool value_;
+    std::string label_;
+    Event<bool> value_changed_event_;
 };
 
-
-}
-}
-#endif /* check_box_hpp */
+}  // namespace vox::ui

@@ -4,40 +4,30 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef input_multiple_ints_h
-#define input_multiple_ints_h
+#pragma once
 
-#include "input_multiple_scalars.h"
+#include "vox.render/ui/widgets/input_fields/input_multiple_scalars.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Input widget of multiple type int
  */
-template<size_t _Size>
-class InputMultipleInts : public InputMultipleScalars<int, _Size> {
+template <size_t Size>
+class InputMultipleInts : public InputMultipleScalars<int, Size> {
 public:
-    /**
-     * Constructor
-     * @param p_defaultValue
-     * @param p_step
-     * @param p_fastStep
-     * @param p_label
-     * @param p_format
-     * @param p_selectAllOnClick
-     */
-    InputMultipleInts(int p_defaultValue = 0,
-                      int p_step = 1,
-                      int p_fastStep = 0,
-                      const std::string &p_label = "",
-                      const std::string &p_format = "%d",
-                      bool p_selectAllOnClick = true) :
-    InputMultipleScalars<int, _Size>(ImGuiDataType_::ImGuiDataType_S32, p_defaultValue,
-                                     p_step, p_fastStep, p_label, p_format, p_selectAllOnClick) {
-    }
+    explicit InputMultipleInts(int default_value = 0,
+                               int step = 1,
+                               int fast_step = 0,
+                               const std::string &label = "",
+                               const std::string &format = "%d",
+                               bool select_all_on_click = true)
+        : InputMultipleScalars<int, Size>(ImGuiDataType_::ImGuiDataType_S32,
+                                          default_value,
+                                          step,
+                                          fast_step,
+                                          label,
+                                          format,
+                                          select_all_on_click) {}
 };
 
-
-}
-}
-#endif /* input_multiple_ints_h */
+}  // namespace vox::ui

@@ -4,34 +4,25 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef text_clickable_hpp
-#define text_clickable_hpp
+#pragma once
 
-#include "text.h"
-#include "event.h"
+#include "vox.render/event.h"
+#include "vox.render/ui/widgets/texts/text.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Widget to display text on a panel that is also clickable
  */
 class TextClickable : public Text {
 public:
-    /**
-     * Constructor
-     * @param p_content p_content
-     */
-    TextClickable(const std::string &p_content = "");
-    
+    explicit TextClickable(const std::string &content = "");
+
 protected:
-    void _draw_Impl() override;
-    
+    void DrawImpl() override;
+
 public:
-    Event<> clickedEvent;
-    Event<> doubleClickedEvent;
+    Event<> clicked_event_;
+    Event<> double_clicked_event_;
 };
 
-
-}
-}
-#endif /* text_clickable_hpp */
+}  // namespace vox::ui

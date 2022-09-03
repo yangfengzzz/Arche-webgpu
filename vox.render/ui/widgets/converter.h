@@ -4,16 +4,15 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef converter_hpp
-#define converter_hpp
+#pragma once
 
-#include "gui/imgui.h"
-#include "vector2.h"
-#include "vector4.h"
-#include "color.h"
+#include <imgui.h>
 
-namespace vox {
-namespace ui {
+#include "vox.math/color.h"
+#include "vox.math/vector2.h"
+#include "vox.math/vector4.h"
+
+namespace vox::ui {
 /**
  * Handles imgui conversion to/from arche types
  */
@@ -22,25 +21,22 @@ public:
     /**
      * Convert the given Color to ImVec4
      */
-    static ImVec4 ToImVec4(const Color &p_value);
-    
+    static ImVec4 ToImVec4(const Color &value);
+
     /**
      * Convert the given ImVec4 to Color
      */
-    static Color ToColor(const ImVec4 &p_value);
-    
+    static Color ToColor(const ImVec4 &value);
+
     /**
      * Convert the given FVector2 to ImVec2
      */
-    static ImVec2 ToImVec2(const Vector2F &p_value);
-    
+    static ImVec2 ToImVec2(const Vector2F &value);
+
     /**
      * Convert the given ImVec2 to FVector2
      */
-    static Vector2F ToVector2F(const ImVec2 &p_value);
+    static Vector2F ToVector2F(const ImVec2 &value);
 };
 
-
-}
-}
-#endif /* converter_hpp */
+}  // namespace vox::ui

@@ -4,79 +4,69 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef input_single_scalar_h
-#define input_single_scalar_h
+#pragma once
 
-#include "ui/widgets/data_widget.h"
-#include "event.h"
+#include <utility>
 
-namespace vox {
-namespace ui {
+#include "vox.render/event.h"
+#include "vox.render/ui/widgets/data_widget.h"
+
+namespace vox::ui {
 /**
  * Input widget of generic type
  */
-template<typename T>
+template <typename T>
 class InputSingleScalar : public DataWidget<T> {
     static_assert(std::is_scalar<T>::value, "Invalid InputSingleScalar T (Scalar expected)");
-    
+
 public:
-    /**
-     * Constructor
-     * @param p_dataType p_dataType
-     * @param p_defaultValue p_defaultValue
-     * @param p_step p_step
-     * @param p_fastStep p_fastStep
-     * @param p_label p_label
-     * @param p_format p_format
-     * @param p_selectAllOnClick p_selectAllOnClick
-     */
-    InputSingleScalar(ImGuiDataType p_dataType,
-                      T p_defaultValue,
-                      T p_step,
-                      T p_fastStep,
-                      const std::string &p_label,
-                      const std::string &p_format,
-                      bool p_selectAllOnClick) :
-    DataWidget<T>(value), _dataType(p_dataType), value(p_defaultValue), step(p_step),
-    fastStep(p_fastStep), label(p_label), format(p_format), selectAllOnClick(p_selectAllOnClick) {
-    }
-    
+    InputSingleScalar(ImGuiDataType data_type,
+                      T default_value,
+                      T step,
+                      T fast_step,
+                      std::string label,
+                      std::string format,
+                      bool select_all_on_click)
+        : DataWidget<T>(value_),
+          data_type_(data_type),
+          value_(default_value),
+          step_(step),
+          fast_step_(fast_step),
+          label_(std::move(label)),
+          format_(std::move(format)),
+          select_all_on_click_(select_all_on_click) {}
+
 protected:
-    void _draw_Impl() override {
-        T previousValue = value;
-        
+    void DrawImpl() override {
+        T previous_value = value_;
+
         ImGuiInputTextFlags flags = ImGuiInputTextFlags_EnterReturnsTrue;
-        if (selectAllOnClick)
-            flags |= ImGuiInputTextFlags_AutoSelectAll;
-        
-        bool enterPressed = ImGui::InputScalar((label + DataWidget<T>::_widgetID).c_str(), _dataType, &value,
-                                               step != 0.0f ? &step : nullptr,
-                                               fastStep != 0.0f ? &fastStep : nullptr,
-                                               format.c_str(), flags);
-        
-        if (previousValue != value) {
-            contentChangedEvent.invoke(value);
-            DataWidget<T>::notifyChange();
+        if (select_all_on_click_) flags |= ImGuiInputTextFlags_AutoSelectAll;
+
+        bool enter_pressed = ImGui::InputScalar((label_ + DataWidget<T>::widget_id_).c_str(), data_type_, &value_,
+                                                step_ != 0.0f ? &step_ : nullptr,
+                                                fast_step_ != 0.0f ? &fast_step_ : nullptr, format_.c_str(), flags);
+
+        if (previous_value != value_) {
+            content_changed_event_.Invoke(value_);
+            DataWidget<T>::NotifyChange();
         }
-        
-        if (enterPressed)
-            enterPressedEvent.invoke(value);
+
+        if (enter_pressed) enter_pressed_event_.Invoke(value_);
     }
-    
+
 public:
-    T value;
-    T step;
-    T fastStep;
-    std::string label;
-    std::string format;
-    bool selectAllOnClick;
-    Event<T> contentChangedEvent;
-    Event<T> enterPressedEvent;
-    
+    T value_;
+    T step_;
+    T fast_step_;
+    std::string label_;
+    std::string format_;
+    bool select_all_on_click_;
+    Event<T> content_changed_event_;
+    Event<T> enter_pressed_event_;
+
 private:
-    ImGuiDataType _dataType;
+    ImGuiDataType data_type_;
 };
 
-}
-}
-#endif /* input_single_scalar_h */
+}  // namespace vox::ui

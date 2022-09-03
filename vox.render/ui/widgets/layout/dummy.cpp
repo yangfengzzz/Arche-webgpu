@@ -4,17 +4,13 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "dummy.h"
-#include "ui/widgets/converter.h"
+#include "vox.render/ui/widgets/layout/dummy.h"
 
-namespace vox {
-namespace ui {
-Dummy::Dummy(const Vector2F &p_size) : size(p_size) {
-}
+#include "vox.render/ui/widgets/converter.h"
 
-void Dummy::_draw_Impl() {
-    ImGui::Dummy(Converter::ToImVec2(size));
-}
+namespace vox::ui {
+Dummy::Dummy(const Vector2F &size) : size_(size) {}
 
-}
-}
+void Dummy::DrawImpl() { ImGui::Dummy(Converter::ToImVec2(size_)); }
+
+}  // namespace vox::ui

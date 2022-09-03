@@ -4,36 +4,22 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef input_int_hpp
-#define input_int_hpp
+#pragma once
 
-#include "input_single_scalar.h"
+#include "vox.render/ui/widgets/input_fields/input_single_scalar.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Input widget of type int
  */
 class InputInt : public InputSingleScalar<int> {
 public:
-    /**
-     * Constructor
-     * @param p_defaultValue p_defaultValue
-     * @param p_step p_step
-     * @param p_fastStep p_fastStep
-     * @param p_label p_label
-     * @param p_format p_format
-     * @param p_selectAllOnClick p_selectAllOnClick
-     */
-    InputInt(int p_defaultValue = 0,
-             int p_step = 1,
-             int p_fastStep = 0,
-             const std::string &p_label = "",
-             const std::string &p_format = "%d",
-             bool p_selectAllOnClick = true);
+    explicit InputInt(int default_value = 0,
+                      int step = 1,
+                      int fast_step = 0,
+                      const std::string &label = "",
+                      const std::string &format = "%d",
+                      bool select_all_on_click = true);
 };
 
-
-}
-}
-#endif /* input_int_hpp */
+}  // namespace vox::ui

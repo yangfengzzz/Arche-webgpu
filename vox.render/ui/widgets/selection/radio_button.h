@@ -4,57 +4,47 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef radio_button_hpp
-#define radio_button_hpp
+#pragma once
 
-#include "ui/widgets/data_widget.h"
-#include "event.h"
+#include "vox.render/event.h"
+#include "vox.render/ui/widgets/data_widget.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Widget that represent a button that is selectable. Only one radio button can be selected
  * in the same RadioButtonLinker
  */
 class RadioButton : public DataWidget<bool> {
     friend class RadioButtonLinker;
-    
+
 public:
-    /**
-     * Constructor
-     * @param p_selected p_selected
-     * @param p_label p_label
-     */
-    RadioButton(bool p_selected = false, const std::string &p_label = "");
-    
+    explicit RadioButton(bool selected = false, std::string label = "");
+
     /**
      * Make the radio button selected
      */
-    void select();
-    
+    void Select();
+
     /**
      * Returns true if the radio button is selected
      */
-    bool isSelected() const;
-    
+    [[nodiscard]] bool IsSelected() const;
+
     /**
      * Returns the radio button ID
      */
-    bool radioID() const;
-    
+    [[nodiscard]] bool RadioId() const;
+
 protected:
-    void _draw_Impl() override;
-    
+    void DrawImpl() override;
+
 public:
-    std::string label;
-    Event<int> clickedEvent;
-    
+    std::string label_;
+    Event<int> clicked_event_;
+
 private:
-    bool _selected = false;
-    int _radioID = 0;
+    bool selected_ = false;
+    int radio_id_ = 0;
 };
 
-
-}
-}
-#endif /* radio_button_hpp */
+}  // namespace vox::ui

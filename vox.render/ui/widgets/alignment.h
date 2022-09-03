@@ -4,30 +4,17 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef alignment_h
-#define alignment_h
+#pragma once
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Defines horizontal alignments
  */
-enum class HorizontalAlignment {
-    LEFT,
-    CENTER,
-    RIGHT
-};
+enum class HorizontalAlignment { LEFT, CENTER, RIGHT };
 
 /**
  * Defines vertical alignments
  */
-enum class VerticalAlignment {
-    TOP,
-    MIDDLE,
-    BOTTOM
-};
+enum class VerticalAlignment { TOP, MIDDLE, BOTTOM };
 
-
-}
-}
-#endif /* alignment_h */
+}  // namespace vox::ui

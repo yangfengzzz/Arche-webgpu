@@ -4,15 +4,14 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef ui_image_hpp
-#define ui_image_hpp
+#pragma once
 
-#include "ui/widgets/widget.h"
-#include "vector2.h"
 #include <webgpu/webgpu_cpp.h>
 
-namespace vox {
-namespace ui {
+#include "vox.math/vector2.h"
+#include "vox.render/ui/widgets/widget.h"
+
+namespace vox::ui {
 /**
  * Simple widget that display an image
  */
@@ -25,16 +24,14 @@ public:
      */
     Image(wgpu::TextureView p_textureID, const Vector2F &p_size);
     
-    void setTextureView(wgpu::TextureView p_textureID);
+    void SetTextureView(wgpu::TextureView p_textureID);
     
 protected:
-    void _draw_Impl() override;
-    
+    void DrawImpl() override;
+
 public:
     wgpu::TextureView textureID;
     Vector2F size;
 };
 
-}
-}
-#endif /* ui_image_hpp */
+}  // namespace vox::ui

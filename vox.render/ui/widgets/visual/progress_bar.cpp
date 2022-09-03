@@ -4,18 +4,18 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "progress_bar.h"
-#include "ui/widgets/converter.h"
+#include "vox.render/ui/widgets/visual/progress_bar.h"
 
-namespace vox {
-namespace ui {
-ProgressBar::ProgressBar(float p_fraction, const Vector2F &p_size, const std::string &p_overlay) :
-fraction(p_fraction), size(p_size), overlay(p_overlay) {
+#include <utility>
+
+#include "vox.render/ui/widgets/converter.h"
+
+namespace vox::ui {
+ProgressBar::ProgressBar(float fraction, const Vector2F &size, std::string overlay)
+    : fraction_(fraction), size_(size), overlay_(std::move(overlay)) {}
+
+void ProgressBar::DrawImpl() {
+    ImGui::ProgressBar(fraction_, Converter::ToImVec2(size_), !overlay_.empty() ? overlay_.c_str() : nullptr);
 }
 
-void ProgressBar::_draw_Impl() {
-    ImGui::ProgressBar(fraction, Converter::ToImVec2(size), !overlay.empty() ? overlay.c_str() : nullptr);
-}
-
-}
-}
+}  // namespace vox::ui

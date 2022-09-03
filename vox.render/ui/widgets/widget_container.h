@@ -4,20 +4,15 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef widget_container_hpp
-#define widget_container_hpp
+#pragma once
 
-#include "widget.h"
+#include "vox.render/ui/widgets/widget.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Defines how the memory should be managed
  */
-enum class MemoryMode {
-    INTERNAL_MANAGEMENT,
-    EXTERNAL_MANAGEMENT
-};
+enum class MemoryMode { INTERNAL_MANAGEMENT, EXTERNAL_MANAGEMENT };
 
 /**
  * The base class for any widget container
@@ -26,65 +21,58 @@ class WidgetContainer {
 public:
     /**
      * Remove a widget from the container
-     * @param p_widget p_widget
      */
-    void removeWidget(Widget &p_widget);
-    
+    void RemoveWidget(Widget &widget);
+
     /**
      * Remove all widgets from the container
      */
-    void removeAllWidgets();
-    
+    void RemoveAllWidgets();
+
     /**
      * Consider a widget
-     * @param p_manageMemory p_manageMemory
      */
-    void considerWidget(Widget &p_widget, bool p_manageMemory = true);
-    
+    void ConsiderWidget(Widget &widget, bool manage_memory = true);
+
     /**
      * Unconsider a widget
-     * @param p_widget p_widget
      */
-    void unconsiderWidget(Widget &p_widget);
-    
+    void UnconsiderWidget(Widget &widget);
+
     /**
-     * Collect garbages by removing widgets marked as "Destroyed"
+     * Collect garbage by removing widgets marked as "Destroyed"
      */
-    void collectGarbages();
-    
+    void CollectGarbage();
+
     /**
      * Draw every widgets
      */
-    void drawWidgets();
-    
+    void DrawWidgets();
+
     /**
      * Allow the user to reverse the draw order of this widget container
      */
-    void reverseDrawOrder(bool reversed = true);
-    
+    void ReverseDrawOrder(bool reversed = true);
+
     /**
      * Create a widget
-     * @param p_args p_args
      */
-    template<typename T, typename ... Args>
-    T &createWidget(Args &&... p_args) {
-        _widgets.emplace_back(new T(p_args...), MemoryMode::INTERNAL_MANAGEMENT);
-        T &instance = *reinterpret_cast<T *>(_widgets.back().first);
-        instance.setParent(this);
+    template <typename T, typename... Args>
+    T &CreateWidget(Args &&...args) {
+        widgets_.emplace_back(new T(args...), MemoryMode::INTERNAL_MANAGEMENT);
+        T &instance = *reinterpret_cast<T *>(widgets_.back().first);
+        instance.SetParent(this);
         return instance;
     }
-    
+
     /**
      * Returns the widgets and their memory management mode
      */
-    std::vector<std::pair<Widget *, MemoryMode>> &widgets();
-    
+    std::vector<std::pair<Widget *, MemoryMode>> &Widgets();
+
 protected:
-    std::vector<std::pair<Widget *, MemoryMode>> _widgets{};
-    bool _reversedDrawOrder = false;
+    std::vector<std::pair<Widget *, MemoryMode>> widgets_{};
+    bool reversed_draw_order_ = false;
 };
 
-
-}
-}
-#endif /* widget_container_hpp */
+}  // namespace vox::ui

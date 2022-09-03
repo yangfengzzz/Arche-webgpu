@@ -4,28 +4,25 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "color_picker.h"
+#include "vox.render/ui/widgets/selection/color_picker.h"
 
-namespace vox {
-namespace ui {
-ColorPicker::ColorPicker(bool p_enableAlpha, const Color &p_defaultColor) :
-DataWidget<Color>(color), enableAlpha(p_enableAlpha), color(p_defaultColor) {
-}
+namespace vox::ui {
+ColorPicker::ColorPicker(bool enable_alpha, const Color &default_color)
+    : DataWidget<Color>(color_), enable_alpha_(enable_alpha), color_(default_color) {}
 
-void ColorPicker::_draw_Impl() {
-    int flags = !enableAlpha ? ImGuiColorEditFlags_NoAlpha : 0;
-    bool valueChanged = false;
-    
-    if (enableAlpha)
-        valueChanged = ImGui::ColorPicker4(_widgetID.c_str(), &color.r, flags);
+void ColorPicker::DrawImpl() {
+    int flags = !enable_alpha_ ? ImGuiColorEditFlags_NoAlpha : 0;
+    bool value_changed = false;
+
+    if (enable_alpha_)
+        value_changed = ImGui::ColorPicker4(widget_id_.c_str(), &color_.r, flags);
     else
-        valueChanged = ImGui::ColorPicker3(_widgetID.c_str(), &color.r, flags);
-    
-    if (valueChanged) {
-        colorChangedEvent.invoke(color);
-        notifyChange();
+        value_changed = ImGui::ColorPicker3(widget_id_.c_str(), &color_.r, flags);
+
+    if (value_changed) {
+        color_changed_event_.Invoke(color_);
+        NotifyChange();
     }
 }
 
-}
-}
+}  // namespace vox::ui

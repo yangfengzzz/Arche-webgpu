@@ -4,27 +4,24 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "button_colored.h"
-#include "ui/widgets/converter.h"
+#include "vox.render/ui/widgets/buttons/button_colored.h"
 
-namespace vox {
-namespace ui {
-ButtonColored::ButtonColored(const std::string &p_label, const Color &p_color,
-                             const Vector2F &p_size, bool p_enableAlpha) :
-label(p_label), color(p_color), size(p_size), enableAlpha(p_enableAlpha) {
+#include <utility>
+
+#include "vox.render/ui/widgets/converter.h"
+
+namespace vox::ui {
+ButtonColored::ButtonColored(std::string label, const Color &color, const Vector2F &size, bool enable_alpha)
+    : label_(std::move(label)), color_(color), size_(size), enable_alpha_(enable_alpha) {}
+
+void ButtonColored::DrawImpl() {
+    ImVec4 imColor = Converter::ToImVec4(color_);
+
+    if (ImGui::ColorButton((label_ + widget_id_).c_str(), imColor, !enable_alpha_ ? ImGuiColorEditFlags_NoAlpha : 0,
+                           Converter::ToImVec2(size_)))
+        clicked_event_.Invoke();
+
+    color_ = Converter::ToColor(imColor);
 }
 
-void ButtonColored::_draw_Impl() {
-    ImVec4 imColor = Converter::ToImVec4(color);
-    
-    if (ImGui::ColorButton((label + _widgetID).c_str(), imColor,
-                           !enableAlpha ? ImGuiColorEditFlags_NoAlpha : 0,
-                           Converter::ToImVec2(size)))
-        clickedEvent.invoke();
-    
-    color = Converter::ToColor(imColor);
-}
-
-
-}
-}
+}  // namespace vox::ui

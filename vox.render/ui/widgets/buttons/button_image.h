@@ -4,42 +4,32 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef button_image_hpp
-#define button_image_hpp
+#pragma once
 
-#include "button.h"
-#include "vector2.h"
-#include "color.h"
 #include <webgpu/webgpu_cpp.h>
+#include "vox.math/color.h"
+#include "vox.math/vector2.h"
+#include "vox.render/ui/widgets/buttons/button.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Button widget with an image
  */
 class ButtonImage : public Button {
 public:
-    /**
-     * Constructor
-     * @param p_textureID p_textureID
-     * @param p_size p_size
-     */
     ButtonImage(wgpu::TextureView p_textureID, const Vector2F &p_size);
     
 protected:
-    void _draw_Impl() override;
-    
+    void DrawImpl() override;
+
 public:
-    bool disabled = false;
-    
-    Color background = {0, 0, 0, 0};
-    Color tint = {1, 1, 1, 1};
-    
+    bool disabled_ = false;
+
+    Color background_ = {0, 0, 0, 0};
+    Color tint_ = {1, 1, 1, 1};
+
     wgpu::TextureView textureID;
-    Vector2F size;
+    Vector2F size_;
 };
 
-
-}
-}
-#endif /* button_image_hpp */
+}  // namespace vox::ui

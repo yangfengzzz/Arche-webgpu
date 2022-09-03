@@ -4,18 +4,17 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef widget_hpp
-#define widget_hpp
+#pragma once
+
+#include <imgui.h>
 
 #include <string>
 
-#include "ui/drawable.h"
-#include "ui/plugins/pluginable.h"
-#include "ui/plugins/data_dispatcher.h"
-#include "gui/imgui.h"
+#include "vox.render/ui/drawable.h"
+#include "vox.render/ui/plugins/data_dispatcher.h"
+#include "vox.render/ui/plugins/pluginable.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 class WidgetContainer;
 
 /**
@@ -29,63 +28,58 @@ public:
      * Constructor
      */
     Widget();
-    
+
     /**
      * Draw the widget on the panel
      */
-    void draw() override;
-    
+    void Draw() override;
+
     /**
      * Link the widget to another one by making its id identical to the given widget
-     * @param p_widget p_widget
      */
-    void linkTo(const Widget &p_widget);
-    
+    void LinkTo(const Widget &widget);
+
     /**
      * Mark the widget as destroyed. It will be removed from the owner panel
      * by the garbage collector
      */
-    void destroy();
-    
+    void Destroy();
+
     /**
      * Returns true if the widget is marked as destroyed
      */
-    bool isDestroyed() const;
-    
+    [[nodiscard]] bool IsDestroyed() const;
+
     /**
      * Defines the parent of this widget
-     * @param p_parent p_parent
      */
-    void setParent(WidgetContainer *p_parent);
-    
+    void SetParent(WidgetContainer *parent);
+
     /**
      * Returns true if the widget has a parent
      */
-    bool hasParent() const;
-    
+    [[nodiscard]] bool HasParent() const;
+
     /**
      * Returns the parent of the widget or nullptr if there is no parent
      */
-    WidgetContainer *parent();
-    
+    WidgetContainer *Parent();
+
 protected:
-    virtual void _draw_Impl() = 0;
-    
+    virtual void DrawImpl() = 0;
+
 public:
-    bool enabled = true;
-    bool lineBreak = true;
-    
+    bool enabled_ = true;
+    bool line_break_ = true;
+
 protected:
-    WidgetContainer *_parent{nullptr};
-    std::string _widgetID = "?";
-    bool _autoExecutePlugins = true;
-    
+    WidgetContainer *parent_{nullptr};
+    std::string widget_id_ = "?";
+    bool auto_execute_plugins_ = true;
+
 private:
-    static uint64_t __WIDGET_ID_INCREMENT;
-    bool _destroyed = false;
+    static uint64_t widget_id_increment_;
+    bool destroyed_ = false;
 };
 
-
-}
-}
-#endif /* widget_hpp */
+}  // namespace vox::ui

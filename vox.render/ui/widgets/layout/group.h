@@ -4,21 +4,17 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef group_hpp
-#define group_hpp
+#pragma once
 
-#include "ui/widgets/widget_container.h"
+#include "vox.render/ui/widgets/widget_container.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Widget that can contains other widgets
  */
 class Group : public Widget, public WidgetContainer {
 protected:
-    void _draw_Impl() override;
+    void DrawImpl() override;
 };
 
-}
-}
-#endif /* group_hpp */
+}  // namespace vox::ui

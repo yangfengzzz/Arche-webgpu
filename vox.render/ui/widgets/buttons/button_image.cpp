@@ -4,24 +4,22 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "button_image.h"
-#include "ui/widgets/converter.h"
-#include "gui/imgui_internal.h"
+#include "vox.render/ui/widgets/buttons/button_image.h"
 
-namespace vox {
-namespace ui {
-ButtonImage::ButtonImage(wgpu::TextureView p_textureID, const Vector2F &p_size) :
-textureID{p_textureID}, size(p_size) {
-}
+#include <utility>
 
-void ButtonImage::_draw_Impl() {
-    ImVec4 bg = Converter::ToImVec4(background);
-    ImVec4 tn = Converter::ToImVec4(tint);
-    
-    if (ImGui::ImageButton((ImTextureID) textureID.Get(), Converter::ToImVec2(size),
+#include "vox.render/ui/widgets/converter.h"
+
+namespace vox::ui {
+ButtonImage::ButtonImage(wgpu::TextureView p_textureID, const Vector2F &p_size)
+    : textureID{std::move(p_textureID)}, size_(p_size) {}
+void ButtonImage::DrawImpl() {
+    ImVec4 bg = Converter::ToImVec4(background_);
+    ImVec4 tn = Converter::ToImVec4(tint_);
+
+    if (ImGui::ImageButton((ImTextureID) textureID.Get(), Converter::ToImVec2(size_),
                            ImVec2(0.f, 0.f), ImVec2(1.f, 1.f), -1, bg, tn))
-        clickedEvent.invoke();
+        clicked_event_.Invoke();
 }
 
-}
-}
+}  // namespace vox::ui

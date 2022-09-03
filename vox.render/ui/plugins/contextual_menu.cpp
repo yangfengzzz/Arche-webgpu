@@ -4,21 +4,16 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "contextual_menu.h"
+#include "vox.render/ui/plugins/contextual_menu.h"
 
-namespace vox {
-namespace ui {
-void ContextualMenu::execute() {
+namespace vox::ui {
+void ContextualMenu::Execute() {
     if (ImGui::BeginPopupContextItem()) {
-        drawWidgets();
+        DrawWidgets();
         ImGui::EndPopup();
     }
 }
 
-void ContextualMenu::close() {
-    ImGui::CloseCurrentPopup();
-}
+void ContextualMenu::Close() { ImGui::CloseCurrentPopup(); }
 
-
-}
-}
+}  // namespace vox::ui

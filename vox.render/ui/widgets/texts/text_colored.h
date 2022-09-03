@@ -4,35 +4,24 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef text_colored_hpp
-#define text_colored_hpp
+#pragma once
 
-#include "text.h"
-#include "color.h"
+#include "vox.math/color.h"
+#include "vox.render/ui/widgets/texts/text.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Widget to display text on a panel that can be colored
  */
 class TextColored : public Text {
 public:
-    /**
-     * Constructor
-     * @param p_content p_content
-     * @param p_color p_color
-     */
-    TextColored(const std::string &p_content = "",
-                const Color &p_color = Color(1.0f, 1.0f, 1.0f, 1.0f));
-    
+    explicit TextColored(const std::string &content = "", const Color &color = Color(1.0f, 1.0f, 1.0f, 1.0f));
+
 public:
-    Color color;
-    
+    Color color_;
+
 protected:
-    void _draw_Impl() override;
+    void DrawImpl() override;
 };
 
-
-}
-}
-#endif /* text_colored_hpp */
+}  // namespace vox::ui

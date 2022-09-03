@@ -4,19 +4,13 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "text_colored.h"
-#include "ui/widgets/converter.h"
+#include "vox.render/ui/widgets/texts/text_colored.h"
 
-namespace vox {
-namespace ui {
-TextColored::TextColored(const std::string &p_content,
-                         const Color &p_color) :
-Text(p_content), color(p_color) {
-}
+#include "vox.render/ui/widgets/converter.h"
 
-void TextColored::_draw_Impl() {
-    ImGui::TextColored(Converter::ToImVec4(color), content.c_str());
-}
+namespace vox::ui {
+TextColored::TextColored(const std::string &content, const Color &color) : Text(content), color_(color) {}
 
-}
-}
+void TextColored::DrawImpl() { ImGui::TextColored(Converter::ToImVec4(color_), "%s", content_.c_str()); }
+
+}  // namespace vox::ui

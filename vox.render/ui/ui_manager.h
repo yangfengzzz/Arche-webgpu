@@ -4,13 +4,14 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef ui_manager_hpp
-#define ui_manager_hpp
+#pragma once
 
 #include <string>
 #include <unordered_map>
-#include "ui/canvas.h"
-#include "rendering/render_context.h"
+
+#include "vox.render/singleton.h"
+#include "vox.render/rendering/render_context.h"
+#include "vox.render/ui/canvas.h"
 
 struct GLFWwindow;
 
@@ -31,125 +32,119 @@ enum class Style {
 /**
  * Handle the creation and drawing of the UI
  */
-class UIManager {
+class UiManager : public Singleton<UiManager> {
 public:
+    static UiManager &GetSingleton();
+
+    static UiManager *GetSingletonPtr();
+
     /**
      * Create the UI manager. Will setup ImGui internally\
-     * @param p_glfwWindow p_glfwWindow
-     * @param p_style p_style
      */
-    UIManager(GLFWwindow *p_glfwWindow,
-              RenderContext* context, Style p_style = Style::IM_DARK_STYLE);
-    
+    UiManager(GLFWwindow *glfw_window, RenderContext *context, Style style = Style::IM_DARK_STYLE);
+
     /**
-     * Destroy the UI manager. Will handle ImGui destruction internally
+     * Destroy the UI manager. Will handle_ ImGui destruction internally
      */
-    ~UIManager();
-    
+    ~UiManager();
+
     /**
      * Apply a new style to the UI elements
-     * @param p_style p_style
      */
-    void applyStyle(Style p_style);
-    
+    static void ApplyStyle(Style style);
+
     /**
      * Load a font (Returns true on success)
-     * @param p_id p_id
-     * @param p_path p_path
-     * @param p_fontSize p_fontSize
      */
-    bool loadFont(const std::string &p_id, const std::string &p_path, float p_fontSize);
-    
+    bool LoadFont(const std::string &id, const std::string &path, float font_size);
+
     /**
      * Unload a font (Returns true on success)
-     * @param p_id p_id
      */
-    bool unloadFont(const std::string &p_id);
-    
+    bool UnloadFont(const std::string &id);
+
     /**
      * Set the given font as the current one (Returns true on success)
      */
-    bool useFont(const std::string &p_id);
-    
+    bool UseFont(const std::string &id);
+
     /**
      * Use the default font (ImGui default font)
      */
-    void useDefaultFont();
-    
+    void UseDefaultFont();
+
     /**
      * Allow the user to enable/disable .ini generation to save his editor layout
-     * @param p_value p_value
      */
-    void enableEditorLayoutSave(bool p_value);
-    
+    void EnableEditorLayoutSave(bool value);
+
     /**
      *  Return true if the editor layout save system is on
      */
-    bool isEditorLayoutSaveEnabled() const;
-    
+    [[nodiscard]] static bool IsEditorLayoutSaveEnabled();
+
     /**
      * Defines a filename for the editor layout save file
      */
-    void setEditorLayoutSaveFilename(const std::string &p_filename);
-    
+    void SetEditorLayoutSaveFilename(const std::string &filename);
+
     /**
      * Defines a frequency (in seconds) for the auto saving system of the editor layout
-     * @param p_frequency p_frequency
+     * @param frequency frequency
      */
-    void setEditorLayoutAutosaveFrequency(float p_frequency);
-    
+    static void SetEditorLayoutAutosaveFrequency(float frequency);
+
     /**
      * Returns the current frequency (in seconds) for the auto saving system of the editor layout
      */
-    float editorLayoutAutosaveFrequency(float p_frequeny);
-    
+    static float EditorLayoutAutosaveFrequency(float frequency);
+
     /**
      * Enable the docking system
-     * @param p_value p_value
+     * @param value value
      */
-    void enableDocking(bool p_value);
-    
+    void EnableDocking(bool value);
+
     /**
      * Reset the UI layout to the given configuration file
-     * @param p_config p_config
+     * @param config config
      */
-    void resetLayout(const std::string &p_config) const;
-    
+    static void ResetLayout(const std::string &config);
+
     /**
      * Return true if the docking system is enabled
      */
-    bool isDockingEnabled() const;
-    
+    [[nodiscard]] bool IsDockingEnabled() const;
+
     /**
      * Defines the canvas to use
-     * @param p_canvas p_canvas
      */
-    void setCanvas(Canvas &p_canvas);
-    
+    void SetCanvas(Canvas &canvas);
+
     /**
      * Stop considering the current canvas (if any)
      */
-    void removeCanvas();
-    
+    void RemoveCanvas();
+
     /**
-     * Render ImGui current frane
-     * @note Should be called once per frame
+     * @brief Draws the Gui
+     * @param command_buffer Command buffer to register draw-commands
      */
-    void render(wgpu::RenderPassEncoder& passEncoder);
+    void Render(wgpu::RenderPassEncoder& passEncoder);
     
 private:
-    void pushCurrentFont();
-    
-    void popCurrentFont();
-    
+    void PushCurrentFont();
+
+    void PopCurrentFont();
+
 private:
-    bool _dockingState;
-    Canvas *_currentCanvas{nullptr};
-    std::unordered_map<std::string, ImFont *> _fonts;
-    std::string _layoutSaveFilename = "imgui.ini";
+    bool docking_state_{};
+    Canvas *current_canvas_{nullptr};
+    std::unordered_map<std::string, ImFont *> fonts_;
+    std::string layout_save_filename_ = "imgui.ini";
 };
 
-
-}
-}
-#endif /* ui_manager_hpp */
+}  // namespace ui
+template <>
+inline ui::UiManager *Singleton<ui::UiManager>::ms_singleton{nullptr};
+}  // namespace vox

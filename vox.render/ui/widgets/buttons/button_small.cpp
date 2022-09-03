@@ -4,42 +4,41 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "button_small.h"
-#include "ui/widgets/converter.h"
+#include "vox.render/ui/widgets/buttons/button_small.h"
 
-namespace vox {
-namespace ui {
-ButtonSmall::ButtonSmall(const std::string &p_label) :
-label(p_label) {
+#include <utility>
+
+#include "vox.render/ui/widgets/converter.h"
+
+namespace vox::ui {
+ButtonSmall::ButtonSmall(std::string label) : label_(std::move(label)) {
     auto &style = ImGui::GetStyle();
-    
-    idleBackgroundColor = Converter::ToColor(style.Colors[ImGuiCol_Button]);
-    hoveredBackgroundColor = Converter::ToColor(style.Colors[ImGuiCol_ButtonHovered]);
-    clickedBackgroundColor = Converter::ToColor(style.Colors[ImGuiCol_ButtonActive]);
-    textColor = Converter::ToColor(style.Colors[ImGuiCol_Text]);
+
+    idle_background_color_ = Converter::ToColor(style.Colors[ImGuiCol_Button]);
+    hovered_background_color_ = Converter::ToColor(style.Colors[ImGuiCol_ButtonHovered]);
+    clicked_background_color_ = Converter::ToColor(style.Colors[ImGuiCol_ButtonActive]);
+    text_color_ = Converter::ToColor(style.Colors[ImGuiCol_Text]);
 }
 
-void ButtonSmall::_draw_Impl() {
+void ButtonSmall::DrawImpl() {
     auto &style = ImGui::GetStyle();
-    
-    auto defaultIdleColor = style.Colors[ImGuiCol_Button];
-    auto defaultHoveredColor = style.Colors[ImGuiCol_ButtonHovered];
-    auto defaultClickedColor = style.Colors[ImGuiCol_ButtonActive];
-    auto defaultTextColor = style.Colors[ImGuiCol_Text];
-    
-    style.Colors[ImGuiCol_Button] = Converter::ToImVec4(idleBackgroundColor);
-    style.Colors[ImGuiCol_ButtonHovered] = Converter::ToImVec4(hoveredBackgroundColor);
-    style.Colors[ImGuiCol_ButtonActive] = Converter::ToImVec4(clickedBackgroundColor);
-    style.Colors[ImGuiCol_Text] = Converter::ToImVec4(textColor);
-    
-    if (ImGui::SmallButton((label + _widgetID).c_str()))
-        clickedEvent.invoke();
-    
-    style.Colors[ImGuiCol_Button] = defaultIdleColor;
-    style.Colors[ImGuiCol_ButtonHovered] = defaultHoveredColor;
-    style.Colors[ImGuiCol_ButtonActive] = defaultClickedColor;
-    style.Colors[ImGuiCol_Text] = defaultTextColor;
+
+    auto default_idle_color = style.Colors[ImGuiCol_Button];
+    auto default_hovered_color = style.Colors[ImGuiCol_ButtonHovered];
+    auto default_clicked_color = style.Colors[ImGuiCol_ButtonActive];
+    auto default_text_color = style.Colors[ImGuiCol_Text];
+
+    style.Colors[ImGuiCol_Button] = Converter::ToImVec4(idle_background_color_);
+    style.Colors[ImGuiCol_ButtonHovered] = Converter::ToImVec4(hovered_background_color_);
+    style.Colors[ImGuiCol_ButtonActive] = Converter::ToImVec4(clicked_background_color_);
+    style.Colors[ImGuiCol_Text] = Converter::ToImVec4(text_color_);
+
+    if (ImGui::SmallButton((label_ + widget_id_).c_str())) clicked_event_.Invoke();
+
+    style.Colors[ImGuiCol_Button] = default_idle_color;
+    style.Colors[ImGuiCol_ButtonHovered] = default_hovered_color;
+    style.Colors[ImGuiCol_ButtonActive] = default_clicked_color;
+    style.Colors[ImGuiCol_Text] = default_text_color;
 }
 
-}
-}
+}  // namespace vox::ui

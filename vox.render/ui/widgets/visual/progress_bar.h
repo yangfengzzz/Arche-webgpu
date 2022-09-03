@@ -4,37 +4,26 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef progress_bar_hpp
-#define progress_bar_hpp
+#pragma once
 
-#include "ui/widgets/widget.h"
-#include "vector2.h"
+#include "vox.math/vector2.h"
+#include "vox.render/ui/widgets/widget.h"
 
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Simple widget that display a progress bar
  */
 class ProgressBar : public Widget {
 public:
-    /**
-     * Constructor
-     * @param p_fraction p_fraction
-     * @param p_size p_size
-     * @param p_overlay p_overlay
-     */
-    ProgressBar(float p_fraction = 0.0f, const Vector2F &p_size = {0.0f, 0.0f},
-                const std::string &p_overlay = "");
-    
+    explicit ProgressBar(float fraction = 0.0f, const Vector2F &size = {0.0f, 0.0f}, std::string overlay = "");
+
 protected:
-    void _draw_Impl() override;
-    
+    void DrawImpl() override;
+
 public:
-    float fraction;
-    Vector2F size;
-    std::string overlay;
+    float fraction_;
+    Vector2F size_;
+    std::string overlay_;
 };
 
-}
-}
-#endif /* progress_bar_hpp */
+}  // namespace vox::ui

@@ -4,36 +4,29 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "radio_button.h"
+#include "vox.render/ui/widgets/selection/radio_button.h"
 
-namespace vox {
-namespace ui {
-RadioButton::RadioButton(bool p_selected, const std::string &p_label) :
-DataWidget<bool>(_selected), label(p_label) {
-    if (p_selected)
-        select();
+#include <utility>
+
+namespace vox::ui {
+RadioButton::RadioButton(bool selected, std::string label) : DataWidget<bool>(selected_), label_(std::move(label)) {
+    if (selected) Select();
 }
 
-void RadioButton::select() {
-    _selected = true;
-    clickedEvent.invoke(_radioID);
+void RadioButton::Select() {
+    selected_ = true;
+    clicked_event_.Invoke(radio_id_);
 }
 
-bool RadioButton::isSelected() const {
-    return _selected;
-}
+bool RadioButton::IsSelected() const { return selected_; }
 
-bool RadioButton::radioID() const {
-    return _radioID;
-}
+bool RadioButton::RadioId() const { return radio_id_; }
 
-void RadioButton::_draw_Impl() {
-    if (ImGui::RadioButton((label + _widgetID).c_str(), _selected)) {
-        clickedEvent.invoke(_radioID);
-        notifyChange();
+void RadioButton::DrawImpl() {
+    if (ImGui::RadioButton((label_ + widget_id_).c_str(), selected_)) {
+        clicked_event_.Invoke(radio_id_);
+        NotifyChange();
     }
 }
 
-
-}
-}
+}  // namespace vox::ui

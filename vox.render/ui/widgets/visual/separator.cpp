@@ -4,14 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "separator.h"
+#include "vox.render/ui/widgets/visual/separator.h"
 
-namespace vox {
-namespace ui {
-void Separator::_draw_Impl() {
-    ImGui::Separator();
-}
+namespace vox::ui {
+void Separator::DrawImpl() { ImGui::Separator(); }
 
-
-}
-}
+}  // namespace vox::ui

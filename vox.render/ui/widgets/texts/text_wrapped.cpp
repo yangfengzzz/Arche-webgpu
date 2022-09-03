@@ -4,18 +4,11 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "text_wrapped.h"
+#include "vox.render/ui/widgets/texts/text_wrapped.h"
 
-namespace vox {
-namespace ui {
-TextWrapped::TextWrapped(const std::string &p_content) :
-Text(p_content) {
-}
+namespace vox::ui {
+TextWrapped::TextWrapped(const std::string &content) : Text(content) {}
 
-void TextWrapped::_draw_Impl() {
-    ImGui::TextWrapped(content.c_str());
-}
+void TextWrapped::DrawImpl() { ImGui::TextWrapped("%s", content_.c_str()); }
 
-
-}
-}
+}  // namespace vox::ui

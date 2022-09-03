@@ -4,34 +4,24 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef dummy_hpp
-#define dummy_hpp
+#pragma once
 
-#include "vector2.h"
+#include "vox.math/vector2.h"
+#include "vox.render/ui/widgets/widget.h"
 
-#include "ui/widgets/widget.h"
-
-namespace vox {
-namespace ui {
+namespace vox::ui {
 /**
  * Dummy widget that takes the given size as space in the panel
  */
 class Dummy : public Widget {
 public:
-    /**
-     * Constructor
-     * @param p_size p_size
-     */
-    Dummy(const Vector2F &p_size = {0.0f, 0.0f});
-    
+    explicit Dummy(const Vector2F &size = {0.0f, 0.0f});
+
 protected:
-    void _draw_Impl() override;
-    
+    void DrawImpl() override;
+
 public:
-    Vector2F size;
+    Vector2F size_;
 };
 
-
-}
-}
-#endif /* dummy_hpp */
+}  // namespace vox::ui

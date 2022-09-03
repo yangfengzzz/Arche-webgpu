@@ -4,77 +4,63 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef drag_multiple_scalars_h
-#define drag_multiple_scalars_h
+#pragma once
 
-#include "ui/widgets/data_widget.h"
-#include "event.h"
+#include <utility>
 
-namespace vox {
-namespace ui {
+#include "vox.render/event.h"
+#include "vox.render/ui/widgets/data_widget.h"
+
+namespace vox::ui {
 /**
  * Drag widget of multiple generic type
  */
-template<typename T, size_t _Size>
-class DragMultipleScalars : public DataWidget<std::array<T, _Size>> {
-    static_assert(_Size > 1, "Invalid DragMultipleScalars _Size (2 or more requiered)");
-    
+template <typename T, size_t Size>
+class DragMultipleScalars : public DataWidget<std::array<T, Size>> {
+    static_assert(Size > 1, "Invalid DragMultipleScalars _Size (2 or more required)");
+
 public:
-    /**
-     * Constructor
-     * @param p_dataType p_dataType
-     * @param p_min p_min
-     * @param p_max p_max
-     * @param p_value p_value
-     * @param p_speed p_speed
-     * @param p_label p_label
-     * @param p_format p_format
-     */
-    DragMultipleScalars(ImGuiDataType_ p_dataType,
-                        T p_min,
-                        T p_max,
-                        T p_value,
-                        float p_speed,
-                        const std::string &p_label,
-                        const std::string &p_format) :
-    DataWidget<std::array<T, _Size>>(values), _dataType(p_dataType),
-    min(p_min), max(p_max), speed(p_speed), label(p_label), format(p_format) {
-        values.fill(p_value);
+    DragMultipleScalars(
+            ImGuiDataType_ data_type, T min, T max, T value, float speed, std::string label, std::string format)
+        : DataWidget<std::array<T, Size>>(values_),
+          data_type_(data_type),
+          min_(min),
+          max_(max),
+          speed_(speed),
+          label_(std::move(label)),
+          format_(std::move(format)) {
+        values_.fill(value);
     }
-    
+
 protected:
-    void _draw_Impl() override {
-        if (max < min)
-            max = min;
-        
-        for (size_t i = 0; i < _Size; ++i) {
-            if (values[i] < min)
-                values[i] = min;
-            else if (values[i] > max)
-                values[i] = max;
+    void DrawImpl() override {
+        if (max_ < min_) max_ = min_;
+
+        for (size_t i = 0; i < Size; ++i) {
+            if (values_[i] < min_)
+                values_[i] = min_;
+            else if (values_[i] > max_)
+                values_[i] = max_;
         }
-        
-        if (ImGui::DragScalarN((label + DataWidget<std::array<T, _Size>>::_widgetID).c_str(),
-                               _dataType, values.data(), _Size, speed, &min, &max, format.c_str())) {
-            valueChangedEvent.invoke(values);
-            DataWidget<std::array<T, _Size>>::notifyChange();
+
+        if (ImGui::DragScalarN((label_ + DataWidget<std::array<T, Size>>::widget_id_).c_str(), data_type_,
+                               values_.data(), Size, speed_, &min_, &max_, format_.c_str())) {
+            value_changed_event_.Invoke(values_);
+            DataWidget<std::array<T, Size>>::NotifyChange();
         }
     }
-    
+
 public:
-    T min;
-    T max;
-    float speed;
-    std::array<T, _Size> values;
-    std::string label;
-    std::string format;
-    Event<std::array<T, _Size> &> valueChangedEvent;
-    
+    T min_;
+    T max_;
+    float speed_;
+    std::array<T, Size> values_;
+    std::string label_;
+    std::string format_;
+    Event<std::array<T, Size> &> value_changed_event_;
+
 protected:
-    ImGuiDataType_ _dataType;
+    ImGuiDataType_ data_type_;
 };
 
-
-}
-}
-#endif /* drag_multiple_scalars_h */
+}  // namespace vox::ui
