@@ -15,6 +15,6 @@ public:
     void operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros);
 };
 
-}
+}  // namespace vox
 
 #endif /* wgsl_light_frag_define_hpp */

@@ -15,11 +15,11 @@ public:
     WGSLBeginViewDirFrag(const std::string& input, const std::string& output);
 
     void operator()(std::string& source, const ShaderMacroCollection& macros);
-    
+
 private:
     const std::string _input;
     const std::string _output;
 };
 
-}
+}  // namespace vox
 #endif /* wgsl_begin_viewdir_frag_hpp */

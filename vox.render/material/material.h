@@ -28,15 +28,15 @@ public:
     ShaderData shaderData;
     /** Render state. */
     RenderState renderState = RenderState();
-    
+
     /**
      * Create a material instance.
      * @param shader - Shader used by the material
      */
-    Material(wgpu::Device& device, Shader *shader);
+    Material(wgpu::Device &device, Shader *shader);
 };
 using MaterialPtr = std::shared_ptr<Material>;
 
-}
+}  // namespace vox
 
 #endif /* material_hpp */

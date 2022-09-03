@@ -154,7 +154,7 @@ private:
     std::unique_ptr<ComputePass> _clusterLightsCompute{nullptr};
 };
 
-template<> inline LightManager* Singleton<LightManager>::msSingleton{nullptr};
+template<> inline LightManager* Singleton<LightManager>::ms_singleton{nullptr};
 
 }
 

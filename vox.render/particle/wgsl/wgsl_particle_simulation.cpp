@@ -7,7 +7,7 @@
 #include "wgsl_particle_simulation.h"
 #include "particle/particle_manager.h"
 #include "filesystem.h"
-#include <fmt/core.h>
+#include <spdlog/fmt/fmt.h>
 
 namespace vox {
 WGSLParticleSimulation::WGSLParticleSimulation() {

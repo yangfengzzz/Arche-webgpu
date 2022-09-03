@@ -5,20 +5,19 @@
 //  property of any third parties.
 
 #include "wgsl_color_share.h"
-#include "wgsl.h"
-#include <fmt/core.h>
+
+#include <spdlog/fmt/fmt.h>
+
+#include "vox.render/shaderlib/wgsl.h"
 
 namespace vox {
-WGSLColorShare::WGSLColorShare(const std::string& outputStructName) :
-_outputStructName(outputStructName) {
-}
+WGSLColorShare::WGSLColorShare(const std::string& outputStructName) : _outputStructName(outputStructName) {}
 
-void WGSLColorShare::operator()(WGSLEncoder& encoder,
-                             const ShaderMacroCollection& macros, size_t counterIndex) {
+void WGSLColorShare::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros, size_t counterIndex) {
     if (macros.contains(HAS_VERTEXCOLOR)) {
-        encoder.addInoutType(_outputStructName, WGSLEncoder::getCounterNumber(counterIndex),
-                             "v_color", UniformType::Vec4f32);
+        encoder.addInoutType(_outputStructName, WGSLEncoder::getCounterNumber(counterIndex), "v_color",
+                             UniformType::Vec4f32);
     }
 }
 
-}
+}  // namespace vox

@@ -8,56 +8,56 @@
 
 namespace vox {
 // MARK: - SERIALIZATION_HELPERS
-void Serializer::serializeBoolean(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+void Serializer::serializeBoolean(nlohmann::json &data,
                                   const std::string &p_name, bool p_value) {
     tinyxml2::XMLElement *element = p_doc.NewElement(p_name.c_str());
     element->SetText(p_value);
     p_node->InsertEndChild(element);
 }
 
-void Serializer::serializeString(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+void Serializer::serializeString(nlohmann::json &data,
                                  const std::string &p_name, const std::string &p_value) {
     tinyxml2::XMLElement *element = p_doc.NewElement(p_name.c_str());
     element->SetText(p_value.c_str());
     p_node->InsertEndChild(element);
 }
 
-void Serializer::serializeFloat(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+void Serializer::serializeFloat(nlohmann::json &data,
                                 const std::string &p_name, float p_value) {
     tinyxml2::XMLElement *element = p_doc.NewElement(p_name.c_str());
     element->SetText(p_value);
     p_node->InsertEndChild(element);
 }
 
-void Serializer::serializeDouble(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+void Serializer::serializeDouble(nlohmann::json &data,
                                  const std::string &p_name, double p_value) {
     tinyxml2::XMLElement *element = p_doc.NewElement(p_name.c_str());
     element->SetText(p_value);
     p_node->InsertEndChild(element);
 }
 
-void Serializer::serializeInt(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+void Serializer::serializeInt(nlohmann::json &data,
                               const std::string &p_name, int p_value) {
     tinyxml2::XMLElement *element = p_doc.NewElement(p_name.c_str());
     element->SetText(p_value);
     p_node->InsertEndChild(element);
 }
 
-void Serializer::serializeUint(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+void Serializer::serializeUint(nlohmann::json &data,
                                const std::string &p_name, unsigned p_value) {
     tinyxml2::XMLElement *element = p_doc.NewElement(p_name.c_str());
     element->SetText(p_value);
     p_node->InsertEndChild(element);
 }
 
-void Serializer::serializeInt64(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+void Serializer::serializeInt64(nlohmann::json &data,
                                 const std::string &p_name, int64_t p_value) {
     tinyxml2::XMLElement *element = p_doc.NewElement(p_name.c_str());
     element->SetText(p_value);
     p_node->InsertEndChild(element);
 }
 
-void Serializer::serializeVec2(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+void Serializer::serializeVec2(nlohmann::json &data,
                                const std::string &p_name, const Vector2F &p_value) {
     tinyxml2::XMLNode *element = p_doc.NewElement(p_name.c_str());
     p_node->InsertEndChild(element);
@@ -71,7 +71,7 @@ void Serializer::serializeVec2(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *
     element->InsertEndChild(y);
 }
 
-void Serializer::serializeVec3(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+void Serializer::serializeVec3(nlohmann::json &data,
                                const std::string &p_name, const Vector3F &p_value) {
     tinyxml2::XMLNode *element = p_doc.NewElement(p_name.c_str());
     p_node->InsertEndChild(element);
@@ -89,7 +89,7 @@ void Serializer::serializeVec3(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *
     element->InsertEndChild(z);
 }
 
-void Serializer::serializeVec4(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+void Serializer::serializeVec4(nlohmann::json &data,
                                const std::string &p_name, const Vector4F &p_value) {
     tinyxml2::XMLNode *element = p_doc.NewElement(p_name.c_str());
     p_node->InsertEndChild(element);
@@ -111,7 +111,7 @@ void Serializer::serializeVec4(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *
     element->InsertEndChild(w);
 }
 
-void Serializer::serializeQuat(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+void Serializer::serializeQuat(nlohmann::json &data,
                                const std::string &p_name, const QuaternionF &p_value) {
     tinyxml2::XMLNode *element = p_doc.NewElement(p_name.c_str());
     p_node->InsertEndChild(element);
@@ -133,7 +133,7 @@ void Serializer::serializeQuat(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *
     element->InsertEndChild(w);
 }
 
-void Serializer::serializeColor(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+void Serializer::serializeColor(nlohmann::json &data,
                                 const std::string &p_name, const Color &p_value) {
     tinyxml2::XMLNode *element = p_doc.NewElement(p_name.c_str());
     p_node->InsertEndChild(element);
@@ -155,39 +155,39 @@ void Serializer::serializeColor(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode 
     element->InsertEndChild(a);
 }
 
-//void Serializer::serializeMaterial(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+//void Serializer::serializeMaterial(nlohmann::json &data,
 //                                   const std::string &p_name, OvCore::Resources::Material *p_value) {
 //    SerializeString(p_doc, p_node, p_name.c_str(), p_value ? p_value->path : "?");
 //}
 //
-//void Serializer::serializeSound(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+//void Serializer::serializeSound(nlohmann::json &data,
 //                                const std::string &p_name, OvAudio::Resources::Sound *p_value) {
 //    SerializeString(p_doc, p_node, p_name.c_str(), p_value ? p_value->path : "?");
 //}
 //
-//void Serializer::serializeModel(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+//void Serializer::serializeModel(nlohmann::json &data,
 //                                const std::string &p_name, OvRendering::Resources::Model *p_value) {
 //    SerializeString(p_doc, p_node, p_name.c_str(), p_value ? p_value->path : "?");
 //}
 //
-//void Serializer::serializeTexture(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+//void Serializer::serializeTexture(nlohmann::json &data,
 //                                  const std::string &p_name, OvRendering::Resources::Texture *p_value) {
 //    SerializeString(p_doc, p_node, p_name.c_str(), p_value ? p_value->path : "?");
 //}
 //
-//void Serializer::serializeShader(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+//void Serializer::serializeShader(nlohmann::json &data,
 //                                 const std::string &p_name, OvRendering::Resources::Shader *p_value) {
 //    SerializeString(p_doc, p_node, p_name.c_str(), p_value ? p_value->path : "?");
 //}
 
 // MARK: -  DESERIALIZATION_HELPERS
-void Serializer::deserializeBoolean(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+void Serializer::deserializeBoolean(nlohmann::json &data,
                                     const std::string &p_name, bool &p_out) {
     if (auto element = p_node->FirstChildElement(p_name.c_str()); element)
         element->QueryBoolText(&p_out);
 }
 
-void Serializer::deserializeString(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+void Serializer::deserializeString(nlohmann::json &data,
                                    const std::string &p_name, std::string &p_out) {
     if (auto element = p_node->FirstChildElement(p_name.c_str()); element) {
         const char *result = element->GetText();
@@ -195,37 +195,37 @@ void Serializer::deserializeString(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNo
     }
 }
 
-void Serializer::deserializeFloat(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+void Serializer::deserializeFloat(nlohmann::json &data,
                                   const std::string &p_name, float &p_out) {
     if (auto element = p_node->FirstChildElement(p_name.c_str()); element)
         element->QueryFloatText(&p_out);
 }
 
-void Serializer::deserializeDouble(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+void Serializer::deserializeDouble(nlohmann::json &data,
                                    const std::string &p_name, double &p_out) {
     if (auto element = p_node->FirstChildElement(p_name.c_str()); element)
         element->QueryDoubleText(&p_out);
 }
 
-void Serializer::deserializeInt(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+void Serializer::deserializeInt(nlohmann::json &data,
                                 const std::string &p_name, int &p_out) {
     if (auto element = p_node->FirstChildElement(p_name.c_str()); element)
         element->QueryIntText(&p_out);
 }
 
-void Serializer::deserializeUint(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+void Serializer::deserializeUint(nlohmann::json &data,
                                  const std::string &p_name, unsigned &p_out) {
     if (auto element = p_node->FirstChildElement(p_name.c_str()); element)
         element->QueryUnsignedText(&p_out);
 }
 
-void Serializer::deserializeInt64(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+void Serializer::deserializeInt64(nlohmann::json &data,
                                   const std::string &p_name, int64_t &p_out) {
     if (auto element = p_node->FirstChildElement(p_name.c_str()); element)
         element->QueryInt64Text(&p_out);
 }
 
-void Serializer::deserializeVec2(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+void Serializer::deserializeVec2(nlohmann::json &data,
                                  const std::string &p_name, Vector2F &p_out) {
     if (auto node = p_node->FirstChildElement(p_name.c_str()); node) {
         if (auto element = node->FirstChildElement("x"); element)
@@ -236,7 +236,7 @@ void Serializer::deserializeVec2(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode
     }
 }
 
-void Serializer::deserializeVec3(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+void Serializer::deserializeVec3(nlohmann::json &data,
                                  const std::string &p_name, Vector3F &p_out) {
     if (auto node = p_node->FirstChildElement(p_name.c_str()); node) {
         if (auto element = node->FirstChildElement("x"); element)
@@ -250,7 +250,7 @@ void Serializer::deserializeVec3(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode
     }
 }
 
-void Serializer::deserializeVec4(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+void Serializer::deserializeVec4(nlohmann::json &data,
                                  const std::string &p_name, Vector4F &p_out) {
     if (auto node = p_node->FirstChildElement(p_name.c_str()); node) {
         if (auto element = node->FirstChildElement("x"); element)
@@ -267,7 +267,7 @@ void Serializer::deserializeVec4(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode
     }
 }
 
-void Serializer::deserializeQuat(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+void Serializer::deserializeQuat(nlohmann::json &data,
                                  const std::string &p_name, QuaternionF &p_out) {
     if (auto node = p_node->FirstChildElement(p_name.c_str()); node) {
         if (auto element = node->FirstChildElement("x"); element)
@@ -284,7 +284,7 @@ void Serializer::deserializeQuat(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode
     }
 }
 
-void Serializer::deserializeColor(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+void Serializer::deserializeColor(nlohmann::json &data,
                                   const std::string &p_name, Color &p_out) {
     if (auto node = p_node->FirstChildElement(p_name.c_str()); node) {
         if (auto element = node->FirstChildElement("r"); element)
@@ -301,7 +301,7 @@ void Serializer::deserializeColor(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNod
     }
 }
 
-//void Serializer::deserializeModel(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+//void Serializer::deserializeModel(nlohmann::json &data,
 //                                  const std::string &p_name, OvRendering::Resources::Model *&p_out) {
 //    if (std::string path = DeserializeString(p_doc, p_node, p_name.c_str()); path != "?" && path != "")
 //        p_out = OvCore::Global::ServiceLocator::Get<OvCore::ResourceManagement::ModelManager>().GetResource(path);
@@ -309,7 +309,7 @@ void Serializer::deserializeColor(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNod
 //        p_out = nullptr;
 //}
 //
-//void Serializer::deserializeTexture(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+//void Serializer::deserializeTexture(nlohmann::json &data,
 //                                    const std::string &p_name, OvRendering::Resources::Texture *&p_out) {
 //    if (std::string path = DeserializeString(p_doc, p_node, p_name.c_str()); path != "?" && path != "")
 //        p_out = OvCore::Global::ServiceLocator::Get<OvCore::ResourceManagement::TextureManager>().GetResource(path);
@@ -317,7 +317,7 @@ void Serializer::deserializeColor(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNod
 //        p_out = nullptr;
 //}
 //
-//void Serializer::deserializeShader(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+//void Serializer::deserializeShader(nlohmann::json &data,
 //                                   const std::string &p_name, OvRendering::Resources::Shader *&p_out) {
 //    if (std::string path = DeserializeString(p_doc, p_node, p_name.c_str()); path != "?" && path != "")
 //        p_out = OvCore::Global::ServiceLocator::Get<OvCore::ResourceManagement::ShaderManager>().GetResource(path);
@@ -325,7 +325,7 @@ void Serializer::deserializeColor(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNod
 //        p_out = nullptr;
 //}
 //
-//void Serializer::deserializeMaterial(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+//void Serializer::deserializeMaterial(nlohmann::json &data,
 //                                     const std::string &p_name, OvCore::Resources::Material *&p_out) {
 //    if (std::string path = DeserializeString(p_doc, p_node, p_name.c_str()); path != "?" && path != "")
 //        p_out = OvCore::Global::ServiceLocator::Get<OvCore::ResourceManagement::MaterialManager>().GetResource(path);
@@ -333,7 +333,7 @@ void Serializer::deserializeColor(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNod
 //        p_out = nullptr;
 //}
 //
-//void Serializer::deserializeSound(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+//void Serializer::deserializeSound(nlohmann::json &data,
 //                                  const std::string &p_name, OvAudio::Resources::Sound *&p_out) {
 //    if (std::string path = DeserializeString(p_doc, p_node, p_name.c_str()); path != "?" && path != "")
 //        p_out = OvCore::Global::ServiceLocator::Get<OvCore::ResourceManagement::SoundManager>().GetResource(path);
@@ -341,119 +341,119 @@ void Serializer::deserializeColor(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNod
 //        p_out = nullptr;
 //}
 
-bool Serializer::deserializeBoolean(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+bool Serializer::deserializeBoolean(nlohmann::json &data,
                                     const std::string &p_name) {
     bool result;
     deserializeBoolean(p_doc, p_node, p_name, result);
     return result;
 }
 
-std::string Serializer::deserializeString(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+std::string Serializer::deserializeString(nlohmann::json &data,
                                           const std::string &p_name) {
     std::string result;
     deserializeString(p_doc, p_node, p_name, result);
     return result;
 }
 
-float Serializer::deserializeFloat(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+float Serializer::deserializeFloat(nlohmann::json &data,
                                    const std::string &p_name) {
     float result;
     deserializeFloat(p_doc, p_node, p_name, result);
     return result;
 }
 
-double Serializer::deserializeDouble(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+double Serializer::deserializeDouble(nlohmann::json &data,
                                      const std::string &p_name) {
     double result;
     deserializeDouble(p_doc, p_node, p_name, result);
     return result;
 }
 
-int Serializer::deserializeInt(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+int Serializer::deserializeInt(nlohmann::json &data,
                                const std::string &p_name) {
     int result;
     deserializeInt(p_doc, p_node, p_name, result);
     return result;
 }
 
-unsigned Serializer::deserializeUint(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+unsigned Serializer::deserializeUint(nlohmann::json &data,
                                      const std::string &p_name) {
     unsigned result;
     deserializeUint(p_doc, p_node, p_name, result);
     return result;
 }
 
-int64_t Serializer::deserializeInt64(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+int64_t Serializer::deserializeInt64(nlohmann::json &data,
                                      const std::string &p_name) {
     int64_t result;
     deserializeInt64(p_doc, p_node, p_name, result);
     return result;
 }
 
-Vector2F Serializer::deserializeVec2(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+Vector2F Serializer::deserializeVec2(nlohmann::json &data,
                                      const std::string &p_name) {
     Vector2F result;
     deserializeVec2(p_doc, p_node, p_name, result);
     return result;
 }
 
-Vector3F Serializer::deserializeVec3(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+Vector3F Serializer::deserializeVec3(nlohmann::json &data,
                                      const std::string &p_name) {
     Vector3F result;
     deserializeVec3(p_doc, p_node, p_name, result);
     return result;
 }
 
-Vector4F Serializer::deserializeVec4(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+Vector4F Serializer::deserializeVec4(nlohmann::json &data,
                                      const std::string &p_name) {
     Vector4F result;
     deserializeVec4(p_doc, p_node, p_name, result);
     return result;
 }
 
-QuaternionF Serializer::deserializeQuat(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+QuaternionF Serializer::deserializeQuat(nlohmann::json &data,
                                         const std::string &p_name) {
     QuaternionF result;
     deserializeQuat(p_doc, p_node, p_name, result);
     return result;
 }
 
-Color Serializer::deserializeColor(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+Color Serializer::deserializeColor(nlohmann::json &data,
                                    const std::string &p_name) {
     Color result;
     deserializeColor(p_doc, p_node, p_name, result);
     return result;
 }
 
-//OvRendering::Resources::Model *Serializer::deserializeModel(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+//OvRendering::Resources::Model *Serializer::deserializeModel(nlohmann::json &data,
 //                                                            const std::string &p_name) {
 //    OvRendering::Resources::Model *result;
 //    DeserializeModel(p_doc, p_node, p_name, result);
 //    return result;
 //}
 //
-//OvRendering::Resources::Texture *Serializer::deserializeTexture(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+//OvRendering::Resources::Texture *Serializer::deserializeTexture(nlohmann::json &data,
 //                                                                const std::string &p_name) {
 //    OvRendering::Resources::Texture *result;
 //    DeserializeTexture(p_doc, p_node, p_name, result);
 //    return result;
 //}
 //
-//OvRendering::Resources::Shader *Serializer::deserializeShader(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+//OvRendering::Resources::Shader *Serializer::deserializeShader(nlohmann::json &data,
 //                                                              const std::string &p_name) {
 //    OvRendering::Resources::Shader *result;
 //    DeserializeShader(p_doc, p_node, p_name, result);
 //    return result;
 //}
 //
-//OvCore::Resources::Material *Serializer::deserializeMaterial(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+//OvCore::Resources::Material *Serializer::deserializeMaterial(nlohmann::json &data,
 //                                                             const std::string &p_name) {
 //    OvCore::Resources::Material *result;
 //    DeserializeMaterial(p_doc, p_node, p_name, result);
 //    return result;
 //}
 //
-//OvAudio::Resources::Sound *Serializer::deserializeSound(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node,
+//OvAudio::Resources::Sound *Serializer::deserializeSound(nlohmann::json &data,
 //                                                        const std::string &p_name) {
 //    OvAudio::Resources::Sound *result;
 //    DeserializeSound(p_doc, p_node, p_name, result);

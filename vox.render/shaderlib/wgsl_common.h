@@ -7,12 +7,13 @@
 #ifndef wgsl_common_h
 #define wgsl_common_h
 
-#include <string>
-#include <vector>
 #include <webgpu/webgpu_cpp.h>
 
+#include <string>
+#include <vector>
+
 namespace vox {
-//MARK: - Attributes
+// MARK: - Attributes
 enum class Attributes : uint32_t {
     Position = 0,
     Normal,
@@ -33,24 +34,24 @@ enum class Attributes : uint32_t {
 };
 std::string toString(Attributes type);
 
-//MARK: - UniformType
+// MARK: - UniformType
 enum class UniformType {
     F32,
     I32,
     U32,
-    
+
     Vec2f32,
     Vec2i32,
     Vec2u32,
-    
+
     Vec3f32,
     Vec3i32,
     Vec3u32,
-    
+
     Vec4f32,
     Vec4i32,
     Vec4u32,
-    
+
     Mat2x2f32,
     Mat3x2f32,
     Mat4x2f32,
@@ -63,36 +64,36 @@ enum class UniformType {
 };
 std::string toString(UniformType type);
 
-//MARK: - TextureType
+// MARK: - TextureType
 enum class TextureType {
     Texture1Df32,
     Texture1Di32,
     Texture1Du32,
-    
+
     Texture2Df32,
     Texture2Di32,
     Texture2Du32,
-    
+
     Texture2DArrayf32,
     Texture2DArrayi32,
     Texture2DArrayu32,
-    
+
     Texture3Df32,
     Texture3Di32,
     Texture3Du32,
-    
+
     TextureCubef32,
     TextureCubei32,
     TextureCubeu32,
-    
+
     TextureCubeArrayf32,
     TextureCubeArrayi32,
     TextureCubeArrayu32,
-    
+
     TextureMultisampled2Df32,
     TextureMultisampled2Di32,
     TextureMultisampled2Du32,
-    
+
     TextureDepth2D,
     TextureDepth2DArray,
     TextureDepthCube,
@@ -104,28 +105,20 @@ bool isMultisampled(TextureType type);
 wgpu::TextureViewDimension viewDimension(TextureType type);
 wgpu::TextureSampleType sampleType(TextureType type);
 
-//MARK: - SamplerType
-enum class SamplerType {
-    Sampler,
-    SamplerComparison
-};
+// MARK: - SamplerType
+enum class SamplerType { Sampler, SamplerComparison };
 std::string toString(SamplerType type);
 wgpu::SamplerBindingType bindingType(SamplerType type);
 
-//MARK: - StorageTextureType
-enum class StorageTextureType {
-    TextureStorage1D,
-    TextureStorage2D,
-    TextureStorage2DArray,
-    TextureStorage3D
-};
+// MARK: - StorageTextureType
+enum class StorageTextureType { TextureStorage1D, TextureStorage2D, TextureStorage2DArray, TextureStorage3D };
 std::string toString(StorageTextureType type);
 wgpu::TextureViewDimension viewDimension(StorageTextureType type);
 
-//MARK: - TexelFormats
+// MARK: - TexelFormats
 std::string toString(wgpu::TextureFormat type);
 
-//MARK: - BuiltInType
+// MARK: - BuiltInType
 enum class BuiltInType {
     VertexIndex,
     InstanceIndex,
@@ -144,5 +137,5 @@ std::string toString(BuiltInType type);
 
 std::string toType(BuiltInType type);
 
-}
+}  // namespace vox
 #endif /* wgsl_common_h */

@@ -8,15 +8,9 @@
 #define script_hpp
 
 #include "component.h"
-#include "input_events.h"
+#include "vox.render/platform/input_events.h"
 
 namespace vox {
-namespace physics {
-class ColliderShape;
-
-using ColliderShapePtr = std::shared_ptr<ColliderShape>;
-}
-
 /**
  * Script class, used for logic writing.
  */
@@ -105,12 +99,12 @@ public:
     /**
      * Serialize the component
      */
-    void onSerialize(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node) override;
+    void onSerialize(nlohmann::json &data) override;
     
     /**
      * Deserialize the component
      */
-    void onDeserialize(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node) override;
+    void onDeserialize(nlohmann::json &data) override;
     
     /**
      * Defines how the component should be drawn in the inspector

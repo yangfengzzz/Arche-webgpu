@@ -7,23 +7,23 @@
 #ifndef wgsl_skybox_debugger_hpp
 #define wgsl_skybox_debugger_hpp
 
-#include "wgsl_cache.h"
+#include "functors/wgsl_begin_position_vert.h"
 #include "functors/wgsl_common.h"
 #include "functors/wgsl_common_vert.h"
-#include "functors/wgsl_uv_share.h"
-#include "functors/wgsl_begin_position_vert.h"
-#include "functors/wgsl_uv_vert.h"
 #include "functors/wgsl_position_vert.h"
+#include "functors/wgsl_uv_share.h"
+#include "functors/wgsl_uv_vert.h"
+#include "wgsl_cache.h"
 
 namespace vox {
-//MARK: - Unlit Vertex Code
+// MARK: - Unlit Vertex Code
 class WGSLSkyboxDebuggerVertex : public WGSLCache {
 public:
     WGSLSkyboxDebuggerVertex();
-        
+
 private:
     void _createShaderSource(size_t hash, const ShaderMacroCollection& macros) override;
-    
+
     WGSLCommonVert _commonVert;
     WGSLUVShare _uvShare;
     WGSLBeginPositionVert _beginPositionVert;
@@ -31,18 +31,18 @@ private:
     WGSLPositionVert _positionVert;
 };
 
-//MARK: - Unlit Fragment Code
+// MARK: - Unlit Fragment Code
 class WGSLSkyboxDebuggerFragment : public WGSLCache {
 public:
     WGSLSkyboxDebuggerFragment();
-        
+
 private:
     void _createShaderSource(size_t hash, const ShaderMacroCollection& macros) override;
-    
+
     WGSLCommon _common;
     WGSLUVShare _uvShare;
 };
 
-}
+}  // namespace vox
 
 #endif /* wgsl_skybox_debugger_hpp */

@@ -21,15 +21,16 @@ public:
      * @param count - Drawing count
      * @param topology - Drawing topology
      */
-    SubMesh(uint32_t start = 0, uint32_t count = 0,
+    SubMesh(uint32_t start = 0,
+            uint32_t count = 0,
             wgpu::PrimitiveTopology topology = wgpu::PrimitiveTopology::TriangleList);
-    
+
     uint32_t start() const;
-    
+
     uint32_t count() const;
-        
+
     wgpu::PrimitiveTopology topology() const;
-    
+
 private:
     /** Start drawing offset. */
     uint32_t _start;
@@ -39,6 +40,6 @@ private:
     wgpu::PrimitiveTopology _topology;
 };
 
-}
+}  // namespace vox
 
 #endif /* sub_mesh_hpp */

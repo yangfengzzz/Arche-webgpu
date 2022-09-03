@@ -6,7 +6,7 @@
 
 #include "shadow_subpass.h"
 #include "material/material.h"
-#include "graphics/mesh.h"
+#include "mesh/mesh.h"
 #include "camera.h"
 #include "renderer.h"
 #include "rendering/render_pass.h"

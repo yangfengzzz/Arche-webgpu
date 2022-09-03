@@ -7,26 +7,24 @@
 #include "wgsl_pbr.h"
 
 namespace vox {
-WGSLPbrVertex::WGSLPbrVertex():
-_common(),
-_commonVert("VertexIn"),
-_blendShapeInput("VertexIn"),
-_uvShare("VertexOut"),
-_colorShare("VertexOut"),
-_normalShare("VertexOut"),
-_worldPosShare("VertexOut"),
+WGSLPbrVertex::WGSLPbrVertex()
+    : _common(),
+      _commonVert("VertexIn"),
+      _blendShapeInput("VertexIn"),
+      _uvShare("VertexOut"),
+      _colorShare("VertexOut"),
+      _normalShare("VertexOut"),
+      _worldPosShare("VertexOut"),
 
-_beginPositionVert("in", "out"),
-_beginNormalVert("in", "out"),
-_blendShapeVert("in", "out"),
-_skinningVert("in", "out"),
-_uvVert("in", "out"),
-_colorVert("in", "out"),
-_normalVert("in", "out"),
-_worldPosVert("in", "out"),
-_positionVert("in", "out") {
-    
-}
+      _beginPositionVert("in", "out"),
+      _beginNormalVert("in", "out"),
+      _blendShapeVert("in", "out"),
+      _skinningVert("in", "out"),
+      _uvVert("in", "out"),
+      _colorVert("in", "out"),
+      _normalVert("in", "out"),
+      _worldPosVert("in", "out"),
+      _positionVert("in", "out") {}
 
 void WGSLPbrVertex::_createShaderSource(size_t hash, const ShaderMacroCollection& macros) {
     _source.clear();
@@ -44,7 +42,7 @@ void WGSLPbrVertex::_createShaderSource(size_t hash, const ShaderMacroCollection
         _worldPosShare(encoder, macros, outputStructCounter);
         encoder.addInoutType("VertexOut", BuiltInType::Position, "position", UniformType::Vec4f32);
 
-        encoder.addEntry({{"in", "VertexIn"}}, {"out", "VertexOut"}, [&](std::string &source){
+        encoder.addEntry({{"in", "VertexIn"}}, {"out", "VertexOut"}, [&](std::string& source) {
             _beginPositionVert(source, macros);
             _beginNormalVert(source, macros);
             _blendShapeVert(source, macros);
@@ -63,20 +61,18 @@ void WGSLPbrVertex::_createShaderSource(size_t hash, const ShaderMacroCollection
     _infoCache[hash] = _bindGroupInfo;
 }
 
-//MARK: - Frag
-WGSLPbrFragment::WGSLPbrFragment(bool is_metallic_workflow):
-_common(),
-_commonFrag("VertexOut"),
-_uvShare("VertexOut"),
-_colorShare("VertexOut"),
-_normalShare("VertexOut"),
-_worldPosShare("VertexOut"),
-_lightFragDefine(),
-_pbrFragDefine("VertexOut", is_metallic_workflow),
-_pbrHelper("VertexOut", is_metallic_workflow),
-_pbrFrag("in", "out", is_metallic_workflow){
-    
-}
+// MARK: - Frag
+WGSLPbrFragment::WGSLPbrFragment(bool is_metallic_workflow)
+    : _common(),
+      _commonFrag("VertexOut"),
+      _uvShare("VertexOut"),
+      _colorShare("VertexOut"),
+      _normalShare("VertexOut"),
+      _worldPosShare("VertexOut"),
+      _lightFragDefine(),
+      _pbrFragDefine("VertexOut", is_metallic_workflow),
+      _pbrHelper("VertexOut", is_metallic_workflow),
+      _pbrFrag("in", "out", is_metallic_workflow) {}
 
 void WGSLPbrFragment::_createShaderSource(size_t hash, const ShaderMacroCollection& macros) {
     _source.clear();
@@ -94,7 +90,7 @@ void WGSLPbrFragment::_createShaderSource(size_t hash, const ShaderMacroCollecti
         _pbrFragDefine(encoder, macros, inputStructCounter);
         _pbrHelper(encoder, macros, inputStructCounter);
         encoder.addInoutType("Output", 0, "finalColor", UniformType::Vec4f32);
-        encoder.addEntry({{"in", "VertexOut"}}, {"out", "Output"}, [&](std::string &source){
+        encoder.addEntry({{"in", "VertexOut"}}, {"out", "Output"}, [&](std::string& source) {
             _pbrFrag(source, macros);
             source += "out.finalColor =vec4<f32>(totalRadiance, material.opacity);\n";
         });
@@ -105,4 +101,4 @@ void WGSLPbrFragment::_createShaderSource(size_t hash, const ShaderMacroCollecti
     _infoCache[hash] = _bindGroupInfo;
 }
 
-}
+}  // namespace vox

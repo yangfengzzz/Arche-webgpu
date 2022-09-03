@@ -13,19 +13,18 @@ namespace vox {
 class WGSLIBLFragDefine {
 public:
     WGSLIBLFragDefine(const std::string& outputStructName);
-    
-    void operator()(WGSLEncoder& encoder,
-                    const ShaderMacroCollection& macros, size_t counterIndex);
-    
+
+    void operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros, size_t counterIndex);
+
     void setParamName(const std::string& name);
-    
+
     const std::string& paramName() const;
-    
+
 private:
     std::string _paramName{};
     std::string _outputStructName{};
 };
 
-}
+}  // namespace vox
 
 #endif /* wgsl_ibl_frag_define_hpp */

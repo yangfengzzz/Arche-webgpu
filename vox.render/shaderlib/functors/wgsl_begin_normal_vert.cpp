@@ -5,13 +5,12 @@
 //  property of any third parties.
 
 #include "wgsl_begin_normal_vert.h"
-#include <fmt/core.h>
+
+#include <spdlog/fmt/fmt.h>
 
 namespace vox {
-WGSLBeginNormalVert::WGSLBeginNormalVert(const std::string& input, const std::string& output):
-_input(input),
-_output(output) {
-}
+WGSLBeginNormalVert::WGSLBeginNormalVert(const std::string& input, const std::string& output)
+    : _input(input), _output(output) {}
 
 void WGSLBeginNormalVert::operator()(std::string& source, const ShaderMacroCollection& macros) {
     if (macros.contains(HAS_NORMAL)) {
@@ -22,4 +21,4 @@ void WGSLBeginNormalVert::operator()(std::string& source, const ShaderMacroColle
     }
 }
 
-}
+}  // namespace vox

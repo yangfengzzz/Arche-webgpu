@@ -7,23 +7,13 @@
 #include "sub_mesh.h"
 
 namespace vox {
-SubMesh::SubMesh(uint32_t start, uint32_t count,
-                 wgpu::PrimitiveTopology topology):
-_start(start),
-_count(count),
-_topology(topology) {
-}
+SubMesh::SubMesh(uint32_t start, uint32_t count, wgpu::PrimitiveTopology topology)
+    : _start(start), _count(count), _topology(topology) {}
 
-uint32_t SubMesh::start() const {
-    return _start;
-}
+uint32_t SubMesh::start() const { return _start; }
 
-uint32_t SubMesh::count() const {
-    return _count;
-}
+uint32_t SubMesh::count() const { return _count; }
 
-wgpu::PrimitiveTopology SubMesh::topology() const {
-    return _topology;
-}
+wgpu::PrimitiveTopology SubMesh::topology() const { return _topology; }
 
-}
+}  // namespace vox

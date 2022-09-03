@@ -54,11 +54,11 @@ void Script::_onDisable() {
 }
 
 //MARK: - Reflection
-void Script::onSerialize(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node) {
+void Script::onSerialize(nlohmann::json &data) {
     
 }
 
-void Script::onDeserialize(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node) {
+void Script::onDeserialize(nlohmann::json &data) {
     
 }
 

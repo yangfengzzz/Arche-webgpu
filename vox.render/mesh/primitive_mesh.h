@@ -8,7 +8,7 @@
 #define primitive_mesh_hpp
 
 #include "model_mesh.h"
-#include "vector3.h"
+#include "vox.math/vector3.h"
 
 namespace vox {
 /**
@@ -28,7 +28,7 @@ public:
                                      float radius = 0.5,
                                      size_t segments = 18,
                                      bool noLongerAccessible = true);
-    
+
     /**
      * Create a cuboid mesh.
      * @param device - Engine
@@ -38,12 +38,9 @@ public:
      * @param noLongerAccessible - No longer access the vertices of the mesh after creation
      * @returns Cuboid model mesh
      */
-    static ModelMeshPtr createCuboid(wgpu::Device &device,
-                                     float width = 1,
-                                     float height = 1,
-                                     float depth = 1,
-                                     bool noLongerAccessible = true);
-    
+    static ModelMeshPtr createCuboid(
+            wgpu::Device &device, float width = 1, float height = 1, float depth = 1, bool noLongerAccessible = true);
+
     /**
      * Create a plane mesh.
      * @param device - Engine
@@ -60,7 +57,7 @@ public:
                                     size_t horizontalSegments = 1,
                                     size_t verticalSegments = 1,
                                     bool noLongerAccessible = true);
-    
+
     /**
      * Create a cylinder mesh.
      * @param device - Engine
@@ -79,7 +76,7 @@ public:
                                        size_t radialSegments = 20,
                                        size_t heightSegments = 1,
                                        bool noLongerAccessible = true);
-    
+
     /**
      * Create a torus mesh.
      * @param device - Engine
@@ -98,7 +95,7 @@ public:
                                     size_t tubularSegments = 30,
                                     float arc = 360,
                                     bool noLongerAccessible = true);
-    
+
     /**
      * Create a cone mesh.
      * @param device - Engine
@@ -115,7 +112,7 @@ public:
                                    size_t radialSegments = 20,
                                    size_t heightSegments = 1,
                                    bool noLongerAccessible = true);
-    
+
     /**
      * Create a capsule mesh.
      * @param device - Engine
@@ -132,7 +129,7 @@ public:
                                       size_t radialSegments = 6,
                                       size_t heightSegments = 1,
                                       bool noLongerAccessible = true);
-    
+
 private:
     static void _createCapsuleCap(float radius,
                                   float height,
@@ -145,7 +142,7 @@ private:
                                   std::vector<Vector2F> &uvs,
                                   std::vector<uint32_t> &indices,
                                   size_t indicesOffset);
-    
+
     static void _initialize(const ModelMeshPtr &mesh,
                             const std::vector<Vector3F> &positions,
                             const std::vector<Vector3F> &normals,
@@ -154,6 +151,6 @@ private:
                             bool noLongerAccessible = true);
 };
 
-}
+}  // namespace vox
 
 #endif /* primitive_mesh_hpp */

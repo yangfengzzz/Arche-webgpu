@@ -7,7 +7,7 @@
 #include "wgsl_common.h"
 
 namespace vox {
-//MARK: - Attributes
+// MARK: - Attributes
 std::string toString(Attributes type) {
     switch (type) {
         case Attributes::Position:
@@ -62,220 +62,212 @@ std::string toString(Attributes type) {
     }
 }
 
-//MARK: - UniformType
+// MARK: - UniformType
 std::string toString(UniformType type) {
     switch (type) {
         case UniformType::F32:
             return "f32";
             break;
-            
+
         case UniformType::I32:
             return "i32";
             break;
-            
+
         case UniformType::U32:
             return "u32";
             break;
-            
+
         case UniformType::Vec2f32:
             return "vec2<f32>";
             break;
-            
+
         case UniformType::Vec2i32:
             return "vec2<i32>";
             break;
-            
+
         case UniformType::Vec2u32:
             return "vec2<u32>";
             break;
-            
+
         case UniformType::Vec3f32:
             return "vec3<f32>";
             break;
-            
+
         case UniformType::Vec3i32:
             return "vec3<i32>";
             break;
-            
+
         case UniformType::Vec3u32:
             return "vec3<u32>";
             break;
-            
+
         case UniformType::Vec4f32:
             return "vec4<f32>";
             break;
-            
+
         case UniformType::Vec4i32:
             return "vec4<i32>";
             break;
-            
+
         case UniformType::Vec4u32:
             return "vec4<u32>";
             break;
-            
+
         case UniformType::Mat2x2f32:
             return "mat2x2<f32>";
             break;
-            
+
         case UniformType::Mat3x2f32:
             return "mat3x2<f32>";
             break;
-            
+
         case UniformType::Mat4x2f32:
             return "mat4x2<f32>";
             break;
-            
+
         case UniformType::Mat2x3f32:
             return "mat2x3<f32>";
             break;
-            
+
         case UniformType::Mat3x3f32:
             return "mat3x3<f32>";
             break;
-            
+
         case UniformType::Mat4x3f32:
             return "mat4x3<f32>";
             break;
-            
+
         case UniformType::Mat2x4f32:
             return "mat2x4<f32>";
             break;
-            
+
         case UniformType::Mat3x4f32:
             return "mat3x4<f32>";
             break;
-            
+
         case UniformType::Mat4x4f32:
             return "mat4x4<f32>";
             break;
-            
+
         default:
             break;
     }
 }
 
-//MARK: - TextureType
+// MARK: - TextureType
 std::string toString(TextureType type) {
     switch (type) {
         case TextureType::Texture1Df32:
             return "texture_1d<f32>";
             break;
-            
+
         case TextureType::Texture1Di32:
             return "texture_1d<i32>";
             break;
-            
+
         case TextureType::Texture1Du32:
             return "texture_1d<u32>";
             break;
-            
-            
+
         case TextureType::Texture2Df32:
             return "texture_2d<f32>";
             break;
-            
+
         case TextureType::Texture2Di32:
             return "texture_2d<i32>";
             break;
-            
+
         case TextureType::Texture2Du32:
             return "texture_2d<u32>";
             break;
-            
-            
+
         case TextureType::Texture2DArrayf32:
             return "texture_2d_array<f32>";
             break;
-            
+
         case TextureType::Texture2DArrayi32:
             return "texture_2d_array<i32>";
             break;
-            
+
         case TextureType::Texture2DArrayu32:
             return "texture_2d_array<u32>";
             break;
-            
-            
+
         case TextureType::Texture3Df32:
             return "texture_3d<f32>";
             break;
-            
+
         case TextureType::Texture3Di32:
             return "texture_3d<i32>";
             break;
-            
+
         case TextureType::Texture3Du32:
             return "texture_3d<u32>";
             break;
-            
-            
+
         case TextureType::TextureCubef32:
             return "texture_cube<f32>";
             break;
-            
+
         case TextureType::TextureCubei32:
             return "texture_cube<i32>";
             break;
-            
+
         case TextureType::TextureCubeu32:
             return "texture_cube<u32>";
             break;
-            
-            
+
         case TextureType::TextureCubeArrayf32:
             return "texture_cube_array<f32>";
             break;
-            
+
         case TextureType::TextureCubeArrayi32:
             return "texture_cube_array<i32>";
             break;
-            
+
         case TextureType::TextureCubeArrayu32:
             return "texture_cube_array<u32>";
             break;
-            
-            
+
         case TextureType::TextureMultisampled2Df32:
             return "texture_multisampled_2d<f32>";
             break;
-            
+
         case TextureType::TextureMultisampled2Di32:
             return "texture_multisampled_2d<i32>";
             break;
-            
+
         case TextureType::TextureMultisampled2Du32:
             return "texture_multisampled_2d<u32>";
             break;
-            
-            
+
         case TextureType::TextureDepth2D:
             return "texture_depth_2d";
             break;
-            
+
         case TextureType::TextureDepth2DArray:
             return "texture_depth_2d_array";
             break;
-            
+
         case TextureType::TextureDepthCube:
             return "texture_depth_cube";
             break;
-            
+
         case TextureType::TextureDepthCubeArray:
             return "texture_depth_cube_array";
             break;
-            
+
         case TextureType::TextureDepthMultisampled2D:
             return "texture_depth_multisampled_2d";
             break;
-            
+
         default:
             break;
     }
 }
 
 bool isMultisampled(TextureType type) {
-    if (type == TextureType::TextureMultisampled2Df32 ||
-        type == TextureType::TextureMultisampled2Di32 ||
+    if (type == TextureType::TextureMultisampled2Df32 || type == TextureType::TextureMultisampled2Di32 ||
         type == TextureType::TextureMultisampled2Du32) {
         return true;
     }
@@ -289,7 +281,7 @@ wgpu::TextureViewDimension viewDimension(TextureType type) {
         case TextureType::Texture1Du32:
             return wgpu::TextureViewDimension::e1D;
             break;
-            
+
         case TextureType::Texture2Df32:
         case TextureType::Texture2Di32:
         case TextureType::Texture2Du32:
@@ -300,34 +292,34 @@ wgpu::TextureViewDimension viewDimension(TextureType type) {
         case TextureType::TextureDepthMultisampled2D:
             return wgpu::TextureViewDimension::e2D;
             break;
-            
+
         case TextureType::Texture2DArrayf32:
         case TextureType::Texture2DArrayi32:
         case TextureType::Texture2DArrayu32:
         case TextureType::TextureDepth2DArray:
             return wgpu::TextureViewDimension::e2DArray;
             break;
-            
+
         case TextureType::Texture3Df32:
         case TextureType::Texture3Di32:
         case TextureType::Texture3Du32:
             return wgpu::TextureViewDimension::e3D;
             break;
-            
+
         case TextureType::TextureCubef32:
         case TextureType::TextureCubei32:
         case TextureType::TextureCubeu32:
         case TextureType::TextureDepthCube:
             return wgpu::TextureViewDimension::Cube;
             break;
-            
+
         case TextureType::TextureCubeArrayf32:
         case TextureType::TextureCubeArrayi32:
         case TextureType::TextureCubeArrayu32:
         case TextureType::TextureDepthCubeArray:
             return wgpu::TextureViewDimension::CubeArray;
             break;
-            
+
         default:
             break;
     }
@@ -344,7 +336,7 @@ wgpu::TextureSampleType sampleType(TextureType type) {
         case TextureType::TextureMultisampled2Df32:
             return wgpu::TextureSampleType::Float;
             break;
-            
+
         case TextureType::Texture1Di32:
         case TextureType::Texture2Di32:
         case TextureType::Texture2DArrayi32:
@@ -354,7 +346,7 @@ wgpu::TextureSampleType sampleType(TextureType type) {
         case TextureType::TextureMultisampled2Di32:
             return wgpu::TextureSampleType::Sint;
             break;
-            
+
         case TextureType::Texture1Du32:
         case TextureType::Texture2Du32:
         case TextureType::Texture2DArrayu32:
@@ -364,7 +356,7 @@ wgpu::TextureSampleType sampleType(TextureType type) {
         case TextureType::TextureMultisampled2Du32:
             return wgpu::TextureSampleType::Uint;
             break;
-            
+
         case TextureType::TextureDepth2D:
         case TextureType::TextureDepth2DArray:
         case TextureType::TextureDepthCube:
@@ -372,23 +364,23 @@ wgpu::TextureSampleType sampleType(TextureType type) {
         case TextureType::TextureDepthMultisampled2D:
             return wgpu::TextureSampleType::Depth;
             break;
-            
+
         default:
             break;
     }
 }
 
-//MARK: - SamplerType
+// MARK: - SamplerType
 std::string toString(SamplerType type) {
     switch (type) {
         case SamplerType::Sampler:
             return "sampler";
             break;
-            
+
         case SamplerType::SamplerComparison:
             return "sampler_comparison";
             break;
-            
+
         default:
             break;
     }
@@ -399,17 +391,17 @@ wgpu::SamplerBindingType bindingType(SamplerType type) {
         case SamplerType::Sampler:
             return wgpu::SamplerBindingType::Filtering;
             break;
-            
+
         case SamplerType::SamplerComparison:
             return wgpu::SamplerBindingType::Comparison;
             break;
-            
+
         default:
             break;
     }
 }
 
-//MARK: - StorageTextureType
+// MARK: - StorageTextureType
 std::string toString(StorageTextureType type) {
     switch (type) {
         case StorageTextureType::TextureStorage1D:
@@ -424,7 +416,7 @@ std::string toString(StorageTextureType type) {
         case StorageTextureType::TextureStorage3D:
             return "texture_storage_3d";
             break;
-            
+
         default:
             break;
     }
@@ -444,13 +436,13 @@ wgpu::TextureViewDimension viewDimension(StorageTextureType type) {
         case StorageTextureType::TextureStorage3D:
             return wgpu::TextureViewDimension::e3D;
             break;
-            
+
         default:
             break;
     }
 }
 
-//MARK: - TexelFormat
+// MARK: - TexelFormat
 std::string toString(wgpu::TextureFormat type) {
     switch (type) {
         case wgpu::TextureFormat::RGBA8Unorm:
@@ -501,7 +493,7 @@ std::string toString(wgpu::TextureFormat type) {
         case wgpu::TextureFormat::RGBA32Float:
             return "rgba32float";
             break;
-            
+
         default:
             assert(false && "undefined");
             throw std::exception();
@@ -509,7 +501,7 @@ std::string toString(wgpu::TextureFormat type) {
     }
 }
 
-//MARK: - BuiltInType
+// MARK: - BuiltInType
 std::string toString(BuiltInType type) {
     switch (type) {
         case BuiltInType::VertexIndex:
@@ -596,4 +588,4 @@ std::string toType(BuiltInType type) {
     }
 }
 
-}
+}  // namespace vox

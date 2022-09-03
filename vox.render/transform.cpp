@@ -427,11 +427,11 @@ void Transform::_rotateXYZ(float x, float y, float z, bool relativeToLocal) {
 }
 
 //MARK: - Reflection
-void Transform::onSerialize(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node) {
+void Transform::onSerialize(nlohmann::json &data) {
     
 }
 
-void Transform::onDeserialize(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node) {
+void Transform::onDeserialize(nlohmann::json &data) {
     
 }
 

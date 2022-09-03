@@ -7,13 +7,10 @@
 #include "primitive_mesh.h"
 
 namespace vox {
-ModelMeshPtr PrimitiveMesh::createSphere(wgpu::Device &device,
-                                         float radius,
-                                         size_t segments,
-                                         bool noLongerAccessible) {
+ModelMeshPtr PrimitiveMesh::createSphere(wgpu::Device &device, float radius, size_t segments, bool noLongerAccessible) {
     auto mesh = std::make_shared<ModelMesh>(device);
     segments = std::max(size_t(2), segments);
-    
+
     const auto count = segments + 1;
     const auto vertexCount = count * count;
     const auto rectangleCount = segments * segments;
@@ -22,11 +19,11 @@ ModelMeshPtr PrimitiveMesh::createSphere(wgpu::Device &device,
     const auto alphaRange = thetaRange * 2;
     const auto countReciprocal = 1.0 / count;
     const auto segmentsReciprocal = 1.0 / segments;
-    
+
     auto positions = std::vector<Vector3F>(vertexCount);
     auto normals = std::vector<Vector3F>(vertexCount);
     auto uvs = std::vector<Vector2F>(vertexCount);
-    
+
     for (size_t i = 0; i < vertexCount; ++i) {
         const auto x = i % count;
         const auto y = size_t(float(i) * countReciprocal) | 0;
@@ -35,11 +32,11 @@ ModelMeshPtr PrimitiveMesh::createSphere(wgpu::Device &device,
         const auto alphaDelta = u * alphaRange;
         const auto thetaDelta = v * thetaRange;
         const auto sinTheta = std::sin(thetaDelta);
-        
+
         const auto posX = -radius * std::cos(alphaDelta) * sinTheta;
         const auto posY = radius * std::cos(thetaDelta);
         const auto posZ = radius * std::sin(alphaDelta) * sinTheta;
-        
+
         // Position
         positions[i] = Vector3F(posX, posY, posZ);
         // Normal
@@ -47,17 +44,17 @@ ModelMeshPtr PrimitiveMesh::createSphere(wgpu::Device &device,
         // Texcoord
         uvs[i] = Vector2F(u, v);
     }
-    
+
     size_t offset = 0;
     for (size_t i = 0; i < rectangleCount; ++i) {
         const auto x = i % segments;
         const auto y = size_t(float(i) * segmentsReciprocal) | 0;
-        
+
         const auto a = y * count + x;
         const auto b = a + 1;
         const auto c = a + count;
         const auto d = c + 1;
-        
+
         indices[offset++] = static_cast<uint32_t>(b);
         indices[offset++] = static_cast<uint32_t>(a);
         indices[offset++] = static_cast<uint32_t>(d);
@@ -65,30 +62,27 @@ ModelMeshPtr PrimitiveMesh::createSphere(wgpu::Device &device,
         indices[offset++] = static_cast<uint32_t>(c);
         indices[offset++] = static_cast<uint32_t>(d);
     }
-    
+
     auto &bounds = mesh->bounds;
-    bounds.lowerCorner = Point3F(-radius, -radius, -radius);
-    bounds.upperCorner = Point3F(radius, radius, radius);
-    
+    bounds.lower_corner = Point3F(-radius, -radius, -radius);
+    bounds.upper_corner = Point3F(radius, radius, radius);
+
     PrimitiveMesh::_initialize(mesh, positions, normals, uvs, indices, noLongerAccessible);
     return mesh;
 }
 
-ModelMeshPtr PrimitiveMesh::createCuboid(wgpu::Device &device,
-                                         float width,
-                                         float height,
-                                         float depth,
-                                         bool noLongerAccessible) {
+ModelMeshPtr PrimitiveMesh::createCuboid(
+        wgpu::Device &device, float width, float height, float depth, bool noLongerAccessible) {
     auto mesh = std::make_shared<ModelMesh>(device);
-    
+
     const auto halfWidth = width / 2;
     const auto halfHeight = height / 2;
     const auto halfDepth = depth / 2;
-    
+
     auto positions = std::vector<Vector3F>(24);
     auto normals = std::vector<Vector3F>(24);
     auto uvs = std::vector<Vector2F>(24);
-    
+
     // Up
     positions[0] = Vector3F(-halfWidth, halfHeight, -halfDepth);
     positions[1] = Vector3F(halfWidth, halfHeight, -halfDepth);
@@ -167,9 +161,9 @@ ModelMeshPtr PrimitiveMesh::createCuboid(wgpu::Device &device,
     uvs[21] = Vector2F(0, 0);
     uvs[22] = Vector2F(0, 1);
     uvs[23] = Vector2F(1, 1);
-    
+
     auto indices = std::vector<uint32_t>(36);
-    
+
     // prettier-ignore
     // Up
     indices[0] = 0;
@@ -213,14 +207,13 @@ ModelMeshPtr PrimitiveMesh::createCuboid(wgpu::Device &device,
     indices[33] = 22;
     indices[34] = 20;
     indices[35] = 21;
-    
+
     auto &bounds = mesh->bounds;
-    bounds.lowerCorner = Point3F(-halfWidth, -halfHeight, -halfDepth);
-    bounds.upperCorner = Point3F(halfWidth, halfHeight, halfDepth);
-    
+    bounds.lower_corner = Point3F(-halfWidth, -halfHeight, -halfDepth);
+    bounds.upper_corner = Point3F(halfWidth, halfHeight, halfDepth);
+
     PrimitiveMesh::_initialize(mesh, positions, normals, uvs, indices, noLongerAccessible);
     return mesh;
-    
 }
 
 ModelMeshPtr PrimitiveMesh::createPlane(wgpu::Device &device,
@@ -232,7 +225,7 @@ ModelMeshPtr PrimitiveMesh::createPlane(wgpu::Device &device,
     auto mesh = std::make_shared<ModelMesh>(device);
     horizontalSegments = std::max(size_t(1), horizontalSegments);
     verticalSegments = std::max(size_t(1), verticalSegments);
-    
+
     const auto horizontalCount = horizontalSegments + 1;
     const auto verticalCount = verticalSegments + 1;
     const auto halfWidth = width / 2;
@@ -245,15 +238,15 @@ ModelMeshPtr PrimitiveMesh::createPlane(wgpu::Device &device,
     const auto horizontalCountReciprocal = 1.0 / horizontalCount;
     const auto horizontalSegmentsReciprocal = 1.0 / horizontalSegments;
     const auto verticalSegmentsReciprocal = 1.0 / verticalSegments;
-    
+
     auto positions = std::vector<Vector3F>(vertexCount);
     auto normals = std::vector<Vector3F>(vertexCount);
     auto uvs = std::vector<Vector2F>(vertexCount);
-    
+
     for (size_t i = 0; i < vertexCount; ++i) {
         const auto x = i % horizontalCount;
         const auto z = size_t(float(i) * horizontalCountReciprocal) | 0;
-        
+
         // Position
         positions[i] = Vector3F(x * gridWidth - halfWidth, 0, z * gridHeight - halfHeight);
         // Normal
@@ -261,17 +254,17 @@ ModelMeshPtr PrimitiveMesh::createPlane(wgpu::Device &device,
         // Texcoord
         uvs[i] = Vector2F(x * horizontalSegmentsReciprocal, z * verticalSegmentsReciprocal);
     }
-    
+
     size_t offset = 0;
     for (size_t i = 0; i < rectangleCount; ++i) {
         const auto x = i % horizontalSegments;
         const auto y = size_t(float(i) * horizontalSegmentsReciprocal) | 0;
-        
+
         const auto a = y * horizontalCount + x;
         const auto b = a + 1;
         const auto c = a + horizontalCount;
         const auto d = c + 1;
-        
+
         indices[offset++] = static_cast<uint32_t>(a);
         indices[offset++] = static_cast<uint32_t>(c);
         indices[offset++] = static_cast<uint32_t>(b);
@@ -279,11 +272,11 @@ ModelMeshPtr PrimitiveMesh::createPlane(wgpu::Device &device,
         indices[offset++] = static_cast<uint32_t>(d);
         indices[offset++] = static_cast<uint32_t>(b);
     }
-    
+
     auto &bounds = mesh->bounds;
-    bounds.lowerCorner = Point3F(-halfWidth, 0, -halfHeight);
-    bounds.upperCorner = Point3F(halfWidth, 0, halfHeight);
-    
+    bounds.lower_corner = Point3F(-halfWidth, 0, -halfHeight);
+    bounds.upper_corner = Point3F(halfWidth, 0, halfHeight);
+
     PrimitiveMesh::_initialize(mesh, positions, normals, uvs, indices, noLongerAccessible);
     return mesh;
 }
@@ -296,7 +289,7 @@ ModelMeshPtr PrimitiveMesh::createCylinder(wgpu::Device &device,
                                            size_t heightSegments,
                                            bool noLongerAccessible) {
     auto mesh = std::make_shared<ModelMesh>(device);
-    
+
     const auto radialCount = radialSegments + 1;
     const auto verticalCount = heightSegments + 1;
     const auto halfHeight = height * 0.5;
@@ -309,20 +302,20 @@ ModelMeshPtr PrimitiveMesh::createCylinder(wgpu::Device &device,
     const float radialCountReciprocal = 1.0 / radialCount;
     const float radialSegmentsReciprocal = 1.0 / radialSegments;
     const float heightSegmentsReciprocal = 1.0 / heightSegments;
-    
+
     auto positions = std::vector<Vector3F>(totalVertexCount);
     auto normals = std::vector<Vector3F>(totalVertexCount);
     auto uvs = std::vector<Vector2F>(totalVertexCount);
-    
+
     size_t indicesOffset = 0;
-    
+
     // Create torso
     const auto thetaStart = M_PI;
     const auto thetaRange = M_PI * 2;
     const auto radiusDiff = radiusBottom - radiusTop;
     const auto slope = radiusDiff / height;
     const float radiusSlope = radiusDiff / heightSegments;
-    
+
     for (size_t i = 0; i < torsoVertexCount; ++i) {
         const auto x = i % radialCount;
         const auto y = size_t(float(i) * radialCountReciprocal) | 0;
@@ -332,11 +325,11 @@ ModelMeshPtr PrimitiveMesh::createCylinder(wgpu::Device &device,
         const auto sinTheta = std::sin(theta);
         const auto cosTheta = std::cos(theta);
         const auto radius = radiusBottom - y * radiusSlope;
-        
+
         const auto posX = radius * sinTheta;
         const auto posY = y * unitHeight - halfHeight;
         const auto posZ = radius * cosTheta;
-        
+
         // Position
         positions[i] = Vector3F(posX, posY, posZ);
         // Normal
@@ -344,16 +337,16 @@ ModelMeshPtr PrimitiveMesh::createCylinder(wgpu::Device &device,
         // Texcoord
         uvs[i] = Vector2F(u, 1 - v);
     }
-    
+
     for (size_t i = 0; i < torsoRectangleCount; ++i) {
         const auto x = i % radialSegments;
         const auto y = size_t(float(i) * radialSegmentsReciprocal) | 0;
-        
+
         const auto a = y * radialCount + x;
         const auto b = a + 1;
         const auto c = a + radialCount;
         const auto d = c + 1;
-        
+
         indices[indicesOffset++] = static_cast<uint32_t>(b);
         indices[indicesOffset++] = static_cast<uint32_t>(c);
         indices[indicesOffset++] = static_cast<uint32_t>(a);
@@ -361,24 +354,24 @@ ModelMeshPtr PrimitiveMesh::createCylinder(wgpu::Device &device,
         indices[indicesOffset++] = static_cast<uint32_t>(d);
         indices[indicesOffset++] = static_cast<uint32_t>(c);
     }
-    
+
     // Bottom position
     positions[torsoVertexCount] = Vector3F(0, -halfHeight, 0);
     // Bottom normal
     normals[torsoVertexCount] = Vector3F(0, -1, 0);
     // Bottom texcoord
     uvs[torsoVertexCount] = Vector2F(0.5, 0.5);
-    
+
     // Top position
     positions[torsoVertexCount + 1] = Vector3F(0, halfHeight, 0);
     // Top normal
     normals[torsoVertexCount + 1] = Vector3F(0, 1, 0);
     // Top texcoord
     uvs[torsoVertexCount + 1] = Vector2F(0.5, 0.5);
-    
+
     // Add cap vertices
     auto offset = torsoVertexCount + 2;
-    
+
     const auto diameterTopReciprocal = 1.0 / (radiusTop * 2);
     const auto diameterBottomReciprocal = 1.0 / (radiusBottom * 2);
     const auto positionStride = radialCount * heightSegments;
@@ -386,18 +379,18 @@ ModelMeshPtr PrimitiveMesh::createCylinder(wgpu::Device &device,
         const auto curPosBottom = positions[i];
         auto curPosX = curPosBottom.x;
         auto curPosZ = curPosBottom.z;
-        
+
         // Bottom position
         positions[offset] = Vector3F(curPosX, -halfHeight, curPosZ);
         // Bottom normal
         normals[offset] = Vector3F(0, -1, 0);
         // Bottom texcoord
         uvs[offset++] = Vector2F(curPosX * diameterBottomReciprocal + 0.5, 0.5 - curPosZ * diameterBottomReciprocal);
-        
+
         const auto &curPosTop = positions[i + positionStride];
         curPosX = curPosTop.x;
         curPosZ = curPosTop.z;
-        
+
         // Top position
         positions[offset] = Vector3F(curPosX, halfHeight, curPosZ);
         // Top normal
@@ -405,7 +398,7 @@ ModelMeshPtr PrimitiveMesh::createCylinder(wgpu::Device &device,
         // Top texcoord
         uvs[offset++] = Vector2F(curPosX * diameterTopReciprocal + 0.5, curPosZ * diameterTopReciprocal + 0.5);
     }
-    
+
     // Add cap indices
     const auto topCapIndex = torsoVertexCount + 1;
     const auto bottomIndiceIndex = torsoVertexCount + 2;
@@ -413,23 +406,23 @@ ModelMeshPtr PrimitiveMesh::createCylinder(wgpu::Device &device,
     for (size_t i = 0; i < radialSegments; ++i) {
         const auto firstStride = i * 2;
         const auto secondStride = i == radialSegments - 1 ? 0 : firstStride + 2;
-        
+
         // Bottom
         indices[indicesOffset++] = static_cast<uint32_t>(torsoVertexCount);
         indices[indicesOffset++] = static_cast<uint32_t>(bottomIndiceIndex + secondStride);
         indices[indicesOffset++] = static_cast<uint32_t>(bottomIndiceIndex + firstStride);
-        
+
         // Top
         indices[indicesOffset++] = static_cast<uint32_t>(topCapIndex);
         indices[indicesOffset++] = static_cast<uint32_t>(topIndiceIndex + firstStride);
         indices[indicesOffset++] = static_cast<uint32_t>(topIndiceIndex + secondStride);
     }
-    
+
     auto &bounds = mesh->bounds;
     const auto radiusMax = std::max(radiusTop, radiusBottom);
-    bounds.lowerCorner = Point3F(-radiusMax, -halfHeight, -radiusMax);
-    bounds.upperCorner = Point3F(radiusMax, halfHeight, radiusMax);
-    
+    bounds.lower_corner = Point3F(-radiusMax, -halfHeight, -radiusMax);
+    bounds.upper_corner = Point3F(radiusMax, halfHeight, radiusMax);
+
     PrimitiveMesh::_initialize(mesh, positions, normals, uvs, indices, noLongerAccessible);
     return mesh;
 }
@@ -442,17 +435,17 @@ ModelMeshPtr PrimitiveMesh::createTorus(wgpu::Device &device,
                                         float arc,
                                         bool noLongerAccessible) {
     auto mesh = std::make_shared<ModelMesh>(device);
-    
+
     const auto vertexCount = (radialSegments + 1) * (tubularSegments + 1);
     const auto rectangleCount = radialSegments * tubularSegments;
     auto indices = std::vector<uint32_t>(rectangleCount * 6);
-    
+
     auto positions = std::vector<Vector3F>(vertexCount);
     auto normals = std::vector<Vector3F>(vertexCount);
     auto uvs = std::vector<Vector2F>(vertexCount);
-    
+
     arc = (arc / 180) * M_PI;
-    
+
     size_t offset = 0;
     for (size_t i = 0; i <= radialSegments; i++) {
         for (size_t j = 0; j <= tubularSegments; j++) {
@@ -462,20 +455,19 @@ ModelMeshPtr PrimitiveMesh::createTorus(wgpu::Device &device,
             const auto sinV = std::sin(v);
             const auto cosU = std::cos(u);
             const auto sinU = std::sin(u);
-            
-            const auto position = Vector3F((radius + tubeRadius * cosV) * cosU,
-                                           (radius + tubeRadius * cosV) * sinU,
+
+            const auto position = Vector3F((radius + tubeRadius * cosV) * cosU, (radius + tubeRadius * cosV) * sinU,
                                            tubeRadius * sinV);
             positions[offset] = position;
-            
+
             const auto centerX = radius * cosU;
             const auto centerY = radius * sinU;
             normals[offset] = Vector3F(position.x - centerX, position.y - centerY, position.z).normalized();
-            
+
             uvs[offset++] = Vector2F(j / tubularSegments, i / radialSegments);
         }
     }
-    
+
     offset = 0;
     for (size_t i = 1; i <= radialSegments; i++) {
         for (size_t j = 1; j <= tubularSegments; j++) {
@@ -483,22 +475,22 @@ ModelMeshPtr PrimitiveMesh::createTorus(wgpu::Device &device,
             const auto b = (tubularSegments + 1) * (i - 1) + j - 1;
             const auto c = (tubularSegments + 1) * (i - 1) + j;
             const auto d = (tubularSegments + 1) * i + j;
-            
+
             indices[offset++] = static_cast<uint32_t>(a);
             indices[offset++] = static_cast<uint32_t>(b);
             indices[offset++] = static_cast<uint32_t>(d);
-            
+
             indices[offset++] = static_cast<uint32_t>(b);
             indices[offset++] = static_cast<uint32_t>(c);
             indices[offset++] = static_cast<uint32_t>(d);
         }
     }
-    
+
     auto &bounds = mesh->bounds;
     const auto outerRadius = radius + tubeRadius;
-    bounds.lowerCorner = Point3F(-outerRadius, -outerRadius, -tubeRadius);
-    bounds.upperCorner = Point3F(outerRadius, outerRadius, tubeRadius);
-    
+    bounds.lower_corner = Point3F(-outerRadius, -outerRadius, -tubeRadius);
+    bounds.upper_corner = Point3F(outerRadius, outerRadius, tubeRadius);
+
     PrimitiveMesh::_initialize(mesh, positions, normals, uvs, indices, noLongerAccessible);
     return mesh;
 }
@@ -510,7 +502,7 @@ ModelMeshPtr PrimitiveMesh::createCone(wgpu::Device &device,
                                        size_t heightSegments,
                                        bool noLongerAccessible) {
     auto mesh = std::make_shared<ModelMesh>(device);
-    
+
     const auto radialCount = radialSegments + 1;
     const auto verticalCount = heightSegments + 1;
     const auto halfHeight = height * 0.5;
@@ -522,18 +514,18 @@ ModelMeshPtr PrimitiveMesh::createCone(wgpu::Device &device,
     const auto radialCountReciprocal = 1.0 / radialCount;
     const auto radialSegmentsReciprocal = 1.0 / radialSegments;
     const auto heightSegmentsReciprocal = 1.0 / heightSegments;
-    
+
     auto positions = std::vector<Vector3F>(totalVertexCount);
     auto normals = std::vector<Vector3F>(totalVertexCount);
     auto uvs = std::vector<Vector2F>(totalVertexCount);
-    
+
     size_t indicesOffset = 0;
-    
+
     // Create torso
     const auto thetaStart = M_PI;
     const auto thetaRange = M_PI * 2;
     const auto slope = radius / height;
-    
+
     for (size_t i = 0; i < torsoVertexCount; ++i) {
         const auto x = i % radialCount;
         const auto y = size_t(float(i) * radialCountReciprocal) | 0;
@@ -543,11 +535,11 @@ ModelMeshPtr PrimitiveMesh::createCone(wgpu::Device &device,
         const auto sinTheta = std::sin(theta);
         const auto cosTheta = std::cos(theta);
         const auto curRadius = radius - y * radius;
-        
+
         const auto posX = curRadius * sinTheta;
         const auto posY = y * unitHeight - halfHeight;
         const auto posZ = curRadius * cosTheta;
-        
+
         // Position
         positions[i] = Vector3F(posX, posY, posZ);
         // Normal
@@ -555,16 +547,16 @@ ModelMeshPtr PrimitiveMesh::createCone(wgpu::Device &device,
         // Texcoord
         uvs[i] = Vector2F(u, 1 - v);
     }
-    
+
     for (size_t i = 0; i < torsoRectangleCount; ++i) {
         const auto x = i % radialSegments;
         const auto y = size_t(float(i) * radialSegmentsReciprocal) | 0;
-        
+
         const auto a = y * radialCount + x;
         const auto b = a + 1;
         const auto c = a + radialCount;
         const auto d = c + 1;
-        
+
         indices[indicesOffset++] = static_cast<uint32_t>(b);
         indices[indicesOffset++] = static_cast<uint32_t>(c);
         indices[indicesOffset++] = static_cast<uint32_t>(a);
@@ -572,14 +564,14 @@ ModelMeshPtr PrimitiveMesh::createCone(wgpu::Device &device,
         indices[indicesOffset++] = static_cast<uint32_t>(d);
         indices[indicesOffset++] = static_cast<uint32_t>(c);
     }
-    
+
     // Bottom position
     positions[torsoVertexCount] = Vector3F(0, -halfHeight, 0);
     // Bottom normal
     normals[torsoVertexCount] = Vector3F(0, -1, 0);
     // Bottom texcoord
     uvs[torsoVertexCount] = Vector2F(0.5, 0.5);
-    
+
     // Add bottom cap vertices
     size_t offset = torsoVertexCount + 1;
     const auto diameterBottomReciprocal = 1.0 / (radius * 2);
@@ -587,7 +579,7 @@ ModelMeshPtr PrimitiveMesh::createCone(wgpu::Device &device,
         const auto &curPos = positions[i];
         const auto curPosX = curPos.x;
         const auto curPosZ = curPos.z;
-        
+
         // Bottom position
         positions[offset] = Vector3F(curPosX, -halfHeight, curPosZ);
         // Bottom normal
@@ -595,22 +587,22 @@ ModelMeshPtr PrimitiveMesh::createCone(wgpu::Device &device,
         // Bottom texcoord
         uvs[offset++] = Vector2F(curPosX * diameterBottomReciprocal + 0.5, 0.5 - curPosZ * diameterBottomReciprocal);
     }
-    
+
     const auto bottomIndiceIndex = torsoVertexCount + 1;
     for (size_t i = 0; i < radialSegments; ++i) {
         const auto firstStride = i;
         const auto secondStride = i == radialSegments - 1 ? 0 : firstStride + 1;
-        
+
         // Bottom
         indices[indicesOffset++] = static_cast<uint32_t>(torsoVertexCount);
         indices[indicesOffset++] = static_cast<uint32_t>(bottomIndiceIndex + secondStride);
         indices[indicesOffset++] = static_cast<uint32_t>(bottomIndiceIndex + firstStride);
     }
-    
+
     auto &bounds = mesh->bounds;
-    bounds.lowerCorner = Point3F(-radius, -halfHeight, -radius);
-    bounds.upperCorner = Point3F(radius, halfHeight, radius);
-    
+    bounds.lower_corner = Point3F(-radius, -halfHeight, -radius);
+    bounds.upper_corner = Point3F(radius, halfHeight, radius);
+
     PrimitiveMesh::_initialize(mesh, positions, normals, uvs, indices, noLongerAccessible);
     return mesh;
 }
@@ -622,35 +614,35 @@ ModelMeshPtr PrimitiveMesh::createCapsule(wgpu::Device &device,
                                           size_t heightSegments,
                                           bool noLongerAccessible) {
     auto mesh = std::make_shared<ModelMesh>(device);
-    
+
     radialSegments = std::max(size_t(2), radialSegments);
-    
+
     const auto radialCount = radialSegments + 1;
     const auto verticalCount = heightSegments + 1;
     const auto halfHeight = height * 0.5;
     const auto unitHeight = height / heightSegments;
     const auto torsoVertexCount = radialCount * verticalCount;
     const auto torsoRectangleCount = radialSegments * heightSegments;
-    
+
     const auto capVertexCount = radialCount * radialCount;
     const auto capRectangleCount = radialSegments * radialSegments;
-    
+
     const auto totalVertexCount = torsoVertexCount + 2 * capVertexCount;
     auto indices = std::vector<uint32_t>((torsoRectangleCount + 2 * capRectangleCount) * 6);
-    
+
     const auto radialCountReciprocal = 1.0 / radialCount;
     const auto radialSegmentsReciprocal = 1.0 / radialSegments;
     const auto heightSegmentsReciprocal = 1.0 / heightSegments;
-    
+
     const auto halfPI = M_PI / 2;
     const auto doublePI = M_PI * 2;
-    
+
     auto positions = std::vector<Vector3F>(totalVertexCount);
     auto normals = std::vector<Vector3F>(totalVertexCount);
     auto uvs = std::vector<Vector2F>(totalVertexCount);
-    
+
     size_t indicesOffset = 0;
-    
+
     // create torso
     for (size_t i = 0; i < torsoVertexCount; ++i) {
         const auto x = i % radialCount;
@@ -660,21 +652,21 @@ ModelMeshPtr PrimitiveMesh::createCapsule(wgpu::Device &device,
         const auto theta = -halfPI + u * doublePI;
         const auto sinTheta = std::sin(theta);
         const auto cosTheta = std::cos(theta);
-        
+
         positions[i] = Vector3F(radius * sinTheta, y * unitHeight - halfHeight, radius * cosTheta);
         normals[i] = Vector3F(sinTheta, 0, cosTheta);
         uvs[i] = Vector2F(u, 1 - v);
     }
-    
+
     for (size_t i = 0; i < torsoRectangleCount; ++i) {
         const auto x = i % radialSegments;
         const auto y = size_t(float(i) * radialSegmentsReciprocal) | 0;
-        
+
         const auto a = y * radialCount + x;
         const auto b = a + 1;
         const auto c = a + radialCount;
         const auto d = c + 1;
-        
+
         indices[indicesOffset++] = static_cast<uint32_t>(b);
         indices[indicesOffset++] = static_cast<uint32_t>(c);
         indices[indicesOffset++] = static_cast<uint32_t>(a);
@@ -682,37 +674,17 @@ ModelMeshPtr PrimitiveMesh::createCapsule(wgpu::Device &device,
         indices[indicesOffset++] = static_cast<uint32_t>(d);
         indices[indicesOffset++] = static_cast<uint32_t>(c);
     }
-    
-    PrimitiveMesh::_createCapsuleCap(radius,
-                                     height,
-                                     radialSegments,
-                                     doublePI,
-                                     torsoVertexCount,
-                                     1,
-                                     positions,
-                                     normals,
-                                     uvs,
-                                     indices,
-                                     indicesOffset
-                                     );
-    
-    PrimitiveMesh::_createCapsuleCap(radius,
-                                     height,
-                                     radialSegments,
-                                     -doublePI,
-                                     torsoVertexCount + capVertexCount,
-                                     -1,
-                                     positions,
-                                     normals,
-                                     uvs,
-                                     indices,
-                                     indicesOffset + 6 * capRectangleCount
-                                     );
-    
+
+    PrimitiveMesh::_createCapsuleCap(radius, height, radialSegments, doublePI, torsoVertexCount, 1, positions, normals,
+                                     uvs, indices, indicesOffset);
+
+    PrimitiveMesh::_createCapsuleCap(radius, height, radialSegments, -doublePI, torsoVertexCount + capVertexCount, -1,
+                                     positions, normals, uvs, indices, indicesOffset + 6 * capRectangleCount);
+
     auto &bounds = mesh->bounds;
-    bounds.lowerCorner = Point3F(-radius, -radius - halfHeight, -radius);
-    bounds.upperCorner = Point3F(radius, radius + halfHeight, radius);
-    
+    bounds.lower_corner = Point3F(-radius, -radius - halfHeight, -radius);
+    bounds.upper_corner = Point3F(radius, radius + halfHeight, radius);
+
     PrimitiveMesh::_initialize(mesh, positions, normals, uvs, indices, noLongerAccessible);
     return mesh;
 }
@@ -734,7 +706,7 @@ void PrimitiveMesh::_createCapsuleCap(float radius,
     const auto capRectangleCount = radialSegments * radialSegments;
     const auto radialCountReciprocal = 1.0 / radialCount;
     const auto radialSegmentsReciprocal = 1.0 / radialSegments;
-    
+
     for (size_t i = 0; i < capVertexCount; ++i) {
         const auto x = i % radialCount;
         const auto y = size_t(float(i) * radialCountReciprocal) | 0;
@@ -743,26 +715,26 @@ void PrimitiveMesh::_createCapsuleCap(float radius,
         const auto alphaDelta = u * capAlphaRange;
         const auto thetaDelta = (v * M_PI) / 2;
         const auto sinTheta = std::sin(thetaDelta);
-        
+
         const auto posX = -radius * std::cos(alphaDelta) * sinTheta;
         const auto posY = (radius * std::cos(thetaDelta) + halfHeight) * posIndex;
         const auto posZ = radius * std::sin(alphaDelta) * sinTheta;
-        
+
         const auto index = i + offset;
         positions[index] = Vector3F(posX, posY, posZ);
         normals[index] = Vector3F(posX, posY, posZ);
         uvs[index] = Vector2F(u, v);
     }
-    
+
     for (size_t i = 0; i < capRectangleCount; ++i) {
         const auto x = i % radialSegments;
         const auto y = size_t(float(i) * radialSegmentsReciprocal) | 0;
-        
+
         const auto a = y * radialCount + x + offset;
         const auto b = a + 1;
         const auto c = a + radialCount;
         const auto d = c + 1;
-        
+
         indices[indicesOffset++] = static_cast<uint32_t>(b);
         indices[indicesOffset++] = static_cast<uint32_t>(a);
         indices[indicesOffset++] = static_cast<uint32_t>(d);
@@ -782,9 +754,9 @@ void PrimitiveMesh::_initialize(const ModelMeshPtr &mesh,
     mesh->setNormals(normals);
     mesh->setUVs(uvs);
     mesh->setIndices(indices);
-    
+
     mesh->uploadData(noLongerAccessible);
     mesh->addSubMesh(0, static_cast<uint32_t>(indices.size()));
 }
 
-}
+}  // namespace vox

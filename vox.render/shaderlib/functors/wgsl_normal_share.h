@@ -13,14 +13,13 @@ namespace vox {
 class WGSLNormalShare {
 public:
     WGSLNormalShare(const std::string& outputStructName);
-    
-    void operator()(WGSLEncoder& encoder,
-                    const ShaderMacroCollection& macros, size_t counterIndex);
-    
+
+    void operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros, size_t counterIndex);
+
 private:
     std::string _outputStructName{};
 };
 
-}
+}  // namespace vox
 
 #endif /* wgsl_normal_share_hpp */

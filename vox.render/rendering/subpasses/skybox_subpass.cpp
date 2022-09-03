@@ -5,20 +5,20 @@
 //  property of any third parties.
 
 #include "skybox_subpass.h"
-#include "rendering/render_pass.h"
-#include "mesh/primitive_mesh.h"
+
 #include "camera.h"
+#include "mesh/primitive_mesh.h"
+#include "rendering/render_pass.h"
 #include "shaderlib/wgsl_skybox.h"
 
 namespace vox {
 SkyboxSubpass::SkyboxSubpass(RenderContext* renderContext,
                              wgpu::TextureFormat depthStencilTextureFormat,
                              Scene* scene,
-                             Camera* camera):
-Subpass(renderContext, scene, camera),
-_depthStencilTextureFormat(depthStencilTextureFormat),
-_vpMatrix(renderContext->device(), sizeof(Matrix4x4F),
-          wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst){
+                             Camera* camera)
+    : Subpass(renderContext, scene, camera),
+      _depthStencilTextureFormat(depthStencilTextureFormat),
+      _vpMatrix(renderContext->device(), sizeof(Matrix4x4F), wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst) {
     createCuboid();
     _vertexSource = std::make_unique<WGSLSkyboxVertex>();
     _fragmentSource = std::make_unique<WGSLSkyboxFragment>();
@@ -34,15 +34,11 @@ void SkyboxSubpass::createCuboid() {
     _type = SkyBoxType::Cuboid;
 }
 
-SampledTextureCubePtr SkyboxSubpass::textureCubeMap() {
-    return _cubeMap;
-}
+SampledTextureCubePtr SkyboxSubpass::textureCubeMap() { return _cubeMap; }
 
-void SkyboxSubpass::setTextureCubeMap(SampledTextureCubePtr v) {
-    _cubeMap = v;
-}
+void SkyboxSubpass::setTextureCubeMap(SampledTextureCubePtr v) { _cubeMap = v; }
 
-//MARK: - Render
+// MARK: - Render
 void SkyboxSubpass::prepare() {
     _depthStencil.format = _depthStencilTextureFormat;
     _depthStencil.depthWriteEnabled = false;
@@ -115,7 +111,7 @@ void SkyboxSubpass::prepare() {
 
 void SkyboxSubpass::draw(wgpu::RenderPassEncoder& passEncoder) {
     passEncoder.PushDebugGroup("Draw Skybox");
-    
+
     const auto projectionMatrix = _camera->projectionMatrix();
     auto viewMatrix = _camera->viewMatrix();
     if (_type == SkyBoxType::Cuboid) {
@@ -127,15 +123,15 @@ void SkyboxSubpass::draw(wgpu::RenderPassEncoder& passEncoder) {
     auto _matrix = projectionMatrix * viewMatrix;
     std::vector<uint8_t> bytes = to_bytes(_matrix);
     _renderContext->device().GetQueue().WriteBuffer(_vpMatrix.handle(), 0, bytes.data(), sizeof(Matrix4x4F));
-    
+
     _bindGroupEntries[1].textureView = _cubeMap->textureView();
     _bindGroupEntries[2].sampler = _cubeMap->sampler();
     passEncoder.SetBindGroup(0, _pass->resourceCache().requestBindGroup(_bindGroupDescriptor));
     passEncoder.SetPipeline(_renderPipeline);
-    
+
     // Draw Call
     for (uint32_t j = 0; j < _mesh->vertexBufferBindings().size(); j++) {
-        auto vertexBufferBinding =  _mesh->vertexBufferBindings()[j];
+        auto vertexBufferBinding = _mesh->vertexBufferBindings()[j];
         if (vertexBufferBinding) {
             passEncoder.SetVertexBuffer(j, _mesh->vertexBufferBindings()[j]->handle());
         }
@@ -145,8 +141,8 @@ void SkyboxSubpass::draw(wgpu::RenderPassEncoder& passEncoder) {
         passEncoder.SetIndexBuffer(_mesh->indexBufferBinding()->buffer(), _mesh->indexBufferBinding()->format());
     }
     passEncoder.DrawIndexed(_mesh->subMesh()->count(), 1, _mesh->subMesh()->start(), 0, 0);
-    
+
     passEncoder.PopDebugGroup();
 }
 
-}
+}  // namespace vox

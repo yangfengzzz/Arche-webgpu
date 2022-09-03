@@ -7,9 +7,7 @@
 #include "wgsl_skybox.h"
 
 namespace vox {
-WGSLSkyboxVertex::WGSLSkyboxVertex():
-_commonVert("VertexIn") {
-}
+WGSLSkyboxVertex::WGSLSkyboxVertex() : _commonVert("VertexIn") {}
 
 void WGSLSkyboxVertex::_createShaderSource(size_t hash, const ShaderMacroCollection& macros) {
     _source.clear();
@@ -18,11 +16,11 @@ void WGSLSkyboxVertex::_createShaderSource(size_t hash, const ShaderMacroCollect
         auto encoder = createSourceEncoder(wgpu::ShaderStage::Vertex);
         _commonVert(encoder, macros);
         encoder.addUniformBinding("u_mvpNoscale", "mat4x4<f32>", 10, 0);
-        
+
         encoder.addInoutType("VertexOut", 0, "v_cubeUV", UniformType::Vec3f32);
         encoder.addInoutType("VertexOut", BuiltInType::Position, "position", UniformType::Vec4f32);
 
-        encoder.addEntry({{"in", "VertexIn"}}, {"out", "VertexOut"}, [&](std::string &source){
+        encoder.addEntry({{"in", "VertexIn"}}, {"out", "VertexOut"}, [&](std::string& source) {
             source += "out.v_cubeUV = in.Position.xyz;\n";
             source += "out.position = u_mvpNoscale * vec4<f32>( in.Position, 1.0 );\n";
             source += "out.position.z = out.position.w;\n";
@@ -33,9 +31,7 @@ void WGSLSkyboxVertex::_createShaderSource(size_t hash, const ShaderMacroCollect
     _infoCache[hash] = _bindGroupInfo;
 }
 
-WGSLSkyboxFragment::WGSLSkyboxFragment():
-_common() {
-}
+WGSLSkyboxFragment::WGSLSkyboxFragment() : _common() {}
 
 void WGSLSkyboxFragment::_createShaderSource(size_t hash, const ShaderMacroCollection& macros) {
     _source.clear();
@@ -43,12 +39,12 @@ void WGSLSkyboxFragment::_createShaderSource(size_t hash, const ShaderMacroColle
     {
         auto encoder = createSourceEncoder(wgpu::ShaderStage::Fragment);
         _common(encoder, macros);
-        encoder.addSampledTextureBinding("u_cubeTexture", TextureType::TextureCubef32, 0,
-                                         "u_cubeSampler", SamplerType::Sampler, 1, 0);
+        encoder.addSampledTextureBinding("u_cubeTexture", TextureType::TextureCubef32, 0, "u_cubeSampler",
+                                         SamplerType::Sampler, 1, 0);
         encoder.addInoutType("VertexOut", 0, "v_cubeUV", UniformType::Vec3f32);
         encoder.addInoutType("Output", 0, "finalColor", UniformType::Vec4f32);
 
-        encoder.addEntry({{"in", "VertexOut"}}, {"out", "Output"},  [&](std::string &source){
+        encoder.addEntry({{"in", "VertexOut"}}, {"out", "Output"}, [&](std::string& source) {
             source += "var textureColor = textureSample( u_cubeTexture, u_cubeSampler, in.v_cubeUV );\n";
             source += "out.finalColor = textureColor;\n";
         });
@@ -58,4 +54,4 @@ void WGSLSkyboxFragment::_createShaderSource(size_t hash, const ShaderMacroColle
     _infoCache[hash] = _bindGroupInfo;
 }
 
-}
+}  // namespace vox

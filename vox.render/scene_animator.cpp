@@ -50,11 +50,11 @@ void SceneAnimator::_onDisable() {
 }
 
 //MARK: - Reflection
-void SceneAnimator::onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+void SceneAnimator::onSerialize(nlohmann::json &data) {
     
 }
 
-void SceneAnimator::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+void SceneAnimator::onDeserialize(nlohmann::json &data) {
     
 }
 

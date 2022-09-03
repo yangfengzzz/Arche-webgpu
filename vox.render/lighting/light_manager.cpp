@@ -11,16 +11,16 @@
 #include "lighting/wgsl/wgsl_cluster_compute.h"
 #include "lighting/wgsl/wgsl_cluster_debug.h"
 #include "shaderlib/wgsl_unlit.h"
-#include <glog/logging.h>
+#include "vox.base/logging.h"
 
 namespace vox {
 LightManager *LightManager::getSingletonPtr(void) {
-    return msSingleton;
+    return ms_singleton;
 }
 
 LightManager &LightManager::getSingleton(void) {
-    assert(msSingleton);
-    return (*msSingleton);
+    assert(ms_singleton);
+    return (*ms_singleton);
 }
 
 LightManager::LightManager(Scene* scene) :
@@ -73,7 +73,7 @@ void LightManager::attachPointLight(PointLight *light) {
     if (iter == _pointLights.end()) {
         _pointLights.push_back(light);
     } else {
-        LOG(ERROR) << "Light already attached." << std::endl;;
+        LOGE("Light already attached.")
     }
 }
 
@@ -94,7 +94,7 @@ void LightManager::attachSpotLight(SpotLight *light) {
     if (iter == _spotLights.end()) {
         _spotLights.push_back(light);
     } else {
-        LOG(ERROR) << "Light already attached." << std::endl;;
+        LOGE("Light already attached.")
     }
 }
 
@@ -115,7 +115,7 @@ void LightManager::attachDirectLight(DirectLight *light) {
     if (iter == _directLights.end()) {
         _directLights.push_back(light);
     } else {
-        LOG(ERROR) << "Light already attached." << std::endl;;
+        LOGE("Light already attached.")
     }
 }
 

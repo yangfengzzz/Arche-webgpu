@@ -7,9 +7,7 @@
 #include "mesh.h"
 
 namespace vox {
-uint32_t Mesh::instanceCount() const {
-    return _instanceCount;
-}
+uint32_t Mesh::instanceCount() const { return _instanceCount; }
 
 SubMesh* Mesh::subMesh() {
     if (_subMeshes.size() > 0) {
@@ -27,26 +25,17 @@ const SubMesh* Mesh::subMesh() const {
     }
 }
 
-const std::vector<SubMesh>& Mesh::subMeshes() const {
-    return _subMeshes;
-}
+const std::vector<SubMesh>& Mesh::subMeshes() const { return _subMeshes; }
 
-void Mesh::addSubMesh(SubMesh subMesh) {
-    _subMeshes.push_back(subMesh);
-}
+void Mesh::addSubMesh(SubMesh subMesh) { _subMeshes.push_back(subMesh); }
 
-void Mesh::addSubMesh(uint32_t start, uint32_t count,
-                      wgpu::PrimitiveTopology topology) {
+void Mesh::addSubMesh(uint32_t start, uint32_t count, wgpu::PrimitiveTopology topology) {
     _subMeshes.push_back(SubMesh(start, count, topology));
 }
 
-void Mesh::clearSubMesh() {
-    _subMeshes.clear();
-}
+void Mesh::clearSubMesh() { _subMeshes.clear(); }
 
-std::unique_ptr<UpdateFlag> Mesh::registerUpdateFlag() {
-    return _updateFlagManager.registration();
-}
+std::unique_ptr<UpdateFlag> Mesh::registerUpdateFlag() { return _updateFlagManager.registration(); }
 
 void Mesh::_setVertexLayouts(const std::vector<wgpu::VertexBufferLayout>& layouts) {
     _clearVertexLayouts();
@@ -71,25 +60,17 @@ void Mesh::_setIndexBufferBinding(std::optional<IndexBufferBinding> binding) {
     }
 }
 
-void Mesh::_clearVertexLayouts() {
-    _vertexBufferLayouts.clear();
-}
+void Mesh::_clearVertexLayouts() { _vertexBufferLayouts.clear(); }
 
 void Mesh::_addVertexLayout(const wgpu::VertexBufferLayout& layout) {
     _vertexBufferLayouts.push_back(layout);
     _updateFlagManager.distribute();
 }
 
-const std::vector<wgpu::VertexBufferLayout>& Mesh::vertexBufferLayouts() const {
-    return _vertexBufferLayouts;
-}
+const std::vector<wgpu::VertexBufferLayout>& Mesh::vertexBufferLayouts() const { return _vertexBufferLayouts; }
 
-const std::vector<std::optional<Buffer>>& Mesh::vertexBufferBindings() const {
-    return _vertexBufferBindings;
-}
+const std::vector<std::optional<Buffer>>& Mesh::vertexBufferBindings() const { return _vertexBufferBindings; }
 
-const std::optional<IndexBufferBinding>& Mesh::indexBufferBinding() const {
-    return _indexBufferBinding;
-}
+const std::optional<IndexBufferBinding>& Mesh::indexBufferBinding() const { return _indexBufferBinding; }
 
-}
+}  // namespace vox

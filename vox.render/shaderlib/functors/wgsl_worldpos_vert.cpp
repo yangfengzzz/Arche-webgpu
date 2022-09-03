@@ -5,13 +5,12 @@
 //  property of any third parties.
 
 #include "wgsl_worldpos_vert.h"
-#include <fmt/core.h>
+
+#include <spdlog/fmt/fmt.h>
 
 namespace vox {
-WGSLWorldPosVert::WGSLWorldPosVert(const std::string& input, const std::string& output):
-_input(input),
-_output(output) {
-}
+WGSLWorldPosVert::WGSLWorldPosVert(const std::string& input, const std::string& output)
+    : _input(input), _output(output) {}
 
 void WGSLWorldPosVert::operator()(std::string& source, const ShaderMacroCollection& macros) {
     if (macros.contains(NEED_WORLDPOS)) {
@@ -20,4 +19,4 @@ void WGSLWorldPosVert::operator()(std::string& source, const ShaderMacroCollecti
     }
 }
 
-}
+}  // namespace vox

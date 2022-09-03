@@ -317,11 +317,11 @@ void ParticleRenderer::_onDisable() {
 }
 
 //MARK: - Reflection
-void ParticleRenderer::onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+void ParticleRenderer::onSerialize(nlohmann::json &data) {
     
 }
 
-void ParticleRenderer::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+void ParticleRenderer::onDeserialize(nlohmann::json &data) {
     
 }
 

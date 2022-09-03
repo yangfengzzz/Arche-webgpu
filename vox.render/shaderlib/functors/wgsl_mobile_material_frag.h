@@ -13,16 +13,14 @@ namespace vox {
 class WGSLMobileMaterialShare {
 public:
     WGSLMobileMaterialShare(const std::string& outputStructName);
-    
-    void operator()(WGSLEncoder& encoder,
-                    const ShaderMacroCollection& macros, size_t counterIndex);
-    
+
+    void operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros, size_t counterIndex);
+
 private:
     std::string _outputStructName{};
     std::string _blinnPhongStruct;
-
 };
 
-}
+}  // namespace vox
 
 #endif /* wgsl_mobile_material_frag_hpp */

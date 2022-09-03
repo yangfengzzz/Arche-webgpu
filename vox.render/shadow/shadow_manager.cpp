@@ -8,7 +8,7 @@
 #include "shader/shader.h"
 #include "camera.h"
 #include "entity.h"
-#include "matrix_utils.h"
+#include "vox.geometry/matrix_utils.h"
 #include "texture/texture_utils.h"
 #include "texture/sampled_texture2d.h"
 #include "texture/sampled_texturecube.h"
@@ -25,13 +25,13 @@ uint32_t ShadowManager::cubeShadowCount() {
     return _cubeShadowCount;
 }
 
-ShadowManager *ShadowManager::getSingletonPtr(void) {
-    return msSingleton;
+ShadowManager *ShadowManager::getSingletonPtr() {
+    return ms_singleton;
 }
 
-ShadowManager &ShadowManager::getSingleton(void) {
-    assert(msSingleton);
-    return (*msSingleton);
+ShadowManager &ShadowManager::getSingleton() {
+    assert(ms_singleton);
+    return (*ms_singleton);
 }
 
 //-----------------------------------------------------------------------

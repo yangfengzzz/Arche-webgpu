@@ -8,7 +8,7 @@
 #define spot_light_hpp
 
 #include "light.h"
-#include "color.h"
+#include "vox.math/color.h"
 
 namespace vox {
 /**
@@ -54,12 +54,12 @@ public:
     /**
      * Serialize the component
      */
-    void onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) override;
+    void onSerialize(nlohmann::json &data) override;
     
     /**
      * Deserialize the component
      */
-    void onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) override;
+    void onDeserialize(nlohmann::json &data) override;
     
     /**
      * Defines how the component should be drawn in the inspector

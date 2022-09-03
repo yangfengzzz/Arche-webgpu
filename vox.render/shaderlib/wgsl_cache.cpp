@@ -16,4 +16,4 @@ std::pair<const std::string&, const WGSL::BindGroupInfo&> WGSLCache::compile(con
     return {_sourceCache[hash], _infoCache[hash]};
 }
 
-}
+}  // namespace vox

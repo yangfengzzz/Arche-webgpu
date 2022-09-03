@@ -4,36 +4,28 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "buffer_mesh.h"
-#include <glog/logging.h>
+#include "vox.render/mesh/buffer_mesh.h"
+
+#include "vox.base/logging.h"
 
 namespace vox {
-void BufferMesh::setInstanceCount(uint32_t newValue) {
-    _instanceCount = newValue;
-}
+void BufferMesh::setInstanceCount(uint32_t newValue) { _instanceCount = newValue; }
 
-const std::vector<std::optional<Buffer>>& BufferMesh::vertexBufferBindings() {
-    return _vertexBufferBindings;
-}
+const std::vector<std::optional<Buffer>>& BufferMesh::vertexBufferBindings() { return _vertexBufferBindings; }
 
-const std::optional<IndexBufferBinding>& BufferMesh::indexBufferBinding() {
-    return _indexBufferBinding;
-}
+const std::optional<IndexBufferBinding>& BufferMesh::indexBufferBinding() { return _indexBufferBinding; }
 
-const std::vector<wgpu::VertexBufferLayout>& BufferMesh::vertexBufferLayouts() {
-    return _vertexBufferLayouts;
-}
+const std::vector<wgpu::VertexBufferLayout>& BufferMesh::vertexBufferLayouts() { return _vertexBufferLayouts; }
 
-void BufferMesh::setVertexLayouts(const std::vector<wgpu::VertexBufferLayout>& layouts) {
-    _setVertexLayouts(layouts);
-}
+void BufferMesh::setVertexLayouts(const std::vector<wgpu::VertexBufferLayout>& layouts) { _setVertexLayouts(layouts); }
 
 void BufferMesh::setVertexLayouts(const std::vector<wgpu::VertexAttribute>& attributes,
-                                  uint64_t stride, wgpu::VertexStepMode stepMode) {
+                                  uint64_t stride,
+                                  wgpu::VertexStepMode stepMode) {
     if (_vertexAttributes.size() > 0) {
-        LOG(WARNING) << "reset vertex layouts\n";
+        LOGW("reset vertex layouts")
     }
-    
+
     _vertexAttributes = attributes;
     _layouts.stepMode = stepMode;
     _layouts.attributes = _vertexAttributes.data();
@@ -74,4 +66,4 @@ void BufferMesh::setIndexBufferBinding(std::optional<IndexBufferBinding> bufferB
     _setIndexBufferBinding(bufferBinding);
 }
 
-}
+}  // namespace vox

@@ -11,61 +11,59 @@
 #include "texture/sampled_texturecube.h"
 
 namespace vox {
-class SkyboxSubpass: public Subpass {
+class SkyboxSubpass : public Subpass {
 public:
     SkyboxSubpass(RenderContext* renderContext,
                   wgpu::TextureFormat depthStencilTextureFormat,
                   Scene* scene,
                   Camera* camera);
-    
+
     void prepare() override;
-    
+
     void draw(wgpu::RenderPassEncoder& passEncoder) override;
-    
+
 public:
     void createSphere(float radius);
-    
+
     void createCuboid();
-    
+
     /**
      * Texture cube map of the sky box material.
      */
     SampledTextureCubePtr textureCubeMap();
-    
+
     void setTextureCubeMap(SampledTextureCubePtr v);
-    
+
 private:
-    enum class SkyBoxType {
-        Cuboid, Sphere
-    };
+    enum class SkyBoxType { Cuboid, Sphere };
     SkyBoxType _type;
     ModelMeshPtr _mesh{nullptr};
     SampledTextureCubePtr _cubeMap{nullptr};
     Buffer _vpMatrix;
-    
+
     WGSLPtr _vertexSource{nullptr};
     WGSLPtr _fragmentSource{nullptr};
-    
+
     wgpu::RenderPipelineDescriptor _forwardPipelineDescriptor;
     wgpu::DepthStencilState _depthStencil;
     wgpu::FragmentState _fragment;
     wgpu::ColorTargetState _colorTargetState;
-    
+
     std::vector<wgpu::BindGroupLayoutEntry> _bindGroupLayoutEntry;
     wgpu::BindGroupLayoutDescriptor _bindGroupLayoutDescriptor;
     wgpu::BindGroupLayout _bindGroupLayout;
-    
+
     std::vector<wgpu::BindGroupEntry> _bindGroupEntries{};
     wgpu::BindGroupDescriptor _bindGroupDescriptor;
 
     wgpu::PipelineLayoutDescriptor _pipelineLayoutDescriptor;
     wgpu::PipelineLayout _pipelineLayout;
-    
+
     wgpu::RenderPipeline _renderPipeline;
-    
+
     wgpu::TextureFormat _depthStencilTextureFormat;
 };
 
-}
+}  // namespace vox
 
 #endif /* skybox_subpass_hpp */

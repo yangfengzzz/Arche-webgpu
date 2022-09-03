@@ -5,7 +5,7 @@
 //  property of any third parties.
 
 #include "spot_light.h"
-#include "matrix_utils.h"
+#include "vox.geometry/matrix_utils.h"
 #include "entity.h"
 #include "light_manager.h"
 
@@ -40,15 +40,15 @@ void SpotLight::_updateShaderData(SpotLightData &shaderData) {
 // MARK: - Shadow
 Matrix4x4F SpotLight::shadowProjectionMatrix() {
     const auto fov = std::min(M_PI / 2, angle * 2 * std::sqrt(2));
-    return makepPerspective<float>(fov, 1, 0.1, distance + 5);
+    return makePerspective<float>(fov, 1, 0.1, distance + 5);
 }
 
 //MARK: - Reflection
-void SpotLight::onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+void SpotLight::onSerialize(nlohmann::json &data) {
     
 }
 
-void SpotLight::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+void SpotLight::onDeserialize(nlohmann::json &data) {
     
 }
 

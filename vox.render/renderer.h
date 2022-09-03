@@ -8,11 +8,11 @@
 #define renderer_hpp
 
 #include "component.h"
-#include "shader/shader_data.h"
 #include "rendering/render_element.h"
-#include "bounding_box3.h"
-#include "matrix4x4.h"
+#include "shader/shader_data.h"
 #include "update_flag.h"
+#include "vox.math/bounding_box3.h"
+#include "vox.math/matrix4x4.h"
 
 namespace vox {
 /**
@@ -25,124 +25,123 @@ public:
         Matrix4x4F u_modelMat;
         Matrix4x4F u_normalMat;
     };
-    
+
     /** ShaderData related to renderer. */
     ShaderData shaderData;
     // @ignoreClone
     /** Whether it is clipped by the frustum, needs to be turned on camera.enableFrustumCulling. */
     bool isCulled = false;
-    
+
     /** Set whether the renderer to receive shadows. */
     bool receiveShadow = false;
     /** Set whether the renderer to cast shadows. */
     bool castShadow = false;
-    
+
     /**
      * Material count.
      */
     size_t materialCount();
-    
+
     /**
      * The bounding volume of the renderer.
      */
     BoundingBox3F bounds();
-    
+
     explicit Renderer(Entity *entity);
-    
+
 public:
     /**
      * Get the first instance material by index.
-     * @remarks Calling this function for the first time after the material is set will create an instance material to ensure that it is unique to the renderer.
+     * @remarks Calling this function for the first time after the material is set will create an instance material to
+     * ensure that it is unique to the renderer.
      * @param index - Material index
      * @returns Instance material
      */
     MaterialPtr getInstanceMaterial(size_t index = 0);
-    
+
     /**
      * Get the first material by index.
      * @param index - Material index
      * @returns Material
      */
     MaterialPtr getMaterial(size_t index = 0);
-    
+
     /**
      * Set the first material.
      * @param material - The first material
      */
     void setMaterial(MaterialPtr material);
-    
+
     /**
      * Set material by index.
      * @param index - Material index
      * @param material - The material
      */
     void setMaterial(size_t index, MaterialPtr material);
-    
+
     /**
      * Get all instance materials.
-     * @remarks Calling this function for the first time after the material is set will create an instance material to ensure that it is unique to the renderer.
+     * @remarks Calling this function for the first time after the material is set will create an instance material to
+     * ensure that it is unique to the renderer.
      * @returns All instance materials
      */
     std::vector<MaterialPtr> getInstanceMaterials();
-    
+
     /**
      * Get all materials.
      * @returns All materials
      */
     std::vector<MaterialPtr> getMaterials();
-    
+
     /**
      * Set all materials.
      * @param materials - All materials
      */
     void setMaterials(const std::vector<MaterialPtr> &materials);
-    
+
     void pushPrimitive(const RenderElement &element,
                        std::vector<RenderElement> &opaqueQueue,
                        std::vector<RenderElement> &alphaTestQueue,
                        std::vector<RenderElement> &transparentQueue);
-    
+
     void setDistanceForSort(float dist);
-    
+
     float distanceForSort();
-    
+
     void updateShaderData();
-    
+
 protected:
     void _onEnable() override;
-    
+
     void _onDisable() override;
-    
+
     virtual void _render(std::vector<RenderElement> &opaqueQueue,
                          std::vector<RenderElement> &alphaTestQueue,
                          std::vector<RenderElement> &transparentQueue) = 0;
-    
-    virtual void _updateBounds(BoundingBox3F &worldBounds) {
-    }
-    
-    virtual void update(float deltaTime) {
-    }
-    
+
+    virtual void _updateBounds(BoundingBox3F &worldBounds) {}
+
+    virtual void update(float deltaTime) {}
+
 protected:
     MaterialPtr _createInstanceMaterial(const MaterialPtr &material, size_t index);
-    
+
     std::vector<std::shared_ptr<Material>> _materials;
-    
+
 private:
     friend class ComponentsManager;
-    
+
     float _distanceForSort = 0;
-    
+
     RendererData _rendererData;
     ShaderProperty _rendererProperty;
-    
+
     std::unique_ptr<UpdateFlag> _transformChangeFlag;
     BoundingBox3F _bounds = BoundingBox3F();
     Matrix4x4F _normalMatrix = Matrix4x4F();
     std::vector<bool> _materialsInstanced;
 };
 
-
-}
+}  // namespace vox
 
 #endif /* renderer_hpp */

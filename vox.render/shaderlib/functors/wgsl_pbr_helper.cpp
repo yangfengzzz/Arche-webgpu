@@ -5,43 +5,43 @@
 //  property of any third parties.
 
 #include "wgsl_pbr_helper.h"
-#include "wgsl.h"
-#include <fmt/core.h>
+
+#include <spdlog/fmt/fmt.h>
+
+#include "vox.render/shaderlib/wgsl.h"
 
 namespace vox {
-WGSLPbrHelper::WGSLPbrHelper(const std::string& outputStructName, bool is_metallic_workflow) :
-_outputStructName(outputStructName),
-_is_metallic_workflow(is_metallic_workflow),
-_normalGet(outputStructName),
-_brdf(outputStructName),
-_directIrradianceFragDefine(outputStructName),
-_iblFragDefine(outputStructName){
+WGSLPbrHelper::WGSLPbrHelper(const std::string& outputStructName, bool is_metallic_workflow)
+    : _outputStructName(outputStructName),
+      _is_metallic_workflow(is_metallic_workflow),
+      _normalGet(outputStructName),
+      _brdf(outputStructName),
+      _directIrradianceFragDefine(outputStructName),
+      _iblFragDefine(outputStructName) {
     _paramName = "in";
 }
 
-void WGSLPbrHelper::setParamName(const std::string& name) {
-    _paramName = name;
-}
+void WGSLPbrHelper::setParamName(const std::string& name) { _paramName = name; }
 
-const std::string& WGSLPbrHelper::paramName() const {
-    return _paramName;
-}
+const std::string& WGSLPbrHelper::paramName() const { return _paramName; }
 
-void WGSLPbrHelper::operator()(WGSLEncoder& encoder,
-                               const ShaderMacroCollection& macros, size_t counterIndex) {
+void WGSLPbrHelper::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros, size_t counterIndex) {
     _normalGet(encoder, macros, counterIndex);
-    
-    encoder.addFunction("fn pow2(x: f32)->f32 {\n"
-                        "    return x * x;\n"
-                        "}\n");
-    encoder.addFunction("fn BRDF_Diffuse_Lambert(diffuseColor: vec3<f32>)->vec3<f32> {\n"
-                        "    return RECIPROCAL_PI * diffuseColor;\n"
-                        "}\n");
-    encoder.addFunction("fn computeSpecularOcclusion(ambientOcclusion: f32, roughness: f32, dotNV: f32)->f32 {\n"
-                        "    return saturate( pow( dotNV + ambientOcclusion, exp2( - 16.0 * roughness - 1.0 ) ) - 1.0 + ambientOcclusion );\n"
-                        "}\n");
-    
-    
+
+    encoder.addFunction(
+            "fn pow2(x: f32)->f32 {\n"
+            "    return x * x;\n"
+            "}\n");
+    encoder.addFunction(
+            "fn BRDF_Diffuse_Lambert(diffuseColor: vec3<f32>)->vec3<f32> {\n"
+            "    return RECIPROCAL_PI * diffuseColor;\n"
+            "}\n");
+    encoder.addFunction(
+            "fn computeSpecularOcclusion(ambientOcclusion: f32, roughness: f32, dotNV: f32)->f32 {\n"
+            "    return saturate( pow( dotNV + ambientOcclusion, exp2( - 16.0 * roughness - 1.0 ) ) - 1.0 + "
+            "ambientOcclusion );\n"
+            "}\n");
+
     std::string getPhysicalMaterial = "fn getPhysicalMaterial(\n";
     getPhysicalMaterial += "     diffuseColor: vec4<f32>,\n";
     if (_is_metallic_workflow) {
@@ -84,35 +84,40 @@ void WGSLPbrHelper::operator()(WGSLEncoder& encoder,
         getPhysicalMaterial += "}\n";
     }
     if (macros.contains(HAS_METALROUGHNESSMAP) && _is_metallic_workflow) {
-        getPhysicalMaterial += "var metalRoughMapColor = textureSample(u_metallicRoughnessTexture, u_metallicRoughnessSampler, v_uv );\n";
+        getPhysicalMaterial +=
+                "var metalRoughMapColor = textureSample(u_metallicRoughnessTexture, u_metallicRoughnessSampler, v_uv "
+                ");\n";
         getPhysicalMaterial += "roughness = roughness * metalRoughMapColor.g;\n";
         getPhysicalMaterial += "metal = metal * metalRoughMapColor.b;\n";
     }
     if (macros.contains(HAS_SPECULARGLOSSINESSMAP) && !_is_metallic_workflow) {
-        getPhysicalMaterial += "var specularGlossinessColor = textureSample(u_specularGlossinessTexture, u_specularGlossinessSampler, v_uv );\n";
+        getPhysicalMaterial +=
+                "var specularGlossinessColor = textureSample(u_specularGlossinessTexture, u_specularGlossinessSampler, "
+                "v_uv );\n";
         getPhysicalMaterial += "specularColor = specularColor * specularGlossinessColor.rgb;\n";
         getPhysicalMaterial += "glossiness = glossiness * specularGlossinessColor.a;\n";
     }
-    
+
     if (_is_metallic_workflow) {
         getPhysicalMaterial += "material.diffuseColor = diffuseColorUpdate.rgb * ( 1.0 - metal );\n";
         getPhysicalMaterial += "material.specularColor = mix( vec3<f32>( 0.04), diffuseColorUpdate.rgb, metal );\n";
         getPhysicalMaterial += "material.roughness = clamp( roughness, 0.04, 1.0 );\n";
     } else {
-        getPhysicalMaterial += "var specularStrength = max( max( specularColor.r, specularColor.g ), specularColor.b );\n";
+        getPhysicalMaterial +=
+                "var specularStrength = max( max( specularColor.r, specularColor.g ), specularColor.b );\n";
         getPhysicalMaterial += "material.diffuseColor = diffuseColorUpdate.rgb * ( 1.0 - specularStrength );\n";
         getPhysicalMaterial += "material.specularColor = specularColor;\n";
         getPhysicalMaterial += "material.roughness = clamp( 1.0 - glossiness, 0.04, 1.0 );\n";
     }
-    
+
     getPhysicalMaterial += "material.opacity = diffuseColorUpdate.a;\n";
     getPhysicalMaterial += "return material;\n";
     getPhysicalMaterial += "}\n";
     encoder.addFunction(getPhysicalMaterial);
-    
+
     _brdf(encoder, macros, counterIndex);
     _directIrradianceFragDefine(encoder, macros, counterIndex);
     _iblFragDefine(encoder, macros, counterIndex);
 }
 
-}
+}  // namespace vox

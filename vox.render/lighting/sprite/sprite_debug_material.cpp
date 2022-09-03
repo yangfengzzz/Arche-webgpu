@@ -5,7 +5,7 @@
 //  property of any third parties.
 
 #include "sprite_debug_material.h"
-#include <fmt/core.h>
+#include <spdlog/fmt/fmt.h>
 
 namespace vox {
 WGSLSpriteDebugVertex::WGSLSpriteDebugVertex(bool isSpotLight):

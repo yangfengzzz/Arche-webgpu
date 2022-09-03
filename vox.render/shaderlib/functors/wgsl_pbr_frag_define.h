@@ -13,16 +13,15 @@ namespace vox {
 class WGSLPbrFragDefine {
 public:
     WGSLPbrFragDefine(const std::string& outputStructName, bool is_metallic_workflow);
-    
-    void operator()(WGSLEncoder& encoder,
-                    const ShaderMacroCollection& macros, size_t counterIndex);
-    
+
+    void operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros, size_t counterIndex);
+
 private:
     std::string _outputStructName{};
     bool _is_metallic_workflow;
     std::string _pbrStruct;
 };
 
-}
+}  // namespace vox
 
 #endif /* wgsl_pbr_frag_define_hpp */

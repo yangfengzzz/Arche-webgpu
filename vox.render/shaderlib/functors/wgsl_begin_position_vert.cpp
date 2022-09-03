@@ -5,12 +5,12 @@
 //  property of any third parties.
 
 #include "wgsl_begin_position_vert.h"
-#include <fmt/core.h>
+
+#include <spdlog/fmt/fmt.h>
 
 namespace vox {
-WGSLBeginPositionVert::WGSLBeginPositionVert(const std::string& input, const std::string& output):
-_input(input),
-_output(output) {
+WGSLBeginPositionVert::WGSLBeginPositionVert(const std::string& input, const std::string& output)
+    : _input(input), _output(output) {
     _formatTemplate = "var position = vec4<f32>( {}.Position , 1.0 );\n";
     _formatTemplate = fmt::format(_formatTemplate, _input);
 }
@@ -19,4 +19,4 @@ void WGSLBeginPositionVert::operator()(std::string& source, const ShaderMacroCol
     source += _formatTemplate;
 }
 
-}
+}  // namespace vox

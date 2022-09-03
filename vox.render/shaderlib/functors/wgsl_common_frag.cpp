@@ -5,12 +5,13 @@
 //  property of any third parties.
 
 #include "wgsl_common_frag.h"
-#include "wgsl.h"
-#include <fmt/core.h>
+
+#include <spdlog/fmt/fmt.h>
+
+#include "vox.render/shaderlib/wgsl.h"
 
 namespace vox {
-WGSLCommonFrag::WGSLCommonFrag(const std::string& inputStructName) :
-_inputStructName(inputStructName) {
+WGSLCommonFrag::WGSLCommonFrag(const std::string& inputStructName) : _inputStructName(inputStructName) {
     _cameraStruct = "struct CameraData {\n";
     _cameraStruct += " u_viewMat: mat4x4<f32>;\n";
     _cameraStruct += " u_projMat: mat4x4<f32>;\n";
@@ -19,7 +20,7 @@ _inputStructName(inputStructName) {
     _cameraStruct += " u_projInvMat: mat4x4<f32>;\n";
     _cameraStruct += " u_cameraPos: vec3<f32>;\n";
     _cameraStruct += "}\n";
-    
+
     _rendererStruct = "struct RendererData {\n";
     _rendererStruct += " u_localMat: mat4x4<f32>;\n";
     _rendererStruct += " u_modelMat: mat4x4<f32>;\n";
@@ -34,4 +35,4 @@ void WGSLCommonFrag::operator()(WGSLEncoder& encoder, const ShaderMacroCollectio
     encoder.addUniformBinding("u_rendererData", "RendererData");
 }
 
-}
+}  // namespace vox

@@ -13,15 +13,15 @@ namespace vox {
 class WGSLCommonFrag {
 public:
     WGSLCommonFrag(const std::string& inputStructName);
-    
+
     void operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros);
-    
+
 private:
     std::string _inputStructName{};
-    
+
     std::string _cameraStruct{};
     std::string _rendererStruct{};
 };
 
-}
+}  // namespace vox
 #endif /* wgsl_common_frag_hpp */

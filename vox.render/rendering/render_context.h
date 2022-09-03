@@ -13,25 +13,25 @@ namespace vox {
 class RenderContext {
 public:
     RenderContext(BackendBinding* binding, uint32_t width, uint32_t height);
-    
+
     wgpu::Device& device();
-    
+
     void resize(uint32_t width, uint32_t height);
 
     wgpu::TextureView currentDrawableTexture();
-    
+
     wgpu::TextureFormat drawableTextureFormat();
-    
+
     void present();
-    
+
 private:
     BackendBinding* _binding{nullptr};
     uint32_t _width;
     uint32_t _height;
-    
+
     wgpu::SwapChain _swapchain;
 };
 
-}
+}  // namespace vox
 
 #endif /* render_context_hpp */

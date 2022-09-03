@@ -5,12 +5,12 @@
 //  property of any third parties.
 
 #include "wgsl_position_vert.h"
-#include <fmt/core.h>
+
+#include <spdlog/fmt/fmt.h>
 
 namespace vox {
-WGSLPositionVert::WGSLPositionVert(const std::string& input, const std::string& output):
-_input(input),
-_output(output) {
+WGSLPositionVert::WGSLPositionVert(const std::string& input, const std::string& output)
+    : _input(input), _output(output) {
     _formatTemplate = "{}.position = u_cameraData.u_VPMat * u_rendererData.u_modelMat * position;\n";
     _formatTemplate = fmt::format(_formatTemplate, _output);
 }
@@ -19,4 +19,4 @@ void WGSLPositionVert::operator()(std::string& source, const ShaderMacroCollecti
     source += _formatTemplate;
 }
 
-}
+}  // namespace vox

@@ -5,27 +5,20 @@
 //  property of any third parties.
 
 #include "gpu_skinned_mesh_renderer.h"
+
 #include "entity.h"
 #include "scene.h"
 #include "shader/shader.h"
 
 namespace vox {
-std::string GPUSkinnedMeshRenderer::name() {
-    return "GPUSkinnedMeshRenderer";
-}
+std::string GPUSkinnedMeshRenderer::name() { return "GPUSkinnedMeshRenderer"; }
 
-GPUSkinnedMeshRenderer::GPUSkinnedMeshRenderer(Entity *entity) :
-MeshRenderer(entity),
-_jointMatrixProperty(Shader::createProperty("u_jointMatrix", ShaderDataGroup::Renderer)) {
-}
+GPUSkinnedMeshRenderer::GPUSkinnedMeshRenderer(Entity* entity)
+    : MeshRenderer(entity), _jointMatrixProperty(Shader::createProperty("u_jointMatrix", ShaderDataGroup::Renderer)) {}
 
-GPUSkinnedMeshRenderer::SkinPtr GPUSkinnedMeshRenderer::skin() {
-    return _skin;
-}
+GPUSkinnedMeshRenderer::SkinPtr GPUSkinnedMeshRenderer::skin() { return _skin; }
 
-void GPUSkinnedMeshRenderer::setSkin(const SkinPtr &skin) {
-    _skin = skin;
-}
+void GPUSkinnedMeshRenderer::setSkin(const SkinPtr& skin) { _skin = skin; }
 
 void GPUSkinnedMeshRenderer::update(float deltaTime) {
     if (_skin) {
@@ -33,7 +26,7 @@ void GPUSkinnedMeshRenderer::update(float deltaTime) {
             _initJoints();
             _hasInitJoints = true;
         }
-        
+
         // Update join matrices
         auto m = entity()->transform->worldMatrix();
         auto inverseTransform = m.inverse();
@@ -53,18 +46,11 @@ void GPUSkinnedMeshRenderer::_initJoints() {
     shaderData.enableMacro(HAS_SKIN);
 }
 
-//MARK: - Reflection
-void GPUSkinnedMeshRenderer::onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
-    
-}
+// MARK: - Reflection
+void GPUSkinnedMeshRenderer::onSerialize(nlohmann::json& data) {}
 
-void GPUSkinnedMeshRenderer::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
-    
-}
+void GPUSkinnedMeshRenderer::onDeserialize(nlohmann::json& data) {}
 
-void GPUSkinnedMeshRenderer::onInspector(ui::WidgetContainer& p_root) {
-    
-}
+void GPUSkinnedMeshRenderer::onInspector(ui::WidgetContainer& p_root) {}
 
-
-}
+}  // namespace vox

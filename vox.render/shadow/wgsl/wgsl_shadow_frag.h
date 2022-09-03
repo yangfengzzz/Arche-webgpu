@@ -13,11 +13,11 @@ namespace vox {
 class WGSLShadowFrag {
 public:
     WGSLShadowFrag();
-    
+
     void operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros);
-    
+
     void operator()(std::string& source, const ShaderMacroCollection& macros);
 };
 
-}
+}  // namespace vox
 #endif /* wgsl_shadow_frag_hpp */

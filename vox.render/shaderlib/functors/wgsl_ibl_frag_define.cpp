@@ -5,25 +5,21 @@
 //  property of any third parties.
 
 #include "wgsl_ibl_frag_define.h"
-#include "wgsl.h"
-#include <fmt/core.h>
+
+#include <spdlog/fmt/fmt.h>
+
+#include "vox.render/shaderlib/wgsl.h"
 
 namespace vox {
-WGSLIBLFragDefine::WGSLIBLFragDefine(const std::string& outputStructName) :
-_outputStructName(outputStructName) {
+WGSLIBLFragDefine::WGSLIBLFragDefine(const std::string& outputStructName) : _outputStructName(outputStructName) {
     _paramName = "in";
 }
 
-void WGSLIBLFragDefine::setParamName(const std::string& name) {
-    _paramName = name;
-}
+void WGSLIBLFragDefine::setParamName(const std::string& name) { _paramName = name; }
 
-const std::string& WGSLIBLFragDefine::paramName() const {
-    return _paramName;
-}
+const std::string& WGSLIBLFragDefine::paramName() const { return _paramName; }
 
-void WGSLIBLFragDefine::operator()(WGSLEncoder& encoder,
-                                   const ShaderMacroCollection& macros, size_t counterIndex) {
+void WGSLIBLFragDefine::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros, size_t counterIndex) {
     std::string function;
     // sh need be pre-scaled in CPU.
     function = "fn getLightProbeIrradiance(sh: array<vec3<f32>, 9>, normal:vec3<f32>)->vec3<f32> {\n";
@@ -42,7 +38,7 @@ void WGSLIBLFragDefine::operator()(WGSLEncoder& encoder,
     function += "   return max(result, vec3<f32>(0.0));\n";
     function += "}\n";
     encoder.addFunction(function);
-    
+
     // ref: https://www.unrealengine.com/blog/physically-based-shading-on-mobile - environmentBRDF for GGX on mobile
     function = "fn envBRDFApprox(specularColor:vec3<f32>, roughness:f32, dotNV:f32 )->vec3<f32>{\n";
     function += "   let c0 = vec4<f32>( -1.0, -0.0275, -0.572, 0.022 );\n";
@@ -58,23 +54,27 @@ void WGSLIBLFragDefine::operator()(WGSLEncoder& encoder,
     function += "   return specularColor * AB.x + AB.y;\n";
     function += "}\n";
     encoder.addFunction(function);
-    
+
     function = "fn getSpecularMIPLevel(roughness:f32, maxMIPLevel:i32)->f32 {\n";
     function += "    return roughness * f32(maxMIPLevel);\n";
     function += "}\n";
     encoder.addFunction(function);
-    
-    function = "fn getLightProbeRadiance(geometry:GeometricContext, roughness:f32, maxMIPLevel:i32, specularIntensity:f32)->vec3<f32> {\n";
+
+    function =
+            "fn getLightProbeRadiance(geometry:GeometricContext, roughness:f32, maxMIPLevel:i32, "
+            "specularIntensity:f32)->vec3<f32> {\n";
     if (!macros.contains(HAS_SPECULAR_ENV)) {
         function += "return vec3<f32>(0.0, 0.0, 0.0);\n";
     } else {
         function += "var reflectVec = reflect( -geometry.viewDir, geometry.normal );\n";
         function += "var specularMIPLevel = getSpecularMIPLevel(roughness, maxMIPLevel );\n";
-        function += "var envMapColor =  textureSampleLevel(u_env_specularTexture, u_env_specularSampler, reflectVec, specularMIPLevel );\n";
+        function +=
+                "var envMapColor =  textureSampleLevel(u_env_specularTexture, u_env_specularSampler, reflectVec, "
+                "specularMIPLevel );\n";
         function += "return envMapColor.rgb * specularIntensity;\n";
     }
     function += "}\n";
     encoder.addFunction(function);
 }
 
-}
+}  // namespace vox

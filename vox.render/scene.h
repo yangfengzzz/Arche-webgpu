@@ -19,7 +19,7 @@
 #include "lighting/ambient_light.h"
 #include "shader/shader_data.h"
 #include "background.h"
-#include "input_events.h"
+#include "platform/input_events.h"
 
 namespace vox {
 /// @brief A collection of entities organized in a tree structure.
@@ -116,12 +116,12 @@ public:
     /**
      * Called when the serialization is asked
      */
-    void onSerialize(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node) override;
+    void onSerialize(nlohmann::json &data) override;
     
     /**
      * Called when the deserialization is asked
      */
-    void onDeserialize(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node) override;
+    void onDeserialize(nlohmann::json &data) override;
     
 private:
     friend class SceneManager;

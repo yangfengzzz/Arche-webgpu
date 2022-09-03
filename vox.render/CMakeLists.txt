@@ -58,29 +58,24 @@ set(COMMON_FILES
 
 set(RENDERING_FILES
         # Header files
-        rendering/render_element.h
-        rendering/pipeline_state.h
-        rendering/postprocessing_pipeline.h
-        rendering/postprocessing_pass.h
-        rendering/postprocessing_renderpass.h
-        rendering/postprocessing_computepass.h
+        rendering/compute_pass.h
+        rendering/compute_pass.cpp
         rendering/render_context.h
-        rendering/render_frame.h
-        rendering/render_pipeline.h
-        rendering/render_target.h
-        rendering/subpass.h
-        # Source files
-        rendering/render_element.cpp
-        rendering/pipeline_state.cpp
-        rendering/postprocessing_pipeline.cpp
-        rendering/postprocessing_pass.cpp
-        rendering/postprocessing_renderpass.cpp
-        rendering/postprocessing_computepass.cpp
         rendering/render_context.cpp
-        rendering/render_frame.cpp
-        rendering/render_pipeline.cpp
-        rendering/render_target.cpp
-        rendering/subpass.cpp)
+        rendering/render_element.h
+        rendering/render_element.cpp
+        rendering/render_pass.h
+        rendering/render_pass.cpp
+        rendering/resource_cache.h
+        rendering/resource_cache.cpp
+        rendering/subpass.h
+        rendering/subpass.cpp
+        rendering/subpasses/forward_subpass.h
+        rendering/subpasses/forward_subpass.cpp
+        rendering/subpasses/color_picker_subpass.h
+        rendering/subpasses/color_picker_subpass.cpp
+        rendering/subpasses/skybox_subpass.h
+        rendering/subpasses/skybox_subpass.cpp)
 
 set(SCENE_RESOURCE_FILES
         # Header Files
@@ -438,7 +433,10 @@ set(CONTROL_FILES controls/spherical.h
         controls/free_control.h
         controls/free_control.cpp)
 
-set(MESH_FILES mesh/index_buffer_binding.h
+set(MESH_FILES
+        mesh/buffer.h
+        mesh/buffer.cpp
+        mesh/index_buffer_binding.h
         mesh/index_buffer_binding.cpp
         mesh/sub_mesh.h
         mesh/sub_mesh.cpp
@@ -455,10 +453,13 @@ set(MESH_FILES mesh/index_buffer_binding.h
         mesh/primitive_mesh.h
         mesh/primitive_mesh.cpp
         mesh/mesh_manager.h
-        mesh/mesh_manager.cpp)
+        mesh/mesh_manager.cpp
+        mesh/wireframe_primitive_mesh.h
+        mesh/wireframe_primitive_mesh.cpp)
 
-file(GLOB WIREFRAME_FILES
-        ${CMAKE_CURRENT_SOURCE_DIR}/wireframe/*.cpp)
+file(GLOB SHADERLIB_FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/shaderlib/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/shaderlib/functors/*.cpp)
 
 set(SHADER_FILES shader/glsl_compiler.h
         shader/glsl_compiler.cpp
@@ -533,16 +534,40 @@ set(LIGHT_FILE
         lighting/light_manager.cpp
         lighting/ambient_light.h
         lighting/ambient_light.cpp
-        lighting/debug/cluster_debug_material.h
-        lighting/debug/cluster_debug_material.cpp
-        lighting/debug/sprite_debug.h
-        lighting/debug/sprite_debug.cpp)
+        lighting/cluster_debug_material.h
+        lighting/cluster_debug_material.cpp
+        lighting/sprite/sprite_debug.h
+        lighting/sprite/sprite_debug.cpp
+        lighting/sprite/sprite_debug_material.h
+        lighting/sprite/sprite_debug_material.cpp
+        lighting/wgsl/wgsl_cluster_common.h
+        lighting/wgsl/wgsl_cluster_common.cpp
+        lighting/wgsl/wgsl_cluster_compute.h
+        lighting/wgsl/wgsl_cluster_compute.cpp
+        lighting/wgsl/wgsl_cluster_debug.h
+        lighting/wgsl/wgsl_cluster_debug.cpp)
 
 set(SHADOW_FILE
         shadow/shadow_manager.cpp
         shadow/shadow_manager.h
         shadow/shadow_subpass.cpp
-        shadow/shadow_subpass.h)
+        shadow/shadow_subpass.h
+        shadow/shadow_debug_material.h
+        shadow/shadow_debug_material.cpp
+        shadow/shadow_material.h
+        shadow/shadow_material.cpp
+        shadow/wgsl_shadow.h
+        shadow/wgsl_shadow.cpp
+        shadow/wgsl/wgsl_shadow_common.h
+        shadow/wgsl/wgsl_shadow_common.cpp
+        shadow/wgsl/wgsl_shadow_debug.h
+        shadow/wgsl/wgsl_shadow_debug.cpp
+        shadow/wgsl/wgsl_shadow_frag.h
+        shadow/wgsl/wgsl_shadow_frag.cpp
+        shadow/wgsl/wgsl_shadow_share.h
+        shadow/wgsl/wgsl_shadow_share.cpp
+        shadow/wgsl/wgsl_shadow_vert.h
+        shadow/wgsl/wgsl_shadow_vert.cpp)
 
 set(PARTICLE_FILE
         particle/particle_material.h
@@ -606,20 +631,19 @@ set(PROJECT_FILES
 #        ${COMMON_FILES}
 #        ${FRAMEWORK_FILES}
 #        ${CORE_FILES}
-#        ${RENDERING_FILES}
+        ${RENDERING_FILES}
 #        ${RENDERING_SUBPASSES_FILES}
 #        ${SCENE_RESOURCE_FILES}
         ${STATS_FILES}
         ${UI_FILES}
 #        ${SCENE_FILES}
 #        ${CONTROL_FILES}
-#        ${MESH_FILES}
-#        ${WIREFRAME_FILES}
+        ${MESH_FILES}
+        ${SHADERLIB_FILES}
         ${SHADER_FILES}
-#        ${MATERIAL_FILES}
-#        ${LOADER_FILES}
-#        ${LIGHT_FILE}
-#        ${SHADOW_FILE}
+        ${MATERIAL_FILES}
+        ${LIGHT_FILE}
+        ${SHADOW_FILE}
 #        ${PARTICLE_FILE}
         ${PLUGINS_FILE}
 #        ${LUA_FILES}

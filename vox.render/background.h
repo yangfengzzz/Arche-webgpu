@@ -7,7 +7,7 @@
 #ifndef background_hpp
 #define background_hpp
 
-#include "color.h"
+#include "vox.math/color.h"
 
 namespace vox {
 /**

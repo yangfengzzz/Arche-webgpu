@@ -24,38 +24,38 @@ public:
      * Metallic.
      */
     float metallic();
-    
+
     void setMetallic(float newValue);
-    
+
     /**
      * Roughness.
      */
     float roughness();
-    
+
     void setRoughness(float newValue);
-    
+
     /**
      * Roughness metallic texture.
      * @remarks G channel is roughness, B channel is metallic
      */
     SampledTexture2DPtr metallicRoughnessTexture();
-    
+
     void setMetallicRoughnessTexture(SampledTexture2DPtr newValue);
-    
+
     /**
      * Create a pbr metallic-roughness workflow material instance.
      */
     explicit PBRMaterial(wgpu::Device& device);
-    
+
 private:
     PBRData _pbrData;
     ShaderProperty _pbrProp;
-    
+
     SampledTexture2DPtr _metallicRoughnessTexture{nullptr};
     ShaderProperty _metallicRoughnessTextureProp;
     ShaderProperty _metallicRoughnessSamplerProp;
 };
 
-}
+}  // namespace vox
 
 #endif /* pbr_material_hpp */

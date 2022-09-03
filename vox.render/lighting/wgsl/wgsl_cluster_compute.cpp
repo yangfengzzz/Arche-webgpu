@@ -5,7 +5,7 @@
 //  property of any third parties.
 
 #include "wgsl_cluster_compute.h"
-#include <fmt/core.h>
+#include <spdlog/fmt/fmt.h>
 #include <unordered_map>
 
 namespace vox {

@@ -5,20 +5,19 @@
 //  property of any third parties.
 
 #include "wgsl_worldpos_share.h"
-#include "wgsl.h"
-#include <fmt/core.h>
+
+#include <spdlog/fmt/fmt.h>
+
+#include "vox.render/shaderlib/wgsl.h"
 
 namespace vox {
-WGSLWorldPosShare::WGSLWorldPosShare(const std::string& outputStructName) :
-_outputStructName(outputStructName) {
-}
+WGSLWorldPosShare::WGSLWorldPosShare(const std::string& outputStructName) : _outputStructName(outputStructName) {}
 
-void WGSLWorldPosShare::operator()(WGSLEncoder& encoder,
-                                   const ShaderMacroCollection& macros, size_t counterIndex) {
+void WGSLWorldPosShare::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros, size_t counterIndex) {
     if (macros.contains(NEED_WORLDPOS)) {
-        encoder.addInoutType(_outputStructName, WGSLEncoder::getCounterNumber(counterIndex),
-                             "v_pos", UniformType::Vec3f32);
+        encoder.addInoutType(_outputStructName, WGSLEncoder::getCounterNumber(counterIndex), "v_pos",
+                             UniformType::Vec3f32);
     }
 }
 
-}
+}  // namespace vox

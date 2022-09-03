@@ -5,13 +5,12 @@
 //  property of any third parties.
 
 #include "wgsl_begin_viewdir_frag.h"
-#include <fmt/core.h>
+
+#include <spdlog/fmt/fmt.h>
 
 namespace vox {
-WGSLBeginViewDirFrag::WGSLBeginViewDirFrag(const std::string& input, const std::string& output):
-_input(input),
-_output(output) {
-}
+WGSLBeginViewDirFrag::WGSLBeginViewDirFrag(const std::string& input, const std::string& output)
+    : _input(input), _output(output) {}
 
 void WGSLBeginViewDirFrag::operator()(std::string& source, const ShaderMacroCollection& macros) {
     if (macros.contains(NEED_WORLDPOS)) {
@@ -19,4 +18,4 @@ void WGSLBeginViewDirFrag::operator()(std::string& source, const ShaderMacroColl
     }
 }
 
-}
+}  // namespace vox

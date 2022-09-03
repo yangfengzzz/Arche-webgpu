@@ -7,47 +7,48 @@
 #ifndef wgsl_h
 #define wgsl_h
 
-#include "wgsl_common.h"
-#include "shaderlib/wgsl_encoder.h"
-#include "shader/shader_macro_collection.h"
+#include <webgpu/webgpu_cpp.h>
+
 #include <unordered_map>
 #include <unordered_set>
-#include <webgpu/webgpu_cpp.h>
+
+#include "shader/shader_macro_collection.h"
+#include "shaderlib/wgsl_encoder.h"
+#include "wgsl_common.h"
 
 namespace vox {
 class WGSL {
 public:
-    using BindGroupLayoutEntryMap = std::unordered_map<uint32_t, std::unordered_map<uint32_t, wgpu::BindGroupLayoutEntry>>;
+    using BindGroupLayoutEntryMap =
+            std::unordered_map<uint32_t, std::unordered_map<uint32_t, wgpu::BindGroupLayoutEntry>>;
     using BindGroupInfo = std::unordered_map<uint32_t, std::unordered_set<uint32_t>>;
-    
+
     class Builder;
-    
+
     WGSL() = default;
-    
-    WGSL(const std::string& source,
-         const BindGroupInfo& info,
-         const BindGroupLayoutEntryMap& entryMap);
-    
+
+    WGSL(const std::string& source, const BindGroupInfo& info, const BindGroupLayoutEntryMap& entryMap);
+
     virtual ~WGSL() = default;
-    
+
     virtual std::pair<const std::string&, const BindGroupInfo&> compile(const ShaderMacroCollection& macros);
-    
+
     const BindGroupLayoutEntryMap& bindGroupLayoutEntryMap();
-    
+
 public:
     WGSLEncoder createSourceEncoder(wgpu::ShaderStage currentStage);
-    
+
 protected:
     friend class WGSLEncoder;
     void _setSource(const std::string& source);
     void _setBindGroupInfo(const BindGroupInfo& info);
     void _setBindGroupLayoutEntryMap(const BindGroupLayoutEntryMap& map);
-    
+
     std::string _source{};
     BindGroupInfo _bindGroupInfo{};
     BindGroupLayoutEntryMap _bindGroupLayoutEntryMap{};
 };
 using WGSLPtr = std::unique_ptr<WGSL>;
 
-}
+}  // namespace vox
 #endif /* wgsl_h */

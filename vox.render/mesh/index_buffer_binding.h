@@ -21,7 +21,7 @@ public:
      * @param format - Index buffer format
      */
     IndexBufferBinding(Buffer buffer, wgpu::IndexFormat format);
-    
+
     /**
      * Index buffer.
      */
@@ -31,12 +31,12 @@ public:
      * Index buffer format.
      */
     wgpu::IndexFormat format() const;
-    
+
 private:
     Buffer _buffer;
     wgpu::IndexFormat _format;
 };
 
-}
+}  // namespace vox
 
 #endif /* index_buffer_binding_hpp */

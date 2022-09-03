@@ -7,16 +7,15 @@
 #include "wgsl_unlit.h"
 
 namespace vox {
-WGSLUnlitVertex::WGSLUnlitVertex():
-_commonVert("VertexIn"),
-_blendShapeInput("VertexIn"),
-_uvShare("VertexOut"),
-_beginPositionVert("in", "out"),
-_blendShapeVert("in", "out"),
-_skinningVert("in", "out"),
-_uvVert("in", "out"),
-_positionVert("in", "out") {
-}
+WGSLUnlitVertex::WGSLUnlitVertex()
+    : _commonVert("VertexIn"),
+      _blendShapeInput("VertexIn"),
+      _uvShare("VertexOut"),
+      _beginPositionVert("in", "out"),
+      _blendShapeVert("in", "out"),
+      _skinningVert("in", "out"),
+      _uvVert("in", "out"),
+      _positionVert("in", "out") {}
 
 void WGSLUnlitVertex::_createShaderSource(size_t hash, const ShaderMacroCollection& macros) {
     _source.clear();
@@ -30,7 +29,7 @@ void WGSLUnlitVertex::_createShaderSource(size_t hash, const ShaderMacroCollecti
         _uvShare(encoder, macros, outputStructCounter);
         encoder.addInoutType("VertexOut", BuiltInType::Position, "position", UniformType::Vec4f32);
 
-        encoder.addEntry({{"in", "VertexIn"}}, {"out", "VertexOut"}, [&](std::string &source){
+        encoder.addEntry({{"in", "VertexIn"}}, {"out", "VertexOut"}, [&](std::string& source) {
             _beginPositionVert(source, macros);
             _blendShapeVert(source, macros);
             _skinningVert(source, macros);
@@ -45,10 +44,7 @@ void WGSLUnlitVertex::_createShaderSource(size_t hash, const ShaderMacroCollecti
     _infoCache[hash] = _bindGroupInfo;
 }
 
-WGSLUnlitFragment::WGSLUnlitFragment():
-_common(),
-_uvShare("VertexOut") {
-}
+WGSLUnlitFragment::WGSLUnlitFragment() : _common(), _uvShare("VertexOut") {}
 
 void WGSLUnlitFragment::_createShaderSource(size_t hash, const ShaderMacroCollection& macros) {
     _source.clear();
@@ -62,9 +58,10 @@ void WGSLUnlitFragment::_createShaderSource(size_t hash, const ShaderMacroCollec
         encoder.addUniformBinding("u_alphaCutoff", UniformType::F32);
         encoder.addInoutType("Output", 0, "finalColor", UniformType::Vec4f32);
         if (macros.contains(HAS_BASE_TEXTURE)) {
-            encoder.addSampledTextureBinding("u_baseTexture", TextureType::Texture2Df32, "u_baseSampler", SamplerType::Sampler);
+            encoder.addSampledTextureBinding("u_baseTexture", TextureType::Texture2Df32, "u_baseSampler",
+                                             SamplerType::Sampler);
         }
-        encoder.addEntry({{"in", "VertexOut"}}, {"out", "Output"},  [&](std::string &source){
+        encoder.addEntry({{"in", "VertexOut"}}, {"out", "Output"}, [&](std::string& source) {
             source += "var baseColor = u_baseColor;\n";
             if (macros.contains(HAS_BASE_TEXTURE)) {
                 source += "var textureColor = textureSample(u_baseTexture, u_baseSampler, in.v_uv);\n";
@@ -82,7 +79,6 @@ void WGSLUnlitFragment::_createShaderSource(size_t hash, const ShaderMacroCollec
     WGSLEncoder::endCounter(inputStructCounter);
     _sourceCache[hash] = _source;
     _infoCache[hash] = _bindGroupInfo;
-    
 }
 
-}
+}  // namespace vox

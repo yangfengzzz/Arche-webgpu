@@ -5,9 +5,11 @@
 //  property of any third parties.
 
 #include "shaderlib/wgsl_encoder.h"
-#include "wgsl.h"
+
+#include <spdlog/fmt/fmt.h>
+
 #include "shader/shader.h"
-#include <fmt/core.h>
+#include "vox.render/shaderlib/wgsl.h"
 
 namespace vox {
 std::vector<uint32_t> WGSLEncoder::_counters{};
@@ -19,16 +21,12 @@ size_t WGSLEncoder::startCounter(uint32_t initVal) {
         }
     }
     _counters.push_back(initVal);
-    return _counters.size()-1;
+    return _counters.size() - 1;
 }
 
-uint32_t WGSLEncoder::getCounterNumber(size_t index) {
-    return _counters[index]++;
-}
+uint32_t WGSLEncoder::getCounterNumber(size_t index) { return _counters[index]++; }
 
-void WGSLEncoder::endCounter(size_t index) {
-    _counters[index] = static_cast<uint32_t>(-1);
-}
+void WGSLEncoder::endCounter(size_t index) { _counters[index] = static_cast<uint32_t>(-1); }
 
 WGSLEncoder::~WGSLEncoder() {
     if (_needFlush) {
@@ -46,13 +44,11 @@ void WGSLEncoder::addFunction(const std::string& code) {
     _needFlush = true;
 }
 
-void WGSLEncoder::addUniformBinding(const std::string& uniformName,
-                                    UniformType type, uint32_t group) {
+void WGSLEncoder::addUniformBinding(const std::string& uniformName, UniformType type, uint32_t group) {
     addUniformBinding(uniformName, toString(type), group);
 }
 
-void WGSLEncoder::addUniformBinding(const std::string& uniformName,
-                                    const std::string& type, uint32_t group) {
+void WGSLEncoder::addUniformBinding(const std::string& uniformName, const std::string& type, uint32_t group) {
     auto property = Shader::getPropertyByName(uniformName);
     if (property.has_value()) {
         addUniformBinding(uniformName, type, property.value().uniqueId, group);
@@ -61,14 +57,16 @@ void WGSLEncoder::addUniformBinding(const std::string& uniformName,
     }
 }
 
-void WGSLEncoder::addUniformBinding(const std::string& uniformName, const std::string& type,
-                                    uint32_t binding, uint32_t group) {
-    const std::string formatTemplate = "@group({}) @binding({})\n "
-    "var<uniform> {}: {};\n ";
-    
-    _uniformBlock += fmt::format(formatTemplate, group, binding,
-                                 uniformName, type);
-    
+void WGSLEncoder::addUniformBinding(const std::string& uniformName,
+                                    const std::string& type,
+                                    uint32_t binding,
+                                    uint32_t group) {
+    const std::string formatTemplate =
+            "@group({}) @binding({})\n "
+            "var<uniform> {}: {};\n ";
+
+    _uniformBlock += fmt::format(formatTemplate, group, binding, uniformName, type);
+
     wgpu::BindGroupLayoutEntry entry;
     entry.binding = binding;
     entry.visibility = _currentStage;
@@ -86,29 +84,35 @@ void WGSLEncoder::addUniformBinding(const std::string& uniformName, const std::s
     _needFlush = true;
 }
 
-void WGSLEncoder::addSampledTextureBinding(const std::string& texName, TextureType texType,
-                                           const std::string& samplerName, SamplerType samplerType,
+void WGSLEncoder::addSampledTextureBinding(const std::string& texName,
+                                           TextureType texType,
+                                           const std::string& samplerName,
+                                           SamplerType samplerType,
                                            uint32_t group) {
     auto texProperty = Shader::getPropertyByName(texName);
     auto samplerProperty = Shader::getPropertyByName(samplerName);
     if (texProperty.has_value() && samplerProperty.has_value()) {
         uint32_t texBinding = texProperty.value().uniqueId;
         uint32_t samplerBinding = samplerProperty.value().uniqueId;
-        addSampledTextureBinding(texName, texType, texBinding,
-                                 samplerName, samplerType, samplerBinding, group);
+        addSampledTextureBinding(texName, texType, texBinding, samplerName, samplerType, samplerBinding, group);
     } else {
         assert(false && "Unknown Uniform Name");
     }
 }
 
-void WGSLEncoder::addSampledTextureBinding(const std::string& texName, TextureType texType, uint32_t texBinding,
-                                           const std::string& samplerName, SamplerType samplerType, uint32_t samplerBinding,
+void WGSLEncoder::addSampledTextureBinding(const std::string& texName,
+                                           TextureType texType,
+                                           uint32_t texBinding,
+                                           const std::string& samplerName,
+                                           SamplerType samplerType,
+                                           uint32_t samplerBinding,
                                            uint32_t group) {
-    const std::string formatTemplate = "@group({}) @binding({}) var {}: {};\n "
-    "@group({}) @binding({}) var {}: {};\n ";
-    
-    _uniformBlock += fmt::format(formatTemplate, group, texBinding, texName, toString(texType),
-                                 group, samplerBinding, samplerName, toString(samplerType));
+    const std::string formatTemplate =
+            "@group({}) @binding({}) var {}: {};\n "
+            "@group({}) @binding({}) var {}: {};\n ";
+
+    _uniformBlock += fmt::format(formatTemplate, group, texBinding, texName, toString(texType), group, samplerBinding,
+                                 samplerName, toString(samplerType));
     // Texture
     {
         wgpu::BindGroupLayoutEntry entry;
@@ -148,14 +152,18 @@ void WGSLEncoder::addSampledTextureBinding(const std::string& texName, TextureTy
     _needFlush = true;
 }
 
-//MARK: - Storage
-void WGSLEncoder::addStorageBufferBinding(const std::string& bufferName, UniformType type,
-                                          bool isRead, uint32_t group) {
+// MARK: - Storage
+void WGSLEncoder::addStorageBufferBinding(const std::string& bufferName,
+                                          UniformType type,
+                                          bool isRead,
+                                          uint32_t group) {
     addStorageBufferBinding(bufferName, toString(type), isRead, group);
 }
 
-void WGSLEncoder::addStorageBufferBinding(const std::string& bufferName, const std::string& type,
-                                          bool isRead, uint32_t group) {
+void WGSLEncoder::addStorageBufferBinding(const std::string& bufferName,
+                                          const std::string& type,
+                                          bool isRead,
+                                          uint32_t group) {
     auto property = Shader::getPropertyByName(bufferName);
     if (property.has_value()) {
         addStorageBufferBinding(bufferName, type, isRead, property.value().uniqueId, group);
@@ -164,19 +172,18 @@ void WGSLEncoder::addStorageBufferBinding(const std::string& bufferName, const s
     }
 }
 
-void WGSLEncoder::addStorageBufferBinding(const std::string& bufferName, const std::string& type,
-                                          bool isRead, uint32_t binding, uint32_t group) {
-    const std::string formatTemplate = "@group({}) @binding({})\n "
-    "var<storage, {}> {}: {};\n ";
-    
+void WGSLEncoder::addStorageBufferBinding(
+        const std::string& bufferName, const std::string& type, bool isRead, uint32_t binding, uint32_t group) {
+    const std::string formatTemplate =
+            "@group({}) @binding({})\n "
+            "var<storage, {}> {}: {};\n ";
+
     if (isRead) {
-        _uniformBlock += fmt::format(formatTemplate, group, binding,
-                                     "read", bufferName, type);
+        _uniformBlock += fmt::format(formatTemplate, group, binding, "read", bufferName, type);
     } else {
-        _uniformBlock += fmt::format(formatTemplate, group, binding,
-                                     "read_write", bufferName, type);
+        _uniformBlock += fmt::format(formatTemplate, group, binding, "read_write", bufferName, type);
     }
-    
+
     wgpu::BindGroupLayoutEntry entry;
     entry.binding = binding;
     entry.visibility = _currentStage;
@@ -198,17 +205,19 @@ void WGSLEncoder::addStorageBufferBinding(const std::string& bufferName, const s
     _needFlush = true;
 }
 
-void WGSLEncoder::addStorageTextureBinding(const std::string& texName, StorageTextureType texType,
-                                           wgpu::TextureFormat texelFormat, uint32_t group) {
-    const std::string formatTemplate = "@group({}) @binding({})\n "
-    "var {}: {}<{}, write>;\n ";
-    
+void WGSLEncoder::addStorageTextureBinding(const std::string& texName,
+                                           StorageTextureType texType,
+                                           wgpu::TextureFormat texelFormat,
+                                           uint32_t group) {
+    const std::string formatTemplate =
+            "@group({}) @binding({})\n "
+            "var {}: {}<{}, write>;\n ";
+
     auto property = Shader::getPropertyByName(texName);
     if (property.has_value()) {
         uint32_t binding = property.value().uniqueId;
-        _uniformBlock += fmt::format(formatTemplate, group, binding, texName,
-                                     toString(texType), toString(texelFormat));
-        
+        _uniformBlock += fmt::format(formatTemplate, group, binding, texName, toString(texType), toString(texelFormat));
+
         wgpu::BindGroupLayoutEntry entry;
         entry.binding = binding;
         entry.visibility = _currentStage;
@@ -231,40 +240,46 @@ void WGSLEncoder::addStorageTextureBinding(const std::string& texName, StorageTe
     _needFlush = true;
 }
 
-//MARK: - Inout
-void WGSLEncoder::addInoutType(const std::string& structName,
-                               Attributes attributes, UniformType type) {
+// MARK: - Inout
+void WGSLEncoder::addInoutType(const std::string& structName, Attributes attributes, UniformType type) {
     addInoutType(structName, (uint32_t)attributes, toString(attributes), toString(type));
 }
 
-void WGSLEncoder::addInoutType(const std::string& structName, uint32_t location,
-                               const std::string& attributes, UniformType type) {
+void WGSLEncoder::addInoutType(const std::string& structName,
+                               uint32_t location,
+                               const std::string& attributes,
+                               UniformType type) {
     addInoutType(structName, location, attributes, toString(type));
 }
 
-void WGSLEncoder::addInoutType(const std::string& structName, uint32_t location,
-                               const std::string& attributes, const std::string& type) {
+void WGSLEncoder::addInoutType(const std::string& structName,
+                               uint32_t location,
+                               const std::string& attributes,
+                               const std::string& type) {
     const std::string formatTemplate = "@location({}) {}: {};";
-    _inoutType[structName].push_back(fmt::format(formatTemplate, location,
-                                                 attributes,  type));
+    _inoutType[structName].push_back(fmt::format(formatTemplate, location, attributes, type));
     _needFlush = true;
 }
 
-void WGSLEncoder::addInoutType(const std::string& structName, BuiltInType builtin,
-                               const std::string& attributes, UniformType type) {
+void WGSLEncoder::addInoutType(const std::string& structName,
+                               BuiltInType builtin,
+                               const std::string& attributes,
+                               UniformType type) {
     addInoutType(structName, builtin, attributes, toString(type));
 }
 
-void WGSLEncoder::addInoutType(const std::string& structName, BuiltInType builtin,
-                               const std::string& attributes, const std::string& type) {
+void WGSLEncoder::addInoutType(const std::string& structName,
+                               BuiltInType builtin,
+                               const std::string& attributes,
+                               const std::string& type) {
     const std::string formatTemplate = "@builtin({}) {}: {};";
-    _inoutType[structName].push_back(fmt::format(formatTemplate, toString(builtin),
-                                                 attributes,  type));
+    _inoutType[structName].push_back(fmt::format(formatTemplate, toString(builtin), attributes, type));
     _needFlush = true;
 }
 
 void WGSLEncoder::addEntry(const std::initializer_list<std::pair<std::string, std::string>>& inParam,
-                           const std::pair<std::string, std::string>& outType, std::function<void(std::string&)> code,
+                           const std::pair<std::string, std::string>& outType,
+                           std::function<void(std::string&)> code,
                            const std::initializer_list<std::pair<std::string, BuiltInType>>& builtIn) {
     if (_currentStage == wgpu::ShaderStage::Vertex) {
         _entryBlock += "@stage(vertex)\n";
@@ -273,7 +288,7 @@ void WGSLEncoder::addEntry(const std::initializer_list<std::pair<std::string, st
     } else {
         assert(false && "Use Begin at first");
     }
-    
+
     _entryBlock += "fn main(";
     for (const auto& param : inParam) {
         _entryBlock += param.first;
@@ -287,28 +302,29 @@ void WGSLEncoder::addEntry(const std::initializer_list<std::pair<std::string, st
     _entryBlock += ") -> ";
     _entryBlock += outType.second;
     _entryBlock += " {\n";
-    
+
     std::string formatTemplate = "var {}:{};\n";
     _entryBlock += fmt::format(formatTemplate, outType.first, outType.second);
-    
+
     code(_entryBlock);
-    
+
     formatTemplate = "return {};\n";
     _entryBlock += fmt::format(formatTemplate, outType.first);
     _entryBlock += "}\n";
-    
+
     _needFlush = true;
 }
 
-void WGSLEncoder::addEntry(const std::array<uint32_t, 3>& workgroupSize, std::function<void(std::string&)> code,
+void WGSLEncoder::addEntry(const std::array<uint32_t, 3>& workgroupSize,
+                           std::function<void(std::string&)> code,
                            const std::initializer_list<std::pair<std::string, BuiltInType>>& builtIn) {
     if (_currentStage == wgpu::ShaderStage::Compute) {
-        _entryBlock += fmt::format("@stage(compute) @workgroup_size({}, {}, {})\n",
-                                   workgroupSize[0], workgroupSize[1], workgroupSize[2]);
+        _entryBlock += fmt::format("@stage(compute) @workgroup_size({}, {}, {})\n", workgroupSize[0], workgroupSize[1],
+                                   workgroupSize[2]);
     } else {
         assert(false && "Use Begin at first");
     }
-    
+
     _entryBlock += "fn main(";
     for (const auto& vars : builtIn) {
         _entryBlock += fmt::format("@builtin({}) {}: {},\n", toString(vars.second), vars.first, toType(vars.second));
@@ -316,7 +332,7 @@ void WGSLEncoder::addEntry(const std::array<uint32_t, 3>& workgroupSize, std::fu
     _entryBlock += ") {\n";
     code(_entryBlock);
     _entryBlock += "}\n";
-    
+
     _needFlush = true;
 }
 
@@ -360,9 +376,6 @@ void WGSLEncoder::_buildSource() {
     _source += _entryBlock;
 }
 
-WGSLEncoder::WGSLEncoder(WGSL* wgsl, wgpu::ShaderStage currentStage):
-_wgsl(wgsl),
-_currentStage(currentStage){
-}
+WGSLEncoder::WGSLEncoder(WGSL* wgsl, wgpu::ShaderStage currentStage) : _wgsl(wgsl), _currentStage(currentStage) {}
 
-}
+}  // namespace vox

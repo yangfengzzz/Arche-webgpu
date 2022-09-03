@@ -7,12 +7,7 @@
 #include "render_element.h"
 
 namespace vox {
-RenderElement::RenderElement(Renderer *renderer, MeshPtr mesh,
-                             const SubMesh *subMesh, MaterialPtr material):
-renderer(renderer),
-mesh(mesh),
-subMesh(subMesh),
-material(material) {
-}
+RenderElement::RenderElement(Renderer *renderer, MeshPtr mesh, const SubMesh *subMesh, MaterialPtr material)
+    : renderer(renderer), mesh(mesh), subMesh(subMesh), material(material) {}
 
-}
+}  // namespace vox

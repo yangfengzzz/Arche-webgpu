@@ -10,7 +10,7 @@
 #include "material/base_material.h"
 #include "shaderlib/functors/wgsl_light_frag_define.h"
 #include "shaderlib/functors/wgsl_common_frag.h"
-#include "wgsl_cache.h"
+#include "vox.render/shaderlib/wgsl_cache.h"
 
 namespace vox {
 //MARK: - Unlit Vertex Code

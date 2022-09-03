@@ -8,7 +8,7 @@
 #define light_hpp
 
 #include "component.h"
-#include "matrix4x4.h"
+#include "vox.math/matrix4x4.h"
 
 namespace vox {
 /**

@@ -42,11 +42,11 @@ Matrix4x4F DirectLight::shadowProjectionMatrix() {
 }
 
 //MARK: - Reflection
-void DirectLight::onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+void DirectLight::onSerialize(nlohmann::json &data) {
     
 }
 
-void DirectLight::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+void DirectLight::onDeserialize(nlohmann::json &data) {
     
 }
 

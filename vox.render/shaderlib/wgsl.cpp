@@ -4,36 +4,23 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "wgsl.h"
+#include "vox.render/shaderlib/wgsl.h"
 
 namespace vox {
-WGSL::WGSL(const std::string& source,
-           const BindGroupInfo& info,
-           const BindGroupLayoutEntryMap& entryMap):
-_source(source),
-_bindGroupInfo(info),
-_bindGroupLayoutEntryMap(entryMap){
-}
+WGSL::WGSL(const std::string& source, const BindGroupInfo& info, const BindGroupLayoutEntryMap& entryMap)
+    : _source(source), _bindGroupInfo(info), _bindGroupLayoutEntryMap(entryMap) {}
 
 std::pair<const std::string&, const WGSL::BindGroupInfo&> WGSL::compile(const ShaderMacroCollection& macros) {
     return std::make_pair(_source, _bindGroupInfo);
 }
 
-const WGSL::BindGroupLayoutEntryMap& WGSL::bindGroupLayoutEntryMap() {
-    return _bindGroupLayoutEntryMap;
-}
+const WGSL::BindGroupLayoutEntryMap& WGSL::bindGroupLayoutEntryMap() { return _bindGroupLayoutEntryMap; }
 
-WGSLEncoder WGSL::createSourceEncoder(wgpu::ShaderStage currentStage) {
-    return WGSLEncoder(this, currentStage);
-}
+WGSLEncoder WGSL::createSourceEncoder(wgpu::ShaderStage currentStage) { return WGSLEncoder(this, currentStage); }
 
-void WGSL::_setSource(const std::string& source) {
-    _source = source;
-}
+void WGSL::_setSource(const std::string& source) { _source = source; }
 
-void WGSL::_setBindGroupInfo(const BindGroupInfo& info) {
-    _bindGroupInfo = info;
-}
+void WGSL::_setBindGroupInfo(const BindGroupInfo& info) { _bindGroupInfo = info; }
 
 void WGSL::_setBindGroupLayoutEntryMap(const BindGroupLayoutEntryMap& map) {
     for (const auto& groupIter : map) {
@@ -51,4 +38,4 @@ void WGSL::_setBindGroupLayoutEntryMap(const BindGroupLayoutEntryMap& map) {
     }
 }
 
-}
+}  // namespace vox

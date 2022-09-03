@@ -310,11 +310,11 @@ uint32_t Camera::framebufferHeight() const {
 }
 
 //MARK: - Reflection
-void Camera::onSerialize(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node) {
+void Camera::onSerialize(nlohmann::json &data) {
     
 }
 
-void Camera::onDeserialize(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node) {
+void Camera::onDeserialize(nlohmann::json &data) {
     
 }
 

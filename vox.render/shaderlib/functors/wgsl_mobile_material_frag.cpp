@@ -5,12 +5,14 @@
 //  property of any third parties.
 
 #include "wgsl_mobile_material_frag.h"
-#include "wgsl.h"
-#include <fmt/core.h>
+
+#include <spdlog/fmt/fmt.h>
+
+#include "vox.render/shaderlib/wgsl.h"
 
 namespace vox {
-WGSLMobileMaterialShare::WGSLMobileMaterialShare(const std::string& outputStructName) :
-_outputStructName(outputStructName) {
+WGSLMobileMaterialShare::WGSLMobileMaterialShare(const std::string& outputStructName)
+    : _outputStructName(outputStructName) {
     _blinnPhongStruct = "struct BlinnPhongData {\n";
     _blinnPhongStruct += "  baseColor : vec4<f32>;\n";
     _blinnPhongStruct += "  specularColor : vec4<f32>;\n";
@@ -21,31 +23,32 @@ _outputStructName(outputStructName) {
 }
 
 void WGSLMobileMaterialShare::operator()(WGSLEncoder& encoder,
-                                         const ShaderMacroCollection& macros, size_t counterIndex) {
+                                         const ShaderMacroCollection& macros,
+                                         size_t counterIndex) {
     encoder.addStruct(_blinnPhongStruct);
     encoder.addUniformBinding("u_blinnPhongData", "BlinnPhongData");
-    
+
     encoder.addUniformBinding("u_alphaCutoff", UniformType::F32);
-    
+
     if (macros.contains(HAS_EMISSIVE_TEXTURE)) {
-        encoder.addSampledTextureBinding("u_emissiveTexture", TextureType::Texture2Df32,
-                                         "u_emissiveSampler", SamplerType::Sampler);
+        encoder.addSampledTextureBinding("u_emissiveTexture", TextureType::Texture2Df32, "u_emissiveSampler",
+                                         SamplerType::Sampler);
     }
-    
+
     if (macros.contains(HAS_DIFFUSE_TEXTURE)) {
-        encoder.addSampledTextureBinding("u_diffuseTexture", TextureType::Texture2Df32,
-                                         "u_diffuseSampler", SamplerType::Sampler);
+        encoder.addSampledTextureBinding("u_diffuseTexture", TextureType::Texture2Df32, "u_diffuseSampler",
+                                         SamplerType::Sampler);
     }
-    
+
     if (macros.contains(HAS_SPECULAR_TEXTURE)) {
-        encoder.addSampledTextureBinding("u_specularTexture", TextureType::Texture2Df32,
-                                         "u_specularSampler", SamplerType::Sampler);
+        encoder.addSampledTextureBinding("u_specularTexture", TextureType::Texture2Df32, "u_specularSampler",
+                                         SamplerType::Sampler);
     }
-    
+
     if (macros.contains(HAS_NORMAL_TEXTURE)) {
-        encoder.addSampledTextureBinding("u_normalTexture", TextureType::Texture2Df32,
-                                         "u_normalSampler", SamplerType::Sampler);
+        encoder.addSampledTextureBinding("u_normalTexture", TextureType::Texture2Df32, "u_normalSampler",
+                                         SamplerType::Sampler);
     }
 }
 
-}
+}  // namespace vox

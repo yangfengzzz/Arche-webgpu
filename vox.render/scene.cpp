@@ -182,11 +182,11 @@ void Scene::updateShaderData() {
 }
 
 //MARK: - Reflection
-void Scene::onSerialize(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node) {
+void Scene::onSerialize(nlohmann::json &data) {
     
 }
 
-void Scene::onDeserialize(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node) {
+void Scene::onDeserialize(nlohmann::json &data) {
     
 }
 

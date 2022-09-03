@@ -7,34 +7,28 @@
 #include "buffer.h"
 
 namespace vox {
-Buffer::Buffer(wgpu::Device& device, uint64_t byteLength, wgpu::BufferUsage bufferUsage):
-_size(byteLength) {
+Buffer::Buffer(wgpu::Device& device, uint64_t byteLength, wgpu::BufferUsage bufferUsage) : _size(byteLength) {
     wgpu::BufferDescriptor desc;
     desc.usage = bufferUsage;
     desc.size = byteLength;
     _nativeBuffer = device.CreateBuffer(&desc);
 }
 
-Buffer::Buffer(wgpu::Device& device, const void* data,
-               uint64_t size, wgpu::BufferUsage bufferUsage) {
+Buffer::Buffer(wgpu::Device& device, const void* data, uint64_t size, wgpu::BufferUsage bufferUsage) {
     wgpu::BufferDescriptor desc;
     desc.usage = bufferUsage;
     desc.size = size;
     _nativeBuffer = device.CreateBuffer(&desc);
-    
-    uploadData(device, data, size);    
+
+    uploadData(device, data, size);
 }
 
 void Buffer::uploadData(wgpu::Device& device, const void* data, uint64_t size, uint64_t bufferOffset) {
     device.GetQueue().WriteBuffer(_nativeBuffer, bufferOffset, data, size);
 }
 
-const wgpu::Buffer& Buffer::handle() const {
-    return _nativeBuffer;
-}
+const wgpu::Buffer& Buffer::handle() const { return _nativeBuffer; }
 
-uint64_t Buffer::size() const {
-    return _size;
-}
+uint64_t Buffer::size() const { return _size; }
 
-}
+}  // namespace vox

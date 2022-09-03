@@ -7,26 +7,26 @@
 #ifndef wgsl_unlit_hpp
 #define wgsl_unlit_hpp
 
-#include "wgsl_cache.h"
+#include "functors/wgsl_begin_position_vert.h"
+#include "functors/wgsl_blend_shape_input.h"
+#include "functors/wgsl_blend_shape_vert.h"
 #include "functors/wgsl_common.h"
 #include "functors/wgsl_common_vert.h"
-#include "functors/wgsl_blend_shape_input.h"
-#include "functors/wgsl_uv_share.h"
-#include "functors/wgsl_begin_position_vert.h"
-#include "functors/wgsl_blend_shape_vert.h"
-#include "functors/wgsl_skinning_vert.h"
-#include "functors/wgsl_uv_vert.h"
 #include "functors/wgsl_position_vert.h"
+#include "functors/wgsl_skinning_vert.h"
+#include "functors/wgsl_uv_share.h"
+#include "functors/wgsl_uv_vert.h"
+#include "wgsl_cache.h"
 
 namespace vox {
-//MARK: - Unlit Vertex Code
+// MARK: - Unlit Vertex Code
 class WGSLUnlitVertex : public WGSLCache {
 public:
     WGSLUnlitVertex();
-        
+
 private:
     void _createShaderSource(size_t hash, const ShaderMacroCollection& macros) override;
-    
+
     WGSLCommonVert _commonVert;
     WGSLBlendShapeInput _blendShapeInput;
     WGSLUVShare _uvShare;
@@ -37,18 +37,18 @@ private:
     WGSLPositionVert _positionVert;
 };
 
-//MARK: - Unlit Fragment Code
+// MARK: - Unlit Fragment Code
 class WGSLUnlitFragment : public WGSLCache {
 public:
     WGSLUnlitFragment();
-        
+
 private:
     void _createShaderSource(size_t hash, const ShaderMacroCollection& macros) override;
-    
+
     WGSLCommon _common;
     WGSLUVShare _uvShare;
 };
 
-}
+}  // namespace vox
 
 #endif /* wgsl_unlit_hpp */

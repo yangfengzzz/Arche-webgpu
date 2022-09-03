@@ -21,49 +21,49 @@ public:
     struct Skin {
         std::string name;
         std::vector<Matrix4x4F> inverseBindMatrices;
-        std::vector<Entity *> joints;
+        std::vector<Entity*> joints;
     };
     using SkinPtr = std::shared_ptr<Skin>;
-    
+
 public:
-    GPUSkinnedMeshRenderer(Entity *entity);
-    
+    GPUSkinnedMeshRenderer(Entity* entity);
+
     /**
      * Skin Object.
      */
     SkinPtr skin();
-    
-    void setSkin(const SkinPtr &skin);
-    
+
+    void setSkin(const SkinPtr& skin);
+
     void update(float deltaTime) override;
-    
+
 public:
     /**
      * Serialize the component
      */
-    void onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) override;
-    
+    void onSerialize(nlohmann::json& data) override;
+
     /**
      * Deserialize the component
      */
-    void onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) override;
-    
+    void onDeserialize(nlohmann::json& data) override;
+
     /**
      * Defines how the component should be drawn in the inspector
      */
     void onInspector(ui::WidgetContainer& p_root) override;
-    
+
 private:
     SkinPtr _skin;
-    
+
     void _initJoints();
-    
+
     bool _hasInitJoints = false;
-    
+
     std::vector<float> jointMatrix{};
     ShaderProperty _jointMatrixProperty;
 };
 
-}
+}  // namespace vox
 
 #endif /* gpu_skinned_mesh_renderer_hpp */

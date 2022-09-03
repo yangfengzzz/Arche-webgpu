@@ -4,16 +4,15 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef buffer_mesh_hpp
-#define buffer_mesh_hpp
+#pragma once
 
-#include "graphics/mesh.h"
+#include "mesh/mesh.h"
 
 namespace vox {
-class BufferMesh:public Mesh {
-public:    
+class BufferMesh : public Mesh {
+public:
     void setInstanceCount(uint32_t newValue);
-    
+
     /**
      * Vertex buffer binding collection.
      */
@@ -23,7 +22,7 @@ public:
      * Index buffer binding.
      */
     const std::optional<IndexBufferBinding>& indexBufferBinding();
-    
+
     /**
      * Vertex layout collection.
      */
@@ -34,15 +33,16 @@ public:
      * @param layouts - Vertex layouts collection
      */
     void setVertexLayouts(const std::vector<wgpu::VertexBufferLayout>& layouts);
-    
+
     /**
      * Set vertex layouts.
      * @param attributes - Vertex attributes collection
      * @param stride - stride step size
      */
     void setVertexLayouts(const std::vector<wgpu::VertexAttribute>& attributes,
-                          uint64_t stride, wgpu::VertexStepMode stepMode = wgpu::VertexStepMode::Vertex);
-    
+                          uint64_t stride,
+                          wgpu::VertexStepMode stepMode = wgpu::VertexStepMode::Vertex);
+
     /**
      * Set vertex buffer binding.
      * @param buffer - Vertex buffer binding
@@ -56,7 +56,7 @@ public:
      * @param firstIndex - First vertex buffer index, the default value is 0
      */
     void setVertexBufferBindings(const std::vector<Buffer>& vertexBufferBindings, size_t firstIndex = 0);
-    
+
     /**
      * Set index buffer binding.
      * @param buffer - Index buffer
@@ -70,12 +70,10 @@ public:
      * @remarks When bufferBinding is null, it will clear IndexBufferBinding
      */
     void setIndexBufferBinding(std::optional<IndexBufferBinding> bufferBinding);
-    
+
 private:
     wgpu::VertexBufferLayout _layouts;
     std::vector<wgpu::VertexAttribute> _vertexAttributes{};
 };
 
-}
-
-#endif /* buffer_mesh_hpp */
+}  // namespace vox

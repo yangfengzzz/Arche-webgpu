@@ -5,7 +5,7 @@
 //  property of any third parties.
 
 #include "wgsl_cluster_debug.h"
-#include <fmt/core.h>
+#include <spdlog/fmt/fmt.h>
 
 namespace vox {
 WGSLClusterDebug::WGSLClusterDebug(const std::array<uint32_t, 3>& tileCount, uint32_t maxLightsPerCluster):

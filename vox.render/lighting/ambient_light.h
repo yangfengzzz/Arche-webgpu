@@ -8,10 +8,10 @@
 #define ambient_light_hpp
 
 #include "scene_forward.h"
-#include "spherical_harmonics3.h"
+#include "vox.math/spherical_harmonics3.h"
 #include "texture/sampled_texture.h"
 #include "shader/shader_property.h"
-#include "matrix4x4.h"
+#include "vox.math/matrix4x4.h"
 
 namespace vox {
 /**

@@ -7,13 +7,12 @@
 #include "wgsl_skybox_debugger.h"
 
 namespace vox {
-WGSLSkyboxDebuggerVertex::WGSLSkyboxDebuggerVertex():
-_commonVert("VertexIn"),
-_uvShare("VertexOut"),
-_beginPositionVert("in", "out"),
-_uvVert("in", "out"),
-_positionVert("in", "out") {
-}
+WGSLSkyboxDebuggerVertex::WGSLSkyboxDebuggerVertex()
+    : _commonVert("VertexIn"),
+      _uvShare("VertexOut"),
+      _beginPositionVert("in", "out"),
+      _uvVert("in", "out"),
+      _positionVert("in", "out") {}
 
 void WGSLSkyboxDebuggerVertex::_createShaderSource(size_t hash, const ShaderMacroCollection& macros) {
     _source.clear();
@@ -26,7 +25,7 @@ void WGSLSkyboxDebuggerVertex::_createShaderSource(size_t hash, const ShaderMacr
         _uvShare(encoder, macros, outputStructCounter);
         encoder.addInoutType("VertexOut", BuiltInType::Position, "position", UniformType::Vec4f32);
 
-        encoder.addEntry({{"in", "VertexIn"}}, {"out", "VertexOut"}, [&](std::string &source){
+        encoder.addEntry({{"in", "VertexIn"}}, {"out", "VertexOut"}, [&](std::string& source) {
             _beginPositionVert(source, macros);
             _uvVert(source, macros);
             _positionVert(source, macros);
@@ -39,10 +38,7 @@ void WGSLSkyboxDebuggerVertex::_createShaderSource(size_t hash, const ShaderMacr
     _infoCache[hash] = _bindGroupInfo;
 }
 
-WGSLSkyboxDebuggerFragment::WGSLSkyboxDebuggerFragment():
-_common(),
-_uvShare("VertexOut") {
-}
+WGSLSkyboxDebuggerFragment::WGSLSkyboxDebuggerFragment() : _common(), _uvShare("VertexOut") {}
 
 void WGSLSkyboxDebuggerFragment::_createShaderSource(size_t hash, const ShaderMacroCollection& macros) {
     _source.clear();
@@ -54,15 +50,16 @@ void WGSLSkyboxDebuggerFragment::_createShaderSource(size_t hash, const ShaderMa
         _uvShare(encoder, macros, inputStructCounter);
 
         encoder.addInoutType("Output", 0, "finalColor", UniformType::Vec4f32);
-        encoder.addSampledTextureBinding("u_baseTexture", TextureType::Texture2Df32, "u_baseSampler", SamplerType::Sampler);
+        encoder.addSampledTextureBinding("u_baseTexture", TextureType::Texture2Df32, "u_baseSampler",
+                                         SamplerType::Sampler);
         encoder.addUniformBinding("u_faceIndex", UniformType::I32);
 
-        encoder.addEntry({{"in", "VertexOut"}}, {"out", "Output"},  [&](std::string &source){
+        encoder.addEntry({{"in", "VertexOut"}}, {"out", "Output"}, [&](std::string& source) {
             source += "var uv = in.v_uv;\n";
             source += "if (u_faceIndex == 2 || u_faceIndex == 3) {\n";
             source += "    uv.y = 1.0 - uv.y;\n";
             source += "}\n";
-            
+
             source += "var baseColor = textureSample(u_baseTexture, u_baseSampler, uv);\n";
             source += "out.finalColor = vec4<f32>(baseColor.rgb, 1.0);\n";
         });
@@ -71,7 +68,6 @@ void WGSLSkyboxDebuggerFragment::_createShaderSource(size_t hash, const ShaderMa
     WGSLEncoder::endCounter(inputStructCounter);
     _sourceCache[hash] = _source;
     _infoCache[hash] = _bindGroupInfo;
-    
 }
 
-}
+}  // namespace vox

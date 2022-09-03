@@ -10,11 +10,11 @@
 #include "wgsl_cache.h"
 
 namespace vox {
-//MARK: - Quad Vertex Code
+// MARK: - Quad Vertex Code
 class WGSLQuadVertex : public WGSLCache {
 private:
     void _createShaderSource(size_t hash, const ShaderMacroCollection& macros) override;
 };
 
-}
+}  // namespace vox
 #endif /* wgsl_quad_hpp */

@@ -5,32 +5,31 @@
 //  property of any third parties.
 
 #include "wgsl_blinn_phong.h"
-#include "light_manager.h"
+
+#include "vox.render/lighting/light_manager.h"
 
 namespace vox {
-WGSLBlinnPhongVertex::WGSLBlinnPhongVertex():
-_common(),
-_commonVert("VertexIn"),
-_blendShapeInput("VertexIn"),
-_uvShare("VertexOut"),
-_colorShare("VertexOut"),
-_normalShare("VertexOut"),
-_worldPosShare("VertexOut"),
+WGSLBlinnPhongVertex::WGSLBlinnPhongVertex()
+    : _common(),
+      _commonVert("VertexIn"),
+      _blendShapeInput("VertexIn"),
+      _uvShare("VertexOut"),
+      _colorShare("VertexOut"),
+      _normalShare("VertexOut"),
+      _worldPosShare("VertexOut"),
 
-_beginPositionVert("in", "out"),
-_beginNormalVert("in", "out"),
-_blendShapeVert("in", "out"),
-_skinningVert("in", "out"),
-_uvVert("in", "out"),
-_colorVert("in", "out"),
-_normalVert("in", "out"),
-_worldPosVert("in", "out"),
-_positionVert("in", "out"),
+      _beginPositionVert("in", "out"),
+      _beginNormalVert("in", "out"),
+      _blendShapeVert("in", "out"),
+      _skinningVert("in", "out"),
+      _uvVert("in", "out"),
+      _colorVert("in", "out"),
+      _normalVert("in", "out"),
+      _worldPosVert("in", "out"),
+      _positionVert("in", "out"),
 
-_shadowShare("VertexOut"),
-_shadowVert("out"){
-    
-}
+      _shadowShare("VertexOut"),
+      _shadowVert("out") {}
 
 void WGSLBlinnPhongVertex::_createShaderSource(size_t hash, const ShaderMacroCollection& macros) {
     _source.clear();
@@ -42,16 +41,16 @@ void WGSLBlinnPhongVertex::_createShaderSource(size_t hash, const ShaderMacroCol
         _common(encoder, macros);
         _commonVert(encoder, macros);
         _blendShapeInput(encoder, macros, inputStructCounter);
-        
+
         _uvShare(encoder, macros, outputStructCounter);
         _colorShare(encoder, macros, outputStructCounter);
         _normalShare(encoder, macros, outputStructCounter);
         _worldPosShare(encoder, macros, outputStructCounter);
         _shadowShare(encoder, macros, outputStructCounter);
-        
+
         encoder.addInoutType("VertexOut", BuiltInType::Position, "position", UniformType::Vec4f32);
-        
-        encoder.addEntry({{"in", "VertexIn"}}, {"out", "VertexOut"}, [&](std::string &source){
+
+        encoder.addEntry({{"in", "VertexIn"}}, {"out", "VertexOut"}, [&](std::string& source) {
             _beginPositionVert(source, macros);
             _beginNormalVert(source, macros);
             _blendShapeVert(source, macros);
@@ -61,7 +60,7 @@ void WGSLBlinnPhongVertex::_createShaderSource(size_t hash, const ShaderMacroCol
             _normalVert(source, macros);
             _worldPosVert(source, macros);
             _positionVert(source, macros);
-            
+
             _shadowVert(source, macros);
         });
         encoder.flush();
@@ -72,31 +71,30 @@ void WGSLBlinnPhongVertex::_createShaderSource(size_t hash, const ShaderMacroCol
     _infoCache[hash] = _bindGroupInfo;
 }
 
-//MARK: - Frag
-WGSLBlinnPhongFragment::WGSLBlinnPhongFragment():
-_common(),
-_commonFrag("VertexOut"),
-_uvShare("VertexOut"),
-_colorShare("VertexOut"),
-_normalShare("VertexOut"),
-_worldPosShare("VertexOut"),
-_lightFragDefine(),
-_mobileMaterialShare("VertexOut"),
-_normalGet("VertexOut"),
+// MARK: - Frag
+WGSLBlinnPhongFragment::WGSLBlinnPhongFragment()
+    : _common(),
+      _commonFrag("VertexOut"),
+      _uvShare("VertexOut"),
+      _colorShare("VertexOut"),
+      _normalShare("VertexOut"),
+      _worldPosShare("VertexOut"),
+      _lightFragDefine(),
+      _mobileMaterialShare("VertexOut"),
+      _normalGet("VertexOut"),
 
-_beginMobileFrag("in", "out"),
-_beginViewDirFrag("in", "out"),
-_mobileBlinnphoneFrag("in", "out"),
+      _beginMobileFrag("in", "out"),
+      _beginViewDirFrag("in", "out"),
+      _mobileBlinnphoneFrag("in", "out"),
 
-_shadowShare("VertexOut"),
-_shadowFrag(),
-_shadowCommon(),
+      _shadowShare("VertexOut"),
+      _shadowFrag(),
+      _shadowCommon(),
 
-_forwardPlusUniforms(),
-_tileFunctions(LightManager::TILE_COUNT),
-_clusterLightsStructs(LightManager::TILE_COUNT[0] * LightManager::TILE_COUNT[1] * LightManager::TILE_COUNT[2],
-                      LightManager::MAX_LIGHTS_PER_CLUSTER) {
-}
+      _forwardPlusUniforms(),
+      _tileFunctions(LightManager::TILE_COUNT),
+      _clusterLightsStructs(LightManager::TILE_COUNT[0] * LightManager::TILE_COUNT[1] * LightManager::TILE_COUNT[2],
+                            LightManager::MAX_LIGHTS_PER_CLUSTER) {}
 
 void WGSLBlinnPhongFragment::_createShaderSource(size_t hash, const ShaderMacroCollection& macros) {
     _source.clear();
@@ -108,28 +106,28 @@ void WGSLBlinnPhongFragment::_createShaderSource(size_t hash, const ShaderMacroC
 
         _common(encoder, macros);
         _shadowCommon(encoder, macros);
-        
+
         _commonFrag(encoder, macros);
         _shadowFrag(encoder, macros);
-        
+
         _uvShare(encoder, macros, inputStructCounter);
         _colorShare(encoder, macros, inputStructCounter);
         _normalShare(encoder, macros, inputStructCounter);
         _worldPosShare(encoder, macros, inputStructCounter);
         _shadowShare(encoder, macros, inputStructCounter);
-        
+
         if (LightManager::getSingleton().enableForwardPlus()) {
             _forwardPlusUniforms(encoder, macros);
             _tileFunctions(encoder, macros);
             _clusterLightsStructs(encoder, macros);
         }
-        
+
         _lightFragDefine(encoder, macros);
         _mobileMaterialShare(encoder, macros, inputStructCounter);
         _normalGet(encoder, macros, inputStructCounter);
-        
+
         encoder.addInoutType("Output", 0, "finalColor", UniformType::Vec4f32);
-        encoder.addEntry({{"in", "VertexOut"}}, {"out", "Output"}, [&](std::string &source){
+        encoder.addEntry({{"in", "VertexOut"}}, {"out", "Output"}, [&](std::string& source) {
             _beginMobileFrag(source, macros);
             _beginViewDirFrag(source, macros);
             _mobileBlinnphoneFrag(source, macros);
@@ -138,7 +136,7 @@ void WGSLBlinnPhongFragment::_createShaderSource(size_t hash, const ShaderMacroC
                 source += "diffuse = diffuse * shadow;\n";
                 source += "specular = specular * shadow;\n";
             }
-            
+
             source += "out.finalColor = emission + ambient + diffuse + specular;\n";
             source += "out.finalColor.a = diffuse.a;\n";
         });
@@ -149,4 +147,4 @@ void WGSLBlinnPhongFragment::_createShaderSource(size_t hash, const ShaderMacroC
     _infoCache[hash] = _bindGroupInfo;
 }
 
-}
+}  // namespace vox

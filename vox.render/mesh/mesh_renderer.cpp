@@ -5,19 +5,15 @@
 //  property of any third parties.
 
 #include "mesh_renderer.h"
-#include "graphics/mesh.h"
-#include "shaderlib/wgsl_common.h"
+
 #include "entity.h"
+#include "mesh/mesh.h"
+#include "shaderlib/wgsl_common.h"
 
 namespace vox {
-std::string MeshRenderer::name() {
-    return "MeshRenderer";
-}
+std::string MeshRenderer::name() { return "MeshRenderer"; }
 
-MeshRenderer::MeshRenderer(Entity *entity) :
-Renderer(entity) {
-    
-}
+MeshRenderer::MeshRenderer(Entity *entity) : Renderer(entity) {}
 
 void MeshRenderer::setMesh(const MeshPtr &newValue) {
     auto &lastMesh = _mesh;
@@ -32,9 +28,7 @@ void MeshRenderer::setMesh(const MeshPtr &newValue) {
     }
 }
 
-MeshPtr MeshRenderer::mesh() {
-    return _mesh;
-}
+MeshPtr MeshRenderer::mesh() { return _mesh; }
 
 void MeshRenderer::_render(std::vector<RenderElement> &opaqueQueue,
                            std::vector<RenderElement> &alphaTestQueue,
@@ -42,12 +36,12 @@ void MeshRenderer::_render(std::vector<RenderElement> &opaqueQueue,
     if (_mesh != nullptr) {
         if (_meshUpdateFlag->flag) {
             const auto &vertexLayouts = _mesh->vertexBufferLayouts();
-            
+
             shaderData.disableMacro(HAS_UV);
             shaderData.disableMacro(HAS_NORMAL);
             shaderData.disableMacro(HAS_TANGENT);
             shaderData.disableMacro(HAS_VERTEXCOLOR);
-            
+
             for (size_t i = 0, n = vertexLayouts.size(); i < n; i++) {
                 for (uint32_t j = 0, m = vertexLayouts[i].attributeCount; j < m; j++) {
                     if (vertexLayouts[i].attributes[j].shaderLocation == (uint32_t)Attributes::UV_0) {
@@ -66,7 +60,7 @@ void MeshRenderer::_render(std::vector<RenderElement> &opaqueQueue,
             }
             _meshUpdateFlag->flag = false;
         }
-        
+
         auto &subMeshes = _mesh->subMeshes();
         for (size_t i = 0; i < subMeshes.size(); i++) {
             MaterialPtr material;
@@ -91,23 +85,16 @@ void MeshRenderer::_updateBounds(BoundingBox3F &worldBounds) {
         const auto worldMatrix = _entity->transform->worldMatrix();
         worldBounds = localBounds.transform(worldMatrix);
     } else {
-        worldBounds.lowerCorner = Point3F(0, 0, 0);
-        worldBounds.upperCorner = Point3F(0, 0, 0);
+        worldBounds.lower_corner = Point3F(0, 0, 0);
+        worldBounds.upper_corner = Point3F(0, 0, 0);
     }
 }
 
-//MARK: - Reflection
-void MeshRenderer::onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
-    
-}
+// MARK: - Reflection
+void MeshRenderer::onSerialize(nlohmann::json &data) {}
 
-void MeshRenderer::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
-    
-}
+void MeshRenderer::onDeserialize(nlohmann::json &data) {}
 
-void MeshRenderer::onInspector(ui::WidgetContainer& p_root) {
-    
-}
+void MeshRenderer::onInspector(ui::WidgetContainer &p_root) {}
 
-
-}
+}  // namespace vox

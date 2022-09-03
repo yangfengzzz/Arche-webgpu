@@ -5,31 +5,20 @@
 //  property of any third parties.
 
 #include "compute_pass.h"
-#include "render_pass.h"
-#include <glog/logging.h>
+#include "vox.base/logging.h"
 
 namespace vox {
-ComputePass::ComputePass(wgpu::Device& device, WGSLPtr&& source) :
-_source(std::move(source)),
-_resourceCache(device) {
+ComputePass::ComputePass(wgpu::Device& device, WGSLPtr&& source) : _source(std::move(source)), _resourceCache(device) {
     _computePipelineDescriptor.compute.entryPoint = "main";
 }
 
-uint32_t ComputePass::workgroupCountX() const {
-    return _workgroupCountX;
-}
+uint32_t ComputePass::workgroupCountX() const { return _workgroupCountX; }
 
-uint32_t ComputePass::workgroupCountY() const {
-    return _workgroupCountY;
-}
+uint32_t ComputePass::workgroupCountY() const { return _workgroupCountY; }
 
-uint32_t ComputePass::workgroupCountZ() const {
-    return _workgroupCountZ;
-}
+uint32_t ComputePass::workgroupCountZ() const { return _workgroupCountZ; }
 
-void ComputePass::setDispatchCount(uint32_t workgroupCountX,
-                                      uint32_t workgroupCountY,
-                                      uint32_t workgroupCountZ) {
+void ComputePass::setDispatchCount(uint32_t workgroupCountX, uint32_t workgroupCountY, uint32_t workgroupCountZ) {
     _workgroupCountX = workgroupCountX;
     _workgroupCountY = workgroupCountY;
     _workgroupCountZ = workgroupCountZ;
@@ -40,7 +29,7 @@ void ComputePass::attachShaderData(ShaderData* data) {
     if (iter == _data.end()) {
         _data.push_back(data);
     } else {
-        LOG(ERROR) << "ShaderData already attached." << std::endl;;
+        LOGE("ShaderData already attached.")
     }
 }
 
@@ -51,14 +40,14 @@ void ComputePass::detachShaderData(ShaderData* data) {
     }
 }
 
-void ComputePass::compute(wgpu::ComputePassEncoder &passEncoder) {
+void ComputePass::compute(wgpu::ComputePassEncoder& passEncoder) {
     auto compileMacros = ShaderMacroCollection();
     for (auto& shaderData : _data) {
         shaderData->mergeMacro(compileMacros, compileMacros);
     }
-    
+
     _computePipelineDescriptor.compute.module = _compileShader(compileMacros);
-    
+
     std::vector<wgpu::BindGroupLayout> bindGroupLayouts;
     for (auto& layoutDesc : _bindGroupLayoutDescriptorMap) {
         wgpu::BindGroupLayout bindGroupLayout = _resourceCache.requestBindGroupLayout(layoutDesc.second);
@@ -69,8 +58,8 @@ void ComputePass::compute(wgpu::ComputePassEncoder &passEncoder) {
             _bindGroupEntries[i].binding = entry.binding;
             if (entry.buffer.type != wgpu::BufferBindingType::Undefined) {
                 _bindingData(_bindGroupEntries[i]);
-            } else if (entry.texture.sampleType != wgpu::TextureSampleType::Undefined
-                       || entry.storageTexture.access != wgpu::StorageTextureAccess::Undefined) {
+            } else if (entry.texture.sampleType != wgpu::TextureSampleType::Undefined ||
+                       entry.storageTexture.access != wgpu::StorageTextureAccess::Undefined) {
                 _bindingTexture(_bindGroupEntries[i]);
             } else if (entry.sampler.type != wgpu::SamplerBindingType::Undefined) {
                 _bindingSampler(_bindGroupEntries[i]);
@@ -84,48 +73,48 @@ void ComputePass::compute(wgpu::ComputePassEncoder &passEncoder) {
         bindGroupLayouts.emplace_back(std::move(bindGroupLayout));
     }
     _flush();
-    
+
     _pipelineLayoutDescriptor.bindGroupLayoutCount = static_cast<uint32_t>(bindGroupLayouts.size());
     _pipelineLayoutDescriptor.bindGroupLayouts = bindGroupLayouts.data();
     _pipelineLayout = _resourceCache.requestPipelineLayout(_pipelineLayoutDescriptor);
     _computePipelineDescriptor.layout = _pipelineLayout;
     auto renderPipeline = _resourceCache.requestPipeline(_computePipelineDescriptor);
     passEncoder.SetPipeline(renderPipeline);
-    
+
     passEncoder.Dispatch(_workgroupCountX, _workgroupCountY, _workgroupCountZ);
 }
 
-//MARK: - Internal
+// MARK: - Internal
 void ComputePass::_flush() {
     _bindGroupLayoutEntryVecMap.clear();
     _bindGroupLayoutDescriptorMap.clear();
 }
 
-wgpu::ShaderModule &ComputePass::_compileShader(const ShaderMacroCollection& macros) {
+wgpu::ShaderModule& ComputePass::_compileShader(const ShaderMacroCollection& macros) {
     auto result = _source->compile(macros);
     // std::cout<<result.first<<std::endl;
-    
+
     for (const auto& info : result.second) {
         _bindGroupLayoutEntryVecMap[info.first].reserve(info.second.size());
         for (const auto& entry : info.second) {
             _bindGroupLayoutEntryVecMap[info.first].push_back(_findEntry(info.first, entry));
         }
     }
-    
+
     for (const auto& entryVec : _bindGroupLayoutEntryVecMap) {
         wgpu::BindGroupLayoutDescriptor desc;
         desc.entryCount = static_cast<uint32_t>(entryVec.second.size());
         desc.entries = entryVec.second.data();
         _bindGroupLayoutDescriptorMap[entryVec.first] = desc;
     }
-    
+
     return _resourceCache.requestShader(result.first);
 }
 
 wgpu::BindGroupLayoutEntry ComputePass::_findEntry(uint32_t group, uint32_t binding) {
     wgpu::BindGroupLayoutEntry entry;
     entry.visibility = wgpu::ShaderStage::None;
-    
+
     const auto& entryMap = _source->bindGroupLayoutEntryMap();
     auto iter = entryMap.find(group);
     if (iter != entryMap.end()) {
@@ -134,7 +123,7 @@ wgpu::BindGroupLayoutEntry ComputePass::_findEntry(uint32_t group, uint32_t bind
             entry = entryIter->second;
         }
     }
-    
+
     if (entry.visibility != wgpu::ShaderStage::None) {
         return entry;
     } else {
@@ -174,4 +163,4 @@ void ComputePass::_bindingSampler(wgpu::BindGroupEntry& entry) {
     }
 }
 
-}
+}  // namespace vox

@@ -161,7 +161,7 @@ private:
     };
 };
 
-template<> inline ShadowManager* Singleton<ShadowManager>::msSingleton{nullptr};
+template<> inline ShadowManager* Singleton<ShadowManager>::ms_singleton{nullptr};
 
 }
 #endif /* shadow_manager_hpp */

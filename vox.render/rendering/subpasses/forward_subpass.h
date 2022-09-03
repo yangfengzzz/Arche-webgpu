@@ -10,64 +10,58 @@
 #include "rendering/subpass.h"
 
 namespace vox {
-class ForwardSubpass: public Subpass {
+class ForwardSubpass : public Subpass {
 public:
-    enum class RenderMode {
-        AUTO,
-        MANUAL
-    };
-    
+    enum class RenderMode { AUTO, MANUAL };
+
     ForwardSubpass(RenderContext* renderContext,
                    wgpu::TextureFormat depthStencilTextureFormat,
                    Scene* scene,
                    Camera* camera);
-    
+
     void prepare() override;
-    
+
     void draw(wgpu::RenderPassEncoder& passEncoder) override;
-    
+
 public:
     RenderMode renderMode() const;
-    
+
     void setRenderMode(RenderMode mode);
-    
+
     void addRenderElement(const RenderElement& element);
-    
+
     void clearAllRenderElement();
-    
+
 private:
-    void _drawMeshes(wgpu::RenderPassEncoder &passEncoder);
-    
-    void _drawElement(wgpu::RenderPassEncoder &passEncoder,
-                      const std::vector<RenderElement> &items,
+    void _drawMeshes(wgpu::RenderPassEncoder& passEncoder);
+
+    void _drawElement(wgpu::RenderPassEncoder& passEncoder,
+                      const std::vector<RenderElement>& items,
                       const ShaderMacroCollection& compileMacros);
-    
-    void _bindingData(wgpu::BindGroupEntry& entry,
-                      MaterialPtr mat, Renderer* renderer);
-    
-    void _bindingTexture(wgpu::BindGroupEntry& entry,
-                         MaterialPtr mat, Renderer* renderer);
-    
-    void _bindingSampler(wgpu::BindGroupEntry& entry,
-                         MaterialPtr mat, Renderer* renderer);
-    
+
+    void _bindingData(wgpu::BindGroupEntry& entry, MaterialPtr mat, Renderer* renderer);
+
+    void _bindingTexture(wgpu::BindGroupEntry& entry, MaterialPtr mat, Renderer* renderer);
+
+    void _bindingSampler(wgpu::BindGroupEntry& entry, MaterialPtr mat, Renderer* renderer);
+
     wgpu::RenderPipelineDescriptor _forwardPipelineDescriptor;
     wgpu::DepthStencilState _depthStencil;
     wgpu::FragmentState _fragment;
     wgpu::ColorTargetState _colorTargetState;
-    
+
     wgpu::BindGroupDescriptor _bindGroupDescriptor;
     std::vector<wgpu::BindGroupEntry> _bindGroupEntries{};
-    
+
     wgpu::PipelineLayoutDescriptor _pipelineLayoutDescriptor;
     wgpu::PipelineLayout _pipelineLayout;
-    
+
     wgpu::TextureFormat _depthStencilTextureFormat;
-    
+
     RenderMode _mode = RenderMode::AUTO;
     std::vector<RenderElement> _elements{};
 };
 
-}
+}  // namespace vox
 
 #endif /* forward_subpass_hpp */

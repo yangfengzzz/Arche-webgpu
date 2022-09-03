@@ -7,9 +7,9 @@
 #ifndef component_manager_hpp
 #define component_manager_hpp
 
-#include "matrix4x4.h"
-#include "bounding_frustum.h"
-#include "input_events.h"
+#include "vox.math/matrix4x4.h"
+#include "vox.math/bounding_frustum.h"
+#include "vox.render/platform/input_events.h"
 #include "scene_forward.h"
 #include "rendering/render_element.h"
 #include "singleton.h"
@@ -98,7 +98,7 @@ private:
     std::vector<SceneAnimator *> _onUpdateSceneAnimators;
 };
 
-template<> inline ComponentsManager *Singleton<ComponentsManager>::msSingleton{nullptr};
+template<> inline ComponentsManager *Singleton<ComponentsManager>::ms_singleton{nullptr};
 
 }        // namespace vox
 #endif /* component_manager_hpp */

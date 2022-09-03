@@ -5,18 +5,16 @@
 //  property of any third parties.
 
 #include "wgsl_uv_share.h"
-#include "wgsl.h"
-#include <fmt/core.h>
+
+#include <spdlog/fmt/fmt.h>
+
+#include "vox.render/shaderlib/wgsl.h"
 
 namespace vox {
-WGSLUVShare::WGSLUVShare(const std::string& outputStructName) :
-_outputStructName(outputStructName) {
+WGSLUVShare::WGSLUVShare(const std::string& outputStructName) : _outputStructName(outputStructName) {}
+
+void WGSLUVShare::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros, size_t counterIndex) {
+    encoder.addInoutType(_outputStructName, WGSLEncoder::getCounterNumber(counterIndex), "v_uv", UniformType::Vec2f32);
 }
 
-void WGSLUVShare::operator()(WGSLEncoder& encoder,
-                             const ShaderMacroCollection& macros, size_t counterIndex) {
-    encoder.addInoutType(_outputStructName, WGSLEncoder::getCounterNumber(counterIndex),
-                         "v_uv", UniformType::Vec2f32);
-}
-
-}
+}  // namespace vox

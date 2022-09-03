@@ -5,7 +5,7 @@
 //  property of any third parties.
 
 #include "point_light.h"
-#include "matrix_utils.h"
+#include "vox.geometry/matrix_utils.h"
 #include "entity.h"
 #include "light_manager.h"
 
@@ -35,15 +35,15 @@ void PointLight::_updateShaderData(PointLightData &shaderData) {
 
 //MARK: - Shadow
 Matrix4x4F PointLight::shadowProjectionMatrix() {
-    return makepPerspective<float>(degreesToRadians(120), 1, 0.1, 100);
+    return makePerspective<float>(degreesToRadians(120), 1, 0.1, 100);
 }
 
 //MARK: - Reflection
-void PointLight::onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+void PointLight::onSerialize(nlohmann::json &data) {
     
 }
 
-void PointLight::onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) {
+void PointLight::onDeserialize(nlohmann::json &data) {
     
 }
 

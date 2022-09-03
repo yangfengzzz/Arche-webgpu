@@ -7,7 +7,7 @@
 #ifndef wgsl_reflect_hpp
 #define wgsl_reflect_hpp
 
-#include "wgsl.h"
+#include "vox.render/shaderlib/wgsl.h"
 
 namespace vox {
 class WGSLReflect : public WGSL {
@@ -15,6 +15,6 @@ public:
     WGSLReflect(const std::string& filename);
 };
 
-}
+}  // namespace vox
 
 #endif /* wgsl_reflect_hpp */

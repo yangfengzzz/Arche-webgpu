@@ -5,30 +5,25 @@
 //  property of any third parties.
 
 #include "model_mesh.h"
+
 #include "shaderlib/wgsl_common.h"
 
 namespace vox {
-bool ModelMesh::accessible() {
-    return _accessible;
-}
+bool ModelMesh::accessible() { return _accessible; }
 
-size_t ModelMesh::vertexCount() {
-    return _vertexCount;
-}
+size_t ModelMesh::vertexCount() { return _vertexCount; }
 
-ModelMesh::ModelMesh(wgpu::Device &device):
-_device(device) {
-}
+ModelMesh::ModelMesh(wgpu::Device &device) : _device(device) {}
 
 void ModelMesh::setPositions(const std::vector<Vector3F> &positions) {
     if (!_accessible) {
         assert(false && "Not allowed to access data while accessible is false.");
     }
-    
+
     auto count = positions.size();
     _positions = positions;
     _vertexChangeFlag |= ValueChanged::Position;
-    
+
     if (_vertexCount != count) {
         _vertexCount = count;
     }
@@ -38,7 +33,7 @@ const std::vector<Vector3F> &ModelMesh::positions() {
     if (!_accessible) {
         assert(false && "Not allowed to access data while accessible is false.");
     }
-    
+
     return _positions;
 }
 
@@ -46,11 +41,11 @@ void ModelMesh::setNormals(const std::vector<Vector3F> &normals) {
     if (!_accessible) {
         assert(false && "Not allowed to access data while accessible is false.");
     }
-    
+
     if (normals.size() != _vertexCount) {
         assert(false && "The array provided needs to be the same size as vertex count.");
     }
-    
+
     _vertexChangeFlag |= ValueChanged::Normal;
     _normals = normals;
 }
@@ -66,11 +61,11 @@ void ModelMesh::setColors(const std::vector<Color> &colors) {
     if (!_accessible) {
         assert(false && "Not allowed to access data while accessible is false.");
     }
-    
+
     if (colors.size() != _vertexCount) {
         assert(false && "The array provided needs to be the same size as vertex count.");
     }
-    
+
     _vertexChangeFlag |= ValueChanged::Color;
     _colors = colors;
 }
@@ -86,11 +81,11 @@ void ModelMesh::setTangents(const std::vector<Vector4F> &tangents) {
     if (!_accessible) {
         assert(false && "Not allowed to access data while accessible is false.");
     }
-    
+
     if (tangents.size() != _vertexCount) {
         assert(false && "The array provided needs to be the same size as vertex count.");
     }
-    
+
     _vertexChangeFlag |= ValueChanged::Tangent;
     _tangents = tangents;
 }
@@ -106,11 +101,11 @@ void ModelMesh::setUVs(const std::vector<Vector2F> &uv, int channelIndex) {
     if (!_accessible) {
         assert(false && "Not allowed to access data while accessible is false.");
     }
-    
+
     if (uv.size() != _vertexCount) {
         assert(false && "The array provided needs to be the same size as vertex count.");
     }
-    
+
     switch (channelIndex) {
         case 0:
             _vertexChangeFlag |= ValueChanged::UV;
@@ -148,7 +143,6 @@ void ModelMesh::setUVs(const std::vector<Vector2F> &uv, int channelIndex) {
             assert(false && "The index of channel needs to be in range [0 - 7].");
     }
 }
-
 
 const std::vector<Vector2F> &ModelMesh::uvs(int channelIndex) {
     if (!_accessible) {
@@ -197,19 +191,19 @@ void ModelMesh::uploadData(bool noLongerAccessible) {
     if (!_accessible) {
         assert(false && "Not allowed to access data while accessible is false.");
     }
-    
+
     auto vertexLayouts = _updateVertexLayouts();
     _setVertexLayouts({vertexLayouts});
     _vertexChangeFlag = ValueChanged::All;
-    
+
     auto vertexFloatCount = _elementCount * _vertexCount;
     auto vertices = std::vector<float>(vertexFloatCount);
     _updateVertices(vertices);
-    
+
     auto newVertexBuffer = Buffer(_device, vertices.data(), vertices.size() * sizeof(float),
                                   wgpu::BufferUsage::Vertex | wgpu::BufferUsage::CopyDst);
     _setVertexBufferBinding(0, newVertexBuffer);
-    
+
     if (_indicesFormat == wgpu::IndexFormat::Uint16) {
         auto newIndexBuffer = Buffer(_device, _indices16.data(), _indices16.size() * sizeof(uint16_t),
                                      wgpu::BufferUsage::Index | wgpu::BufferUsage::CopyDst);
@@ -219,7 +213,7 @@ void ModelMesh::uploadData(bool noLongerAccessible) {
                                      wgpu::BufferUsage::Index | wgpu::BufferUsage::CopyDst);
         _setIndexBufferBinding(IndexBufferBinding(newIndexBuffer, _indicesFormat));
     }
-    
+
     if (noLongerAccessible) {
         _accessible = false;
         _releaseCache();
@@ -229,71 +223,82 @@ void ModelMesh::uploadData(bool noLongerAccessible) {
 wgpu::VertexBufferLayout ModelMesh::_updateVertexLayouts() {
     _vertexAttribute.resize(1);
     _vertexAttribute[0] = wgpu::VertexAttribute{wgpu::VertexFormat::Float32x3, 0, (uint32_t)Attributes::Position};
-    
+
     size_t offset = 12;
     size_t elementCount = 3;
     if (!_normals.empty()) {
-        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x3, offset, (uint32_t)Attributes::Normal});
+        _vertexAttribute.push_back(
+                wgpu::VertexAttribute{wgpu::VertexFormat::Float32x3, offset, (uint32_t)Attributes::Normal});
         offset += 12;
         elementCount += 3;
     }
     if (!_colors.empty()) {
-        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x4, offset, (uint32_t)Attributes::Color_0});
+        _vertexAttribute.push_back(
+                wgpu::VertexAttribute{wgpu::VertexFormat::Float32x4, offset, (uint32_t)Attributes::Color_0});
         offset += 16;
         elementCount += 4;
     }
     if (!_tangents.empty()) {
-        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x4, offset, (uint32_t)Attributes::Tangent});
+        _vertexAttribute.push_back(
+                wgpu::VertexAttribute{wgpu::VertexFormat::Float32x4, offset, (uint32_t)Attributes::Tangent});
         offset += 16;
         elementCount += 4;
     }
     if (!_uv.empty()) {
-        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, (uint32_t)Attributes::UV_0});
+        _vertexAttribute.push_back(
+                wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, (uint32_t)Attributes::UV_0});
         offset += 8;
         elementCount += 2;
     }
     if (!_uv1.empty()) {
-        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, (uint32_t)Attributes::UV_1});
+        _vertexAttribute.push_back(
+                wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, (uint32_t)Attributes::UV_1});
         offset += 8;
         elementCount += 2;
     }
     if (!_uv2.empty()) {
-        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, (uint32_t)Attributes::UV_2});
+        _vertexAttribute.push_back(
+                wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, (uint32_t)Attributes::UV_2});
         offset += 8;
         elementCount += 2;
     }
     if (!_uv3.empty()) {
-        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, (uint32_t)Attributes::UV_3});
+        _vertexAttribute.push_back(
+                wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, (uint32_t)Attributes::UV_3});
         offset += 8;
         elementCount += 2;
     }
     if (!_uv4.empty()) {
-        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, (uint32_t)Attributes::UV_4});
+        _vertexAttribute.push_back(
+                wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, (uint32_t)Attributes::UV_4});
         offset += 8;
         elementCount += 2;
     }
     if (!_uv5.empty()) {
-        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, (uint32_t)Attributes::UV_5});
+        _vertexAttribute.push_back(
+                wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, (uint32_t)Attributes::UV_5});
         offset += 8;
         elementCount += 2;
     }
     if (!_uv6.empty()) {
-        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, (uint32_t)Attributes::UV_6});
+        _vertexAttribute.push_back(
+                wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, (uint32_t)Attributes::UV_6});
         offset += 8;
         elementCount += 2;
     }
     if (!_uv7.empty()) {
-        _vertexAttribute.push_back(wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, (uint32_t)Attributes::UV_7});
+        _vertexAttribute.push_back(
+                wgpu::VertexAttribute{wgpu::VertexFormat::Float32x2, offset, (uint32_t)Attributes::UV_7});
         offset += 8;
         elementCount += 2;
     }
-    
+
     wgpu::VertexBufferLayout vertexBufferLayout;
     vertexBufferLayout.arrayStride = elementCount * 4;
     vertexBufferLayout.attributes = _vertexAttribute.data();
     vertexBufferLayout.attributeCount = static_cast<uint32_t>(_vertexAttribute.size());
     vertexBufferLayout.stepMode = wgpu::VertexStepMode::Vertex;
-    
+
     _elementCount = elementCount;
     return vertexBufferLayout;
 }
@@ -308,9 +313,9 @@ void ModelMesh::_updateVertices(std::vector<float> &vertices) {
             vertices[start + 2] = position.z;
         }
     }
-    
+
     size_t offset = 3;
-    
+
     if (!_normals.empty()) {
         if ((_vertexChangeFlag & ValueChanged::Normal) != 0) {
             for (size_t i = 0; i < _vertexCount; i++) {
@@ -323,7 +328,7 @@ void ModelMesh::_updateVertices(std::vector<float> &vertices) {
         }
         offset += 3;
     }
-    
+
     if (!_colors.empty()) {
         if ((_vertexChangeFlag & ValueChanged::Color) != 0) {
             for (size_t i = 0; i < _vertexCount; i++) {
@@ -337,7 +342,7 @@ void ModelMesh::_updateVertices(std::vector<float> &vertices) {
         }
         offset += 4;
     }
-    
+
     if (!_tangents.empty()) {
         if ((_vertexChangeFlag & ValueChanged::Tangent) != 0) {
             for (size_t i = 0; i < _vertexCount; i++) {
@@ -379,7 +384,6 @@ void ModelMesh::_updateVertices(std::vector<float> &vertices) {
                 const auto &uv = _uv2[i];
                 vertices[start] = uv.x;
                 vertices[start + 1] = uv.y;
-                
             }
         }
         offset += 2;
@@ -439,7 +443,7 @@ void ModelMesh::_updateVertices(std::vector<float> &vertices) {
         }
         offset += 2;
     }
-    
+
     _vertexChangeFlag = 0;
 }
 
@@ -459,6 +463,4 @@ void ModelMesh::_releaseCache() {
     _uv7.clear();
 }
 
-
-
-}
+}  // namespace vox

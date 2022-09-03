@@ -4,27 +4,24 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef vobject_hpp
-#define vobject_hpp
+#pragma once
 
-#include <tinyxml2.h>
+#include <nlohmann/json.hpp>
 
 namespace vox {
 class VObject {
 public:
-    virtual ~VObject() {}
-    
+    virtual ~VObject() = default;
+
     /**
      * Called when the serialization is asked
      */
-    virtual void onSerialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) = 0;
-    
+    virtual void onSerialize(nlohmann::json &data) = 0;
+
     /**
      * Called when the deserialization is asked
      */
-    virtual void onDeserialize(tinyxml2::XMLDocument& p_doc, tinyxml2::XMLNode* p_node) = 0;
+    virtual void onDeserialize(nlohmann::json &data) = 0;
 };
 
-}
-
-#endif /* vobject_hpp */
+}  // namespace vox

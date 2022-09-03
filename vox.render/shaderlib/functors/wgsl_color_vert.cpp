@@ -5,13 +5,11 @@
 //  property of any third parties.
 
 #include "wgsl_color_vert.h"
-#include <fmt/core.h>
+
+#include <spdlog/fmt/fmt.h>
 
 namespace vox {
-WGSLColorVert::WGSLColorVert(const std::string& input, const std::string& output):
-_input(input),
-_output(output) {
-}
+WGSLColorVert::WGSLColorVert(const std::string& input, const std::string& output) : _input(input), _output(output) {}
 
 void WGSLColorVert::operator()(std::string& source, const ShaderMacroCollection& macros) {
     if (macros.contains(HAS_VERTEXCOLOR)) {
@@ -20,4 +18,4 @@ void WGSLColorVert::operator()(std::string& source, const ShaderMacroCollection&
     }
 }
 
-}
+}  // namespace vox

@@ -91,7 +91,7 @@ public:
         auto component = std::make_unique<T>(this, args...);
         T *componentPtr = component.get();
         _components.emplace_back(std::move(component));
-        componentAddedEvent.invoke(componentPtr);
+        componentAddedEvent.Invoke(componentPtr);
         if (_isActiveInHierarchy) {
             componentPtr->_setActive(true);
         }
@@ -197,12 +197,12 @@ public:
     /**
      * Called when the serialization is asked
      */
-    void onSerialize(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node) override;
+    void onSerialize(nlohmann::json &data) override;
     
     /**
      * Called when the deserialization is asked
      */
-    void onDeserialize(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node) override;
+    void onDeserialize(nlohmann::json &data) override;
     
 public:
     std::vector<Script *> scripts();

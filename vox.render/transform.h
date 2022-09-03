@@ -9,9 +9,9 @@
 
 #include "component.h"
 #include "update_flag_manager.h"
-#include "vector3.h"
-#include "matrix4x4.h"
-#include "quaternion.h"
+#include "vox.math/vector3.h"
+#include "vox.math/matrix4x4.h"
+#include "vox.math/quaternion.h"
 
 namespace vox {
 /**
@@ -268,12 +268,12 @@ public:
     /**
      * Serialize the component
      */
-    void onSerialize(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node) override;
+    void onSerialize(nlohmann::json &data) override;
     
     /**
      * Deserialize the component
      */
-    void onDeserialize(tinyxml2::XMLDocument &p_doc, tinyxml2::XMLNode *p_node) override;
+    void onDeserialize(nlohmann::json &data) override;
     
     /**
      * Defines how the component should be drawn in the inspector

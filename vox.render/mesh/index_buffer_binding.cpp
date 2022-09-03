@@ -7,18 +7,10 @@
 #include "index_buffer_binding.h"
 
 namespace vox {
-IndexBufferBinding::IndexBufferBinding(Buffer buffer, wgpu::IndexFormat format):
-_buffer(buffer),
-_format(format) {
-}
+IndexBufferBinding::IndexBufferBinding(Buffer buffer, wgpu::IndexFormat format) : _buffer(buffer), _format(format) {}
 
-const wgpu::Buffer& IndexBufferBinding::buffer() const {
-    return _buffer.handle();
-}
+const wgpu::Buffer& IndexBufferBinding::buffer() const { return _buffer.handle(); }
 
-wgpu::IndexFormat IndexBufferBinding::format() const {
-    return _format;
-    
-}
+wgpu::IndexFormat IndexBufferBinding::format() const { return _format; }
 
-}
+}  // namespace vox

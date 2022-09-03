@@ -8,9 +8,9 @@
 #define blinn_phong_material_hpp
 
 #include "base_material.h"
-#include "color.h"
-#include "vector4.h"
+#include "vox.math/color.h"
 #include "texture/sampled_texture2d.h"
+#include "vox.math/vector4.h"
 
 namespace vox {
 /**
@@ -24,96 +24,96 @@ public:
         Color emissiveColor = Color(0, 0, 0, 1);
         float normalIntensity = 1.f;
         float shininess = 16.f;
-        float _pad1, _pad2; // align
+        float _pad1, _pad2;  // align
     };
-    
+
     /**
      * Base color.
      */
     const Color& baseColor();
-    
-    void setBaseColor(const Color &newValue);
-    
+
+    void setBaseColor(const Color& newValue);
+
     /**
      * Base texture.
      */
     SampledTexture2DPtr baseTexture();
-    
+
     void setBaseTexture(SampledTexture2DPtr newValue);
-    
+
     /**
      * Specular color.
      */
     const Color& specularColor();
-    
-    void setSpecularColor(const Color &newValue);
-    
+
+    void setSpecularColor(const Color& newValue);
+
     /**
      * Specular texture.
      */
     SampledTexture2DPtr specularTexture();
-    
+
     void setSpecularTexture(SampledTexture2DPtr newValue);
-    
+
     /**
      * Emissive color.
      */
     const Color& emissiveColor();
-    
-    void setEmissiveColor(const Color &newValue);
-    
+
+    void setEmissiveColor(const Color& newValue);
+
     /**
      * Emissive texture.
      */
     SampledTexture2DPtr emissiveTexture();
-    
+
     void setEmissiveTexture(SampledTexture2DPtr newValue);
-    
+
     /**
      * Normal texture.
      */
     SampledTexture2DPtr normalTexture();
-    
+
     void setNormalTexture(SampledTexture2DPtr newValue);
-    
+
     /**
      * Normal texture intensity.
      */
     float normalIntensity();
-    
+
     void setNormalIntensity(float newValue);
-    
+
     /**
-     * Set the specular reflection coefficient, the larger the value, the more convergent the specular reflection effect.
+     * Set the specular reflection coefficient, the larger the value, the more convergent the specular reflection
+     * effect.
      */
     float shininess();
-    
+
     void setShininess(float newValue);
-    
+
     explicit BlinnPhongMaterial(wgpu::Device& device);
-    
+
 private:
     BlinnPhongData _blinnPhongData;
     ShaderProperty _blinnPhongProp;
-    
+
     SampledTexture2DPtr _baseTexture{nullptr};
     ShaderProperty _baseTextureProp;
     ShaderProperty _baseSamplerProp;
-    
+
     SampledTexture2DPtr _specularTexture{nullptr};
     ShaderProperty _specularTextureProp;
     ShaderProperty _specularSamplerProp;
-    
+
     SampledTexture2DPtr _emissiveTexture{nullptr};
     ShaderProperty _emissiveTextureProp;
     ShaderProperty _emissiveSamplerProp;
-    
+
     SampledTexture2DPtr _normalTexture{nullptr};
     ShaderProperty _normalTextureProp;
     ShaderProperty _normalSamplerProp;
 };
 
-
-}
+}  // namespace vox
 
 #endif /* blinn_phong_material_hpp */

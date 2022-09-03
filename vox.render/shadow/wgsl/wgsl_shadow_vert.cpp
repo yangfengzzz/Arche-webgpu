@@ -5,18 +5,17 @@
 //  property of any third parties.
 
 #include "wgsl_shadow_vert.h"
-#include "wgsl.h"
-#include <fmt/core.h>
+#include "vox.render/shaderlib/wgsl.h"
+#include <spdlog/fmt/fmt.h>
 
 namespace vox {
-WGSLShadowVert::WGSLShadowVert(const std::string& output):
-_output(output) {
-}
+WGSLShadowVert::WGSLShadowVert(const std::string& output) : _output(output) {}
 
 void WGSLShadowVert::operator()(std::string& source, const ShaderMacroCollection& macros) {
     if (macros.contains(SHADOW_MAP_COUNT)) {
-        source += fmt::format("{}.view_pos = (u_cameraData.u_viewMat * u_rendererData.u_modelMat * position).xyz;\n", _output);
+        source += fmt::format("{}.view_pos = (u_cameraData.u_viewMat * u_rendererData.u_modelMat * position).xyz;\n",
+                              _output);
     }
 }
 
-}
+}  // namespace vox

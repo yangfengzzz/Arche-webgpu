@@ -22,10 +22,10 @@ struct RenderElement {
     const SubMesh *subMesh;
     /** Material. */
     MaterialPtr material;
-    
+
     RenderElement(Renderer *renderer, MeshPtr mesh, const SubMesh *subMesh, MaterialPtr material);
 };
 
-}
+}  // namespace vox
 
 #endif /* render_element_hpp */

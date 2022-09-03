@@ -8,7 +8,7 @@
 #define unlit_material_hpp
 
 #include "base_material.h"
-#include "color.h"
+#include "vox.math/color.h"
 #include "texture/sampled_texture2d.h"
 
 namespace vox {
@@ -21,30 +21,30 @@ public:
      * Base color.
      */
     const Color& baseColor();
-    
-    void setBaseColor(const Color &newValue);
-    
+
+    void setBaseColor(const Color& newValue);
+
     /**
      * Base texture.
      */
     SampledTexture2DPtr baseTexture();
-    
+
     void setBaseTexture(SampledTexture2DPtr newValue);
-    
+
     /**
      * Create a unlit material instance.
      */
     explicit UnlitMaterial(wgpu::Device& device);
-    
+
 private:
     Color _baseColor = Color(1, 1, 1, 1);
     ShaderProperty _baseColorProp;
-    
+
     SampledTexture2DPtr _baseTexture = nullptr;
     ShaderProperty _baseTextureProp;
     ShaderProperty _baseSamplerProp;
 };
 
-}
+}  // namespace vox
 
 #endif /* unlit_material_hpp */

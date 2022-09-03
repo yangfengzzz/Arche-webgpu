@@ -13,13 +13,13 @@ namespace vox {
 class WGSLShadowVert {
 public:
     WGSLShadowVert(const std::string& output);
-    
+
     void operator()(std::string& source, const ShaderMacroCollection& macros);
-    
+
 private:
     const std::string _output;
 };
 
-}
+}  // namespace vox
 
 #endif /* wgsl_shadow_vert_hpp */

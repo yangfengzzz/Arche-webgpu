@@ -13,13 +13,12 @@ namespace vox {
 class WGSLUVShare {
 public:
     WGSLUVShare(const std::string& outputStructName);
-    
-    void operator()(WGSLEncoder& encoder,
-                    const ShaderMacroCollection& macros, size_t counterIndex);
-    
+
+    void operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros, size_t counterIndex);
+
 private:
     std::string _outputStructName{};
 };
 
-}
+}  // namespace vox
 #endif /* uv_share_hpp */

@@ -7,50 +7,53 @@
 #include "wireframe_primitive_mesh.h"
 
 namespace vox {
-ModelMeshPtr WireframePrimitiveMesh::createCuboidWireFrame(wgpu::Device &device, float width, float height, float depth) {
+ModelMeshPtr WireframePrimitiveMesh::createCuboidWireFrame(wgpu::Device& device,
+                                                           float width,
+                                                           float height,
+                                                           float depth) {
     auto mesh = std::make_shared<ModelMesh>(device);
-    
+
     auto halfWidth = width / 2;
     auto halfHeight = height / 2;
     auto halfDepth = depth / 2;
-    
+
     auto positions = std::vector<Vector3F>(24);
     // Up
     positions[0] = Vector3F(-halfWidth, halfHeight, -halfDepth);
     positions[1] = Vector3F(halfWidth, halfHeight, -halfDepth);
     positions[2] = Vector3F(halfWidth, halfHeight, halfDepth);
     positions[3] = Vector3F(-halfWidth, halfHeight, halfDepth);
-    
+
     // Down
     positions[4] = Vector3F(-halfWidth, -halfHeight, -halfDepth);
     positions[5] = Vector3F(halfWidth, -halfHeight, -halfDepth);
     positions[6] = Vector3F(halfWidth, -halfHeight, halfDepth);
     positions[7] = Vector3F(-halfWidth, -halfHeight, halfDepth);
-    
+
     // Left
     positions[8] = Vector3F(-halfWidth, halfHeight, -halfDepth);
     positions[9] = Vector3F(-halfWidth, halfHeight, halfDepth);
     positions[10] = Vector3F(-halfWidth, -halfHeight, halfDepth);
     positions[11] = Vector3F(-halfWidth, -halfHeight, -halfDepth);
-    
+
     // Right
     positions[12] = Vector3F(halfWidth, halfHeight, -halfDepth);
     positions[13] = Vector3F(halfWidth, halfHeight, halfDepth);
     positions[14] = Vector3F(halfWidth, -halfHeight, halfDepth);
     positions[15] = Vector3F(halfWidth, -halfHeight, -halfDepth);
-    
+
     // Front
     positions[16] = Vector3F(-halfWidth, halfHeight, halfDepth);
     positions[17] = Vector3F(halfWidth, halfHeight, halfDepth);
     positions[18] = Vector3F(halfWidth, -halfHeight, halfDepth);
     positions[19] = Vector3F(-halfWidth, -halfHeight, halfDepth);
-    
+
     // Back
     positions[20] = Vector3F(-halfWidth, halfHeight, -halfDepth);
     positions[21] = Vector3F(halfWidth, halfHeight, -halfDepth);
     positions[22] = Vector3F(halfWidth, -halfHeight, -halfDepth);
     positions[23] = Vector3F(-halfWidth, -halfHeight, -halfDepth);
-    
+
     auto indices = std::vector<uint32_t>(48);
     // Up
     indices[0] = 0;
@@ -61,7 +64,7 @@ ModelMeshPtr WireframePrimitiveMesh::createCuboidWireFrame(wgpu::Device &device,
     indices[5] = 3;
     indices[6] = 3;
     indices[7] = 0;
-    
+
     // Down
     indices[8] = 4;
     indices[9] = 5;
@@ -107,66 +110,66 @@ ModelMeshPtr WireframePrimitiveMesh::createCuboidWireFrame(wgpu::Device &device,
     indices[45] = 23;
     indices[46] = 23;
     indices[47] = 20;
-    
+
     mesh->setPositions(positions);
     mesh->setIndices(indices);
-    
+
     mesh->uploadData(true);
     mesh->addSubMesh(0, static_cast<uint32_t>(indices.size()), wgpu::PrimitiveTopology::LineList);
     return mesh;
 }
 
-ModelMeshPtr WireframePrimitiveMesh::createSphereWireFrame(wgpu::Device &device, float radius) {
+ModelMeshPtr WireframePrimitiveMesh::createSphereWireFrame(wgpu::Device& device, float radius) {
     auto mesh = std::make_shared<ModelMesh>(device);
-    
+
     auto vertexCount = 40;
     auto shift = Vector3F();
-    
+
     auto positions = std::vector<Vector3F>(vertexCount * 3);
     auto indices = std::vector<uint32_t>(vertexCount * 6);
     // X
     _createCircleWireFrame(radius, 0, vertexCount, 0, shift, positions, indices);
-    
+
     // Y
     _createCircleWireFrame(radius, vertexCount, vertexCount, 1, shift, positions, indices);
-    
+
     // Z
     _createCircleWireFrame(radius, 2 * vertexCount, vertexCount, 2, shift, positions, indices);
-    
+
     mesh->setPositions(positions);
     mesh->setIndices(indices);
-    
+
     mesh->uploadData(true);
     mesh->addSubMesh(0, static_cast<uint32_t>(indices.size()), wgpu::PrimitiveTopology::LineList);
     return mesh;
 }
 
-ModelMeshPtr WireframePrimitiveMesh::createCapsuleWireFrame(wgpu::Device &device, float radius, float height) {
+ModelMeshPtr WireframePrimitiveMesh::createCapsuleWireFrame(wgpu::Device& device, float radius, float height) {
     auto mesh = std::make_shared<ModelMesh>(device);
-    
+
     auto vertexCount = 40;
     auto shift = Vector3F();
     auto halfHeight = height / 2;
     auto positions = std::vector<Vector3F>(vertexCount * 4);
     auto indices = std::vector<uint32_t>(vertexCount * 8);
-    
+
     // Y-Top
     shift.y = halfHeight;
     _createCircleWireFrame(radius, 0, vertexCount, 1, shift, positions, indices);
-    
+
     // Y-Bottom
     shift.y = -halfHeight;
     _createCircleWireFrame(radius, vertexCount, vertexCount, 1, shift, positions, indices);
-    
+
     // X-Elliptic
     _createEllipticWireFrame(radius, halfHeight, vertexCount * 2, vertexCount, 2, positions, indices);
-    
+
     // Z-Elliptic
     _createEllipticWireFrame(radius, halfHeight, vertexCount * 3, vertexCount, 0, positions, indices);
-    
+
     mesh->setPositions(positions);
     mesh->setIndices(indices);
-    
+
     mesh->uploadData(true);
     mesh->addSubMesh(0, static_cast<uint32_t>(indices.size()), wgpu::PrimitiveTopology::LineList);
     return mesh;
@@ -183,26 +186,23 @@ void WireframePrimitiveMesh::_createCircleWireFrame(float radius,
     for (uint32_t i = 0; i < vertexCount; ++i) {
         float v = i * countReciprocal;
         float thetaDelta = v * M_PI * 2;
-        
+
         uint32_t globalIndex = i + vertexBegin;
         switch (axis) {
             case 0:
-                positions[globalIndex] = Vector3F(shift.x,
-                                                  radius * std::cos(thetaDelta) + shift.y,
+                positions[globalIndex] = Vector3F(shift.x, radius * std::cos(thetaDelta) + shift.y,
                                                   radius * std::sin(thetaDelta) + shift.z);
                 break;
             case 1:
-                positions[globalIndex] = Vector3F(radius * std::cos(thetaDelta) + shift.x,
-                                                  shift.y,
+                positions[globalIndex] = Vector3F(radius * std::cos(thetaDelta) + shift.x, shift.y,
                                                   radius * std::sin(thetaDelta) + shift.z);
                 break;
             case 2:
                 positions[globalIndex] = Vector3F(radius * std::cos(thetaDelta) + shift.x,
-                                                  radius * std::sin(thetaDelta) + shift.y,
-                                                  shift.z);
+                                                  radius * std::sin(thetaDelta) + shift.y, shift.z);
                 break;
         }
-        
+
         if (i < vertexCount - 1) {
             indices[2 * globalIndex] = globalIndex;
             indices[2 * globalIndex + 1] = globalIndex + 1;
@@ -224,28 +224,26 @@ void WireframePrimitiveMesh::_createEllipticWireFrame(float radius,
     for (uint32_t i = 0; i < vertexCount; ++i) {
         float v = i * countReciprocal;
         float thetaDelta = v * M_PI * 2;
-        
+
         uint32_t globalIndex = i + vertexBegin;
         switch (axis) {
             case 0:
-                positions[globalIndex] = Vector3F(0,
-                                                  radius * std::sin(thetaDelta) + height,
-                                                  radius * std::cos(thetaDelta));
+                positions[globalIndex] =
+                        Vector3F(0, radius * std::sin(thetaDelta) + height, radius * std::cos(thetaDelta));
                 break;
             case 1:
                 positions[globalIndex] = Vector3F(radius * std::cos(thetaDelta), height, radius * std::sin(thetaDelta));
                 break;
             case 2:
-                positions[globalIndex] = Vector3F(radius * std::cos(thetaDelta),
-                                                  radius * std::sin(thetaDelta) + height,
-                                                  0);
+                positions[globalIndex] =
+                        Vector3F(radius * std::cos(thetaDelta), radius * std::sin(thetaDelta) + height, 0);
                 break;
         }
-        
+
         if (i == vertexCount / 2) {
             height = -height;
         }
-        
+
         if (i < vertexCount - 1) {
             indices[2 * globalIndex] = globalIndex;
             indices[2 * globalIndex + 1] = globalIndex + 1;
@@ -255,4 +253,4 @@ void WireframePrimitiveMesh::_createEllipticWireFrame(float radius,
         }
     }
 }
-}
+}  // namespace vox

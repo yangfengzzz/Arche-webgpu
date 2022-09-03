@@ -17,5 +17,4 @@ enum class BlendMode {
     Additive
 };
 
-
 #endif /* blend_mode_h */

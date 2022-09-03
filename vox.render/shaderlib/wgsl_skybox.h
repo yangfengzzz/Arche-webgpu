@@ -7,32 +7,32 @@
 #ifndef wgsl_skybox_hpp
 #define wgsl_skybox_hpp
 
-#include "wgsl_cache.h"
 #include "functors/wgsl_common.h"
 #include "functors/wgsl_common_vert.h"
+#include "wgsl_cache.h"
 
 namespace vox {
-//MARK: - Skybox Vertex Code
+// MARK: - Skybox Vertex Code
 class WGSLSkyboxVertex : public WGSLCache {
 public:
     WGSLSkyboxVertex();
-        
+
 private:
     void _createShaderSource(size_t hash, const ShaderMacroCollection& macros) override;
-    
+
     WGSLCommonVert _commonVert;
 };
 
-//MARK: - Skybox Fragment Code
+// MARK: - Skybox Fragment Code
 class WGSLSkyboxFragment : public WGSLCache {
 public:
     WGSLSkyboxFragment();
-        
+
 private:
     void _createShaderSource(size_t hash, const ShaderMacroCollection& macros) override;
-    
+
     WGSLCommon _common;
 };
 
-}
+}  // namespace vox
 #endif /* wgsl_skybox_hpp */
