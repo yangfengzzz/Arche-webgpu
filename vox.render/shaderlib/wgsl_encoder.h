@@ -7,7 +7,7 @@
 #ifndef wgsl_encoder_hpp
 #define wgsl_encoder_hpp
 
-#include "vector3.h"
+#include "vox.math/vector3.h"
 #include "wgsl_common.h"
 #include "shader/shader_macro_collection.h"
 #include <unordered_map>

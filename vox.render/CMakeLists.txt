@@ -463,8 +463,6 @@ file(GLOB WIREFRAME_FILES
 set(SHADER_FILES shader/glsl_compiler.h
         shader/glsl_compiler.cpp
         shader/shader_common.h
-        shader/shader_data.h
-        shader/shader_data.cpp
         shader/shader_module.h
         shader/shader_module.cpp
         shader/shader_source.h
@@ -474,7 +472,33 @@ set(SHADER_FILES shader/glsl_compiler.h
         shader/spirv_reflection.h
         shader/spirv_reflection.cpp
         shader/shader_manager.h
-        shader/shader_manager.cpp)
+        shader/shader_manager.cpp
+
+        shader/shader.h
+        shader/shader.cpp
+        shader/shader_data.h
+        shader/shader_data.cpp
+        shader/shader_data_group.h
+        shader/internal_macro_name.h
+        shader/shader_pool.h
+        shader/shader_pool.cpp
+        shader/shader_property.h
+        shader/shader_property.cpp
+        shader/shader_macro_collection.h
+        shader/shader_macro_collection.cpp
+
+        shader/state/blend_state.h
+        shader/state/blend_state.cpp
+        shader/state/depth_state.h
+        shader/state/depth_state.cpp
+        shader/state/raster_state.h
+        shader/state/raster_state.cpp
+        shader/state/render_state.h
+        shader/state/render_state.cpp
+        shader/state/render_target_blend_state.h
+        shader/state/stencil_state.h
+        shader/state/stencil_state.cpp
+        )
 
 set(MATERIAL_FILES material/material.h
         material/material.cpp
@@ -591,7 +615,7 @@ set(PROJECT_FILES
 #        ${CONTROL_FILES}
 #        ${MESH_FILES}
 #        ${WIREFRAME_FILES}
-#        ${SHADER_FILES}
+        ${SHADER_FILES}
 #        ${MATERIAL_FILES}
 #        ${LOADER_FILES}
 #        ${LIGHT_FILE}

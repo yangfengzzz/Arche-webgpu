@@ -8,7 +8,7 @@
 #define blend_state_hpp
 
 #include "render_target_blend_state.h"
-#include "color.h"
+#include "vox.math/color.h"
 
 namespace vox {
 /**

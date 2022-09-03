@@ -11,7 +11,7 @@
 #include "shader_macro_collection.h"
 #include "shader_property.h"
 #include "shader.h"
-#include "graphics/buffer.h"
+#include "mesh/buffer.h"
 #include "texture/sampled_texture.h"
 #include "std_helpers.h"
 #include <any>
