@@ -66,7 +66,7 @@ add_subdirectory(test.geometry)
 #add_subdirectory(apps.force)
 
 # Add render framework
-#add_subdirectory(vox.render)
+add_subdirectory(vox.render)
 #add_subdirectory(apps)
 
 # Add editor
