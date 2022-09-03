@@ -1,0 +1,53 @@
+//  Copyright (c) 2022 Feng Yang
+//
+//  I am making my contributions/submissions to this project solely in my
+//  personal capacity and am not conveying any rights to any intellectual
+//  property of any third parties.
+
+#include "@SAMPLE_NAME_FILE@.h"
+
+#include "common/vk_common.h"
+#include "gltf_loader.h"
+#include "vox.visual/gui.h"
+#include "platform/filesystem.h"
+#include "platform/platform.h"
+#include "rendering/subpasses/forward_subpass.h"
+#include "stats/stats.h"
+
+@SAMPLE_NAME@::@SAMPLE_NAME@()
+{
+}
+
+bool @SAMPLE_NAME@::prepare(vkb::Platform &platform)
+{
+	if (!VulkanSample::prepare(platform))
+	{
+		return false;
+	}
+
+	// Load a scene from the assets folder
+	load_scene("scenes/sponza/Sponza01.gltf");
+
+	// Attach a move script to the camera component in the scene
+	auto &camera_node = vkb::add_free_camera(*scene, "main_camera", get_render_context().get_surface_extent());
+	auto camera       = &camera_node.get_component<vkb::sg::Camera>();
+
+	// Example Scene Render Pipeline
+	vkb::ShaderSource vert_shader("base.vert");
+	vkb::ShaderSource frag_shader("base.frag");
+	auto              scene_subpass   = std::make_unique<vkb::ForwardSubpass>(get_render_context(), std::move(vert_shader), std::move(frag_shader), *scene, *camera);
+	auto              render_pipeline = vkb::RenderPipeline();
+	render_pipeline.add_subpass(std::move(scene_subpass));
+	set_render_pipeline(std::move(render_pipeline));
+
+	// Add a GUI with the stats you want to monitor
+	stats->request_stats({/*stats you require*/});
+	gui = std::make_unique<vkb::Gui>(*this, platform.get_window(), stats.get());
+
+	return true;
+}
+
+std::unique_ptr<vkb::VulkanSample> create_@SAMPLE_NAME_FILE@()
+{
+	return std::make_unique<@SAMPLE_NAME@>();
+}
