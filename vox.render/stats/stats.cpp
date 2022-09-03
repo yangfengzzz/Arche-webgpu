@@ -8,11 +8,9 @@
 
 #include <utility>
 
-#include "vox.render/core/device.h"
-#include "vox.render/error.h"
 #include "vox.render/stats/frame_time_stats_provider.h"
 #include "vox.render/stats/hwcpipe_stats_provider.h"
-#include "vox.render/stats/vulkan_stats_provider.h"
+#include "vox.base/logging.h"
 
 namespace vox {
 Stats::Stats(RenderContext &render_context, size_t buffer_size)
@@ -46,7 +44,6 @@ void Stats::RequestStats(const std::set<StatIndex> &requested_stats, CounterSamp
     // so subsequent providers only see requests for stats that aren't already supported.
     providers_.emplace_back(std::make_unique<FrameTimeStatsProvider>(stats));
     providers_.emplace_back(std::make_unique<HWCPipeStatsProvider>(stats));
-    providers_.emplace_back(std::make_unique<VulkanStatsProvider>(stats, sampling_config_, render_context_));
 
     // In continuous sampling mode we still need to update the frame times as if we are polling
     // Store the frame time provider here, so we can easily access it later.

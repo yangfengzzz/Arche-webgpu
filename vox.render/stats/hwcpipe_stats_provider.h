@@ -6,15 +6,7 @@
 
 #pragma once
 
-#include "vox.render/error.h"
-#include "vox.render/vk_common.h"
-
-VKBP_DISABLE_WARNINGS()
-
 #include <hwcpipe.h>
-
-VKBP_ENABLE_WARNINGS()
-
 #include "vox.render/stats/stats_provider.h"
 
 namespace vox {

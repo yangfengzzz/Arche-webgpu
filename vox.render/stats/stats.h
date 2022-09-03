@@ -14,7 +14,6 @@
 #include <vector>
 
 #include "vox.base/timer.h"
-#include "vox.render/error.h"
 #include "vox.render/stats/stats_common.h"
 #include "vox.render/stats/stats_provider.h"
 

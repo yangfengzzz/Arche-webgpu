@@ -115,14 +115,12 @@ set(STATS_FILES
         stats/stats_provider.h
         stats/frame_time_stats_provider.h
         stats/hwcpipe_stats_provider.h
-        stats/vulkan_stats_provider.h
 
         # Source Files
         stats/stats.cpp
         stats/stats_provider.cpp
         stats/frame_time_stats_provider.cpp
-        stats/hwcpipe_stats_provider.cpp
-        stats/vulkan_stats_provider.cpp)
+        stats/hwcpipe_stats_provider.cpp)
 
 set(CORE_FILES
         # Header Files
@@ -534,17 +532,6 @@ set(PLUGINS_FILE
         plugins/force_close.h
         plugins/force_close.cpp)
 
-set(GRAPHING_FILES
-        # Header Files
-        graphing/graph.h
-        graphing/graph_node.h
-        graphing/framework_graph.h
-
-        # Source Files
-        graphing/graph.cpp
-        graphing/graph_node.cpp
-        graphing/framework_graph.cpp)
-
 set(ANDROID_FILES
         # Header Files
         platform/android/android_platform.h
@@ -587,7 +574,6 @@ source_group("rendering\\" FILES ${RENDERING_FILES})
 source_group("rendering\\subpasses" FILES ${RENDERING_SUBPASSES_FILES})
 source_group("\\" FILES ${SCENE_RESOURCE_FILES})
 source_group("stats\\" FILES ${STATS_FILES})
-source_group("graphing\\" FILES ${GRAPHING_FILES})
 
 set(PROJECT_FILES
         ${DAWN_FILES}
@@ -599,7 +585,7 @@ set(PROJECT_FILES
 #        ${RENDERING_FILES}
 #        ${RENDERING_SUBPASSES_FILES}
 #        ${SCENE_RESOURCE_FILES}
-#        ${STATS_FILES}
+        ${STATS_FILES}
         ${UI_FILES}
 #        ${SCENE_FILES}
 #        ${CONTROL_FILES}
@@ -612,7 +598,6 @@ set(PROJECT_FILES
 #        ${SHADOW_FILE}
 #        ${PARTICLE_FILE}
         ${PLUGINS_FILE}
-#        ${GRAPHING_FILES}
 #        ${LUA_FILES}
         )
 

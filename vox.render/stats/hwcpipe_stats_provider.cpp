@@ -6,8 +6,6 @@
 
 #include "vox.render/stats/hwcpipe_stats_provider.h"
 
-#include "vox.render/error.h"
-
 namespace vox {
 HWCPipeStatsProvider::HWCPipeStatsProvider(std::set<StatIndex> &requested_stats) {
     // Mapping of stats to their hwcpipe availability
