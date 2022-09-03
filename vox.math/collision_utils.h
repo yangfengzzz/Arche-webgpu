@@ -4,16 +4,16 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef collision_util_hpp
-#define collision_util_hpp
+#pragma once
 
+#include <array>
 #include <cassert>
 #include <cmath>
-#include <array>
-#include "ray3.h"
-#include "bounding_plane3.h"
-#include "bounding_box3.h"
-#include "bounding_frustum.h"
+
+#include "vox.math/bounding_box3.h"
+#include "vox.math/bounding_frustum.h"
+#include "vox.math/bounding_plane3.h"
+#include "vox.math/ray3.h"
 
 namespace vox {
 /**
@@ -82,11 +82,11 @@ float intersectsRayAndBox(const Ray3F &ray, const BoundingBox3F &box);
 
 /**
  * Check whether the boxes intersect.
- * @param boxA - The first box to check
- * @param boxB - The second box to check
+ * @param box_a - The first box to check
+ * @param box_b - The second box to check
  * @returns True if the boxes intersect, false otherwise
  */
-bool intersectsBoxAndBox(const BoundingBox3F &boxA, const BoundingBox3F &boxB);
+bool intersectsBoxAndBox(const BoundingBox3F &box_a, const BoundingBox3F &box_b);
 
 /**
  * Get whether or not a specified bounding box intersects with this frustum (Contains or Intersects).
@@ -104,6 +104,4 @@ bool intersectsFrustumAndBox(const BoundingFrustum &frustum, const BoundingBox3F
  */
 ContainmentType frustumContainsBox(const BoundingFrustum &frustum, const BoundingBox3F &box);
 
-}
-
-#endif /* collision_util_hpp */
+}  // namespace vox

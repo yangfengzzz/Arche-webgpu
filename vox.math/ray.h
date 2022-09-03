@@ -4,10 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef INCLUDE_VOX_RAY_H_
-#define INCLUDE_VOX_RAY_H_
+#pragma once
 
-#include "vector.h"
+#include "vox.math/vector.h"
 
 namespace vox {
 
@@ -17,13 +16,10 @@ namespace vox {
 //! \tparam     T     The value type.
 //! \tparam     N     The dimension.
 //!
-template<typename T, size_t N>
-class Ray {
+template <typename T, size_t N>
+struct Ray {
     static_assert(N != 2 && N != 3, "Not implemented.");
-    static_assert(std::is_floating_point<T>::value,
-                  "Ray only can be instantiated with floating point types");
+    static_assert(std::is_floating_point<T>::value, "Ray only can be instantiated with floating point types");
 };
 
 }  // namespace vox
-
-#endif  // INCLUDE_VOX_RAY_H_

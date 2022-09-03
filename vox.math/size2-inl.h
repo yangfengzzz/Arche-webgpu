@@ -4,36 +4,35 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef INCLUDE_VOX_DETAIL_SIZE2_INL_H_
-#define INCLUDE_VOX_DETAIL_SIZE2_INL_H_
-
-#include "math_utils.h"
-#include "size2.h"
+#pragma once
 
 #include <algorithm>
 #include <cassert>
 
+#include "vox.math/math_utils.h"
+#include "vox.math/size2.h"
+
 namespace vox {
 
 // Constructors
-template<typename U>
+template <typename U>
 inline Size2::Size2(const std::initializer_list<U> &lst) {
     set(lst);
 }
 
 // Basic setters
-inline void Size2::set(size_t newX, size_t newY) {
-    x = newX;
-    y = newY;
+inline void Size2::set(size_t new_x, size_t new_y) {
+    x = new_x;
+    y = new_y;
 }
 
-template<typename U>
+template <typename U>
 inline void Size2::set(const std::initializer_list<U> &lst) {
     assert(lst.size() >= 2);
-    
-    auto inputElem = lst.begin();
-    x = static_cast<size_t>(*inputElem);
-    y = static_cast<size_t>(*(++inputElem));
+
+    auto input_elem = lst.begin();
+    x = static_cast<size_t>(*input_elem);
+    y = static_cast<size_t>(*(++input_elem));
 }
 
 inline void Size2::set(const Size2 &v) {
@@ -41,59 +40,33 @@ inline void Size2::set(const Size2 &v) {
     y = v.y;
 }
 
-inline void Size2::setZero() {
-    x = y = 0;
-}
+inline void Size2::setZero() { x = y = 0; }
 
 // Binary operators: new instance = this (+) v
-inline Size2 Size2::add(size_t v) const {
-    return Size2(x + v, y + v);
-}
+inline Size2 Size2::add(size_t v) const { return {x + v, y + v}; }
 
-inline Size2 Size2::add(const Size2 &v) const {
-    return Size2(x + v.x, y + v.y);
-}
+inline Size2 Size2::add(const Size2 &v) const { return {x + v.x, y + v.y}; }
 
-inline Size2 Size2::sub(size_t v) const {
-    return Size2(x - v, y - v);
-}
+inline Size2 Size2::sub(size_t v) const { return {x - v, y - v}; }
 
-inline Size2 Size2::sub(const Size2 &v) const {
-    return Size2(x - v.x, y - v.y);
-}
+inline Size2 Size2::sub(const Size2 &v) const { return {x - v.x, y - v.y}; }
 
-inline Size2 Size2::mul(size_t v) const {
-    return Size2(x * v, y * v);
-}
+inline Size2 Size2::mul(size_t v) const { return {x * v, y * v}; }
 
-inline Size2 Size2::mul(const Size2 &v) const {
-    return Size2(x * v.x, y * v.y);
-}
+inline Size2 Size2::mul(const Size2 &v) const { return {x * v.x, y * v.y}; }
 
-inline Size2 Size2::div(size_t v) const {
-    return Size2(x / v, y / v);
-}
+inline Size2 Size2::div(size_t v) const { return {x / v, y / v}; }
 
-inline Size2 Size2::div(const Size2 &v) const {
-    return Size2(x / v.x, y / v.y);
-}
+inline Size2 Size2::div(const Size2 &v) const { return {x / v.x, y / v.y}; }
 
 // Binary operators: new instance = v (+) this
-inline Size2 Size2::rsub(size_t v) const {
-    return Size2(v - x, v - y);
-}
+inline Size2 Size2::rsub(size_t v) const { return {v - x, v - y}; }
 
-inline Size2 Size2::rsub(const Size2 &v) const {
-    return Size2(v.x - x, v.y - y);
-}
+inline Size2 Size2::rsub(const Size2 &v) const { return {v.x - x, v.y - y}; }
 
-inline Size2 Size2::rdiv(size_t v) const {
-    return Size2(v / x, v / y);
-}
+inline Size2 Size2::rdiv(size_t v) const { return {v / x, v / y}; }
 
-inline Size2 Size2::rdiv(const Size2 &v) const {
-    return Size2(v.x / x, v.y / y);
-}
+inline Size2 Size2::rdiv(const Size2 &v) const { return {v.x / x, v.y / y}; }
 
 // Augmented operators: this (+)= v
 inline void Size2::iadd(size_t v) {
@@ -147,29 +120,17 @@ inline size_t &Size2::at(size_t i) {
     return (&x)[i];
 }
 
-inline size_t Size2::sum() const {
-    return x + y;
-}
+inline size_t Size2::sum() const { return x + y; }
 
-inline size_t Size2::min() const {
-    return std::min(x, y);
-}
+inline size_t Size2::min() const { return std::min(x, y); }
 
-inline size_t Size2::max() const {
-    return std::max(x, y);
-}
+inline size_t Size2::max() const { return std::max(x, y); }
 
-inline size_t Size2::dominantAxis() const {
-    return (x > y) ? 0 : 1;
-}
+inline size_t Size2::dominantAxis() const { return (x > y) ? 0 : 1; }
 
-inline size_t Size2::subminantAxis() const {
-    return (x < y) ? 0 : 1;
-}
+inline size_t Size2::subminantAxis() const { return (x < y) ? 0 : 1; }
 
-inline bool Size2::isEqual(const Size2 &other) const {
-    return (x == other.x && y == other.y);
-}
+inline bool Size2::isEqual(const Size2 &other) const { return (x == other.x && y == other.y); }
 
 // Operators
 inline size_t &Size2::operator[](size_t i) {
@@ -187,7 +148,7 @@ inline Size2 &Size2::operator=(const Size2 &v) {
     return (*this);
 }
 
-template<typename U>
+template <typename U>
 inline Size2 &Size2::operator=(const std::initializer_list<U> &lst) {
     set(lst);
     return (*this);
@@ -233,79 +194,43 @@ inline Size2 &Size2::operator/=(const Size2 &v) {
     return (*this);
 }
 
-inline bool Size2::operator==(const Size2 &v) const {
-    return isEqual(v);
-}
+inline bool Size2::operator==(const Size2 &v) const { return isEqual(v); }
 
-inline bool Size2::operator!=(const Size2 &v) const {
-    return !isEqual(v);
-}
+inline bool Size2::operator!=(const Size2 &v) const { return !isEqual(v); }
 
 // Math functions
-inline Size2 operator+(const Size2 &a) {
-    return a;
-}
+inline Size2 operator+(const Size2 &a) { return a; }
 
-inline Size2 operator+(const Size2 &a, size_t b) {
-    return a.add(b);
-}
+inline Size2 operator+(const Size2 &a, size_t b) { return a.add(b); }
 
-inline Size2 operator+(size_t a, const Size2 &b) {
-    return b.add(a);
-}
+inline Size2 operator+(size_t a, const Size2 &b) { return b.add(a); }
 
-inline Size2 operator+(const Size2 &a, const Size2 &b) {
-    return a.add(b);
-}
+inline Size2 operator+(const Size2 &a, const Size2 &b) { return a.add(b); }
 
-inline Size2 operator-(const Size2 &a, size_t b) {
-    return a.sub(b);
-}
+inline Size2 operator-(const Size2 &a, size_t b) { return a.sub(b); }
 
-inline Size2 operator-(size_t a, const Size2 &b) {
-    return b.rsub(a);
-}
+inline Size2 operator-(size_t a, const Size2 &b) { return b.rsub(a); }
 
-inline Size2 operator-(const Size2 &a, const Size2 &b) {
-    return a.sub(b);
-}
+inline Size2 operator-(const Size2 &a, const Size2 &b) { return a.sub(b); }
 
-inline Size2 operator*(const Size2 &a, size_t b) {
-    return a.mul(b);
-}
+inline Size2 operator*(const Size2 &a, size_t b) { return a.mul(b); }
 
-inline Size2 operator*(size_t a, const Size2 &b) {
-    return b.mul(a);
-}
+inline Size2 operator*(size_t a, const Size2 &b) { return b.mul(a); }
 
-inline Size2 operator*(const Size2 &a, const Size2 &b) {
-    return a.mul(b);
-}
+inline Size2 operator*(const Size2 &a, const Size2 &b) { return a.mul(b); }
 
-inline Size2 operator/(const Size2 &a, size_t b) {
-    return a.div(b);
-}
+inline Size2 operator/(const Size2 &a, size_t b) { return a.div(b); }
 
-inline Size2 operator/(size_t a, const Size2 &b) {
-    return b.rdiv(a);
-}
+inline Size2 operator/(size_t a, const Size2 &b) { return b.rdiv(a); }
 
-inline Size2 operator/(const Size2 &a, const Size2 &b) {
-    return a.div(b);
-}
+inline Size2 operator/(const Size2 &a, const Size2 &b) { return a.div(b); }
 
-inline Size2 min(const Size2 &a, const Size2 &b) {
-    return Size2(std::min(a.x, b.x), std::min(a.y, b.y));
-}
+inline Size2 min(const Size2 &a, const Size2 &b) { return {std::min(a.x, b.x), std::min(a.y, b.y)}; }
 
-inline Size2 max(const Size2 &a, const Size2 &b) {
-    return Size2(std::max(a.x, b.x), std::max(a.y, b.y));
-}
+inline Size2 max(const Size2 &a, const Size2 &b) { return {std::max(a.x, b.x), std::max(a.y, b.y)}; }
 
 inline Size2 clamp(const Size2 &v, const Size2 &low, const Size2 &high) {
-    return Size2(clamp(v.x, low.x, high.x), clamp(v.y, low.y, high.y));
+    return {clamp(v.x, low.x, high.x), clamp(v.y, low.y, high.y)};
 }
 
 }  // namespace vox
-
-#endif  // INCLUDE_VOX_DETAIL_SIZE2_INL_H_

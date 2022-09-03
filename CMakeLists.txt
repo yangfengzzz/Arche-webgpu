@@ -53,12 +53,12 @@ add_subdirectory(vox.base)
 add_subdirectory(test.base)
 
 # Add math library
-#add_subdirectory(vox.math)
-#add_subdirectory(test.math)
+add_subdirectory(vox.math)
+add_subdirectory(test.math)
 
 # Add geometry library
-#add_subdirectory(vox.geometry)
-#add_subdirectory(test.geometry)
+add_subdirectory(vox.geometry)
+add_subdirectory(test.geometry)
 
 # Add force library
 #add_subdirectory(vox.force)

@@ -4,12 +4,12 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef INCLUDE_VOX_MATH_UTILS_H_
-#define INCLUDE_VOX_MATH_UTILS_H_
+#pragma once
 
-#include "macros.h"
 #include <cstddef>
 #include <limits>
+
+#include "vox.base/macros.h"
 
 namespace vox {
 
@@ -24,7 +24,7 @@ namespace vox {
 //!
 //! \return     True if similar.
 //!
-template<typename T>
+template <typename T>
 inline bool similar(T x, T y, T eps = std::numeric_limits<T>::epsilon());
 
 //!
@@ -36,7 +36,7 @@ inline bool similar(T x, T y, T eps = std::numeric_limits<T>::epsilon());
 //!
 //! \return     The sign.
 //!
-template<typename T>
+template <typename T>
 inline T sign(T x);
 
 //!
@@ -50,7 +50,7 @@ inline T sign(T x);
 //!
 //! \return     The minimum value.
 //!
-template<typename T>
+template <typename T>
 inline T min3(T x, T y, T z);
 
 //!
@@ -64,15 +64,15 @@ inline T min3(T x, T y, T z);
 //!
 //! \return     The maximum value.
 //!
-template<typename T>
+template <typename T>
 inline T max3(T x, T y, T z);
 
 //! Returns minimum among n-elements.
-template<typename T>
+template <typename T>
 inline T minn(const T *x, size_t n);
 
 //! Returns maximum among n-elements.
-template<typename T>
+template <typename T>
 inline T maxn(const T *x, size_t n);
 
 //!
@@ -85,7 +85,7 @@ inline T maxn(const T *x, size_t n);
 //!
 //! \return     The absolute minimum.
 //!
-template<typename T>
+template <typename T>
 inline T absmin(T x, T y);
 
 //!
@@ -98,27 +98,27 @@ inline T absmin(T x, T y);
 //!
 //! \return     The absolute maximum.
 //!
-template<typename T>
+template <typename T>
 inline T absmax(T x, T y);
 
 //! Returns absolute minimum among n-elements.
-template<typename T>
+template <typename T>
 inline T absminn(const T *x, size_t n);
 
 //! Returns absolute maximum among n-elements.
-template<typename T>
+template <typename T>
 inline T absmaxn(const T *x, size_t n);
 
-template<typename T>
+template <typename T>
 inline size_t argmin2(T x, T y);
 
-template<typename T>
+template <typename T>
 inline size_t argmax2(T x, T y);
 
-template<typename T>
+template <typename T>
 inline size_t argmin3(T x, T y, T z);
 
-template<typename T>
+template <typename T>
 inline size_t argmax3(T x, T y, T z);
 
 //!
@@ -130,7 +130,7 @@ inline size_t argmax3(T x, T y, T z);
 //!
 //! \return     The squared value.
 //!
-template<typename T>
+template <typename T>
 inline T square(T x);
 
 //!
@@ -142,7 +142,7 @@ inline T square(T x);
 //!
 //! \return     The cubic of \p x.
 //!
-template<typename T>
+template <typename T>
 inline T cubic(T x);
 
 //!
@@ -156,83 +156,88 @@ inline T cubic(T x);
 //!
 //! \return     The clamped value.
 //!
-template<typename T>
+template <typename T>
 inline T clamp(T val, T low, T high);
 
 //!
 //! \brief      Converts degrees to radians.
 //!
-//! \param[in]  angleInDegrees The angle in degrees.
+//! \param[in]  angle_in_degrees The angle in degrees.
 //!
 //! \tparam     T              Value type.
 //!
 //! \return     Angle in radians.
 //!
-template<typename T>
-inline T degreesToRadians(T angleInDegrees);
+template <typename T>
+inline T degreesToRadians(T angle_in_degrees);
 
 //!
 //! \brief      Converts radians to degrees.
 //!
-//! \param[in]  angleInRadians The angle in radians.
+//! \param[in]  angle_in_radians The angle in radians.
 //!
 //! \tparam     T              Value type.
 //!
 //! \return     Angle in degrees.
 //!
-template<typename T>
-inline T radiansToDegrees(T angleInRadians);
+template <typename T>
+inline T radiansToDegrees(T angle_in_radians);
 
 //!
 //! \brief      Gets the barycentric coordinate.
 //!
 //! \param[in]  x     The input value.
-//! \param[in]  iLow  The lowest index.
-//! \param[in]  iHigh The highest index.
+//! \param[in]  i_low  The lowest index.
+//! \param[in]  i_high The highest index.
 //! \param      i     The output index.
-//! \param      t     The offset from \p i.
+//! \param      f     The offset from \p i.
 //!
 //! \tparam     T     Value type.
 //!
-template<class T>
-inline void getBarycentric(T x, ssize_t iLow, ssize_t iHigh, ssize_t *i, T *t);
+template <class T>
+inline void getBarycentric(T x, ssize_t i_low, ssize_t i_high, ssize_t *i, T *f);
 
 //!
 //! \brief      Computes linear interpolation.
 //!
-//! \param[in]  f0    The first value.
-//! \param[in]  f1    The second value.
-//! \param[in]  t     Relative offset [0, 1] from the first value.
+//! \param[in]  value_0    The first value.
+//! \param[in]  value_1    The second value.
+//! \param[in]  f     Relative offset [0, 1] from the first value.
 //!
 //! \tparam     S     Input value type.
 //! \tparam     T     Offset type.
 //!
 //! \return     The interpolated value.
 //!
-template<typename S, typename T>
-inline S lerp(const S &f0, const S &f1, T t);
+template <typename S, typename T>
+inline S lerp(const S &value_0, const S &value_1, T f);
 
 //! \brief      Computes bilinear interpolation.
-template<typename S, typename T>
-inline S bilerp(const S &f00, const S &f10, const S &f01, const S &f11, T tx,
-                T ty);
+template <typename S, typename T>
+inline S bilerp(const S &f_00, const S &f_10, const S &f_01, const S &f_11, T tx, T ty);
 
 //! \brief      Computes trilinear interpolation.
-template<typename S, typename T>
-inline S trilerp(const S &f000, const S &f100, const S &f010, const S &f110,
-                 const S &f001, const S &f101, const S &f011, const S &f111,
-                 T tx, T ty, T tz);
+template <typename S, typename T>
+inline S trilerp(const S &f_000,
+                 const S &f_100,
+                 const S &f010,
+                 const S &f110,
+                 const S &f001,
+                 const S &f101,
+                 const S &f011,
+                 const S &f111,
+                 T tx,
+                 T ty,
+                 T fz);
 
 //! \brief      Computes Catmull-Rom interpolation.
-template<typename S, typename T>
-inline S catmullRom(const S &f0, const S &f1, const S &f2, const S &f3, T t);
+template <typename S, typename T>
+inline S catmullRom(const S &f0, const S &f1, const S &f2, const S &f3, T f);
 
 //! \brief      Computes monotonic Catmull-Rom interpolation.
-template<typename T>
-inline T monotonicCatmullRom(const T &f0, const T &f1, const T &f2, const T &f3, T t);
+template <typename T>
+inline T monotonicCatmullRom(const T &f0, const T &f1, const T &f2, const T &f3, T f);
 
 }  // namespace vox
 
-#include "math_utils-inl.h"
-
-#endif  // INCLUDE_VOX_MATH_UTILS_H_
+#include "vox.math/math_utils-inl.h"
