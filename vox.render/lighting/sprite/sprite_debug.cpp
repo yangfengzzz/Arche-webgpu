@@ -4,12 +4,12 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "sprite_debug.h"
+#include "vox.render/lighting/sprite/sprite_debug.h"
 
-#include "entity.h"
-#include "lighting/light_manager.h"
-#include "mesh/mesh_renderer.h"
-#include "sprite_debug_material.h"
+#include "vox.render/entity.h"
+#include "vox.render/lighting/light_manager.h"
+#include "vox.render/lighting/sprite/sprite_debug_material.h"
+#include "vox.render/mesh/mesh_renderer.h"
 
 namespace vox {
 std::string SpriteDebug::name() { return "SpriteDebug"; }

@@ -4,15 +4,14 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef wgsl_shadow_vert_hpp
-#define wgsl_shadow_vert_hpp
+#pragma once
 
-#include "shaderlib/wgsl_encoder.h"
+#include "vox.render/shaderlib/wgsl_encoder.h"
 
 namespace vox {
 class WGSLShadowVert {
 public:
-    WGSLShadowVert(const std::string& output);
+    explicit WGSLShadowVert(std::string output);
 
     void operator()(std::string& source, const ShaderMacroCollection& macros);
 
@@ -21,5 +20,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* wgsl_shadow_vert_hpp */

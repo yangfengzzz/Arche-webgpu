@@ -4,18 +4,16 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef stb_hpp
-#define stb_hpp
+#pragma once
 
-#include "image.h"
+#include "vox.render/image/image.h"
 
 namespace vox {
 class Stb : public Image {
 public:
     Stb(const std::vector<uint8_t> &data, bool flipY);
 
-    virtual ~Stb() = default;
+    ~Stb() override = default;
 };
 
 }  // namespace vox
-#endif /* stb_hpp */

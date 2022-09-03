@@ -4,14 +4,13 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef shadow_manager_hpp
-#define shadow_manager_hpp
+#pragma once
 
-#include "lighting/point_light.h"
-#include "rendering/render_pass.h"
-#include "shadow_material.h"
-#include "shadow_subpass.h"
-#include "singleton.h"
+#include "vox.render/lighting/point_light.h"
+#include "vox.render/rendering/render_pass.h"
+#include "vox.render/shadow/shadow_material.h"
+#include "vox.render/shadow/shadow_subpass.h"
+#include "vox.render/singleton.h"
 
 namespace vox {
 class ShadowManager : public Singleton<ShadowManager> {
@@ -83,14 +82,14 @@ public:
 
     static uint32_t cubeShadowCount();
 
-    static ShadowManager& getSingleton(void);
+    static ShadowManager& getSingleton();
 
-    static ShadowManager* getSingletonPtr(void);
+    static ShadowManager* getSingletonPtr();
 
 public:
     ShadowManager(Scene* scene, Camera* camera);
 
-    float cascadeSplitLambda();
+    [[nodiscard]] float cascadeSplitLambda() const;
 
     void setCascadeSplitLambda(float value);
 
@@ -168,4 +167,3 @@ template <>
 inline ShadowManager* Singleton<ShadowManager>::ms_singleton{nullptr};
 
 }  // namespace vox
-#endif /* shadow_manager_hpp */

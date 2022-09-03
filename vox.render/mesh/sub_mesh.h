@@ -4,8 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef sub_mesh_hpp
-#define sub_mesh_hpp
+#pragma once
 
 #include <webgpu/webgpu_cpp.h>
 
@@ -21,15 +20,15 @@ public:
      * @param count - Drawing count
      * @param topology - Drawing topology
      */
-    SubMesh(uint32_t start = 0,
-            uint32_t count = 0,
-            wgpu::PrimitiveTopology topology = wgpu::PrimitiveTopology::TriangleList);
+    explicit SubMesh(uint32_t start = 0,
+                     uint32_t count = 0,
+                     wgpu::PrimitiveTopology topology = wgpu::PrimitiveTopology::TriangleList);
 
-    uint32_t start() const;
+    [[nodiscard]] uint32_t start() const;
 
-    uint32_t count() const;
+    [[nodiscard]] uint32_t count() const;
 
-    wgpu::PrimitiveTopology topology() const;
+    [[nodiscard]] wgpu::PrimitiveTopology topology() const;
 
 private:
     /** Start drawing offset. */
@@ -41,5 +40,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* sub_mesh_hpp */

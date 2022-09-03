@@ -4,11 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef shadow_subpass_hpp
-#define shadow_subpass_hpp
+#pragma once
 
-#include "rendering/subpass.h"
-#include "shadow_material.h"
+#include "vox.render/rendering/subpass.h"
+#include "vox.render/shadow/shadow_material.h"
 
 namespace vox {
 class ShadowSubpass : public Subpass {
@@ -30,7 +29,7 @@ private:
                       const std::vector<RenderElement>& items,
                       const ShaderMacroCollection& compileMacros);
 
-    void _bindingData(wgpu::BindGroupEntry& entry, MaterialPtr mat, Renderer* renderer);
+    void _bindingData(wgpu::BindGroupEntry& entry, const MaterialPtr& mat, Renderer* renderer);
 
     wgpu::RenderPipelineDescriptor _shadowGenDescriptor;
     wgpu::DepthStencilState _depthStencil;
@@ -46,5 +45,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* shadow_subpass_hpp */

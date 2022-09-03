@@ -4,13 +4,12 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef render_pass_hpp
-#define render_pass_hpp
+#pragma once
 
 #include <vector>
 
-#include "resource_cache.h"
-#include "subpass.h"
+#include "vox.render/rendering/resource_cache.h"
+#include "vox.render/rendering/subpass.h"
 
 namespace vox {
 class RenderPass {
@@ -70,5 +69,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* render_pass_hpp */

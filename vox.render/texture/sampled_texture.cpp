@@ -4,9 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "sampled_texture.h"
+#include "vox.render/texture/sampled_texture.h"
 
-#include <math.h>
+#include <cmath>
 
 namespace vox {
 SampledTexture::SampledTexture(wgpu::Device& device) : _device(device) {
@@ -17,21 +17,21 @@ SampledTexture::SampledTexture(wgpu::Device& device) : _device(device) {
     setAddressModeV(wgpu::AddressMode::Repeat);
 }
 
-uint32_t SampledTexture::width() { return _textureDesc.size.width; }
+uint32_t SampledTexture::width() const { return _textureDesc.size.width; }
 
-uint32_t SampledTexture::height() { return _textureDesc.size.height; }
+uint32_t SampledTexture::height() const { return _textureDesc.size.height; }
 
-uint32_t SampledTexture::depthOrArrayLayers() { return _textureDesc.size.depthOrArrayLayers; }
+uint32_t SampledTexture::depthOrArrayLayers() const { return _textureDesc.size.depthOrArrayLayers; }
 
-uint32_t SampledTexture::mipmapCount() { return _textureDesc.mipLevelCount; }
+uint32_t SampledTexture::mipmapCount() const { return _textureDesc.mipLevelCount; }
 
-wgpu::TextureFormat SampledTexture::format() { return _textureDesc.format; }
+wgpu::TextureFormat SampledTexture::format() const { return _textureDesc.format; }
 
 wgpu::TextureViewDimension SampledTexture::textureViewDimension() { return _dimension; }
 
 void SampledTexture::setTextureViewDimension(wgpu::TextureViewDimension dim) { _dimension = dim; }
 
-uint32_t SampledTexture::_getMipmapCount(bool mipmap) {
+uint32_t SampledTexture::_getMipmapCount(bool mipmap) const {
     return mipmap ? log2(fmax(_textureDesc.size.width, _textureDesc.size.height)) + 1 : 1;
 }
 
@@ -46,49 +46,49 @@ wgpu::Sampler& SampledTexture::sampler() {
 }
 
 // MARK: - Sampler
-wgpu::AddressMode SampledTexture::addressModeU() { return _samplerDesc.addressModeU; }
+wgpu::AddressMode SampledTexture::addressModeU() const { return _samplerDesc.addressModeU; }
 
 void SampledTexture::setAddressModeU(wgpu::AddressMode value) {
     _samplerDesc.addressModeU = value;
     _isDirty = true;
 }
 
-wgpu::AddressMode SampledTexture::addressModeV() { return _samplerDesc.addressModeV; }
+wgpu::AddressMode SampledTexture::addressModeV() const { return _samplerDesc.addressModeV; }
 
 void SampledTexture::setAddressModeV(wgpu::AddressMode value) {
     _samplerDesc.addressModeV = value;
     _isDirty = true;
 }
 
-wgpu::FilterMode SampledTexture::minFilterMode() { return _samplerDesc.minFilter; }
+wgpu::FilterMode SampledTexture::minFilterMode() const { return _samplerDesc.minFilter; }
 
 void SampledTexture::setMinFilterMode(wgpu::FilterMode value) {
     _samplerDesc.minFilter = value;
     _isDirty = true;
 }
 
-wgpu::FilterMode SampledTexture::magFilterMode() { return _samplerDesc.magFilter; }
+wgpu::FilterMode SampledTexture::magFilterMode() const { return _samplerDesc.magFilter; }
 
 void SampledTexture::setMagFilterMode(wgpu::FilterMode value) {
     _samplerDesc.magFilter = value;
     _isDirty = true;
 }
 
-wgpu::FilterMode SampledTexture::mipmapFilter() { return _samplerDesc.mipmapFilter; }
+wgpu::FilterMode SampledTexture::mipmapFilter() const { return _samplerDesc.mipmapFilter; }
 
 void SampledTexture::setMipmapFilter(wgpu::FilterMode value) {
     _samplerDesc.mipmapFilter = value;
     _isDirty = true;
 }
 
-uint16_t SampledTexture::anisoLevel() { return _samplerDesc.maxAnisotropy; }
+uint16_t SampledTexture::anisoLevel() const { return _samplerDesc.maxAnisotropy; }
 
 void SampledTexture::setAnisoLevel(uint16_t value) {
     _samplerDesc.maxAnisotropy = value;
     _isDirty = true;
 }
 
-wgpu::CompareFunction SampledTexture::compareFunction() { return _samplerDesc.compare; }
+wgpu::CompareFunction SampledTexture::compareFunction() const { return _samplerDesc.compare; }
 
 void SampledTexture::setCompareFunction(wgpu::CompareFunction function) {
     _samplerDesc.compare = function;
@@ -101,7 +101,7 @@ wgpu::ImageCopyBuffer SampledTexture::_createImageCopyBuffer(wgpu::Buffer buffer
                                                              uint32_t bytesPerRow,
                                                              uint32_t rowsPerImage) {
     wgpu::ImageCopyBuffer imageCopyBuffer = {};
-    imageCopyBuffer.buffer = buffer;
+    imageCopyBuffer.buffer = std::move(buffer);
     imageCopyBuffer.layout = _createTextureDataLayout(offset, bytesPerRow, rowsPerImage);
 
     return imageCopyBuffer;
@@ -137,7 +137,6 @@ uint32_t bytesPerPixel(wgpu::TextureFormat format) {
         case wgpu::TextureFormat::R8Uint:
         case wgpu::TextureFormat::R8Sint:
             return 1;
-            break;
 
         case wgpu::TextureFormat::R16Uint:
         case wgpu::TextureFormat::R16Sint:
@@ -145,7 +144,6 @@ uint32_t bytesPerPixel(wgpu::TextureFormat format) {
         case wgpu::TextureFormat::RG8Unorm:
         case wgpu::TextureFormat::RG8Snorm:
             return 2;
-            break;
 
         case wgpu::TextureFormat::R32Float:
         case wgpu::TextureFormat::R32Uint:
@@ -161,7 +159,6 @@ uint32_t bytesPerPixel(wgpu::TextureFormat format) {
         case wgpu::TextureFormat::BGRA8Unorm:
         case wgpu::TextureFormat::BGRA8UnormSrgb:
             return 4;
-            break;
 
         case wgpu::TextureFormat::RG32Float:
         case wgpu::TextureFormat::RG32Uint:
@@ -169,17 +166,14 @@ uint32_t bytesPerPixel(wgpu::TextureFormat format) {
         case wgpu::TextureFormat::RGBA16Uint:
         case wgpu::TextureFormat::RGBA16Sint:
             return 8;
-            break;
 
         case wgpu::TextureFormat::RGBA32Float:
         case wgpu::TextureFormat::RGBA32Sint:
             return 16;
-            break;
 
         default:
             assert(false && "undefined");
             throw std::exception();
-            break;
     }
 }
 

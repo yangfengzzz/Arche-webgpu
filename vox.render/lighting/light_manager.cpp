@@ -4,20 +4,18 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "light_manager.h"
+#include "vox.render/lighting//light_manager.h"
 
-#include "camera.h"
-#include "lighting/wgsl/wgsl_cluster_compute.h"
-#include "lighting/wgsl/wgsl_cluster_debug.h"
-#include "scene.h"
-#include "shader/shader.h"
-#include "shaderlib/wgsl_unlit.h"
 #include "vox.base/logging.h"
+#include "vox.render/camera.h"
+#include "vox.render/lighting/wgsl/wgsl_cluster_compute.h"
+#include "vox.render/lighting/wgsl/wgsl_cluster_debug.h"
+#include "vox.render/shaderlib/wgsl_unlit.h"
 
 namespace vox {
-LightManager *LightManager::getSingletonPtr(void) { return ms_singleton; }
+LightManager *LightManager::getSingletonPtr() { return ms_singleton; }
 
-LightManager &LightManager::getSingleton(void) {
+LightManager &LightManager::getSingleton() {
     assert(ms_singleton);
     return (*ms_singleton);
 }

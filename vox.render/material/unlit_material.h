@@ -4,12 +4,11 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef unlit_material_hpp
-#define unlit_material_hpp
+#pragma once
 
-#include "base_material.h"
-#include "texture/sampled_texture2d.h"
 #include "vox.math/color.h"
+#include "vox.render/material/base_material.h"
+#include "vox.render/texture/sampled_texture2d.h"
 
 namespace vox {
 /**
@@ -29,7 +28,7 @@ public:
      */
     SampledTexture2DPtr baseTexture();
 
-    void setBaseTexture(SampledTexture2DPtr newValue);
+    void setBaseTexture(const SampledTexture2DPtr& newValue);
 
     /**
      * Create a unlit material instance.
@@ -46,5 +45,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* unlit_material_hpp */

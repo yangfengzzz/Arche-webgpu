@@ -4,14 +4,13 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef ambient_light_hpp
-#define ambient_light_hpp
+#pragma once
 
-#include "scene_forward.h"
-#include "shader/shader_property.h"
-#include "texture/sampled_texture.h"
 #include "vox.math/matrix4x4.h"
 #include "vox.math/spherical_harmonics3.h"
+#include "vox.render/scene_forward.h"
+#include "vox.render/shader/shader_property.h"
+#include "vox.render/texture/sampled_texture.h"
 
 namespace vox {
 /**
@@ -61,7 +60,7 @@ public:
      * Diffuse reflection solid color.
      * @remarks Effective when diffuse reflection mode is `DiffuseMode.SolidColor`.
      */
-    Color diffuseSolidColor();
+    [[nodiscard]] Color diffuseSolidColor() const;
 
     void setDiffuseSolidColor(const Color &value);
 
@@ -79,12 +78,12 @@ public:
      */
     std::shared_ptr<SampledTexture> diffuseTexture();
 
-    void setDiffuseTexture(std::shared_ptr<SampledTexture> value);
+    void setDiffuseTexture(const std::shared_ptr<SampledTexture> &value);
 
     /**
      * Diffuse reflection intensity.
      */
-    float diffuseIntensity();
+    [[nodiscard]] float diffuseIntensity() const;
 
     void setDiffuseIntensity(float value);
 
@@ -92,7 +91,7 @@ public:
     /**
      * Whether to decode from specularTexture with RGBM format.
      */
-    bool specularTextureDecodeRGBM();
+    [[nodiscard]] bool specularTextureDecodeRGBM() const;
 
     void setSpecularTextureDecodeRGBM(bool value);
 
@@ -102,12 +101,12 @@ public:
      */
     std::shared_ptr<SampledTexture> specularTexture();
 
-    void setSpecularTexture(std::shared_ptr<SampledTexture> value);
+    void setSpecularTexture(const std::shared_ptr<SampledTexture> &value);
 
     /**
      * Specular reflection intensity.
      */
-    float specularIntensity();
+    [[nodiscard]] float specularIntensity() const;
 
     void setSpecularIntensity(float value);
 
@@ -118,7 +117,7 @@ public:
      */
     std::shared_ptr<SampledTexture> brdfTexture();
 
-    void setBRDFTexture(std::shared_ptr<SampledTexture> value);
+    void setBRDFTexture(const std::shared_ptr<SampledTexture> &value);
 
 private:
     std::array<float, 27> _preComputeSH(const SphericalHarmonics3 &sh);
@@ -143,10 +142,8 @@ private:
     ShaderProperty _brdfTextureProperty;
     ShaderProperty _brdfSamplerProperty;
 
-    Scene *_scene;
+    Scene *_scene{};
     DiffuseMode _diffuseMode = DiffuseMode::SolidColor;
 };
 
 }  // namespace vox
-
-#endif /* ambient_light_hpp */

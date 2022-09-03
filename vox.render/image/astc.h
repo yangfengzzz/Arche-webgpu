@@ -4,10 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef astc_hpp
-#define astc_hpp
+#pragma once
 
-#include "image.h"
+#include "vox.render/image/image.h"
 
 namespace vox {
 struct BlockDim {
@@ -30,7 +29,7 @@ public:
      */
     Astc(const std::vector<uint8_t> &data, bool flipY);
 
-    virtual ~Astc() = default;
+    ~Astc() override = default;
 
 private:
     /**
@@ -48,5 +47,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* astc_hpp */

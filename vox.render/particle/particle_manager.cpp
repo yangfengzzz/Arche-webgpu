@@ -4,12 +4,12 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "particle_manager.h"
+#include "vox.render/particle/particle_manager.h"
 
-#include "particle/wgsl/wgsl_particle_draw.h"
-#include "particle/wgsl/wgsl_particle_emission.h"
-#include "particle/wgsl/wgsl_particle_simulation.h"
 #include "vox.base/logging.h"
+#include "vox.render/particle/wgsl/wgsl_particle_draw.h"
+#include "vox.render/particle/wgsl/wgsl_particle_emission.h"
+#include "vox.render/particle/wgsl/wgsl_particle_simulation.h"
 
 namespace vox {
 ParticleManager* ParticleManager::getSingletonPtr() { return ms_singleton; }

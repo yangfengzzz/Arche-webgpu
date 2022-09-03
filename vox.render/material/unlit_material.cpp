@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "unlit_material.h"
+#include "vox.render/material/unlit_material.h"
 
 namespace vox {
 const Color& UnlitMaterial::baseColor() { return _baseColor; }
@@ -16,7 +16,7 @@ void UnlitMaterial::setBaseColor(const Color& newValue) {
 
 SampledTexture2DPtr UnlitMaterial::baseTexture() { return _baseTexture; }
 
-void UnlitMaterial::setBaseTexture(SampledTexture2DPtr newValue) {
+void UnlitMaterial::setBaseTexture(const SampledTexture2DPtr& newValue) {
     _baseTexture = newValue;
     shaderData.setSampledTexture(UnlitMaterial::_baseTextureProp, UnlitMaterial::_baseSamplerProp, newValue);
 

@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "buffer.h"
+#include "vox.render/mesh/buffer.h"
 
 namespace vox {
 Buffer::Buffer(wgpu::Device& device, uint64_t byteLength, wgpu::BufferUsage bufferUsage) : _size(byteLength) {

@@ -457,13 +457,9 @@ set(SHADOW_FILE
         shadow/wgsl/wgsl_shadow_vert.h
         shadow/wgsl/wgsl_shadow_vert.cpp)
 
-set(PARTICLE_FILE
-        particle/particle_material.h
-        particle/particle_material.cpp
-        particle/particle_renderer.h
-        particle/particle_renderer.cpp
-        particle/particle_manager.h
-        particle/particle_manager.cpp)
+file(GLOB PARTICLE_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/particle/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/particle/wgsl/*.cpp)
 
 set(PLUGINS_FILE
         plugins/force_close.h

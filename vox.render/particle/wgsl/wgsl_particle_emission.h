@@ -4,11 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef wgsl_particle_emission_hpp
-#define wgsl_particle_emission_hpp
+#pragma once
 
-#include "shaderlib/wgsl_cache.h"
-#include "wgsl_particle_common.h"
+#include "vox.render/particle/wgsl/wgsl_particle_common.h"
+#include "vox.render/shaderlib/wgsl_cache.h"
 
 namespace vox {
 class WGSLParticleEmission : public WGSLCache {
@@ -22,4 +21,3 @@ private:
 };
 
 }  // namespace vox
-#endif /* wgsl_particle_emission_hpp */

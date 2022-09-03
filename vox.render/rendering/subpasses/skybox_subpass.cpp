@@ -4,12 +4,14 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "skybox_subpass.h"
+#include "vox.render/rendering/subpasses/skybox_subpass.h"
 
-#include "camera.h"
-#include "mesh/primitive_mesh.h"
-#include "rendering/render_pass.h"
-#include "shaderlib/wgsl_skybox.h"
+#include <utility>
+
+#include "vox.render/camera.h"
+#include "vox.render/mesh/primitive_mesh.h"
+#include "vox.render/rendering/render_pass.h"
+#include "vox.render/shaderlib/wgsl_skybox.h"
 
 namespace vox {
 SkyboxSubpass::SkyboxSubpass(RenderContext* renderContext,
@@ -36,7 +38,7 @@ void SkyboxSubpass::createCuboid() {
 
 SampledTextureCubePtr SkyboxSubpass::textureCubeMap() { return _cubeMap; }
 
-void SkyboxSubpass::setTextureCubeMap(SampledTextureCubePtr v) { _cubeMap = v; }
+void SkyboxSubpass::setTextureCubeMap(SampledTextureCubePtr v) { _cubeMap = std::move(v); }
 
 // MARK: - Render
 void SkyboxSubpass::prepare() {

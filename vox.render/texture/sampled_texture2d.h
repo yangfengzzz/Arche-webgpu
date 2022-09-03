@@ -4,11 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef sampled_texture2D_hpp
-#define sampled_texture2D_hpp
+#pragma once
 
-#include "image/image.h"
-#include "sampled_texture.h"
+#include "vox.render/image/image.h"
+#include "vox.render/texture/sampled_texture.h"
 
 namespace vox {
 class SampledTexture2D : public SampledTexture {
@@ -42,10 +41,8 @@ public:
     void setImageSource(const ::vox::Image* data);
 
 protected:
-    SampledTexture2D(wgpu::Device& device);
+    explicit SampledTexture2D(wgpu::Device& device);
 };
 using SampledTexture2DPtr = std::shared_ptr<SampledTexture2D>;
 
 }  // namespace vox
-
-#endif /* sampled_texture2D_hpp */

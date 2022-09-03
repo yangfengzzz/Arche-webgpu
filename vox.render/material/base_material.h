@@ -4,13 +4,12 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef base_material_hpp
-#define base_material_hpp
+#pragma once
 
-#include "enums/blend_mode.h"
-#include "enums/render_face.h"
-#include "material.h"
 #include "vox.math/vector4.h"
+#include "vox.render/material/enums/blend_mode.h"
+#include "vox.render/material/enums/render_face.h"
+#include "vox.render/material/material.h"
 
 namespace vox {
 class BaseMaterial : public Material {
@@ -21,7 +20,7 @@ public:
      * If material is transparent, transparent blend mode will be affected by `blendMode`, default is
      * `BlendMode.Normal`.
      */
-    bool isTransparent();
+    [[nodiscard]] bool isTransparent() const;
 
     void setIsTransparent(bool newValue);
 
@@ -31,7 +30,7 @@ public:
      * Fragments with alpha channel lower than cutoff value will be discarded.
      * `0` means no fragment will be discarded.
      */
-    float alphaCutoff();
+    [[nodiscard]] float alphaCutoff() const;
 
     void setAlphaCutoff(float newValue);
 
@@ -77,4 +76,3 @@ private:
 };
 
 }  // namespace vox
-#endif /* base_material_hpp */

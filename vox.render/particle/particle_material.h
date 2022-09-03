@@ -4,11 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef particle_material_hpp
-#define particle_material_hpp
+#pragma once
 
-#include "material/base_material.h"
 #include "vox.math/vector3.h"
+#include "vox.render/material/base_material.h"
 
 namespace vox {
 class ParticleMaterial : public BaseMaterial {
@@ -26,35 +25,35 @@ public:
         float _pad;
     };
 
-    float minParticleSize() const;
+    [[nodiscard]] float minParticleSize() const;
 
     void setMinParticleSize(float size);
 
-    float maxParticleSize() const;
+    [[nodiscard]] float maxParticleSize() const;
 
     void setMaxParticleSize(float size);
 
-    ColorMode colorMode() const;
+    [[nodiscard]] ColorMode colorMode() const;
 
     void setColorMode(ColorMode mode);
 
-    Vector3F birthGradient() const;
+    [[nodiscard]] Vector3F birthGradient() const;
 
     void setBirthGradient(const Vector3F& gradient);
 
-    Vector3F deathGradient() const;
+    [[nodiscard]] Vector3F deathGradient() const;
 
     void setDeathGradient(const Vector3F& gradient);
 
-    float fadeCoefficient() const;
+    [[nodiscard]] float fadeCoefficient() const;
 
     void setFadeCoefficient(float coeff);
 
-    bool debugDraw() const;
+    [[nodiscard]] bool debugDraw() const;
 
     void setDebugDraw(bool flag);
 
-    ParticleMaterial(wgpu::Device& device);
+    explicit ParticleMaterial(wgpu::Device& device);
 
 private:
     ParticleData _particleData;
@@ -62,4 +61,3 @@ private:
 };
 
 }  // namespace vox
-#endif /* particle_material_hpp */

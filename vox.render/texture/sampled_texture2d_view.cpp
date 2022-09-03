@@ -4,11 +4,13 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "sampled_texture2d_view.h"
+#include "vox.render/texture/sampled_texture2d_view.h"
+
+#include <utility>
 
 namespace vox {
 SampledTexture2DView::SampledTexture2DView(wgpu::Device& device, std::function<wgpu::TextureView()> creator)
-    : SampledTexture2D(device), _creator(creator) {}
+    : SampledTexture2D(device), _creator(std::move(creator)) {}
 
 wgpu::TextureView SampledTexture2DView::textureView() { return _creator(); }
 

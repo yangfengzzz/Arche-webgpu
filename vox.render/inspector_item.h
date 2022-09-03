@@ -4,8 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef inspector_item_hpp
-#define inspector_item_hpp
+#pragma once
 
 #include "ui/widgets/widget_container.h"
 #include "vobject.h"
@@ -29,4 +28,3 @@ public:
 };
 
 }  // namespace vox
-#endif /* inspector_item_hpp */

@@ -4,8 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef depth_state_hpp
-#define depth_state_hpp
+#pragma once
 
 #include <webgpu/webgpu_cpp.h>
 
@@ -21,10 +20,9 @@ struct DepthState {
     /** Depth comparison function. */
     wgpu::CompareFunction compareFunction = wgpu::CompareFunction::Less;
 
-    void apply(wgpu::DepthStencilState *depthStencil) { platformApply(depthStencil); }
+    void apply(wgpu::DepthStencilState *depthStencil) const { platformApply(depthStencil); }
 
-    void platformApply(wgpu::DepthStencilState *depthStencil);
+    void platformApply(wgpu::DepthStencilState *depthStencil) const;
 };
 
 }  // namespace vox
-#endif /* depth_state_hpp */

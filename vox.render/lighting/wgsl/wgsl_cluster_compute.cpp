@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "wgsl_cluster_compute.h"
+#include "vox.render/lighting/wgsl/wgsl_cluster_compute.h"
 
 #include <spdlog/fmt/fmt.h>
 

@@ -4,16 +4,16 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "wgsl_particle_common.h"
+#include "vox.render/particle/wgsl/wgsl_particle_common.h"
 
-#include "filesystem.h"
+#include "vox.render/platform/filesystem.h"
 
 namespace vox {
 void WGSLParticleCommon::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros) {
-    std::string particleStruct = fs::readShader("particle/particle_struct.wgsl");
+    std::string particleStruct = fs::ReadShader("particle/particle_struct.wgsl");
     encoder.addStruct(particleStruct);
 
-    std::string particleMath = fs::readShader("particle/particle_math.wgsl");
+    std::string particleMath = fs::ReadShader("particle/particle_math.wgsl");
     encoder.addFunction(particleMath);
 }
 

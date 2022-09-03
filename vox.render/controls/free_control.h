@@ -4,17 +4,15 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef free_control_hpp
-#define free_control_hpp
+#pragma once
 
 #include <array>
 
-#include "../script.h"
-#include "spherical.h"
 #include "vox.math/vector3.h"
+#include "vox.render/controls/spherical.h"
+#include "vox.render/script.h"
 
-namespace vox {
-namespace control {
+namespace vox::control {
 /**
  * The camera's roaming controller, can move up and down, left and right, and rotate the viewing angle.
  */
@@ -25,7 +23,7 @@ public:
      */
     std::string name() override;
 
-    FreeControl(Entity *entity);
+    explicit FreeControl(Entity *entity);
 
     void onDisable() override;
 
@@ -134,7 +132,4 @@ private:
     uint32_t _height = 1000;
 };
 
-}  // namespace control
-}  // namespace vox
-
-#endif /* free_control_hpp */
+}  // namespace vox::control

@@ -4,10 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef wgsl_particle_noise_hpp
-#define wgsl_particle_noise_hpp
+#pragma once
 
-#include "shaderlib/wgsl_encoder.h"
+#include "vox.render/shaderlib/wgsl_encoder.h"
 
 namespace vox {
 class WGSLParticleNoise {
@@ -16,4 +15,3 @@ public:
 };
 
 }  // namespace vox
-#endif /* wgsl_particle_noise_hpp */

@@ -4,8 +4,8 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef wgsl_common_h
-#define wgsl_common_h
+#pragma once
+
 
 #include <webgpu/webgpu_cpp.h>
 
@@ -138,4 +138,3 @@ std::string toString(BuiltInType type);
 std::string toType(BuiltInType type);
 
 }  // namespace vox
-#endif /* wgsl_common_h */

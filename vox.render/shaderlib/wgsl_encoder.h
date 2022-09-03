@@ -4,8 +4,8 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef wgsl_encoder_hpp
-#define wgsl_encoder_hpp
+#pragma once
+
 
 #include <unordered_map>
 #include <unordered_set>
@@ -144,5 +144,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* wgsl_encoder_hpp */

@@ -4,12 +4,12 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "lua_binder.h"
+#include "vox.render/lua/lua_binder.h"
 
-#include "lua/lua_component_binder.h"
-#include "lua/lua_entity_binder.h"
-#include "lua/lua_global_binder.h"
-#include "lua/lua_math_binder.h"
+#include "vox.render/lua/lua_component_binder.h"
+#include "vox.render/lua/lua_entity_binder.h"
+#include "vox.render/lua/lua_global_binder.h"
+#include "vox.render/lua/lua_math_binder.h"
 
 namespace vox {
 void LuaBinder::callBinders(sol::state& luaState) {

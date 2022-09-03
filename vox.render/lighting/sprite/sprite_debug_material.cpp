@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "sprite_debug_material.h"
+#include "vox.render/lighting/sprite/sprite_debug_material.h"
 
 #include <spdlog/fmt/fmt.h>
 

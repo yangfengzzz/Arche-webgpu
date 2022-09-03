@@ -4,10 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef pbr_specular_material_hpp
-#define pbr_specular_material_hpp
+#pragma once
 
-#include "pbr_base_material.h"
+#include "vox.render/material/pbr_base_material.h"
 
 namespace vox {
 /**
@@ -25,14 +24,14 @@ public:
     /**
      * Specular color.
      */
-    const Color& specularColor();
+    [[nodiscard]] const Color& specularColor() const;
 
     void setSpecularColor(const Color& newValue);
 
     /**
      * Glossiness.
      */
-    float glossiness();
+    [[nodiscard]] float glossiness() const;
 
     void setGlossiness(float newValue);
 
@@ -42,7 +41,7 @@ public:
      */
     SampledTexture2DPtr specularGlossinessTexture();
 
-    void setSpecularGlossinessTexture(SampledTexture2DPtr newValue);
+    void setSpecularGlossinessTexture(const SampledTexture2DPtr& newValue);
 
     /**
      * Create a pbr specular-glossiness workflow material instance.
@@ -59,5 +58,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* pbr_specular_material_hpp */

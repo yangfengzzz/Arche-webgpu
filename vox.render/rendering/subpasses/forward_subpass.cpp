@@ -4,15 +4,14 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "forward_subpass.h"
+#include "vox.render/rendering/subpasses/forward_subpass.h"
 
-#include "camera.h"
-#include "components_manager.h"
-#include "material/material.h"
-#include "mesh/mesh.h"
-#include "renderer.h"
-#include "rendering/render_pass.h"
-#include "shadow/shadow_manager.h"
+#include "vox.render/camera.h"
+#include "vox.render/components_manager.h"
+#include "vox.render/material/material.h"
+#include "vox.render/mesh/mesh.h"
+#include "vox.render/renderer.h"
+#include "vox.render/shadow/shadow_manager.h"
 
 namespace vox {
 ForwardSubpass::ForwardSubpass(RenderContext *renderContext,
@@ -166,7 +165,7 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
     }
 }
 
-void ForwardSubpass::_bindingData(wgpu::BindGroupEntry &entry, MaterialPtr mat, Renderer *renderer) {
+void ForwardSubpass::_bindingData(wgpu::BindGroupEntry &entry, const MaterialPtr &mat, Renderer *renderer) {
     auto group = Shader::getShaderPropertyGroup(entry.binding);
     if (group.has_value()) {
         switch (*group) {
@@ -196,7 +195,7 @@ void ForwardSubpass::_bindingData(wgpu::BindGroupEntry &entry, MaterialPtr mat, 
     }
 }
 
-void ForwardSubpass::_bindingTexture(wgpu::BindGroupEntry &entry, MaterialPtr mat, Renderer *renderer) {
+void ForwardSubpass::_bindingTexture(wgpu::BindGroupEntry &entry, const MaterialPtr &mat, Renderer *renderer) {
     auto group = Shader::getShaderPropertyGroup(entry.binding);
     if (group.has_value()) {
         switch (*group) {
@@ -222,7 +221,7 @@ void ForwardSubpass::_bindingTexture(wgpu::BindGroupEntry &entry, MaterialPtr ma
     }
 }
 
-void ForwardSubpass::_bindingSampler(wgpu::BindGroupEntry &entry, MaterialPtr mat, Renderer *renderer) {
+void ForwardSubpass::_bindingSampler(wgpu::BindGroupEntry &entry, const MaterialPtr &mat, Renderer *renderer) {
     auto group = Shader::getShaderPropertyGroup(entry.binding);
     if (group.has_value()) {
         switch (*group) {

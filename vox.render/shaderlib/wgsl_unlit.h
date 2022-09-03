@@ -4,8 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef wgsl_unlit_hpp
-#define wgsl_unlit_hpp
+#pragma once
 
 #include "functors/wgsl_begin_position_vert.h"
 #include "functors/wgsl_blend_shape_input.h"
@@ -50,5 +49,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* wgsl_unlit_hpp */

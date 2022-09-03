@@ -4,15 +4,14 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "wgsl_particle_emission.h"
+#include "vox.render/particle/wgsl/wgsl_particle_emission.h"
 
 #include <spdlog/fmt/fmt.h>
 
-#include "filesystem.h"
-#include "particle/particle_manager.h"
+#include "vox.render/particle/particle_manager.h"
 
 namespace vox {
-WGSLParticleEmission::WGSLParticleEmission() {}
+WGSLParticleEmission::WGSLParticleEmission() = default;
 
 void WGSLParticleEmission::_createShaderSource(size_t hash, const ShaderMacroCollection& macros) {
     _source.clear();

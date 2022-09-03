@@ -4,9 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "wgsl_particle_draw.h"
+#include "vox.render/particle/wgsl/wgsl_particle_draw.h"
 
-#include "filesystem.h"
+#include "vox.render/platform/filesystem.h"
 
 namespace vox {
 WGSLParticleVertex::WGSLParticleVertex() : _commonFrag("VertexIn") {}
@@ -20,7 +20,7 @@ void WGSLParticleVertex::_createShaderSource(size_t hash, const ShaderMacroColle
         auto encoder = createSourceEncoder(wgpu::ShaderStage::Vertex);
         _particleCommon(encoder, macros);
 
-        std::string particleDraw = fs::readShader("particle/particle_draw.wgsl");
+        std::string particleDraw = fs::ReadShader("particle/particle_draw.wgsl");
         encoder.addStruct(particleDraw);
 
         encoder.addStruct(
@@ -102,7 +102,7 @@ void WGSLParticleVertex::_createShaderSource(size_t hash, const ShaderMacroColle
 }
 
 // MARK: - Particle Fragment Code
-WGSLParticleFragment::WGSLParticleFragment() {}
+WGSLParticleFragment::WGSLParticleFragment() = default;
 
 void WGSLParticleFragment::_createShaderSource(size_t hash, const ShaderMacroCollection& macros) {
     _source.clear();
@@ -111,7 +111,7 @@ void WGSLParticleFragment::_createShaderSource(size_t hash, const ShaderMacroCol
     {
         auto encoder = createSourceEncoder(wgpu::ShaderStage::Fragment);
 
-        std::string particleDraw = fs::readShader("particle/particle_draw.wgsl");
+        std::string particleDraw = fs::ReadShader("particle/particle_draw.wgsl");
         encoder.addStruct(particleDraw);
 
         encoder.addStruct(

@@ -4,16 +4,16 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "shadow_manager.h"
+#include "vox.render/shadow/shadow_manager.h"
 
-#include "camera.h"
-#include "entity.h"
-#include "lighting/light_manager.h"
-#include "shader/shader.h"
-#include "texture/sampled_texture2d.h"
-#include "texture/sampled_texturecube.h"
-#include "texture/texture_utils.h"
 #include "vox.geometry/matrix_utils.h"
+#include "vox.render/camera.h"
+#include "vox.render/entity.h"
+#include "vox.render/lighting/light_manager.h"
+#include "vox.render/shader/shader.h"
+#include "vox.render/texture/sampled_texture2d.h"
+#include "vox.render/texture/sampled_texturecube.h"
+#include "vox.render/texture/texture_utils.h"
 
 namespace vox {
 uint32_t ShadowManager::_shadowCount = 0;
@@ -53,7 +53,7 @@ ShadowManager::ShadowManager(Scene* scene, Camera* camera)
     _renderPass->addSubpass(std::move(shadowSubpass));
 }
 
-float ShadowManager::cascadeSplitLambda() { return _cascadeSplitLambda; }
+float ShadowManager::cascadeSplitLambda() const { return _cascadeSplitLambda; }
 
 void ShadowManager::setCascadeSplitLambda(float value) { _cascadeSplitLambda = value; }
 

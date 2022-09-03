@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "sub_mesh.h"
+#include "vox.render/mesh/sub_mesh.h"
 
 namespace vox {
 SubMesh::SubMesh(uint32_t start, uint32_t count, wgpu::PrimitiveTopology topology)

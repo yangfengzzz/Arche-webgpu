@@ -4,8 +4,8 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef wgsl_pbr_hpp
-#define wgsl_pbr_hpp
+#pragma once
+
 
 #include "functors/wgsl_begin_normal_vert.h"
 #include "functors/wgsl_begin_position_vert.h"
@@ -79,4 +79,3 @@ private:
 };
 
 }  // namespace vox
-#endif /* wgsl_pbr_hpp */

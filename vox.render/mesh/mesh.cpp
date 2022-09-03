@@ -4,13 +4,13 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "mesh.h"
+#include "vox.render/mesh/mesh.h"
 
 namespace vox {
 uint32_t Mesh::instanceCount() const { return _instanceCount; }
 
 SubMesh* Mesh::subMesh() {
-    if (_subMeshes.size() > 0) {
+    if (!_subMeshes.empty()) {
         return &_subMeshes[0];
     } else {
         return nullptr;
@@ -18,7 +18,7 @@ SubMesh* Mesh::subMesh() {
 }
 
 const SubMesh* Mesh::subMesh() const {
-    if (_subMeshes.size() > 0) {
+    if (!_subMeshes.empty()) {
         return &_subMeshes[0];
     } else {
         return nullptr;
@@ -30,7 +30,7 @@ const std::vector<SubMesh>& Mesh::subMeshes() const { return _subMeshes; }
 void Mesh::addSubMesh(SubMesh subMesh) { _subMeshes.push_back(subMesh); }
 
 void Mesh::addSubMesh(uint32_t start, uint32_t count, wgpu::PrimitiveTopology topology) {
-    _subMeshes.push_back(SubMesh(start, count, topology));
+    _subMeshes.emplace_back(start, count, topology);
 }
 
 void Mesh::clearSubMesh() { _subMeshes.clear(); }
@@ -39,8 +39,8 @@ std::unique_ptr<UpdateFlag> Mesh::registerUpdateFlag() { return _updateFlagManag
 
 void Mesh::_setVertexLayouts(const std::vector<wgpu::VertexBufferLayout>& layouts) {
     _clearVertexLayouts();
-    for (size_t i = 0, n = layouts.size(); i < n; i++) {
-        _addVertexLayout(layouts[i]);
+    for (const auto& layout : layouts) {
+        _addVertexLayout(layout);
     }
 }
 
@@ -52,7 +52,7 @@ void Mesh::_setVertexBufferBinding(size_t index, const Buffer& binding) {
     }
 }
 
-void Mesh::_setIndexBufferBinding(std::optional<IndexBufferBinding> binding) {
+void Mesh::_setIndexBufferBinding(const std::optional<IndexBufferBinding>& binding) {
     if (binding.has_value()) {
         _indexBufferBinding = binding;
     } else {

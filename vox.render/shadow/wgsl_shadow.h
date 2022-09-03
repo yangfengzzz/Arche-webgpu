@@ -4,15 +4,14 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef wgsl_shadow_hpp
-#define wgsl_shadow_hpp
+#pragma once
 
-#include "shaderlib/functors/wgsl_begin_position_vert.h"
-#include "shaderlib/functors/wgsl_blend_shape_input.h"
-#include "shaderlib/functors/wgsl_blend_shape_vert.h"
-#include "shaderlib/functors/wgsl_common_vert.h"
-#include "shaderlib/functors/wgsl_skinning_vert.h"
-#include "shaderlib/wgsl_cache.h"
+#include "vox.render/shaderlib/functors/wgsl_begin_position_vert.h"
+#include "vox.render/shaderlib/functors/wgsl_blend_shape_input.h"
+#include "vox.render/shaderlib/functors/wgsl_blend_shape_vert.h"
+#include "vox.render/shaderlib/functors/wgsl_common_vert.h"
+#include "vox.render/shaderlib/functors/wgsl_skinning_vert.h"
+#include "vox.render/shaderlib/wgsl_cache.h"
 
 namespace vox {
 // MARK: - Shadow Vertex Code
@@ -30,5 +29,3 @@ private:
     WGSLSkinningVert _skinningVert;
 };
 }  // namespace vox
-
-#endif /* wgsl_shadow_hpp */

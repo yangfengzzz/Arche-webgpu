@@ -4,8 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef lua_binder_hpp
-#define lua_binder_hpp
+#pragma once
 
 #include <sol/sol.hpp>
 
@@ -22,4 +21,3 @@ public:
 };
 
 }  // namespace vox
-#endif /* lua_binder_hpp */

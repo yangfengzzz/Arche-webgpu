@@ -4,12 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "particle_renderer.h"
+#include "vox.render/particle/particle_renderer.h"
 
-#include "entity.h"
-#include "mesh/mesh_renderer.h"
-#include "particle_manager.h"
-#include "scene.h"
+#include "vox.render/entity.h"
+#include "vox.render/particle/particle_manager.h"
 
 namespace vox {
 namespace {
@@ -20,8 +18,6 @@ uint32_t closestPowerOfTwo(uint32_t const n) {
 }
 
 }  // namespace
-
-uint32_t const ParticleRenderer::kBatchEmitCount;
 
 std::string ParticleRenderer::name() { return "ParticleRenderer"; }
 
@@ -102,8 +98,8 @@ void ParticleRenderer::_allocBuffer() {
 
 void ParticleRenderer::_generateRandomValues() {
     std::uniform_real_distribution<float> distrib(_minValue, _maxValue);
-    for (unsigned int i = 0u; i < _randomVec.size(); ++i) {
-        _randomVec[i] = distrib(_mt);
+    for (float &i : _randomVec) {
+        i = distrib(_mt);
     }
     shaderData.setData(_randomBufferProp, _randomVec);
 }
@@ -112,7 +108,7 @@ void ParticleRenderer::_render(std::vector<RenderElement> &opaqueQueue,
                                std::vector<RenderElement> &alphaTestQueue,
                                std::vector<RenderElement> &transparentQueue) {
     if (_numAliveParticles > 0) {
-        transparentQueue.push_back(RenderElement(this, _mesh, _mesh->subMesh(), _material));
+        transparentQueue.emplace_back(this, _mesh, _mesh->subMesh(), _material);
     }
 }
 

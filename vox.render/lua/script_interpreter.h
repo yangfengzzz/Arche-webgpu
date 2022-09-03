@@ -4,13 +4,12 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef script_interpreter_hpp
-#define script_interpreter_hpp
+#pragma once
 
 #include <sol/sol.hpp>
 #include <vector>
 
-#include "behaviour.h"
+#include "vox.render/behaviour.h"
 
 namespace vox {
 /**
@@ -21,7 +20,7 @@ public:
     /**
      * Constructor
      */
-    ScriptInterpreter(const std::string &scriptRootFolder);
+    explicit ScriptInterpreter(std::string scriptRootFolder);
 
     /**
      * Destructor
@@ -56,14 +55,13 @@ public:
     /**
      * Returns true if every scripts are OK
      */
-    bool isOk() const;
+    [[nodiscard]] bool isOk() const;
 
 private:
     std::unique_ptr<sol::state> _luaState{nullptr};
     std::string _scriptRootFolder;
     std::vector<Behaviour *> _behaviours;
-    bool _isOk;
+    bool _isOk{};
 };
 
 }  // namespace vox
-#endif /* script_interpreter_hpp */

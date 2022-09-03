@@ -4,11 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef skybox_subpass_hpp
-#define skybox_subpass_hpp
+#pragma once
 
-#include "rendering/subpass.h"
-#include "texture/sampled_texturecube.h"
+#include "vox.render/rendering/subpass.h"
+#include "vox.render/texture/sampled_texturecube.h"
 
 namespace vox {
 class SkyboxSubpass : public Subpass {
@@ -65,5 +64,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* skybox_subpass_hpp */

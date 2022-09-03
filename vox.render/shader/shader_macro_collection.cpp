@@ -4,9 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "shader_macro_collection.h"
+#include "vox.render/shader/shader_macro_collection.h"
 
-#include "std_helpers.h"
+#include "vox.render/std_helpers.h"
 
 namespace vox {
 void ShaderMacroCollection::unionCollection(const ShaderMacroCollection& left,

@@ -4,10 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef forward_subpass_hpp
-#define forward_subpass_hpp
+#pragma once
 
-#include "rendering/subpass.h"
+#include "vox.render/rendering/subpass.h"
 
 namespace vox {
 class ForwardSubpass : public Subpass {
@@ -24,7 +23,7 @@ public:
     void draw(wgpu::RenderPassEncoder& passEncoder) override;
 
 public:
-    RenderMode renderMode() const;
+    [[nodiscard]] RenderMode renderMode() const;
 
     void setRenderMode(RenderMode mode);
 
@@ -39,11 +38,11 @@ private:
                       const std::vector<RenderElement>& items,
                       const ShaderMacroCollection& compileMacros);
 
-    void _bindingData(wgpu::BindGroupEntry& entry, MaterialPtr mat, Renderer* renderer);
+    void _bindingData(wgpu::BindGroupEntry& entry, const MaterialPtr& mat, Renderer* renderer);
 
-    void _bindingTexture(wgpu::BindGroupEntry& entry, MaterialPtr mat, Renderer* renderer);
+    void _bindingTexture(wgpu::BindGroupEntry& entry, const MaterialPtr& mat, Renderer* renderer);
 
-    void _bindingSampler(wgpu::BindGroupEntry& entry, MaterialPtr mat, Renderer* renderer);
+    void _bindingSampler(wgpu::BindGroupEntry& entry, const MaterialPtr& mat, Renderer* renderer);
 
     wgpu::RenderPipelineDescriptor _forwardPipelineDescriptor;
     wgpu::DepthStencilState _depthStencil;
@@ -63,5 +62,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* forward_subpass_hpp */

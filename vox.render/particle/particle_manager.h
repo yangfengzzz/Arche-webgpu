@@ -4,12 +4,11 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef particle_manager_hpp
-#define particle_manager_hpp
+#pragma once
 
-#include "particle_renderer.h"
-#include "rendering/compute_pass.h"
 #include "singleton.h"
+#include "vox.render/particle/particle_renderer.h"
+#include "vox.render/rendering/compute_pass.h"
 
 namespace vox {
 class ParticleManager : public Singleton<ParticleManager> {
@@ -24,13 +23,13 @@ public:
         return PARTICLES_KERNEL_GROUP_WIDTH * (nparticles / PARTICLES_KERNEL_GROUP_WIDTH);
     }
 
-    static ParticleManager& getSingleton(void);
+    static ParticleManager& getSingleton();
 
-    static ParticleManager* getSingletonPtr(void);
+    static ParticleManager* getSingletonPtr();
 
-    ParticleManager(wgpu::Device& device);
+    explicit ParticleManager(wgpu::Device& device);
 
-    const std::vector<ParticleRenderer*>& particles() const;
+    [[nodiscard]] const std::vector<ParticleRenderer*>& particles() const;
 
     void addParticle(ParticleRenderer* particle);
 
@@ -39,12 +38,12 @@ public:
     void draw(wgpu::CommandEncoder& commandEncoder);
 
 public:
-    float timeStepFactor() const;
+    [[nodiscard]] float timeStepFactor() const;
 
     void setTimeStepFactor(float factor);
 
 private:
-    void _emission(const uint32_t count, ParticleRenderer* particle, wgpu::ComputePassEncoder& passEncoder);
+    void _emission(uint32_t count, ParticleRenderer* particle, wgpu::ComputePassEncoder& passEncoder);
 
     void _simulation(ParticleRenderer* particle, wgpu::ComputePassEncoder& passEncoder);
 
@@ -60,4 +59,3 @@ template <>
 inline ParticleManager* Singleton<ParticleManager>::ms_singleton{nullptr};
 
 }  // namespace vox
-#endif /* particle_manager_hpp */

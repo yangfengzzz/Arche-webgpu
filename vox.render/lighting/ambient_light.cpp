@@ -4,10 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "ambient_light.h"
+#include "vox.render/lighting/ambient_light.h"
 
-#include "scene.h"
-#include "shader/shader.h"
+#include "vox.render/scene.h"
 
 namespace vox {
 AmbientLight::AmbientLight()
@@ -54,7 +53,7 @@ void AmbientLight::setDiffuseMode(DiffuseMode value) {
     }
 }
 
-Color AmbientLight::diffuseSolidColor() {
+Color AmbientLight::diffuseSolidColor() const {
     return Color(_envMapLight.diffuse.x, _envMapLight.diffuse.y, _envMapLight.diffuse.z);
 }
 
@@ -74,7 +73,7 @@ void AmbientLight::setDiffuseSphericalHarmonics(const SphericalHarmonics3 &value
 
 std::shared_ptr<SampledTexture> AmbientLight::diffuseTexture() { return _diffuseTexture; }
 
-void AmbientLight::setDiffuseTexture(std::shared_ptr<SampledTexture> value) {
+void AmbientLight::setDiffuseTexture(const std::shared_ptr<SampledTexture> &value) {
     _diffuseTexture = value;
     if (!_scene) return;
 
@@ -89,7 +88,7 @@ void AmbientLight::setDiffuseTexture(std::shared_ptr<SampledTexture> value) {
     }
 }
 
-float AmbientLight::diffuseIntensity() { return _envMapLight.diffuseIntensity; }
+float AmbientLight::diffuseIntensity() const { return _envMapLight.diffuseIntensity; }
 
 void AmbientLight::setDiffuseIntensity(float value) {
     _envMapLight.diffuseIntensity = value;
@@ -99,13 +98,13 @@ void AmbientLight::setDiffuseIntensity(float value) {
 }
 
 // MARK: - Specular
-bool AmbientLight::specularTextureDecodeRGBM() { return _specularTextureDecodeRGBM; }
+bool AmbientLight::specularTextureDecodeRGBM() const { return _specularTextureDecodeRGBM; }
 
 void AmbientLight::setSpecularTextureDecodeRGBM(bool value) {}
 
 std::shared_ptr<SampledTexture> AmbientLight::specularTexture() { return _specularReflection; }
 
-void AmbientLight::setSpecularTexture(std::shared_ptr<SampledTexture> value) {
+void AmbientLight::setSpecularTexture(const std::shared_ptr<SampledTexture> &value) {
     _specularReflection = value;
     if (!_scene) return;
 
@@ -122,7 +121,7 @@ void AmbientLight::setSpecularTexture(std::shared_ptr<SampledTexture> value) {
     }
 }
 
-float AmbientLight::specularIntensity() { return _envMapLight.specularIntensity; }
+float AmbientLight::specularIntensity() const { return _envMapLight.specularIntensity; }
 
 void AmbientLight::setSpecularIntensity(float value) {
     _envMapLight.specularIntensity = value;
@@ -134,7 +133,7 @@ void AmbientLight::setSpecularIntensity(float value) {
 // MARK: - BRDF Texture
 std::shared_ptr<SampledTexture> AmbientLight::brdfTexture() { return _brdfLutTexture; }
 
-void AmbientLight::setBRDFTexture(std::shared_ptr<SampledTexture> value) {}
+void AmbientLight::setBRDFTexture(const std::shared_ptr<SampledTexture> &value) {}
 
 std::array<float, 27> AmbientLight::_preComputeSH(const SphericalHarmonics3 &sh) {
     /**
@@ -162,39 +161,39 @@ std::array<float, 27> AmbientLight::_preComputeSH(const SphericalHarmonics3 &sh)
      */
 
     const auto &src = sh.coefficients();
-    std::array<float, 27> out;
+    std::array<float, 27> out{};
     // l0
-    out[0] = src[0] * 0.886227;  // kernel0 * basis0 = 0.886227
-    out[1] = src[1] * 0.886227;
-    out[2] = src[2] * 0.886227;
+    out[0] = src[0] * 0.886227f;  // kernel0 * basis0 = 0.886227
+    out[1] = src[1] * 0.886227f;
+    out[2] = src[2] * 0.886227f;
 
     // l1
-    out[3] = src[3] * -1.023327;  // kernel1 * basis1 = -1.023327;
-    out[4] = src[4] * -1.023327;
-    out[5] = src[5] * -1.023327;
-    out[6] = src[6] * 1.023327;  // kernel1 * basis2 = 1.023327
-    out[7] = src[7] * 1.023327;
-    out[8] = src[8] * 1.023327;
-    out[9] = src[9] * -1.023327;  // kernel1 * basis3 = -1.023327
-    out[10] = src[10] * -1.023327;
-    out[11] = src[11] * -1.023327;
+    out[3] = src[3] * -1.023327f;  // kernel1 * basis1 = -1.023327;
+    out[4] = src[4] * -1.023327f;
+    out[5] = src[5] * -1.023327f;
+    out[6] = src[6] * 1.023327f;  // kernel1 * basis2 = 1.023327
+    out[7] = src[7] * 1.023327f;
+    out[8] = src[8] * 1.023327f;
+    out[9] = src[9] * -1.023327f;  // kernel1 * basis3 = -1.023327
+    out[10] = src[10] * -1.023327f;
+    out[11] = src[11] * -1.023327f;
 
     // l2
-    out[12] = src[12] * 0.858086;  // kernel2 * basis4 = 0.858086
-    out[13] = src[13] * 0.858086;
-    out[14] = src[14] * 0.858086;
-    out[15] = src[15] * -0.858086;  // kernel2 * basis5 = -0.858086
-    out[16] = src[16] * -0.858086;
-    out[17] = src[17] * -0.858086;
-    out[18] = src[18] * 0.247708;  // kernel2 * basis6 = 0.247708
-    out[19] = src[19] * 0.247708;
-    out[20] = src[20] * 0.247708;
-    out[21] = src[21] * -0.858086;  // kernel2 * basis7 = -0.858086
-    out[22] = src[22] * -0.858086;
-    out[23] = src[23] * -0.858086;
-    out[24] = src[24] * 0.429042;  // kernel2 * basis8 = 0.429042
-    out[25] = src[25] * 0.429042;
-    out[26] = src[26] * 0.429042;
+    out[12] = src[12] * 0.858086f;  // kernel2 * basis4 = 0.858086
+    out[13] = src[13] * 0.858086f;
+    out[14] = src[14] * 0.858086f;
+    out[15] = src[15] * -0.858086f;  // kernel2 * basis5 = -0.858086
+    out[16] = src[16] * -0.858086f;
+    out[17] = src[17] * -0.858086f;
+    out[18] = src[18] * 0.247708f;  // kernel2 * basis6 = 0.247708
+    out[19] = src[19] * 0.247708f;
+    out[20] = src[20] * 0.247708f;
+    out[21] = src[21] * -0.858086f;  // kernel2 * basis7 = -0.858086
+    out[22] = src[22] * -0.858086f;
+    out[23] = src[23] * -0.858086f;
+    out[24] = src[24] * 0.429042f;  // kernel2 * basis8 = 0.429042
+    out[25] = src[25] * 0.429042f;
+    out[26] = src[26] * 0.429042f;
 
     return out;
 }

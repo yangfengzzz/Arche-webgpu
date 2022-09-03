@@ -4,8 +4,8 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef wgsl_cache_hpp
-#define wgsl_cache_hpp
+#pragma once
+
 
 #include <unordered_map>
 
@@ -27,4 +27,3 @@ protected:
 };
 
 }  // namespace vox
-#endif /* wgsl_cache_hpp */

@@ -4,15 +4,14 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef particle_hpp
-#define particle_hpp
+#pragma once
 
 #include <random>
 
-#include "mesh/buffer_mesh.h"
-#include "particle_material.h"
-#include "renderer.h"
-#include "texture/sampled_texture3d.h"
+#include "vox.render/mesh/buffer_mesh.h"
+#include "vox.render/particle/particle_material.h"
+#include "vox.render/renderer.h"
+#include "vox.render/texture/sampled_texture3d.h"
 
 namespace vox {
 class ParticleRenderer : public Renderer {
@@ -66,7 +65,7 @@ public:
 
     ParticleMaterial &material();
 
-    const uint32_t numAliveParticles() const;
+    [[nodiscard]] const uint32_t numAliveParticles() const;
 
 public:
     void _render(std::vector<RenderElement> &opaqueQueue,
@@ -78,68 +77,68 @@ public:
     void update(float deltaTime) override;
 
 public:
-    float timeStep() const;
+    [[nodiscard]] float timeStep() const;
 
     void setTimeStep(float step);
 
-    SimulationVolume boundingVolumeType() const;
+    [[nodiscard]] SimulationVolume boundingVolumeType() const;
 
     void setBoundingVolumeType(SimulationVolume vol);
 
-    float bboxSize() const;
+    [[nodiscard]] float bboxSize() const;
 
     void setBBoxSize(float size);
 
-    float scatteringFactor() const;
+    [[nodiscard]] float scatteringFactor() const;
 
     void setScatteringFactor(float factor);
 
-    float vectorFieldFactor() const;
+    [[nodiscard]] float vectorFieldFactor() const;
 
     void setVectorFieldFactor(float factor);
 
-    std::shared_ptr<SampledTexture3D> vectorFieldTexture() const;
+    [[nodiscard]] std::shared_ptr<SampledTexture3D> vectorFieldTexture() const;
 
     void setVectorFieldTexture(const std::shared_ptr<SampledTexture3D> &field);
 
-    float curlNoiseFactor() const;
+    [[nodiscard]] float curlNoiseFactor() const;
 
     void setCurlNoiseFactor(float factor);
 
-    float curlNoiseScale() const;
+    [[nodiscard]] float curlNoiseScale() const;
 
     void setCurlNoiseScale(float scale);
 
-    float velocityFactor() const;
+    [[nodiscard]] float velocityFactor() const;
 
     void setVelocityFactor(float factor);
 
 public:
-    uint32_t emitCount() const;
+    [[nodiscard]] uint32_t emitCount() const;
 
     void setEmitCount(uint32_t count);
 
-    EmitterType emitterType() const;
+    [[nodiscard]] EmitterType emitterType() const;
 
     void setEmitterType(EmitterType type);
 
-    Vector3F emitterPosition() const;
+    [[nodiscard]] Vector3F emitterPosition() const;
 
     void setEmitterPosition(const Vector3F &position);
 
-    Vector3F emitterDirection() const;
+    [[nodiscard]] Vector3F emitterDirection() const;
 
     void setEmitterDirection(const Vector3F &direction);
 
-    float emitterRadius() const;
+    [[nodiscard]] float emitterRadius() const;
 
     void setEmitterRadius(float radius);
 
-    float particleMinAge() const;
+    [[nodiscard]] float particleMinAge() const;
 
     void setParticleMinAge(float age);
 
-    float particleMaxAge() const;
+    [[nodiscard]] float particleMaxAge() const;
 
     void setParticleMaxAge(float age);
 
@@ -181,7 +180,7 @@ private:
     std::vector<float> _randomVec{};
     ShaderProperty _randomBufferProp;
 
-    ParticleSimulationData _simulationData;
+    ParticleSimulationData _simulationData{};
     ShaderProperty _simulationDataProp;
 
     ParticleEmitterData _emitterData;
@@ -208,5 +207,3 @@ private:
     ShaderProperty _sortIndicesBufferProp;
 };
 }  // namespace vox
-
-#endif /* particle_hpp */

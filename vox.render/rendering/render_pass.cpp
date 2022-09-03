@@ -4,10 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "render_pass.h"
+#include "vox.render/rendering/render_pass.h"
 
-#include "subpass.h"
 #include "vox.base/logging.h"
+#include "vox.render/rendering/subpass.h"
 
 namespace vox {
 RenderPass::RenderPass(wgpu::Device& device, wgpu::RenderPassDescriptor& desc) : _desc(desc), _resourceCache(device) {}

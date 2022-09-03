@@ -4,12 +4,11 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef compute_subpass_hpp
-#define compute_subpass_hpp
+#pragma once
 
-#include "render_context.h"
-#include "resource_cache.h"
-#include "scene.h"
+#include "vox.render/rendering/render_context.h"
+#include "vox.render/rendering/resource_cache.h"
+#include "vox.render/scene.h"
 
 namespace vox {
 class ComputePass {
@@ -30,11 +29,11 @@ public:
     ComputePass& operator=(ComputePass&&) = delete;
 
 public:
-    uint32_t workgroupCountX() const;
+    [[nodiscard]] uint32_t workgroupCountX() const;
 
-    uint32_t workgroupCountY() const;
+    [[nodiscard]] uint32_t workgroupCountY() const;
 
-    uint32_t workgroupCountZ() const;
+    [[nodiscard]] uint32_t workgroupCountZ() const;
 
     void setDispatchCount(uint32_t workgroupCountX, uint32_t workgroupCountY = 1, uint32_t workgroupCountZ = 1);
 
@@ -82,4 +81,3 @@ private:
 };
 
 }  // namespace vox
-#endif /* compute_subpass_hpp */

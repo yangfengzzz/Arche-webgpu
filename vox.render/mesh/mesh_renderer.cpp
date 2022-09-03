@@ -4,11 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "mesh_renderer.h"
+#include "vox.render/mesh/mesh_renderer.h"
 
-#include "entity.h"
-#include "mesh/mesh.h"
-#include "shaderlib/wgsl_common.h"
+#include "vox.render/entity.h"
+#include "vox.render/mesh/mesh.h"
 
 namespace vox {
 std::string MeshRenderer::name() { return "MeshRenderer"; }
@@ -42,18 +41,18 @@ void MeshRenderer::_render(std::vector<RenderElement> &opaqueQueue,
             shaderData.disableMacro(HAS_TANGENT);
             shaderData.disableMacro(HAS_VERTEXCOLOR);
 
-            for (size_t i = 0, n = vertexLayouts.size(); i < n; i++) {
-                for (uint32_t j = 0, m = vertexLayouts[i].attributeCount; j < m; j++) {
-                    if (vertexLayouts[i].attributes[j].shaderLocation == (uint32_t)Attributes::UV_0) {
+            for (const auto &vertexLayout : vertexLayouts) {
+                for (uint32_t j = 0, m = vertexLayout.attributeCount; j < m; j++) {
+                    if (vertexLayout.attributes[j].shaderLocation == (uint32_t)Attributes::UV_0) {
                         shaderData.enableMacro(HAS_UV);
                     }
-                    if (vertexLayouts[i].attributes[j].shaderLocation == (uint32_t)Attributes::Normal) {
+                    if (vertexLayout.attributes[j].shaderLocation == (uint32_t)Attributes::Normal) {
                         shaderData.enableMacro(HAS_NORMAL);
                     }
-                    if (vertexLayouts[i].attributes[j].shaderLocation == (uint32_t)Attributes::Tangent) {
+                    if (vertexLayout.attributes[j].shaderLocation == (uint32_t)Attributes::Tangent) {
                         shaderData.enableMacro(HAS_TANGENT);
                     }
-                    if (vertexLayouts[i].attributes[j].shaderLocation == (uint32_t)Attributes::Color_0) {
+                    if (vertexLayout.attributes[j].shaderLocation == (uint32_t)Attributes::Color_0) {
                         shaderData.enableMacro(HAS_VERTEXCOLOR);
                     }
                 }

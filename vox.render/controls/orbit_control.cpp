@@ -4,12 +4,11 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "orbit_control.h"
+#include "vox.render/controls/orbit_control.h"
 
-#include "../entity.h"
+#include "vox.render/entity.h"
 
-namespace vox {
-namespace control {
+namespace vox::control {
 std::string OrbitControl::name() { return "OrbitControl"; }
 
 OrbitControl::OrbitControl(Entity *entity) : Script(entity), _cameraEntity(entity) {}
@@ -88,7 +87,7 @@ void OrbitControl::onUpdate(float dtime) {
     _cameraEntity->transform->setPosition(_position);
     _cameraEntity->transform->lookAt(target, up);
 
-    if (enableDamping == true) {
+    if (enableDamping) {
         _sphericalDump._theta *= 1 - dampingFactor;
         _sphericalDump._phi *= 1 - dampingFactor;
         _zoomFrag *= 1 - zoomFactor;
@@ -108,9 +107,9 @@ void OrbitControl::onUpdate(float dtime) {
     _panOffset = Vector3F(0, 0, 0);
 }
 
-float OrbitControl::autoRotationAngle(float dtime) { return (autoRotateSpeed / 1000) * dtime; }
+float OrbitControl::autoRotationAngle(float dtime) const { return (autoRotateSpeed / 1000) * dtime; }
 
-float OrbitControl::zoomScale() { return std::pow(0.95, zoomSpeed); }
+float OrbitControl::zoomScale() const { return std::pow(0.95, zoomSpeed); }
 
 void OrbitControl::rotateLeft(float radian) {
     _sphericalDelta._theta -= radian;
@@ -202,25 +201,25 @@ void OrbitControl::handleMouseWheel(double xoffset, double yoffset) {
 }
 
 void OrbitControl::onMouseDown(MouseButton button, double xpos, double ypos) {
-    if (enabled() == false) return;
+    if (!enabled()) return;
 
     _isMouseUp = false;
 
     switch (button) {
         case MouseButton::LEFT:
-            if (enableRotate == false) return;
+            if (!enableRotate) return;
 
             handleMouseDownRotate(xpos, ypos);
             _state = STATE::ROTATE;
             break;
         case MouseButton::MIDDLE:
-            if (enableZoom == false) return;
+            if (!enableZoom) return;
 
             handleMouseDownZoom(xpos, ypos);
             _state = STATE::ZOOM;
             break;
         case MouseButton::RIGHT:
-            if (enablePan == false) return;
+            if (!enablePan) return;
 
             handleMouseDownPan(xpos, ypos);
             _state = STATE::PAN;
@@ -231,41 +230,40 @@ void OrbitControl::onMouseDown(MouseButton button, double xpos, double ypos) {
 }
 
 void OrbitControl::onMouseMove(double xpos, double ypos) {
-    if (enabled() == false) return;
+    if (!enabled()) return;
 
     switch (_state) {
         case STATE::ROTATE:
-            if (enableRotate == false) return;
+            if (!enableRotate) return;
 
             handleMouseMoveRotate(xpos, ypos);
             break;
 
         case STATE::ZOOM:
-            if (enableZoom == false) return;
+            if (!enableZoom) return;
 
             handleMouseMoveZoom(xpos, ypos);
             break;
 
         case STATE::PAN:
-            if (enablePan == false) return;
+            if (!enablePan) return;
 
             handleMouseMovePan(xpos, ypos);
             break;
         default:
             break;
-            ;
     }
 }
 
 void OrbitControl::onMouseUp() {
-    if (enabled() == false) return;
+    if (!enabled()) return;
 
     _isMouseUp = true;
     _state = STATE::NONE;
 }
 
 void OrbitControl::onMouseWheel(double xoffset, double yoffset) {
-    if (enabled() == false || enableZoom == false || (_state != STATE::NONE && _state != STATE::ROTATE)) return;
+    if (!enabled() || !enableZoom || (_state != STATE::NONE && _state != STATE::ROTATE)) return;
 
     handleMouseWheel(xoffset, yoffset);
 }
@@ -291,7 +289,7 @@ void OrbitControl::handleKeyDown(KeyCode key) {
 }
 
 void OrbitControl::onKeyDown(KeyCode key) {
-    if (enabled() == false || enableKeys == false || enablePan == false) return;
+    if (!enabled() || !enableKeys || !enablePan) return;
 
     handleKeyDown(key);
 }
@@ -315,5 +313,4 @@ void OrbitControl::onTouchMove() {}
 
 void OrbitControl::onTouchEnd() {}
 
-}  // namespace control
-}  // namespace vox
+}  // namespace vox::control

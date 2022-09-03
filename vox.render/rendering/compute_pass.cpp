@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "compute_pass.h"
+#include "vox.render/rendering/compute_pass.h"
 
 #include "vox.base/logging.h"
 

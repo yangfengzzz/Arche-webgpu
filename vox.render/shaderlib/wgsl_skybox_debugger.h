@@ -4,8 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef wgsl_skybox_debugger_hpp
-#define wgsl_skybox_debugger_hpp
+#pragma once
 
 #include "functors/wgsl_begin_position_vert.h"
 #include "functors/wgsl_common.h"
@@ -44,5 +43,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* wgsl_skybox_debugger_hpp */

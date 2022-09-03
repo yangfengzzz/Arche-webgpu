@@ -4,10 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "shadow_debug_material.h"
+#include "vox.render/shadow/shadow_debug_material.h"
 
-#include "shaderlib/wgsl_blinn_phong.h"
-#include "shadow/wgsl/wgsl_shadow_debug.h"
+#include "vox.render/shaderlib/wgsl_blinn_phong.h"
+#include "vox.render/shadow/wgsl/wgsl_shadow_debug.h"
 
 namespace vox {
 ShadowDebugMaterial::ShadowDebugMaterial(wgpu::Device& device)

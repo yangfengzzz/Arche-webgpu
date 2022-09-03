@@ -4,8 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef uv_share_hpp
-#define uv_share_hpp
+#pragma once
 
 #include "shaderlib/wgsl_encoder.h"
 
@@ -21,4 +20,3 @@ private:
 };
 
 }  // namespace vox
-#endif /* uv_share_hpp */

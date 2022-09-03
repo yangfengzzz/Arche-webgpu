@@ -4,8 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef sampled_texture_hpp
-#define sampled_texture_hpp
+#pragma once
 
 #include <webgpu/webgpu_cpp.h>
 
@@ -16,32 +15,32 @@ uint32_t bytesPerPixel(wgpu::TextureFormat format);
 
 class SampledTexture {
 public:
-    SampledTexture(wgpu::Device& device);
+    explicit SampledTexture(wgpu::Device& device);
 
     /**
      * The width of the texture.
      */
-    uint32_t width();
+    [[nodiscard]] uint32_t width() const;
 
     /**
      * The height of the texture.
      */
-    uint32_t height();
+    [[nodiscard]] uint32_t height() const;
 
     /**
      * The depthOrArrayLayers of the texture.
      */
-    uint32_t depthOrArrayLayers();
+    [[nodiscard]] uint32_t depthOrArrayLayers() const;
 
     /**
      * Texture mipmapping count.
      */
-    uint32_t mipmapCount();
+    [[nodiscard]] uint32_t mipmapCount() const;
 
     /**
      * Texture format.
      */
-    wgpu::TextureFormat format();
+    [[nodiscard]] wgpu::TextureFormat format() const;
 
     wgpu::Texture& texture();
 
@@ -56,53 +55,53 @@ public:
     /**
      * Wrapping mode for texture coordinate S.
      */
-    wgpu::AddressMode addressModeU();
+    [[nodiscard]] wgpu::AddressMode addressModeU() const;
 
     void setAddressModeU(wgpu::AddressMode value);
 
     /**
      * Wrapping mode for texture coordinate T.
      */
-    wgpu::AddressMode addressModeV();
+    [[nodiscard]] wgpu::AddressMode addressModeV() const;
 
     void setAddressModeV(wgpu::AddressMode value);
 
     /**
      * Filter mode for texture.
      */
-    wgpu::FilterMode minFilterMode();
+    [[nodiscard]] wgpu::FilterMode minFilterMode() const;
 
     void setMinFilterMode(wgpu::FilterMode value);
 
     /**
      * Filter mode for texture.
      */
-    wgpu::FilterMode magFilterMode();
+    [[nodiscard]] wgpu::FilterMode magFilterMode() const;
 
     void setMagFilterMode(wgpu::FilterMode value);
 
     /**
      * Filter mode for texture.
      */
-    wgpu::FilterMode mipmapFilter();
+    [[nodiscard]] wgpu::FilterMode mipmapFilter() const;
 
     void setMipmapFilter(wgpu::FilterMode value);
 
     /**
      * Anisotropic level for texture.
      */
-    uint16_t anisoLevel();
+    [[nodiscard]] uint16_t anisoLevel() const;
 
     void setAnisoLevel(uint16_t value);
 
-    wgpu::CompareFunction compareFunction();
+    [[nodiscard]] wgpu::CompareFunction compareFunction() const;
 
     void setCompareFunction(wgpu::CompareFunction function);
 
     wgpu::Sampler& sampler();
 
 protected:
-    uint32_t _getMipmapCount(bool mipmap);
+    [[nodiscard]] uint32_t _getMipmapCount(bool mipmap) const;
 
     wgpu::ImageCopyBuffer _createImageCopyBuffer(wgpu::Buffer buffer,
                                                  uint64_t offset,
@@ -128,5 +127,3 @@ protected:
 using SampledTexturePtr = std::shared_ptr<SampledTexture>;
 
 }  // namespace vox
-
-#endif /* sampler_texture_hpp */

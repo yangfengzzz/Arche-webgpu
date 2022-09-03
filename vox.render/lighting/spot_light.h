@@ -4,11 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef spot_light_hpp
-#define spot_light_hpp
+#pragma once
 
-#include "light.h"
 #include "vox.math/color.h"
+#include "vox.render/lighting/light.h"
 
 namespace vox {
 /**
@@ -45,7 +44,7 @@ public:
     /** Angle, in radians, from falloff begins to ends. */
     float penumbra = M_PI / 12;
 
-    SpotLight(Entity *entity);
+    explicit SpotLight(Entity *entity);
 
 public:
     Matrix4x4F shadowProjectionMatrix() override;
@@ -83,5 +82,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* spot_light_hpp */

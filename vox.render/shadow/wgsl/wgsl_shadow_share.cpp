@@ -4,10 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "wgsl_shadow_share.h"
+#include "vox.render/shadow/wgsl/wgsl_shadow_share.h"
 
 namespace vox {
-WGSLShadowShare::WGSLShadowShare(const std::string& outputStructName) : _outputStructName(outputStructName) {}
+WGSLShadowShare::WGSLShadowShare(std::string outputStructName) : _outputStructName(std::move(outputStructName)) {}
 
 void WGSLShadowShare::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros, size_t counterIndex) {
     if (macros.contains(SHADOW_MAP_COUNT)) {

@@ -4,10 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef render_context_hpp
-#define render_context_hpp
+#pragma once
 
-#include "utils/backend_binding.h"
+#include "vox.render/utils/backend_binding.h"
 
 namespace vox {
 class RenderContext {
@@ -33,5 +32,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* render_context_hpp */

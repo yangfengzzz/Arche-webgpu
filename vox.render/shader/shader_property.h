@@ -4,12 +4,11 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef shader_property_hpp
-#define shader_property_hpp
+#pragma once
 
 #include <string>
 
-#include "shader_data_group.h"
+#include "vox.render/shader/shader_data_group.h"
 
 namespace vox {
 /**
@@ -23,11 +22,10 @@ struct ShaderProperty {
 
     const uint32_t uniqueId;
 
-    ShaderProperty(const std::string &name, ShaderDataGroup group);
+    ShaderProperty(std::string name, ShaderDataGroup group);
 
 private:
     static uint32_t _propertyNameCounter;
 };
 
 }  // namespace vox
-#endif /* shader_property_hpp */

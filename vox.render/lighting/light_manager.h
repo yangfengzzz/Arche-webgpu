@@ -4,15 +4,14 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef light_manager_hpp
-#define light_manager_hpp
+#pragma once
 
-#include "direct_light.h"
-#include "point_light.h"
-#include "rendering/compute_pass.h"
-#include "shader/shader_data.h"
-#include "singleton.h"
-#include "spot_light.h"
+#include "vox.render/lighting/direct_light.h"
+#include "vox.render/lighting/point_light.h"
+#include "vox.render/lighting/spot_light.h"
+#include "vox.render/rendering/compute_pass.h"
+#include "vox.render/shader/shader_data.h"
+#include "vox.render/singleton.h"
 
 namespace vox {
 /**
@@ -32,11 +31,11 @@ public:
     // This limitation should be able to go away when we have atomic methods in WGSL.
     static constexpr uint32_t MAX_LIGHTS_PER_CLUSTER = 50;
 
-    static LightManager &getSingleton(void);
+    static LightManager &getSingleton();
 
-    static LightManager *getSingletonPtr(void);
+    static LightManager *getSingletonPtr();
 
-    LightManager(Scene *scene);
+    explicit LightManager(Scene *scene);
 
     void setCamera(Camera *camera);
 
@@ -52,7 +51,7 @@ public:
      */
     void detachPointLight(PointLight *light);
 
-    const std::vector<PointLight *> &pointLights() const;
+    [[nodiscard]] const std::vector<PointLight *> &pointLights() const;
 
 public:
     /**
@@ -67,7 +66,7 @@ public:
      */
     void detachSpotLight(SpotLight *light);
 
-    const std::vector<SpotLight *> &spotLights() const;
+    [[nodiscard]] const std::vector<SpotLight *> &spotLights() const;
 
 public:
     /**
@@ -82,10 +81,10 @@ public:
      */
     void detachDirectLight(DirectLight *light);
 
-    const std::vector<DirectLight *> &directLights() const;
+    [[nodiscard]] const std::vector<DirectLight *> &directLights() const;
 
 public:
-    bool enableForwardPlus() const;
+    [[nodiscard]] bool enableForwardPlus() const;
 
     void draw(wgpu::CommandEncoder &commandEncoder);
 
@@ -155,5 +154,3 @@ template <>
 inline LightManager *Singleton<LightManager>::ms_singleton{nullptr};
 
 }  // namespace vox
-
-#endif /* light_manager_hpp */

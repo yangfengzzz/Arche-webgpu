@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "ktx_image.h"
+#include "vox.render/image/ktx_image.h"
 
 #include <ktx.h>
 
@@ -112,8 +112,8 @@ Ktx::Ktx(const std::vector<uint8_t> &data, bool flipY) : Image{} {
     } else {
         std::vector<std::vector<uint64_t>> offsets{};
         offsets.resize(1);
-        for (size_t level = 0; level < mipmap_levels.size(); level++) {
-            offsets[0].push_back(static_cast<uint64_t>(mipmap_levels[level].offset));
+        for (auto &mipmap_level : mipmap_levels) {
+            offsets[0].push_back(static_cast<uint64_t>(mipmap_level.offset));
         }
         setOffsets(offsets);
     }

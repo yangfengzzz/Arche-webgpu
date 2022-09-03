@@ -4,12 +4,11 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef render_subpass_hpp
-#define render_subpass_hpp
+#pragma once
 
-#include "render_context.h"
-#include "render_element.h"
-#include "scene.h"
+#include "vox.render/rendering/render_context.h"
+#include "vox.render/rendering/render_element.h"
+#include "vox.render/scene.h"
 
 namespace vox {
 class RenderPass;
@@ -54,4 +53,3 @@ protected:
 };
 
 }  // namespace vox
-#endif /* render_subpass_hpp */

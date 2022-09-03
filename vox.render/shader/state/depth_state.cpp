@@ -4,10 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "depth_state.h"
+#include "vox.render/shader/state/depth_state.h"
 
 namespace vox {
-void DepthState::platformApply(wgpu::DepthStencilState *depthStencil) {
+void DepthState::platformApply(wgpu::DepthStencilState *depthStencil) const {
     if (enabled && depthStencil) {
         // apply compare func.
         depthStencil->depthCompare = compareFunction;

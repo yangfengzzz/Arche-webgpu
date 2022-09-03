@@ -4,10 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "stencil_state.h"
+#include "vox.render/shader/state/stencil_state.h"
 
 namespace vox {
-void StencilState::platformApply(wgpu::DepthStencilState *depthStencil, wgpu::RenderPassEncoder &encoder) {
+void StencilState::platformApply(wgpu::DepthStencilState *depthStencil, wgpu::RenderPassEncoder &encoder) const {
     if (enabled && depthStencil) {
         // apply stencil func.
         encoder.SetStencilReference(referenceValue);

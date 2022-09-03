@@ -4,16 +4,14 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef shadow_debug_material_hpp
-#define shadow_debug_material_hpp
+#pragma once
 
-#include "material/base_material.h"
+#include "vox.render/material/base_material.h"
 
 namespace vox {
 class ShadowDebugMaterial : public BaseMaterial {
 public:
-    ShadowDebugMaterial(wgpu::Device& device);
+    explicit ShadowDebugMaterial(wgpu::Device& device);
 };
 
 }  // namespace vox
-#endif /* shadow_debug_material_hpp */

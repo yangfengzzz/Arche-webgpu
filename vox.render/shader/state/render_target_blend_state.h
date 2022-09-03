@@ -4,8 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef render_target_blend_state_h
-#define render_target_blend_state_h
+#pragma once
 
 #include <webgpu/webgpu_cpp.h>
 
@@ -33,5 +32,3 @@ struct RenderTargetBlendState {
 };
 
 }  // namespace vox
-
-#endif /* render_target_blend_state_h */

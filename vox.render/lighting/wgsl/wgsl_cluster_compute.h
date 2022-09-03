@@ -4,18 +4,17 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef wgsl_cluster_compute_hpp
-#define wgsl_cluster_compute_hpp
+#pragma once
 
-#include "shaderlib/functors/wgsl_light_frag_define.h"
-#include "shaderlib/wgsl_cache.h"
-#include "wgsl_cluster_common.h"
+#include "vox.render/lighting/wgsl/wgsl_cluster_common.h"
+#include "vox.render/shaderlib/functors/wgsl_light_frag_define.h"
+#include "vox.render/shaderlib/wgsl_cache.h"
 
 namespace vox {
 // MARK: - WGSLTileFunctions
 class WGSLTileFunctions {
 public:
-    WGSLTileFunctions(const std::array<uint32_t, 3>& tileCount);
+    explicit WGSLTileFunctions(const std::array<uint32_t, 3>& tileCount);
 
     void operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros);
 
@@ -26,7 +25,7 @@ private:
 // MARK: - WGSLClusterStructs
 class WGSLClusterStructs {
 public:
-    WGSLClusterStructs(uint32_t totalTiles);
+    explicit WGSLClusterStructs(uint32_t totalTiles);
 
     void operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros);
 
@@ -85,4 +84,3 @@ private:
 };
 
 }  // namespace vox
-#endif /* wgsl_cluster_compute_hpp */

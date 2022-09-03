@@ -4,8 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef wgsl_h
-#define wgsl_h
+#pragma once
 
 #include <webgpu/webgpu_cpp.h>
 
@@ -51,4 +50,3 @@ protected:
 using WGSLPtr = std::unique_ptr<WGSL>;
 
 }  // namespace vox
-#endif /* wgsl_h */

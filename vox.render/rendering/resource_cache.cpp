@@ -4,11 +4,11 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "resource_cache.h"
+#include "vox.render/rendering/resource_cache.h"
 
 #include <utility>
 
-#include "std_helpers.h"
+#include "vox.render/std_helpers.h"
 
 namespace std {
 using namespace vox;

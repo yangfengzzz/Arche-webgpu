@@ -4,17 +4,17 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "pbr_material.h"
+#include "vox.render/material/pbr_material.h"
 
 namespace vox {
-float PBRMaterial::metallic() { return _pbrData.metallic; }
+float PBRMaterial::metallic() const { return _pbrData.metallic; }
 
 void PBRMaterial::setMetallic(float newValue) {
     _pbrData.metallic = newValue;
     shaderData.setData(PBRMaterial::_pbrProp, _pbrData);
 }
 
-float PBRMaterial::roughness() { return _pbrData.roughness; }
+float PBRMaterial::roughness() const { return _pbrData.roughness; }
 
 void PBRMaterial::setRoughness(float newValue) {
     _pbrData.roughness = newValue;
@@ -23,7 +23,7 @@ void PBRMaterial::setRoughness(float newValue) {
 
 SampledTexture2DPtr PBRMaterial::metallicRoughnessTexture() { return _metallicRoughnessTexture; }
 
-void PBRMaterial::setMetallicRoughnessTexture(SampledTexture2DPtr newValue) {
+void PBRMaterial::setMetallicRoughnessTexture(const SampledTexture2DPtr& newValue) {
     _metallicRoughnessTexture = newValue;
     shaderData.setSampledTexture(PBRMaterial::_metallicRoughnessTextureProp, PBRMaterial::_metallicRoughnessSamplerProp,
                                  newValue);

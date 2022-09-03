@@ -4,17 +4,15 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef spherical_hpp
-#define spherical_hpp
+#pragma once
 
 #include "vox.math/vector3.h"
 
-namespace vox {
-namespace control {
+namespace vox::control {
 // Spherical.
 class Spherical {
 public:
-    Spherical(float radius = 1.0, float phi = 0, float theta = 0);
+    explicit Spherical(float radius = 1.0, float phi = 0, float theta = 0);
 
     void set(float radius, float phi, float theta);
 
@@ -22,7 +20,7 @@ public:
 
     void setFromVec3(const Vector3F &v3);
 
-    void setToVec3(Vector3F &v3);
+    void setToVec3(Vector3F &v3) const;
 
 private:
     friend class OrbitControl;
@@ -34,7 +32,4 @@ private:
     float _theta;
 };
 
-}  // namespace control
-}  // namespace vox
-
-#endif /* spherical_hpp */
+}  // namespace vox::control

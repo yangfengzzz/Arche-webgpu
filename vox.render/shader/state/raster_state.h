@@ -4,8 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef raster_state_hpp
-#define raster_state_hpp
+#pragma once
 
 #include <webgpu/webgpu_cpp.h>
 
@@ -23,13 +22,13 @@ struct RasterState {
     float depthBiasSlopeScale = 1.0;
     float depthBiasClamp = 0.01;
 
-    void apply(wgpu::PrimitiveState& primitive, wgpu::DepthStencilState* depthStencil, bool frontFaceInvert) {
+    void apply(wgpu::PrimitiveState& primitive, wgpu::DepthStencilState* depthStencil, bool frontFaceInvert) const {
         platformApply(primitive, depthStencil, frontFaceInvert);
     }
 
-    void platformApply(wgpu::PrimitiveState& primitive, wgpu::DepthStencilState* depthStencil, bool frontFaceInvert);
+    void platformApply(wgpu::PrimitiveState& primitive,
+                       wgpu::DepthStencilState* depthStencil,
+                       bool frontFaceInvert) const;
 };
 
 }  // namespace vox
-
-#endif /* raster_state_hpp */

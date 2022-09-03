@@ -22,7 +22,7 @@ void BufferMesh::setVertexLayouts(const std::vector<wgpu::VertexBufferLayout>& l
 void BufferMesh::setVertexLayouts(const std::vector<wgpu::VertexAttribute>& attributes,
                                   uint64_t stride,
                                   wgpu::VertexStepMode stepMode) {
-    if (_vertexAttributes.size() > 0) {
+    if (!_vertexAttributes.empty()) {
         LOGW("reset vertex layouts")
     }
 
@@ -38,7 +38,7 @@ void BufferMesh::setVertexBufferBinding(const Buffer& buffer, size_t index) {
     if (_vertexBufferBindings.size() <= index) {
         _vertexBufferBindings.reserve(index + 1);
         for (size_t i = _vertexBufferBindings.size(); i < index; i++) {
-            _vertexBufferBindings.push_back(std::nullopt);
+            _vertexBufferBindings.emplace_back(std::nullopt);
         }
     }
     _setVertexBufferBinding(index, buffer);
@@ -50,7 +50,7 @@ void BufferMesh::setVertexBufferBindings(const std::vector<Buffer>& vertexBuffer
     if (_vertexBufferBindings.size() < needLength) {
         _vertexBufferBindings.reserve(needLength);
         for (size_t i = _vertexBufferBindings.size(); i < needLength; i++) {
-            _vertexBufferBindings.push_back(std::nullopt);
+            _vertexBufferBindings.emplace_back(std::nullopt);
         }
     }
     for (size_t i = 0; i < count; i++) {
@@ -62,7 +62,7 @@ void BufferMesh::setIndexBufferBinding(const Buffer& buffer, wgpu::IndexFormat f
     _setIndexBufferBinding(IndexBufferBinding(buffer, format));
 }
 
-void BufferMesh::setIndexBufferBinding(std::optional<IndexBufferBinding> bufferBinding) {
+void BufferMesh::setIndexBufferBinding(const std::optional<IndexBufferBinding>& bufferBinding) {
     _setIndexBufferBinding(bufferBinding);
 }
 

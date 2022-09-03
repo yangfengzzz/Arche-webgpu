@@ -4,12 +4,14 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "script_interpreter.h"
+#include "vox.render/lua/script_interpreter.h"
 
-#include "lua_binder.h"
+#include <utility>
+
+#include "vox.render/lua/lua_binder.h"
 
 namespace vox {
-ScriptInterpreter::ScriptInterpreter(const std::string &scriptRootFolder) : _scriptRootFolder(scriptRootFolder) {
+ScriptInterpreter::ScriptInterpreter(std::string scriptRootFolder) : _scriptRootFolder(std::move(scriptRootFolder)) {
     createLuaContextAndBindGlobals();
 
     /* Listen to behaviours */
@@ -37,7 +39,7 @@ void ScriptInterpreter::createLuaContextAndBindGlobals() {
 void ScriptInterpreter::destroyLuaContext() {
     if (_luaState) {
         std::for_each(_behaviours.begin(), _behaviours.end(),
-                      [this](Behaviour *behaviour) { behaviour->unregisterFromLuaContext(); });
+                      [](Behaviour *behaviour) { behaviour->unregisterFromLuaContext(); });
 
         _luaState.reset();
         _isOk = false;
@@ -56,9 +58,9 @@ void ScriptInterpreter::unconsider(Behaviour *p_toUnconsider) {
     if (_luaState) p_toUnconsider->unregisterFromLuaContext();
 
     _behaviours.erase(std::remove_if(_behaviours.begin(), _behaviours.end(),
-                                     [p_toUnconsider](Behaviour *behaviour) { return p_toUnconsider == behaviour; }));
+                                     [p_toUnconsider](Behaviour *behaviour) { return p_toUnconsider == behaviour; }), _behaviours.end());
 
-    refreshAll();  // Unconsidering a script is impossible with Lua, we have to reparse every behaviours
+    refreshAll();  // Unconsidering a script is impossible with Lua, we have to reparse every behaviour
 }
 
 void ScriptInterpreter::refreshAll() {

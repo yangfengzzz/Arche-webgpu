@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "cluster_debug_material.h"
+#include "vox.render/lighting/cluster_debug_material.h"
 
 namespace vox {
 ClusterDebugMaterial::ClusterDebugMaterial(wgpu::Device& device)

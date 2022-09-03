@@ -4,8 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef stencil_state_hpp
-#define stencil_state_hpp
+#pragma once
 
 #include <webgpu/webgpu_cpp.h>
 
@@ -42,12 +41,11 @@ struct StencilState {
     /** specifying the function to use for back face when the stencil test passes, but the depth test fails. */
     wgpu::StencilOperation zFailOperationBack = wgpu::StencilOperation::Keep;
 
-    void apply(wgpu::DepthStencilState *depthStencil, wgpu::RenderPassEncoder &encoder) {
+    void apply(wgpu::DepthStencilState *depthStencil, wgpu::RenderPassEncoder &encoder) const {
         platformApply(depthStencil, encoder);
     }
 
-    void platformApply(wgpu::DepthStencilState *depthStencil, wgpu::RenderPassEncoder &encoder);
+    void platformApply(wgpu::DepthStencilState *depthStencil, wgpu::RenderPassEncoder &encoder) const;
 };
 
 }  // namespace vox
-#endif /* stencil_state_hpp */

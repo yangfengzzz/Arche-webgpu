@@ -4,10 +4,11 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "index_buffer_binding.h"
+#include "vox.render/mesh/index_buffer_binding.h"
 
 namespace vox {
-IndexBufferBinding::IndexBufferBinding(Buffer buffer, wgpu::IndexFormat format) : _buffer(buffer), _format(format) {}
+IndexBufferBinding::IndexBufferBinding(Buffer buffer, wgpu::IndexFormat format)
+    : _buffer(std::move(buffer)), _format(format) {}
 
 const wgpu::Buffer& IndexBufferBinding::buffer() const { return _buffer.handle(); }
 

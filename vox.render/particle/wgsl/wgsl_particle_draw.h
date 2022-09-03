@@ -4,12 +4,11 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef wgsl_particle_draw_hpp
-#define wgsl_particle_draw_hpp
+#pragma once
 
-#include "shaderlib/functors/wgsl_common_frag.h"
+#include "vox.render/particle/wgsl/wgsl_particle_common.h"
+#include "vox.render/shaderlib/functors/wgsl_common_frag.h"
 #include "vox.render/shaderlib/wgsl_cache.h"
-#include "wgsl_particle_common.h"
 
 namespace vox {
 // MARK: - Unlit Vertex Code
@@ -34,4 +33,3 @@ private:
 };
 
 }  // namespace vox
-#endif /* wgsl_particle_draw_hpp */

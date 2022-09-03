@@ -4,11 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef sprite_debug_hpp
-#define sprite_debug_hpp
+#pragma once
 
-#include "mesh/buffer_mesh.h"
-#include "script.h"
+#include "vox.render/mesh/buffer_mesh.h"
+#include "vox.render/script.h"
 
 namespace vox {
 class SpriteDebug : public Script {
@@ -18,7 +17,7 @@ public:
      */
     std::string name() override;
 
-    SpriteDebug(Entity *entity);
+    explicit SpriteDebug(Entity *entity);
 
     void onUpdate(float deltaTime) override;
 
@@ -30,5 +29,3 @@ private:
     std::shared_ptr<BufferMesh> _pointLightMesh{nullptr};
 };
 }  // namespace vox
-
-#endif /* sprite_debug_hpp */

@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "render_context.h"
+#include "vox.render/rendering/render_context.h"
 
 namespace vox {
 RenderContext::RenderContext(BackendBinding* binding, uint32_t width, uint32_t height)

@@ -4,10 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef index_buffer_binding_hpp
-#define index_buffer_binding_hpp
+#pragma once
 
-#include "buffer.h"
+#include "vox.render/mesh/buffer.h"
 
 namespace vox {
 /**
@@ -25,12 +24,12 @@ public:
     /**
      * Index buffer.
      */
-    const wgpu::Buffer& buffer() const;
+    [[nodiscard]] const wgpu::Buffer& buffer() const;
 
     /**
      * Index buffer format.
      */
-    wgpu::IndexFormat format() const;
+    [[nodiscard]] wgpu::IndexFormat format() const;
 
 private:
     Buffer _buffer;
@@ -38,5 +37,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* index_buffer_binding_hpp */

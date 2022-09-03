@@ -4,10 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef render_element_hpp
-#define render_element_hpp
+#pragma once
 
-#include "scene_forward.h"
+#include "vox.render/scene_forward.h"
 
 namespace vox {
 /**
@@ -27,5 +26,3 @@ struct RenderElement {
 };
 
 }  // namespace vox
-
-#endif /* render_element_hpp */

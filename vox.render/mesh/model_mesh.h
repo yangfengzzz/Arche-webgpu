@@ -4,12 +4,11 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef model_mesh_hpp
-#define model_mesh_hpp
+#pragma once
 
-#include "mesh/mesh.h"
-#include "texture/sampled_texture2d.h"
 #include "vox.math/color.h"
+#include "vox.render/mesh/mesh.h"
+#include "vox.render/texture/sampled_texture2d.h"
 
 namespace vox {
 struct ValueChanged {
@@ -41,18 +40,18 @@ public:
     /**
      * Whether to access data of the mesh.
      */
-    bool accessible();
+    [[nodiscard]] bool accessible() const;
 
     /**
      * Vertex count of current mesh.
      */
-    size_t vertexCount();
+    [[nodiscard]] size_t vertexCount() const;
 
     /**
      * Create a model mesh.
      * @param device - Engine to which the mesh belongs
      */
-    ModelMesh(wgpu::Device &device);
+    explicit ModelMesh(wgpu::Device &device);
 
 public:
     /**
@@ -156,8 +155,8 @@ private:
     std::vector<uint32_t> _indices32{};
     std::vector<uint16_t> _indices16{};
     wgpu::IndexFormat _indicesFormat;
-    int _vertexChangeFlag;
-    size_t _elementCount;
+    int _vertexChangeFlag{};
+    size_t _elementCount{};
     std::vector<wgpu::VertexAttribute> _vertexAttribute{};
 
     std::vector<Vector3F> _positions;
@@ -178,5 +177,3 @@ private:
 using ModelMeshPtr = std::shared_ptr<ModelMesh>;
 
 }  // namespace vox
-
-#endif /* model_mesh_hpp */

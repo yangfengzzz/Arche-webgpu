@@ -4,8 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef wgsl_begin_viewdir_frag_hpp
-#define wgsl_begin_viewdir_frag_hpp
+#pragma once
 
 #include "shaderlib/wgsl_encoder.h"
 
@@ -22,4 +21,3 @@ private:
 };
 
 }  // namespace vox
-#endif /* wgsl_begin_viewdir_frag_hpp */

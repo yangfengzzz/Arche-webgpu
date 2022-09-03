@@ -4,11 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef wireframe_primitive_mesh_hpp
-#define wireframe_primitive_mesh_hpp
+#pragma once
 
-#include "model_mesh.h"
 #include "vox.math/vector3.h"
+#include "vox.render/mesh/model_mesh.h"
 
 namespace vox {
 /**
@@ -27,7 +26,7 @@ private:
                                        uint32_t vertexBegin,
                                        uint32_t vertexCount,
                                        uint8_t axis,
-                                       Vector3F shift,
+                                       const Vector3F& shift,
                                        std::vector<Vector3F>& positions,
                                        std::vector<uint32_t>& indices);
 
@@ -41,4 +40,3 @@ private:
 };
 
 }  // namespace vox
-#endif /* wireframe_primitive_mesh_hpp */

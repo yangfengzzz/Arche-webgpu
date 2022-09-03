@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "lua_component_binder.h"
+#include "vox.render/lua/lua_component_binder.h"
 
 namespace vox {
 void LuaComponentBinder::bindComponent(sol::state& luaState) {}

@@ -4,8 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef internal_macro_name_h
-#define internal_macro_name_h
+#pragma once
 
 namespace vox {
 // int have no verb, other will use:
@@ -72,5 +71,3 @@ enum MacroName {
 };
 
 }  // namespace vox
-
-#endif /* internal_macro_name_h */

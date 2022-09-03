@@ -4,11 +4,11 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "point_light.h"
+#include "vox.render/lighting/point_light.h"
 
-#include "entity.h"
-#include "light_manager.h"
 #include "vox.geometry/matrix_utils.h"
+#include "vox.render/entity.h"
+#include "vox.render/lighting/light_manager.h"
 
 namespace vox {
 std::string PointLight::name() { return "PointLight"; }
@@ -27,7 +27,7 @@ void PointLight::_updateShaderData(PointLightData &shaderData) {
 }
 
 // MARK: - Shadow
-Matrix4x4F PointLight::shadowProjectionMatrix() { return makePerspective<float>(degreesToRadians(120), 1, 0.1, 100); }
+Matrix4x4F PointLight::shadowProjectionMatrix() { return makePerspective<float>(degreesToRadians(120.f), 1, 0.1, 100); }
 
 // MARK: - Reflection
 void PointLight::onSerialize(nlohmann::json &data) {}

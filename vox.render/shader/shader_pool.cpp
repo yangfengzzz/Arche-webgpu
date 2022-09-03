@@ -4,13 +4,13 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "shader_pool.h"
+#include "vox.render/shader/shader_pool.h"
 
-#include "shader.h"
-#include "shaderlib/wgsl_blinn_phong.h"
-#include "shaderlib/wgsl_pbr.h"
-#include "shaderlib/wgsl_unlit.h"
-#include "shadow/wgsl_shadow.h"
+#include "vox.render/shader/shader.h"
+#include "vox.render/shaderlib/wgsl_blinn_phong.h"
+#include "vox.render/shaderlib/wgsl_pbr.h"
+#include "vox.render/shaderlib/wgsl_unlit.h"
+#include "vox.render/shadow/wgsl_shadow.h"
 
 namespace vox {
 void ShaderPool::init() {

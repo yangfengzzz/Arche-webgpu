@@ -4,10 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef wgsl_shadow_frag_hpp
-#define wgsl_shadow_frag_hpp
+#pragma once
 
-#include "shaderlib/wgsl_encoder.h"
+#include "vox.render/shaderlib/wgsl_encoder.h"
 
 namespace vox {
 class WGSLShadowFrag {
@@ -20,4 +19,3 @@ public:
 };
 
 }  // namespace vox
-#endif /* wgsl_shadow_frag_hpp */

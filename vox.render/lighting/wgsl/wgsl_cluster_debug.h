@@ -4,12 +4,11 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef wgsl_cluster_debug_hpp
-#define wgsl_cluster_debug_hpp
+#pragma once
 
-#include "shaderlib/functors/wgsl_uv_share.h"
-#include "shaderlib/wgsl_cache.h"
-#include "wgsl_cluster_compute.h"
+#include "vox.render/lighting/wgsl/wgsl_cluster_compute.h"
+#include "vox.render/shaderlib/functors/wgsl_uv_share.h"
+#include "vox.render/shaderlib/wgsl_cache.h"
 
 namespace vox {
 class WGSLClusterDebug : public WGSLCache {
@@ -28,4 +27,3 @@ private:
 };
 
 }  // namespace vox
-#endif /* wgsl_cluster_debug_hpp */

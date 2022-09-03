@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "blend_state.h"
+#include "vox.render/shader/state/blend_state.h"
 
 namespace vox {
 void BlendState::platformApply(wgpu::ColorTargetState *colorTargetState,

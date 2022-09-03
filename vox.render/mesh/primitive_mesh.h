@@ -4,11 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef primitive_mesh_hpp
-#define primitive_mesh_hpp
+#pragma once
 
-#include "model_mesh.h"
 #include "vox.math/vector3.h"
+#include "vox.render/mesh/model_mesh.h"
 
 namespace vox {
 /**
@@ -152,5 +151,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* primitive_mesh_hpp */

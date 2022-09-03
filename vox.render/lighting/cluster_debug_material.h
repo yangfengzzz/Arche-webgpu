@@ -4,16 +4,14 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef cluster_debug_material_hpp
-#define cluster_debug_material_hpp
+#pragma once
 
-#include "material/base_material.h"
+#include "vox.render/material/base_material.h"
 
 namespace vox {
 class ClusterDebugMaterial : public BaseMaterial {
 public:
-    ClusterDebugMaterial(wgpu::Device& device);
+    explicit ClusterDebugMaterial(wgpu::Device& device);
 };
 
 }  // namespace vox
-#endif /* cluster_debug_material_hpp */

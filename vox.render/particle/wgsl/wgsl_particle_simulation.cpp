@@ -4,15 +4,14 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "wgsl_particle_simulation.h"
+#include "vox.render/particle/wgsl/wgsl_particle_simulation.h"
 
 #include <spdlog/fmt/fmt.h>
 
-#include "filesystem.h"
-#include "particle/particle_manager.h"
+#include "vox.render/particle/particle_manager.h"
 
 namespace vox {
-WGSLParticleSimulation::WGSLParticleSimulation() {}
+WGSLParticleSimulation::WGSLParticleSimulation() = default;
 
 void WGSLParticleSimulation::_createShaderSource(size_t hash, const ShaderMacroCollection& macros) {
     _source.clear();
@@ -193,7 +192,7 @@ void WGSLParticleSimulation::_createShaderSource(size_t hash, const ShaderMacroC
                                      "        \n";
                              if (macros.contains(NEED_PARTICLE_SCATTERING)) {
                                  source += "force = force + calculateScattering(global_id.x);\n";
-                             };
+                             }
 
                              source +=
                                      "force = force + calculateRepulsion(p);\n"

@@ -4,8 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef buffer_hpp
-#define buffer_hpp
+#pragma once
 
 #include <webgpu/webgpu_cpp.h>
 
@@ -40,9 +39,9 @@ public:
 
     Buffer& operator=(Buffer&& other) = default;
 
-    const wgpu::Buffer& handle() const;
+    [[nodiscard]] const wgpu::Buffer& handle() const;
 
-    uint64_t size() const;
+    [[nodiscard]] uint64_t size() const;
 
 private:
     wgpu::Buffer _nativeBuffer;
@@ -50,5 +49,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* buffer_hpp */

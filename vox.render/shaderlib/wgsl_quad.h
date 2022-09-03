@@ -4,8 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef wgsl_quad_hpp
-#define wgsl_quad_hpp
+#pragma once
 
 #include "wgsl_cache.h"
 
@@ -17,4 +16,3 @@ private:
 };
 
 }  // namespace vox
-#endif /* wgsl_quad_hpp */

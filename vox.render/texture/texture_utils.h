@@ -4,12 +4,11 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef sampled_texture_utils_hpp
-#define sampled_texture_utils_hpp
+#pragma once
 
 #include <vector>
 
-#include "sampled_texture.h"
+#include "vox.render/texture/sampled_texture.h"
 
 namespace vox {
 class TextureUtils {
@@ -32,5 +31,3 @@ public:
 };
 
 }  // namespace vox
-
-#endif /* sampled_texture_utils_hpp */

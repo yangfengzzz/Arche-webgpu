@@ -4,7 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "shader.h"
+#include "vox.render/shader/shader.h"
+
+#include <utility>
 
 #include "vox.base/logging.h"
 
@@ -13,8 +15,8 @@ std::unordered_map<std::string, std::unique_ptr<Shader>> Shader::_shaderMap = {}
 std::unordered_map<std::string, ShaderProperty> Shader::_propertyNameMap = {};
 std::unordered_map<uint32_t, ShaderDataGroup> Shader::_propertyGroupMap = {};
 
-Shader::Shader(const std::string& name, WGSLPtr&& vertexSource, WGSLPtr&& fragmentSource)
-    : name(name), _vertexSource(std::move(vertexSource)), _fragmentSource(std::move(fragmentSource)) {}
+Shader::Shader(std::string name, WGSLPtr&& vertexSource, WGSLPtr&& fragmentSource)
+    : name(std::move(name)), _vertexSource(std::move(vertexSource)), _fragmentSource(std::move(fragmentSource)) {}
 
 const std::string& Shader::vertexSource(const ShaderMacroCollection& macros) {
     auto result = _vertexSource->compile(macros);

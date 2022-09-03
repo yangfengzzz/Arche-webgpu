@@ -4,14 +4,14 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "model_mesh.h"
+#include "vox.render/mesh/model_mesh.h"
 
-#include "shaderlib/wgsl_common.h"
+#include "vox.render/shaderlib/wgsl_common.h"
 
 namespace vox {
-bool ModelMesh::accessible() { return _accessible; }
+bool ModelMesh::accessible() const { return _accessible; }
 
-size_t ModelMesh::vertexCount() { return _vertexCount; }
+size_t ModelMesh::vertexCount() const { return _vertexCount; }
 
 ModelMesh::ModelMesh(wgpu::Device &device) : _device(device) {}
 

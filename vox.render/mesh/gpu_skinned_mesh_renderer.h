@@ -4,10 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef gpu_skinned_mesh_renderer_hpp
-#define gpu_skinned_mesh_renderer_hpp
+#pragma once
 
-#include "mesh_renderer.h"
+#include "vox.render/mesh/mesh_renderer.h"
 
 namespace vox {
 
@@ -26,7 +25,7 @@ public:
     using SkinPtr = std::shared_ptr<Skin>;
 
 public:
-    GPUSkinnedMeshRenderer(Entity* entity);
+    explicit GPUSkinnedMeshRenderer(Entity* entity);
 
     /**
      * Skin Object.
@@ -65,5 +64,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* gpu_skinned_mesh_renderer_hpp */

@@ -4,11 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef direct_light_hpp
-#define direct_light_hpp
+#pragma once
 
-#include "light.h"
 #include "vox.math/color.h"
+#include "vox.render/lighting/light.h"
 
 namespace vox {
 /**
@@ -33,7 +32,7 @@ public:
     /** Light intensity. */
     float intensity = 1.0;
 
-    DirectLight(Entity *entity);
+    explicit DirectLight(Entity *entity);
 
 public:
     Matrix4x4F shadowProjectionMatrix() override;
@@ -73,5 +72,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* direct_light_hpp */

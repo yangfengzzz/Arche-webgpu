@@ -4,11 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef shadow_material_hpp
-#define shadow_material_hpp
+#pragma once
 
-#include "material/base_material.h"
 #include "vox.math/matrix4x4.h"
+#include "vox.render/material/base_material.h"
 
 namespace vox {
 class ShadowMaterial : public BaseMaterial {
@@ -16,11 +15,11 @@ public:
     /**
      * Create a ShadowMaterial instance.
      */
-    ShadowMaterial(wgpu::Device& device);
+    explicit ShadowMaterial(wgpu::Device& device);
 
     void setViewProjectionMatrix(const Matrix4x4F& vp);
 
-    const Matrix4x4F& viewProjectionMatrix() const;
+    [[nodiscard]] const Matrix4x4F& viewProjectionMatrix() const;
 
 private:
     Matrix4x4F _vp = Matrix4x4F();
@@ -28,5 +27,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* shadow_material_hpp */

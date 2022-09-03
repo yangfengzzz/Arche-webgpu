@@ -4,8 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef blend_shape_input_hpp
-#define blend_shape_input_hpp
+#pragma once
 
 #include "shaderlib/wgsl_encoder.h"
 
@@ -22,5 +21,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* blend_shape_input_hpp */

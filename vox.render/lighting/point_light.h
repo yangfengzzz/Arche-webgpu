@@ -4,11 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef point_light_hpp
-#define point_light_hpp
+#pragma once
 
-#include "light.h"
 #include "vox.math/color.h"
+#include "vox.render/lighting/light.h"
 
 namespace vox {
 /**
@@ -35,7 +34,7 @@ public:
     /** Defines a distance cutoff at which the light's intensity must be considered zero. */
     float distance = 5;
 
-    PointLight(Entity *entity);
+    explicit PointLight(Entity *entity);
 
 public:
     Matrix4x4F shadowProjectionMatrix() override;
@@ -74,5 +73,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* point_light_hpp */

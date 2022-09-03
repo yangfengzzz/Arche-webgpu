@@ -14,7 +14,7 @@
 
 #include "backend_binding.h"
 
-#include "GLFW/glfw3.h"
+#include <GLFW/glfw3.h>
 
 #if defined(DAWN_ENABLE_BACKEND_OPENGL)
 #include <dawn/native/OpenGLBackend.h>

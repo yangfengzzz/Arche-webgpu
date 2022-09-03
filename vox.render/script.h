@@ -4,10 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef script_hpp
-#define script_hpp
+#pragma once
 
-#include "component.h"
+#include "vox.render/component.h"
 #include "vox.render/platform/input_events.h"
 
 namespace vox {
@@ -110,5 +109,3 @@ protected:
 };
 
 }  // namespace vox
-
-#endif /* script_hpp */

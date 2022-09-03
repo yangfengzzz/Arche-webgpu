@@ -4,8 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef wgsl_skybox_hpp
-#define wgsl_skybox_hpp
+#pragma once
 
 #include "functors/wgsl_common.h"
 #include "functors/wgsl_common_vert.h"
@@ -35,4 +34,3 @@ private:
 };
 
 }  // namespace vox
-#endif /* wgsl_skybox_hpp */

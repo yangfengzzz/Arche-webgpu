@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "mesh/mesh.h"
+#include "vox.render/mesh/mesh.h"
 
 namespace vox {
 class BufferMesh : public Mesh {
@@ -69,7 +69,7 @@ public:
      * @param bufferBinding - Index buffer binding
      * @remarks When bufferBinding is null, it will clear IndexBufferBinding
      */
-    void setIndexBufferBinding(std::optional<IndexBufferBinding> bufferBinding);
+    void setIndexBufferBinding(const std::optional<IndexBufferBinding>& bufferBinding);
 
 private:
     wgpu::VertexBufferLayout _layouts;

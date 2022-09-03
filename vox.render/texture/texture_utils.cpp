@@ -4,11 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "texture_utils.h"
+#include "vox.render/texture/texture_utils.h"
 
 #include <array>
-
-#include "sampled_texture2d.h"
 
 namespace vox {
 void TextureUtils::buildTextureArray(const std::vector<wgpu::Texture>::iterator& texturesBegin,

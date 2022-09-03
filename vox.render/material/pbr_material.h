@@ -4,10 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef pbr_material_hpp
-#define pbr_material_hpp
+#pragma once
 
-#include "pbr_base_material.h"
+#include "vox.render/material/pbr_base_material.h"
 
 namespace vox {
 /**
@@ -23,14 +22,14 @@ public:
     /**
      * Metallic.
      */
-    float metallic();
+    [[nodiscard]] float metallic() const;
 
     void setMetallic(float newValue);
 
     /**
      * Roughness.
      */
-    float roughness();
+    [[nodiscard]] float roughness() const;
 
     void setRoughness(float newValue);
 
@@ -40,7 +39,7 @@ public:
      */
     SampledTexture2DPtr metallicRoughnessTexture();
 
-    void setMetallicRoughnessTexture(SampledTexture2DPtr newValue);
+    void setMetallicRoughnessTexture(const SampledTexture2DPtr& newValue);
 
     /**
      * Create a pbr metallic-roughness workflow material instance.
@@ -57,5 +56,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* pbr_material_hpp */

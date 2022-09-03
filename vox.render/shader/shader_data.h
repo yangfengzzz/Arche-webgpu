@@ -4,21 +4,20 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef shader_data_hpp
-#define shader_data_hpp
+#pragma once
 
 #include <webgpu/webgpu_cpp.h>
 
 #include <any>
 #include <unordered_map>
 
-#include "mesh/buffer.h"
-#include "shader.h"
-#include "shader_data_group.h"
-#include "shader_macro_collection.h"
-#include "shader_property.h"
-#include "std_helpers.h"
-#include "texture/sampled_texture.h"
+#include "vox.render/mesh/buffer.h"
+#include "vox.render/shader/shader.h"
+#include "vox.render/shader/shader_data_group.h"
+#include "vox.render/shader/shader_macro_collection.h"
+#include "vox.render/shader/shader_property.h"
+#include "vox.render/std_helpers.h"
+#include "vox.render/texture/sampled_texture.h"
 
 namespace vox {
 /**
@@ -26,9 +25,9 @@ namespace vox {
  */
 class ShaderData {
 public:
-    ShaderData(wgpu::Device& device);
+    explicit ShaderData(wgpu::Device& device);
 
-    const std::unordered_map<uint32_t, Buffer>& shaderBuffers() const;
+    [[nodiscard]] const std::unordered_map<uint32_t, Buffer>& shaderBuffers() const;
 
     std::optional<Buffer> getData(const std::string& property_name);
 
@@ -36,9 +35,9 @@ public:
 
     std::optional<Buffer> getData(uint32_t uniqueID);
 
-    void setBufferFunctor(const std::string& property_name, std::function<Buffer()> functor);
+    void setBufferFunctor(const std::string& property_name, const std::function<Buffer()>& functor);
 
-    void setBufferFunctor(ShaderProperty property, std::function<Buffer()> functor);
+    void setBufferFunctor(const ShaderProperty& property, const std::function<Buffer()>& functor);
 
     template <typename T>
     void setData(const std::string& property_name, const T& value) {
@@ -51,7 +50,7 @@ public:
     }
 
     template <typename T>
-    void setData(ShaderProperty property, const T& value) {
+    void setData(const ShaderProperty& property, const T& value) {
         auto iter = _shaderBuffers.find(property.uniqueId);
         if (iter == _shaderBuffers.end()) {
             _shaderBuffers.insert(std::make_pair(
@@ -64,7 +63,7 @@ public:
     }
 
     template <typename T>
-    void setData(ShaderProperty property, const std::vector<T>& value) {
+    void setData(const ShaderProperty& property, const std::vector<T>& value) {
         auto iter = _shaderBuffers.find(property.uniqueId);
         if (iter == _shaderBuffers.end()) {
             _shaderBuffers.insert(
@@ -77,7 +76,7 @@ public:
     }
 
     template <typename T, size_t N>
-    void setData(ShaderProperty property, const std::array<T, N>& value) {
+    void setData(const ShaderProperty& property, const std::array<T, N>& value) {
         auto iter = _shaderBuffers.find(property.uniqueId);
         if (iter == _shaderBuffers.end()) {
             _shaderBuffers.insert(std::make_pair(
@@ -142,4 +141,3 @@ private:
 };
 
 }  // namespace vox
-#endif /* shader_data_hpp */

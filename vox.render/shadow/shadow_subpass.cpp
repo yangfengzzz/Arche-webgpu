@@ -4,15 +4,15 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "shadow_subpass.h"
+#include "vox.render/shadow/shadow_subpass.h"
 
-#include "camera.h"
-#include "components_manager.h"
-#include "material/material.h"
-#include "mesh/mesh.h"
-#include "renderer.h"
-#include "rendering/render_pass.h"
-#include "shadow_manager.h"
+#include "vox.render/camera.h"
+#include "vox.render/components_manager.h"
+#include "vox.render/material/material.h"
+#include "vox.render/mesh/mesh.h"
+#include "vox.render/renderer.h"
+#include "vox.render/rendering/render_pass.h"
+#include "vox.render/shadow/shadow_manager.h"
 
 namespace vox {
 ShadowSubpass::ShadowSubpass(RenderContext* renderContext, Scene* scene, Camera* camera)
@@ -132,7 +132,7 @@ void ShadowSubpass::_drawElement(wgpu::RenderPassEncoder& passEncoder,
     }
 }
 
-void ShadowSubpass::_bindingData(wgpu::BindGroupEntry& entry, MaterialPtr mat, Renderer* renderer) {
+void ShadowSubpass::_bindingData(wgpu::BindGroupEntry& entry, const MaterialPtr& mat, Renderer* renderer) {
     auto group = Shader::getShaderPropertyGroup(entry.binding);
     if (group.has_value()) {
         switch (*group) {

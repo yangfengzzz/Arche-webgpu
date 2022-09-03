@@ -4,10 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "blinn_phong_material.h"
+#include "vox.render/material/blinn_phong_material.h"
 
 namespace vox {
-const Color& BlinnPhongMaterial::baseColor() { return _blinnPhongData.baseColor; }
+const Color& BlinnPhongMaterial::baseColor() const { return _blinnPhongData.baseColor; }
 
 void BlinnPhongMaterial::setBaseColor(const Color& newValue) {
     _blinnPhongData.baseColor = newValue;
@@ -16,7 +16,7 @@ void BlinnPhongMaterial::setBaseColor(const Color& newValue) {
 
 SampledTexture2DPtr BlinnPhongMaterial::baseTexture() { return _baseTexture; }
 
-void BlinnPhongMaterial::setBaseTexture(SampledTexture2DPtr newValue) {
+void BlinnPhongMaterial::setBaseTexture(const SampledTexture2DPtr& newValue) {
     _baseTexture = newValue;
     shaderData.setSampledTexture(BlinnPhongMaterial::_baseTextureProp, BlinnPhongMaterial::_baseSamplerProp, newValue);
 
@@ -27,7 +27,7 @@ void BlinnPhongMaterial::setBaseTexture(SampledTexture2DPtr newValue) {
     }
 }
 
-const Color& BlinnPhongMaterial::specularColor() { return _blinnPhongData.specularColor; }
+const Color& BlinnPhongMaterial::specularColor() const { return _blinnPhongData.specularColor; }
 
 void BlinnPhongMaterial::setSpecularColor(const Color& newValue) {
     _blinnPhongData.specularColor = newValue;
@@ -36,7 +36,7 @@ void BlinnPhongMaterial::setSpecularColor(const Color& newValue) {
 
 SampledTexture2DPtr BlinnPhongMaterial::specularTexture() { return _specularTexture; }
 
-void BlinnPhongMaterial::setSpecularTexture(SampledTexture2DPtr newValue) {
+void BlinnPhongMaterial::setSpecularTexture(const SampledTexture2DPtr& newValue) {
     _specularTexture = newValue;
     shaderData.setSampledTexture(BlinnPhongMaterial::_specularTextureProp, BlinnPhongMaterial::_specularSamplerProp,
                                  newValue);
@@ -47,7 +47,7 @@ void BlinnPhongMaterial::setSpecularTexture(SampledTexture2DPtr newValue) {
     }
 }
 
-const Color& BlinnPhongMaterial::emissiveColor() { return _blinnPhongData.emissiveColor; }
+const Color& BlinnPhongMaterial::emissiveColor() const { return _blinnPhongData.emissiveColor; }
 
 void BlinnPhongMaterial::setEmissiveColor(const Color& newValue) {
     _blinnPhongData.emissiveColor = newValue;
@@ -56,7 +56,7 @@ void BlinnPhongMaterial::setEmissiveColor(const Color& newValue) {
 
 SampledTexture2DPtr BlinnPhongMaterial::emissiveTexture() { return _emissiveTexture; }
 
-void BlinnPhongMaterial::BlinnPhongMaterial::setEmissiveTexture(SampledTexture2DPtr newValue) {
+void BlinnPhongMaterial::BlinnPhongMaterial::setEmissiveTexture(const SampledTexture2DPtr& newValue) {
     _emissiveTexture = newValue;
     shaderData.setSampledTexture(BlinnPhongMaterial::_emissiveTextureProp, BlinnPhongMaterial::_emissiveSamplerProp,
                                  newValue);
@@ -69,7 +69,7 @@ void BlinnPhongMaterial::BlinnPhongMaterial::setEmissiveTexture(SampledTexture2D
 
 SampledTexture2DPtr BlinnPhongMaterial::normalTexture() { return _normalTexture; }
 
-void BlinnPhongMaterial::setNormalTexture(SampledTexture2DPtr newValue) {
+void BlinnPhongMaterial::setNormalTexture(const SampledTexture2DPtr& newValue) {
     _normalTexture = newValue;
     shaderData.setSampledTexture(BlinnPhongMaterial::_normalTextureProp, BlinnPhongMaterial::_normalSamplerProp,
                                  newValue);
@@ -80,14 +80,14 @@ void BlinnPhongMaterial::setNormalTexture(SampledTexture2DPtr newValue) {
     }
 }
 
-float BlinnPhongMaterial::normalIntensity() { return _blinnPhongData.normalIntensity; }
+float BlinnPhongMaterial::normalIntensity() const { return _blinnPhongData.normalIntensity; }
 
 void BlinnPhongMaterial::setNormalIntensity(float newValue) {
     _blinnPhongData.normalIntensity = newValue;
     shaderData.setData(BlinnPhongMaterial::_blinnPhongProp, _blinnPhongData);
 }
 
-float BlinnPhongMaterial::shininess() { return _blinnPhongData.shininess; }
+float BlinnPhongMaterial::shininess() const { return _blinnPhongData.shininess; }
 
 void BlinnPhongMaterial::setShininess(float newValue) {
     _blinnPhongData.shininess = newValue;

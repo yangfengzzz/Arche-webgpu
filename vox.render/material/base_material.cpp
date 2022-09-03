@@ -4,10 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "base_material.h"
+#include "vox.render/material/base_material.h"
 
 namespace vox {
-bool BaseMaterial::isTransparent() { return _isTransparent; }
+bool BaseMaterial::isTransparent() const { return _isTransparent; }
 
 void BaseMaterial::setIsTransparent(bool newValue) {
     if (newValue == _isTransparent) {
@@ -29,7 +29,7 @@ void BaseMaterial::setIsTransparent(bool newValue) {
     }
 }
 
-float BaseMaterial::alphaCutoff() { return _alphaCutoff; }
+float BaseMaterial::alphaCutoff() const { return _alphaCutoff; }
 
 void BaseMaterial::setAlphaCutoff(float newValue) {
     _alphaCutoff = newValue;

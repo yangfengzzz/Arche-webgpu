@@ -4,11 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef blend_state_hpp
-#define blend_state_hpp
+#pragma once
 
-#include "render_target_blend_state.h"
 #include "vox.math/color.h"
+#include "vox.render/shader/state/render_target_blend_state.h"
 
 namespace vox {
 /**
@@ -40,5 +39,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* blend_state_hpp */

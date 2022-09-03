@@ -4,8 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef image_hpp
-#define image_hpp
+#pragma once
 
 #include <webgpu/webgpu_cpp.h>
 
@@ -31,25 +30,25 @@ struct Mipmap {
 
 class Image {
 public:
-    Image(std::vector<uint8_t> &&data = {}, std::vector<Mipmap> &&mipmaps = {{}});
+    explicit Image(std::vector<uint8_t> &&data = {}, std::vector<Mipmap> &&mipmaps = {{}});
 
     static std::unique_ptr<Image> load(const std::string &uri, bool flipY = false);
 
     virtual ~Image() = default;
 
-    const std::vector<uint8_t> &data() const;
+    [[nodiscard]] const std::vector<uint8_t> &data() const;
 
     void clear();
 
-    wgpu::TextureFormat format() const;
+    [[nodiscard]] wgpu::TextureFormat format() const;
 
-    const wgpu::Extent3D &extent() const;
+    [[nodiscard]] const wgpu::Extent3D &extent() const;
 
-    const uint32_t layers() const;
+    [[nodiscard]] uint32_t layers() const;
 
-    const std::vector<Mipmap> &mipmaps() const;
+    [[nodiscard]] const std::vector<Mipmap> &mipmaps() const;
 
-    const std::vector<std::vector<uint64_t>> &offsets() const;
+    [[nodiscard]] const std::vector<std::vector<uint64_t>> &offsets() const;
 
     void generateMipmaps();
 
@@ -91,5 +90,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* image_hpp */

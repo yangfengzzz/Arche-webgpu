@@ -4,10 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef mesh_renderer_hpp
-#define mesh_renderer_hpp
+#pragma once
 
-#include "renderer.h"
+#include "vox.render/renderer.h"
 
 namespace vox {
 class MeshRenderer : public Renderer {
@@ -55,5 +54,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* mesh_renderer_hpp */

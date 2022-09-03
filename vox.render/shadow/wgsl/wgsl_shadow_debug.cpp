@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "wgsl_shadow_debug.h"
+#include "vox.render/shadow/wgsl/wgsl_shadow_debug.h"
 
 namespace vox {
 WGSLShadowDebug::WGSLShadowDebug()

@@ -4,8 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef resource_cache_hpp
-#define resource_cache_hpp
+#pragma once
 
 #include <webgpu/webgpu_cpp.h>
 
@@ -41,7 +40,7 @@ struct ResourceCacheState {
  */
 class ResourceCache {
 public:
-    ResourceCache(wgpu::Device &device);
+    explicit ResourceCache(wgpu::Device &device);
 
     ResourceCache(const ResourceCache &) = delete;
 
@@ -71,5 +70,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* resource_cache_hpp */

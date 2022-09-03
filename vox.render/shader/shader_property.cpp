@@ -4,13 +4,13 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "shader_property.h"
+#include "vox.render/shader/shader_property.h"
 
 namespace vox {
 uint32_t ShaderProperty::_propertyNameCounter = 0;
 
-ShaderProperty::ShaderProperty(const std::string &name, ShaderDataGroup group)
-    : name(name), group(group), uniqueId(ShaderProperty::_propertyNameCounter) {
+ShaderProperty::ShaderProperty(std::string name, ShaderDataGroup group)
+    : name(std::move(name)), group(group), uniqueId(ShaderProperty::_propertyNameCounter) {
     ShaderProperty::_propertyNameCounter += 1;
 }
 

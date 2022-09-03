@@ -4,13 +4,11 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "free_control.h"
+#include "vox.render/controls/free_control.h"
 
-#include "../entity.h"
-#include "vox.math/math_utils.h"
+#include "vox.render/entity.h"
 
-namespace vox {
-namespace control {
+namespace vox::control {
 std::string FreeControl::name() { return "FreeControl"; }
 
 FreeControl::FreeControl(Entity *entity) : Script(entity) {
@@ -117,8 +115,8 @@ void FreeControl::onMouseDown(double xpos, double ypos) {
 void FreeControl::onMouseUp() { press = false; }
 
 void FreeControl::onMouseMove(double clientX, double clientY) {
-    if (press == false) return;
-    if (enabled() == false) return;
+    if (!press) return;
+    if (!enabled()) return;
 
     const auto movementX = clientX - _rotateOri[0];
     const auto movementY = clientY - _rotateOri[1];
@@ -179,5 +177,4 @@ void FreeControl::updateSpherical() {
     _phi = _spherical._phi;
 }
 
-}  // namespace control
-}  // namespace vox
+}  // namespace vox::control

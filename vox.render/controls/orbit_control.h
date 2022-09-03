@@ -4,17 +4,15 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef orbit_control_hpp
-#define orbit_control_hpp
+#pragma once
 
-#include "../script.h"
-#include "spherical.h"
 #include "vox.math/matrix4x4.h"
 #include "vox.math/vector2.h"
 #include "vox.math/vector3.h"
+#include "vox.render/controls/spherical.h"
+#include "vox.render/script.h"
 
-namespace vox {
-namespace control {
+namespace vox::control {
 /**
  * The camera's track controller, can rotate, zoom, pan, support mouse and touch events.
  */
@@ -146,9 +144,9 @@ public:
     /**
      * Get the radian of automatic rotation.
      */
-    float autoRotationAngle(float dtime);
+    [[nodiscard]] float autoRotationAngle(float dtime) const;
 
-    float zoomScale();
+    [[nodiscard]] float zoomScale() const;
 
     /**
      * Rotate to the left by a certain radian.
@@ -332,7 +330,4 @@ private:
     uint32_t _height = 1000;
 };
 
-}  // namespace control
-}  // namespace vox
-
-#endif /* orbit_control_hpp */
+}  // namespace vox::control

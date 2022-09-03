@@ -4,13 +4,12 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef pbr_base_material_hpp
-#define pbr_base_material_hpp
+#pragma once
 
-#include "base_material.h"
-#include "texture/sampled_texture2d.h"
 #include "vox.math/color.h"
 #include "vox.math/vector4.h"
+#include "vox.render/material/base_material.h"
+#include "vox.render/texture/sampled_texture2d.h"
 
 namespace vox {
 /**
@@ -29,7 +28,7 @@ public:
     /**
      * Base color.
      */
-    const Color& baseColor();
+    [[nodiscard]] const Color& baseColor() const;
 
     void setBaseColor(const Color& newValue);
 
@@ -38,26 +37,26 @@ public:
      */
     SampledTexture2DPtr baseTexture();
 
-    void setBaseTexture(SampledTexture2DPtr newValue);
+    void setBaseTexture(const SampledTexture2DPtr& newValue);
 
     /**
      * Normal texture.
      */
     SampledTexture2DPtr normalTexture();
 
-    void setNormalTexture(SampledTexture2DPtr newValue);
+    void setNormalTexture(const SampledTexture2DPtr& newValue);
 
     /**
      * Normal texture intensity.
      */
-    float normalTextureIntensity();
+    [[nodiscard]] float normalTextureIntensity() const;
 
     void setNormalTextureIntensity(float newValue);
 
     /**
      * Emissive color.
      */
-    const Color& emissiveColor();
+    [[nodiscard]] const Color& emissiveColor() const;
 
     void setEmissiveColor(const Color& newValue);
 
@@ -66,19 +65,19 @@ public:
      */
     SampledTexture2DPtr emissiveTexture();
 
-    void setEmissiveTexture(SampledTexture2DPtr newValue);
+    void setEmissiveTexture(const SampledTexture2DPtr& newValue);
 
     /**
      * Occlusion texture.
      */
     SampledTexture2DPtr occlusionTexture();
 
-    void setOcclusionTexture(SampledTexture2DPtr newValue);
+    void setOcclusionTexture(const SampledTexture2DPtr& newValue);
 
     /**
      * Occlusion texture intensity.
      */
-    float occlusionTextureIntensity();
+    [[nodiscard]] float occlusionTextureIntensity() const;
 
     void setOcclusionTextureIntensity(float newValue);
 
@@ -110,5 +109,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* pbr_base_material_hpp */

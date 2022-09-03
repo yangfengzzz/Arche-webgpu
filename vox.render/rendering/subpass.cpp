@@ -4,10 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "subpass.h"
+#include "vox.render/rendering/subpass.h"
 
-#include "material/material.h"
-#include "renderer.h"
+#include "vox.render/material/material.h"
+#include "vox.render/renderer.h"
 
 namespace vox {
 Subpass::Subpass(RenderContext* renderContext, Scene* scene, Camera* camera)

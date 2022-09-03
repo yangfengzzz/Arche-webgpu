@@ -4,12 +4,12 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "raster_state.h"
+#include "vox.render/shader/state/raster_state.h"
 
 namespace vox {
 void RasterState::platformApply(wgpu::PrimitiveState& primitive,
                                 wgpu::DepthStencilState* depthStencil,
-                                bool frontFaceInvert) {
+                                bool frontFaceInvert) const {
     primitive.cullMode = cullMode;
     if (frontFaceInvert) {
         primitive.frontFace = wgpu::FrontFace::CW;

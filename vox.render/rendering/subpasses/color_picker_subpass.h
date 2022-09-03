@@ -4,11 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef color_picker_subpass_hpp
-#define color_picker_subpass_hpp
+#pragma once
 
-#include "material/unlit_material.h"
-#include "rendering/subpass.h"
+#include "vox.render/material/unlit_material.h"
+#include "vox.render/rendering/subpass.h"
 
 namespace vox {
 class ColorPickerSubpass : public Subpass {
@@ -68,5 +67,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* color_picker_subpass_hpp */

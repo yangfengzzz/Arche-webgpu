@@ -4,16 +4,16 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "wgsl_particle_sdf.h"
+#include "vox.render/particle/wgsl/wgsl_particle_sdf.h"
 
-#include "filesystem.h"
+#include "vox.render/platform/filesystem.h"
 
 namespace vox {
 void WGSLParticleSDF::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros) {
-    std::string particleDistanceUtils = fs::readShader("particle/particle_distance_utils.wgsl");
+    std::string particleDistanceUtils = fs::ReadShader("particle/particle_distance_utils.wgsl");
     encoder.addFunction(particleDistanceUtils);
 
-    std::string particleDistanceFunc = fs::readShader("particle/particle_distance_func.wgsl");
+    std::string particleDistanceFunc = fs::ReadShader("particle/particle_distance_func.wgsl");
     encoder.addFunction(particleDistanceFunc);
 }
 

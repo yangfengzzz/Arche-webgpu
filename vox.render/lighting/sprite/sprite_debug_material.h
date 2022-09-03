@@ -4,19 +4,18 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef sprite_debug_material_hpp
-#define sprite_debug_material_hpp
+#pragma once
 
-#include "material/base_material.h"
-#include "shaderlib/functors/wgsl_common_frag.h"
-#include "shaderlib/functors/wgsl_light_frag_define.h"
+#include "vox.render/material/base_material.h"
+#include "vox.render/shaderlib/functors/wgsl_common_frag.h"
+#include "vox.render/shaderlib/functors/wgsl_light_frag_define.h"
 #include "vox.render/shaderlib/wgsl_cache.h"
 
 namespace vox {
 // MARK: - Unlit Vertex Code
 class WGSLSpriteDebugVertex : public WGSLCache {
 public:
-    WGSLSpriteDebugVertex(bool isSpotLight);
+    explicit WGSLSpriteDebugVertex(bool isSpotLight);
 
 private:
     void _createShaderSource(size_t hash, const ShaderMacroCollection& macros) override;
@@ -39,4 +38,3 @@ public:
 };
 
 }  // namespace vox
-#endif /* sprite_debug_material_hpp */

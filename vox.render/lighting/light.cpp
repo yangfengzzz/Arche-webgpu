@@ -4,9 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "light.h"
+#include "vox.render/lighting/light.h"
 
-#include "entity.h"
+#include "vox.render/entity.h"
 
 namespace vox {
 Light::Light(Entity *entity) : Component(entity) {}
@@ -16,19 +16,19 @@ Matrix4x4F Light::viewMatrix() { return entity()->transform->worldMatrix().inver
 Matrix4x4F Light::inverseViewMatrix() { return entity()->transform->worldMatrix(); }
 
 // MARK: - Shadow
-bool Light::enableShadow() { return _enableShadow; }
+bool Light::enableShadow() const { return _enableShadow; }
 
 void Light::setEnableShadow(bool enabled) { _enableShadow = enabled; }
 
-float Light::shadowBias() { return _shadowBias; }
+float Light::shadowBias() const { return _shadowBias; }
 
 void Light::setShadowBias(float value) { _shadowBias = value; }
 
-float Light::shadowIntensity() { return _shadowIntensity; }
+float Light::shadowIntensity() const { return _shadowIntensity; }
 
 void Light::setShadowIntensity(float value) { _shadowIntensity = value; }
 
-float Light::shadowRadius() { return _shadowRadius; }
+float Light::shadowRadius() const { return _shadowRadius; }
 
 void Light::setShadowRadius(float value) { _shadowRadius = value; }
 

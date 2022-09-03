@@ -4,13 +4,12 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef blinn_phong_material_hpp
-#define blinn_phong_material_hpp
+#pragma once
 
-#include "base_material.h"
-#include "texture/sampled_texture2d.h"
 #include "vox.math/color.h"
 #include "vox.math/vector4.h"
+#include "vox.render/material/base_material.h"
+#include "vox.render/texture/sampled_texture2d.h"
 
 namespace vox {
 /**
@@ -30,7 +29,7 @@ public:
     /**
      * Base color.
      */
-    const Color& baseColor();
+    [[nodiscard]] const Color& baseColor() const;
 
     void setBaseColor(const Color& newValue);
 
@@ -39,12 +38,12 @@ public:
      */
     SampledTexture2DPtr baseTexture();
 
-    void setBaseTexture(SampledTexture2DPtr newValue);
+    void setBaseTexture(const SampledTexture2DPtr& newValue);
 
     /**
      * Specular color.
      */
-    const Color& specularColor();
+    [[nodiscard]] const Color& specularColor() const;
 
     void setSpecularColor(const Color& newValue);
 
@@ -53,12 +52,12 @@ public:
      */
     SampledTexture2DPtr specularTexture();
 
-    void setSpecularTexture(SampledTexture2DPtr newValue);
+    void setSpecularTexture(const SampledTexture2DPtr& newValue);
 
     /**
      * Emissive color.
      */
-    const Color& emissiveColor();
+    [[nodiscard]] const Color& emissiveColor() const;
 
     void setEmissiveColor(const Color& newValue);
 
@@ -67,19 +66,19 @@ public:
      */
     SampledTexture2DPtr emissiveTexture();
 
-    void setEmissiveTexture(SampledTexture2DPtr newValue);
+    void setEmissiveTexture(const SampledTexture2DPtr& newValue);
 
     /**
      * Normal texture.
      */
     SampledTexture2DPtr normalTexture();
 
-    void setNormalTexture(SampledTexture2DPtr newValue);
+    void setNormalTexture(const SampledTexture2DPtr& newValue);
 
     /**
      * Normal texture intensity.
      */
-    float normalIntensity();
+    [[nodiscard]] float normalIntensity() const;
 
     void setNormalIntensity(float newValue);
 
@@ -87,7 +86,7 @@ public:
      * Set the specular reflection coefficient, the larger the value, the more convergent the specular reflection
      * effect.
      */
-    float shininess();
+    [[nodiscard]] float shininess() const;
 
     void setShininess(float newValue);
 
@@ -115,5 +114,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* blinn_phong_material_hpp */

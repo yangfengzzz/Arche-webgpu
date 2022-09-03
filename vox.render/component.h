@@ -11,8 +11,8 @@
 #include <typeindex>
 #include <vector>
 
-#include "inspector_item.h"
-#include "scene_forward.h"
+#include "vox.render/inspector_item.h"
+#include "vox.render/scene_forward.h"
 
 namespace vox {
 /**
@@ -24,7 +24,7 @@ public:
 
     Component(Component &&other) = default;
 
-    virtual ~Component();
+    ~Component() override;
 
     /**
      * Indicates whether the component is enabled.
@@ -36,7 +36,7 @@ public:
     /**
      * The entity which the component belongs to.
      */
-    Entity *entity() const;
+    [[nodiscard]] Entity *entity() const;
 
     /**
      * The scene which the component's entity belongs to.

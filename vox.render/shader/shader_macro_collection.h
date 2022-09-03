@@ -4,14 +4,13 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef shader_macro_collection_hpp
-#define shader_macro_collection_hpp
+#pragma once
 
 #include <map>
 #include <string>
 #include <vector>
 
-#include "internal_macro_name.h"
+#include "vox.render/shader/internal_macro_name.h"
 
 namespace vox {
 /**
@@ -32,12 +31,12 @@ struct ShaderMacroCollection {
                                 const ShaderMacroCollection& right,
                                 ShaderMacroCollection& result);
 
-    size_t hash() const;
+    [[nodiscard]] size_t hash() const;
 
 public:
-    bool contains(const std::string& macro) const;
+    [[nodiscard]] bool contains(const std::string& macro) const;
 
-    std::optional<double> macroConstant(const std::string& macro) const;
+    [[nodiscard]] std::optional<double> macroConstant(const std::string& macro) const;
 
     /**
      * Enable macro.
@@ -60,9 +59,9 @@ public:
     void disableMacro(const std::string& macroName);
 
 public:
-    bool contains(MacroName macro) const;
+    [[nodiscard]] bool contains(MacroName macro) const;
 
-    std::optional<double> macroConstant(MacroName macro) const;
+    [[nodiscard]] std::optional<double> macroConstant(MacroName macro) const;
 
     /**
      * Enable macro.
@@ -90,5 +89,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* shader_macro_collection_hpp */

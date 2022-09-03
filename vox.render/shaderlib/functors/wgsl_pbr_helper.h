@@ -4,8 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef wgsl_pbr_helper_hpp
-#define wgsl_pbr_helper_hpp
+#pragma once
 
 #include "shaderlib/wgsl_encoder.h"
 #include "wgsl_brdf.h"
@@ -36,5 +35,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* wgsl_pbr_helper_hpp */

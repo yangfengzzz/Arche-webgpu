@@ -4,10 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "direct_light.h"
+#include "vox.render/lighting/direct_light.h"
 
-#include "entity.h"
-#include "light_manager.h"
+#include "vox.render/entity.h"
+#include "vox.render/lighting/light_manager.h"
 
 namespace vox {
 std::string DirectLight::name() { return "DirectLight"; }

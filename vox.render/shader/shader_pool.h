@@ -4,8 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef shader_pool_hpp
-#define shader_pool_hpp
+#pragma once
 
 namespace vox {
 class ShaderPool {
@@ -14,5 +13,3 @@ public:
 };
 
 }  // namespace vox
-
-#endif /* shader_pool_hpp */

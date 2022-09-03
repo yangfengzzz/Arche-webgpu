@@ -4,8 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef wgsl_reflect_hpp
-#define wgsl_reflect_hpp
+#pragma once
 
 #include "vox.render/shaderlib/wgsl.h"
 
@@ -16,5 +15,3 @@ public:
 };
 
 }  // namespace vox
-
-#endif /* wgsl_reflect_hpp */

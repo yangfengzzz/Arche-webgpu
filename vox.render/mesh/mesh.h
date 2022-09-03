@@ -4,41 +4,40 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef mesh_hpp
-#define mesh_hpp
+#pragma once
 
 #include <optional>
 #include <string>
 
-#include "index_buffer_binding.h"
-#include "sub_mesh.h"
-#include "update_flag_manager.h"
 #include "vox.math/bounding_box3.h"
+#include "vox.render/mesh/index_buffer_binding.h"
+#include "vox.render/mesh/sub_mesh.h"
+#include "vox.render/update_flag_manager.h"
 
 namespace vox {
 class Mesh {
 public:
     /** Name. */
-    std::string name = "";
+    std::string name;
     /** The bounding volume of the mesh. */
     BoundingBox3F bounds = BoundingBox3F();
 
     /**
      * Instanced count, disable instanced drawing when set zero.
      */
-    uint32_t instanceCount() const;
+    [[nodiscard]] uint32_t instanceCount() const;
 
     /**
      * First sub-mesh. Rendered using the first material.
      */
-    const SubMesh* subMesh() const;
+    [[nodiscard]] const SubMesh* subMesh() const;
 
     SubMesh* subMesh();
 
     /**
      * A collection of sub-mesh, each sub-mesh can be rendered with an independent material.
      */
-    const std::vector<SubMesh>& subMeshes() const;
+    [[nodiscard]] const std::vector<SubMesh>& subMeshes() const;
 
     /**
      * Add sub-mesh, each sub-mesh can correspond to an independent material.
@@ -73,18 +72,18 @@ public:
     std::unique_ptr<UpdateFlag> registerUpdateFlag();
 
 public:
-    const std::vector<wgpu::VertexBufferLayout>& vertexBufferLayouts() const;
+    [[nodiscard]] const std::vector<wgpu::VertexBufferLayout>& vertexBufferLayouts() const;
 
-    const std::vector<std::optional<Buffer>>& vertexBufferBindings() const;
+    [[nodiscard]] const std::vector<std::optional<Buffer>>& vertexBufferBindings() const;
 
-    const std::optional<IndexBufferBinding>& indexBufferBinding() const;
+    [[nodiscard]] const std::optional<IndexBufferBinding>& indexBufferBinding() const;
 
 protected:
     void _setVertexLayouts(const std::vector<wgpu::VertexBufferLayout>& layouts);
 
     void _setVertexBufferBinding(size_t index, const Buffer& binding);
 
-    void _setIndexBufferBinding(std::optional<IndexBufferBinding> binding);
+    void _setIndexBufferBinding(const std::optional<IndexBufferBinding>& binding);
 
 protected:
     uint32_t _instanceCount = 1;
@@ -102,5 +101,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* mesh_hpp */

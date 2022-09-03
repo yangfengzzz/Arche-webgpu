@@ -4,14 +4,14 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "wgsl_shadow_frag.h"
+#include "vox.render/shadow/wgsl/wgsl_shadow_frag.h"
 
 #include <spdlog/fmt/fmt.h>
 
 #include "vox.render/shaderlib/wgsl.h"
 
 namespace vox {
-WGSLShadowFrag::WGSLShadowFrag() {}
+WGSLShadowFrag::WGSLShadowFrag() = default;
 
 void WGSLShadowFrag::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros) {
     if (macros.contains(SHADOW_MAP_COUNT)) {

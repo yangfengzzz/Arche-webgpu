@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "material.h"
+#include "vox.render/material/material.h"
 
 namespace vox {
 Material::Material(wgpu::Device& device, Shader* shader) : shader(shader), shaderData(device) {}

@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "sampled_texture3d.h"
+#include "vox.render/texture/sampled_texture3d.h"
 
 namespace vox {
 SampledTexture3D::SampledTexture3D(wgpu::Device& device,

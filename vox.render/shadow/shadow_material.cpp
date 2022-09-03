@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "shadow_material.h"
+#include "vox.render/shadow/shadow_material.h"
 
 namespace vox {
 ShadowMaterial::ShadowMaterial(wgpu::Device& device)

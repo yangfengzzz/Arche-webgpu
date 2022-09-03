@@ -4,13 +4,12 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef material_hpp
-#define material_hpp
+#pragma once
 
-#include "../shader/shader.h"
-#include "../shader/shader_data.h"
-#include "../shader/state/render_state.h"
-#include "enums/render_queue_type.h"
+#include "vox.render/material/enums/render_queue_type.h"
+#include "vox.render/shader/shader.h"
+#include "vox.render/shader/shader_data.h"
+#include "vox.render/shader/state/render_state.h"
 
 namespace vox {
 /**
@@ -19,7 +18,7 @@ namespace vox {
 class Material {
 public:
     /** Name. */
-    std::string name = "";
+    std::string name;
     /** Shader used by the material. */
     Shader *shader;
     /** Render queue type. */
@@ -38,5 +37,3 @@ public:
 using MaterialPtr = std::shared_ptr<Material>;
 
 }  // namespace vox
-
-#endif /* material_hpp */

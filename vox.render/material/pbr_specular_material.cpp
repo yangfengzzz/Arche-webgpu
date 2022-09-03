@@ -4,17 +4,17 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "pbr_specular_material.h"
+#include "vox.render/material/pbr_specular_material.h"
 
 namespace vox {
-const Color& PBRSpecularMaterial::specularColor() { return _pbrSpecularData.specularColor; }
+const Color& PBRSpecularMaterial::specularColor() const { return _pbrSpecularData.specularColor; }
 
 void PBRSpecularMaterial::setSpecularColor(const Color& newValue) {
     _pbrSpecularData.specularColor = newValue;
     shaderData.setData(PBRSpecularMaterial::_pbrSpecularProp, _pbrSpecularData);
 }
 
-float PBRSpecularMaterial::glossiness() { return _pbrSpecularData.glossiness; }
+float PBRSpecularMaterial::glossiness() const { return _pbrSpecularData.glossiness; }
 
 void PBRSpecularMaterial::setGlossiness(float newValue) {
     _pbrSpecularData.glossiness = newValue;
@@ -23,7 +23,7 @@ void PBRSpecularMaterial::setGlossiness(float newValue) {
 
 SampledTexture2DPtr PBRSpecularMaterial::specularGlossinessTexture() { return _specularGlossinessTexture; }
 
-void PBRSpecularMaterial::setSpecularGlossinessTexture(SampledTexture2DPtr newValue) {
+void PBRSpecularMaterial::setSpecularGlossinessTexture(const SampledTexture2DPtr& newValue) {
     _specularGlossinessTexture = newValue;
     shaderData.setSampledTexture(PBRSpecularMaterial::_specularGlossinessTextureProp,
                                  PBRSpecularMaterial::_specularGlossinessSamplerProp, newValue);

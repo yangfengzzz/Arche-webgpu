@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "sampled_texturecube.h"
+#include "vox.render/texture/sampled_texturecube.h"
 
 #include <array>
 

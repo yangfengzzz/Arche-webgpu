@@ -4,10 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "spherical.h"
+#include "vox.render/controls/spherical.h"
 
-namespace vox {
-namespace control {
+namespace vox::control {
 Spherical::Spherical(float radius, float phi, float theta) : _radius(radius), _phi(phi), _theta(theta) {}
 
 void Spherical::set(float radius, float phi, float theta) {
@@ -29,7 +28,7 @@ void Spherical::setFromVec3(const Vector3F &v3) {
     }
 }
 
-void Spherical::setToVec3(Vector3F &v3) {
+void Spherical::setToVec3(Vector3F &v3) const {
     const auto sinPhiRadius = std::sin(_phi) * _radius;
 
     v3.x = sinPhiRadius * std::sin(_theta);
@@ -37,5 +36,4 @@ void Spherical::setToVec3(Vector3F &v3) {
     v3.z = sinPhiRadius * std::cos(_theta);
 }
 
-}  // namespace control
-}  // namespace vox
+}  // namespace vox::control

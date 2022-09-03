@@ -4,16 +4,15 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef shader_hpp
-#define shader_hpp
+#pragma once
 
 #include <optional>
 #include <string>
 #include <unordered_map>
 
-#include "shader_macro_collection.h"
-#include "shader_property.h"
-#include "shaderlib/wgsl.h"
+#include "vox.render/shader/shader_macro_collection.h"
+#include "vox.render/shader/shader_property.h"
+#include "vox.render/shaderlib/wgsl.h"
 
 namespace vox {
 /**
@@ -27,7 +26,7 @@ public:
     /** The name of shader. */
     std::string name;
 
-    Shader(const std::string& name, WGSLPtr&& vertexSource, WGSLPtr&& fragmentSource);
+    Shader(std::string name, WGSLPtr&& vertexSource, WGSLPtr&& fragmentSource);
 
     const std::string& vertexSource(const ShaderMacroCollection& macros);
 
@@ -90,5 +89,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* shader_hpp */

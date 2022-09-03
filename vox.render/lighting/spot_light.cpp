@@ -4,11 +4,11 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "spot_light.h"
+#include "vox.render/lighting/spot_light.h"
 
-#include "entity.h"
-#include "light_manager.h"
 #include "vox.geometry/matrix_utils.h"
+#include "vox.render/entity.h"
+#include "vox.render/lighting/light_manager.h"
 
 namespace vox {
 std::string SpotLight::name() { return "SpotLight"; }
@@ -32,7 +32,7 @@ void SpotLight::_updateShaderData(SpotLightData &shaderData) {
 
 // MARK: - Shadow
 Matrix4x4F SpotLight::shadowProjectionMatrix() {
-    const auto fov = std::min(M_PI / 2, angle * 2 * std::sqrt(2));
+    const auto fov = std::min<float>(M_PI / 2.f, angle * 2.f * std::sqrt(2.f));
     return makePerspective<float>(fov, 1, 0.1, distance + 5);
 }
 

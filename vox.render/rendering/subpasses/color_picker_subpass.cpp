@@ -4,14 +4,13 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "color_picker_subpass.h"
+#include "vox.render/rendering/subpasses/color_picker_subpass.h"
 
-#include "camera.h"
-#include "components_manager.h"
-#include "material/material.h"
-#include "mesh/mesh.h"
-#include "renderer.h"
-#include "rendering/render_pass.h"
+#include "vox.render/camera.h"
+#include "vox.render/components_manager.h"
+#include "vox.render/mesh/mesh.h"
+#include "vox.render/renderer.h"
+#include "vox.render/rendering/render_pass.h"
 
 namespace vox {
 ColorPickerSubpass::ColorPickerSubpass(RenderContext *renderContext,
@@ -62,8 +61,8 @@ void ColorPickerSubpass::_drawMeshes(wgpu::RenderPassEncoder &passEncoder) {
     size_t total = opaqueQueue.size() + alphaTestQueue.size() + transparentQueue.size();
     _bufferPool.reserve(total);
     for (size_t i = _bufferPool.size(); i < total; i++) {
-        _bufferPool.push_back(Buffer(_renderContext->device(), sizeof(Color),
-                                     wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst));
+        _bufferPool.emplace_back(_renderContext->device(), sizeof(Color),
+                                 wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst);
     }
 
     _drawElement(passEncoder, opaqueQueue, compileMacros);
@@ -187,10 +186,10 @@ Vector3F ColorPickerSubpass::id2Color(uint32_t id) {
     if (id >= 0xffffff) {
         std::cout << "Framebuffer Picker encounter primitive's id greater than " + std::to_string(0xffffff)
                   << std::endl;
-        return Vector3F(0, 0, 0);
+        return {0.f, 0.f, 0.f};
     }
 
-    return Vector3F((id & 0xff) / 255.0, ((id & 0xff00) >> 8) / 255.0, ((id & 0xff0000) >> 16) / 255.0);
+    return {(id & 0xff) / 255.f, ((id & 0xff00) >> 8) / 255.f, ((id & 0xff0000) >> 16) / 255.f};
 }
 
 uint32_t ColorPickerSubpass::color2Id(const std::array<uint8_t, 4> &color) {

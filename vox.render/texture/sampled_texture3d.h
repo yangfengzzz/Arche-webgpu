@@ -4,10 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef sampled_texture3d_hpp
-#define sampled_texture3d_hpp
+#pragma once
 
-#include "sampled_texture.h"
+#include "vox.render/texture/sampled_texture.h"
 
 namespace vox {
 class SampledTexture3D : public SampledTexture {
@@ -33,4 +32,3 @@ public:
 using SampledTexture3DPtr = std::shared_ptr<SampledTexture3D>;
 
 }  // namespace vox
-#endif /* sampled_texture3d_hpp */

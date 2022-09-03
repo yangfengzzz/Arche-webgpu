@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "lua_global_binder.h"
+#include "vox.render/lua/lua_global_binder.h"
 
 namespace vox {
 void LuaGlobalsBinder::bindGlobals(sol::state& luaState) {}

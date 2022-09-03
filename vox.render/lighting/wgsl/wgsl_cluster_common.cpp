@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "wgsl_cluster_common.h"
+#include "vox.render/lighting/wgsl/wgsl_cluster_common.h"
 
 namespace vox {
 void WGSLForwardPlusUniforms::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros) {

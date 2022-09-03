@@ -4,19 +4,16 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef ktx_image_hpp
-#define ktx_image_hpp
+#pragma once
 
-#include "image.h"
+#include "vox.render/image/image.h"
 
 namespace vox {
 class Ktx : public Image {
 public:
     Ktx(const std::vector<uint8_t> &data, bool flipY);
 
-    virtual ~Ktx() = default;
+    ~Ktx() override = default;
 };
 
 }  // namespace vox
-
-#endif /* ktx_image_hpp */

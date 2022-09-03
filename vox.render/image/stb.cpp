@@ -4,12 +4,12 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "stb.h"
+#include "vox.render/image/stb.h"
 #define STB_IMAGE_IMPLEMENTATION
 
 #include <stb_image.h>
 
-#include "std_helpers.h"
+#include "vox.render/std_helpers.h"
 
 namespace vox {
 Stb::Stb(const std::vector<uint8_t> &data, bool flipY) : Image{} {

@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "lua_math_binder.h"
+#include "vox.render/lua/lua_math_binder.h"
 
 #include "vox.math/matrix3x3.h"
 #include "vox.math/matrix4x4.h"

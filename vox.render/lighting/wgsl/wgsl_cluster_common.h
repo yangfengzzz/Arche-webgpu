@@ -4,10 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef wgsl_cluster_common_hpp
-#define wgsl_cluster_common_hpp
+#pragma once
 
-#include "shaderlib/wgsl_encoder.h"
+#include "vox.render/shaderlib/wgsl_encoder.h"
 
 namespace vox {
 // MARK: - WGSLForwardPlusUniforms
@@ -17,4 +16,3 @@ public:
 };
 
 }  // namespace vox
-#endif /* wgsl_cluster_common_hpp */

@@ -4,10 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "image.h"
+#include "vox.render/image/image.h"
 
-#include "platform/filesystem.h"
-#include "std_helpers.h"
+#include "vox.render/platform/filesystem.h"
+#include "vox.render/std_helpers.h"
 
 #define STB_IMAGE_RESIZE_IMPLEMENTATION
 #include <stb_image_resize.h>
@@ -32,7 +32,7 @@ wgpu::TextureFormat Image::format() const { return _format; }
 
 const wgpu::Extent3D &Image::extent() const { return _mipmaps.at(0).extent; }
 
-const uint32_t Image::layers() const { return _mipmaps.at(0).extent.depthOrArrayLayers; }
+uint32_t Image::layers() const { return _mipmaps.at(0).extent.depthOrArrayLayers; }
 
 const std::vector<Mipmap> &Image::mipmaps() const { return _mipmaps; }
 
@@ -41,7 +41,7 @@ const std::vector<std::vector<uint64_t>> &Image::offsets() const { return _offse
 std::shared_ptr<SampledTexture2D> Image::createSampledTexture(wgpu::Device &device, wgpu::TextureUsage usage) {
     auto sampledTex = std::make_shared<SampledTexture2D>(
             device, _mipmaps.at(0).extent.width, _mipmaps.at(0).extent.height, _mipmaps.at(0).extent.depthOrArrayLayers,
-            _format, usage, _mipmaps.size() > 1 ? true : false);
+            _format, usage, _mipmaps.size() > 1);
     sampledTex->setImageSource(this);
     return sampledTex;
 }
@@ -78,7 +78,7 @@ void Image::generateMipmaps() {
                            _data.data() + next_mipmap.offset, next_mipmap.extent.width, next_mipmap.extent.height, 0,
                            channels);
 
-        _mipmaps.emplace_back(std::move(next_mipmap));
+        _mipmaps.emplace_back(next_mipmap);
 
         // Next mipmap values
         next_width = std::max<uint32_t>(1u, next_width / 2);

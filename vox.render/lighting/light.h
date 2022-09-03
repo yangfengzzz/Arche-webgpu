@@ -4,11 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef light_hpp
-#define light_hpp
+#pragma once
 
-#include "component.h"
 #include "vox.math/matrix4x4.h"
+#include "vox.render/component.h"
 
 namespace vox {
 /**
@@ -21,7 +20,7 @@ public:
      * */
     static constexpr uint32_t MAX_LIGHT = 10;
 
-    Light(Entity *entity);
+    explicit Light(Entity *entity);
 
     /**
      * View matrix.
@@ -34,28 +33,28 @@ public:
     Matrix4x4F inverseViewMatrix();
 
 public:
-    bool enableShadow();
+    [[nodiscard]] bool enableShadow() const;
 
     void setEnableShadow(bool enabled);
 
     /**
      * Shadow bias.
      */
-    float shadowBias();
+    [[nodiscard]] float shadowBias() const;
 
     void setShadowBias(float value);
 
     /**
      * Shadow intensity, the larger the value, the clearer and darker the shadow.
      */
-    float shadowIntensity();
+    [[nodiscard]] float shadowIntensity() const;
 
     void setShadowIntensity(float value);
 
     /**
      * Pixel range used for shadow PCF interpolation.
      */
-    float shadowRadius();
+    [[nodiscard]] float shadowRadius() const;
 
     void setShadowRadius(float value);
 
@@ -69,4 +68,3 @@ private:
 };
 
 }  // namespace vox
-#endif /* light_hpp */

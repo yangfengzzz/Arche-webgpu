@@ -4,8 +4,8 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef wgsl_blinn_phong_hpp
-#define wgsl_blinn_phong_hpp
+#pragma once
+
 
 #include "functors/wgsl_begin_mobile_frag.h"
 #include "functors/wgsl_begin_normal_vert.h"
@@ -101,5 +101,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* wgsl_blinn_phong_hpp */

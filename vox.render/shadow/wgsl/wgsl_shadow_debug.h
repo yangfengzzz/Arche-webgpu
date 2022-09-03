@@ -4,18 +4,17 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef wgsl_shadow_debug_hpp
-#define wgsl_shadow_debug_hpp
+#pragma once
 
-#include "shaderlib/functors/wgsl_color_share.h"
-#include "shaderlib/functors/wgsl_common_frag.h"
-#include "shaderlib/functors/wgsl_normal_share.h"
-#include "shaderlib/functors/wgsl_uv_share.h"
-#include "shaderlib/functors/wgsl_worldpos_share.h"
-#include "shadow/wgsl/wgsl_shadow_common.h"
-#include "shadow/wgsl/wgsl_shadow_frag.h"
-#include "shadow/wgsl/wgsl_shadow_share.h"
+#include "vox.render/shaderlib/functors/wgsl_color_share.h"
+#include "vox.render/shaderlib/functors/wgsl_common_frag.h"
+#include "vox.render/shaderlib/functors/wgsl_normal_share.h"
+#include "vox.render/shaderlib/functors/wgsl_uv_share.h"
+#include "vox.render/shaderlib/functors/wgsl_worldpos_share.h"
 #include "vox.render/shaderlib/wgsl_cache.h"
+#include "vox.render/shadow/wgsl/wgsl_shadow_common.h"
+#include "vox.render/shadow/wgsl/wgsl_shadow_frag.h"
+#include "vox.render/shadow/wgsl/wgsl_shadow_share.h"
 
 namespace vox {
 class WGSLShadowDebug : public WGSLCache {
@@ -37,4 +36,3 @@ private:
 };
 
 }  // namespace vox
-#endif /* wgsl_shadow_debug_hpp */

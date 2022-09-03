@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "primitive_mesh.h"
+#include "vox.render/mesh/primitive_mesh.h"
 
 namespace vox {
 ModelMeshPtr PrimitiveMesh::createSphere(wgpu::Device &device, float radius, size_t segments, bool noLongerAccessible) {

@@ -3,7 +3,8 @@
 //  I am making my contributions/submissions to this project solely in my
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
-#include "render_state.h"
+
+#include "vox.render/shader/state/render_state.h"
 
 namespace vox {
 void RenderState::apply(wgpu::ColorTargetState* colorTargetState,

@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "wireframe_primitive_mesh.h"
+#include "vox.render/mesh/wireframe_primitive_mesh.h"
 
 namespace vox {
 ModelMeshPtr WireframePrimitiveMesh::createCuboidWireFrame(wgpu::Device& device,
@@ -179,7 +179,7 @@ void WireframePrimitiveMesh::_createCircleWireFrame(float radius,
                                                     uint32_t vertexBegin,
                                                     uint32_t vertexCount,
                                                     uint8_t axis,
-                                                    Vector3F shift,
+                                                    const Vector3F& shift,
                                                     std::vector<Vector3F>& positions,
                                                     std::vector<uint32_t>& indices) {
     auto countReciprocal = 1.0 / vertexCount;
