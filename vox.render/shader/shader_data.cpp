@@ -5,12 +5,11 @@
 //  property of any third parties.
 
 #include "shader_data.h"
+
 #include "shader.h"
 
 namespace vox {
-ShaderData::ShaderData(wgpu::Device& device):
-_device(device) {
-}
+ShaderData::ShaderData(wgpu::Device &device) : _device(device) {}
 
 std::optional<Buffer> ShaderData::getData(const std::string &property_name) {
     auto property = Shader::getPropertyByName(property_name);
@@ -21,30 +20,25 @@ std::optional<Buffer> ShaderData::getData(const std::string &property_name) {
     }
 }
 
-std::optional<Buffer> ShaderData::getData(const ShaderProperty &property) {
-    return getData(property.uniqueId);
-}
+std::optional<Buffer> ShaderData::getData(const ShaderProperty &property) { return getData(property.uniqueId); }
 
 std::optional<Buffer> ShaderData::getData(uint32_t uniqueID) {
     auto iter = _shaderBuffers.find(uniqueID);
     if (iter != _shaderBuffers.end()) {
         return iter->second;
     }
-    
+
     auto functorIter = _shaderBufferFunctors.find(uniqueID);
     if (functorIter != _shaderBufferFunctors.end()) {
         return functorIter->second();
     }
-    
+
     return std::nullopt;
 }
 
-const std::unordered_map<uint32_t, Buffer> &ShaderData::shaderBuffers() const {
-    return _shaderBuffers;
-}
+const std::unordered_map<uint32_t, Buffer> &ShaderData::shaderBuffers() const { return _shaderBuffers; }
 
-void ShaderData::setBufferFunctor(const std::string &property_name,
-                                  std::function<Buffer()> functor) {
+void ShaderData::setBufferFunctor(const std::string &property_name, std::function<Buffer()> functor) {
     auto property = Shader::getPropertyByName(property_name);
     if (property.has_value()) {
         setBufferFunctor(property.value(), functor);
@@ -53,15 +47,14 @@ void ShaderData::setBufferFunctor(const std::string &property_name,
     }
 }
 
-void ShaderData::setBufferFunctor(ShaderProperty property,
-                                  std::function<Buffer()> functor) {
+void ShaderData::setBufferFunctor(ShaderProperty property, std::function<Buffer()> functor) {
     _shaderBufferFunctors.insert(std::make_pair(property.uniqueId, functor));
 }
 
-//MARK: - Sampler&&Texture
+// MARK: - Sampler&&Texture
 void ShaderData::setSampledTexture(const std::string &texture_name,
                                    const std::string &sample_name,
-                                   const SampledTexturePtr& value) {
+                                   const SampledTexturePtr &value) {
     // Texture
     {
         auto property = Shader::getPropertyByName(texture_name);
@@ -84,7 +77,7 @@ void ShaderData::setSampledTexture(const std::string &texture_name,
 
 void ShaderData::setSampledTexture(const ShaderProperty &texture_prop,
                                    const ShaderProperty &sample_prop,
-                                   const SampledTexturePtr& value) {
+                                   const SampledTexturePtr &value) {
     _shaderTextures[texture_prop.uniqueId] = value;
     _shaderSamplers[sample_prop.uniqueId] = value;
 }
@@ -107,34 +100,23 @@ std::optional<wgpu::Sampler> ShaderData::getSampler(uint32_t uniqueID) {
     }
 }
 
-//MARK: - Macro
-void ShaderData::enableMacro(const std::string& macroName) {
-    _macroCollection.enableMacro(macroName);
-}
+// MARK: - Macro
+void ShaderData::enableMacro(const std::string &macroName) { _macroCollection.enableMacro(macroName); }
 
-void ShaderData::enableMacro(const std::string& macroName, double value) {
+void ShaderData::enableMacro(const std::string &macroName, double value) {
     _macroCollection.enableMacro(macroName, value);
 }
 
-void ShaderData::disableMacro(const std::string& macroName) {
-    _macroCollection.disableMacro(macroName);
-}
+void ShaderData::disableMacro(const std::string &macroName) { _macroCollection.disableMacro(macroName); }
 
-void ShaderData::enableMacro(MacroName macroName) {
-    _macroCollection.enableMacro(macroName);
-}
+void ShaderData::enableMacro(MacroName macroName) { _macroCollection.enableMacro(macroName); }
 
-void ShaderData::enableMacro(MacroName macroName, double value) {
-    _macroCollection.enableMacro(macroName, value);
-}
+void ShaderData::enableMacro(MacroName macroName, double value) { _macroCollection.enableMacro(macroName, value); }
 
-void ShaderData::disableMacro(MacroName macroName) {
-    _macroCollection.disableMacro(macroName);
-}
+void ShaderData::disableMacro(MacroName macroName) { _macroCollection.disableMacro(macroName); }
 
-void ShaderData::mergeMacro(const ShaderMacroCollection &macros,
-                            ShaderMacroCollection &result) const {
+void ShaderData::mergeMacro(const ShaderMacroCollection &macros, ShaderMacroCollection &result) const {
     ShaderMacroCollection::unionCollection(macros, _macroCollection, result);
 }
 
-}
+}  // namespace vox

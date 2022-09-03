@@ -5,35 +5,23 @@
 //  property of any third parties.
 
 #include "script.h"
+
+#include "components_manager.h"
 #include "entity.h"
 #include "scene.h"
-#include "components_manager.h"
 
 namespace vox {
-std::string Script::name() {
-    return "Script";
-}
+std::string Script::name() { return "Script"; }
 
-Script::Script(Entity *entity) :
-Component(entity) {
-    
-}
+Script::Script(Entity *entity) : Component(entity) {}
 
-Script::~Script() {
-    ComponentsManager::getSingleton().addDestroyComponent(this);
-}
+Script::~Script() { ComponentsManager::getSingleton().addDestroyComponent(this); }
 
-void Script::setIsStarted(bool value) {
-    _started = value;
-}
+void Script::setIsStarted(bool value) { _started = value; }
 
-bool Script::isStarted() {
-    return _started;
-}
+bool Script::isStarted() { return _started; }
 
-void Script::_onAwake() {
-    onAwake();
-}
+void Script::_onAwake() { onAwake(); }
 
 void Script::_onEnable() {
     auto componentsManager = ComponentsManager::getSingletonPtr();
@@ -53,17 +41,11 @@ void Script::_onDisable() {
     onDisable();
 }
 
-//MARK: - Reflection
-void Script::onSerialize(nlohmann::json &data) {
-    
-}
+// MARK: - Reflection
+void Script::onSerialize(nlohmann::json &data) {}
 
-void Script::onDeserialize(nlohmann::json &data) {
-    
-}
+void Script::onDeserialize(nlohmann::json &data) {}
 
-void Script::onInspector(ui::WidgetContainer &p_root) {
-    
-}
+void Script::onInspector(ui::WidgetContainer &p_root) {}
 
-}
+}  // namespace vox

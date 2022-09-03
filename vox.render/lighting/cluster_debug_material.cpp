@@ -7,8 +7,7 @@
 #include "cluster_debug_material.h"
 
 namespace vox {
-ClusterDebugMaterial::ClusterDebugMaterial(wgpu::Device& device):
-BaseMaterial(device, Shader::find("cluster_debug")) {
-}
+ClusterDebugMaterial::ClusterDebugMaterial(wgpu::Device& device)
+    : BaseMaterial(device, Shader::find("cluster_debug")) {}
 
-}
+}  // namespace vox

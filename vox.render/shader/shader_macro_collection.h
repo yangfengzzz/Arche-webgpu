@@ -7,9 +7,10 @@
 #ifndef shader_macro_collection_hpp
 #define shader_macro_collection_hpp
 
-#include <vector>
-#include <string>
 #include <map>
+#include <string>
+#include <vector>
+
 #include "internal_macro_name.h"
 
 namespace vox {
@@ -18,25 +19,26 @@ namespace vox {
  */
 struct ShaderMacroCollection {
     ShaderMacroCollection() = default;
-    
+
     ~ShaderMacroCollection() = default;
-    
+
     /**
      * Union of two macro collection.
      * @param left - input macro collection
      * @param right - input macro collection
      * @param result - union output macro collection
      */
-    static void unionCollection(const ShaderMacroCollection &left, const ShaderMacroCollection &right,
-                                ShaderMacroCollection &result);
-    
+    static void unionCollection(const ShaderMacroCollection& left,
+                                const ShaderMacroCollection& right,
+                                ShaderMacroCollection& result);
+
     size_t hash() const;
-    
+
 public:
     bool contains(const std::string& macro) const;
-    
+
     std::optional<double> macroConstant(const std::string& macro) const;
-    
+
     /**
      * Enable macro.
      * @param macroName - Shader macro
@@ -56,12 +58,12 @@ public:
      * @param macroName - Macro name
      */
     void disableMacro(const std::string& macroName);
-    
+
 public:
     bool contains(MacroName macro) const;
-    
+
     std::optional<double> macroConstant(MacroName macro) const;
-    
+
     /**
      * Enable macro.
      * @param macroName - Shader macro
@@ -81,12 +83,12 @@ public:
      * @param macroName - Macro name
      */
     void disableMacro(MacroName macroName);
-    
-private:    
+
+private:
     std::map<size_t, double> _value{};
     static std::vector<size_t> _internalMacroHashValue;
 };
 
-}
+}  // namespace vox
 
 #endif /* shader_macro_collection_hpp */

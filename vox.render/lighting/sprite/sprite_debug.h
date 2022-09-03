@@ -7,8 +7,8 @@
 #ifndef sprite_debug_hpp
 #define sprite_debug_hpp
 
-#include "script.h"
 #include "mesh/buffer_mesh.h"
+#include "script.h"
 
 namespace vox {
 class SpriteDebug : public Script {
@@ -17,18 +17,18 @@ public:
      * Returns the name of the component
      */
     std::string name() override;
-    
+
     SpriteDebug(Entity *entity);
-    
+
     void onUpdate(float deltaTime) override;
-    
+
 private:
     Entity *_spotEntity{nullptr};
     std::shared_ptr<BufferMesh> _spotLightMesh{nullptr};
-    
+
     Entity *_pointEntity{nullptr};
     std::shared_ptr<BufferMesh> _pointLightMesh{nullptr};
 };
-}
+}  // namespace vox
 
 #endif /* sprite_debug_hpp */

@@ -5,10 +5,10 @@
 //  property of any third parties.
 
 #include "vox.render/shader/glsl_compiler.h"
+
+#include <glslang/Include/ShHandle.h>
 #include <SPIRV/GlslangToSpv.h>
 #include <StandAlone/ResourceLimits.h>
-#include <glslang/Include/ShHandle.h>
-
 
 namespace vox {
 namespace {

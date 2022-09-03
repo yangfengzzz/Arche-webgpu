@@ -15,5 +15,5 @@ public:
     ClusterDebugMaterial(wgpu::Device& device);
 };
 
-}
+}  // namespace vox
 #endif /* cluster_debug_material_hpp */

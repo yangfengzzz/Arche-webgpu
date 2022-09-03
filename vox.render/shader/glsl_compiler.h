@@ -6,9 +6,11 @@
 
 #pragma once
 
+#include <glslang/Public/ShaderLang.h>
+
 #include <string>
 #include <vector>
-#include <glslang/Public/ShaderLang.h>
+
 #include "vox.render/shader/shader_module.h"
 
 namespace vox {

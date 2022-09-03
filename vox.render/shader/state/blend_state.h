@@ -21,24 +21,24 @@ struct BlendState {
     Color blendColor = Color(0, 0, 0, 0);
     /** Whether to use (Alpha-to-Coverage) technology. */
     bool alphaToCoverage = false;
-        
+
     /**
      * Apply the current blend state by comparing with the last blend state.
      */
-    void apply(wgpu::ColorTargetState* colorTargetState,
+    void apply(wgpu::ColorTargetState *colorTargetState,
                wgpu::MultisampleState &multisample,
                wgpu::RenderPassEncoder &encoder) {
         platformApply(colorTargetState, multisample, encoder);
     }
-    
-    void platformApply(wgpu::ColorTargetState* colorTargetState,
+
+    void platformApply(wgpu::ColorTargetState *colorTargetState,
                        wgpu::MultisampleState &multisample,
                        wgpu::RenderPassEncoder &encoder);
-    
+
 private:
     wgpu::BlendState _blendState;
 };
 
-}
+}  // namespace vox
 
 #endif /* blend_state_hpp */

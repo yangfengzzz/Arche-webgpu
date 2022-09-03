@@ -23,15 +23,15 @@ public:
      * @param image Image to decode
      */
     Astc(const Image &image, bool flipY);
-    
+
     /**
      * @brief Decodes ASTC data with an ASTC header
      * @param data ASTC data with header
      */
     Astc(const std::vector<uint8_t> &data, bool flipY);
-    
+
     virtual ~Astc() = default;
-    
+
 private:
     /**
      * @brief Decodes ASTC data
@@ -40,13 +40,13 @@ private:
      * @param data Pointer to ASTC image data
      */
     void decode(BlockDim blockdim, wgpu::Extent3D extent, const uint8_t *data);
-    
+
     /**
      * @brief Initializes ASTC library
      */
     void init();
 };
 
-}        // namespace vox
+}  // namespace vox
 
 #endif /* astc_hpp */

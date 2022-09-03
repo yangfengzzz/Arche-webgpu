@@ -21,6 +21,5 @@ public:
     static void bindMaths(sol::state& luaState);
 };
 
-
-}
+}  // namespace vox
 #endif /* lua_math_binder_hpp */

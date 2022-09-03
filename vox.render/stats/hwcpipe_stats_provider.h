@@ -7,6 +7,7 @@
 #pragma once
 
 #include <hwcpipe.h>
+
 #include "vox.render/stats/stats_provider.h"
 
 namespace vox {

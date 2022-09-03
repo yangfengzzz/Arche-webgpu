@@ -6,10 +6,10 @@
 
 #pragma once
 
+#include <spirv_glsl.hpp>
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include <spirv_glsl.hpp>
 
 #include "vox.render/shader/shader_module.h"
 

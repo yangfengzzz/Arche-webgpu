@@ -13,10 +13,10 @@ namespace vox {
 class Ktx : public Image {
 public:
     Ktx(const std::vector<uint8_t> &data, bool flipY);
-    
+
     virtual ~Ktx() = default;
 };
 
-}        // namespace vox
+}  // namespace vox
 
 #endif /* ktx_image_hpp */

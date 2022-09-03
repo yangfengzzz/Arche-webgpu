@@ -9,11 +9,9 @@
 namespace vox {
 uint32_t ShaderProperty::_propertyNameCounter = 0;
 
-ShaderProperty::ShaderProperty(const std::string &name, ShaderDataGroup group) :
-name(name),
-group(group),
-uniqueId(ShaderProperty::_propertyNameCounter) {
+ShaderProperty::ShaderProperty(const std::string &name, ShaderDataGroup group)
+    : name(name), group(group), uniqueId(ShaderProperty::_propertyNameCounter) {
     ShaderProperty::_propertyNameCounter += 1;
 }
 
-}
+}  // namespace vox

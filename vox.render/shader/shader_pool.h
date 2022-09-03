@@ -13,6 +13,6 @@ public:
     static void init();
 };
 
-}
+}  // namespace vox
 
 #endif /* shader_pool_hpp */

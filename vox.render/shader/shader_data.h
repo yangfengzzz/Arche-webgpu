@@ -7,16 +7,18 @@
 #ifndef shader_data_hpp
 #define shader_data_hpp
 
+#include <webgpu/webgpu_cpp.h>
+
+#include <any>
+#include <unordered_map>
+
+#include "mesh/buffer.h"
+#include "shader.h"
 #include "shader_data_group.h"
 #include "shader_macro_collection.h"
 #include "shader_property.h"
-#include "shader.h"
-#include "mesh/buffer.h"
-#include "texture/sampled_texture.h"
 #include "std_helpers.h"
-#include <any>
-#include <unordered_map>
-#include <webgpu/webgpu_cpp.h>
+#include "texture/sampled_texture.h"
 
 namespace vox {
 /**
@@ -25,23 +27,21 @@ namespace vox {
 class ShaderData {
 public:
     ShaderData(wgpu::Device& device);
-    
-    const std::unordered_map<uint32_t, Buffer> &shaderBuffers() const;
-    
-    std::optional<Buffer> getData(const std::string &property_name);
-    
-    std::optional<Buffer> getData(const ShaderProperty &property);
-    
+
+    const std::unordered_map<uint32_t, Buffer>& shaderBuffers() const;
+
+    std::optional<Buffer> getData(const std::string& property_name);
+
+    std::optional<Buffer> getData(const ShaderProperty& property);
+
     std::optional<Buffer> getData(uint32_t uniqueID);
-    
-    void setBufferFunctor(const std::string &property_name,
-                          std::function<Buffer()> functor);
-    
-    void setBufferFunctor(ShaderProperty property,
-                          std::function<Buffer()> functor);
-    
-    template<typename T>
-    void setData(const std::string &property_name, const T& value) {
+
+    void setBufferFunctor(const std::string& property_name, std::function<Buffer()> functor);
+
+    void setBufferFunctor(ShaderProperty property, std::function<Buffer()> functor);
+
+    template <typename T>
+    void setData(const std::string& property_name, const T& value) {
         auto property = Shader::getPropertyByName(property_name);
         if (property.has_value()) {
             setData(property.value(), value);
@@ -49,68 +49,68 @@ public:
             assert(false && "can't find property");
         }
     }
-    
-    template<typename T>
+
+    template <typename T>
     void setData(ShaderProperty property, const T& value) {
         auto iter = _shaderBuffers.find(property.uniqueId);
         if (iter == _shaderBuffers.end()) {
-            _shaderBuffers.insert(std::make_pair(property.uniqueId,
-                                                 Buffer(_device, sizeof(T),
-                                                        wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst)));
+            _shaderBuffers.insert(std::make_pair(
+                    property.uniqueId,
+                    Buffer(_device, sizeof(T), wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst)));
         }
         iter = _shaderBuffers.find(property.uniqueId);
-        
+
         _device.GetQueue().WriteBuffer(iter->second.handle(), 0, &value, sizeof(T));
     }
-    
-    template<typename T>
+
+    template <typename T>
     void setData(ShaderProperty property, const std::vector<T>& value) {
         auto iter = _shaderBuffers.find(property.uniqueId);
         if (iter == _shaderBuffers.end()) {
-            _shaderBuffers.insert(std::make_pair(property.uniqueId,
-                                                 Buffer(_device, sizeof(T) * value.size(),
-                                                        wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst)));
+            _shaderBuffers.insert(
+                    std::make_pair(property.uniqueId, Buffer(_device, sizeof(T) * value.size(),
+                                                             wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst)));
         }
         iter = _shaderBuffers.find(property.uniqueId);
-        
+
         _device.GetQueue().WriteBuffer(iter->second.handle(), 0, value.data(), sizeof(T) * value.size());
     }
-    
-    template<typename T, size_t N>
+
+    template <typename T, size_t N>
     void setData(ShaderProperty property, const std::array<T, N>& value) {
         auto iter = _shaderBuffers.find(property.uniqueId);
         if (iter == _shaderBuffers.end()) {
-            _shaderBuffers.insert(std::make_pair(property.uniqueId,
-                                                 Buffer(_device, sizeof(T) * N,
-                                                        wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst)));
+            _shaderBuffers.insert(std::make_pair(
+                    property.uniqueId,
+                    Buffer(_device, sizeof(T) * N, wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst)));
         }
         iter = _shaderBuffers.find(property.uniqueId);
-        
+
         _device.GetQueue().WriteBuffer(iter->second.handle(), 0, value.data(), sizeof(T) * N);
     }
-    
+
 public:
-    void setSampledTexture(const std::string &texture_name,
-                           const std::string &sample_name,
+    void setSampledTexture(const std::string& texture_name,
+                           const std::string& sample_name,
                            const SampledTexturePtr& value);
-    
-    void setSampledTexture(const ShaderProperty &texture_prop,
-                           const ShaderProperty &sample_prop,
+
+    void setSampledTexture(const ShaderProperty& texture_prop,
+                           const ShaderProperty& sample_prop,
                            const SampledTexturePtr& value);
-    
+
     std::optional<wgpu::TextureView> getTextureView(uint32_t uniqueID);
-    
+
     std::optional<wgpu::Sampler> getSampler(uint32_t uniqueID);
-    
+
 public:
     /**
      * Enable macro.
      * @param macroName - Shader macro
      */
     void enableMacro(const std::string& macroName);
-    
+
     void enableMacro(MacroName macroName);
-    
+
     /**
      * Enable macro.
      * @remarks Name and value will combine one macro, it's equal the macro of "name value".
@@ -118,29 +118,28 @@ public:
      * @param value - Macro value
      */
     void enableMacro(const std::string& macroName, double value);
-    
+
     void enableMacro(MacroName macroName, double value);
-    
+
     /**
      * Disable macro
      * @param macroName - Macro name
      */
     void disableMacro(const std::string& macroName);
-    
+
     void disableMacro(MacroName macroName);
-    
-    void mergeMacro(const ShaderMacroCollection &macros,
-                    ShaderMacroCollection &result) const;
-    
+
+    void mergeMacro(const ShaderMacroCollection& macros, ShaderMacroCollection& result) const;
+
 private:
     wgpu::Device& _device;
     std::unordered_map<uint32_t, Buffer> _shaderBuffers{};
     std::unordered_map<uint32_t, std::function<Buffer()>> _shaderBufferFunctors{};
     std::unordered_map<uint32_t, SampledTexturePtr> _shaderTextures{};
     std::unordered_map<uint32_t, SampledTexturePtr> _shaderSamplers{};
-    
+
     ShaderMacroCollection _macroCollection;
 };
 
-}
+}  // namespace vox
 #endif /* shader_data_hpp */

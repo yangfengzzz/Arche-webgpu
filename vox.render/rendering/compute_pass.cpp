@@ -5,6 +5,7 @@
 //  property of any third parties.
 
 #include "compute_pass.h"
+
 #include "vox.base/logging.h"
 
 namespace vox {

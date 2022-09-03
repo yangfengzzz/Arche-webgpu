@@ -5,21 +5,17 @@
 //  property of any third parties.
 
 #include "transform.h"
-#include "math_utils.h"
-#include "matrix_utils.h"
+
 #include "entity.h"
+#include "vox.geometry/matrix_utils.h"
+#include "vox.math/math_utils.h"
 
 namespace vox {
-std::string Transform::name() {
-    return "Transform";
-}
+std::string Transform::name() { return "Transform"; }
 
-Transform::Transform(Entity *entity) : Component(entity) {
-}
+Transform::Transform(Entity *entity) : Component(entity) {}
 
-Point3F Transform::position() {
-    return _position;
-}
+Point3F Transform::position() { return _position; }
 
 void Transform::setPosition(const Point3F &value) {
     _position = value;
@@ -54,8 +50,8 @@ void Transform::setWorldPosition(const Point3F &value) {
 Vector3F Transform::rotation() {
     if (_isContainDirtyFlag(TransformFlag::LocalEuler)) {
         _rotation = _rotationQuaternion.toEuler();
-        _rotation *= kRadianToDegree; // radians to degrees
-        
+        _rotation *= kRadianToDegree;  // radians to degrees
+
         _setDirtyFlagFalse(TransformFlag::LocalEuler);
     }
     return _rotation;
@@ -71,7 +67,7 @@ void Transform::setRotation(const Vector3F &value) {
 Vector3F Transform::worldRotation() {
     if (_isContainDirtyFlag(TransformFlag::WorldEuler)) {
         _worldRotation = worldRotationQuaternion().toEuler();
-        _worldRotation *= kRadianToDegree; // Radian to angle
+        _worldRotation *= kRadianToDegree;  // Radian to angle
         _setDirtyFlagFalse(TransformFlag::WorldEuler);
     }
     return _worldRotation;
@@ -79,8 +75,7 @@ Vector3F Transform::worldRotation() {
 
 void Transform::setWorldRotation(const Vector3F &value) {
     _worldRotation = value;
-    _worldRotationQuaternion = QuaternionF::makeRotationEuler(degreesToRadians(value.x),
-                                                              degreesToRadians(value.y),
+    _worldRotationQuaternion = QuaternionF::makeRotationEuler(degreesToRadians(value.x), degreesToRadians(value.y),
                                                               degreesToRadians(value.z));
     setWorldRotationQuaternion(_worldRotationQuaternion);
     _setDirtyFlagFalse(TransformFlag::WorldEuler);
@@ -88,9 +83,8 @@ void Transform::setWorldRotation(const Vector3F &value) {
 
 QuaternionF Transform::rotationQuaternion() {
     if (_isContainDirtyFlag(TransformFlag::LocalQuat)) {
-        _rotationQuaternion = QuaternionF::makeRotationEuler(degreesToRadians(_rotation.x),
-                                                             degreesToRadians(_rotation.y),
-                                                             degreesToRadians(_rotation.z));
+        _rotationQuaternion = QuaternionF::makeRotationEuler(
+                degreesToRadians(_rotation.x), degreesToRadians(_rotation.y), degreesToRadians(_rotation.z));
         _setDirtyFlagFalse(TransformFlag::LocalQuat);
     }
     return _rotationQuaternion;
@@ -129,9 +123,7 @@ void Transform::setWorldRotationQuaternion(const QuaternionF &value) {
     _setDirtyFlagFalse(TransformFlag::WorldQuat);
 }
 
-Vector3F Transform::scale() {
-    return _scale;
-}
+Vector3F Transform::scale() { return _scale; }
 
 void Transform::setScale(const Vector3F &value) {
     _scale = value;
@@ -260,9 +252,7 @@ void Transform::rotate(const Vector3F &rotation, bool relativeToLocal) {
     _rotateXYZ(rotation.x, rotation.y, rotation.z, relativeToLocal);
 }
 
-void Transform::rotate(float x, float y, float z, bool relativeToLocal) {
-    _rotateXYZ(x, y, z, relativeToLocal);
-}
+void Transform::rotate(float x, float y, float z, bool relativeToLocal) { _rotateXYZ(x, y, z, relativeToLocal); }
 
 void Transform::rotateByAxis(const Vector3F &axis, float angle, bool relativeToLocal) {
     const auto rad = angle * kDegreeToRadian;
@@ -283,9 +273,7 @@ void Transform::lookAt(const Point3F &worldPosition, const Vector3F &worldUp) {
     setWorldRotationQuaternion(worldRotationQuaternion);
 }
 
-std::unique_ptr<UpdateFlag> Transform::registerWorldChangeFlag() {
-    return _updateFlagManager.registration();
-}
+std::unique_ptr<UpdateFlag> Transform::registerWorldChangeFlag() { return _updateFlagManager.registration(); }
 
 void Transform::_parentChange() {
     _isParentDirty = true;
@@ -384,17 +372,11 @@ bool Transform::_isContainDirtyFlags(int targetDirtyFlags) {
     return (_dirtyFlag & targetDirtyFlags) == targetDirtyFlags;
 }
 
-bool Transform::_isContainDirtyFlag(int type) {
-    return (_dirtyFlag & type) != 0;
-}
+bool Transform::_isContainDirtyFlag(int type) { return (_dirtyFlag & type) != 0; }
 
-void Transform::_setDirtyFlagTrue(int type) {
-    _dirtyFlag |= type;
-}
+void Transform::_setDirtyFlagTrue(int type) { _dirtyFlag |= type; }
 
-void Transform::_setDirtyFlagFalse(int type) {
-    _dirtyFlag &= ~type;
-}
+void Transform::_setDirtyFlagFalse(int type) { _dirtyFlag &= ~type; }
 
 void Transform::_worldAssociatedChange(int type) {
     _dirtyFlag |= type;
@@ -426,17 +408,11 @@ void Transform::_rotateXYZ(float x, float y, float z, bool relativeToLocal) {
     _rotateByQuat(rotQuat, relativeToLocal);
 }
 
-//MARK: - Reflection
-void Transform::onSerialize(nlohmann::json &data) {
-    
-}
+// MARK: - Reflection
+void Transform::onSerialize(nlohmann::json &data) {}
 
-void Transform::onDeserialize(nlohmann::json &data) {
-    
-}
+void Transform::onDeserialize(nlohmann::json &data) {}
 
-void Transform::onInspector(ui::WidgetContainer &p_root) {
-    
-}
+void Transform::onInspector(ui::WidgetContainer &p_root) {}
 
-}
+}  // namespace vox

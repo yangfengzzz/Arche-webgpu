@@ -138,7 +138,7 @@ void Platform::Update() {
     }
 }
 
-std::unique_ptr<RenderContext> Platform::CreateRenderContext(wgpu::Device& device) {
+std::unique_ptr<RenderContext> Platform::CreateRenderContext(wgpu::Device &device) {
     binding_ = window_->createBackendBinding(device);
     auto extent = window_->GetExtent();
     auto scale = window_->GetContentScaleFactor();

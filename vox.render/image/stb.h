@@ -13,9 +13,9 @@ namespace vox {
 class Stb : public Image {
 public:
     Stb(const std::vector<uint8_t> &data, bool flipY);
-    
+
     virtual ~Stb() = default;
 };
 
-}        // namespace vox
+}  // namespace vox
 #endif /* stb_hpp */

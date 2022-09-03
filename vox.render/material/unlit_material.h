@@ -8,8 +8,8 @@
 #define unlit_material_hpp
 
 #include "base_material.h"
-#include "vox.math/color.h"
 #include "texture/sampled_texture2d.h"
+#include "vox.math/color.h"
 
 namespace vox {
 /**

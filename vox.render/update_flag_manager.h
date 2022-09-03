@@ -9,20 +9,21 @@
 
 #include <memory>
 #include <vector>
+
 #include "update_flag.h"
 
 namespace vox {
 class UpdateFlagManager {
 public:
     std::unique_ptr<UpdateFlag> registration();
-    
+
     void distribute();
-    
+
 private:
     friend class UpdateFlag;
-    
+
     std::vector<UpdateFlag *> _updateFlags;
 };
 
-}        // namespace vox
+}  // namespace vox
 #endif /* updateFlag_manager_hpp */

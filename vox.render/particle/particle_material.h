@@ -8,17 +8,13 @@
 #define particle_material_hpp
 
 #include "material/base_material.h"
-#include "vector3.h"
+#include "vox.math/vector3.h"
 
 namespace vox {
 class ParticleMaterial : public BaseMaterial {
 public:
-    enum class ColorMode : uint32_t {
-        DEFAULT,
-        GRADIENT,
-        kNumColorMode
-    };
-    
+    enum class ColorMode : uint32_t { DEFAULT, GRADIENT, kNumColorMode };
+
     struct ParticleData {
         Vector3F birthGradient;
         float minParticleSize;
@@ -29,41 +25,41 @@ public:
         float debugDraw;
         float _pad;
     };
-    
+
     float minParticleSize() const;
-    
+
     void setMinParticleSize(float size);
-    
+
     float maxParticleSize() const;
-    
+
     void setMaxParticleSize(float size);
-    
+
     ColorMode colorMode() const;
-    
+
     void setColorMode(ColorMode mode);
-    
+
     Vector3F birthGradient() const;
-    
+
     void setBirthGradient(const Vector3F& gradient);
-    
+
     Vector3F deathGradient() const;
-    
+
     void setDeathGradient(const Vector3F& gradient);
-    
+
     float fadeCoefficient() const;
-    
+
     void setFadeCoefficient(float coeff);
-    
+
     bool debugDraw() const;
-    
+
     void setDebugDraw(bool flag);
-    
+
     ParticleMaterial(wgpu::Device& device);
-    
+
 private:
     ParticleData _particleData;
     ShaderProperty _particleDataProp;
 };
 
-}
+}  // namespace vox
 #endif /* particle_material_hpp */

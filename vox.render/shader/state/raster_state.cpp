@@ -16,7 +16,7 @@ void RasterState::platformApply(wgpu::PrimitiveState& primitive,
     } else {
         primitive.frontFace = wgpu::FrontFace::CCW;
     }
-    
+
     if (depthBias != 0 || depthBiasSlopeScale != 0) {
         if (depthStencil) {
             depthStencil->depthBias = depthBias;
@@ -25,4 +25,4 @@ void RasterState::platformApply(wgpu::PrimitiveState& primitive,
         }
     }
 }
-}
+}  // namespace vox

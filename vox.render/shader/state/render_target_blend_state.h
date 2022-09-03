@@ -32,6 +32,6 @@ struct RenderTargetBlendState {
     wgpu::ColorWriteMask colorWriteMask = wgpu::ColorWriteMask::All;
 };
 
-}
+}  // namespace vox
 
 #endif /* render_target_blend_state_h */

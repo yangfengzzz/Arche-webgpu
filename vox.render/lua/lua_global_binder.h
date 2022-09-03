@@ -21,6 +21,5 @@ public:
     static void bindGlobals(sol::state& luaState);
 };
 
-
-}
+}  // namespace vox
 #endif /* lua_global_binder_hpp */

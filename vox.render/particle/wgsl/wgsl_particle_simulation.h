@@ -16,14 +16,14 @@ namespace vox {
 class WGSLParticleSimulation : public WGSLCache {
 public:
     WGSLParticleSimulation();
-    
+
 private:
     void _createShaderSource(size_t hash, const ShaderMacroCollection& macros) override;
-    
+
     WGSLParticleCommon _particleCommon;
     WGSLParticleNoise _particleNoise;
     WGSLParticleSDF _particleSDF;
 };
 
-}
+}  // namespace vox
 #endif /* wgsl_particle_simulation_hpp */

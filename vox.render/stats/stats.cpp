@@ -8,9 +8,9 @@
 
 #include <utility>
 
+#include "vox.base/logging.h"
 #include "vox.render/stats/frame_time_stats_provider.h"
 #include "vox.render/stats/hwcpipe_stats_provider.h"
-#include "vox.base/logging.h"
 
 namespace vox {
 Stats::Stats(RenderContext &render_context, size_t buffer_size)

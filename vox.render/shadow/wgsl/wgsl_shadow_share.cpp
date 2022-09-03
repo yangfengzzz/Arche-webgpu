@@ -7,16 +7,13 @@
 #include "wgsl_shadow_share.h"
 
 namespace vox {
-WGSLShadowShare::WGSLShadowShare(const std::string& outputStructName) :
-_outputStructName(outputStructName) {
-}
+WGSLShadowShare::WGSLShadowShare(const std::string& outputStructName) : _outputStructName(outputStructName) {}
 
-void WGSLShadowShare::operator()(WGSLEncoder& encoder,
-                                 const ShaderMacroCollection& macros, size_t counterIndex) {
+void WGSLShadowShare::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros, size_t counterIndex) {
     if (macros.contains(SHADOW_MAP_COUNT)) {
-        encoder.addInoutType(_outputStructName, WGSLEncoder::getCounterNumber(counterIndex),
-                             "view_pos", UniformType::Vec3f32);
+        encoder.addInoutType(_outputStructName, WGSLEncoder::getCounterNumber(counterIndex), "view_pos",
+                             UniformType::Vec3f32);
     }
 }
 
-}
+}  // namespace vox

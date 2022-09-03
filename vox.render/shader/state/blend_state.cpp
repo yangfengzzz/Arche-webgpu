@@ -7,7 +7,7 @@
 #include "blend_state.h"
 
 namespace vox {
-void BlendState::platformApply(wgpu::ColorTargetState* colorTargetState,
+void BlendState::platformApply(wgpu::ColorTargetState *colorTargetState,
                                wgpu::MultisampleState &multisample,
                                wgpu::RenderPassEncoder &encoder) {
     const auto enabled = targetBlendState.enabled;
@@ -18,7 +18,7 @@ void BlendState::platformApply(wgpu::ColorTargetState* colorTargetState,
     const auto sourceAlphaBlendFactor = targetBlendState.sourceAlphaBlendFactor;
     const auto destinationAlphaBlendFactor = targetBlendState.destinationAlphaBlendFactor;
     const auto colorWriteMask = targetBlendState.colorWriteMask;
-    
+
     if (enabled && colorTargetState) {
         colorTargetState->blend = &_blendState;
     } else {
@@ -26,28 +26,28 @@ void BlendState::platformApply(wgpu::ColorTargetState* colorTargetState,
             colorTargetState->blend = nullptr;
         }
     }
-    
+
     if (enabled) {
         // apply blend factor.
         _blendState.color.srcFactor = sourceColorBlendFactor;
         _blendState.color.dstFactor = destinationColorBlendFactor;
         _blendState.alpha.srcFactor = sourceAlphaBlendFactor;
         _blendState.alpha.dstFactor = destinationAlphaBlendFactor;
-        
+
         // apply blend operation.
         _blendState.color.operation = colorBlendOperation;
         _blendState.alpha.operation = alphaBlendOperation;
-        
+
         // apply blend color.
-        encoder.SetBlendConstant(reinterpret_cast<wgpu::Color*>(&blendColor));
-        
+        encoder.SetBlendConstant(reinterpret_cast<wgpu::Color *>(&blendColor));
+
         // apply color mask.
         if (colorTargetState) {
             colorTargetState->writeMask = colorWriteMask;
         }
     }
-    
+
     multisample.alphaToCoverageEnabled = alphaToCoverage;
 }
 
-}
+}  // namespace vox

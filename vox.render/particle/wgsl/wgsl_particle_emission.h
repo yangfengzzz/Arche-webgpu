@@ -14,12 +14,12 @@ namespace vox {
 class WGSLParticleEmission : public WGSLCache {
 public:
     WGSLParticleEmission();
-    
+
 private:
     void _createShaderSource(size_t hash, const ShaderMacroCollection& macros) override;
-    
+
     WGSLParticleCommon _particleCommon;
 };
 
-}
+}  // namespace vox
 #endif /* wgsl_particle_emission_hpp */

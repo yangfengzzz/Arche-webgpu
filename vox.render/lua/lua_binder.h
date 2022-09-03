@@ -21,5 +21,5 @@ public:
     static void callBinders(sol::state& luaState);
 };
 
-}
+}  // namespace vox
 #endif /* lua_binder_hpp */

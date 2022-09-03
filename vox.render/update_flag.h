@@ -18,15 +18,15 @@ class UpdateFlagManager;
 class UpdateFlag {
 public:
     bool flag = true;
-    
+
     UpdateFlag(UpdateFlagManager *_flags);
-    
+
     ~UpdateFlag();
-    
+
 private:
     UpdateFlagManager *_flags{nullptr};
 };
 
-}        // namespace vox
+}  // namespace vox
 
 #endif /* updateFlag_hpp */

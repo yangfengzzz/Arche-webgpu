@@ -7,7 +7,7 @@
 #ifndef spherical_hpp
 #define spherical_hpp
 
-#include "vector3.h"
+#include "vox.math/vector3.h"
 
 namespace vox {
 namespace control {
@@ -15,26 +15,26 @@ namespace control {
 class Spherical {
 public:
     Spherical(float radius = 1.0, float phi = 0, float theta = 0);
-    
+
     void set(float radius, float phi, float theta);
-    
+
     void makeSafe();
-    
+
     void setFromVec3(const Vector3F &v3);
-    
+
     void setToVec3(Vector3F &v3);
-    
+
 private:
     friend class OrbitControl;
-    
+
     friend class FreeControl;
-    
+
     float _radius;
     float _phi;
     float _theta;
 };
 
-}
-}
+}  // namespace control
+}  // namespace vox
 
 #endif /* spherical_hpp */

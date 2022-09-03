@@ -17,8 +17,8 @@ void ButtonImage::DrawImpl() {
     ImVec4 bg = Converter::ToImVec4(background_);
     ImVec4 tn = Converter::ToImVec4(tint_);
 
-    if (ImGui::ImageButton((ImTextureID) textureID.Get(), Converter::ToImVec2(size_),
-                           ImVec2(0.f, 0.f), ImVec2(1.f, 1.f), -1, bg, tn))
+    if (ImGui::ImageButton((ImTextureID)textureID.Get(), Converter::ToImVec2(size_), ImVec2(0.f, 0.f), ImVec2(1.f, 1.f),
+                           -1, bg, tn))
         clicked_event_.Invoke();
 }
 

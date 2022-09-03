@@ -7,6 +7,7 @@
 #pragma once
 
 #include <webgpu/webgpu_cpp.h>
+
 #include "vox.math/color.h"
 #include "vox.math/vector2.h"
 #include "vox.render/ui/widgets/buttons/button.h"
@@ -18,7 +19,7 @@ namespace vox::ui {
 class ButtonImage : public Button {
 public:
     ButtonImage(wgpu::TextureView p_textureID, const Vector2F &p_size);
-    
+
 protected:
     void DrawImpl() override;
 

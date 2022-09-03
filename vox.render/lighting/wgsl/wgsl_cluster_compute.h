@@ -7,69 +7,71 @@
 #ifndef wgsl_cluster_compute_hpp
 #define wgsl_cluster_compute_hpp
 
-#include "wgsl_cluster_common.h"
-#include "shaderlib/wgsl_cache.h"
 #include "shaderlib/functors/wgsl_light_frag_define.h"
+#include "shaderlib/wgsl_cache.h"
+#include "wgsl_cluster_common.h"
 
 namespace vox {
-//MARK: - WGSLTileFunctions
+// MARK: - WGSLTileFunctions
 class WGSLTileFunctions {
 public:
     WGSLTileFunctions(const std::array<uint32_t, 3>& tileCount);
-    
+
     void operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros);
-    
+
 private:
     std::array<uint32_t, 3> _tileCount{};
 };
 
-//MARK: - WGSLClusterStructs
+// MARK: - WGSLClusterStructs
 class WGSLClusterStructs {
 public:
     WGSLClusterStructs(uint32_t totalTiles);
-    
+
     void operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros);
-    
+
 private:
     uint32_t _totalTiles;
 };
 
-//MARK: - WGSLClusterLightsStructs
+// MARK: - WGSLClusterLightsStructs
 class WGSLClusterLightsStructs {
 public:
     WGSLClusterLightsStructs(uint32_t totalTiles, uint32_t maxLightsPerCluster);
-    
+
     void operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros);
-    
+
 private:
     uint32_t _totalTiles;
     uint32_t _maxLightsPerCluster;
 };
 
-//MARK: - WGSLClusterBoundsSource
+// MARK: - WGSLClusterBoundsSource
 class WGSLClusterBoundsSource : public WGSLCache {
 public:
-    WGSLClusterBoundsSource(const std::array<uint32_t, 3>& tileCount, uint32_t maxLightsPerCluster,
+    WGSLClusterBoundsSource(const std::array<uint32_t, 3>& tileCount,
+                            uint32_t maxLightsPerCluster,
                             const std::array<uint32_t, 3>& workgroupSize);
-    
+
     void _createShaderSource(size_t hash, const ShaderMacroCollection& macros) override;
-        
+
 private:
     std::array<uint32_t, 3> _tileCount{};
     std::array<uint32_t, 3> _workgroupSize{};
-    
+
     WGSLForwardPlusUniforms _forwardPlusUniforms;
     WGSLClusterStructs _clusterStructs;
 };
 
-//MARK: - WGSLClusterLightsSource
+// MARK: - WGSLClusterLightsSource
 class WGSLClusterLightsSource : public WGSLCache {
 public:
-    WGSLClusterLightsSource(const std::array<uint32_t, 3>& tileCount, uint32_t maxLightsPerCluster,
+    WGSLClusterLightsSource(const std::array<uint32_t, 3>& tileCount,
+                            uint32_t maxLightsPerCluster,
                             const std::array<uint32_t, 3>& workgroupSize);
-    
+
     void _createShaderSource(size_t hash, const ShaderMacroCollection& macros) override;
-        
+
 private:
     std::array<uint32_t, 3> _tileCount{};
     std::array<uint32_t, 3> _workgroupSize{};
@@ -82,5 +84,5 @@ private:
     WGSLTileFunctions _tileFunctions;
 };
 
-}
+}  // namespace vox
 #endif /* wgsl_cluster_compute_hpp */

@@ -8,10 +8,10 @@
 #define behaviour_inl_h
 
 #include "behaviour.h"
-#include <glog/logging.h>
+#include "vox.base/logging.h"
 
 namespace vox {
-template<typename ...Args>
+template <typename... Args>
 inline void Behaviour::luaCall(const std::string &functionName, Args &&...args) {
     if (_object.valid()) {
         if (_object[functionName].valid()) {
@@ -19,11 +19,11 @@ inline void Behaviour::luaCall(const std::string &functionName, Args &&...args) 
             auto pfrResult = pfr.call(_object, std::forward<Args>(args)...);
             if (!pfrResult.valid()) {
                 sol::error err = pfrResult;
-                LOG(ERROR) << err.what() << std::endl;;
+                LOGE(err.what())
             }
         }
     }
 }
 
-}
+}  // namespace vox
 #endif /* behaviour_inl_h */

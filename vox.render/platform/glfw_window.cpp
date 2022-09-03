@@ -13,6 +13,7 @@
 #include <GLFW/glfw3.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/spdlog.h>
+
 #include "vox.render/platform/platform.h"
 
 namespace vox {
@@ -275,23 +276,23 @@ GlfwWindow::GlfwWindow(Platform *platform, const Window::Properties &properties)
 
 GlfwWindow::~GlfwWindow() { glfwTerminate(); }
 
-std::unique_ptr<BackendBinding> GlfwWindow::createBackendBinding(wgpu::Device& device) {
-    // Default to D3D12, Metal, Vulkan, OpenGL in that order as D3D12 and Metal are the preferred on
-    // their respective platforms, and Vulkan is preferred to OpenGL
-    #if defined(DAWN_ENABLE_BACKEND_D3D12)
+std::unique_ptr<BackendBinding> GlfwWindow::createBackendBinding(wgpu::Device &device) {
+// Default to D3D12, Metal, Vulkan, OpenGL in that order as D3D12 and Metal are the preferred on
+// their respective platforms, and Vulkan is preferred to OpenGL
+#if defined(DAWN_ENABLE_BACKEND_D3D12)
     static wgpu::BackendType backendType = wgpu::BackendType::D3D12;
-    #elif defined(DAWN_ENABLE_BACKEND_METAL)
+#elif defined(DAWN_ENABLE_BACKEND_METAL)
     static wgpu::BackendType backendType = wgpu::BackendType::Metal;
-    #elif defined(DAWN_ENABLE_BACKEND_VULKAN)
+#elif defined(DAWN_ENABLE_BACKEND_VULKAN)
     static wgpu::BackendType backendType = wgpu::BackendType::Vulkan;
-    #elif defined(DAWN_ENABLE_BACKEND_OPENGLES)
+#elif defined(DAWN_ENABLE_BACKEND_OPENGLES)
     static wgpu::BackendType backendType = wgpu::BackendType::OpenGLES;
-    #elif defined(DAWN_ENABLE_BACKEND_DESKTOP_GL)
+#elif defined(DAWN_ENABLE_BACKEND_DESKTOP_GL)
     static wgpu::BackendType backendType = wgpu::BackendType::OpenGL;
-    #else
-    #    error
-    #endif
-    
+#else
+#error
+#endif
+
     return createBinding(backendType, handle_, device);
 }
 

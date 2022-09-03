@@ -20,13 +20,11 @@ struct DepthState {
     bool writeEnabled = true;
     /** Depth comparison function. */
     wgpu::CompareFunction compareFunction = wgpu::CompareFunction::Less;
-    
-    void apply(wgpu::DepthStencilState *depthStencil) {
-        platformApply(depthStencil);
-    }
-    
+
+    void apply(wgpu::DepthStencilState *depthStencil) { platformApply(depthStencil); }
+
     void platformApply(wgpu::DepthStencilState *depthStencil);
 };
 
-}
+}  // namespace vox
 #endif /* depth_state_hpp */

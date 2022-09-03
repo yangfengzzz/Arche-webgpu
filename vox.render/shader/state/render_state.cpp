@@ -9,7 +9,7 @@ namespace vox {
 void RenderState::apply(wgpu::ColorTargetState* colorTargetState,
                         wgpu::DepthStencilState* depthStencil,
                         wgpu::RenderPipelineDescriptor& pipelineDescriptor,
-                        wgpu::RenderPassEncoder &encoder,
+                        wgpu::RenderPassEncoder& encoder,
                         bool frontFaceInvert) {
     blendState.apply(colorTargetState, pipelineDescriptor.multisample, encoder);
     depthState.apply(depthStencil);
@@ -17,4 +17,4 @@ void RenderState::apply(wgpu::ColorTargetState* colorTargetState,
     rasterState.apply(pipelineDescriptor.primitive, depthStencil, frontFaceInvert);
 }
 
-}
+}  // namespace vox

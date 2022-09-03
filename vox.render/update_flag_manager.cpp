@@ -7,9 +7,7 @@
 #include "update_flag_manager.h"
 
 namespace vox {
-std::unique_ptr<UpdateFlag> UpdateFlagManager::registration() {
-    return std::make_unique<UpdateFlag>(this);
-}
+std::unique_ptr<UpdateFlag> UpdateFlagManager::registration() { return std::make_unique<UpdateFlag>(this); }
 
 void UpdateFlagManager::distribute() {
     for (size_t i = 0; i < _updateFlags.size(); i++) {
@@ -17,4 +15,4 @@ void UpdateFlagManager::distribute() {
     }
 }
 
-}        // namespace vox
+}  // namespace vox

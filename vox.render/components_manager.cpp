@@ -5,21 +5,20 @@
 //  property of any third parties.
 
 #include "components_manager.h"
-#include "script.h"
-#include "renderer.h"
-#include "entity.h"
+
 #include "camera.h"
+#include "entity.h"
+#include "renderer.h"
 #include "scene_animator.h"
-#include <glog/logging.h>
+#include "script.h"
+#include "vox.base/logging.h"
 
 namespace vox {
-ComponentsManager *ComponentsManager::getSingletonPtr(void) {
-    return msSingleton;
-}
+ComponentsManager *ComponentsManager::getSingletonPtr() { return ms_singleton; }
 
-ComponentsManager &ComponentsManager::getSingleton(void) {
-    assert(msSingleton);
-    return (*msSingleton);
+ComponentsManager &ComponentsManager::getSingleton() {
+    assert(ms_singleton);
+    return (*ms_singleton);
 }
 
 void ComponentsManager::addOnStartScript(Script *script) {
@@ -27,7 +26,7 @@ void ComponentsManager::addOnStartScript(Script *script) {
     if (iter == _onStartScripts.end()) {
         _onStartScripts.push_back(script);
     } else {
-        LOG(ERROR) << "Script already attached." << std::endl;;
+        LOGE("Script already attached.")
     }
 }
 
@@ -43,7 +42,7 @@ void ComponentsManager::addOnUpdateScript(Script *script) {
     if (iter == _onUpdateScripts.end()) {
         _onUpdateScripts.push_back(script);
     } else {
-        LOG(ERROR) << "Script already attached." << std::endl;;
+        LOGE("Script already attached.")
     }
 }
 
@@ -54,9 +53,7 @@ void ComponentsManager::removeOnUpdateScript(Script *script) {
     }
 }
 
-void ComponentsManager::addDestroyComponent(Script *component) {
-    _destroyComponents.push_back(component);
-}
+void ComponentsManager::addDestroyComponent(Script *component) { _destroyComponents.push_back(component); }
 
 void ComponentsManager::callComponentDestroy() {
     if (_destroyComponents.size() > 0) {
@@ -106,8 +103,10 @@ void ComponentsManager::callScriptInputEvent(const InputEvent &inputEvent) {
     }
 }
 
-void ComponentsManager::callScriptResize(uint32_t win_width, uint32_t win_height,
-                                         uint32_t fb_width, uint32_t fb_height) {
+void ComponentsManager::callScriptResize(uint32_t win_width,
+                                         uint32_t win_height,
+                                         uint32_t fb_width,
+                                         uint32_t fb_height) {
     for (size_t i = 0; i < _onUpdateScripts.size(); i++) {
         const auto &element = _onUpdateScripts[i];
         if (element->isStarted()) {
@@ -116,13 +115,13 @@ void ComponentsManager::callScriptResize(uint32_t win_width, uint32_t win_height
     }
 }
 
-//MARK: - Renderer
+// MARK: - Renderer
 void ComponentsManager::addRenderer(Renderer *renderer) {
     auto iter = std::find(_renderers.begin(), _renderers.end(), renderer);
     if (iter == _renderers.end()) {
         _renderers.push_back(renderer);
     } else {
-        LOG(ERROR) << "Renderer already attached." << std::endl;;
+        LOGE("Renderer already attached.")
     }
 }
 
@@ -145,12 +144,12 @@ void ComponentsManager::callRender(Camera *camera,
                                    std::vector<RenderElement> &transparentQueue) {
     for (size_t i = 0; i < _renderers.size(); i++) {
         const auto &element = _renderers[i];
-        
+
         // filter by camera culling mask.
         if (!(camera->cullingMask & element->_entity->layer)) {
             continue;
         }
-        
+
         // filter by camera frustum.
         if (camera->enableFrustumCulling) {
             element->isCulled = !camera->frustum().intersectsBox(element->bounds());
@@ -158,7 +157,7 @@ void ComponentsManager::callRender(Camera *camera,
                 continue;
             }
         }
-        
+
         const auto &transform = camera->entity()->transform;
         const auto position = transform->worldPosition();
         auto center = element->bounds().midPoint();
@@ -169,7 +168,7 @@ void ComponentsManager::callRender(Camera *camera,
         } else {
             element->setDistanceForSort(center.distanceSquaredTo(position));
         }
-        
+
         element->_render(opaqueQueue, alphaTestQueue, transparentQueue);
     }
 }
@@ -187,7 +186,7 @@ void ComponentsManager::callRender(const BoundingFrustum &frustrum,
     }
 }
 
-//MARK: - Camera
+// MARK: - Camera
 void ComponentsManager::callCameraOnBeginRender(Camera *camera) {
     const auto &camComps = camera->entity()->scripts();
     for (size_t i = 0; i < camComps.size(); i++) {
@@ -211,13 +210,13 @@ void ComponentsManager::putActiveChangedTempList(std::vector<Component *> &compo
     _componentsContainerPool.push_back(componentContainer);
 }
 
-//MARK: - Animation
+// MARK: - Animation
 void ComponentsManager::addOnUpdateSceneAnimators(SceneAnimator *animator) {
     auto iter = std::find(_onUpdateSceneAnimators.begin(), _onUpdateSceneAnimators.end(), animator);
     if (iter == _onUpdateSceneAnimators.end()) {
         _onUpdateSceneAnimators.push_back(animator);
     } else {
-        LOG(ERROR) << "SceneAnimator already attached." << std::endl;;
+        LOGE("SceneAnimator already attached.")
     }
 }
 
@@ -235,4 +234,4 @@ void ComponentsManager::callSceneAnimatorUpdate(float deltaTime) {
     }
 }
 
-}        // namespace vox
+}  // namespace vox

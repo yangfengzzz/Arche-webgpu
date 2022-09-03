@@ -6,9 +6,10 @@
 
 #pragma once
 
+#include <webgpu/webgpu_cpp.h>
+
 #include "vox.render/shader/shader_source.h"
 #include "vox.render/shader/shader_variant.h"
-#include <webgpu/webgpu_cpp.h>
 
 #if defined(VK_USE_PLATFORM_XLIB_KHR)
 #undef None

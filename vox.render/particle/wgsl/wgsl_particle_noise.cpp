@@ -5,15 +5,16 @@
 //  property of any third parties.
 
 #include "wgsl_particle_noise.h"
+
 #include "filesystem.h"
 
 namespace vox {
 void WGSLParticleNoise::operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros) {
     std::string particlePerlin = fs::readShader("particle/particle_perlin.wgsl");
     encoder.addFunction(particlePerlin);
-    
+
     std::string particleCurlNoise = fs::readShader("particle/particle_curl_noise.wgsl");
     encoder.addFunction(particleCurlNoise);
 }
 
-}
+}  // namespace vox

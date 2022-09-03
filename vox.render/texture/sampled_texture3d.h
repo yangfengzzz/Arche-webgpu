@@ -21,16 +21,16 @@ public:
      * @param mipmap - Whether to use multi-level texture
      */
     SampledTexture3D(wgpu::Device& device,
-                       uint32_t width,
-                       uint32_t height,
-                       uint32_t depthOrArrayLayers = 1,
-                       wgpu::TextureFormat format = wgpu::TextureFormat::RGBA8Unorm,
-                       wgpu::TextureUsage usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst,
-                       bool mipmap = true);
-    
+                     uint32_t width,
+                     uint32_t height,
+                     uint32_t depthOrArrayLayers = 1,
+                     wgpu::TextureFormat format = wgpu::TextureFormat::RGBA8Unorm,
+                     wgpu::TextureUsage usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst,
+                     bool mipmap = true);
+
     wgpu::TextureView textureView() override;
 };
 using SampledTexture3DPtr = std::shared_ptr<SampledTexture3D>;
 
-}
+}  // namespace vox
 #endif /* sampled_texture3d_hpp */

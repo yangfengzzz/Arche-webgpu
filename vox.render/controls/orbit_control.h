@@ -8,10 +8,10 @@
 #define orbit_control_hpp
 
 #include "../script.h"
-#include "vector3.h"
-#include "vector2.h"
-#include "matrix4x4.h"
 #include "spherical.h"
+#include "vox.math/matrix4x4.h"
+#include "vox.math/vector2.h"
+#include "vox.math/vector3.h"
 
 namespace vox {
 namespace control {
@@ -24,45 +24,24 @@ public:
      * Returns the name of the component
      */
     std::string name() override;
-    
+
     struct STATE {
-        enum Enum {
-            NONE = -1,
-            ROTATE = 0,
-            ZOOM = 1,
-            PAN = 2,
-            TOUCH_ROTATE = 3,
-            TOUCH_ZOOM = 4,
-            TOUCH_PAN = 5
-        };
+        enum Enum { NONE = -1, ROTATE = 0, ZOOM = 1, PAN = 2, TOUCH_ROTATE = 3, TOUCH_ZOOM = 4, TOUCH_PAN = 5 };
     };
-    
+
     struct Keys {
-        enum Enum {
-            LEFT = 37,
-            UP = 38,
-            RIGHT = 39,
-            BOTTOM = 40
-        };
+        enum Enum { LEFT = 37, UP = 38, RIGHT = 39, BOTTOM = 40 };
     };
-    
+
     // Control keys.
     struct MouseButtons {
-        enum Enum {
-            ORBIT = 0,
-            ZOOM = 1,
-            PAN = 2
-        };
+        enum Enum { ORBIT = 0, ZOOM = 1, PAN = 2 };
     };
-    
+
     struct TouchFingers {
-        enum Enum {
-            ORBIT = 1,
-            ZOOM = 2,
-            PAN = 3
-        };
+        enum Enum { ORBIT = 1, ZOOM = 2, PAN = 3 };
     };
-        
+
     float fov = 45;
     // Target position.
     Point3F target = Point3F();
@@ -84,7 +63,7 @@ public:
      * Maximum zoom speed, the default is positive infinity.
      */
     float maxZoom = std::numeric_limits<float>::infinity();
-    
+
     /**
      * Whether to enable camera damping, the default is true.
      */
@@ -147,186 +126,185 @@ public:
     bool autoRotate = false;
     /** The radian of automatic rotation per second. */
     float autoRotateSpeed = M_PI;
-    
+
 public:
     explicit OrbitControl(Entity *entity);
-    
+
     void onDisable() override;
-    
+
     void onEnable() override;
-    
+
     void onDestroy() override;
-    
+
     void onUpdate(float dtime) override;
-    
+
     void inputEvent(const InputEvent &inputEvent) override;
-    
-    void resize(uint32_t win_width, uint32_t win_height,
-                uint32_t fb_width, uint32_t fb_height) override;
-    
+
+    void resize(uint32_t win_width, uint32_t win_height, uint32_t fb_width, uint32_t fb_height) override;
+
 public:
     /**
      * Get the radian of automatic rotation.
      */
     float autoRotationAngle(float dtime);
-    
+
     float zoomScale();
-    
+
     /**
      * Rotate to the left by a certain radian.
      * @param radian - Radian value of rotation
      */
     void rotateLeft(float radian);
-    
+
     /**
      * Rotate to the right by a certain radian.
      * @param radian - Radian value of rotation
      */
     void rotateUp(float radian);
-    
+
     /**
      * Pan left.
      */
     void panLeft(float distance, const Matrix4x4F &worldMatrix);
-    
+
     /**
      * Pan right.
      */
     void panUp(float distance, const Matrix4x4F &worldMatrix);
-    
+
     /**
      * Pan.
      * @param deltaX - The amount of translation from the screen distance in the x direction
      * @param deltaY - The amount of translation from the screen distance in the y direction
      */
     void pan(float deltaX, float deltaY);
-    
+
     /**
      * Zoom in.
      */
     void zoomIn(float zoomScale);
-    
+
     /**
      * Zoom out.
      */
     void zoomOut(float zoomScale);
-    
+
 public:
     /**
      * Rotation parameter update on mouse click.
      */
     void handleMouseDownRotate(double xpos, double ypos);
-    
+
     /**
      * Zoom parameter update on mouse click.
      */
     void handleMouseDownZoom(double xpos, double ypos);
-    
+
     /**
      * Pan parameter update on mouse click.
      */
     void handleMouseDownPan(double xpos, double ypos);
-    
+
     /**
      * Rotation parameter update when the mouse moves.
      */
     void handleMouseMoveRotate(double xpos, double ypos);
-    
+
     /**
      * Zoom parameters update when the mouse moves.
      */
     void handleMouseMoveZoom(double xpos, double ypos);
-    
+
     /**
      * Pan parameters update when the mouse moves.
      */
     void handleMouseMovePan(double xpos, double ypos);
-    
+
     /**
      * Zoom parameter update when the mouse wheel is scrolled.
      */
     void handleMouseWheel(double xoffset, double yoffset);
-    
+
     /**
      * Total handling of mouse down events.
      */
     void onMouseDown(MouseButton button, double xpos, double ypos);
-    
+
     /**
      * Total handling of mouse movement events.
      */
     void onMouseMove(double xpos, double ypos);
-    
+
     /**
      * Total handling of mouse up events.
      */
     void onMouseUp();
-    
+
     /**
      * Total handling of mouse wheel events.
      */
     void onMouseWheel(double xoffset, double yoffset);
-    
+
 public:
     /**
      * Pan parameter update when keyboard is pressed.
      */
     void handleKeyDown(KeyCode key);
-    
+
     /**
      * Total handling of keyboard down events.
      */
     void onKeyDown(KeyCode key);
-    
+
 public:
     /**
      * Rotation parameter update when touch is dropped.
      */
     void handleTouchStartRotate();
-    
+
     /**
      * Zoom parameter update when touch down.
      */
     void handleTouchStartZoom();
-    
+
     /**
      * Update the translation parameter when touch down.
      */
     void handleTouchStartPan();
-    
+
     /**
      * Rotation parameter update when touch to move.
      */
     void handleTouchMoveRotate();
-    
+
     /**
      * Zoom parameter update when touch to move.
      */
     void handleTouchMoveZoom();
-    
+
     /**
      * Pan parameter update when touch moves.
      */
     void handleTouchMovePan();
-    
+
     /**
      * Total handling of touch start events.
      */
     void onTouchStart();
-    
+
     /**
      * Total handling of touch movement events.
      */
     void onTouchMove();
-    
+
     /**
      * Total handling of touch end events.
      */
     void onTouchEnd();
-    
+
 private:
-    Entity* _cameraEntity;
-    
+    Entity *_cameraEntity;
+
     Point3F _position;
     Vector3F _offset;
     Spherical _spherical;
@@ -347,14 +325,14 @@ private:
     Vector2F _zoomStart;
     Vector2F _zoomEnd;
     Vector2F _zoomDelta;
-    
+
     bool _enableEvent = true;
     bool _enableMove = false;
     uint32_t _width = 1000;
     uint32_t _height = 1000;
 };
 
-}
-}
+}  // namespace control
+}  // namespace vox
 
 #endif /* orbit_control_hpp */

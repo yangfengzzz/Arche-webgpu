@@ -8,8 +8,8 @@
 #define pbr_base_material_hpp
 
 #include "base_material.h"
-#include "vox.math/color.h"
 #include "texture/sampled_texture2d.h"
+#include "vox.math/color.h"
 #include "vox.math/vector4.h"
 
 namespace vox {

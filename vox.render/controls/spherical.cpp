@@ -5,15 +5,10 @@
 //  property of any third parties.
 
 #include "spherical.h"
-#include "constants.h"
 
 namespace vox {
 namespace control {
-Spherical::Spherical(float radius, float phi, float theta) :
-_radius(radius),
-_phi(phi),
-_theta(theta) {
-}
+Spherical::Spherical(float radius, float phi, float theta) : _radius(radius), _phi(phi), _theta(theta) {}
 
 void Spherical::set(float radius, float phi, float theta) {
     _radius = radius;
@@ -21,9 +16,7 @@ void Spherical::set(float radius, float phi, float theta) {
     _theta = theta;
 }
 
-void Spherical::makeSafe() {
-    _phi = clamp<float>(_phi, kEpsilonF, M_PI - kEpsilonF);
-}
+void Spherical::makeSafe() { _phi = clamp<float>(_phi, kEpsilonF, M_PI - kEpsilonF); }
 
 void Spherical::setFromVec3(const Vector3F &v3) {
     _radius = v3.length();
@@ -38,11 +31,11 @@ void Spherical::setFromVec3(const Vector3F &v3) {
 
 void Spherical::setToVec3(Vector3F &v3) {
     const auto sinPhiRadius = std::sin(_phi) * _radius;
-    
+
     v3.x = sinPhiRadius * std::sin(_theta);
     v3.y = std::cos(_phi) * _radius;
     v3.z = sinPhiRadius * std::cos(_theta);
 }
 
-}
-}
+}  // namespace control
+}  // namespace vox

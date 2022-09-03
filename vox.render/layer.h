@@ -82,6 +82,6 @@ enum Layer {
     Nothing = 0x0
 };
 
-}        // namespace vox
+}  // namespace vox
 
 #endif /* layer_h */

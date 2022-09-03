@@ -5,8 +5,10 @@
 //  property of any third parties.
 
 #include "wgsl_shadow_frag.h"
-#include "vox.render/shaderlib/wgsl.h"
+
 #include <spdlog/fmt/fmt.h>
+
+#include "vox.render/shaderlib/wgsl.h"
 
 namespace vox {
 WGSLShadowFrag::WGSLShadowFrag() {}

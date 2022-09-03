@@ -5,14 +5,15 @@
 //  property of any third parties.
 
 #include "shadow_debug_material.h"
+
 #include "shaderlib/wgsl_blinn_phong.h"
 #include "shadow/wgsl/wgsl_shadow_debug.h"
 
 namespace vox {
-ShadowDebugMaterial::ShadowDebugMaterial(wgpu::Device& device):
-BaseMaterial(device, Shader::create("shadow_debug_material",
-                                    std::make_unique<WGSLBlinnPhongVertex>(),
-                                    std::make_unique<WGSLShadowDebug>())) {
-}
+ShadowDebugMaterial::ShadowDebugMaterial(wgpu::Device& device)
+    : BaseMaterial(device,
+                   Shader::create("shadow_debug_material",
+                                  std::make_unique<WGSLBlinnPhongVertex>(),
+                                  std::make_unique<WGSLShadowDebug>())) {}
 
-}
+}  // namespace vox

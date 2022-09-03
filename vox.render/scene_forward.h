@@ -72,6 +72,6 @@ class SpotLight;
 
 class DirectLight;
 
-}
+}  // namespace vox
 
 #endif /* scene_forward_h */

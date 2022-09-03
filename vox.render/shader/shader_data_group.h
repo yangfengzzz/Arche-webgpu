@@ -20,11 +20,11 @@ enum class ShaderDataGroup {
     Renderer,
     /** material group. */
     Material,
-    
+
     /** compute group. */
     Compute
 };
 
-}
+}  // namespace vox
 
 #endif /* shaderData_group_h */

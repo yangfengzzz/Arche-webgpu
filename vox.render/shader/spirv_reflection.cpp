@@ -5,6 +5,7 @@
 //  property of any third parties.
 
 #include "vox.render/shader/spirv_reflection.h"
+
 #include "vox.base/logging.h"
 
 namespace vox {

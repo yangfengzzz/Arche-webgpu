@@ -23,9 +23,9 @@ public:
      * @parma p_size p_size
      */
     Image(wgpu::TextureView p_textureID, const Vector2F &p_size);
-    
+
     void SetTextureView(wgpu::TextureView p_textureID);
-    
+
 protected:
     void DrawImpl() override;
 

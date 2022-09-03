@@ -19,18 +19,18 @@ enum MacroName {
     HAS_NORMAL,
     HAS_TANGENT,
     HAS_VERTEXCOLOR,
-    
+
     // Blend Shape
     HAS_BLENDSHAPE,
     HAS_BLENDSHAPE_TEXTURE,
     HAS_BLENDSHAPE_NORMAL,
     HAS_BLENDSHAPE_TANGENT,
-    
+
     // Skin
     HAS_SKIN,
     HAS_JOINT_TEXTURE,
     JOINTS_COUNT,
-    
+
     // Material
     NEED_ALPHA_CUTOFF,
     NEED_WORLDPOS,
@@ -46,24 +46,24 @@ enum MacroName {
     HAS_OCCLUSIONMAP,
     HAS_SPECULARGLOSSINESSMAP,
     HAS_METALROUGHNESSMAP,
-    
+
     // Light
     DIRECT_LIGHT_COUNT,
     POINT_LIGHT_COUNT,
     SPOT_LIGHT_COUNT,
-    
+
     // Enviroment
     HAS_SH,
     HAS_SPECULAR_ENV,
     HAS_DIFFUSE_ENV,
-    
+
     // Particle Render
     NEED_PARTICLE_SCATTERING,
     NEED_PARTICLE_VECTOR_FIELD,
     NEED_PARTICLE_CURL_NOISE,
     NEED_PARTICLE_VELOCITY_CONTROL,
     PARTICLE_COUNT,
-    
+
     // Shadow
     SHADOW_MAP_COUNT,
     CUBE_SHADOW_MAP_COUNT,
@@ -71,6 +71,6 @@ enum MacroName {
     TOTAL_COUNT
 };
 
-}
+}  // namespace vox
 
 #endif /* internal_macro_name_h */

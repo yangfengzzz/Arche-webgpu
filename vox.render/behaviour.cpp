@@ -5,30 +5,24 @@
 //  property of any third parties.
 
 #include "behaviour.h"
+
 #include "entity.h"
 #include "ui/widgets/texts/text_colored.h"
-#include <glog/logging.h>
+#include "vox.base/logging.h"
 
 namespace vox {
-std::string Behaviour::name() {
-    return "Behaviour";
-}
+std::string Behaviour::name() { return "Behaviour"; }
 
-Behaviour::Behaviour(Entity *entity) :
-Script(entity) {
-    createdEvent.invoke(this);
-}
+Behaviour::Behaviour(Entity *entity) : Script(entity) { createdEvent.Invoke(this); }
 
-Behaviour::~Behaviour() {
-    destroyedEvent.invoke(this);
-}
+Behaviour::~Behaviour() { destroyedEvent.Invoke(this); }
 
 bool Behaviour::registerToLuaContext(sol::state &p_luaState, const std::string &p_scriptFolder) {
     auto result = p_luaState.safe_script_file(p_scriptFolder + scriptName + ".lua", &sol::script_pass_on_error);
-    
+
     if (!result.valid()) {
         sol::error err = result;
-        LOG(ERROR) << err.what() << std::endl;
+        LOGE(err.what())
         return false;
     } else {
         if (result.return_count() == 1 && result[0].is<sol::table>()) {
@@ -36,72 +30,48 @@ bool Behaviour::registerToLuaContext(sol::state &p_luaState, const std::string &
             _object["owner"] = _entity;
             return true;
         } else {
-            LOG(ERROR) << "'" + scriptName + ".lua' missing return expression\n";
+            LOGE("{}.lua missing return expression", scriptName)
             return false;
         }
     }
 }
 
-void Behaviour::unregisterFromLuaContext() {
-    _object = sol::lua_nil;
-}
+void Behaviour::unregisterFromLuaContext() { _object = sol::lua_nil; }
 
-sol::table &Behaviour::table() {
-    return _object;
-}
+sol::table &Behaviour::table() { return _object; }
 
-//MARK: - Lua Call
+// MARK: - Lua Call
 
-void Behaviour::onAwake() {
-    luaCall("onAwake");
-}
+void Behaviour::onAwake() { luaCall("onAwake"); }
 
-void Behaviour::onEnable() {
-    luaCall("onEnable");
-}
+void Behaviour::onEnable() { luaCall("onEnable"); }
 
-void Behaviour::onDisable() {
-    luaCall("onDisable");
-}
+void Behaviour::onDisable() { luaCall("onDisable"); }
 
-void Behaviour::onDestroy() {
-    luaCall("onDestroy");
-}
+void Behaviour::onDestroy() { luaCall("onDestroy"); }
 
-void Behaviour::onStart() {
-    luaCall("onStart");
-}
+void Behaviour::onStart() { luaCall("onStart"); }
 
-void Behaviour::onUpdate(float deltaTime) {
-    luaCall("onUpdate", deltaTime);
-}
+void Behaviour::onUpdate(float deltaTime) { luaCall("onUpdate", deltaTime); }
 
-void Behaviour::onLateUpdate(float deltaTime) {
-    luaCall("onLateUpdate", deltaTime);
-}
+void Behaviour::onLateUpdate(float deltaTime) { luaCall("onLateUpdate", deltaTime); }
 
-void Behaviour::onBeginRender(Camera *camera) {
-}
+void Behaviour::onBeginRender(Camera *camera) {}
 
-void Behaviour::onEndRender(Camera *camera) {
-}
+void Behaviour::onEndRender(Camera *camera) {}
 
-void Behaviour::inputEvent(const InputEvent &inputEvent) {
-}
+void Behaviour::inputEvent(const InputEvent &inputEvent) {}
 
-void Behaviour::resize(uint32_t win_width, uint32_t win_height,
-                       uint32_t fb_width, uint32_t fb_height) {
-}
+void Behaviour::resize(uint32_t win_width, uint32_t win_height, uint32_t fb_width, uint32_t fb_height) {}
 
 void Behaviour::onInspector(ui::WidgetContainer &root) {
     if (_object.valid()) {
-        root.createWidget<ui::TextColored>("Ready", Color::Green);
-        root.createWidget<ui::TextColored>("Your script gets interpreted by the engine with success", Color::White);
+        root.CreateWidget<ui::TextColored>("Ready", Color::green);
+        root.CreateWidget<ui::TextColored>("Your script gets interpreted by the engine with success", Color::white);
     } else {
-        root.createWidget<ui::TextColored>("Compilation failed!", Color::Red);
-        root.createWidget<ui::TextColored>("Check the console for more information", Color::White);
+        root.CreateWidget<ui::TextColored>("Compilation failed!", Color::red);
+        root.CreateWidget<ui::TextColored>("Check the console for more information", Color::white);
     }
 }
 
-
-}
+}  // namespace vox

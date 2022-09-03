@@ -5,11 +5,13 @@
 //  property of any third parties.
 
 #include "shader_macro_collection.h"
+
 #include "std_helpers.h"
 
 namespace vox {
-void ShaderMacroCollection::unionCollection(const ShaderMacroCollection &left, const ShaderMacroCollection &right,
-                                            ShaderMacroCollection &result) {
+void ShaderMacroCollection::unionCollection(const ShaderMacroCollection& left,
+                                            const ShaderMacroCollection& right,
+                                            ShaderMacroCollection& result) {
     result._value.insert(left._value.begin(), left._value.end());
     result._value.insert(right._value.begin(), right._value.end());
 }
@@ -56,60 +58,60 @@ void ShaderMacroCollection::disableMacro(const std::string& macroName) {
     }
 }
 
-//MARK: - Internal Macro
+// MARK: - Internal Macro
 std::vector<size_t> ShaderMacroCollection::_internalMacroHashValue = {
-    std::hash<std::string>{}("HAS_UV"),
-    std::hash<std::string>{}("HAS_NORMAL"),
-    std::hash<std::string>{}("HAS_TANGENT"),
-    std::hash<std::string>{}("HAS_VERTEXCOLOR"),
-    
-    // Blend Shape
-    std::hash<std::string>{}("HAS_BLENDSHAPE"),
-    std::hash<std::string>{}("HAS_BLENDSHAPE_TEXTURE"),
-    std::hash<std::string>{}("HAS_BLENDSHAPE_NORMAL"),
-    std::hash<std::string>{}("HAS_BLENDSHAPE_TANGENT"),
-    
-    // Skin
-    std::hash<std::string>{}("HAS_SKIN"),
-    std::hash<std::string>{}("HAS_JOINT_TEXTURE"),
-    std::hash<std::string>{}("JOINTS_COUNT"),
-    
-    // Material
-    std::hash<std::string>{}("NEED_ALPHA_CUTOFF"),
-    std::hash<std::string>{}("NEED_WORLDPOS"),
-    std::hash<std::string>{}("NEED_TILINGOFFSET"),
-    std::hash<std::string>{}("HAS_DIFFUSE_TEXTURE"),
-    std::hash<std::string>{}("HAS_SPECULAR_TEXTURE"),
-    std::hash<std::string>{}("HAS_EMISSIVE_TEXTURE"),
-    std::hash<std::string>{}("HAS_NORMAL_TEXTURE"),
-    std::hash<std::string>{}("OMIT_NORMAL"),
-    std::hash<std::string>{}("HAS_BASE_TEXTURE"),
-    std::hash<std::string>{}("HAS_BASE_COLORMAP"),
-    std::hash<std::string>{}("HAS_EMISSIVEMAP"),
-    std::hash<std::string>{}("HAS_OCCLUSIONMAP"),
-    std::hash<std::string>{}("HAS_SPECULARGLOSSINESSMAP"),
-    std::hash<std::string>{}("HAS_METALROUGHNESSMAP"),
-    
-    // Light
-    std::hash<std::string>{}("DIRECT_LIGHT_COUNT"),
-    std::hash<std::string>{}("POINT_LIGHT_COUNT"),
-    std::hash<std::string>{}("SPOT_LIGHT_COUNT"),
-    
-    // Enviroment
-    std::hash<std::string>{}("HAS_SH"),
-    std::hash<std::string>{}("HAS_SPECULAR_ENV"),
-    std::hash<std::string>{}("HAS_DIFFUSE_ENV"),
-    
-    // Particle Render
-    std::hash<std::string>{}("NEED_PARTICLE_SCATTERING"),
-    std::hash<std::string>{}("NEED_PARTICLE_VECTOR_FIELD"),
-    std::hash<std::string>{}("NEED_PARTICLE_CURL_NOISE"),
-    std::hash<std::string>{}("NEED_PARTICLE_VELOCITY_CONTROL"),
-    std::hash<std::string>{}("PARTICLE_COUNT"),
-    
-    // Shadow
-    std::hash<std::string>{}("SHADOW_MAP_COUNT"),
-    std::hash<std::string>{}("CUBE_SHADOW_MAP_COUNT"),
+        std::hash<std::string>{}("HAS_UV"),
+        std::hash<std::string>{}("HAS_NORMAL"),
+        std::hash<std::string>{}("HAS_TANGENT"),
+        std::hash<std::string>{}("HAS_VERTEXCOLOR"),
+
+        // Blend Shape
+        std::hash<std::string>{}("HAS_BLENDSHAPE"),
+        std::hash<std::string>{}("HAS_BLENDSHAPE_TEXTURE"),
+        std::hash<std::string>{}("HAS_BLENDSHAPE_NORMAL"),
+        std::hash<std::string>{}("HAS_BLENDSHAPE_TANGENT"),
+
+        // Skin
+        std::hash<std::string>{}("HAS_SKIN"),
+        std::hash<std::string>{}("HAS_JOINT_TEXTURE"),
+        std::hash<std::string>{}("JOINTS_COUNT"),
+
+        // Material
+        std::hash<std::string>{}("NEED_ALPHA_CUTOFF"),
+        std::hash<std::string>{}("NEED_WORLDPOS"),
+        std::hash<std::string>{}("NEED_TILINGOFFSET"),
+        std::hash<std::string>{}("HAS_DIFFUSE_TEXTURE"),
+        std::hash<std::string>{}("HAS_SPECULAR_TEXTURE"),
+        std::hash<std::string>{}("HAS_EMISSIVE_TEXTURE"),
+        std::hash<std::string>{}("HAS_NORMAL_TEXTURE"),
+        std::hash<std::string>{}("OMIT_NORMAL"),
+        std::hash<std::string>{}("HAS_BASE_TEXTURE"),
+        std::hash<std::string>{}("HAS_BASE_COLORMAP"),
+        std::hash<std::string>{}("HAS_EMISSIVEMAP"),
+        std::hash<std::string>{}("HAS_OCCLUSIONMAP"),
+        std::hash<std::string>{}("HAS_SPECULARGLOSSINESSMAP"),
+        std::hash<std::string>{}("HAS_METALROUGHNESSMAP"),
+
+        // Light
+        std::hash<std::string>{}("DIRECT_LIGHT_COUNT"),
+        std::hash<std::string>{}("POINT_LIGHT_COUNT"),
+        std::hash<std::string>{}("SPOT_LIGHT_COUNT"),
+
+        // Enviroment
+        std::hash<std::string>{}("HAS_SH"),
+        std::hash<std::string>{}("HAS_SPECULAR_ENV"),
+        std::hash<std::string>{}("HAS_DIFFUSE_ENV"),
+
+        // Particle Render
+        std::hash<std::string>{}("NEED_PARTICLE_SCATTERING"),
+        std::hash<std::string>{}("NEED_PARTICLE_VECTOR_FIELD"),
+        std::hash<std::string>{}("NEED_PARTICLE_CURL_NOISE"),
+        std::hash<std::string>{}("NEED_PARTICLE_VELOCITY_CONTROL"),
+        std::hash<std::string>{}("PARTICLE_COUNT"),
+
+        // Shadow
+        std::hash<std::string>{}("SHADOW_MAP_COUNT"),
+        std::hash<std::string>{}("CUBE_SHADOW_MAP_COUNT"),
 };
 
 bool ShaderMacroCollection::contains(MacroName macro) const {
@@ -145,4 +147,4 @@ void ShaderMacroCollection::disableMacro(MacroName macroName) {
     }
 }
 
-}
+}  // namespace vox

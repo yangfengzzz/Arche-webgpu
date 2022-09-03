@@ -5,11 +5,10 @@
 //  property of any third parties.
 
 #include "lua_entity_binder.h"
+
 #include "entity.h"
 
 namespace vox {
-void LuaEntityBinder::bindEntity(sol::state& luaState) {
-    luaState.new_usertype<Entity>("entity");
-}
+void LuaEntityBinder::bindEntity(sol::state& luaState) { luaState.new_usertype<Entity>("entity"); }
 
-}
+}  // namespace vox

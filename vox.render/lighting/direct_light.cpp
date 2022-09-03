@@ -5,25 +5,18 @@
 //  property of any third parties.
 
 #include "direct_light.h"
+
 #include "entity.h"
 #include "light_manager.h"
 
 namespace vox {
-std::string DirectLight::name() {
-    return "DirectLight";
-}
+std::string DirectLight::name() { return "DirectLight"; }
 
-DirectLight::DirectLight(Entity *entity) :
-Light(entity) {
-}
+DirectLight::DirectLight(Entity *entity) : Light(entity) {}
 
-void DirectLight::_onEnable() {
-    LightManager::getSingleton().attachDirectLight(this);
-}
+void DirectLight::_onEnable() { LightManager::getSingleton().attachDirectLight(this); }
 
-void DirectLight::_onDisable() {
-    LightManager::getSingleton().detachDirectLight(this);
-}
+void DirectLight::_onDisable() { LightManager::getSingleton().detachDirectLight(this); }
 
 void DirectLight::_updateShaderData(DirectLightData &shaderData) {
     shaderData.color = Vector3F(color.r * intensity, color.g * intensity, color.b * intensity);
@@ -31,27 +24,19 @@ void DirectLight::_updateShaderData(DirectLightData &shaderData) {
     shaderData.direction = Vector3F(direction.x, direction.y, direction.z);
 }
 
-//MARK: - Shadow
-Vector3F DirectLight::direction() {
-    return entity()->transform->worldForward();
-}
+// MARK: - Shadow
+Vector3F DirectLight::direction() { return entity()->transform->worldForward(); }
 
 Matrix4x4F DirectLight::shadowProjectionMatrix() {
     assert(false && "cascade shadow don't use this projection");
     throw std::exception();
 }
 
-//MARK: - Reflection
-void DirectLight::onSerialize(nlohmann::json &data) {
-    
-}
+// MARK: - Reflection
+void DirectLight::onSerialize(nlohmann::json &data) {}
 
-void DirectLight::onDeserialize(nlohmann::json &data) {
-    
-}
+void DirectLight::onDeserialize(nlohmann::json &data) {}
 
-void DirectLight::onInspector(ui::WidgetContainer& p_root) {
-    
-}
+void DirectLight::onInspector(ui::WidgetContainer &p_root) {}
 
-}
+}  // namespace vox

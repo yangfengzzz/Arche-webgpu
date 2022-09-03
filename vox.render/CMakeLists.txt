@@ -627,26 +627,26 @@ source_group("stats\\" FILES ${STATS_FILES})
 set(PROJECT_FILES
         ${DAWN_FILES}
         ${PLATFORM_FILES}
-#        ${PARSER_FILES}
-#        ${COMMON_FILES}
-#        ${FRAMEWORK_FILES}
-#        ${CORE_FILES}
+        #        ${PARSER_FILES}
+        #        ${COMMON_FILES}
+        #        ${FRAMEWORK_FILES}
+        #        ${CORE_FILES}
         ${RENDERING_FILES}
-#        ${RENDERING_SUBPASSES_FILES}
-#        ${SCENE_RESOURCE_FILES}
+        #        ${RENDERING_SUBPASSES_FILES}
+        #        ${SCENE_RESOURCE_FILES}
         ${STATS_FILES}
         ${UI_FILES}
-#        ${SCENE_FILES}
-#        ${CONTROL_FILES}
+        ${SCENE_FILES}
+        ${CONTROL_FILES}
         ${MESH_FILES}
         ${SHADERLIB_FILES}
         ${SHADER_FILES}
         ${MATERIAL_FILES}
         ${LIGHT_FILE}
         ${SHADOW_FILE}
-#        ${PARTICLE_FILE}
+        ${PARTICLE_FILE}
         ${PLUGINS_FILE}
-#        ${LUA_FILES}
+        ${LUA_FILES}
         )
 
 # No need for explict casts from vk::HandleType to VkHandleType on ANDROID

@@ -10,11 +10,11 @@
 #include "shaderlib/wgsl_encoder.h"
 
 namespace vox {
-//MARK: - WGSLForwardPlusUniforms
+// MARK: - WGSLForwardPlusUniforms
 class WGSLForwardPlusUniforms {
 public:
     void operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros);
 };
 
-}
+}  // namespace vox
 #endif /* wgsl_cluster_common_hpp */

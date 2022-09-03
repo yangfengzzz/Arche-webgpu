@@ -11,8 +11,7 @@
 #include "entity.h"
 
 namespace vox {
-Component::Component(Entity *entity) : _entity(entity) {
-}
+Component::Component(Entity *entity) : _entity(entity) {}
 
 Component::~Component() {
     if (_entity->isActiveInHierarchy()) {
@@ -23,9 +22,7 @@ Component::~Component() {
     }
 }
 
-bool Component::enabled() {
-    return _enabled;
-}
+bool Component::enabled() { return _enabled; }
 
 void Component::setEnabled(bool value) {
     if (value == _enabled) {
@@ -43,13 +40,9 @@ void Component::setEnabled(bool value) {
     }
 }
 
-Entity *Component::entity() const {
-    return _entity;
-}
+Entity *Component::entity() const { return _entity; }
 
-Scene *Component::scene() {
-    return _entity->scene();
-}
+Scene *Component::scene() { return _entity->scene(); }
 
 void Component::_setActive(bool value) {
     if (value) {
@@ -72,4 +65,4 @@ void Component::_setActive(bool value) {
     }
 }
 
-}        // namespace vox
+}  // namespace vox

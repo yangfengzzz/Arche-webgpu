@@ -7,14 +7,9 @@
 #include "sampled_texture2d_view.h"
 
 namespace vox {
-SampledTexture2DView::SampledTexture2DView(wgpu::Device& device, std::function<wgpu::TextureView()> creator):
-SampledTexture2D(device),
-_creator(creator) {
-    
-}
+SampledTexture2DView::SampledTexture2DView(wgpu::Device& device, std::function<wgpu::TextureView()> creator)
+    : SampledTexture2D(device), _creator(creator) {}
 
-wgpu::TextureView SampledTexture2DView::textureView() {
-    return _creator();
-}
+wgpu::TextureView SampledTexture2DView::textureView() { return _creator(); }
 
-}
+}  // namespace vox

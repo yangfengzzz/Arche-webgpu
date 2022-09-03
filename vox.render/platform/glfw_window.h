@@ -22,7 +22,7 @@ public:
 
     ~GlfwWindow() override;
 
-    std::unique_ptr<BackendBinding> createBackendBinding(wgpu::Device& device) override;
+    std::unique_ptr<BackendBinding> createBackendBinding(wgpu::Device &device) override;
 
     bool ShouldClose() override;
 

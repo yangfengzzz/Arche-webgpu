@@ -11,15 +11,15 @@
 #include "vox.math/matrix4x4.h"
 
 namespace vox {
-class ShadowMaterial: public BaseMaterial {
+class ShadowMaterial : public BaseMaterial {
 public:
     /**
      * Create a ShadowMaterial instance.
      */
     ShadowMaterial(wgpu::Device& device);
-    
+
     void setViewProjectionMatrix(const Matrix4x4F& vp);
-    
+
     const Matrix4x4F& viewProjectionMatrix() const;
 
 private:
@@ -27,6 +27,6 @@ private:
     ShaderProperty _shadowViewProjectionProp;
 };
 
-}
+}  // namespace vox
 
 #endif /* shadow_material_hpp */

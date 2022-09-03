@@ -25,7 +25,7 @@
 #include <vector>
 
 namespace vox {
-template<typename T>
+template <typename T>
 inline void read(std::istringstream &is, T &value) {
     is.read(reinterpret_cast<char *>(&value), sizeof(T));
 }
@@ -37,7 +37,7 @@ inline void read(std::istringstream &is, std::string &value) {
     is.read(const_cast<char *>(value.data()), size);
 }
 
-template<class T>
+template <class T>
 inline void read(std::istringstream &is, std::set<T> &value) {
     std::size_t size;
     read(is, size);
@@ -48,7 +48,7 @@ inline void read(std::istringstream &is, std::set<T> &value) {
     }
 }
 
-template<class T>
+template <class T>
 inline void read(std::istringstream &is, std::vector<T> &value) {
     std::size_t size;
     read(is, size);
@@ -56,33 +56,33 @@ inline void read(std::istringstream &is, std::vector<T> &value) {
     is.read(reinterpret_cast<char *>(value.data()), value.size() * sizeof(T));
 }
 
-template<class T, class S>
+template <class T, class S>
 inline void read(std::istringstream &is, std::map<T, S> &value) {
     std::size_t size;
     read(is, size);
-    
+
     for (uint32_t i = 0; i < size; i++) {
         std::pair<T, S> item;
         read(is, item.first);
         read(is, item.second);
-        
+
         value.insert(std::move(item));
     }
 }
 
-template<class T, uint32_t N>
+template <class T, uint32_t N>
 inline void read(std::istringstream &is, std::array<T, N> &value) {
     is.read(reinterpret_cast<char *>(value.data()), N * sizeof(T));
 }
 
-template<typename T, typename... Args>
-inline void read(std::istringstream &is, T &first_arg, Args &... args) {
+template <typename T, typename... Args>
+inline void read(std::istringstream &is, T &first_arg, Args &...args) {
     read(is, first_arg);
-    
+
     read(is, args...);
 }
 
-template<typename T>
+template <typename T>
 inline void write(std::ostringstream &os, const T &value) {
     os.write(reinterpret_cast<const char *>(&value), sizeof(T));
 }
@@ -92,39 +92,39 @@ inline void write(std::ostringstream &os, const std::string &value) {
     os.write(value.data(), value.size());
 }
 
-template<class T>
+template <class T>
 inline void write(std::ostringstream &os, const std::set<T> &value) {
     write(os, value.size());
-    for (const T &item: value) {
+    for (const T &item : value) {
         os.write(reinterpret_cast<const char *>(&item), sizeof(T));
     }
 }
 
-template<class T>
+template <class T>
 inline void write(std::ostringstream &os, const std::vector<T> &value) {
     write(os, value.size());
     os.write(reinterpret_cast<const char *>(value.data()), value.size() * sizeof(T));
 }
 
-template<class T, class S>
+template <class T, class S>
 inline void write(std::ostringstream &os, const std::map<T, S> &value) {
     write(os, value.size());
-    
-    for (const std::pair<T, S> &item: value) {
+
+    for (const std::pair<T, S> &item : value) {
         write(os, item.first);
         write(os, item.second);
     }
 }
 
-template<class T, uint32_t N>
+template <class T, uint32_t N>
 inline void write(std::ostringstream &os, const std::array<T, N> &value) {
     os.write(reinterpret_cast<const char *>(value.data()), N * sizeof(T));
 }
 
-template<typename T, typename... Args>
-inline void write(std::ostringstream &os, const T &first_arg, const Args &... args) {
+template <typename T, typename... Args>
+inline void write(std::ostringstream &os, const T &first_arg, const Args &...args) {
     write(os, first_arg);
-    
+
     write(os, args...);
 }
 
@@ -132,7 +132,7 @@ inline void write(std::ostringstream &os, const T &first_arg, const Args &... ar
  * @brief Helper function to combine a given hash
  *        with a generated hash for the input param.
  */
-template<class T>
+template <class T>
 inline void hash_combine(size_t &seed, const T &v) {
     std::hash<T> hasher;
     size_t hash = hasher(v);
@@ -146,7 +146,7 @@ inline void hash_combine(size_t &seed, const T &v) {
  * @param value The object to be converted to string
  * @return String version of the given object
  */
-template<class T>
+template <class T>
 inline std::string to_string(const T &value) {
     std::stringstream ss;
     ss << std::fixed << value;
@@ -158,24 +158,23 @@ inline std::string to_string(const T &value) {
  * @param value Value of type @ref size_t to convert
  * @return An @ref uint32_t representation of the same value
  */
-template<class T>
+template <class T>
 uint32_t to_u32(T value) {
     static_assert(std::is_arithmetic<T>::value, "T must be numeric");
-    
+
     if (static_cast<uintmax_t>(value) > static_cast<uintmax_t>(std::numeric_limits<uint32_t>::max())) {
         throw std::runtime_error("to_u32() failed, value is too big to be converted to uint32_t");
     }
-    
+
     return static_cast<uint32_t>(value);
 }
 
-template<typename T>
+template <typename T>
 inline std::vector<uint8_t> to_bytes(const T &value) {
     return std::vector<uint8_t>{reinterpret_cast<const uint8_t *>(&value),
-        reinterpret_cast<const uint8_t *>(&value) + sizeof(T)};
+                                reinterpret_cast<const uint8_t *>(&value) + sizeof(T)};
 }
 
-}        // namespace vox
-
+}  // namespace vox
 
 #endif /* helpers_h */

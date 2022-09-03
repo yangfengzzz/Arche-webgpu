@@ -21,6 +21,5 @@ public:
     static void bindComponent(sol::state& luaState);
 };
 
-
-}
+}  // namespace vox
 #endif /* lua_component_binder_hpp */

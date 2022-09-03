@@ -8,8 +8,8 @@
 #define render_state_hpp
 
 #include "blend_state.h"
-#include "raster_state.h"
 #include "depth_state.h"
+#include "raster_state.h"
 #include "stencil_state.h"
 
 namespace vox {
@@ -25,14 +25,14 @@ struct RenderState {
     StencilState stencilState = StencilState();
     /** Raster state. */
     RasterState rasterState = RasterState();
-    
+
     void apply(wgpu::ColorTargetState* colorTargetState,
                wgpu::DepthStencilState* depthStencil,
                wgpu::RenderPipelineDescriptor& pipelineDescriptor,
-               wgpu::RenderPassEncoder &encoder,
+               wgpu::RenderPassEncoder& encoder,
                bool frontFaceInvert);
 };
 
-}
+}  // namespace vox
 
 #endif /* render_state_hpp */

@@ -21,6 +21,5 @@ public:
     static void bindEntity(sol::state& luaState);
 };
 
-
-}
+}  // namespace vox
 #endif /* lua_entity_binder_hpp */

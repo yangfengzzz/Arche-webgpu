@@ -30,20 +30,21 @@ public:
     /**
      * Background mode.
      * @defaultValue `BackgroundMode.SolidColor`
-     * @remarks If using `BackgroundMode.Sky` mode and material or mesh of the `sky` is not defined, it will downgrade to `BackgroundMode.SolidColor`.
+     * @remarks If using `BackgroundMode.Sky` mode and material or mesh of the `sky` is not defined, it will downgrade
+     * to `BackgroundMode.SolidColor`.
      */
     BackgroundMode::Enum mode = BackgroundMode::Enum::SolidColor;
-    
+
     /**
      * Background solid color.
      * @defaultValue `new Color(0.25, 0.25, 0.25, 1.0)`
      * @remarks When `mode` is `BackgroundMode.SolidColor`, the property will take effects.
      */
     Color solidColor = Color(0.25, 0.25, 0.25, 1.0);
-    
+
     Background() = default;
 };
 
-}
+}  // namespace vox
 
 #endif /* background_hpp */

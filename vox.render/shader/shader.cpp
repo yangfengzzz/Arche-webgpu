@@ -5,6 +5,7 @@
 //  property of any third parties.
 
 #include "shader.h"
+
 #include "vox.base/logging.h"
 
 namespace vox {
@@ -12,13 +13,8 @@ std::unordered_map<std::string, std::unique_ptr<Shader>> Shader::_shaderMap = {}
 std::unordered_map<std::string, ShaderProperty> Shader::_propertyNameMap = {};
 std::unordered_map<uint32_t, ShaderDataGroup> Shader::_propertyGroupMap = {};
 
-Shader::Shader(const std::string &name,
-               WGSLPtr&& vertexSource,
-               WGSLPtr&& fragmentSource) :
-name(name),
-_vertexSource(std::move(vertexSource)),
-_fragmentSource(std::move(fragmentSource)) {
-}
+Shader::Shader(const std::string& name, WGSLPtr&& vertexSource, WGSLPtr&& fragmentSource)
+    : name(name), _vertexSource(std::move(vertexSource)), _fragmentSource(std::move(fragmentSource)) {}
 
 const std::string& Shader::vertexSource(const ShaderMacroCollection& macros) {
     auto result = _vertexSource->compile(macros);
@@ -26,7 +22,7 @@ const std::string& Shader::vertexSource(const ShaderMacroCollection& macros) {
         _bindGroupInfo[info.first].insert(info.second.begin(), info.second.end());
     }
     _updateFlag.first = true;
-    
+
     return result.first;
 }
 
@@ -36,7 +32,7 @@ const std::string& Shader::fragmentSource(const ShaderMacroCollection& macros) {
         _bindGroupInfo[info.first].insert(info.second.begin(), info.second.end());
     }
     _updateFlag.second = true;
-    
+
     return result.first;
 }
 
@@ -48,7 +44,7 @@ const Shader::BindGroupLayoutDescriptorMap& Shader::bindGroupLayoutDescriptors(c
         fragmentSource(macros);
     }
     _updateFlag = {false, false};
-    
+
     for (const auto& info : _bindGroupInfo) {
         _bindGroupLayoutEntryVecMap[info.first].reserve(info.second.size());
         for (const auto& entry : info.second) {
@@ -74,7 +70,7 @@ void Shader::flush() {
 wgpu::BindGroupLayoutEntry Shader::_findEntry(uint32_t group, uint32_t binding) {
     wgpu::BindGroupLayoutEntry entry;
     entry.visibility = wgpu::ShaderStage::None;
-    
+
     const auto& entryMap = _vertexSource->bindGroupLayoutEntryMap();
     auto iter = entryMap.find(group);
     if (iter != entryMap.end()) {
@@ -83,7 +79,7 @@ wgpu::BindGroupLayoutEntry Shader::_findEntry(uint32_t group, uint32_t binding) 
             entry = entryIter->second;
         }
     }
-    
+
     if (_fragmentSource) {
         const auto& entryMap = _fragmentSource->bindGroupLayoutEntryMap();
         auto iter = entryMap.find(group);
@@ -98,7 +94,7 @@ wgpu::BindGroupLayoutEntry Shader::_findEntry(uint32_t group, uint32_t binding) 
             }
         }
     }
-    
+
     if (entry.visibility != wgpu::ShaderStage::None) {
         return entry;
     } else {
@@ -107,11 +103,9 @@ wgpu::BindGroupLayoutEntry Shader::_findEntry(uint32_t group, uint32_t binding) 
     }
 }
 
-Shader *Shader::create(const std::string &name,
-                       WGSLPtr&& vertexSource,
-                       WGSLPtr&& fragmentSource) {
+Shader* Shader::create(const std::string& name, WGSLPtr&& vertexSource, WGSLPtr&& fragmentSource) {
     auto iter = Shader::_shaderMap.find(name);
-    
+
     if (iter != Shader::_shaderMap.end()) {
         LOGE("Shader named {} already exists.", name)
     }
@@ -121,7 +115,7 @@ Shader *Shader::create(const std::string &name,
     return shaderPtr;
 }
 
-Shader *Shader::find(const std::string &name) {
+Shader* Shader::find(const std::string& name) {
     auto iter = Shader::_shaderMap.find(name);
     if (iter != Shader::_shaderMap.end()) {
         return iter->second.get();
@@ -130,8 +124,8 @@ Shader *Shader::find(const std::string &name) {
     }
 }
 
-//MARK: - Property
-std::optional<ShaderProperty> Shader::getPropertyByName(const std::string &name) {
+// MARK: - Property
+std::optional<ShaderProperty> Shader::getPropertyByName(const std::string& name) {
     auto iter = Shader::_propertyNameMap.find(name);
     if (iter != Shader::_propertyNameMap.end()) {
         return iter->second;
@@ -140,7 +134,7 @@ std::optional<ShaderProperty> Shader::getPropertyByName(const std::string &name)
     }
 }
 
-std::optional<ShaderDataGroup> Shader::getShaderPropertyGroup(const std::string &propertyName) {
+std::optional<ShaderDataGroup> Shader::getShaderPropertyGroup(const std::string& propertyName) {
     auto iter = Shader::_propertyNameMap.find(propertyName);
     if (iter != Shader::_propertyNameMap.end()) {
         return iter->second.group;
@@ -158,7 +152,7 @@ std::optional<ShaderDataGroup> Shader::getShaderPropertyGroup(uint32_t uniqueID)
     }
 }
 
-ShaderProperty Shader::createProperty(const std::string &name, ShaderDataGroup group) {
+ShaderProperty Shader::createProperty(const std::string& name, ShaderDataGroup group) {
     auto iter = Shader::_propertyNameMap.find(name);
     if (iter != Shader::_propertyNameMap.end()) {
         return iter->second;
@@ -170,4 +164,4 @@ ShaderProperty Shader::createProperty(const std::string &name, ShaderDataGroup g
     }
 }
 
-}
+}  // namespace vox

@@ -11,10 +11,10 @@ void DepthState::platformApply(wgpu::DepthStencilState *depthStencil) {
     if (enabled && depthStencil) {
         // apply compare func.
         depthStencil->depthCompare = compareFunction;
-        
+
         // apply write enabled.
         depthStencil->depthWriteEnabled = writeEnabled;
     }
 }
 
-}
+}  // namespace vox

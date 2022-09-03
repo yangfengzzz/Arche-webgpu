@@ -15,5 +15,5 @@ public:
     ShadowDebugMaterial(wgpu::Device& device);
 };
 
-}
+}  // namespace vox
 #endif /* shadow_debug_material_hpp */

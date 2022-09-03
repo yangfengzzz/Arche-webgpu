@@ -7,11 +7,12 @@
 #ifndef particle_hpp
 #define particle_hpp
 
-#include "renderer.h"
-#include "particle_material.h"
-#include "texture/sampled_texture3d.h"
-#include "mesh/buffer_mesh.h"
 #include <random>
+
+#include "mesh/buffer_mesh.h"
+#include "particle_material.h"
+#include "renderer.h"
+#include "texture/sampled_texture3d.h"
 
 namespace vox {
 class ParticleRenderer : public Renderer {
@@ -20,27 +21,16 @@ public:
      * Returns the name of the component
      */
     std::string name() override;
-    
+
     // [USER DEFINED]
     static constexpr float kDefaultSimulationVolumeSize = 32.0f;
     static constexpr uint32_t kMaxParticleCount = (1u << 15u);
     static constexpr uint32_t kBatchEmitCount = std::max(256u, (kMaxParticleCount >> 4u));
-    
-    enum class EmitterType : uint32_t {
-        POINT,
-        DISK,
-        SPHERE,
-        BALL,
-        kNumEmitterType
-    };
-    
-    enum class SimulationVolume : uint32_t {
-        SPHERE,
-        BOX,
-        NONE,
-        kNumSimulationVolume
-    };
-    
+
+    enum class EmitterType : uint32_t { POINT, DISK, SPHERE, BALL, kNumEmitterType };
+
+    enum class SimulationVolume : uint32_t { SPHERE, BOX, NONE, kNumSimulationVolume };
+
     struct TParticle {
         Vector4<float> position;
         Vector4<float> velocity;
@@ -49,7 +39,7 @@ public:
         float padding0;
         uint32_t id;
     };
-    
+
     struct ParticleEmitterData {
         Vector3F emitterPosition;
         uint32_t emitCount;
@@ -60,7 +50,7 @@ public:
         float particleMaxAge;
         float _pad;
     };
-    
+
     struct ParticleSimulationData {
         float timeStep;
         SimulationVolume boundingVolumeType;
@@ -71,152 +61,152 @@ public:
         float curlNoiseScale;
         float velocityFactor;
     };
-    
+
     explicit ParticleRenderer(Entity *entity);
-    
-    ParticleMaterial& material();
-    
+
+    ParticleMaterial &material();
+
     const uint32_t numAliveParticles() const;
-    
+
 public:
     void _render(std::vector<RenderElement> &opaqueQueue,
                  std::vector<RenderElement> &alphaTestQueue,
                  std::vector<RenderElement> &transparentQueue) override;
-    
+
     void _updateBounds(BoundingBox3F &worldBounds) override;
-    
+
     void update(float deltaTime) override;
-        
+
 public:
     float timeStep() const;
-    
+
     void setTimeStep(float step);
-    
+
     SimulationVolume boundingVolumeType() const;
-    
+
     void setBoundingVolumeType(SimulationVolume vol);
-    
+
     float bboxSize() const;
-    
+
     void setBBoxSize(float size);
-    
+
     float scatteringFactor() const;
-    
+
     void setScatteringFactor(float factor);
-    
+
     float vectorFieldFactor() const;
-    
+
     void setVectorFieldFactor(float factor);
-    
+
     std::shared_ptr<SampledTexture3D> vectorFieldTexture() const;
-    
-    void setVectorFieldTexture(const std::shared_ptr<SampledTexture3D>& field);
-    
+
+    void setVectorFieldTexture(const std::shared_ptr<SampledTexture3D> &field);
+
     float curlNoiseFactor() const;
-    
+
     void setCurlNoiseFactor(float factor);
-    
+
     float curlNoiseScale() const;
-    
+
     void setCurlNoiseScale(float scale);
-    
+
     float velocityFactor() const;
-    
+
     void setVelocityFactor(float factor);
-    
+
 public:
     uint32_t emitCount() const;
-    
+
     void setEmitCount(uint32_t count);
-    
+
     EmitterType emitterType() const;
-    
+
     void setEmitterType(EmitterType type);
-    
+
     Vector3F emitterPosition() const;
-    
-    void setEmitterPosition(const Vector3F& position);
-    
+
+    void setEmitterPosition(const Vector3F &position);
+
     Vector3F emitterDirection() const;
-    
-    void setEmitterDirection(const Vector3F& direction);
-    
+
+    void setEmitterDirection(const Vector3F &direction);
+
     float emitterRadius() const;
-    
+
     void setEmitterRadius(float radius);
-    
+
     float particleMinAge() const;
-    
+
     void setParticleMinAge(float age);
-    
+
     float particleMaxAge() const;
-    
+
     void setParticleMaxAge(float age);
-        
+
 private:
     void _onEnable() override;
-    
+
     void _onDisable() override;
-    
+
     void _allocBuffer();
-        
+
     void _generateRandomValues();
-    
+
 public:
     /**
      * Serialize the component
      */
     void onSerialize(nlohmann::json &data) override;
-    
+
     /**
      * Deserialize the component
      */
     void onDeserialize(nlohmann::json &data) override;
-    
+
     /**
      * Defines how the component should be drawn in the inspector
      */
-    void onInspector(ui::WidgetContainer& p_root) override;
-    
+    void onInspector(ui::WidgetContainer &p_root) override;
+
 private:
     uint32_t _numAliveParticles = 0;
 
     std::shared_ptr<BufferMesh> _mesh{nullptr};
     std::shared_ptr<ParticleMaterial> _material{nullptr};
-    
+
     std::random_device _randomDevice;
     std::mt19937 _mt;
     float _minValue = 0.0;
     float _maxValue = 1.0;
     std::vector<float> _randomVec{};
     ShaderProperty _randomBufferProp;
-    
+
     ParticleSimulationData _simulationData;
     ShaderProperty _simulationDataProp;
-    
+
     ParticleEmitterData _emitterData;
     ShaderProperty _emitterDataProp;
-    
+
     SampledTexture3DPtr _vectorFieldTexture{nullptr};
     ShaderProperty _vectorFieldTextureProp;
     ShaderProperty _vectorFieldSamplerProp;
-    
+
 private:
     uint32_t _read = 0;
     uint32_t _write = 1;
     std::unique_ptr<Buffer> _atomicBuffer[2] = {nullptr, nullptr};
     ShaderProperty _readAtomicBufferProp;
     ShaderProperty _writeAtomicBufferProp;
-    
+
     std::unique_ptr<Buffer> _appendConsumeBuffer[2] = {nullptr, nullptr};
     ShaderProperty _readConsumeBufferProp;
     ShaderProperty _writeConsumeBufferProp;
-    
+
     std::unique_ptr<Buffer> _dpBuffer{nullptr};
     ShaderProperty _dpBufferProp;
     std::unique_ptr<Buffer> _sortIndicesBuffer{nullptr};
     ShaderProperty _sortIndicesBufferProp;
 };
-}
+}  // namespace vox
 
 #endif /* particle_hpp */

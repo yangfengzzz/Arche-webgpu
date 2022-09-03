@@ -13,15 +13,15 @@ SampledTexture3D::SampledTexture3D(wgpu::Device& device,
                                    uint32_t depthOrArrayLayers,
                                    wgpu::TextureFormat format,
                                    wgpu::TextureUsage usage,
-                                   bool mipmap):
-SampledTexture(device) {
+                                   bool mipmap)
+    : SampledTexture(device) {
     _textureDesc.size.width = width;
     _textureDesc.size.height = height;
     _textureDesc.size.depthOrArrayLayers = depthOrArrayLayers;
     _textureDesc.format = format;
     _textureDesc.usage = usage;
     _textureDesc.mipLevelCount = _getMipmapCount(mipmap);
-    
+
     _dimension = wgpu::TextureViewDimension::e3D;
     _nativeTexture = device.CreateTexture(&_textureDesc);
 }
@@ -36,4 +36,4 @@ wgpu::TextureView SampledTexture3D::textureView() {
     return _nativeTexture.CreateView(&desc);
 }
 
-}
+}  // namespace vox

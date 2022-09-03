@@ -6,8 +6,8 @@
 
 #include "vox.render/platform/windows/windows_platform.h"
 
-#include <Windows.h>
 #include <shellapi.h>
+#include <Windows.h>
 
 #include <iostream>
 #include <stdexcept>

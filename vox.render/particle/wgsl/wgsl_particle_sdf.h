@@ -15,5 +15,5 @@ public:
     void operator()(WGSLEncoder& encoder, const ShaderMacroCollection& macros);
 };
 
-}
+}  // namespace vox
 #endif /* wgsl_particle_sdf_hpp */

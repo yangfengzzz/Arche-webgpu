@@ -7,20 +7,15 @@
 #include "shadow_material.h"
 
 namespace vox {
-ShadowMaterial::ShadowMaterial(wgpu::Device& device):
-BaseMaterial(device, Shader::find("shadow")),
-_shadowViewProjectionProp(Shader::createProperty("u_shadowVPMat", ShaderDataGroup::Material)) {
-    
-}
+ShadowMaterial::ShadowMaterial(wgpu::Device& device)
+    : BaseMaterial(device, Shader::find("shadow")),
+      _shadowViewProjectionProp(Shader::createProperty("u_shadowVPMat", ShaderDataGroup::Material)) {}
 
 void ShadowMaterial::setViewProjectionMatrix(const Matrix4x4F& vp) {
     _vp = vp;
     shaderData.setData(_shadowViewProjectionProp, _vp);
 }
 
-const Matrix4x4F& ShadowMaterial::viewProjectionMatrix() const {
-    return _vp;
-}
+const Matrix4x4F& ShadowMaterial::viewProjectionMatrix() const { return _vp; }
 
-
-}
+}  // namespace vox

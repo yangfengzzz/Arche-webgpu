@@ -6,12 +6,13 @@
 
 #pragma once
 
-#include "scene_forward.h"
-#include "inspector_item.h"
 #include <memory>
 #include <string>
 #include <typeindex>
 #include <vector>
+
+#include "inspector_item.h"
+#include "scene_forward.h"
 
 namespace vox {
 /**
@@ -20,54 +21,49 @@ namespace vox {
 class Component : public InspectorItem {
 public:
     explicit Component(Entity *entity);
-    
+
     Component(Component &&other) = default;
-    
+
     virtual ~Component();
-    
+
     /**
      * Indicates whether the component is enabled.
      */
     bool enabled();
-    
+
     void setEnabled(bool value);
-    
+
     /**
      * The entity which the component belongs to.
      */
     Entity *entity() const;
-    
+
     /**
      * The scene which the component's entity belongs to.
      */
     Scene *scene();
-    
+
 public:
-    virtual void _onAwake() {
-    }
-    
-    virtual void _onEnable() {
-    }
-    
-    virtual void _onDisable() {
-    }
-    
-    virtual void _onActive() {
-    }
-    
-    virtual void _onInActive() {
-    }
-    
+    virtual void _onAwake() {}
+
+    virtual void _onEnable() {}
+
+    virtual void _onDisable() {}
+
+    virtual void _onActive() {}
+
+    virtual void _onInActive() {}
+
 protected:
     friend class Entity;
-    
+
     void _setActive(bool value);
-    
+
     Entity *_entity;
-    
+
 private:
     bool _enabled = true;
     bool _awoken = false;
 };
 
-}        // namespace vox
+}  // namespace vox

@@ -7,8 +7,8 @@
 #ifndef sampled_texturecube_hpp
 #define sampled_texturecube_hpp
 
-#include "sampled_texture2d_view.h"
 #include "image/image.h"
+#include "sampled_texture2d_view.h"
 
 namespace vox {
 class SampledTextureCube : public SampledTexture {
@@ -28,14 +28,14 @@ public:
                        wgpu::TextureFormat format = wgpu::TextureFormat::RGBA8Unorm,
                        wgpu::TextureUsage usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst,
                        bool mipmap = true);
-    
+
     wgpu::TextureView textureView() override;
-    
+
     SampledTexture2DViewPtr textureView2D(uint32_t mipmapLevel, uint32_t layer);
-    
+
     void setPixelBuffer(std::array<Image*, 6> images);
 };
 using SampledTextureCubePtr = std::shared_ptr<SampledTextureCube>;
 
-}
+}  // namespace vox
 #endif /* sampled_texturecube_hpp */

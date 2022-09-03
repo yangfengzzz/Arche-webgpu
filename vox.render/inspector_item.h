@@ -7,8 +7,8 @@
 #ifndef inspector_item_hpp
 #define inspector_item_hpp
 
-#include "vobject.h"
 #include "ui/widgets/widget_container.h"
+#include "vobject.h"
 
 namespace vox {
 /**
@@ -20,7 +20,7 @@ public:
      * Returns the name of the component
      */
     virtual std::string name() = 0;
-    
+
     /**
      * Called when the inspector needs to create the UI elements for the given IInspectorItem
      * @param p_root p_root
@@ -28,6 +28,5 @@ public:
     virtual void onInspector(ui::WidgetContainer &p_root) = 0;
 };
 
-
-}
+}  // namespace vox
 #endif /* inspector_item_hpp */

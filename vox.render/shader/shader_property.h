@@ -7,8 +7,9 @@
 #ifndef shader_property_hpp
 #define shader_property_hpp
 
-#include "shader_data_group.h"
 #include <string>
+
+#include "shader_data_group.h"
 
 namespace vox {
 /**
@@ -17,16 +18,16 @@ namespace vox {
 struct ShaderProperty {
     /** Shader property name. */
     const std::string name;
-    
+
     const ShaderDataGroup group;
-    
+
     const uint32_t uniqueId;
-    
+
     ShaderProperty(const std::string &name, ShaderDataGroup group);
-    
+
 private:
     static uint32_t _propertyNameCounter;
 };
 
-}
+}  // namespace vox
 #endif /* shader_property_hpp */

@@ -5,26 +5,19 @@
 //  property of any third parties.
 
 #include "spot_light.h"
-#include "vox.geometry/matrix_utils.h"
+
 #include "entity.h"
 #include "light_manager.h"
+#include "vox.geometry/matrix_utils.h"
 
 namespace vox {
-std::string SpotLight::name() {
-    return "SpotLight";
-}
+std::string SpotLight::name() { return "SpotLight"; }
 
-SpotLight::SpotLight(Entity *entity) :
-Light(entity) {
-}
+SpotLight::SpotLight(Entity *entity) : Light(entity) {}
 
-void SpotLight::_onEnable() {
-    LightManager::getSingleton().attachSpotLight(this);
-}
+void SpotLight::_onEnable() { LightManager::getSingleton().attachSpotLight(this); }
 
-void SpotLight::_onDisable() {
-    LightManager::getSingleton().detachSpotLight(this);
-}
+void SpotLight::_onDisable() { LightManager::getSingleton().detachSpotLight(this); }
 
 void SpotLight::_updateShaderData(SpotLightData &shaderData) {
     shaderData.color = Vector3F(color.r * intensity, color.g * intensity, color.b * intensity);
@@ -43,17 +36,11 @@ Matrix4x4F SpotLight::shadowProjectionMatrix() {
     return makePerspective<float>(fov, 1, 0.1, distance + 5);
 }
 
-//MARK: - Reflection
-void SpotLight::onSerialize(nlohmann::json &data) {
-    
-}
+// MARK: - Reflection
+void SpotLight::onSerialize(nlohmann::json &data) {}
 
-void SpotLight::onDeserialize(nlohmann::json &data) {
-    
-}
+void SpotLight::onDeserialize(nlohmann::json &data) {}
 
-void SpotLight::onInspector(ui::WidgetContainer& p_root) {
-    
-}
+void SpotLight::onInspector(ui::WidgetContainer &p_root) {}
 
-}
+}  // namespace vox
