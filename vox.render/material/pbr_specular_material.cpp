@@ -40,8 +40,8 @@ void PBRSpecularMaterial::setSpecularGlossinessTexture(const SampledTexture2DPtr
 PBRSpecularMaterial::PBRSpecularMaterial(wgpu::Device& device, const std::string& name)
     : PBRBaseMaterial(device, name),
       _pbrSpecularProp("u_pbrSpecularData"),
-      _specularGlossinessTextureProp("_specularGlossinessTexture"),
-      _specularGlossinessSamplerProp("_specularGlossinessSampler") {
+      _specularGlossinessTextureProp("u_specularGlossinessTexture"),
+      _specularGlossinessSamplerProp("u_specularGlossinessSampler") {
     vertex_source_ = ShaderManager::GetSingleton().LoadShader("base/blinn-phong.vert");
     fragment_source_ = ShaderManager::GetSingleton().LoadShader("base/pbr.frag");
     shaderData.setData(PBRSpecularMaterial::_pbrSpecularProp, _pbrSpecularData);

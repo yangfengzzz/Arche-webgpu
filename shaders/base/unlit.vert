@@ -14,14 +14,14 @@ layout(location = Position) in vec3 POSITION;
     layout(location = Weights_0) in vec4 WEIGHTS_0;
 
     #ifdef HAS_JOINT_TEXTURE
-        layout(set = 0, binding = 2) uniform sampler2D jointSampler;
-        layout(set = 0, binding = 3) uniform jointCount {
-            float value;
-        } joint_count;
+        layout(set = 0, binding = 2) uniform sampler2D u_jointSampler;
+        layout(set = 0, binding = 3) uniform u_jointCount {
+            float joint_count;
+        };
 
         mat4 getJointMatrix(sampler2D smp, float index) {
-            float base = index / joint_count.value;
-            float hf = 0.5 / joint_count.value;
+            float base = index / joint_count;
+            float hf = 0.5 / joint_count;
             float v = base + hf;
 
             vec4 m0 = texture2D(smp, vec2(0.125, v));
@@ -32,9 +32,9 @@ layout(location = Position) in vec3 POSITION;
             return mat4(m0, m1, m2, m3);
         }
     #else
-        layout(set = 0, binding = 4) uniform jointMatrix {
-            mat4 value[JOINTS_NUM];
-        } joint_matrix;
+        layout(set = 0, binding = 4) uniform u_jointMatrix {
+            mat4 joint_matrix[JOINTS_NUM];
+        };
     #endif
 #endif
 
@@ -43,24 +43,24 @@ layout(location = Position) in vec3 POSITION;
     layout(location = Color_0) in vec4 COLOR_0;
 #endif
 
-layout(set = 0, binding = 5) uniform cameraData {
+layout(set = 0, binding = 5) uniform u_cameraData {
     mat4 view_mat;
     mat4 proj_mat;
     mat4 vp_mat;
     mat4 view_inv_mat;
     mat4 proj_inv_mat;
     vec3 camera_pos;
-} camera_data;
+};
 
-layout(set = 0, binding = 6) uniform rendererData {
+layout(set = 0, binding = 6) uniform u_rendererData {
     mat4 local_mat;
     mat4 model_mat;
     mat4 normal_mat;
-} renderer_data;
+};
 
-layout(set = 0, binding = 7) uniform tilingOffset {
-    vec4 value;
-} tiling_offset;
+layout(set = 0, binding = 7) uniform u_tilingOffset {
+    vec4 tiling_offset;
+};
 
 //----------------------------------------------------------------------------------------------------------------------
 #ifndef OMIT_NORMAL
@@ -95,9 +95,9 @@ layout(set = 0, binding = 7) uniform tilingOffset {
             layout(location = 23) in vec3 TANGENT_BS3;
         #endif
     #endif
-    layout(set = 0, binding = 8) uniform blendShapeWeights {
-        float value[4];
-    } blend_shape_weights;
+    layout(set = 0, binding = 8) uniform u_blendShapeWeights {
+        float blend_shape_weights[4];
+    };
 #endif
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -110,24 +110,24 @@ void main() {
         #ifdef HAS_BLENDSHAPE_TEXTURE
 
         #else
-            position.xyz += POSITION_BS0 * blend_shape_weights.value[0];
-            position.xyz += POSITION_BS1 * blend_shape_weights.value[1];
-            position.xyz += POSITION_BS2 * blend_shape_weights.value[2];
-            position.xyz += POSITION_BS3 * blend_shape_weights.value[3];
+            position.xyz += POSITION_BS0 * blend_shape_weights[0];
+            position.xyz += POSITION_BS1 * blend_shape_weights[1];
+            position.xyz += POSITION_BS2 * blend_shape_weights[2];
+            position.xyz += POSITION_BS3 * blend_shape_weights[3];
 
             #ifndef OMIT_NORMAL
                 #if defined(HAS_NORMAL) && defined(HAS_BLENDSHAPE_NORMAL)
-                    normal.xyz += NORMAL_BS0 * blend_shape_weights.value[0];
-                    normal.xyz += NORMAL_BS1 * blend_shape_weights.value[1];
-                    normal.xyz += NORMAL_BS2 * blend_shape_weights.value[2];
-                    normal.xyz += NORMAL_BS3 * blend_shape_weights.value[3];
+                    normal.xyz += NORMAL_BS0 * blend_shape_weights[0];
+                    normal.xyz += NORMAL_BS1 * blend_shape_weights[1];
+                    normal.xyz += NORMAL_BS2 * blend_shape_weights[2];
+                    normal.xyz += NORMAL_BS3 * blend_shape_weights[3];
                 #endif
 
                 #if defined(HAS_TANGENT) && defined(NORMAL_TEXTURE) && defined(HAS_BLENDSHAPE_TANGENT)
-                    tangent.xyz += TANGENT_BS0 * blend_shape_weights.value[0];
-                    tangent.xyz += TANGENT_BS1 * blend_shape_weights.value[1];
-                    tangent.xyz += TANGENT_BS2 * blend_shape_weights.value[2];
-                    tangent.xyz += TANGENT_BS3 * blend_shape_weights.value[3];
+                    tangent.xyz += TANGENT_BS0 * blend_shape_weights[0];
+                    tangent.xyz += TANGENT_BS1 * blend_shape_weights[1];
+                    tangent.xyz += TANGENT_BS2 * blend_shape_weights[2];
+                    tangent.xyz += TANGENT_BS3 * blend_shape_weights[3];
                 #endif
             #endif
         #endif
@@ -143,10 +143,10 @@ void main() {
             WEIGHTS_0.w * getJointMatrix(jointSampler, JOINTS_0.w);
         #else
             mat4 skinMatrix =
-            WEIGHTS_0.x * joint_matrix.value[int(JOINTS_0.x)] +
-            WEIGHTS_0.y * joint_matrix.value[int(JOINTS_0.y)] +
-            WEIGHTS_0.z * joint_matrix.value[int(JOINTS_0.z)] +
-            WEIGHTS_0.w * joint_matrix.value[int(JOINTS_0.w)];
+            WEIGHTS_0.x * joint_matrix[int(JOINTS_0.x)] +
+            WEIGHTS_0.y * joint_matrix[int(JOINTS_0.y)] +
+            WEIGHTS_0.z * joint_matrix[int(JOINTS_0.z)] +
+            WEIGHTS_0.w * joint_matrix[int(JOINTS_0.w)];
         #endif
 
         position = skinMatrix * position;
@@ -168,9 +168,9 @@ void main() {
     #endif
 
     #ifdef NEED_TILINGOFFSET
-        v_uv = v_uv * tiling_offset.value.xy + tiling_offset.value.zw;
+        v_uv = v_uv * tiling_offset.xy + tiling_offset.zw;
     #endif
 
     //------------------------------------------------------------------------------------------------------------------
-    gl_Position = camera_data.vp_mat * renderer_data.model_mat * position;
+    gl_Position = vp_mat * model_mat * position;
 }

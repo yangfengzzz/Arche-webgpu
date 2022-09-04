@@ -99,7 +99,7 @@ void BaseMaterial::setBlendMode(const BlendMode &newValue) {
 }
 
 BaseMaterial::BaseMaterial(wgpu::Device &device, const std::string &name)
-    : Material(device, name), _alphaCutoffProp("alphaCutoff"), _tilingOffsetProp("tilingOffset") {
+    : Material(device, name), _alphaCutoffProp("u_alphaCutoff"), _tilingOffsetProp("u_tilingOffset") {
     setBlendMode(BlendMode::Normal);
     shaderData.setData(_alphaCutoffProp, 0.0f);
     shaderData.setData(_tilingOffsetProp, _tilingOffset);

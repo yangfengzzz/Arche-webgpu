@@ -28,9 +28,6 @@ LightManager::LightManager(Scene *scene)
       _forwardPlusProp("u_cluster_uniform"),
       _clustersProp("u_clusters"),
       _clusterLightsProp("u_clusterLights") {
-    //    Shader::create("cluster_debug", std::make_unique<WGSLUnlitVertex>(),
-    //                   std::make_unique<WGSLClusterDebug>(TILE_COUNT, MAX_LIGHTS_PER_CLUSTER));
-
     auto &device = _scene->device();
     _clustersBuffer =
             std::make_unique<Buffer>(device, sizeof(Clusters), wgpu::BufferUsage::Storage | wgpu::BufferUsage::CopyDst);
@@ -133,24 +130,24 @@ void LightManager::_updateShaderData(ShaderData &shaderData) {
     }
 
     if (directLightCount) {
-        shaderData.removeDefine(DIRECT_LIGHT_COUNT + std::to_string(directLightCount));
+        shaderData.addDefine(DIRECT_LIGHT_COUNT + std::to_string(directLightCount));
         shaderData.setData(LightManager::_directLightProperty, _directLightDatas);
     } else {
-        shaderData.addDefine(DIRECT_LIGHT_COUNT);
+        shaderData.removeDefine(DIRECT_LIGHT_COUNT);
     }
 
     if (pointLightCount) {
-        shaderData.removeDefine(POINT_LIGHT_COUNT + std::to_string(pointLightCount));
+        shaderData.addDefine(POINT_LIGHT_COUNT + std::to_string(pointLightCount));
         shaderData.setData(LightManager::_pointLightProperty, _pointLightDatas);
     } else {
-        shaderData.addDefine(POINT_LIGHT_COUNT);
+        shaderData.removeDefine(POINT_LIGHT_COUNT);
     }
 
     if (spotLightCount) {
-        shaderData.removeDefine(SPOT_LIGHT_COUNT + std::to_string(spotLightCount));
+        shaderData.addDefine(SPOT_LIGHT_COUNT + std::to_string(spotLightCount));
         shaderData.setData(LightManager::_spotLightProperty, _spotLightDatas);
     } else {
-        shaderData.addDefine(SPOT_LIGHT_COUNT);
+        shaderData.removeDefine(SPOT_LIGHT_COUNT);
     }
 }
 

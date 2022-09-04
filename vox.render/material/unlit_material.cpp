@@ -32,9 +32,9 @@ void UnlitMaterial::setBaseTexture(const SampledTexture2DPtr& newValue) {
 
 UnlitMaterial::UnlitMaterial(wgpu::Device& device, const std::string& name)
     : BaseMaterial(device, name),
-      _baseColorProp("baseColor"),
-      _baseTextureProp("baseTexture"),
-      _baseSamplerProp("baseSampler") {
+      _baseColorProp("u_baseColor"),
+      _baseTextureProp("u_baseTexture"),
+      _baseSamplerProp("u_baseSampler") {
     vertex_source_ = ShaderManager::GetSingleton().LoadShader("base/unlit.vert");
     fragment_source_ = ShaderManager::GetSingleton().LoadShader("base/unlit.frag");
 

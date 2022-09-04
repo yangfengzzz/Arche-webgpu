@@ -61,7 +61,7 @@ void ShaderData::bindBuffer(
         bool alreadyExist = false;
         for (auto &bindGroupLayout : bindGroupLayoutIter->second) {
             if (bindGroupLayout.binding == resource.binding) {
-                bindGroupLayout.visibility &= resource.stages;
+                bindGroupLayout.visibility |= resource.stages;
                 alreadyExist = true;
                 break;
             }
@@ -101,7 +101,7 @@ void ShaderData::bindTexture(
         bool alreadyExist = false;
         for (auto &bindGroupLayout : bindGroupLayoutIter->second) {
             if (bindGroupLayout.binding == resource.binding) {
-                bindGroupLayout.visibility &= resource.stages;
+                bindGroupLayout.visibility |= resource.stages;
                 alreadyExist = true;
                 break;
             }
@@ -141,7 +141,7 @@ void ShaderData::bindSampler(
         bool alreadyExist = false;
         for (auto &bindGroupLayout : bindGroupLayoutIter->second) {
             if (bindGroupLayout.binding == resource.binding) {
-                bindGroupLayout.visibility &= resource.stages;
+                bindGroupLayout.visibility |= resource.stages;
                 alreadyExist = true;
                 break;
             }
