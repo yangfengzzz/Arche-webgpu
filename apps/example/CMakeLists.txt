@@ -14,90 +14,90 @@
 
 add_library(dawn_utils STATIC ${DAWN_DUMMY_FILE})
 target_sources(dawn_utils PRIVATE
-    "ComboRenderBundleEncoderDescriptor.cpp"
-    "ComboRenderBundleEncoderDescriptor.h"
-    "ComboRenderPipelineDescriptor.cpp"
-    "ComboRenderPipelineDescriptor.h"
-    "PlatformDebugLogger.h"
-    "ScopedAutoreleasePool.cpp"
-    "ScopedAutoreleasePool.h"
-    "SystemUtils.cpp"
-    "SystemUtils.h"
-    "TerribleCommandBuffer.cpp"
-    "TerribleCommandBuffer.h"
-    "TestUtils.cpp"
-    "TestUtils.h"
-    "TextureUtils.cpp"
-    "TextureUtils.h"
-    "Timer.h"
-    "WGPUHelpers.cpp"
-    "WGPUHelpers.h"
-    "WireHelper.cpp"
-    "WireHelper.h"
-)
+        "ComboRenderBundleEncoderDescriptor.cpp"
+        "ComboRenderBundleEncoderDescriptor.h"
+        "ComboRenderPipelineDescriptor.cpp"
+        "ComboRenderPipelineDescriptor.h"
+        "PlatformDebugLogger.h"
+        "ScopedAutoreleasePool.cpp"
+        "ScopedAutoreleasePool.h"
+        "SystemUtils.cpp"
+        "SystemUtils.h"
+        "TerribleCommandBuffer.cpp"
+        "TerribleCommandBuffer.h"
+        "TestUtils.cpp"
+        "TestUtils.h"
+        "TextureUtils.cpp"
+        "TextureUtils.h"
+        "Timer.h"
+        "WGPUHelpers.cpp"
+        "WGPUHelpers.h"
+        "WireHelper.cpp"
+        "WireHelper.h"
+        )
 target_link_libraries(dawn_utils
-    PUBLIC dawncpp_headers
-    PRIVATE dawn_internal_config
-            dawn_common
-            dawn_native
-            dawn_proc
-            dawn_wire
-            SPIRV-Tools-opt
-            glfw
-)
+        PUBLIC dawncpp_headers
+        PRIVATE dawn_internal_config
+        dawn_common
+        dawn_native
+        dawn_proc
+        dawn_wire
+        SPIRV-Tools-opt
+        glfw
+        )
 
-if(WIN32 AND NOT WINDOWS_STORE)
+if (WIN32 AND NOT WINDOWS_STORE)
     target_sources(dawn_utils PRIVATE "WindowsDebugLogger.cpp")
-else()
+else ()
     target_sources(dawn_utils PRIVATE "EmptyDebugLogger.cpp")
-endif()
+endif ()
 
-if(WIN32)
+if (WIN32)
     target_sources(dawn_utils PRIVATE "WindowsTimer.cpp")
-elseif(APPLE)
+elseif (APPLE)
     target_sources(dawn_utils PRIVATE
-        "OSXTimer.cpp"
-        "ObjCUtils.h"
-        "ObjCUtils.mm"
-    )
+            "OSXTimer.cpp"
+            "ObjCUtils.h"
+            "ObjCUtils.mm"
+            )
     target_link_libraries(dawn_utils PRIVATE "-framework QuartzCore")
-elseif(UNIX)
+elseif (UNIX)
     target_sources(dawn_utils PRIVATE "PosixTimer.cpp")
-endif()
+endif ()
 
 if (DAWN_ENABLE_METAL)
     target_link_libraries(dawn_utils PRIVATE "-framework Metal")
-endif()
+endif ()
 
-if(DAWN_SUPPORTS_GLFW_FOR_WINDOWING)
+if (DAWN_SUPPORTS_GLFW_FOR_WINDOWING)
     target_sources(dawn_utils PRIVATE
-        "BackendBinding.cpp"
-        "BackendBinding.h"
-        "GLFWUtils.cpp"
-        "GLFWUtils.h"
-    )
+            "BackendBinding.cpp"
+            "BackendBinding.h"
+            "GLFWUtils.cpp"
+            "GLFWUtils.h"
+            )
     target_link_libraries(dawn_utils PRIVATE glfw)
 
     if (DAWN_ENABLE_D3D12)
         target_sources(dawn_utils PRIVATE "D3D12Binding.cpp")
-    endif()
+    endif ()
 
     if (DAWN_ENABLE_METAL)
         target_sources(dawn_utils PRIVATE
-            "GLFWUtils_metal.mm"
-            "MetalBinding.mm"
-        )
-    endif()
+                "GLFWUtils_metal.mm"
+                "MetalBinding.mm"
+                )
+    endif ()
 
     if (DAWN_ENABLE_NULL)
         target_sources(dawn_utils PRIVATE "NullBinding.cpp")
-    endif()
+    endif ()
 
     if (DAWN_ENABLE_OPENGL)
         target_sources(dawn_utils PRIVATE "OpenGLBinding.cpp")
-    endif()
+    endif ()
 
     if (DAWN_ENABLE_VULKAN)
         target_sources(dawn_utils PRIVATE "VulkanBinding.cpp")
-    endif()
-endif()
+    endif ()
+endif ()

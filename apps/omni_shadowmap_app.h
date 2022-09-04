@@ -4,17 +4,14 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef omni_shadowMap_app_hpp
-#define omni_shadowMap_app_hpp
+#pragma once
 
-#include "forward_application.h"
-#include "controls/orbit_control.h"
+#include "vox.render/controls/orbit_control.h"
+#include "vox.render/forward_application.h"
 
 namespace vox {
 class OminiShadowMapApp : public ForwardApplication {
 public:
     void loadScene() override;
 };
-}
-
-#endif /* omni_shadowMap_app_hpp */
+}  // namespace vox

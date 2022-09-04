@@ -9,17 +9,12 @@
 #include "common/Compiler.h"
 
 namespace utils {
-ScopedAutoreleasePool::ScopedAutoreleasePool() : mPool(nullptr) {
-    DAWN_UNUSED(mPool);
-}
+ScopedAutoreleasePool::ScopedAutoreleasePool() : mPool(nullptr) { DAWN_UNUSED(mPool); }
 
 ScopedAutoreleasePool::~ScopedAutoreleasePool() = default;
 
-ScopedAutoreleasePool::ScopedAutoreleasePool(ScopedAutoreleasePool&& rhs) {
-}
+ScopedAutoreleasePool::ScopedAutoreleasePool(ScopedAutoreleasePool&& rhs) {}
 
-ScopedAutoreleasePool& ScopedAutoreleasePool::operator=(ScopedAutoreleasePool&& rhs) {
-    return *this;
-}
+ScopedAutoreleasePool& ScopedAutoreleasePool::operator=(ScopedAutoreleasePool&& rhs) { return *this; }
 
 }  // namespace utils

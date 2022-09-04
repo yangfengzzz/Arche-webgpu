@@ -14,13 +14,13 @@
 
 #include "TestUtils.h"
 
+#include <vector>
+
 #include "common/Assert.h"
 #include "common/Constants.h"
 #include "common/Math.h"
 #include "TextureUtils.h"
 #include "WGPUHelpers.h"
-
-#include <vector>
 
 namespace utils {
 
@@ -38,36 +38,33 @@ TextureDataCopyLayout GetTextureDataCopyLayoutForTextureAtLevel(wgpu::TextureFor
                                                                 uint32_t rowsPerImage) {
     // Compressed texture formats not supported in this function yet.
     ASSERT(utils::GetTextureFormatBlockWidth(format) == 1);
-    
+
     TextureDataCopyLayout layout;
-    
+
     layout.mipSize = {std::max(textureSizeAtLevel0.width >> mipmapLevel, 1u),
-        std::max(textureSizeAtLevel0.height >> mipmapLevel, 1u),
-        textureSizeAtLevel0.depthOrArrayLayers};
-    
+                      std::max(textureSizeAtLevel0.height >> mipmapLevel, 1u), textureSizeAtLevel0.depthOrArrayLayers};
+
     if (dimension == wgpu::TextureDimension::e3D) {
-        layout.mipSize.depthOrArrayLayers =
-        std::max(textureSizeAtLevel0.depthOrArrayLayers >> mipmapLevel, 1u);
+        layout.mipSize.depthOrArrayLayers = std::max(textureSizeAtLevel0.depthOrArrayLayers >> mipmapLevel, 1u);
     }
-    
+
     layout.bytesPerRow = GetMinimumBytesPerRow(format, layout.mipSize.width);
-    
+
     if (rowsPerImage == wgpu::kCopyStrideUndefined) {
         rowsPerImage = layout.mipSize.height;
     }
     layout.rowsPerImage = rowsPerImage;
-    
+
     uint32_t appliedRowsPerImage = rowsPerImage > 0 ? rowsPerImage : layout.mipSize.height;
     layout.bytesPerImage = layout.bytesPerRow * appliedRowsPerImage;
-    
-    layout.byteLength =
-    RequiredBytesInCopy(layout.bytesPerRow, appliedRowsPerImage, layout.mipSize, format);
-    
+
+    layout.byteLength = RequiredBytesInCopy(layout.bytesPerRow, appliedRowsPerImage, layout.mipSize, format);
+
     const uint32_t bytesPerTexel = utils::GetTexelBlockSizeInBytes(format);
     layout.texelBlocksPerRow = layout.bytesPerRow / bytesPerTexel;
     layout.texelBlocksPerImage = layout.bytesPerImage / bytesPerTexel;
     layout.texelBlockCount = layout.byteLength / bytesPerTexel;
-    
+
     return layout;
 }
 
@@ -82,8 +79,8 @@ uint64_t RequiredBytesInCopy(uint64_t bytesPerRow,
     uint32_t widthInBlocks = copyExtent.width / blockWidth;
     ASSERT(copyExtent.height % blockHeight == 0);
     uint32_t heightInBlocks = copyExtent.height / blockHeight;
-    return RequiredBytesInCopy(bytesPerRow, rowsPerImage, widthInBlocks, heightInBlocks,
-                               copyExtent.depthOrArrayLayers, blockSize);
+    return RequiredBytesInCopy(bytesPerRow, rowsPerImage, widthInBlocks, heightInBlocks, copyExtent.depthOrArrayLayers,
+                               blockSize);
 }
 
 uint64_t RequiredBytesInCopy(uint64_t bytesPerRow,
@@ -95,7 +92,7 @@ uint64_t RequiredBytesInCopy(uint64_t bytesPerRow,
     if (depth == 0) {
         return 0;
     }
-    
+
     uint64_t bytesPerImage = bytesPerRow * rowsPerImage;
     uint64_t requiredBytesInCopy = bytesPerImage * (depth - 1);
     if (heightInBlocks != 0) {
@@ -111,27 +108,24 @@ uint64_t GetTexelCountInCopyRegion(uint64_t bytesPerRow,
                                    wgpu::Extent3D copyExtent,
                                    wgpu::TextureFormat textureFormat) {
     return RequiredBytesInCopy(bytesPerRow, rowsPerImage, copyExtent, textureFormat) /
-    utils::GetTexelBlockSizeInBytes(textureFormat);
+           utils::GetTexelBlockSizeInBytes(textureFormat);
 }
 
 void UnalignDynamicUploader(wgpu::Device device) {
     std::vector<uint8_t> data = {1};
-    
+
     wgpu::TextureDescriptor descriptor = {};
     descriptor.size = {1, 1, 1};
     descriptor.format = wgpu::TextureFormat::R8Unorm;
     descriptor.usage = wgpu::TextureUsage::CopyDst | wgpu::TextureUsage::CopySrc;
     wgpu::Texture texture = device.CreateTexture(&descriptor);
-    
-    wgpu::ImageCopyTexture imageCopyTexture =
-    utils::CreateImageCopyTexture(texture, 0, {0, 0, 0});
-    wgpu::TextureDataLayout textureDataLayout =
-    utils::CreateTextureDataLayout(0, wgpu::kCopyStrideUndefined);
+
+    wgpu::ImageCopyTexture imageCopyTexture = utils::CreateImageCopyTexture(texture, 0, {0, 0, 0});
+    wgpu::TextureDataLayout textureDataLayout = utils::CreateTextureDataLayout(0, wgpu::kCopyStrideUndefined);
     wgpu::Extent3D copyExtent = {1, 1, 1};
-    
+
     // WriteTexture with exactly 1 byte of data.
-    device.GetQueue().WriteTexture(&imageCopyTexture, data.data(), 1, &textureDataLayout,
-                                   &copyExtent);
+    device.GetQueue().WriteTexture(&imageCopyTexture, data.data(), 1, &textureDataLayout, &copyExtent);
 }
 
 uint32_t VertexFormatSize(wgpu::VertexFormat format) {

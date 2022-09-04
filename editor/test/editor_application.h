@@ -21,7 +21,7 @@ public:
     /**
      * @brief Additional sample initialization
      */
-    bool prepare(Engine &engine) override;
+    bool prepare(Platform &platform) override;
     
     /**
      * @brief Main loop sample events

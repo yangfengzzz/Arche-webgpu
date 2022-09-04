@@ -4,16 +4,14 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef cluster_forward_app_hpp
-#define cluster_forward_app_hpp
+#pragma once
 
-#include "forward_application.h"
+#include "vox.render/forward_application.h"
 
 namespace vox {
 class ClusterForwardApp : public ForwardApplication {
 public:
     void loadScene() override;
 };
- 
-}
-#endif /* cluster_forward_app_hpp */
+
+}  // namespace vox

@@ -4,21 +4,18 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef Irradiance_app_hpp
-#define Irradiance_app_hpp
+#pragma once
 
-#include "forward_application.h"
-#include "controls/orbit_control.h"
-#include "texture/sampled_texturecube.h"
+#include "vox.render/controls/orbit_control.h"
+#include "vox.render/forward_application.h"
+#include "vox.render/texture/sampled_texturecube.h"
 
 namespace vox {
 class IrradianceApp : public ForwardApplication {
 public:
     void loadScene() override;
-    
+
 private:
     SampledTextureCubePtr _cubeMap{nullptr};
 };
-}
-
-#endif /* Irradiance_app_hpp */
+}  // namespace vox

@@ -34,7 +34,7 @@ bool TextureFormatSupportsStorageTexture(wgpu::TextureFormat format) {
         case wgpu::TextureFormat::RGBA32Sint:
         case wgpu::TextureFormat::RGBA32Float:
             return true;
-            
+
         default:
             return false;
     }
@@ -57,7 +57,7 @@ bool IsBCTextureFormat(wgpu::TextureFormat textureFormat) {
         case wgpu::TextureFormat::BC7RGBAUnorm:
         case wgpu::TextureFormat::BC7RGBAUnormSrgb:
             return true;
-            
+
         default:
             return false;
     }
@@ -76,7 +76,7 @@ bool IsETC2TextureFormat(wgpu::TextureFormat textureFormat) {
         case wgpu::TextureFormat::EACRG11Unorm:
         case wgpu::TextureFormat::EACRG11Snorm:
             return true;
-            
+
         default:
             return false;
     }
@@ -113,7 +113,7 @@ bool IsASTCTextureFormat(wgpu::TextureFormat textureFormat) {
         case wgpu::TextureFormat::ASTC12x12Unorm:
         case wgpu::TextureFormat::ASTC12x12UnormSrgb:
             return true;
-            
+
         default:
             return false;
     }
@@ -137,7 +137,7 @@ uint32_t GetTexelBlockSizeInBytes(wgpu::TextureFormat textureFormat) {
         case wgpu::TextureFormat::R8Uint:
         case wgpu::TextureFormat::R8Sint:
             return 1u;
-            
+
         case wgpu::TextureFormat::R16Uint:
         case wgpu::TextureFormat::R16Sint:
         case wgpu::TextureFormat::R16Float:
@@ -146,7 +146,7 @@ uint32_t GetTexelBlockSizeInBytes(wgpu::TextureFormat textureFormat) {
         case wgpu::TextureFormat::RG8Uint:
         case wgpu::TextureFormat::RG8Sint:
             return 2u;
-            
+
         case wgpu::TextureFormat::R32Float:
         case wgpu::TextureFormat::R32Uint:
         case wgpu::TextureFormat::R32Sint:
@@ -164,7 +164,7 @@ uint32_t GetTexelBlockSizeInBytes(wgpu::TextureFormat textureFormat) {
         case wgpu::TextureFormat::RG11B10Ufloat:
         case wgpu::TextureFormat::RGB9E5Ufloat:
             return 4u;
-            
+
         case wgpu::TextureFormat::RG32Float:
         case wgpu::TextureFormat::RG32Uint:
         case wgpu::TextureFormat::RG32Sint:
@@ -172,26 +172,26 @@ uint32_t GetTexelBlockSizeInBytes(wgpu::TextureFormat textureFormat) {
         case wgpu::TextureFormat::RGBA16Sint:
         case wgpu::TextureFormat::RGBA16Float:
             return 8u;
-            
+
         case wgpu::TextureFormat::RGBA32Float:
         case wgpu::TextureFormat::RGBA32Uint:
         case wgpu::TextureFormat::RGBA32Sint:
             return 16u;
-            
+
         case wgpu::TextureFormat::Depth16Unorm:
             return 2u;
-            
+
         case wgpu::TextureFormat::Depth24Plus:
         case wgpu::TextureFormat::Depth24UnormStencil8:
         case wgpu::TextureFormat::Depth32Float:
             return 4u;
-            
+
         case wgpu::TextureFormat::BC1RGBAUnorm:
         case wgpu::TextureFormat::BC1RGBAUnormSrgb:
         case wgpu::TextureFormat::BC4RUnorm:
         case wgpu::TextureFormat::BC4RSnorm:
             return 8u;
-            
+
         case wgpu::TextureFormat::BC2RGBAUnorm:
         case wgpu::TextureFormat::BC2RGBAUnormSrgb:
         case wgpu::TextureFormat::BC3RGBAUnorm:
@@ -203,7 +203,7 @@ uint32_t GetTexelBlockSizeInBytes(wgpu::TextureFormat textureFormat) {
         case wgpu::TextureFormat::BC7RGBAUnorm:
         case wgpu::TextureFormat::BC7RGBAUnormSrgb:
             return 16u;
-            
+
         case wgpu::TextureFormat::ETC2RGB8Unorm:
         case wgpu::TextureFormat::ETC2RGB8UnormSrgb:
         case wgpu::TextureFormat::ETC2RGB8A1Unorm:
@@ -211,13 +211,13 @@ uint32_t GetTexelBlockSizeInBytes(wgpu::TextureFormat textureFormat) {
         case wgpu::TextureFormat::EACR11Unorm:
         case wgpu::TextureFormat::EACR11Snorm:
             return 8u;
-            
+
         case wgpu::TextureFormat::ETC2RGBA8Unorm:
         case wgpu::TextureFormat::ETC2RGBA8UnormSrgb:
         case wgpu::TextureFormat::EACRG11Unorm:
         case wgpu::TextureFormat::EACRG11Snorm:
             return 16u;
-            
+
         case wgpu::TextureFormat::ASTC4x4Unorm:
         case wgpu::TextureFormat::ASTC4x4UnormSrgb:
         case wgpu::TextureFormat::ASTC5x4Unorm:
@@ -247,13 +247,13 @@ uint32_t GetTexelBlockSizeInBytes(wgpu::TextureFormat textureFormat) {
         case wgpu::TextureFormat::ASTC12x12Unorm:
         case wgpu::TextureFormat::ASTC12x12UnormSrgb:
             return 16u;
-            
+
         case wgpu::TextureFormat::Depth24PlusStencil8:
         case wgpu::TextureFormat::Depth32FloatStencil8:
-            
+
             // Block size of a multi-planar format depends on aspect.
         case wgpu::TextureFormat::R8BG8Biplanar420Unorm:
-            
+
             // TODO(dawn:666): implement stencil8
         case wgpu::TextureFormat::Stencil8:
         case wgpu::TextureFormat::Undefined:
@@ -307,7 +307,7 @@ uint32_t GetTextureFormatBlockWidth(wgpu::TextureFormat textureFormat) {
         case wgpu::TextureFormat::Depth24UnormStencil8:
         case wgpu::TextureFormat::Depth32FloatStencil8:
             return 1u;
-            
+
         case wgpu::TextureFormat::BC1RGBAUnorm:
         case wgpu::TextureFormat::BC1RGBAUnormSrgb:
         case wgpu::TextureFormat::BC4RUnorm:
@@ -333,7 +333,7 @@ uint32_t GetTextureFormatBlockWidth(wgpu::TextureFormat textureFormat) {
         case wgpu::TextureFormat::EACRG11Unorm:
         case wgpu::TextureFormat::EACRG11Snorm:
             return 4u;
-            
+
         case wgpu::TextureFormat::ASTC4x4Unorm:
         case wgpu::TextureFormat::ASTC4x4UnormSrgb:
             return 4u;
@@ -368,10 +368,10 @@ uint32_t GetTextureFormatBlockWidth(wgpu::TextureFormat textureFormat) {
         case wgpu::TextureFormat::ASTC12x12Unorm:
         case wgpu::TextureFormat::ASTC12x12UnormSrgb:
             return 12u;
-            
+
             // Block size of a multi-planar format depends on aspect.
         case wgpu::TextureFormat::R8BG8Biplanar420Unorm:
-            
+
             // TODO(dawn:666): implement stencil8
         case wgpu::TextureFormat::Stencil8:
         case wgpu::TextureFormat::Undefined:
@@ -425,7 +425,7 @@ uint32_t GetTextureFormatBlockHeight(wgpu::TextureFormat textureFormat) {
         case wgpu::TextureFormat::Depth24UnormStencil8:
         case wgpu::TextureFormat::Depth32FloatStencil8:
             return 1u;
-            
+
         case wgpu::TextureFormat::BC1RGBAUnorm:
         case wgpu::TextureFormat::BC1RGBAUnormSrgb:
         case wgpu::TextureFormat::BC4RUnorm:
@@ -451,7 +451,7 @@ uint32_t GetTextureFormatBlockHeight(wgpu::TextureFormat textureFormat) {
         case wgpu::TextureFormat::EACRG11Unorm:
         case wgpu::TextureFormat::EACRG11Snorm:
             return 4u;
-            
+
         case wgpu::TextureFormat::ASTC4x4Unorm:
         case wgpu::TextureFormat::ASTC4x4UnormSrgb:
         case wgpu::TextureFormat::ASTC5x4Unorm:
@@ -486,10 +486,10 @@ uint32_t GetTextureFormatBlockHeight(wgpu::TextureFormat textureFormat) {
         case wgpu::TextureFormat::ASTC12x12Unorm:
         case wgpu::TextureFormat::ASTC12x12UnormSrgb:
             return 12u;
-            
+
             // Block size of a multi-planar format depends on aspect.
         case wgpu::TextureFormat::R8BG8Biplanar420Unorm:
-            
+
             // TODO(dawn:666): implement stencil8
         case wgpu::TextureFormat::Stencil8:
         case wgpu::TextureFormat::Undefined:
@@ -519,7 +519,7 @@ const char* GetWGSLColorTextureComponentType(wgpu::TextureFormat textureFormat) 
         case wgpu::TextureFormat::BGRA8UnormSrgb:
         case wgpu::TextureFormat::RGBA8UnormSrgb:
             return "f32";
-            
+
         case wgpu::TextureFormat::R8Uint:
         case wgpu::TextureFormat::R16Uint:
         case wgpu::TextureFormat::RG8Uint:
@@ -530,7 +530,7 @@ const char* GetWGSLColorTextureComponentType(wgpu::TextureFormat textureFormat) 
         case wgpu::TextureFormat::RGBA16Uint:
         case wgpu::TextureFormat::RGBA32Uint:
             return "u32";
-            
+
         case wgpu::TextureFormat::R8Sint:
         case wgpu::TextureFormat::R16Sint:
         case wgpu::TextureFormat::RG8Sint:
@@ -541,7 +541,7 @@ const char* GetWGSLColorTextureComponentType(wgpu::TextureFormat textureFormat) 
         case wgpu::TextureFormat::RGBA16Sint:
         case wgpu::TextureFormat::RGBA32Sint:
             return "i32";
-            
+
         default:
             UNREACHABLE();
     }
@@ -622,7 +622,7 @@ const char* GetWGSLImageFormatQualifier(wgpu::TextureFormat textureFormat) {
             return "rgba32sint";
         case wgpu::TextureFormat::RGBA32Float:
             return "rgba32float";
-            
+
             // The below do not currently exist in the WGSL spec, but are used
             // for tests that expect compilation failure.
         case wgpu::TextureFormat::R8Unorm:
@@ -657,7 +657,7 @@ const char* GetWGSLImageFormatQualifier(wgpu::TextureFormat textureFormat) {
             return "rgb10a2unorm";
         case wgpu::TextureFormat::RG11B10Ufloat:
             return "rg11b10ufloat";
-            
+
         default:
             UNREACHABLE();
     }

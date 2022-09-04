@@ -14,16 +14,15 @@
 
 #include "WGPUHelpers.h"
 
-#include "common/Constants.h"
-#include "common/Log.h"
-
-#include <spirv-tools/optimizer.hpp>
-
 #include <cstring>
 #include <iomanip>
 #include <limits>
 #include <mutex>
+#include <spirv-tools/optimizer.hpp>
 #include <sstream>
+
+#include "common/Constants.h"
+#include "common/Log.h"
 
 namespace utils {
 wgpu::ShaderModule CreateShaderModuleFromASM(const wgpu::Device& device, const char* source) {
@@ -31,34 +30,33 @@ wgpu::ShaderModule CreateShaderModuleFromASM(const wgpu::Device& device, const c
     // aren't RAII, we don't return directly on success and instead always go through the code
     // path that destroys the SPIRV-Tools objects.
     wgpu::ShaderModule result = nullptr;
-    
+
     spv_context context = spvContextCreate(SPV_ENV_UNIVERSAL_1_3);
     ASSERT(context != nullptr);
-    
+
     spv_binary spirv = nullptr;
     spv_diagnostic diagnostic = nullptr;
     if (spvTextToBinary(context, source, strlen(source), &spirv, &diagnostic) == SPV_SUCCESS) {
         ASSERT(spirv != nullptr);
         ASSERT(spirv->wordCount <= std::numeric_limits<uint32_t>::max());
-        
+
         wgpu::ShaderModuleSPIRVDescriptor spirvDesc;
         spirvDesc.codeSize = static_cast<uint32_t>(spirv->wordCount);
         spirvDesc.code = spirv->code;
-        
+
         wgpu::ShaderModuleDescriptor descriptor;
         descriptor.nextInChain = &spirvDesc;
         result = device.CreateShaderModule(&descriptor);
     } else {
         ASSERT(diagnostic != nullptr);
-        dawn::WarningLog() << "CreateShaderModuleFromASM SPIRV assembly error:"
-        << diagnostic->position.line + 1 << ":"
-        << diagnostic->position.column + 1 << ": " << diagnostic->error;
+        dawn::WarningLog() << "CreateShaderModuleFromASM SPIRV assembly error:" << diagnostic->position.line + 1 << ":"
+                           << diagnostic->position.column + 1 << ": " << diagnostic->error;
     }
-    
+
     spvDiagnosticDestroy(diagnostic);
     spvBinaryDestroy(spirv);
     spvContextDestroy(context);
-    
+
     return result;
 }
 
@@ -78,27 +76,26 @@ wgpu::Buffer CreateBufferFromData(const wgpu::Device& device,
     descriptor.size = size;
     descriptor.usage = usage | wgpu::BufferUsage::CopyDst;
     wgpu::Buffer buffer = device.CreateBuffer(&descriptor);
-    
+
     device.GetQueue().WriteBuffer(buffer, 0, data, size);
     return buffer;
 }
 
-ComboRenderPassDescriptor::ComboRenderPassDescriptor(
-                                                     std::initializer_list<wgpu::TextureView> colorAttachmentInfo,
+ComboRenderPassDescriptor::ComboRenderPassDescriptor(std::initializer_list<wgpu::TextureView> colorAttachmentInfo,
                                                      wgpu::TextureView depthStencil) {
     for (uint32_t i = 0; i < kMaxColorAttachments; ++i) {
         cColorAttachments[i].loadOp = wgpu::LoadOp::Clear;
         cColorAttachments[i].storeOp = wgpu::StoreOp::Store;
         cColorAttachments[i].clearColor = {0.0f, 0.0f, 0.0f, 0.0f};
     }
-    
+
     cDepthStencilAttachmentInfo.clearDepth = 1.0f;
     cDepthStencilAttachmentInfo.clearStencil = 0;
     cDepthStencilAttachmentInfo.depthLoadOp = wgpu::LoadOp::Clear;
     cDepthStencilAttachmentInfo.depthStoreOp = wgpu::StoreOp::Store;
     cDepthStencilAttachmentInfo.stencilLoadOp = wgpu::LoadOp::Clear;
     cDepthStencilAttachmentInfo.stencilStoreOp = wgpu::StoreOp::Store;
-    
+
     colorAttachmentCount = static_cast<uint32_t>(colorAttachmentInfo.size());
     uint32_t colorAttachmentIndex = 0;
     for (const wgpu::TextureView& colorAttachment : colorAttachmentInfo) {
@@ -108,7 +105,7 @@ ComboRenderPassDescriptor::ComboRenderPassDescriptor(
         ++colorAttachmentIndex;
     }
     colorAttachments = cColorAttachments.data();
-    
+
     if (depthStencil.Get() != nullptr) {
         cDepthStencilAttachmentInfo.view = depthStencil;
         depthStencilAttachment = &cDepthStencilAttachmentInfo;
@@ -117,53 +114,45 @@ ComboRenderPassDescriptor::ComboRenderPassDescriptor(
     }
 }
 
-ComboRenderPassDescriptor::ComboRenderPassDescriptor(const ComboRenderPassDescriptor& other) {
-    *this = other;
-}
+ComboRenderPassDescriptor::ComboRenderPassDescriptor(const ComboRenderPassDescriptor& other) { *this = other; }
 
 const ComboRenderPassDescriptor& ComboRenderPassDescriptor::operator=(
-                                                                      const ComboRenderPassDescriptor& otherRenderPass) {
+        const ComboRenderPassDescriptor& otherRenderPass) {
     cDepthStencilAttachmentInfo = otherRenderPass.cDepthStencilAttachmentInfo;
     cColorAttachments = otherRenderPass.cColorAttachments;
     colorAttachmentCount = otherRenderPass.colorAttachmentCount;
-    
+
     colorAttachments = cColorAttachments.data();
-    
+
     if (otherRenderPass.depthStencilAttachment != nullptr) {
         // Assign desc.depthStencilAttachment to this->depthStencilAttachmentInfo;
         depthStencilAttachment = &cDepthStencilAttachmentInfo;
     } else {
         depthStencilAttachment = nullptr;
     }
-    
+
     return *this;
 }
 
 BasicRenderPass::BasicRenderPass()
-: width(0),
-height(0),
-color(nullptr),
-colorFormat(wgpu::TextureFormat::RGBA8Unorm),
-renderPassInfo({}) {
-}
+    : width(0), height(0), color(nullptr), colorFormat(wgpu::TextureFormat::RGBA8Unorm), renderPassInfo({}) {}
 
 BasicRenderPass::BasicRenderPass(uint32_t texWidth,
                                  uint32_t texHeight,
                                  wgpu::Texture colorAttachment,
                                  wgpu::TextureFormat textureFormat)
-: width(texWidth),
-height(texHeight),
-color(colorAttachment),
-colorFormat(textureFormat),
-renderPassInfo({colorAttachment.CreateView()}) {
-}
+    : width(texWidth),
+      height(texHeight),
+      color(colorAttachment),
+      colorFormat(textureFormat),
+      renderPassInfo({colorAttachment.CreateView()}) {}
 
 BasicRenderPass CreateBasicRenderPass(const wgpu::Device& device,
                                       uint32_t width,
                                       uint32_t height,
                                       wgpu::TextureFormat format) {
     DAWN_ASSERT(width > 0 && height > 0);
-    
+
     wgpu::TextureDescriptor descriptor;
     descriptor.dimension = wgpu::TextureDimension::e2D;
     descriptor.size.width = width;
@@ -174,7 +163,7 @@ BasicRenderPass CreateBasicRenderPass(const wgpu::Device& device,
     descriptor.mipLevelCount = 1;
     descriptor.usage = wgpu::TextureUsage::RenderAttachment | wgpu::TextureUsage::CopySrc;
     wgpu::Texture color = device.CreateTexture(&descriptor);
-    
+
     return BasicRenderPass(width, height, color);
 }
 
@@ -185,7 +174,7 @@ wgpu::ImageCopyBuffer CreateImageCopyBuffer(wgpu::Buffer buffer,
     wgpu::ImageCopyBuffer imageCopyBuffer = {};
     imageCopyBuffer.buffer = buffer;
     imageCopyBuffer.layout = CreateTextureDataLayout(offset, bytesPerRow, rowsPerImage);
-    
+
     return imageCopyBuffer;
 }
 
@@ -198,23 +187,20 @@ wgpu::ImageCopyTexture CreateImageCopyTexture(wgpu::Texture texture,
     imageCopyTexture.mipLevel = mipLevel;
     imageCopyTexture.origin = origin;
     imageCopyTexture.aspect = aspect;
-    
+
     return imageCopyTexture;
 }
 
-wgpu::TextureDataLayout CreateTextureDataLayout(uint64_t offset,
-                                                uint32_t bytesPerRow,
-                                                uint32_t rowsPerImage) {
+wgpu::TextureDataLayout CreateTextureDataLayout(uint64_t offset, uint32_t bytesPerRow, uint32_t rowsPerImage) {
     wgpu::TextureDataLayout textureDataLayout;
     textureDataLayout.offset = offset;
     textureDataLayout.bytesPerRow = bytesPerRow;
     textureDataLayout.rowsPerImage = rowsPerImage;
-    
+
     return textureDataLayout;
 }
 
-wgpu::PipelineLayout MakeBasicPipelineLayout(const wgpu::Device& device,
-                                             const wgpu::BindGroupLayout* bindGroupLayout) {
+wgpu::PipelineLayout MakeBasicPipelineLayout(const wgpu::Device& device, const wgpu::BindGroupLayout* bindGroupLayout) {
     wgpu::PipelineLayoutDescriptor descriptor;
     if (bindGroupLayout != nullptr) {
         descriptor.bindGroupLayoutCount = 1;
@@ -226,8 +212,7 @@ wgpu::PipelineLayout MakeBasicPipelineLayout(const wgpu::Device& device,
     return device.CreatePipelineLayout(&descriptor);
 }
 
-wgpu::PipelineLayout MakePipelineLayout(const wgpu::Device& device,
-                                        std::vector<wgpu::BindGroupLayout> bgls) {
+wgpu::PipelineLayout MakePipelineLayout(const wgpu::Device& device, std::vector<wgpu::BindGroupLayout> bgls) {
     wgpu::PipelineLayoutDescriptor descriptor;
     descriptor.bindGroupLayoutCount = uint32_t(bgls.size());
     descriptor.bindGroupLayouts = bgls.data();
@@ -235,21 +220,19 @@ wgpu::PipelineLayout MakePipelineLayout(const wgpu::Device& device,
 }
 
 wgpu::BindGroupLayout MakeBindGroupLayout(
-                                          const wgpu::Device& device,
-                                          std::initializer_list<BindingLayoutEntryInitializationHelper> entriesInitializer) {
+        const wgpu::Device& device, std::initializer_list<BindingLayoutEntryInitializationHelper> entriesInitializer) {
     std::vector<wgpu::BindGroupLayoutEntry> entries;
     for (const BindingLayoutEntryInitializationHelper& entry : entriesInitializer) {
         entries.push_back(entry);
     }
-    
+
     wgpu::BindGroupLayoutDescriptor descriptor;
     descriptor.entryCount = static_cast<uint32_t>(entries.size());
     descriptor.entries = entries.data();
     return device.CreateBindGroupLayout(&descriptor);
 }
 
-BindingLayoutEntryInitializationHelper::BindingLayoutEntryInitializationHelper(
-                                                                               uint32_t entryBinding,
+BindingLayoutEntryInitializationHelper::BindingLayoutEntryInitializationHelper(uint32_t entryBinding,
                                                                                wgpu::ShaderStage entryVisibility,
                                                                                wgpu::BufferBindingType bufferType,
                                                                                bool bufferHasDynamicOffset,
@@ -261,8 +244,7 @@ BindingLayoutEntryInitializationHelper::BindingLayoutEntryInitializationHelper(
     buffer.minBindingSize = bufferMinBindingSize;
 }
 
-BindingLayoutEntryInitializationHelper::BindingLayoutEntryInitializationHelper(
-                                                                               uint32_t entryBinding,
+BindingLayoutEntryInitializationHelper::BindingLayoutEntryInitializationHelper(uint32_t entryBinding,
                                                                                wgpu::ShaderStage entryVisibility,
                                                                                wgpu::SamplerBindingType samplerType) {
     binding = entryBinding;
@@ -271,11 +253,11 @@ BindingLayoutEntryInitializationHelper::BindingLayoutEntryInitializationHelper(
 }
 
 BindingLayoutEntryInitializationHelper::BindingLayoutEntryInitializationHelper(
-                                                                               uint32_t entryBinding,
-                                                                               wgpu::ShaderStage entryVisibility,
-                                                                               wgpu::TextureSampleType textureSampleType,
-                                                                               wgpu::TextureViewDimension textureViewDimension,
-                                                                               bool textureMultisampled) {
+        uint32_t entryBinding,
+        wgpu::ShaderStage entryVisibility,
+        wgpu::TextureSampleType textureSampleType,
+        wgpu::TextureViewDimension textureViewDimension,
+        bool textureMultisampled) {
     binding = entryBinding;
     visibility = entryVisibility;
     texture.sampleType = textureSampleType;
@@ -284,11 +266,11 @@ BindingLayoutEntryInitializationHelper::BindingLayoutEntryInitializationHelper(
 }
 
 BindingLayoutEntryInitializationHelper::BindingLayoutEntryInitializationHelper(
-                                                                               uint32_t entryBinding,
-                                                                               wgpu::ShaderStage entryVisibility,
-                                                                               wgpu::StorageTextureAccess storageTextureAccess,
-                                                                               wgpu::TextureFormat format,
-                                                                               wgpu::TextureViewDimension textureViewDimension) {
+        uint32_t entryBinding,
+        wgpu::ShaderStage entryVisibility,
+        wgpu::StorageTextureAccess storageTextureAccess,
+        wgpu::TextureFormat format,
+        wgpu::TextureViewDimension textureViewDimension) {
     binding = entryBinding;
     visibility = entryVisibility;
     storageTexture.access = storageTextureAccess;
@@ -301,33 +283,23 @@ BindingLayoutEntryInitializationHelper::BindingLayoutEntryInitializationHelper(
 wgpu::ExternalTextureBindingLayout kExternalTextureBindingLayout = {};
 
 BindingLayoutEntryInitializationHelper::BindingLayoutEntryInitializationHelper(
-                                                                               uint32_t entryBinding,
-                                                                               wgpu::ShaderStage entryVisibility,
-                                                                               wgpu::ExternalTextureBindingLayout* bindingLayout) {
+        uint32_t entryBinding, wgpu::ShaderStage entryVisibility, wgpu::ExternalTextureBindingLayout* bindingLayout) {
     binding = entryBinding;
     visibility = entryVisibility;
     nextInChain = bindingLayout;
 }
 
-BindingLayoutEntryInitializationHelper::BindingLayoutEntryInitializationHelper(
-                                                                               const wgpu::BindGroupLayoutEntry& entry)
-: wgpu::BindGroupLayoutEntry(entry) {
-}
+BindingLayoutEntryInitializationHelper::BindingLayoutEntryInitializationHelper(const wgpu::BindGroupLayoutEntry& entry)
+    : wgpu::BindGroupLayoutEntry(entry) {}
 
-BindingInitializationHelper::BindingInitializationHelper(uint32_t binding,
-                                                         const wgpu::Sampler& sampler)
-: binding(binding), sampler(sampler) {
-}
+BindingInitializationHelper::BindingInitializationHelper(uint32_t binding, const wgpu::Sampler& sampler)
+    : binding(binding), sampler(sampler) {}
 
-BindingInitializationHelper::BindingInitializationHelper(uint32_t binding,
-                                                         const wgpu::TextureView& textureView)
-: binding(binding), textureView(textureView) {
-}
+BindingInitializationHelper::BindingInitializationHelper(uint32_t binding, const wgpu::TextureView& textureView)
+    : binding(binding), textureView(textureView) {}
 
-BindingInitializationHelper::BindingInitializationHelper(
-                                                         uint32_t binding,
-                                                         const wgpu::ExternalTexture& externalTexture)
-: binding(binding) {
+BindingInitializationHelper::BindingInitializationHelper(uint32_t binding, const wgpu::ExternalTexture& externalTexture)
+    : binding(binding) {
     externalTextureBindingEntry.externalTexture = externalTexture;
 }
 
@@ -335,12 +307,11 @@ BindingInitializationHelper::BindingInitializationHelper(uint32_t binding,
                                                          const wgpu::Buffer& buffer,
                                                          uint64_t offset,
                                                          uint64_t size)
-: binding(binding), buffer(buffer), offset(offset), size(size) {
-}
+    : binding(binding), buffer(buffer), offset(offset), size(size) {}
 
 wgpu::BindGroupEntry BindingInitializationHelper::GetAsBinding() const {
     wgpu::BindGroupEntry result;
-    
+
     result.binding = binding;
     result.sampler = sampler;
     result.textureView = textureView;
@@ -350,7 +321,7 @@ wgpu::BindGroupEntry BindingInitializationHelper::GetAsBinding() const {
     if (externalTextureBindingEntry.externalTexture != nullptr) {
         result.nextInChain = &externalTextureBindingEntry;
     }
-    
+
     return result;
 }
 
@@ -361,12 +332,12 @@ wgpu::BindGroup MakeBindGroup(const wgpu::Device& device,
     for (const BindingInitializationHelper& helper : entriesInitializer) {
         entries.push_back(helper.GetAsBinding());
     }
-    
+
     wgpu::BindGroupDescriptor descriptor;
     descriptor.layout = layout;
     descriptor.entryCount = entries.size();
     descriptor.entries = entries.data();
-    
+
     return device.CreateBindGroup(&descriptor);
 }
 

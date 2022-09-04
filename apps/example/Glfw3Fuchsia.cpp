@@ -27,12 +27,9 @@
 
 #include <dlfcn.h>
 
-int glfwInit(void) {
-    return GLFW_TRUE;
-}
+int glfwInit(void) { return GLFW_TRUE; }
 
-void glfwDefaultWindowHints(void) {
-}
+void glfwDefaultWindowHints(void) {}
 
 void glfwWindowHint(int hint, int value) {
     DAWN_UNUSED(hint);
@@ -46,8 +43,8 @@ struct GLFWwindow {
     GLFWwindow() {
         vulkan_loader = ::dlopen("libvulkan.so", RTLD_NOW);
         ASSERT(vulkan_loader != nullptr);
-        GetInstanceProcAddress = reinterpret_cast<PFN_vkGetInstanceProcAddr>(
-            dlsym(vulkan_loader, "vkGetInstanceProcAddr"));
+        GetInstanceProcAddress =
+                reinterpret_cast<PFN_vkGetInstanceProcAddr>(dlsym(vulkan_loader, "vkGetInstanceProcAddr"));
         ASSERT(GetInstanceProcAddress != nullptr);
     }
 
@@ -59,11 +56,7 @@ struct GLFWwindow {
     }
 };
 
-GLFWwindow* glfwCreateWindow(int width,
-                             int height,
-                             const char* title,
-                             GLFWmonitor* monitor,
-                             GLFWwindow* share) {
+GLFWwindow* glfwCreateWindow(int width, int height, const char* title, GLFWmonitor* monitor, GLFWwindow* share) {
     ASSERT(monitor == nullptr);
     ASSERT(share == nullptr);
     DAWN_UNUSED(width);
@@ -82,7 +75,7 @@ VkResult glfwCreateWindowSurface(VkInstance instance,
     // required steps in VulkanInfo.cpp, VulkanFunctions.cpp and BackendVk.cpp.
 
     auto vkCreateImagePipeSurfaceFUCHSIA = reinterpret_cast<PFN_vkCreateImagePipeSurfaceFUCHSIA>(
-        window->GetInstanceProcAddress(instance, "vkCreateImagePipeSurfaceFUCHSIA"));
+            window->GetInstanceProcAddress(instance, "vkCreateImagePipeSurfaceFUCHSIA"));
     ASSERT(vkCreateImagePipeSurfaceFUCHSIA != nullptr);
     if (!vkCreateImagePipeSurfaceFUCHSIA) {
         *surface = VK_NULL_HANDLE;
@@ -90,10 +83,10 @@ VkResult glfwCreateWindowSurface(VkInstance instance,
     }
 
     const struct VkImagePipeSurfaceCreateInfoFUCHSIA create_info = {
-        VK_STRUCTURE_TYPE_IMAGEPIPE_SURFACE_CREATE_INFO_FUCHSIA,
-        nullptr,            // pNext
-        0,                  // flags, ignored for now
-        ZX_HANDLE_INVALID,  // imagePipeHandle, a null handle matches the framebuffer.
+            VK_STRUCTURE_TYPE_IMAGEPIPE_SURFACE_CREATE_INFO_FUCHSIA,
+            nullptr,            // pNext
+            0,                  // flags, ignored for now
+            ZX_HANDLE_INVALID,  // imagePipeHandle, a null handle matches the framebuffer.
     };
 
     return vkCreateImagePipeSurfaceFUCHSIA(instance, &create_info, nullptr, surface);

@@ -20,7 +20,7 @@ namespace utils {
 
 ComboVertexState::ComboVertexState() {
     vertexBufferCount = 0;
-    
+
     // Fill the default values for vertexBuffers and vertexAttributes in buffers.
     wgpu::VertexAttribute vertexAttribute;
     vertexAttribute.shaderLocation = 0;
@@ -45,14 +45,14 @@ ComboVertexState::ComboVertexState() {
 
 ComboRenderPipelineDescriptor::ComboRenderPipelineDescriptor() {
     wgpu::RenderPipelineDescriptor* descriptor = this;
-    
+
     // Set defaults for the vertex state.
     {
         wgpu::VertexState* vertex = &descriptor->vertex;
         vertex->module = nullptr;
         vertex->entryPoint = "main";
         vertex->bufferCount = 0;
-        
+
         // Fill the default values for vertexBuffers and vertexAttributes in buffers.
         for (uint32_t i = 0; i < kMaxVertexAttributes; ++i) {
             cAttributes[i].shaderLocation = 0;
@@ -73,7 +73,7 @@ ComboRenderPipelineDescriptor::ComboRenderPipelineDescriptor() {
         cBuffers[0].attributes = &cAttributes[0];
         vertex->buffers = &cBuffers[0];
     }
-    
+
     // Set the defaults for the primitive state
     {
         wgpu::PrimitiveState* primitive = &descriptor->primitive;
@@ -82,7 +82,7 @@ ComboRenderPipelineDescriptor::ComboRenderPipelineDescriptor() {
         primitive->frontFace = wgpu::FrontFace::CCW;
         primitive->cullMode = wgpu::CullMode::None;
     }
-    
+
     // Set the defaults for the depth-stencil state
     {
         wgpu::StencilFaceState stencilFace;
@@ -90,7 +90,7 @@ ComboRenderPipelineDescriptor::ComboRenderPipelineDescriptor() {
         stencilFace.failOp = wgpu::StencilOperation::Keep;
         stencilFace.depthFailOp = wgpu::StencilOperation::Keep;
         stencilFace.passOp = wgpu::StencilOperation::Keep;
-        
+
         cDepthStencil.format = wgpu::TextureFormat::Depth24PlusStencil8;
         cDepthStencil.depthWriteEnabled = false;
         cDepthStencil.depthCompare = wgpu::CompareFunction::Always;
@@ -102,7 +102,7 @@ ComboRenderPipelineDescriptor::ComboRenderPipelineDescriptor() {
         cDepthStencil.depthBiasSlopeScale = 0.0;
         cDepthStencil.depthBiasClamp = 0.0;
     }
-    
+
     // Set the defaults for the multisample state
     {
         wgpu::MultisampleState* multisample = &descriptor->multisample;
@@ -110,7 +110,7 @@ ComboRenderPipelineDescriptor::ComboRenderPipelineDescriptor() {
         multisample->mask = 0xFFFFFFFF;
         multisample->alphaToCoverageEnabled = false;
     }
-    
+
     // Set the defaults for the fragment state
     {
         cFragment.module = nullptr;
@@ -118,17 +118,17 @@ ComboRenderPipelineDescriptor::ComboRenderPipelineDescriptor() {
         cFragment.targetCount = 1;
         cFragment.targets = &cTargets[0];
         descriptor->fragment = &cFragment;
-        
+
         wgpu::BlendComponent blendComponent;
         blendComponent.srcFactor = wgpu::BlendFactor::One;
         blendComponent.dstFactor = wgpu::BlendFactor::Zero;
         blendComponent.operation = wgpu::BlendOperation::Add;
-        
+
         for (uint32_t i = 0; i < kMaxColorAttachments; ++i) {
             cTargets[i].format = wgpu::TextureFormat::RGBA8Unorm;
             cTargets[i].blend = nullptr;
             cTargets[i].writeMask = wgpu::ColorWriteMask::All;
-            
+
             cBlends[i].color = blendComponent;
             cBlends[i].alpha = blendComponent;
         }

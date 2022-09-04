@@ -16,7 +16,7 @@ EditorApplication::~EditorApplication() {
     _renderPass.reset();
 }
 
-bool EditorApplication::prepare(Engine &engine) {
+bool EditorApplication::prepare(Platform &platform) {
     GraphicsApplication::prepare(engine);
     
     auto extent = engine.window().extent();

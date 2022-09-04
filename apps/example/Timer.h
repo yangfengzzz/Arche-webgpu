@@ -19,16 +19,15 @@ namespace utils {
 
 class Timer {
 public:
-    virtual ~Timer() {
-    }
-    
+    virtual ~Timer() {}
+
     // Timer functionality: Use start() and stop() to record the duration and use
     // getElapsedTime() to query that duration.  If getElapsedTime() is called in between, it
     // will report the elapsed time since start().
     virtual void Start() = 0;
     virtual void Stop() = 0;
     virtual double GetElapsedTime() const = 0;
-    
+
     // Timestamp functionality: Use getAbsoluteTime() to get an absolute time with an unknown
     // origin. This time moves forward regardless of start()/stop().
     virtual double GetAbsoluteTime() = 0;

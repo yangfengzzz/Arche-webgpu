@@ -14,23 +14,23 @@
 
 #include "SampleUtils.h"
 
-#include "common/Assert.h"
-#include "common/Log.h"
-#include "common/Platform.h"
-#include "common/SystemUtils.h"
-#include "BackendBinding.h"
-#include "GLFWUtils.h"
-#include "TerribleCommandBuffer.h"
-
 #include <dawn/dawn_proc.h>
 #include <dawn/dawn_wsi.h>
 #include <dawn_native/DawnNative.h>
 #include <dawn_wire/WireClient.h>
 #include <dawn_wire/WireServer.h>
-#include "GLFW/glfw3.h"
 
 #include <algorithm>
 #include <cstring>
+
+#include "BackendBinding.h"
+#include "common/Assert.h"
+#include "common/Log.h"
+#include "common/Platform.h"
+#include "common/SystemUtils.h"
+#include "GLFW/glfw3.h"
+#include "GLFWUtils.h"
+#include "TerribleCommandBuffer.h"
 
 void PrintDeviceError(WGPUErrorType errorType, const char* message, void*) {
     const char* errorTypeName = "";
@@ -54,9 +54,7 @@ void PrintDeviceError(WGPUErrorType errorType, const char* message, void*) {
     dawn::ErrorLog() << errorTypeName << " error: " << message;
 }
 
-void PrintGLFWError(int code, const char* message) {
-    dawn::ErrorLog() << "GLFW error: " << code << " - " << message;
-}
+void PrintGLFWError(int code, const char* message) { dawn::ErrorLog() << "GLFW error: " << code << " - " << message; }
 
 enum class CmdBufType {
     None,
@@ -77,7 +75,7 @@ static wgpu::BackendType backendType = wgpu::BackendType::OpenGLES;
 #elif defined(DAWN_ENABLE_BACKEND_DESKTOP_GL)
 static wgpu::BackendType backendType = wgpu::BackendType::OpenGL;
 #else
-#    error
+#error
 #endif
 
 static CmdBufType cmdBufType = CmdBufType::Terrible;
@@ -96,12 +94,12 @@ wgpu::Device CreateCppDawnDevice() {
     if (GetEnvironmentVar("ANGLE_DEFAULT_PLATFORM").first.empty()) {
         angleDefaultPlatform.Set("ANGLE_DEFAULT_PLATFORM", "swiftshader");
     }
-    
+
     glfwSetErrorCallback(PrintGLFWError);
     if (!glfwInit()) {
         return wgpu::Device();
     }
-    
+
     // Create the test window and discover adapters using it (esp. for OpenGL)
     utils::SetupGLFWWindowHintsForBackend(backendType);
     glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_FALSE);
@@ -109,16 +107,15 @@ wgpu::Device CreateCppDawnDevice() {
     if (!window) {
         return wgpu::Device();
     }
-    
+
     instance = std::make_unique<dawn_native::Instance>();
     utils::DiscoverAdapter(instance.get(), window, backendType);
-    
+
     // Get an adapter for the backend to use, and create the device.
     dawn_native::Adapter backendAdapter;
     {
         std::vector<dawn_native::Adapter> adapters = instance->GetAdapters();
-        auto adapterIt = std::find_if(adapters.begin(), adapters.end(),
-                                      [](const dawn_native::Adapter adapter) -> bool {
+        auto adapterIt = std::find_if(adapters.begin(), adapters.end(), [](const dawn_native::Adapter adapter) -> bool {
             wgpu::AdapterProperties properties;
             adapter.GetProperties(&properties);
             return properties.backendType == backendType;
@@ -126,59 +123,56 @@ wgpu::Device CreateCppDawnDevice() {
         ASSERT(adapterIt != adapters.end());
         backendAdapter = *adapterIt;
     }
-    
+
     WGPUDevice backendDevice = backendAdapter.CreateDevice();
     DawnProcTable backendProcs = dawn_native::GetProcs();
-    
+
     binding = utils::CreateBinding(backendType, window, backendDevice);
     if (binding == nullptr) {
         return wgpu::Device();
     }
-    
+
     // Choose whether to use the backend procs and devices directly, or set up the wire.
     WGPUDevice cDevice = nullptr;
     DawnProcTable procs;
-    
+
     switch (cmdBufType) {
         case CmdBufType::None:
             procs = backendProcs;
             cDevice = backendDevice;
             break;
-            
+
         case CmdBufType::Terrible: {
             c2sBuf = new utils::TerribleCommandBuffer();
             s2cBuf = new utils::TerribleCommandBuffer();
-            
+
             dawn_wire::WireServerDescriptor serverDesc = {};
             serverDesc.procs = &backendProcs;
             serverDesc.serializer = s2cBuf;
-            
+
             wireServer = new dawn_wire::WireServer(serverDesc);
             c2sBuf->SetHandler(wireServer);
-            
+
             dawn_wire::WireClientDescriptor clientDesc = {};
             clientDesc.serializer = c2sBuf;
-            
+
             wireClient = new dawn_wire::WireClient(clientDesc);
             procs = dawn_wire::client::GetProcs();
             s2cBuf->SetHandler(wireClient);
-            
+
             auto deviceReservation = wireClient->ReserveDevice();
-            wireServer->InjectDevice(backendDevice, deviceReservation.id,
-                                     deviceReservation.generation);
-            
+            wireServer->InjectDevice(backendDevice, deviceReservation.id, deviceReservation.generation);
+
             cDevice = deviceReservation.device;
         } break;
     }
-    
+
     dawnProcSetProcs(&procs);
     procs.deviceSetUncapturedErrorCallback(cDevice, PrintDeviceError, nullptr);
     return wgpu::Device::Acquire(cDevice);
 }
 
-uint64_t GetSwapChainImplementation() {
-    return binding->GetSwapChainImplementation();
-}
+uint64_t GetSwapChainImplementation() { return binding->GetSwapChainImplementation(); }
 
 wgpu::TextureFormat GetPreferredSwapChainTextureFormat() {
     DoFlush();
@@ -265,16 +259,12 @@ void DoFlush() {
     if (cmdBufType == CmdBufType::Terrible) {
         bool c2sSuccess = c2sBuf->Flush();
         bool s2cSuccess = s2cBuf->Flush();
-        
+
         ASSERT(c2sSuccess && s2cSuccess);
     }
     glfwPollEvents();
 }
 
-bool ShouldQuit() {
-    return glfwWindowShouldClose(window);
-}
+bool ShouldQuit() { return glfwWindowShouldClose(window); }
 
-GLFWwindow* GetGLFWWindow() {
-    return window;
-}
+GLFWwindow* GetGLFWWindow() { return window; }

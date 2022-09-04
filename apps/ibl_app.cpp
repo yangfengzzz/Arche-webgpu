@@ -4,26 +4,25 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "ibl_app.h"
-#include "entity.h"
-#include "mesh/primitive_mesh.h"
-#include "mesh/mesh_renderer.h"
-#include "material/pbr_material.h"
-#include "rendering/subpasses/skybox_subpass.h"
-#include "camera.h"
-#include "lighting/direct_light.h"
+#include "apps/ibl_app.h"
+
+#include "vox.render/camera.h"
+#include "vox.render/entity.h"
+#include "vox.render/material/pbr_material.h"
+#include "vox.render/mesh/mesh_renderer.h"
+#include "vox.render/mesh/primitive_mesh.h"
+#include "vox.render/rendering/subpasses/skybox_subpass.h"
 
 namespace vox {
-bool IBLApp::prepare(Engine &engine) {
-    ForwardApplication::prepare(engine);
-    
+bool IBLApp::prepare(Platform &platform) {
+    ForwardApplication::prepare(platform);
+
     auto scene = _sceneManager->currentScene();
-    auto skybox = std::make_unique<SkyboxSubpass>(_renderContext.get(), _depthStencilTextureFormat,
-                                                  scene, _mainCamera);
+    auto skybox = std::make_unique<SkyboxSubpass>(_renderContext.get(), _depthStencilTextureFormat, scene, _mainCamera);
     skybox->createCuboid();
     skybox->setTextureCubeMap(_cubeMap);
     _renderPass->addSubpass(std::move(skybox));
-    
+
     return true;
 }
 
@@ -41,40 +40,40 @@ void IBLApp::loadScene() {
     _materials[8] = Material("Red", Color(1.0f, 0.0f, 0.0f, 1.0), 0.1f, 1.0f);
     _materials[9] = Material("Blue", Color(0.0f, 0.0f, 1.0f, 1.0), 0.1f, 1.0f);
     _materials[10] = Material("Black", Color(0.0f, 1.0, 1.0, 1.0), 0.1f, 1.0f);
-    
+
     const int materialIndex = 7;
     Material mat = _materials[materialIndex];
-    
+
     const std::string path = "SkyMap/country/";
-    const std::array<std::string, 6> imageNames = {"posx.png", "negx.png", "posy.png", "negy.png", "posz.png", "negz.png"};
+    const std::array<std::string, 6> imageNames = {"posx.png", "negx.png", "posy.png",
+                                                   "negy.png", "posz.png", "negz.png"};
     std::array<std::unique_ptr<Image>, 6> images;
-    std::array<Image*, 6> imagePtr;
+    std::array<Image *, 6> imagePtr{};
     for (int i = 0; i < 6; i++) {
         images[i] = Image::load(path + imageNames[i]);
         imagePtr[i] = images[i].get();
     }
-    _cubeMap = std::make_shared<SampledTextureCube>(_device,
-                                                    images[0]->extent().width, images[0]->extent().height, 1,
+    _cubeMap = std::make_shared<SampledTextureCube>(_device, images[0]->extent().width, images[0]->extent().height, 1,
                                                     images[0]->format());
     _cubeMap->setPixelBuffer(imagePtr);
-    
+
     auto scene = _sceneManager->currentScene();
     scene->ambientLight()->setSpecularTexture(_cubeMap);
     scene->ambientLight()->setDiffuseTexture(_cubeMap);
-    
+
     auto rootEntity = scene->createRootEntity();
     auto cameraEntity = rootEntity->createChild();
     cameraEntity->transform->setPosition(10, 10, 10);
     cameraEntity->transform->lookAt(Point3F(0, 0, 0));
     _mainCamera = cameraEntity->addComponent<Camera>();
     cameraEntity->addComponent<control::OrbitControl>();
-    
+
     auto light = rootEntity->createChild("light");
     light->transform->setPosition(-3, 3, -3);
     light->transform->lookAt(Point3F(0, 0, 0));
     auto directionLight = light->addComponent<DirectLight>();
     directionLight->intensity = 0.3;
-    
+
     auto sphere = PrimitiveMesh::createSphere(_device, 0.5, 64);
     for (int i = 0; i < 7; i++) {
         for (int j = 0; j < 7; j++) {
@@ -84,14 +83,14 @@ void IBLApp::loadScene() {
             sphereMtl->setBaseColor(mat.baseColor);
             sphereMtl->setMetallic(clamp(float(7 - i) / float(7 - 1), 0.1f, 1.0f));
             sphereMtl->setRoughness(clamp(float(7 - j) / float(7 - 1), 0.05f, 1.0f));
-            
+
             auto sphereRenderer = sphereEntity->addComponent<MeshRenderer>();
             sphereRenderer->setMesh(sphere);
             sphereRenderer->setMaterial(sphereMtl);
         }
     }
-    
+
     scene->play();
 }
 
-}
+}  // namespace vox

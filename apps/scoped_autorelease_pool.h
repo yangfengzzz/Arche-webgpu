@@ -4,8 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef UTILS_SCOPEDAUTORELEASEPOOL_H_
-#define UTILS_SCOPEDAUTORELEASEPOOL_H_
+#pragma once
 
 #include <cstddef>
 
@@ -35,17 +34,15 @@ class [[nodiscard]] ScopedAutoreleasePool {
 public:
     ScopedAutoreleasePool();
     ~ScopedAutoreleasePool();
-    
+
     ScopedAutoreleasePool(const ScopedAutoreleasePool&) = delete;
     ScopedAutoreleasePool& operator=(const ScopedAutoreleasePool&) = delete;
-    
+
     ScopedAutoreleasePool(ScopedAutoreleasePool&&);
     ScopedAutoreleasePool& operator=(ScopedAutoreleasePool&&);
-    
+
 private:
     void* mPool = nullptr;
 };
 
 }  // namespace utils
-
-#endif  // UTILS_SCOPEDAUTORELEASEPOOL_H_

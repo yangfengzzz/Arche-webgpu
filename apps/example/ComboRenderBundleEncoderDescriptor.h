@@ -17,16 +17,16 @@
 
 #include <webgpu/webgpu_cpp.h>
 
-#include "common/Constants.h"
-
 #include <array>
+
+#include "common/Constants.h"
 
 namespace utils {
 
 class ComboRenderBundleEncoderDescriptor : public wgpu::RenderBundleEncoderDescriptor {
 public:
     ComboRenderBundleEncoderDescriptor();
-    
+
     std::array<wgpu::TextureFormat, kMaxColorAttachments> cColorFormats;
 };
 

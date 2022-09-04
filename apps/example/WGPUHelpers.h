@@ -31,15 +31,10 @@ enum Expectation { Success, Failure };
 wgpu::ShaderModule CreateShaderModuleFromASM(const wgpu::Device& device, const char* source);
 wgpu::ShaderModule CreateShaderModule(const wgpu::Device& device, const char* source);
 
-wgpu::Buffer CreateBufferFromData(const wgpu::Device& device,
-                                  const void* data,
-                                  uint64_t size,
-                                  wgpu::BufferUsage usage);
+wgpu::Buffer CreateBufferFromData(const wgpu::Device& device, const void* data, uint64_t size, wgpu::BufferUsage usage);
 
 template <typename T>
-wgpu::Buffer CreateBufferFromData(const wgpu::Device& device,
-                                  wgpu::BufferUsage usage,
-                                  std::initializer_list<T> data) {
+wgpu::Buffer CreateBufferFromData(const wgpu::Device& device, wgpu::BufferUsage usage, std::initializer_list<T> data) {
     return CreateBufferFromData(device, data.begin(), uint32_t(sizeof(T) * data.size()), usage);
 }
 
@@ -47,13 +42,11 @@ wgpu::ImageCopyBuffer CreateImageCopyBuffer(wgpu::Buffer buffer,
                                             uint64_t offset,
                                             uint32_t bytesPerRow,
                                             uint32_t rowsPerImage = wgpu::kCopyStrideUndefined);
-wgpu::ImageCopyTexture CreateImageCopyTexture(
-                                              wgpu::Texture texture,
+wgpu::ImageCopyTexture CreateImageCopyTexture(wgpu::Texture texture,
                                               uint32_t level,
                                               wgpu::Origin3D origin,
                                               wgpu::TextureAspect aspect = wgpu::TextureAspect::All);
-wgpu::TextureDataLayout CreateTextureDataLayout(
-                                                uint64_t offset,
+wgpu::TextureDataLayout CreateTextureDataLayout(uint64_t offset,
                                                 uint32_t bytesPerRow,
                                                 uint32_t rowsPerImage = wgpu::kCopyStrideUndefined);
 
@@ -61,11 +54,10 @@ struct ComboRenderPassDescriptor : public wgpu::RenderPassDescriptor {
 public:
     ComboRenderPassDescriptor(std::initializer_list<wgpu::TextureView> colorAttachmentInfo,
                               wgpu::TextureView depthStencil = wgpu::TextureView());
-    
+
     ComboRenderPassDescriptor(const ComboRenderPassDescriptor& otherRenderPass);
-    const ComboRenderPassDescriptor& operator=(
-                                               const ComboRenderPassDescriptor& otherRenderPass);
-    
+    const ComboRenderPassDescriptor& operator=(const ComboRenderPassDescriptor& otherRenderPass);
+
     std::array<wgpu::RenderPassColorAttachment, kMaxColorAttachments> cColorAttachments;
     wgpu::RenderPassDepthStencilAttachment cDepthStencilAttachmentInfo = {};
 };
@@ -77,26 +69,23 @@ public:
                     uint32_t height,
                     wgpu::Texture color,
                     wgpu::TextureFormat texture = kDefaultColorFormat);
-    
+
     static constexpr wgpu::TextureFormat kDefaultColorFormat = wgpu::TextureFormat::RGBA8Unorm;
-    
+
     uint32_t width;
     uint32_t height;
     wgpu::Texture color;
     wgpu::TextureFormat colorFormat;
     utils::ComboRenderPassDescriptor renderPassInfo;
 };
-BasicRenderPass CreateBasicRenderPass(
-                                      const wgpu::Device& device,
+BasicRenderPass CreateBasicRenderPass(const wgpu::Device& device,
                                       uint32_t width,
                                       uint32_t height,
                                       wgpu::TextureFormat format = BasicRenderPass::kDefaultColorFormat);
 
-wgpu::PipelineLayout MakeBasicPipelineLayout(const wgpu::Device& device,
-                                             const wgpu::BindGroupLayout* bindGroupLayout);
+wgpu::PipelineLayout MakeBasicPipelineLayout(const wgpu::Device& device, const wgpu::BindGroupLayout* bindGroupLayout);
 
-wgpu::PipelineLayout MakePipelineLayout(const wgpu::Device& device,
-                                        std::vector<wgpu::BindGroupLayout> bgls);
+wgpu::PipelineLayout MakePipelineLayout(const wgpu::Device& device, std::vector<wgpu::BindGroupLayout> bgls);
 
 extern wgpu::ExternalTextureBindingLayout kExternalTextureBindingLayout;
 
@@ -130,12 +119,12 @@ struct BindingLayoutEntryInitializationHelper : wgpu::BindGroupLayoutEntry {
     BindingLayoutEntryInitializationHelper(uint32_t entryBinding,
                                            wgpu::ShaderStage entryVisibility,
                                            wgpu::ExternalTextureBindingLayout* bindingLayout);
-    
+
     BindingLayoutEntryInitializationHelper(const wgpu::BindGroupLayoutEntry& entry);
 };
 
-wgpu::BindGroupLayout MakeBindGroupLayout(const wgpu::Device& device,
-                                          std::initializer_list<BindingLayoutEntryInitializationHelper> entriesInitializer);
+wgpu::BindGroupLayout MakeBindGroupLayout(
+        const wgpu::Device& device, std::initializer_list<BindingLayoutEntryInitializationHelper> entriesInitializer);
 
 // Helpers to make creating bind groups look nicer:
 //
@@ -155,9 +144,9 @@ struct BindingInitializationHelper {
                                 const wgpu::Buffer& buffer,
                                 uint64_t offset = 0,
                                 uint64_t size = wgpu::kWholeSize);
-    
+
     wgpu::BindGroupEntry GetAsBinding() const;
-    
+
     uint32_t binding;
     wgpu::Sampler sampler;
     wgpu::TextureView textureView;
@@ -167,8 +156,7 @@ struct BindingInitializationHelper {
     uint64_t size = 0;
 };
 
-wgpu::BindGroup MakeBindGroup(
-                              const wgpu::Device& device,
+wgpu::BindGroup MakeBindGroup(const wgpu::Device& device,
                               const wgpu::BindGroupLayout& layout,
                               std::initializer_list<BindingInitializationHelper> entriesInitializer);
 

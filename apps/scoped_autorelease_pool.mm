@@ -10,8 +10,7 @@
 
 namespace utils {
 
-ScopedAutoreleasePool::ScopedAutoreleasePool() : mPool([[NSAutoreleasePool alloc] init]) {
-}
+ScopedAutoreleasePool::ScopedAutoreleasePool() : mPool([[NSAutoreleasePool alloc] init]) {}
 
 ScopedAutoreleasePool::~ScopedAutoreleasePool() {
     if (mPool != nullptr) {

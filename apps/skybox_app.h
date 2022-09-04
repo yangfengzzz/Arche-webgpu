@@ -4,19 +4,16 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef skybox_app_hpp
-#define skybox_app_hpp
+#pragma once
 
-#include "forward_application.h"
-#include "controls/orbit_control.h"
+#include "vox.render/controls/orbit_control.h"
+#include "vox.render/forward_application.h"
 
 namespace vox {
 class SkyboxApp : public ForwardApplication {
 public:
-    bool prepare(Engine &engine) override;
+    bool prepare(Platform &platform) override;
 
     void loadScene() override;
 };
-}
-
-#endif /* skybox_app_hpp */
+}  // namespace vox

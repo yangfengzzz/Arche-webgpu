@@ -4,32 +4,30 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef ibl_app_hpp
-#define ibl_app_hpp
+#pragma once
 
-#include "forward_application.h"
-#include "controls/orbit_control.h"
-#include "texture/sampled_texturecube.h"
+#include "vox.render/controls/orbit_control.h"
+#include "vox.render/forward_application.h"
+#include "vox.render/texture/sampled_texturecube.h"
 
 namespace vox {
 class IBLApp : public ForwardApplication {
 public:
-    bool prepare(Engine &engine) override;
-    
+    bool prepare(Platform &platform) override;
+
     void loadScene() override;
-    
+
 private:
     SampledTextureCubePtr _cubeMap{nullptr};
-    
+
     struct Material {
         std::string name;
         Color baseColor;
         float roughness;
         float metallic;
-        
-        Material() {
-        };
-        
+
+        Material(){};
+
         Material(std::string n, Color c, float r, float m) : name(n) {
             roughness = r;
             metallic = m;
@@ -37,10 +35,8 @@ private:
         };
     };
     std::vector<Material> _materials;
-    
+
     std::string _path;
     std::array<std::string, 6> _images;
 };
-}
-
-#endif /* ibl_app_hpp */
+}  // namespace vox

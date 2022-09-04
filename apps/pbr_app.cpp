@@ -4,13 +4,13 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "pbr_app.h"
-#include "entity.h"
-#include "mesh/primitive_mesh.h"
-#include "mesh/mesh_renderer.h"
-#include "material/pbr_material.h"
-#include "camera.h"
-#include "lighting/direct_light.h"
+#include "apps/pbr_app.h"
+
+#include "vox.render/camera.h"
+#include "vox.render/entity.h"
+#include "vox.render/material/pbr_material.h"
+#include "vox.render/mesh/mesh_renderer.h"
+#include "vox.render/mesh/primitive_mesh.h"
 
 namespace vox {
 void PBRApp::loadScene() {
@@ -27,26 +27,26 @@ void PBRApp::loadScene() {
     _materials[8] = Material("Red", Color(1.0f, 0.0f, 0.0f, 1.0), 0.1f, 1.0f);
     _materials[9] = Material("Blue", Color(0.0f, 0.0f, 1.0f, 1.0), 0.1f, 1.0f);
     _materials[10] = Material("Black", Color(0.0f, 1.0, 1.0, 1.0), 0.1f, 1.0f);
-    
+
     const int materialIndex = 0;
     Material mat = _materials[materialIndex];
-    
+
     auto scene = _sceneManager->currentScene();
     auto rootEntity = scene->createRootEntity();
-    
+
     auto cameraEntity = rootEntity->createChild();
     cameraEntity->transform->setPosition(10, 10, 10);
     cameraEntity->transform->lookAt(Point3F(0, 0, 0));
     _mainCamera = cameraEntity->addComponent<Camera>();
     cameraEntity->addComponent<control::OrbitControl>();
-    
+
     // init point light
     auto light = rootEntity->createChild("light");
     light->transform->setPosition(3, 3, 3);
     light->transform->lookAt(Point3F(0, 0, 0));
     auto directionLight = light->addComponent<DirectLight>();
     directionLight->intensity = 0.3;
-    
+
     auto sphere = PrimitiveMesh::createSphere(_device, 0.5, 30);
     for (int i = 0; i < 7; i++) {
         for (int j = 0; j < 7; j++) {
@@ -56,14 +56,14 @@ void PBRApp::loadScene() {
             sphereMtl->setBaseColor(mat.baseColor);
             sphereMtl->setMetallic(clamp(float(i) / float(7 - 1), 0.1f, 1.0f));
             sphereMtl->setRoughness(clamp(float(j) / float(7 - 1), 0.05f, 1.0f));
-            
+
             auto sphereRenderer = sphereEntity->addComponent<MeshRenderer>();
             sphereRenderer->setMesh(sphere);
             sphereRenderer->setMaterial(sphereMtl);
         }
     }
-    
+
     scene->play();
 }
 
-}
+}  // namespace vox

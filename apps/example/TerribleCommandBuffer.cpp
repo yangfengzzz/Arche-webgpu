@@ -18,20 +18,13 @@
 
 namespace utils {
 
-TerribleCommandBuffer::TerribleCommandBuffer() {
-}
+TerribleCommandBuffer::TerribleCommandBuffer() {}
 
-TerribleCommandBuffer::TerribleCommandBuffer(dawn::wire::CommandHandler* handler)
-: mHandler(handler) {
-}
+TerribleCommandBuffer::TerribleCommandBuffer(dawn::wire::CommandHandler* handler) : mHandler(handler) {}
 
-void TerribleCommandBuffer::SetHandler(dawn::wire::CommandHandler* handler) {
-    mHandler = handler;
-}
+void TerribleCommandBuffer::SetHandler(dawn::wire::CommandHandler* handler) { mHandler = handler; }
 
-size_t TerribleCommandBuffer::GetMaximumAllocationSize() const {
-    return sizeof(mBuffer);
-}
+size_t TerribleCommandBuffer::GetMaximumAllocationSize() const { return sizeof(mBuffer); }
 
 void* TerribleCommandBuffer::GetCmdSpace(size_t size) {
     // Note: This returns non-null even if size is zero.
@@ -45,7 +38,7 @@ void* TerribleCommandBuffer::GetCmdSpace(size_t size) {
         }
         return GetCmdSpace(size);
     }
-    
+
     mOffset += size;
     return result;
 }

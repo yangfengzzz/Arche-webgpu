@@ -23,14 +23,14 @@ class TerribleCommandBuffer : public dawn::wire::CommandSerializer {
 public:
     TerribleCommandBuffer();
     TerribleCommandBuffer(dawn::wire::CommandHandler* handler);
-    
+
     void SetHandler(dawn::wire::CommandHandler* handler);
-    
+
     size_t GetMaximumAllocationSize() const override;
-    
+
     void* GetCmdSpace(size_t size) override;
     bool Flush() override;
-    
+
 private:
     dawn::wire::CommandHandler* mHandler = nullptr;
     size_t mOffset = 0;

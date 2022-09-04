@@ -4,28 +4,28 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef pbr_app_hpp
-#define pbr_app_hpp
+#pragma once
 
-#include "forward_application.h"
-#include "controls/orbit_control.h"
+#include <utility>
+
+#include "vox.render/controls/orbit_control.h"
+#include "vox.render/forward_application.h"
 
 namespace vox {
 class PBRApp : public ForwardApplication {
 public:
     void loadScene() override;
-    
+
 private:
     struct Material {
         std::string name;
         Color baseColor;
-        float roughness;
-        float metallic;
-        
-        Material() {
-        };
-        
-        Material(std::string n, Color c, float r, float m) : name(n) {
+        float roughness{};
+        float metallic{};
+
+        Material()= default;;
+
+        Material(std::string n, Color c, float r, float m) : name(std::move(n)) {
             roughness = r;
             metallic = m;
             baseColor = c;
@@ -34,6 +34,4 @@ private:
     std::vector<Material> _materials;
 };
 
-}
-
-#endif /* pbr_app_hpp */
+}  // namespace vox

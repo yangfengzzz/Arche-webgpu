@@ -14,6 +14,6 @@ class GLTFApp : public ForwardApplication {
 public:
     void loadScene() override;
 };
-}
+}  // namespace vox
 
 #endif /* gltf_app_hpp */

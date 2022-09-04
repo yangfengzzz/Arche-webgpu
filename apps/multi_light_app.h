@@ -4,16 +4,14 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef multi_light_app_hpp
-#define multi_light_app_hpp
+#pragma once
 
-#include "forward_application.h"
+#include "vox.render/forward_application.h"
 
 namespace vox {
 class MultiLightApp : public ForwardApplication {
 public:
     void loadScene() override;
 };
- 
-}
-#endif /* multi_light_app_hpp */
+
+}  // namespace vox

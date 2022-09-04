@@ -4,12 +4,13 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "omni_shadowmap_app.h"
-#include "entity.h"
-#include "mesh/primitive_mesh.h"
-#include "mesh/mesh_renderer.h"
-#include "material/blinn_phong_material.h"
-#include "camera.h"
+#include "apps/omni_shadowmap_app.h"
+
+#include "vox.render/camera.h"
+#include "vox.render/entity.h"
+#include "vox.render/material/blinn_phong_material.h"
+#include "vox.render/mesh/mesh_renderer.h"
+#include "vox.render/mesh/primitive_mesh.h"
 
 namespace vox {
 namespace {
@@ -18,11 +19,10 @@ class MoveScript : public Script {
     float height = 2;
     float vel = 4;
     int8_t velSign = -1;
-    
+
 public:
-    MoveScript(Entity *entity) : Script(entity) {
-    }
-    
+    explicit MoveScript(Entity *entity) : Script(entity) {}
+
     void onUpdate(float deltaTime) override {
         if (height >= 2) {
             velSign = -1;
@@ -31,31 +31,31 @@ public:
             velSign = 1;
         }
         height += deltaTime * vel * float(velSign);
-        
+
         entity()->transform->setPosition(std::sin(totalTime), height, std::cos(totalTime));
         totalTime += deltaTime;
     }
 };
-}
+}  // namespace
 
 void OminiShadowMapApp::loadScene() {
     auto scene = _sceneManager->currentScene();
     auto rootEntity = scene->createRootEntity();
-    
+
     auto cameraEntity = rootEntity->createChild();
     cameraEntity->transform->setPosition(0, 0, 20);
     cameraEntity->transform->lookAt(Point3F(0, 0, 0));
     _mainCamera = cameraEntity->addComponent<Camera>();
     cameraEntity->addComponent<control::OrbitControl>();
-    
+
     auto light = rootEntity->createChild("light");
     light->transform->setPosition(0, 0, 0);
     auto directLight = light->addComponent<PointLight>();
     directLight->intensity = 0.5;
     directLight->setEnableShadow(true);
-    
+
     auto planeMesh = PrimitiveMesh::createPlane(_device, 10, 10);
-    
+
     auto planeEntity = rootEntity->createChild("PlaneEntity");
     planeEntity->transform->setPosition(0, 5, 0);
     auto planeMtl = std::make_shared<BlinnPhongMaterial>(_device);
@@ -65,7 +65,7 @@ void OminiShadowMapApp::loadScene() {
     planeRenderer->setMesh(planeMesh);
     planeRenderer->setMaterial(planeMtl);
     planeRenderer->receiveShadow = true;
-    
+
     auto planeEntity2 = rootEntity->createChild("PlaneEntity2");
     planeEntity2->transform->setPosition(0, -5, 0);
     auto planeMtl2 = std::make_shared<BlinnPhongMaterial>(_device);
@@ -108,21 +108,21 @@ void OminiShadowMapApp::loadScene() {
     planeRenderer5->setMesh(planeMesh);
     planeRenderer5->setMaterial(planeMtl5);
     planeRenderer5->receiveShadow = true;
-    
+
     // create box test entity
     float cubeSize = 1.0;
     auto boxMesh = PrimitiveMesh::createCuboid(_device, cubeSize, cubeSize, cubeSize);
     auto boxMtl = std::make_shared<BlinnPhongMaterial>(_device);
     boxMtl->setBaseColor(Color(1.0, 0.0, 0.0, 0.5));
-    boxMtl->setRenderFace(RenderFace::Double); // bug
+    boxMtl->setRenderFace(RenderFace::Double);  // bug
     auto boxEntity = rootEntity->createChild("BoxEntity");
     boxEntity->addComponent<MoveScript>();
     auto boxRenderer = boxEntity->addComponent<MeshRenderer>();
     boxRenderer->setMesh(boxMesh);
     boxRenderer->setMaterial(boxMtl);
     boxRenderer->castShadow = true;
-    
+
     scene->play();
 }
 
-}
+}  // namespace vox

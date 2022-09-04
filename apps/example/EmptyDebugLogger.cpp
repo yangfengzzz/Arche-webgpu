@@ -22,8 +22,6 @@ public:
     ~EmptyDebugLogger() override = default;
 };
 
-PlatformDebugLogger* CreatePlatformDebugLogger() {
-    return new EmptyDebugLogger();
-}
+PlatformDebugLogger* CreatePlatformDebugLogger() { return new EmptyDebugLogger(); }
 
 }  // namespace utils

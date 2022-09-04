@@ -4,25 +4,22 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef atomic_compute_hpp
-#define atomic_compute_hpp
+#pragma once
 
-#include "forward_application.h"
-#include "rendering/compute_pass.h"
+#include "vox.render/forward_application.h"
+#include "vox.render/rendering/compute_pass.h"
 
 namespace vox {
 class AtomicComputeApp : public ForwardApplication {
 public:
-    bool prepare(Engine &engine) override;
+    bool prepare(Platform& platform) override;
 
     void loadScene() override;
-    
+
     void updateGPUTask(wgpu::CommandEncoder& commandEncoder) override;
-    
+
 private:
     std::shared_ptr<Material> _material{nullptr};
     std::unique_ptr<ComputePass> _pass{nullptr};
 };
-}
-
-#endif /* atomic_compute_hpp */
+}  // namespace vox

@@ -4,16 +4,14 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef particle_app_hpp
-#define particle_app_hpp
+#pragma once
 
-#include "forward_application.h"
-#include "particle/particle_manager.h"
+#include "vox.render/forward_application.h"
+#include "vox.render/particle/particle_manager.h"
 
 namespace vox {
 class ParticleApp : public ForwardApplication {
 public:
     void loadScene() override;
 };
-}
-#endif /* particle_app_hpp */
+}  // namespace vox

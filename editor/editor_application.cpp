@@ -37,7 +37,7 @@ _panelsManager(_canvas) {
     Shader::create("editor-grid", std::make_unique<WGSLGridVertex>(), std::make_unique<WGSLGridFragment>());
 }
 
-bool EditorApplication::prepare(Engine &engine) {
+bool EditorApplication::prepare(Platform &platform) {
     GraphicsApplication::prepare(engine);
     
     _gui = std::make_unique<::vox::ui::UIManager>(static_cast<GlfwWindow*>(&engine.window())->handle(), _renderContext.get());

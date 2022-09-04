@@ -4,16 +4,13 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef shadowmap_app_hpp
-#define shadowmap_app_hpp
+#pragma once
 
-#include "forward_application.h"
+#include "vox.render/forward_application.h"
 
 namespace vox {
 class ShadowMapApp : public ForwardApplication {
 public:
     void loadScene() override;
 };
-}
-
-#endif /* shadowmap_app_hpp */
+}  // namespace vox

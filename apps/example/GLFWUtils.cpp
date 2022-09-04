@@ -14,15 +14,15 @@
 
 #include "GLFWUtils.h"
 
-#include "GLFW/glfw3.h"
-#include "common/Platform.h"
-
 #include <cstdlib>
 
+#include "common/Platform.h"
+#include "GLFW/glfw3.h"
+
 #if defined(DAWN_PLATFORM_WINDOWS)
-#    define GLFW_EXPOSE_NATIVE_WIN32
+#define GLFW_EXPOSE_NATIVE_WIN32
 #elif defined(DAWN_USE_X11)
-#    define GLFW_EXPOSE_NATIVE_X11
+#define GLFW_EXPOSE_NATIVE_X11
 #endif
 #include "GLFW/glfw3native.h"
 
@@ -49,20 +49,19 @@ void SetupGLFWWindowHintsForBackend(wgpu::BackendType type) {
 }
 
 wgpu::Surface CreateSurfaceForWindow(wgpu::Instance instance, GLFWwindow* window) {
-    std::unique_ptr<wgpu::ChainedStruct> chainedDescriptor =
-    SetupWindowAndGetSurfaceDescriptorForTesting(window);
-    
+    std::unique_ptr<wgpu::ChainedStruct> chainedDescriptor = SetupWindowAndGetSurfaceDescriptorForTesting(window);
+
     wgpu::SurfaceDescriptor descriptor;
     descriptor.nextInChain = chainedDescriptor.get();
     wgpu::Surface surface = instance.CreateSurface(&descriptor);
-    
+
     return surface;
 }
 
 #if defined(DAWN_PLATFORM_WINDOWS)
 std::unique_ptr<wgpu::ChainedStruct> SetupWindowAndGetSurfaceDescriptorForTesting(GLFWwindow* window) {
     std::unique_ptr<wgpu::SurfaceDescriptorFromWindowsHWND> desc =
-    std::make_unique<wgpu::SurfaceDescriptorFromWindowsHWND>();
+            std::make_unique<wgpu::SurfaceDescriptorFromWindowsHWND>();
     desc->hwnd = glfwGetWin32Window(window);
     desc->hinstance = GetModuleHandle(nullptr);
     return std::move(desc);
@@ -70,7 +69,7 @@ std::unique_ptr<wgpu::ChainedStruct> SetupWindowAndGetSurfaceDescriptorForTestin
 #elif defined(DAWN_USE_X11)
 std::unique_ptr<wgpu::ChainedStruct> SetupWindowAndGetSurfaceDescriptorForTesting(GLFWwindow* window) {
     std::unique_ptr<wgpu::SurfaceDescriptorFromXlibWindow> desc =
-    std::make_unique<wgpu::SurfaceDescriptorFromXlibWindow>();
+            std::make_unique<wgpu::SurfaceDescriptorFromXlibWindow>();
     desc->display = glfwGetX11Display();
     desc->window = glfwGetX11Window(window);
     return std::move(desc);
@@ -78,9 +77,7 @@ std::unique_ptr<wgpu::ChainedStruct> SetupWindowAndGetSurfaceDescriptorForTestin
 #elif defined(DAWN_ENABLE_BACKEND_METAL)
 // SetupWindowAndGetSurfaceDescriptorForTesting defined in GLFWUtils_metal.mm
 #else
-std::unique_ptr<wgpu::ChainedStruct> SetupWindowAndGetSurfaceDescriptorForTesting(GLFWwindow*) {
-    return nullptr;
-}
+std::unique_ptr<wgpu::ChainedStruct> SetupWindowAndGetSurfaceDescriptorForTesting(GLFWwindow*) { return nullptr; }
 #endif
 
 }  // namespace utils

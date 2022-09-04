@@ -12,14 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "SampleUtils.h"
+#include <vector>
 
 #include "ComboRenderPipelineDescriptor.h"
+#include "SampleUtils.h"
 #include "ScopedAutoreleasePool.h"
 #include "SystemUtils.h"
 #include "WGPUHelpers.h"
-
-#include <vector>
 
 wgpu::Device device;
 
@@ -37,18 +36,16 @@ wgpu::BindGroup bindGroup;
 
 void initBuffers() {
     static const uint32_t indexData[3] = {
-        0,
-        1,
-        2,
+            0,
+            1,
+            2,
     };
-    indexBuffer =
-    utils::CreateBufferFromData(device, indexData, sizeof(indexData), wgpu::BufferUsage::Index);
-    
+    indexBuffer = utils::CreateBufferFromData(device, indexData, sizeof(indexData), wgpu::BufferUsage::Index);
+
     static const float vertexData[12] = {
-        0.0f, 0.5f, 0.0f, 1.0f, -0.5f, -0.5f, 0.0f, 1.0f, 0.5f, -0.5f, 0.0f, 1.0f,
+            0.0f, 0.5f, 0.0f, 1.0f, -0.5f, -0.5f, 0.0f, 1.0f, 0.5f, -0.5f, 0.0f, 1.0f,
     };
-    vertexBuffer = utils::CreateBufferFromData(device, vertexData, sizeof(vertexData),
-                                               wgpu::BufferUsage::Vertex);
+    vertexBuffer = utils::CreateBufferFromData(device, vertexData, sizeof(vertexData), wgpu::BufferUsage::Vertex);
 }
 
 void initTextures() {
@@ -62,46 +59,44 @@ void initTextures() {
     descriptor.mipLevelCount = 1;
     descriptor.usage = wgpu::TextureUsage::CopyDst | wgpu::TextureUsage::TextureBinding;
     texture = device.CreateTexture(&descriptor);
-    
+
     sampler = device.CreateSampler();
-    
+
     // Initialize the texture with arbitrary data until we can load images
     std::vector<uint8_t> data(4 * 1024 * 1024, 0);
     for (size_t i = 0; i < data.size(); ++i) {
         data[i] = static_cast<uint8_t>(i % 253);
     }
-    
+
     wgpu::Buffer stagingBuffer = utils::CreateBufferFromData(device, data.data(), static_cast<uint32_t>(data.size()),
                                                              wgpu::BufferUsage::CopySrc);
-    wgpu::ImageCopyBuffer imageCopyBuffer =
-    utils::CreateImageCopyBuffer(stagingBuffer, 0, 4 * 1024);
+    wgpu::ImageCopyBuffer imageCopyBuffer = utils::CreateImageCopyBuffer(stagingBuffer, 0, 4 * 1024);
     wgpu::ImageCopyTexture imageCopyTexture = utils::CreateImageCopyTexture(texture, 0, {0, 0, 0});
     wgpu::Extent3D copySize = {1024, 1024, 1};
-    
+
     wgpu::CommandEncoder encoder = device.CreateCommandEncoder();
     encoder.CopyBufferToTexture(&imageCopyBuffer, &imageCopyTexture, &copySize);
-    
+
     wgpu::CommandBuffer copy = encoder.Finish();
     queue.Submit(1, &copy);
 }
 
 void init() {
     device = CreateCppDawnDevice();
-    
+
     queue = device.GetQueue();
     swapchain = GetSwapChain(device);
-    swapchain.Configure(GetPreferredSwapChainTextureFormat(), wgpu::TextureUsage::RenderAttachment,
-                        640, 480);
-    
+    swapchain.Configure(GetPreferredSwapChainTextureFormat(), wgpu::TextureUsage::RenderAttachment, 640, 480);
+
     initBuffers();
     initTextures();
-    
+
     wgpu::ShaderModule vsModule = utils::CreateShaderModule(device, R"(
         [[stage(vertex)]] fn main([[location(0)]] pos : vec4<f32>)
                                -> [[builtin(position)]] vec4<f32> {
             return pos;
         })");
-    
+
     wgpu::ShaderModule fsModule = utils::CreateShaderModule(device, R"(
         [[group(0), binding(0)]] var mySampler: sampler;
         [[group(0), binding(1)]] var myTexture : texture_2d<f32>;
@@ -110,16 +105,17 @@ void init() {
                                  -> [[location(0)]] vec4<f32> {
             return textureSample(myTexture, mySampler, FragCoord.xy / vec2<f32>(640.0, 480.0));
         })");
-    
-    auto bgl = utils::MakeBindGroupLayout(device, {
-                                              {0, wgpu::ShaderStage::Fragment, wgpu::SamplerBindingType::Filtering},
-                                              {1, wgpu::ShaderStage::Fragment, wgpu::TextureSampleType::Float},
+
+    auto bgl = utils::MakeBindGroupLayout(device,
+                                          {
+                                                  {0, wgpu::ShaderStage::Fragment, wgpu::SamplerBindingType::Filtering},
+                                                  {1, wgpu::ShaderStage::Fragment, wgpu::TextureSampleType::Float},
                                           });
-    
+
     wgpu::PipelineLayout pl = utils::MakeBasicPipelineLayout(device, &bgl);
-    
+
     depthStencilView = CreateDefaultDepthStencilView(device);
-    
+
     utils::ComboRenderPipelineDescriptor descriptor;
     descriptor.layout = utils::MakeBasicPipelineLayout(device, &bgl);
     descriptor.vertex.module = vsModule;
@@ -130,11 +126,11 @@ void init() {
     descriptor.cFragment.module = fsModule;
     descriptor.cTargets[0].format = GetPreferredSwapChainTextureFormat();
     descriptor.EnableDepthStencil(wgpu::TextureFormat::Depth24PlusStencil8);
-    
+
     pipeline = device.CreateRenderPipeline(&descriptor);
-    
+
     wgpu::TextureView view = texture.CreateView();
-    
+
     bindGroup = utils::MakeBindGroup(device, bgl, {{0, sampler}, {1, view}});
 }
 
@@ -148,10 +144,10 @@ void frame() {
     if (s.b >= 1.0f) {
         s.b = 0.0f;
     }
-    
+
     wgpu::TextureView backbufferView = swapchain.GetCurrentTextureView();
     utils::ComboRenderPassDescriptor renderPass({backbufferView}, depthStencilView);
-    
+
     wgpu::CommandEncoder encoder = device.CreateCommandEncoder();
     {
         wgpu::RenderPassEncoder pass = encoder.BeginRenderPass(&renderPass);
@@ -162,7 +158,7 @@ void frame() {
         pass.DrawIndexed(3);
         pass.EndPass();
     }
-    
+
     wgpu::CommandBuffer commands = encoder.Finish();
     queue.Submit(1, &commands);
     swapchain.Present();
@@ -174,12 +170,12 @@ int main(int argc, const char* argv[]) {
         return 1;
     }
     init();
-    
+
     while (!ShouldQuit()) {
         utils::ScopedAutoreleasePool pool;
         frame();
         utils::USleep(16000);
     }
-    
+
     // TODO release stuff
 }
