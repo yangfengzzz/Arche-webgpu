@@ -105,7 +105,7 @@ ExitCode Platform::MainLoop() {
 
     // Compensate for load times of the app by rendering the first frame pre-emptively
     timer_.Tick<utility::Timer::Seconds>();
-    active_app_->Update(0.01667f);
+    active_app_->update(0.01667f);
 
     while (!window_->ShouldClose() && !close_requested_) {
         try {
@@ -114,9 +114,9 @@ ExitCode Platform::MainLoop() {
             window_->ProcessEvents();
         } catch (std::exception &e) {
             LOGE("Error Message: {}", e.what())
-            LOGE("Failed when running application {}", active_app_->GetName())
+            LOGE("Failed when running application {}", active_app_->getName())
 
-            OnAppError(active_app_->GetName());
+            OnAppError(active_app_->getName());
             return ExitCode::FATAL_ERROR;
         }
     }
@@ -134,7 +134,7 @@ void Platform::Update() {
             delta_time = simulation_frame_time_;
         }
 
-        active_app_->Update(delta_time);
+        active_app_->update(delta_time);
     }
 }
 
@@ -154,11 +154,11 @@ void Platform::Terminate(ExitCode code) {
     }
 
     if (active_app_) {
-        std::string id = active_app_->GetName();
+        std::string id = active_app_->getName();
 
         OnAppClose(id);
 
-        active_app_->Finish();
+        active_app_->finish();
     }
 
     active_app_.reset();
@@ -242,22 +242,22 @@ void Platform::SetApp(std::unique_ptr<Application> &&active_app) {
         auto execution_time = timer_.Stop();
         LOGI("Closing App (Runtime: {:.1f})", execution_time)
 
-        auto app_id = active_app_->GetName();
+        auto app_id = active_app_->getName();
 
-        active_app_->Finish();
+        active_app_->finish();
     }
     active_app_ = std::move(active_app);
 }
 
 bool Platform::StartApp() {
-    active_app_->SetName("");
+    active_app_->setName("");
 
     if (!active_app_) {
         LOGE("Failed to create a valid vulkan app.")
         return false;
     }
 
-    if (!active_app_->Prepare(*this)) {
+    if (!active_app_->prepare(*this)) {
         LOGE("Failed to prepare vulkan app.")
         return false;
     }
@@ -269,7 +269,7 @@ bool Platform::StartApp() {
 
 void Platform::InputEvent(const vox::InputEvent &input_event) {
     if (process_input_events_ && active_app_) {
-        active_app_->InputEvent(input_event);
+        active_app_->inputEvent(input_event);
     }
 
     if (input_event.GetSource() == EventSource::KEYBOARD) {
@@ -287,7 +287,7 @@ void Platform::Resize(uint32_t win_width, uint32_t win_height, uint32_t fb_width
     if (window_) {
         window_->Resize(extent);
         if (active_app_) {
-            active_app_->Resize(win_width, win_height, fb_width, fb_height);
+            active_app_->resize(win_width, win_height, fb_width, fb_height);
         }
     }
 }

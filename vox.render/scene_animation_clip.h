@@ -28,7 +28,7 @@ public:
     };
 
 public:
-    explicit SceneAnimationClip(const std::string &name);
+    explicit SceneAnimationClip(std::string name);
 
     void update(float deltaTime);
 

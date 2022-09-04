@@ -9,7 +9,6 @@
 #include "vox.geometry/matrix_utils.h"
 #include "vox.render/entity.h"
 #include "vox.render/scene.h"
-#include "vox.render/shader/shader.h"
 
 namespace vox {
 std::string Camera::name() { return "Camera"; }

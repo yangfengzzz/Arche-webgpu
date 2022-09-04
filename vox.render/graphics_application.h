@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "vox.render/application.h"
+#include "vox.render/platform/application.h"
 #include "vox.render/rendering/render_pass.h"
 #include "vox.render/scene.h"
 #include "vox.render/ui/ui_manager.h"
@@ -16,12 +16,12 @@ class GraphicsApplication : public Application {
 public:
     GraphicsApplication();
 
-    virtual ~GraphicsApplication();
+    ~GraphicsApplication() override;
 
     /**
      * @brief Additional sample initialization
      */
-    bool prepare(Engine &engine) override;
+    bool prepare(Platform &platform) override;
 
     /**
      * @brief Main loop sample events
@@ -50,7 +50,7 @@ protected:
      */
     std::unique_ptr<RenderContext> _renderContext{nullptr};
 
-    std::unique_ptr<ui::UIManager> _gui{nullptr};
+    std::unique_ptr<ui::UiManager> _gui{nullptr};
 };
 
 }  // namespace vox

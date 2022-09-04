@@ -82,7 +82,7 @@ public:
     [[nodiscard]] const std::set<StatIndex> &GetRequestedStats() const { return requested_stats_; }
 
     /**
-     * @brief Update statistics, must be called after every frame
+     * @brief update statistics, must be called after every frame
      * @param delta_time Time since last update
      */
     void Update(float delta_time);

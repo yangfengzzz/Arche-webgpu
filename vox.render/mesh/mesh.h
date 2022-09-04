@@ -67,7 +67,7 @@ public:
 
     /**
      * Register update flag, update flag will be true if the vertex element changes.
-     * @returns Update flag
+     * @returns update flag
      */
     std::unique_ptr<UpdateFlag> registerUpdateFlag();
 

@@ -18,7 +18,7 @@ class ForwardApplication : public GraphicsApplication {
 public:
     ForwardApplication() = default;
 
-    virtual ~ForwardApplication();
+    ~ForwardApplication() override;
 
     /**
      * @brief Additional sample initialization

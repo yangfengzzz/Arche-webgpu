@@ -12,7 +12,6 @@
 #include "vox.render/components_manager.h"
 #include "vox.render/scene.h"
 #include "vox.render/script.h"
-#include "vox.render/serializer.h"
 
 namespace vox {
 Event<Entity *> Entity::destroyedEvent;

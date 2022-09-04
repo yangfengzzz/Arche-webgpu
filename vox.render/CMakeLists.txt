@@ -292,6 +292,16 @@ set(SCENE_FILES
         behaviour.h
         behaviour-inl.h
         behaviour.cpp
+        debug_info.h
+        debug_info.cpp
+        forward_application.h
+        forward_application.cpp
+        graphics_application.h
+        graphics_application.cpp
+        scene_animation_clip.h
+        scene_animation_clip.cpp
+        scene_animator.h
+        scene_animator.cpp
         )
 
 set(LUA_FILES

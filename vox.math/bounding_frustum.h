@@ -54,7 +54,7 @@ struct BoundingFrustum {
     [[nodiscard]] BoundingPlane3F getPlane(int index) const;
 
     /**
-     * Update all planes from the given matrix.
+     * update all planes from the given matrix.
      * @param matrix - The given view-projection matrix
      */
     void calculateFromMatrix(const Matrix4x4F &matrix);

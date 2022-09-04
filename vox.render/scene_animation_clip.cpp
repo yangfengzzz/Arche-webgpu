@@ -7,9 +7,10 @@
 #include "vox.render/scene_animation_clip.h"
 
 #include <iostream>
+#include <utility>
 
 namespace vox {
-SceneAnimationClip::SceneAnimationClip(const std::string &name) : _name(name) {}
+SceneAnimationClip::SceneAnimationClip(std::string name) : _name(std::move(name)) {}
 
 const std::string &SceneAnimationClip::name() const { return _name; }
 

@@ -266,7 +266,7 @@ public:
     void handleTouchStartZoom();
 
     /**
-     * Update the translation parameter when touch down.
+     * update the translation parameter when touch down.
      */
     void handleTouchStartPan();
 

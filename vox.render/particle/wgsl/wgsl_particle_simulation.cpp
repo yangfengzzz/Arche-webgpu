@@ -228,7 +228,7 @@ void WGSLParticleSimulation::_createShaderSource(size_t hash, const ShaderMacroC
                                      "        // Handle collisions.\n"
                                      "        collisionHandling(&position, &velocity);\n"
                                      "        \n"
-                                     "        // Update the particle.\n"
+                                     "        // update the particle.\n"
                                      "        updateParticle(&p, position, velocity, age);\n"
                                      "        \n"
                                      "        // Save it in buffer.\n"

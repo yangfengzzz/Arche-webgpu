@@ -28,18 +28,18 @@ public:
      * @brief Prepares the application for execution
      * @param platform The platform the application is being run on
      */
-    virtual bool Prepare(Platform &platform);
+    virtual bool prepare(Platform &platform);
 
     /**
      * @brief Updates the application
      * @param delta_time The time since the last update
      */
-    virtual void Update(float delta_time);
+    virtual void update(float delta_time);
 
     /**
      * @brief Handles cleaning up the application
      */
-    virtual void Finish();
+    virtual void finish();
 
     /**
      * @brief Handles resizing of the window
@@ -48,19 +48,19 @@ public:
      * @param fb_width New width of the framebuffer
      * @param fb_height New height of the framebuffer
      */
-    virtual bool Resize(uint32_t win_width, uint32_t win_height, uint32_t fb_width, uint32_t fb_height);
+    virtual bool resize(uint32_t win_width, uint32_t win_height, uint32_t fb_width, uint32_t fb_height);
 
     /**
      * @brief Handles input events of the window
      * @param input_event The input event object
      */
-    virtual void InputEvent(const InputEvent &input_event);
+    virtual void inputEvent(const InputEvent &input_event);
 
-    [[nodiscard]] const std::string &GetName() const;
+    [[nodiscard]] const std::string &getName() const;
 
-    void SetName(const std::string &name);
+    void setName(const std::string &name);
 
-    DebugInfo &GetDebugInfo();
+    DebugInfo &getDebugInfo();
 
 protected:
     float fps_{0.0f};

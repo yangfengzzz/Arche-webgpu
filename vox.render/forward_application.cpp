@@ -7,7 +7,7 @@
 #include "vox.render/forward_application.h"
 
 #include "vox.render/camera.h"
-#include "vox.render/engine.h"
+#include "vox.render/platform/platform.h"
 #include "vox.render/rendering/subpasses/forward_subpass.h"
 
 namespace vox {
@@ -24,8 +24,8 @@ ForwardApplication::~ForwardApplication() {
     _particleManager.reset();
 }
 
-bool ForwardApplication::prepare(Engine& engine) {
-    GraphicsApplication::prepare(engine);
+bool ForwardApplication::prepare(Platform& platform) {
+    GraphicsApplication::prepare(platform);
 
     _componentsManager = std::make_unique<ComponentsManager>();
     _sceneManager = std::make_unique<SceneManager>(_device);
@@ -35,8 +35,8 @@ bool ForwardApplication::prepare(Engine& engine) {
     _lightManager = std::make_unique<LightManager>(scene);
     {
         loadScene();
-        auto extent = engine.window().extent();
-        auto factor = engine.window().contentScaleFactor();
+        auto extent = platform.GetWindow().GetExtent();
+        auto factor = platform.GetWindow().GetContentScaleFactor();
         _componentsManager->callScriptResize(extent.width, extent.height, factor * extent.width,
                                              factor * extent.height);
         _mainCamera->resize(extent.width, extent.height, factor * extent.width, factor * extent.height);
@@ -45,8 +45,8 @@ bool ForwardApplication::prepare(Engine& engine) {
     _lightManager->setCamera(_mainCamera);
     _shadowManager = std::make_unique<ShadowManager>(scene, _mainCamera);
 
-    // Create a render pass descriptor for thelighting and composition pass
-    // Whatever rendered in the final pass needs to be stored so it can be displayed
+    // Create a render pass descriptor for the lighting and composition pass
+    // Whatever rendered in the final pass needs to be stored, so it can be displayed
     _renderPassDescriptor.colorAttachmentCount = 1;
     _renderPassDescriptor.colorAttachments = &_colorAttachments;
     _renderPassDescriptor.depthStencilAttachment = &_depthStencilAttachment;

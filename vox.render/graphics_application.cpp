@@ -8,8 +8,7 @@
 
 #include <dawn/dawn_proc.h>
 
-#include "vox.render/engine.h"
-#include "vox.render/shader/shader.h"
+#include "vox.render/platform/platform.h"
 #include "vox.render/shader/shader_pool.h"
 
 namespace vox {
@@ -33,15 +32,15 @@ GraphicsApplication::GraphicsApplication() { ShaderPool::init(); }
 
 GraphicsApplication::~GraphicsApplication() { _renderContext.reset(); }
 
-bool GraphicsApplication::prepare(Engine& engine) {
-    if (!Application::prepare(engine)) {
+bool GraphicsApplication::prepare(Platform& platform) {
+    if (!Application::prepare(platform)) {
         return false;
     }
 
-    LOG(INFO) << "Initializing WebGPU Application";
+    LOGI("Initializing WebGPU Application")
 
     _createCppDawnDevice();
-    _renderContext = engine.createRenderContext(_device);
+    _renderContext = platform.CreateRenderContext(_device);
     return true;
 }
 
@@ -76,7 +75,7 @@ void PrintDeviceError(WGPUErrorType errorType, const char* message, void*) {
             assert(false && "UNREACHABLE");
             return;
     }
-    LOG(ERROR) << errorTypeName << " error: " << message;
+    LOGE("{} error: {}", errorTypeName, message)
 }
 
 void GraphicsApplication::_createCppDawnDevice() {
@@ -87,11 +86,12 @@ void GraphicsApplication::_createCppDawnDevice() {
     dawn_native::Adapter backendAdapter;
     {
         std::vector<dawn_native::Adapter> adapters = _instance->GetAdapters();
-        auto adapterIt = std::find_if(adapters.begin(), adapters.end(), [](const dawn_native::Adapter adapter) -> bool {
-            wgpu::AdapterProperties properties;
-            adapter.GetProperties(&properties);
-            return properties.backendType == backendType;
-        });
+        auto adapterIt =
+                std::find_if(adapters.begin(), adapters.end(), [](const dawn_native::Adapter& adapter) -> bool {
+                    wgpu::AdapterProperties properties;
+                    adapter.GetProperties(&properties);
+                    return properties.backendType == backendType;
+                });
         assert(adapterIt != adapters.end());
         backendAdapter = *adapterIt;
     }
