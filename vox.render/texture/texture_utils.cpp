@@ -57,7 +57,7 @@ void TextureUtils::buildCubeTextureArray(const std::vector<wgpu::Texture>::itera
     }
 }
 
-static wgpu::TextureSampleType sampleType(wgpu::TextureFormat format) {
+wgpu::TextureSampleType TextureUtils::sampleType(wgpu::TextureFormat format) {
     switch (format) {
         case wgpu::TextureFormat::Stencil8:
         case wgpu::TextureFormat::Undefined:
