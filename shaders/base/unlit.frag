@@ -28,7 +28,8 @@ layout(set = 0, binding = 2) uniform alphaCutoff {
 } alpha_cutoff;
 
 #ifdef HAS_BASE_TEXTURE
-    layout(set = 0, binding = 3) uniform sampler2D baseTexture;
+layout(set = 0, binding = 3) uniform texture2D baseTexture;
+layout(set = 0, binding = 4) uniform sampler baseSampler;
 #endif
 
 layout(location = 0) in vec2 v_uv;
@@ -36,17 +37,17 @@ layout(location = 0) out vec4 o_color;
 
 void main() {
     vec4 baseColor = base_color.value;
-
-    #ifdef HAS_BASE_TEXTURE
-        vec4 textureColor = texture(baseTexture, v_uv);
-        baseColor *= textureColor;
-    #endif
-
-    #ifdef NEED_ALPHA_CUTOFF
+    
+#ifdef HAS_BASE_TEXTURE
+    vec4 textureColor = texture(sampler2D(baseTexture, baseSampler), v_uv);
+    baseColor *= textureColor;
+#endif
+    
+#ifdef NEED_ALPHA_CUTOFF
     if (base_color.value.a < alpha_cutoff.value) {
         discard;
     }
-    #endif
-
+#endif
+    
     o_color = baseColor;
 }

@@ -90,7 +90,7 @@ void ShaderData::bindTexture(
         wgpu::BindGroupLayoutEntry layout_entry;
         layout_entry.binding = resource.binding;
         layout_entry.visibility = resource.stages;
-        layout_entry.texture.sampleType = TextureUtils::sampleType(texture->format());
+        layout_entry.texture.sampleType = wgpu::TextureSampleType::Float; //todo: don't support other now
         layout_entry.texture.multisampled = texture->sampleCount() > 1;
         layout_entry.texture.viewDimension = texture->textureViewDimension();
         bindGroupLayoutEntryVecMap[resource.set].push_back(layout_entry);

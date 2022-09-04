@@ -64,8 +64,8 @@ void PrimitiveApp::loadScene() {
     auto texturedMaterial = std::make_shared<UnlitMaterial>(_device);
     planeRenderer->setMaterial(texturedMaterial);
 
-//    auto texture = Image::load("Textures/wood.png")->createSampledTexture(_device);
-//    texturedMaterial->setBaseTexture(texture);
+    auto texture = Image::load("Textures/wood.png")->createSampledTexture(_device);
+    texturedMaterial->setBaseTexture(texture);
 
     scene->play();
 }
