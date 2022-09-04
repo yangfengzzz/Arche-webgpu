@@ -4,18 +4,17 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef component_manager_hpp
-#define component_manager_hpp
+#pragma once
 
 #include <unordered_map>
 #include <vector>
 
-#include "rendering/render_element.h"
-#include "scene_forward.h"
-#include "singleton.h"
 #include "vox.math/bounding_frustum.h"
 #include "vox.math/matrix4x4.h"
 #include "vox.render/platform/input_events.h"
+#include "vox.render/rendering/render_element.h"
+#include "vox.render/scene_forward.h"
+#include "vox.render/singleton.h"
 
 namespace vox {
 /**
@@ -23,9 +22,9 @@ namespace vox {
  */
 class ComponentsManager : public Singleton<ComponentsManager> {
 public:
-    static ComponentsManager &getSingleton(void);
+    static ComponentsManager &getSingleton();
 
-    static ComponentsManager *getSingletonPtr(void);
+    static ComponentsManager *getSingletonPtr();
 
     void addOnStartScript(Script *script);
 
@@ -61,7 +60,7 @@ public:
                     std::vector<RenderElement> &alphaTestQueue,
                     std::vector<RenderElement> &transparentQueue);
 
-    void callRender(const BoundingFrustum &frustrum,
+    void callRender(const BoundingFrustum &frustum,
                     std::vector<RenderElement> &opaqueQueue,
                     std::vector<RenderElement> &alphaTestQueue,
                     std::vector<RenderElement> &transparentQueue);
@@ -102,4 +101,3 @@ template <>
 inline ComponentsManager *Singleton<ComponentsManager>::ms_singleton{nullptr};
 
 }  // namespace vox
-#endif /* component_manager_hpp */

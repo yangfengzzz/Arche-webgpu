@@ -29,7 +29,7 @@ public:
     /**
      * Indicates whether the component is enabled.
      */
-    bool enabled();
+    [[nodiscard]] bool enabled() const;
 
     void setEnabled(bool value);
 

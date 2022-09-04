@@ -4,14 +4,13 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef transform_hpp
-#define transform_hpp
+#pragma once
 
-#include "component.h"
-#include "update_flag_manager.h"
 #include "vox.math/matrix4x4.h"
 #include "vox.math/quaternion.h"
 #include "vox.math/vector3.h"
+#include "vox.render/component.h"
+#include "vox.render/update_flag_manager.h"
 
 namespace vox {
 /**
@@ -51,7 +50,7 @@ public:
      */
     std::string name() override;
 
-    Transform(Entity *entity);
+    explicit Transform(Entity *entity);
 
     /**
      * Local position.
@@ -343,9 +342,9 @@ private:
 
     Matrix3x3F _getScaleMatrix();
 
-    bool _isContainDirtyFlags(int targetDirtyFlags);
+    bool _isContainDirtyFlags(int targetDirtyFlags) const;
 
-    bool _isContainDirtyFlag(int type);
+    bool _isContainDirtyFlag(int type) const;
 
     void _setDirtyFlagTrue(int type);
 
@@ -376,5 +375,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* transform_hpp */

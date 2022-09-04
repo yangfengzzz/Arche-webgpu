@@ -4,15 +4,14 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef renderer_hpp
-#define renderer_hpp
+#pragma once
 
-#include "component.h"
-#include "rendering/render_element.h"
-#include "shader/shader_data.h"
-#include "update_flag.h"
 #include "vox.math/bounding_box3.h"
 #include "vox.math/matrix4x4.h"
+#include "vox.render/component.h"
+#include "vox.render/rendering/render_element.h"
+#include "vox.render/shader/shader_data.h"
+#include "vox.render/update_flag.h"
 
 namespace vox {
 /**
@@ -70,14 +69,14 @@ public:
      * Set the first material.
      * @param material - The first material
      */
-    void setMaterial(MaterialPtr material);
+    void setMaterial(const MaterialPtr &material);
 
     /**
      * Set material by index.
      * @param index - Material index
      * @param material - The material
      */
-    void setMaterial(size_t index, MaterialPtr material);
+    void setMaterial(size_t index, const MaterialPtr &material);
 
     /**
      * Get all instance materials.
@@ -106,7 +105,7 @@ public:
 
     void setDistanceForSort(float dist);
 
-    float distanceForSort();
+    [[nodiscard]] float distanceForSort() const;
 
     void updateShaderData();
 
@@ -143,5 +142,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* renderer_hpp */

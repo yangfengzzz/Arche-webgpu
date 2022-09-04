@@ -4,11 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "behaviour.h"
+#include "vox.render/behaviour.h"
 
-#include "entity.h"
-#include "ui/widgets/texts/text_colored.h"
-#include "vox.base/logging.h"
+#include "vox.render/entity.h"
+#include "vox.render/ui/widgets/texts/text_colored.h"
 
 namespace vox {
 std::string Behaviour::name() { return "Behaviour"; }

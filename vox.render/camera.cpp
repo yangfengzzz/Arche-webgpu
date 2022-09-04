@@ -4,12 +4,12 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "camera.h"
+#include "vox.render/camera.h"
 
-#include "entity.h"
-#include "scene.h"
-#include "shader/shader.h"
 #include "vox.geometry/matrix_utils.h"
+#include "vox.render/entity.h"
+#include "vox.render/scene.h"
+#include "vox.render/shader/shader.h"
 
 namespace vox {
 std::string Camera::name() { return "Camera"; }
@@ -140,7 +140,7 @@ Vector4F Camera::worldToViewportPoint(const Point3F &point) {
     const auto nz = tempVec4.z / w;
 
     // Transform of coordinate axis.
-    return Vector4F((nx + 1.0) * 0.5, (1.0 - ny) * 0.5, nz, w);
+    return {(nx + 1.f) * 0.5f, (1.f - ny) * 0.5f, nz, w};
 }
 
 Point3F Camera::viewportToWorldPoint(const Vector3F &point) {
@@ -161,29 +161,29 @@ Ray3F Camera::viewportPointToRay(const Vector2F &point) {
     return out;
 }
 
-Vector2F Camera::screenToViewportPoint(const Vector2F &point) {
+Vector2F Camera::screenToViewportPoint(const Vector2F &point) const {
     const Vector4F viewport = this->viewport();
-    return Vector2F((point.x / _width - viewport.x) / viewport.z, (point.y / _height - viewport.y) / viewport.w);
+    return {(point.x / _width - viewport.x) / viewport.z, (point.y / _height - viewport.y) / viewport.w};
 }
 
-Vector3F Camera::screenToViewportPoint(const Vector3F &point) {
+Vector3F Camera::screenToViewportPoint(const Vector3F &point) const {
     const Vector4F viewport = this->viewport();
-    return Vector3F((point.x / _width - viewport.x) / viewport.z, (point.y / _height - viewport.y) / viewport.w, 0);
+    return {(point.x / _width - viewport.x) / viewport.z, (point.y / _height - viewport.y) / viewport.w, 0};
 }
 
-Vector2F Camera::viewportToScreenPoint(const Vector2F &point) {
+Vector2F Camera::viewportToScreenPoint(const Vector2F &point) const {
     const Vector4F viewport = this->viewport();
-    return Vector2F((viewport.x + point.x * viewport.z) * _width, (viewport.y + point.y * viewport.w) * _height);
+    return {(viewport.x + point.x * viewport.z) * _width, (viewport.y + point.y * viewport.w) * _height};
 }
 
-Vector3F Camera::viewportToScreenPoint(const Vector3F &point) {
+Vector3F Camera::viewportToScreenPoint(const Vector3F &point) const {
     const Vector4F viewport = this->viewport();
-    return Vector3F((viewport.x + point.x * viewport.z) * _width, (viewport.y + point.y * viewport.w) * _height, 0);
+    return {(viewport.x + point.x * viewport.z) * _width, (viewport.y + point.y * viewport.w) * _height, 0};
 }
 
-Vector4F Camera::viewportToScreenPoint(const Vector4F &point) {
+Vector4F Camera::viewportToScreenPoint(const Vector4F &point) const {
     const Vector4F viewport = this->viewport();
-    return Vector4F((viewport.x + point.x * viewport.z) * _width, (viewport.y + point.y * viewport.w) * _height, 0, 0);
+    return {(viewport.x + point.x * viewport.z) * _width, (viewport.y + point.y * viewport.w) * _height, 0, 0};
 }
 
 Vector4F Camera::worldToScreenPoint(const Point3F &point) {

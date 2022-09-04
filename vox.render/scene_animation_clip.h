@@ -4,12 +4,11 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef scene_animation_clip_hpp
-#define scene_animation_clip_hpp
+#pragma once
 
 #include <string>
 
-#include "entity.h"
+#include "vox.render/entity.h"
 
 namespace vox {
 class SceneAnimationClip {
@@ -29,17 +28,17 @@ public:
     };
 
 public:
-    SceneAnimationClip(const std::string &name);
+    explicit SceneAnimationClip(const std::string &name);
 
     void update(float deltaTime);
 
-    const std::string &name() const;
+    [[nodiscard]] const std::string &name() const;
 
-    float start() const;
+    [[nodiscard]] float start() const;
 
     void setStart(float time);
 
-    float end() const;
+    [[nodiscard]] float end() const;
 
     void setEnd(float time);
 
@@ -58,5 +57,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* scene_animation_clip_hpp */

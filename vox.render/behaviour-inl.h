@@ -4,11 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef behaviour_inl_h
-#define behaviour_inl_h
+#pragma once
 
-#include "behaviour.h"
 #include "vox.base/logging.h"
+#include "vox.render/behaviour.h"
 
 namespace vox {
 template <typename... Args>
@@ -26,4 +25,3 @@ inline void Behaviour::luaCall(const std::string &functionName, Args &&...args) 
 }
 
 }  // namespace vox
-#endif /* behaviour_inl_h */

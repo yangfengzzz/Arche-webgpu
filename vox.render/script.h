@@ -47,7 +47,7 @@ public:
 public:
     void setIsStarted(bool value);
 
-    bool isStarted();
+    [[nodiscard]] bool isStarted() const;
 
     /**
      * Called before the frame-level loop start for the first time, only once.

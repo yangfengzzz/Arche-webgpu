@@ -4,12 +4,11 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef scene_manager_hpp
-#define scene_manager_hpp
+#pragma once
 
-#include "event.h"
-#include "scene.h"
-#include "singleton.h"
+#include "vox.render/event.h"
+#include "vox.render/scene.h"
+#include "vox.render/singleton.h"
 
 namespace vox {
 /**
@@ -21,7 +20,7 @@ public:
      * Default constructor
      * @param p_sceneRootFolder (Optional)
      */
-    SceneManager(wgpu::Device &device, const std::string &p_sceneRootFolder = "");
+    explicit SceneManager(wgpu::Device &device, std::string p_sceneRootFolder = "");
 
     /**
      * Default destructor
@@ -67,7 +66,7 @@ public:
     /**
      * Return true if a scene is currently loaded
      */
-    bool hasCurrentScene() const;
+    [[nodiscard]] bool hasCurrentScene() const;
 
     /*
      * Return current loaded scene
@@ -77,12 +76,12 @@ public:
     /**
      * Return the current scene source path
      */
-    std::string currentSceneSourcePath() const;
+    [[nodiscard]] std::string currentSceneSourcePath() const;
 
     /**
      * Return true if the currently loaded scene has been loaded from a file
      */
-    bool isCurrentSceneLoadedFromDisk() const;
+    [[nodiscard]] bool isCurrentSceneLoadedFromDisk() const;
 
     /**
      * Store the given path as the current scene source path
@@ -106,10 +105,8 @@ private:
     std::unique_ptr<Scene> _currentScene{nullptr};
 
     bool _currentSceneLoadedFromPath{false};
-    std::string _currentSceneSourcePath = "";
+    std::string _currentSceneSourcePath;
 
     std::function<void()> _delayedLoadCall;
 };
 }  // namespace vox
-
-#endif /* scene_manager_hpp */

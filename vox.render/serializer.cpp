@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "serializer.h"
+#include "vox.render/serializer.h"
 
 namespace vox {
 // MARK: - SERIALIZATION_HELPERS

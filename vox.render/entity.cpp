@@ -4,14 +4,15 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "entity.h"
+#include "vox.render/entity.h"
 
-#include "component.h"
-#include "components_manager.h"
-#include "scene.h"
-#include "script.h"
-#include "serializer.h"
+#include <utility>
+
 #include "vox.base/logging.h"
+#include "vox.render/components_manager.h"
+#include "vox.render/scene.h"
+#include "vox.render/script.h"
+#include "vox.render/serializer.h"
 
 namespace vox {
 Event<Entity *> Entity::destroyedEvent;
@@ -21,8 +22,7 @@ Event<Entity *> Entity::dettachEvent;
 
 Entity *Entity::_findChildByName(Entity *root, const std::string &name) {
     const auto &children = root->_children;
-    for (size_t i = 0; i < children.size(); i++) {
-        const auto &child = children[i];
+    for (const auto &child : children) {
         if (child->name == name) {
             return child.get();
         }
@@ -38,7 +38,7 @@ void Entity::_traverseSetOwnerScene(Entity *entity, Scene *scene) {
     }
 }
 
-Entity::Entity(std::string name) : name(name) {
+Entity::Entity(std::string name) : name(std::move(name)) {
     transform = addComponent<Transform>();
     _inverseWorldMatFlag = transform->registerWorldChangeFlag();
 
@@ -56,18 +56,18 @@ Entity::~Entity() {
     std::for_each(_scripts.begin(), _scripts.end(),
                   [&](auto &behaviour) { behaviourRemovedEvent.Invoke(std::ref(behaviour)); });
 
-    for (size_t i = 0, n = _children.size(); i < n; i++) {
-        removeChild(_children[i].get());
+    for (auto &i : _children) {
+        removeChild(i.get());
     }
     _children.clear();
 
-    for (size_t i = 0, n = _components.size(); i < n; i++) {
-        removeComponent(_components[i].get());
+    for (auto &_component : _components) {
+        removeComponent(_component.get());
     }
     _components.clear();
 }
 
-bool Entity::isActive() { return _isActive; }
+bool Entity::isActive() const { return _isActive; }
 
 void Entity::setIsActive(bool value) {
     if (value != _isActive) {
@@ -85,7 +85,7 @@ void Entity::setIsActive(bool value) {
     }
 }
 
-bool Entity::isActiveInHierarchy() { return _isActiveInHierarchy; }
+bool Entity::isActiveInHierarchy() const { return _isActiveInHierarchy; }
 
 Entity *Entity::parent() { return _parent; }
 
@@ -139,8 +139,7 @@ Entity *Entity::findByName(const std::string &name) {
     const auto &children = _children;
     const auto child = Entity::_findChildByName(this, name);
     if (child) return child;
-    for (size_t i = 0; i < children.size(); i++) {
-        const auto &child = children[i];
+    for (const auto &child : children) {
         const auto grandson = child->findByName(name);
         if (grandson) {
             return grandson;
@@ -159,8 +158,7 @@ Entity *Entity::createChild(const std::string &name) {
 
 void Entity::clearChildren() {
     auto &children = _children;
-    for (size_t i = 0; i < children.size(); i++) {
-        const auto &child = children[i];
+    for (auto &child : children) {
         child->_parent = nullptr;
         if (child->_isActiveInHierarchy) {
             child->_processInActive();
@@ -192,8 +190,7 @@ std::unique_ptr<Entity> Entity::clone() {
     }
 
     const auto &components = _components;
-    for (size_t i = 0, n = components.size(); i < n; i++) {
-        const auto &sourceComp = components[i];
+    for (const auto &sourceComp : components) {
         if (!(dynamic_cast<Transform *>(sourceComp.get()))) {
             // TODO
         }
@@ -248,8 +245,8 @@ void Entity::_processInActive() {
 
 void Entity::_setActiveComponents(bool isActive) {
     auto &activeChangedComponents = _activeChangedComponents;
-    for (size_t i = 0, length = activeChangedComponents.size(); i < length; ++i) {
-        activeChangedComponents[i]->_setActive(isActive);
+    for (auto &activeChangedComponent : activeChangedComponents) {
+        activeChangedComponent->_setActive(isActive);
     }
     ComponentsManager::getSingleton().putActiveChangedTempList(activeChangedComponents);
     _activeChangedComponents.clear();
@@ -258,12 +255,11 @@ void Entity::_setActiveComponents(bool isActive) {
 void Entity::_setActiveInHierarchy(std::vector<Component *> &activeChangedComponents) {
     _isActiveInHierarchy = true;
     auto &components = _components;
-    for (size_t i = 0; i < components.size(); i++) {
-        activeChangedComponents.push_back(components[i].get());
+    for (auto &component : components) {
+        activeChangedComponents.push_back(component.get());
     }
     const auto &children = _children;
-    for (size_t i = 0; i < children.size(); i++) {
-        const auto &child = children[i];
+    for (const auto &child : children) {
         if (child->isActive()) {
             child->_setActiveInHierarchy(activeChangedComponents);
         }
@@ -273,12 +269,11 @@ void Entity::_setActiveInHierarchy(std::vector<Component *> &activeChangedCompon
 void Entity::_setInActiveInHierarchy(std::vector<Component *> &activeChangedComponents) {
     _isActiveInHierarchy = false;
     auto &components = _components;
-    for (size_t i = 0; i < components.size(); i++) {
-        activeChangedComponents.push_back(components[i].get());
+    for (auto &component : components) {
+        activeChangedComponents.push_back(component.get());
     }
     auto &children = _children;
-    for (size_t i = 0; i < children.size(); i++) {
-        const auto &child = children[i];
+    for (auto &child : children) {
         if (child->isActive()) {
             child->_setInActiveInHierarchy(activeChangedComponents);
         }
@@ -289,8 +284,8 @@ void Entity::_setTransformDirty() {
     if (transform) {
         transform->_parentChange();
     } else {
-        for (size_t i = 0, len = _children.size(); i < len; i++) {
-            _children[i]->_setTransformDirty();
+        for (auto &i : _children) {
+            i->_setTransformDirty();
         }
     }
 }

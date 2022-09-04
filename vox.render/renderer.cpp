@@ -4,13 +4,12 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "renderer.h"
+#include "vox.render/renderer.h"
 
-#include "components_manager.h"
-#include "entity.h"
-#include "material/material.h"
-#include "scene.h"
-#include "shader/shader.h"
+#include "vox.render/components_manager.h"
+#include "vox.render/entity.h"
+#include "vox.render/material/material.h"
+#include "vox.render/scene.h"
 
 namespace vox {
 size_t Renderer::materialCount() { return _materials.size(); }
@@ -51,7 +50,7 @@ MaterialPtr Renderer::getInstanceMaterial(size_t index) {
 
 MaterialPtr Renderer::getMaterial(size_t index) { return _materials[index]; }
 
-void Renderer::setMaterial(MaterialPtr material) {
+void Renderer::setMaterial(const MaterialPtr &material) {
     size_t index = 0;
 
     if (index >= _materials.size()) {
@@ -70,7 +69,7 @@ void Renderer::setMaterial(MaterialPtr material) {
     }
 }
 
-void Renderer::setMaterial(size_t index, MaterialPtr material) {
+void Renderer::setMaterial(size_t index, const MaterialPtr &material) {
     if (index >= _materials.size()) {
         _materials.reserve(index + 1);
         for (size_t i = _materials.size(); i <= index; i++) {
@@ -106,7 +105,7 @@ void Renderer::setMaterials(const std::vector<MaterialPtr> &materials) {
             _materials.push_back(nullptr);
         }
     }
-    if (_materialsInstanced.size() != 0) {
+    if (!_materialsInstanced.empty()) {
         _materialsInstanced.clear();
     }
 
@@ -136,7 +135,7 @@ void Renderer::pushPrimitive(const RenderElement &element,
 
 void Renderer::setDistanceForSort(float dist) { _distanceForSort = dist; }
 
-float Renderer::distanceForSort() { return _distanceForSort; }
+float Renderer::distanceForSort() const { return _distanceForSort; }
 
 void Renderer::updateShaderData() {
     auto worldMatrix = entity()->transform->worldMatrix();

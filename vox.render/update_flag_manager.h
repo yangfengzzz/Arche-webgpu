@@ -4,13 +4,12 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef updateFlag_manager_hpp
-#define updateFlag_manager_hpp
+#pragma once
 
 #include <memory>
 #include <vector>
 
-#include "update_flag.h"
+#include "vox.render/update_flag.h"
 
 namespace vox {
 class UpdateFlagManager {
@@ -26,4 +25,3 @@ private:
 };
 
 }  // namespace vox
-#endif /* updateFlag_manager_hpp */

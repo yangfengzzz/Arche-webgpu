@@ -40,7 +40,7 @@ std::optional<Buffer> ShaderData::getData(uint32_t uniqueID) {
 
 const std::unordered_map<uint32_t, Buffer> &ShaderData::shaderBuffers() const { return _shaderBuffers; }
 
-void ShaderData::setBufferFunctor(const std::string &property_name, const std::function<Buffer()>& functor) {
+void ShaderData::setBufferFunctor(const std::string &property_name, const std::function<Buffer()> &functor) {
     auto property = Shader::getPropertyByName(property_name);
     if (property.has_value()) {
         setBufferFunctor(property.value(), functor);

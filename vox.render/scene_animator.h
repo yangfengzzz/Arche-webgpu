@@ -4,14 +4,13 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef scene_animator_hpp
-#define scene_animator_hpp
+#pragma once
 
 #include <string>
 #include <vector>
 
-#include "component.h"
-#include "scene_animation_clip.h"
+#include "vox.render/component.h"
+#include "vox.render/scene_animation_clip.h"
 
 namespace vox {
 class SceneAnimator : public Component {
@@ -21,7 +20,7 @@ public:
      */
     std::string name() override;
 
-    SceneAnimator(Entity *entity);
+    explicit SceneAnimator(Entity *entity);
 
     void update(float deltaTime);
 
@@ -56,5 +55,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* scene_animator_hpp */

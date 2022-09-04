@@ -4,8 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef scene_forward_h
-#define scene_forward_h
+#pragma once
 
 #include <memory>
 
@@ -73,5 +72,3 @@ class SpotLight;
 class DirectLight;
 
 }  // namespace vox
-
-#endif /* scene_forward_h */

@@ -270,7 +270,6 @@ set(SCENE_FILES
         update_flag_manager.cpp
         vobject.h
         inspector_item.h
-        inspector_item.cpp
         scene_forward.h
         scene_manager.h
         scene_manager.cpp

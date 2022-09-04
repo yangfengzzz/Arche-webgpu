@@ -4,14 +4,13 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "graphics_application.h"
+#include "vox.render/graphics_application.h"
 
 #include <dawn/dawn_proc.h>
-#include <glog/logging.h>
 
-#include "engine.h"
-#include "shader/shader.h"
-#include "shader/shader_pool.h"
+#include "vox.render/engine.h"
+#include "vox.render/shader/shader.h"
+#include "vox.render/shader/shader_pool.h"
 
 namespace vox {
 // Default to D3D12, Metal, Vulkan, OpenGL in that order as D3D12 and Metal are the preferred on

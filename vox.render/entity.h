@@ -12,10 +12,10 @@
 #include <unordered_map>
 #include <vector>
 
-#include "event.h"
-#include "layer.h"
-#include "transform.h"
-#include "vobject.h"
+#include "vox.render/event.h"
+#include "vox.render/layer.h"
+#include "vox.render/transform.h"
+#include "vox.render/vobject.h"
 
 namespace vox {
 class Component;
@@ -46,21 +46,21 @@ public:
     /**
      * Create a entity.
      */
-    Entity(std::string name = "");
+    explicit Entity(std::string name = "");
 
-    ~Entity();
+    ~Entity() override;
 
     /**
      * Whether to activate locally.
      */
-    bool isActive();
+    [[nodiscard]] bool isActive() const;
 
     void setIsActive(bool value);
 
     /**
      * Whether it is active in the hierarchy.
      */
-    bool isActiveInHierarchy();
+    [[nodiscard]] bool isActiveInHierarchy() const;
 
     /**
      * The parent entity.
@@ -70,7 +70,7 @@ public:
     /**
      * The children entities
      */
-    const std::vector<std::unique_ptr<Entity>> &children() const;
+    [[nodiscard]] const std::vector<std::unique_ptr<Entity>> &children() const;
 
     /**
      * Number of the children entities
@@ -105,8 +105,8 @@ public:
      */
     template <typename T>
     T *getComponent() {
-        for (size_t i = 0; i < _components.size(); i++) {
-            T *component = dynamic_cast<T *>(_components[i].get());
+        for (auto &_component : _components) {
+            T *component = dynamic_cast<T *>(_component.get());
             if (component) {
                 return component;
             }
@@ -121,8 +121,8 @@ public:
     template <typename T>
     std::vector<T *> getComponents() {
         std::vector<T *> results;
-        for (size_t i = 0; i < _components.size(); i++) {
-            T *component = dynamic_cast<T *>(_components[i].get());
+        for (auto &_component : _components) {
+            T *component = dynamic_cast<T *>(_component.get());
             if (component) {
                 results.push_back(component);
             }
@@ -229,14 +229,14 @@ private:
 
     template <typename T>
     void _getComponentsInChildren(std::vector<T *> &results) {
-        for (size_t i = 0; i < _components.size(); i++) {
-            T *component = dynamic_cast<T *>(_components[i].get());
+        for (auto &_component : _components) {
+            T *component = dynamic_cast<T *>(_component.get());
             if (component) {
                 results.push_back(component);
             }
         }
-        for (size_t i = 0; i < _children.size(); i++) {
-            _children[i]->_getComponentsInChildren(results);
+        for (auto &i : _children) {
+            i->_getComponentsInChildren(results);
         }
     }
 

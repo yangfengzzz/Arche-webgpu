@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "scene_animation_clip.h"
+#include "vox.render/scene_animation_clip.h"
 
 #include <iostream>
 

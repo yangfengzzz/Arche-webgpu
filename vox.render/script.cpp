@@ -4,11 +4,11 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "script.h"
+#include "vox.render/script.h"
 
-#include "components_manager.h"
-#include "entity.h"
-#include "scene.h"
+#include "vox.render/components_manager.h"
+#include "vox.render/entity.h"
+#include "vox.render/scene.h"
 
 namespace vox {
 std::string Script::name() { return "Script"; }
@@ -19,7 +19,7 @@ Script::~Script() { ComponentsManager::getSingleton().addDestroyComponent(this);
 
 void Script::setIsStarted(bool value) { _started = value; }
 
-bool Script::isStarted() { return _started; }
+bool Script::isStarted() const { return _started; }
 
 void Script::_onAwake() { onAwake(); }
 

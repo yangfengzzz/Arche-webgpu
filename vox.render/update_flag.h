@@ -4,10 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef updateFlag_hpp
-#define updateFlag_hpp
+#pragma once
 
-#include <stdio.h>
+#include <cstdio>
 
 namespace vox {
 class UpdateFlagManager;
@@ -19,7 +18,7 @@ class UpdateFlag {
 public:
     bool flag = true;
 
-    UpdateFlag(UpdateFlagManager *_flags);
+    explicit UpdateFlag(UpdateFlagManager *_flags);
 
     ~UpdateFlag();
 
@@ -28,5 +27,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* updateFlag_hpp */

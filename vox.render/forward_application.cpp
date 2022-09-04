@@ -4,11 +4,11 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "forward_application.h"
+#include "vox.render/forward_application.h"
 
-#include "camera.h"
-#include "engine.h"
-#include "rendering/subpasses/forward_subpass.h"
+#include "vox.render/camera.h"
+#include "vox.render/engine.h"
+#include "vox.render/rendering/subpasses/forward_subpass.h"
 
 namespace vox {
 Camera* ForwardApplication::mainCamera() { return _mainCamera; }

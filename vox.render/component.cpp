@@ -4,11 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "component.h"
+#include "vox.render/component.h"
 
-#include <algorithm>
-
-#include "entity.h"
+#include "vox.render/entity.h"
 
 namespace vox {
 Component::Component(Entity *entity) : _entity(entity) {}
@@ -22,7 +20,7 @@ Component::~Component() {
     }
 }
 
-bool Component::enabled() { return _enabled; }
+bool Component::enabled() const { return _enabled; }
 
 void Component::setEnabled(bool value) {
     if (value == _enabled) {

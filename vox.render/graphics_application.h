@@ -4,13 +4,12 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef graphics_application_hpp
-#define graphics_application_hpp
+#pragma once
 
-#include "application.h"
-#include "rendering/render_pass.h"
-#include "scene.h"
-#include "ui/ui_manager.h"
+#include "vox.render/application.h"
+#include "vox.render/rendering/render_pass.h"
+#include "vox.render/scene.h"
+#include "vox.render/ui/ui_manager.h"
 
 namespace vox {
 class GraphicsApplication : public Application {
@@ -55,5 +54,3 @@ protected:
 };
 
 }  // namespace vox
-
-#endif /* graphics_application_hpp */

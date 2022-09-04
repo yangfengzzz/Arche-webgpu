@@ -4,13 +4,12 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef behaviour_hpp
-#define behaviour_hpp
+#pragma once
 
 #include <sol/sol.hpp>
 
-#include "event.h"
-#include "script.h"
+#include "vox.render/event.h"
+#include "vox.render/script.h"
 
 namespace vox {
 /**
@@ -56,7 +55,7 @@ public:
     /**
      * Destructor
      */
-    ~Behaviour();
+    ~Behaviour() override;
 
 public:
     /**
@@ -125,5 +124,3 @@ private:
 }  // namespace vox
 
 #include "behaviour-inl.h"
-
-#endif /* behaviour_hpp */

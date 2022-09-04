@@ -4,8 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef background_hpp
-#define background_hpp
+#pragma once
 
 #include "vox.math/color.h"
 
@@ -46,5 +45,3 @@ public:
 };
 
 }  // namespace vox
-
-#endif /* background_hpp */

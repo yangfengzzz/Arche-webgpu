@@ -4,8 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef serializer_hpp
-#define serializer_hpp
+#pragma once
 
 #include <string>
 
@@ -139,5 +138,3 @@ public:
 };
 
 }  // namespace vox
-
-#endif /* serializer_hpp */

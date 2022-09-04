@@ -4,11 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "transform.h"
+#include "vox.render/transform.h"
 
-#include "entity.h"
 #include "vox.geometry/matrix_utils.h"
-#include "vox.math/math_utils.h"
+#include "vox.render/entity.h"
 
 namespace vox {
 std::string Transform::name() { return "Transform"; }
@@ -284,8 +283,8 @@ void Transform::_updateWorldPositionFlag() {
     if (!_isContainDirtyFlags(TransformFlag::WmWp)) {
         _worldAssociatedChange(TransformFlag::WmWp);
         const auto &nodeChildren = _entity->_children;
-        for (size_t i = 0, n = nodeChildren.size(); i < n; i++) {
-            nodeChildren[i]->transform->_updateWorldPositionFlag();
+        for (const auto &i : nodeChildren) {
+            i->transform->_updateWorldPositionFlag();
         }
     }
 }
@@ -294,9 +293,9 @@ void Transform::_updateWorldRotationFlag() {
     if (!_isContainDirtyFlags(TransformFlag::WmWeWq)) {
         _worldAssociatedChange(TransformFlag::WmWeWq);
         const auto &nodeChildren = _entity->_children;
-        for (size_t i = 0, n = nodeChildren.size(); i < n; i++) {
+        for (const auto &i : nodeChildren) {
             // Rotation update of parent entity will trigger world position and rotation update of all child entity.
-            nodeChildren[i]->transform->_updateWorldPositionAndRotationFlag();
+            i->transform->_updateWorldPositionAndRotationFlag();
         }
     }
 }
@@ -305,8 +304,8 @@ void Transform::_updateWorldPositionAndRotationFlag() {
     if (!_isContainDirtyFlags(TransformFlag::WmWpWeWq)) {
         _worldAssociatedChange(TransformFlag::WmWpWeWq);
         const auto &nodeChildren = _entity->_children;
-        for (size_t i = 0, n = nodeChildren.size(); i < n; i++) {
-            nodeChildren[i]->transform->_updateWorldPositionAndRotationFlag();
+        for (const auto &i : nodeChildren) {
+            i->transform->_updateWorldPositionAndRotationFlag();
         }
     }
 }
@@ -315,8 +314,8 @@ void Transform::_updateWorldScaleFlag() {
     if (!_isContainDirtyFlags(TransformFlag::WmWs)) {
         _worldAssociatedChange(TransformFlag::WmWs);
         const auto &nodeChildren = _entity->_children;
-        for (size_t i = 0, n = nodeChildren.size(); i < n; i++) {
-            nodeChildren[i]->transform->_updateWorldPositionAndScaleFlag();
+        for (const auto &i : nodeChildren) {
+            i->transform->_updateWorldPositionAndScaleFlag();
         }
     }
 }
@@ -325,8 +324,8 @@ void Transform::_updateWorldPositionAndScaleFlag() {
     if (!_isContainDirtyFlags(TransformFlag::WmWpWs)) {
         _worldAssociatedChange(TransformFlag::WmWpWs);
         const auto &nodeChildren = _entity->_children;
-        for (size_t i = 0, n = nodeChildren.size(); i < n; i++) {
-            nodeChildren[i]->transform->_updateWorldPositionAndScaleFlag();
+        for (const auto &i : nodeChildren) {
+            i->transform->_updateWorldPositionAndScaleFlag();
         }
     }
 }
@@ -335,8 +334,8 @@ void Transform::_updateAllWorldFlag() {
     if (!_isContainDirtyFlags(TransformFlag::WmWpWeWqWs)) {
         _worldAssociatedChange(TransformFlag::WmWpWeWqWs);
         const auto &nodeChildren = _entity->_children;
-        for (size_t i = 0, n = nodeChildren.size(); i < n; i++) {
-            nodeChildren[i]->transform->_updateAllWorldFlag();
+        for (const auto &i : nodeChildren) {
+            i->transform->_updateAllWorldFlag();
         }
     }
 }
@@ -368,11 +367,11 @@ Matrix3x3F Transform::_getScaleMatrix() {
     return invRotationMat * worldRotScaMat;
 }
 
-bool Transform::_isContainDirtyFlags(int targetDirtyFlags) {
+bool Transform::_isContainDirtyFlags(int targetDirtyFlags) const {
     return (_dirtyFlag & targetDirtyFlags) == targetDirtyFlags;
 }
 
-bool Transform::_isContainDirtyFlag(int type) { return (_dirtyFlag & type) != 0; }
+bool Transform::_isContainDirtyFlag(int type) const { return (_dirtyFlag & type) != 0; }
 
 void Transform::_setDirtyFlagTrue(int type) { _dirtyFlag |= type; }
 

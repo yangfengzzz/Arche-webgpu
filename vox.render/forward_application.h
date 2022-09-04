@@ -4,15 +4,14 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef forward_hpp
-#define forward_hpp
+#pragma once
 
-#include "components_manager.h"
-#include "graphics_application.h"
-#include "lighting/light_manager.h"
-#include "particle/particle_manager.h"
-#include "scene_manager.h"
-#include "shadow/shadow_manager.h"
+#include "vox.render/components_manager.h"
+#include "vox.render/graphics_application.h"
+#include "vox.render/lighting/light_manager.h"
+#include "vox.render/particle/particle_manager.h"
+#include "vox.render/scene_manager.h"
+#include "vox.render/shadow/shadow_manager.h"
 
 namespace vox {
 class ForwardApplication : public GraphicsApplication {
@@ -24,7 +23,7 @@ public:
     /**
      * @brief Additional sample initialization
      */
-    bool prepare(Engine& engine) override;
+    bool prepare(Platform& platform) override;
 
     /**
      * @brief Main loop sample events
@@ -69,5 +68,3 @@ protected:
 };
 
 }  // namespace vox
-
-#endif /* forward_hpp */

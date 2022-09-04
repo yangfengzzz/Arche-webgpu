@@ -6,7 +6,6 @@
 
 #pragma once
 
-
 #include "functors/wgsl_begin_normal_vert.h"
 #include "functors/wgsl_begin_position_vert.h"
 #include "functors/wgsl_blend_shape_input.h"

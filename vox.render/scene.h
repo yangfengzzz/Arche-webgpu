@@ -15,12 +15,12 @@
 #include <string>
 #include <vector>
 
-#include "background.h"
-#include "lighting/ambient_light.h"
-#include "platform/input_events.h"
-#include "scene_forward.h"
-#include "shader/shader_data.h"
-#include "vobject.h"
+#include "vox.render/background.h"
+#include "vox.render/lighting/ambient_light.h"
+#include "vox.render/platform/input_events.h"
+#include "vox.render/scene_forward.h"
+#include "vox.render/shader/shader_data.h"
+#include "vox.render/vobject.h"
 
 namespace vox {
 /// @brief A collection of entities organized in a tree structure.
@@ -40,16 +40,16 @@ public:
      * Create scene.
      * @param device - Device
      */
-    Scene(wgpu::Device &device);
+    explicit Scene(wgpu::Device &device);
 
-    ~Scene();
+    ~Scene() override;
 
     wgpu::Device &device();
 
     /**
      * Ambient light.
      */
-    const std::shared_ptr<AmbientLight> &ambientLight() const;
+    [[nodiscard]] const std::shared_ptr<AmbientLight> &ambientLight() const;
 
     void setAmbientLight(const std::shared_ptr<AmbientLight> &light);
 
@@ -61,7 +61,7 @@ public:
     /**
      * Root entity collection.
      */
-    const std::vector<std::unique_ptr<Entity>> &rootEntities() const;
+    [[nodiscard]] const std::vector<std::unique_ptr<Entity>> &rootEntities() const;
 
     /**
      * Play the scene
@@ -71,14 +71,14 @@ public:
     /**
      * Returns true if the scene is playing
      */
-    bool isPlaying() const;
+    [[nodiscard]] bool isPlaying() const;
 
     /**
      * Create root entity.
      * @param name - Entity name
      * @returns Entity
      */
-    Entity *createRootEntity(std::string name = "");
+    Entity *createRootEntity(const std::string &name = "");
 
     /**
      * Append an entity.

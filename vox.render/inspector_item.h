@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include "ui/widgets/widget_container.h"
-#include "vobject.h"
+#include "vox.render/ui/widgets/widget_container.h"
+#include "vox.render/vobject.h"
 
 namespace vox {
 /**

@@ -4,13 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "scene_animator.h"
+#include "vox.render/scene_animator.h"
 
-#include <iostream>
-
-#include "components_manager.h"
-#include "entity.h"
-#include "scene.h"
+#include "vox.render/components_manager.h"
+#include "vox.render/scene.h"
 
 namespace vox {
 std::string SceneAnimator::name() { return "SceneAnimator"; }

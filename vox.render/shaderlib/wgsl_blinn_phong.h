@@ -6,7 +6,6 @@
 
 #pragma once
 
-
 #include "functors/wgsl_begin_mobile_frag.h"
 #include "functors/wgsl_begin_normal_vert.h"
 #include "functors/wgsl_begin_position_vert.h"

@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vobject.h"
+#include "vox.render/vobject.h"
 
 namespace vox {
 // TODO

@@ -4,18 +4,13 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "scene.h"
+#include "vox.render/scene.h"
 
 #include <queue>
 
-#include "camera.h"
-#include "entity.h"
 #include "vox.base/logging.h"
-#include "vox.math/color.h"
-#include "vox.math/matrix4x4.h"
-#include "vox.math/vector2.h"
-#include "vox.math/vector3.h"
-#include "vox.math/vector4.h"
+#include "vox.render/camera.h"
+#include "vox.render/entity.h"
 
 namespace vox {
 Scene::Scene(wgpu::Device &device) : _device(device), shaderData(device) {
@@ -49,7 +44,7 @@ void Scene::play() { _processActive(true); }
 
 bool Scene::isPlaying() const { return _isActiveInEngine; }
 
-Entity *Scene::createRootEntity(std::string name) {
+Entity *Scene::createRootEntity(const std::string &name) {
     auto entity = std::make_unique<Entity>(name);
     auto entityPtr = entity.get();
     addRootEntity(std::move(entity));
@@ -104,15 +99,13 @@ Entity *Scene::getRootEntity(size_t index) { return _rootEntities[index].get(); 
 
 Entity *Scene::findEntityByName(const std::string &name) {
     const auto &children = _rootEntities;
-    for (size_t i = 0; i < children.size(); i++) {
-        const auto &child = children[i];
+    for (const auto &child : children) {
         if (child->name == name) {
             return child.get();
         }
     }
 
-    for (size_t i = 0; i < children.size(); i++) {
-        const auto &child = children[i];
+    for (const auto &child : children) {
         const auto entity = child->findByName(name);
         if (entity) {
             return entity;
@@ -140,8 +133,7 @@ void Scene::detachRenderCamera(Camera *camera) {
 void Scene::_processActive(bool active) {
     _isActiveInEngine = active;
     const auto &rootEntities = _rootEntities;
-    for (size_t i = 0; i < rootEntities.size(); i++) {
-        const auto &entity = rootEntities[i];
+    for (const auto &entity : rootEntities) {
         if (entity->_isActive) {
             active ? entity->_processActive() : entity->_processInActive();
         }

@@ -4,16 +4,15 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef camera_hpp
-#define camera_hpp
+#pragma once
 
-#include "component.h"
-#include "layer.h"
-#include "shader/shader_data.h"
-#include "update_flag.h"
 #include "vox.math/bounding_frustum.h"
 #include "vox.math/matrix4x4.h"
 #include "vox.math/ray3.h"
+#include "vox.render/component.h"
+#include "vox.render/layer.h"
+#include "vox.render/shader/shader_data.h"
+#include "vox.render/update_flag.h"
 
 namespace vox {
 /**
@@ -73,28 +72,28 @@ public:
      * Create the Camera component.
      * @param entity - Entity
      */
-    Camera(Entity *entity);
+    explicit Camera(Entity *entity);
 
-    const BoundingFrustum &frustum() const;
+    [[nodiscard]] const BoundingFrustum &frustum() const;
 
     /**
      * Near clip plane - the closest point to the camera when rendering occurs.
      */
-    float nearClipPlane() const;
+    [[nodiscard]] float nearClipPlane() const;
 
     void setNearClipPlane(float value);
 
     /**
      * Far clip plane - the furthest point to the camera when rendering occurs.
      */
-    float farClipPlane() const;
+    [[nodiscard]] float farClipPlane() const;
 
     void setFarClipPlane(float value);
 
     /**
      * The camera's view angle. activating when camera use perspective projection.
      */
-    float fieldOfView() const;
+    [[nodiscard]] float fieldOfView() const;
 
     void setFieldOfView(float value);
 
@@ -102,7 +101,7 @@ public:
      * Aspect ratio. The default is automatically calculated by the viewport's aspect ratio. If it is manually set,
      * the manual value will be kept. Call resetAspectRatio() to restore it.
      */
-    float aspectRatio() const;
+    [[nodiscard]] float aspectRatio() const;
 
     void setAspectRatio(float value);
 
@@ -110,7 +109,7 @@ public:
      * Viewport, normalized expression, the upper left corner is (0, 0), and the lower right corner is (1, 1).
      * @remarks Re-assignment is required after modification to ensure that the modification takes effect.
      */
-    Vector4F viewport() const;
+    [[nodiscard]] Vector4F viewport() const;
 
     void setViewport(const Vector4F &value);
 
@@ -118,14 +117,14 @@ public:
      * Whether it is orthogonal, the default is false. True will use orthographic projection, false will use perspective
      * projection.
      */
-    bool isOrthographic() const;
+    [[nodiscard]] bool isOrthographic() const;
 
     void setIsOrthographic(bool value);
 
     /**
      * Half the size of the camera in orthographic mode.
      */
-    float orthographicSize() const;
+    [[nodiscard]] float orthographicSize() const;
 
     void setOrthographicSize(float value);
 
@@ -195,20 +194,20 @@ public:
      * @param point - Point in screen space
      * @returns Point in viewport space
      */
-    Vector2F screenToViewportPoint(const Vector2F &point);
+    [[nodiscard]] Vector2F screenToViewportPoint(const Vector2F &point) const;
 
-    Vector3F screenToViewportPoint(const Vector3F &point);
+    [[nodiscard]] Vector3F screenToViewportPoint(const Vector3F &point) const;
 
     /**
      * Transform the X and Y coordinates of a point from viewport space to screen space.
      * @param point - Point in viewport space
      * @returns Point in screen space
      */
-    Vector2F viewportToScreenPoint(const Vector2F &point);
+    [[nodiscard]] Vector2F viewportToScreenPoint(const Vector2F &point) const;
 
-    Vector3F viewportToScreenPoint(const Vector3F &point);
+    [[nodiscard]] Vector3F viewportToScreenPoint(const Vector3F &point) const;
 
-    Vector4F viewportToScreenPoint(const Vector4F &point);
+    [[nodiscard]] Vector4F viewportToScreenPoint(const Vector4F &point) const;
 
     /**
      * Transform a point from world space to screen space.
@@ -233,13 +232,13 @@ public:
 
     void resize(uint32_t win_width, uint32_t win_height, uint32_t fb_width, uint32_t fb_height);
 
-    uint32_t width() const;
+    [[nodiscard]] uint32_t width() const;
 
-    uint32_t height() const;
+    [[nodiscard]] uint32_t height() const;
 
-    uint32_t framebufferWidth() const;
+    [[nodiscard]] uint32_t framebufferWidth() const;
 
-    uint32_t framebufferHeight() const;
+    [[nodiscard]] uint32_t framebufferHeight() const;
 
     void update();
 
@@ -308,5 +307,3 @@ private:
 };
 
 }  // namespace vox
-
-#endif /* camera_hpp */

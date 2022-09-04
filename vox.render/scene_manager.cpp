@@ -4,11 +4,13 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "scene_manager.h"
+#include "vox.render/scene_manager.h"
+
+#include <utility>
 
 namespace vox {
-SceneManager::SceneManager(wgpu::Device &device, const std::string &p_sceneRootFolder)
-    : _device(device), _sceneRootFolder(p_sceneRootFolder) {
+SceneManager::SceneManager(wgpu::Device &device, std::string p_sceneRootFolder)
+    : _device(device), _sceneRootFolder(std::move(p_sceneRootFolder)) {
     loadEmptyScene();
 }
 
@@ -17,7 +19,7 @@ SceneManager::~SceneManager() { unloadCurrentScene(); }
 void SceneManager::update() {
     if (_delayedLoadCall) {
         _delayedLoadCall();
-        _delayedLoadCall = 0;
+        _delayedLoadCall = nullptr;
     }
 }
 

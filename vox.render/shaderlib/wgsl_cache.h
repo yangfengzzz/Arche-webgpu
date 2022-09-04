@@ -6,7 +6,6 @@
 
 #pragma once
 
-
 #include <unordered_map>
 
 #include "vox.render/shaderlib/wgsl.h"

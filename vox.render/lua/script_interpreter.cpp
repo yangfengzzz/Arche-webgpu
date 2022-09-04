@@ -58,7 +58,8 @@ void ScriptInterpreter::unconsider(Behaviour *p_toUnconsider) {
     if (_luaState) p_toUnconsider->unregisterFromLuaContext();
 
     _behaviours.erase(std::remove_if(_behaviours.begin(), _behaviours.end(),
-                                     [p_toUnconsider](Behaviour *behaviour) { return p_toUnconsider == behaviour; }), _behaviours.end());
+                                     [p_toUnconsider](Behaviour *behaviour) { return p_toUnconsider == behaviour; }),
+                      _behaviours.end());
 
     refreshAll();  // Unconsidering a script is impossible with Lua, we have to reparse every behaviour
 }

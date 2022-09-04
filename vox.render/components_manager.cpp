@@ -4,14 +4,14 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "components_manager.h"
+#include "vox.render/components_manager.h"
 
-#include "camera.h"
-#include "entity.h"
-#include "renderer.h"
-#include "scene_animator.h"
-#include "script.h"
 #include "vox.base/logging.h"
+#include "vox.render/camera.h"
+#include "vox.render/entity.h"
+#include "vox.render/renderer.h"
+#include "vox.render/scene_animator.h"
+#include "vox.render/script.h"
 
 namespace vox {
 ComponentsManager *ComponentsManager::getSingletonPtr() { return ms_singleton; }
@@ -56,19 +56,18 @@ void ComponentsManager::removeOnUpdateScript(Script *script) {
 void ComponentsManager::addDestroyComponent(Script *component) { _destroyComponents.push_back(component); }
 
 void ComponentsManager::callComponentDestroy() {
-    if (_destroyComponents.size() > 0) {
-        for (size_t i = 0; i < _destroyComponents.size(); i++) {
-            _destroyComponents[i]->onDestroy();
+    if (!_destroyComponents.empty()) {
+        for (auto &_destroyComponent : _destroyComponents) {
+            _destroyComponent->onDestroy();
         }
         _destroyComponents.clear();
     }
 }
 
 void ComponentsManager::callScriptOnStart() {
-    if (_onStartScripts.size() > 0) {
+    if (!_onStartScripts.empty()) {
         // The 'onStartScripts.length' maybe add if you add some Script with addComponent() in some Script's onStart()
-        for (size_t i = 0; i < _onStartScripts.size(); i++) {
-            const auto &script = _onStartScripts[i];
+        for (auto &script : _onStartScripts) {
             script->setIsStarted(true);
             script->onStart();
         }
@@ -77,8 +76,7 @@ void ComponentsManager::callScriptOnStart() {
 }
 
 void ComponentsManager::callScriptOnUpdate(float deltaTime) {
-    for (size_t i = 0; i < _onUpdateScripts.size(); i++) {
-        const auto &element = _onUpdateScripts[i];
+    for (auto &element : _onUpdateScripts) {
         if (element->isStarted()) {
             element->onUpdate(deltaTime);
         }
@@ -86,8 +84,7 @@ void ComponentsManager::callScriptOnUpdate(float deltaTime) {
 }
 
 void ComponentsManager::callScriptOnLateUpdate(float deltaTime) {
-    for (size_t i = 0; i < _onUpdateScripts.size(); i++) {
-        const auto &element = _onUpdateScripts[i];
+    for (auto &element : _onUpdateScripts) {
         if (element->isStarted()) {
             element->onLateUpdate(deltaTime);
         }
@@ -95,8 +92,7 @@ void ComponentsManager::callScriptOnLateUpdate(float deltaTime) {
 }
 
 void ComponentsManager::callScriptInputEvent(const InputEvent &inputEvent) {
-    for (size_t i = 0; i < _onUpdateScripts.size(); i++) {
-        const auto &element = _onUpdateScripts[i];
+    for (auto &element : _onUpdateScripts) {
         if (element->isStarted()) {
             element->inputEvent(inputEvent);
         }
@@ -107,8 +103,7 @@ void ComponentsManager::callScriptResize(uint32_t win_width,
                                          uint32_t win_height,
                                          uint32_t fb_width,
                                          uint32_t fb_height) {
-    for (size_t i = 0; i < _onUpdateScripts.size(); i++) {
-        const auto &element = _onUpdateScripts[i];
+    for (auto &element : _onUpdateScripts) {
         if (element->isStarted()) {
             element->resize(win_width, win_height, fb_width, fb_height);
         }
@@ -133,8 +128,8 @@ void ComponentsManager::removeRenderer(Renderer *renderer) {
 }
 
 void ComponentsManager::callRendererOnUpdate(float deltaTime) {
-    for (size_t i = 0; i < _renderers.size(); i++) {
-        _renderers[i]->update(deltaTime);
+    for (auto &_renderer : _renderers) {
+        _renderer->update(deltaTime);
     }
 }
 
@@ -142,9 +137,7 @@ void ComponentsManager::callRender(Camera *camera,
                                    std::vector<RenderElement> &opaqueQueue,
                                    std::vector<RenderElement> &alphaTestQueue,
                                    std::vector<RenderElement> &transparentQueue) {
-    for (size_t i = 0; i < _renderers.size(); i++) {
-        const auto &element = _renderers[i];
-
+    for (auto &element : _renderers) {
         // filter by camera culling mask.
         if (!(camera->cullingMask & element->_entity->layer)) {
             continue;
@@ -173,14 +166,13 @@ void ComponentsManager::callRender(Camera *camera,
     }
 }
 
-void ComponentsManager::callRender(const BoundingFrustum &frustrum,
+void ComponentsManager::callRender(const BoundingFrustum &frustum,
                                    std::vector<RenderElement> &opaqueQueue,
                                    std::vector<RenderElement> &alphaTestQueue,
                                    std::vector<RenderElement> &transparentQueue) {
-    for (size_t i = 0; i < _renderers.size(); i++) {
-        const auto &renderer = _renderers[i];
-        // filter by renderer castShadow and frustrum cull
-        if (frustrum.intersectsBox(renderer->bounds())) {
+    for (auto &renderer : _renderers) {
+        // filter by renderer castShadow and frustum cull
+        if (frustum.intersectsBox(renderer->bounds())) {
             renderer->_render(opaqueQueue, alphaTestQueue, transparentQueue);
         }
     }
@@ -189,20 +181,20 @@ void ComponentsManager::callRender(const BoundingFrustum &frustrum,
 // MARK: - Camera
 void ComponentsManager::callCameraOnBeginRender(Camera *camera) {
     const auto &camComps = camera->entity()->scripts();
-    for (size_t i = 0; i < camComps.size(); i++) {
-        camComps[i]->onBeginRender(camera);
+    for (auto camComp : camComps) {
+        camComp->onBeginRender(camera);
     }
 }
 
 void ComponentsManager::callCameraOnEndRender(Camera *camera) {
     const auto &camComps = camera->entity()->scripts();
-    for (size_t i = 0; i < camComps.size(); i++) {
-        camComps[i]->onEndRender(camera);
+    for (auto camComp : camComps) {
+        camComp->onEndRender(camera);
     }
 }
 
 std::vector<Component *> ComponentsManager::getActiveChangedTempList() {
-    return _componentsContainerPool.size() ? *(_componentsContainerPool.end() - 1) : std::vector<Component *>{};
+    return !_componentsContainerPool.empty() ? *(_componentsContainerPool.end() - 1) : std::vector<Component *>{};
 }
 
 void ComponentsManager::putActiveChangedTempList(std::vector<Component *> &componentContainer) {

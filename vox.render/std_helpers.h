@@ -4,8 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#ifndef helpers_h
-#define helpers_h
+#pragma once
 
 #include <algorithm>
 #include <array>
@@ -176,5 +175,3 @@ inline std::vector<uint8_t> to_bytes(const T &value) {
 }
 
 }  // namespace vox
-
-#endif /* helpers_h */
