@@ -27,7 +27,7 @@ Renderer::Renderer(Entity *entity)
     : Component(entity),
       shaderData(entity->scene()->device()),
       _transformChangeFlag(entity->transform->registerWorldChangeFlag()),
-      _rendererProperty("u_rendererData") {}
+      _rendererProperty("rendererData") {}
 
 void Renderer::_onEnable() { ComponentsManager::getSingleton().addRenderer(this); }
 

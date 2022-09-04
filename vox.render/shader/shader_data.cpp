@@ -40,6 +40,20 @@ void ShaderData::bindBuffer(
         const Buffer &buffer,
         std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>> &bindGroupLayoutEntryVecMap,
         std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>> &bindGroupEntryVecMap) {
+    auto insertFunctor = [&]() {
+        wgpu::BindGroupEntry entry;
+        entry.binding = resource.binding;
+        entry.buffer = buffer.handle();
+        entry.size = buffer.size();
+        bindGroupEntryVecMap[resource.set].push_back(entry);
+
+        wgpu::BindGroupLayoutEntry layout_entry;
+        layout_entry.binding = resource.binding;
+        layout_entry.visibility = resource.stages;
+        layout_entry.buffer.type = wgpu::BufferBindingType::Uniform;
+        bindGroupLayoutEntryVecMap[resource.set].push_back(layout_entry);
+    };
+
     auto bindGroupLayoutIter = bindGroupLayoutEntryVecMap.find(resource.set);
     if (bindGroupLayoutIter != bindGroupLayoutEntryVecMap.end()) {
         bool alreadyExist = false;
@@ -51,20 +65,12 @@ void ShaderData::bindBuffer(
             }
         }
         if (!alreadyExist) {
-            wgpu::BindGroupEntry entry;
-            entry.binding = resource.binding;
-            entry.buffer = buffer.handle();
-            entry.size = buffer.size();
-            bindGroupEntryVecMap[resource.set].push_back(entry);
-
-            wgpu::BindGroupLayoutEntry layout_entry;
-            layout_entry.visibility = resource.stages;
-            layout_entry.buffer.type = wgpu::BufferBindingType::Uniform;
-            bindGroupLayoutIter->second.push_back(layout_entry);
+            insertFunctor();
         }
     } else {
         bindGroupLayoutEntryVecMap[resource.set] = {};
         bindGroupEntryVecMap[resource.set] = {};
+        insertFunctor();
     }
 }
 
@@ -73,6 +79,21 @@ void ShaderData::bindTexture(
         const SampledTexturePtr &texture,
         std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>> &bindGroupLayoutEntryVecMap,
         std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>> &bindGroupEntryVecMap) {
+    auto insertFunctor = [&]() {
+        wgpu::BindGroupEntry entry;
+        entry.binding = resource.binding;
+        entry.textureView = texture->textureView();
+        bindGroupEntryVecMap[resource.set].push_back(entry);
+
+        wgpu::BindGroupLayoutEntry layout_entry;
+        layout_entry.binding = resource.binding;
+        layout_entry.visibility = resource.stages;
+        layout_entry.texture.sampleType;
+        layout_entry.texture.multisampled = false;
+        layout_entry.texture.viewDimension = texture->textureViewDimension();
+        bindGroupLayoutEntryVecMap[resource.set].push_back(layout_entry);
+    };
+
     auto bindGroupLayoutIter = bindGroupLayoutEntryVecMap.find(resource.set);
     if (bindGroupLayoutIter != bindGroupLayoutEntryVecMap.end()) {
         bool alreadyExist = false;
@@ -84,21 +105,12 @@ void ShaderData::bindTexture(
             }
         }
         if (!alreadyExist) {
-            wgpu::BindGroupEntry entry;
-            entry.binding = resource.binding;
-            entry.textureView = texture->textureView();
-            bindGroupEntryVecMap[resource.set].push_back(entry);
-
-            wgpu::BindGroupLayoutEntry layout_entry;
-            layout_entry.visibility = resource.stages;
-            layout_entry.texture.sampleType;
-            layout_entry.texture.multisampled = false;
-            layout_entry.texture.viewDimension = texture->textureViewDimension();
-            bindGroupLayoutIter->second.push_back(layout_entry);
+            insertFunctor();
         }
     } else {
         bindGroupLayoutEntryVecMap[resource.set] = {};
         bindGroupEntryVecMap[resource.set] = {};
+        insertFunctor();
     }
 }
 
@@ -107,6 +119,19 @@ void ShaderData::bindSampler(
         const SampledTexturePtr &sampler,
         std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>> &bindGroupLayoutEntryVecMap,
         std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>> &bindGroupEntryVecMap) {
+    auto insertFunctor = [&]() {
+        wgpu::BindGroupEntry entry;
+        entry.binding = resource.binding;
+        entry.sampler = sampler->sampler();
+        bindGroupEntryVecMap[resource.set].push_back(entry);
+
+        wgpu::BindGroupLayoutEntry layout_entry;
+        layout_entry.binding = resource.binding;
+        layout_entry.visibility = resource.stages;
+        layout_entry.sampler.type;
+        bindGroupLayoutEntryVecMap[resource.set].push_back(layout_entry);
+    };
+
     auto bindGroupLayoutIter = bindGroupLayoutEntryVecMap.find(resource.set);
     if (bindGroupLayoutIter != bindGroupLayoutEntryVecMap.end()) {
         bool alreadyExist = false;
@@ -118,19 +143,12 @@ void ShaderData::bindSampler(
             }
         }
         if (!alreadyExist) {
-            wgpu::BindGroupEntry entry;
-            entry.binding = resource.binding;
-            entry.sampler = sampler->sampler();
-            bindGroupEntryVecMap[resource.set].push_back(entry);
-
-            wgpu::BindGroupLayoutEntry layout_entry;
-            layout_entry.visibility = resource.stages;
-            layout_entry.sampler.type;
-            bindGroupLayoutIter->second.push_back(layout_entry);
+            insertFunctor();
         }
     } else {
         bindGroupLayoutEntryVecMap[resource.set] = {};
         bindGroupEntryVecMap[resource.set] = {};
+        insertFunctor();
     }
 }
 
