@@ -27,6 +27,8 @@ uint32_t SampledTexture::mipmapCount() const { return _textureDesc.mipLevelCount
 
 wgpu::TextureFormat SampledTexture::format() const { return _textureDesc.format; }
 
+uint32_t SampledTexture::sampleCount() const { return _textureDesc.sampleCount; }
+
 wgpu::TextureViewDimension SampledTexture::textureViewDimension() { return _dimension; }
 
 void SampledTexture::setTextureViewDimension(wgpu::TextureViewDimension dim) { _dimension = dim; }

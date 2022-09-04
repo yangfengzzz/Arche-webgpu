@@ -42,6 +42,8 @@ public:
      */
     [[nodiscard]] wgpu::TextureFormat format() const;
 
+    [[nodiscard]] uint32_t sampleCount() const;
+
     wgpu::Texture& texture();
 
 public:

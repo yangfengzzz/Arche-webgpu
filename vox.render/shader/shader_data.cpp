@@ -6,6 +6,8 @@
 
 #include "vox.render/shader/shader_data.h"
 
+#include "vox.render/texture/texture_utils.h"
+
 namespace vox {
 ShaderData::ShaderData(wgpu::Device &device) : _device(device) {}
 
@@ -88,8 +90,8 @@ void ShaderData::bindTexture(
         wgpu::BindGroupLayoutEntry layout_entry;
         layout_entry.binding = resource.binding;
         layout_entry.visibility = resource.stages;
-        layout_entry.texture.sampleType;
-        layout_entry.texture.multisampled = false;
+        layout_entry.texture.sampleType = TextureUtils::sampleType(texture->format());
+        layout_entry.texture.multisampled = texture->sampleCount() > 1;
         layout_entry.texture.viewDimension = texture->textureViewDimension();
         bindGroupLayoutEntryVecMap[resource.set].push_back(layout_entry);
     };
@@ -128,7 +130,9 @@ void ShaderData::bindSampler(
         wgpu::BindGroupLayoutEntry layout_entry;
         layout_entry.binding = resource.binding;
         layout_entry.visibility = resource.stages;
-        layout_entry.sampler.type;
+        layout_entry.sampler.type = sampler->compareFunction() != wgpu::CompareFunction::Undefined
+                                            ? wgpu::SamplerBindingType::Comparison
+                                            : wgpu::SamplerBindingType::Filtering;
         bindGroupLayoutEntryVecMap[resource.set].push_back(layout_entry);
     };
 

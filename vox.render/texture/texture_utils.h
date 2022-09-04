@@ -28,6 +28,8 @@ public:
                                       uint32_t height,
                                       wgpu::Texture& textureArray,
                                       wgpu::CommandEncoder& commandEncoder);
+
+    static wgpu::TextureSampleType sampleType(wgpu::TextureFormat format);
 };
 
 }  // namespace vox
