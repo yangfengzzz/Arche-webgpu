@@ -51,12 +51,65 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC DAWN_ENABLE_BACKEND_METAL DAWN_ENABLE_BACKEND_NULL TINT_BUILD_WGSL_READER)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE vox.render vox.math vox.base plugins spdlog)
+find_library(Cocoa_LIBRARY Cocoa)
+find_library(Metal_LIBRARY Metal)
+find_library(IOKit_LIBRARY IOKit)
+find_library(IOSurface_LIBRARY IOSurface)
+find_library(QuartzCore_LIBRARY QuartzCore)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE vox.render vox.math vox.base plugins spdlog
+        absl_str_format_internal
+        absl_strings_internal
+        absl_strings -labsl_base
+        absl_spinlock_wait
+        absl_raw_logging_internal
+        absl_throw_delegate
+        absl_log_severity
+        absl_int128
+        dawn_common
+        dawn_headers
+        dawncpp_headers
+        dawncpp
+        dawn_proc
+        dawn_platform
+        dawn_wire
+        dawn_native
+        tint
+        tint_diagnostic_utils
+        ${Cocoa_LIBRARY}
+        ${Metal_LIBRARY}
+        ${IOKit_LIBRARY}
+        ${IOSurface_LIBRARY}
+        ${QuartzCore_LIBRARY})
 
 if (CMAKE_BUILD_TYPE MATCHES "Release")
-    target_link_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/third_party/assimp/build_release/bin)
+    target_link_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/third_party/assimp/build_release/bin
+            ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-release/src/dawn
+            ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-release/src/dawn/common
+            ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-release/src/dawn/native
+            ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-release/src/dawn/platform
+            ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-release/src/dawn/wire
+            ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-release/src/tint
+            ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-release/third_party/spirv-tools/source
+            ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-release/third_party/spirv-tools/source/opt
+            ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-release/third_party/abseil/absl/strings
+            ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-release/third_party/abseil/absl/base
+            ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-release/third_party/abseil/absl/numeric
+            ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-release/third_party/glfw/src)
 ELSEIF (CMAKE_BUILD_TYPE MATCHES "Debug")
-    target_link_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/third_party/assimp/build_release/bin)
+    target_link_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/third_party/assimp/build_release/bin
+            ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-debug/src/dawn
+            ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-debug/src/dawn/common
+            ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-debug/src/dawn/native
+            ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-debug/src/dawn/platform
+            ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-debug/src/dawn/wire
+            ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-debug/src/tint
+            ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-debug/third_party/spirv-tools/source
+            ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-debug/third_party/spirv-tools/source/opt
+            ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-debug/third_party/abseil/absl/strings
+            ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-debug/third_party/abseil/absl/base
+            ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-debug/third_party/abseil/absl/numeric
+            ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-debug/third_party/glfw/src)
 endif ()
 
 target_link_libraries(${PROJECT_NAME} PUBLIC
