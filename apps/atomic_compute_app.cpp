@@ -11,52 +11,23 @@
 #include "vox.render/entity.h"
 #include "vox.render/mesh/mesh_renderer.h"
 #include "vox.render/mesh/primitive_mesh.h"
-#include "vox.render/shaderlib/wgsl_cache.h"
-#include "vox.render/shaderlib/wgsl_unlit.h"
+#include "vox.render/shader/shader_manager.h"
 
 namespace vox {
 namespace {
-class WGSLAtomicFragment : public WGSLCache {
-public:
-    WGSLAtomicFragment() : _uvShare("VertexOut") {}
-
-private:
-    WGSLUVShare _uvShare;
-
-    void _createShaderSource(size_t hash, const ShaderMacroCollection& macros) override {
-        _source.clear();
-        _bindGroupInfo.clear();
-        auto inputStructCounter = WGSLEncoder::startCounter(0);
-        {
-            auto encoder = createSourceEncoder(wgpu::ShaderStage::Fragment);
-            _uvShare(encoder, macros, inputStructCounter);
-
-            encoder.addStorageBufferBinding("u_atomic", UniformType::U32, true);
-            encoder.addInoutType("Output", 0, "finalColor", UniformType::Vec4f32);
-
-            encoder.addEntry({{"in", "VertexOut"}}, {"out", "Output"}, [&](std::string& source) {
-                source += "var counter:f32 = f32(u_atomic % 255u);\n";
-                source += "out.finalColor = vec4<f32>(counter / 255.0, 1.0 - counter / 255.0, counter / 255.0, 1.0);\n";
-            });
-            encoder.flush();
-        }
-        WGSLEncoder::endCounter(inputStructCounter);
-        _sourceCache[hash] = _source;
-        _infoCache[hash] = _bindGroupInfo;
-    }
-};
-
 class AtomicMaterial : public BaseMaterial {
 private:
-    ShaderProperty _atomicProp;
+    const std::string _atomicProp;
     Buffer _atomicBuffer;
 
 public:
     explicit AtomicMaterial(wgpu::Device& device)
-        : BaseMaterial(device, Shader::find("atomicRender")),
-          _atomicProp(Shader::createProperty("u_atomic", ShaderDataGroup::Material)),
+        : BaseMaterial(device),
+          _atomicProp("u_atomic"),
           _atomicBuffer(device, sizeof(uint32_t), wgpu::BufferUsage::Storage) {
         setAtomicBuffer(_atomicBuffer);
+        vertex_source_ = ShaderManager::GetSingleton().LoadShader("base/unlit.vert");
+        fragment_source_ = ShaderManager::GetSingleton().LoadShader("base/compute/atomic_counter.frag");
     }
 
     const Buffer& atomicBuffer() { return _atomicBuffer; }
@@ -66,40 +37,10 @@ public:
     }
 };
 
-class WGSLAtomicCompute : public WGSLCache {
-public:
-    WGSLAtomicCompute() = default;
-
-private:
-    void _createShaderSource(size_t hash, const ShaderMacroCollection& macros) override {
-        _source.clear();
-        _bindGroupInfo.clear();
-        {
-            auto encoder = createSourceEncoder(wgpu::ShaderStage::Compute);
-            encoder.addStruct(
-                    "struct Counter {\n"
-                    "counter: atomic<u32>;\n"
-                    "}\n");
-            encoder.addStorageBufferBinding("u_atomic", "Counter", false);
-
-            encoder.addEntry({2, 2, 2}, [&](std::string& source) {
-                // source += "atomicStore(&u_atomic.counter, 0u);\n";
-                // source += "storageBarrier();\n";
-                source += "atomicAdd(&u_atomic.counter, 1u);\n";
-            });
-            encoder.flush();
-        }
-        _sourceCache[hash] = _source;
-        _infoCache[hash] = _bindGroupInfo;
-    }
-};
-
 }  // namespace
 
 // MARK: - AtomicComputeApp
 void AtomicComputeApp::loadScene() {
-    Shader::create("atomicRender", std::make_unique<WGSLUnlitVertex>(), std::make_unique<WGSLAtomicFragment>());
-
     auto scene = _sceneManager->currentScene();
     auto rootEntity = scene->createRootEntity();
 
@@ -127,7 +68,8 @@ void AtomicComputeApp::loadScene() {
 bool AtomicComputeApp::prepare(Platform& platform) {
     ForwardApplication::prepare(platform);
 
-    _pass = std::make_unique<ComputePass>(_device, std::make_unique<WGSLAtomicCompute>());
+    _pass = std::make_unique<ComputePass>(_device,
+                                          ShaderManager::GetSingleton().LoadShader("base/compute/atomic_counter.comp"));
     _pass->setDispatchCount(1, 1, 1);
     _pass->attachShaderData(&_material->shaderData);
 

@@ -11,12 +11,15 @@
 #include "vox.render/material/pbr_material.h"
 #include "vox.render/mesh/mesh_renderer.h"
 #include "vox.render/mesh/primitive_mesh.h"
-#include "vox.render/shaderlib/wgsl_skybox_debugger.h"
+#include "vox.render/shader/shader_manager.h"
 
 namespace vox {
 class BakerMaterial : public BaseMaterial {
 public:
-    explicit BakerMaterial(wgpu::Device& device) : BaseMaterial(device, Shader::find("cubemapDebugger")) {}
+    explicit BakerMaterial(wgpu::Device& device) : BaseMaterial(device) {
+        vertex_source_ = ShaderManager::GetSingleton().LoadShader("base/cubemap-debugger.vert");
+        fragment_source_ = ShaderManager::GetSingleton().LoadShader("base/cubemap-debugger.frag");
+    }
 
     /// Base texture.
     SampledTexture2DPtr baseTexture() { return _texture; }
@@ -36,18 +39,16 @@ public:
 
 private:
     SampledTexture2DPtr _texture{nullptr};
-    ShaderProperty _baseTextureProp = Shader::createProperty("u_baseTexture", ShaderDataGroup::Material);
-    ShaderProperty _baseSamplerProp = Shader::createProperty("u_baseSampler", ShaderDataGroup::Material);
+    const std::string _baseTextureProp = "u_baseTexture";
+    const std::string _baseSamplerProp = "u_baseSampler";
 
     uint32_t _faceIndex{};
-    ShaderProperty _faceIndexProp = Shader::createProperty("u_faceIndex", ShaderDataGroup::Material);
+    const std::string _faceIndexProp = "u_faceIndex";
 };
 
 void IrradianceApp::loadScene() {
     auto scene = _sceneManager->currentScene();
     auto rootEntity = scene->createRootEntity();
-    Shader::create("cubemapDebugger", std::make_unique<WGSLSkyboxDebuggerVertex>(),
-                   std::make_unique<WGSLSkyboxDebuggerFragment>());
 
     auto cameraEntity = rootEntity->createChild();
     cameraEntity->transform->setPosition(0, 0, 10);

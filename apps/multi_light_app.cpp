@@ -11,7 +11,7 @@
 #include "vox.render/camera.h"
 #include "vox.render/controls/orbit_control.h"
 #include "vox.render/entity.h"
-#include "vox.render/lighting/sprite/sprite_debug.h"
+#include "vox.render/lighting/debug/sprite_debug.h"
 #include "vox.render/material/blinn_phong_material.h"
 #include "vox.render/mesh/mesh_renderer.h"
 #include "vox.render/mesh/primitive_mesh.h"
