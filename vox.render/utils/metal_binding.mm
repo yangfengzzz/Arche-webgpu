@@ -32,7 +32,7 @@ public:
     }
 
     DawnSwapChainError Configure(WGPUTextureFormat format, WGPUTextureUsage usage, uint32_t width, uint32_t height) {
-        if (format != WGPUTextureFormat_BGRA8UnormSrgb) {
+        if (format != WGPUTextureFormat_BGRA8Unorm) {
             return "unsupported format";
         }
 
@@ -102,7 +102,7 @@ public:
         return reinterpret_cast<uint64_t>(&_swapchainImpl);
     }
 
-    wgpu::TextureFormat preferredSwapChainTextureFormat() override { return wgpu::TextureFormat::BGRA8UnormSrgb; }
+    wgpu::TextureFormat preferredSwapChainTextureFormat() override { return wgpu::TextureFormat::BGRA8Unorm; }
 
 private:
     template <typename T>

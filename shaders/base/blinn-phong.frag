@@ -120,7 +120,7 @@ layout(set = 0, binding = 12) uniform u_envMapLight {
     float mip_map_level;
     float diffuse_intensity;
     float specular_intensity;
-};
+} env_map_light;
 
 #ifdef USE_SH
     layout(set = 0, binding = 13) uniform u_env_sH {
@@ -247,7 +247,7 @@ void main() {
         specular *= specularTextureColor;
     #endif
 
-    ambient = vec4(diffuse * diffuse_intensity, 1.0) * diffuse;
+    ambient = vec4(env_map_light.diffuse * env_map_light.diffuse_intensity, 1.0) * diffuse;
 
     //------------------------------------------------------------------------------------------------------------------
     #ifdef NEED_WORLDPOS
