@@ -22,11 +22,21 @@ ForwardApplication::~ForwardApplication() {
     _lightManager.reset();
     _shadowManager.reset();
     _particleManager.reset();
+
+    shader_manager_->CollectGarbage();
+    shader_manager_.reset();
+    mesh_manager_->CollectGarbage();
+    mesh_manager_.reset();
 }
 
 bool ForwardApplication::prepare(Platform& platform) {
     GraphicsApplication::prepare(platform);
 
+    // resource loader
+    shader_manager_ = std::make_unique<ShaderManager>();
+    mesh_manager_ = std::make_unique<MeshManager>(_device);
+
+    // logic system
     _componentsManager = std::make_unique<ComponentsManager>();
     _sceneManager = std::make_unique<SceneManager>(_device);
     auto scene = _sceneManager->currentScene();

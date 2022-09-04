@@ -5358,14 +5358,7 @@
 					DAWN_ENABLE_BACKEND_METAL,
 					DAWN_ENABLE_BACKEND_NULL,
 					"$(inherited)",
-					TINT_BUILD_WGSL_READER,
-					DISABLE_CUDA_PHYSX,
-					PX_PHYSX_CORE_EXPORTS,
-					_DEBUG,
-					"'PX_DEBUG=1'",
-					"'PX_CHECKED=1'",
-					"'PX_NVTX=0'",
-					"'PX_SUPPORT_PVD=1'",
+					TINT_BUILD_SPV_READER,
 				);
 				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5423,10 +5416,7 @@
 					DAWN_ENABLE_BACKEND_METAL,
 					DAWN_ENABLE_BACKEND_NULL,
 					"$(inherited)",
-					DISABLE_CUDA_PHYSX,
-					PX_PHYSX_CORE_EXPORTS,
-					NDEBUG,
-					"'PX_SUPPORT_PVD=0'",
+					TINT_BUILD_SPV_READER,
 				);
 				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5598,14 +5588,7 @@
 					DAWN_ENABLE_BACKEND_METAL,
 					DAWN_ENABLE_BACKEND_NULL,
 					"$(inherited)",
-					TINT_BUILD_WGSL_READER,
-					DISABLE_CUDA_PHYSX,
-					PX_PHYSX_CORE_EXPORTS,
-					_DEBUG,
-					"'PX_DEBUG=1'",
-					"'PX_CHECKED=1'",
-					"'PX_NVTX=0'",
-					"'PX_SUPPORT_PVD=1'",
+					TINT_BUILD_SPV_READER,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
@@ -5729,11 +5712,7 @@
 					"$(inherited)",
 					DAWN_ENABLE_BACKEND_METAL,
 					DAWN_ENABLE_BACKEND_NULL,
-					"$(inherited)",
-					DISABLE_CUDA_PHYSX,
-					PX_PHYSX_CORE_EXPORTS,
-					NDEBUG,
-					"'PX_SUPPORT_PVD=0'",
+					TINT_BUILD_SPV_READER,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";

@@ -49,13 +49,13 @@ void PrimitiveApp::loadScene() {
     auto pointLight = light->addComponent<PointLight>();
     pointLight->intensity = 0.3;
 
-    auto cubeEntity = rootEntity->createChild();
-    cubeEntity->addComponent<MoveScript>();
-    auto renderer = cubeEntity->addComponent<MeshRenderer>();
-    renderer->setMesh(PrimitiveMesh::createCuboid(_device, 1));
-    auto material = std::make_shared<BlinnPhongMaterial>(_device);
-    material->setBaseColor(Color(0.4, 0.6, 0.6));
-    renderer->setMaterial(material);
+//    auto cubeEntity = rootEntity->createChild();
+//    cubeEntity->addComponent<MoveScript>();
+//    auto renderer = cubeEntity->addComponent<MeshRenderer>();
+//    renderer->setMesh(PrimitiveMesh::createCuboid(_device, 1));
+//    auto material = std::make_shared<BlinnPhongMaterial>(_device);
+//    material->setBaseColor(Color(0.4, 0.6, 0.6));
+//    renderer->setMaterial(material);
 
     auto planeEntity = rootEntity->createChild();
     planeEntity->transform->setPosition(0, 5, 0);
@@ -64,8 +64,8 @@ void PrimitiveApp::loadScene() {
     auto texturedMaterial = std::make_shared<UnlitMaterial>(_device);
     planeRenderer->setMaterial(texturedMaterial);
 
-    auto texture = Image::load("Textures/wood.png")->createSampledTexture(_device);
-    texturedMaterial->setBaseTexture(texture);
+//    auto texture = Image::load("Textures/wood.png")->createSampledTexture(_device);
+//    texturedMaterial->setBaseTexture(texture);
 
     scene->play();
 }

@@ -575,7 +575,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC ../
         ../third_party/dawn/include
         ../third_party/dawn)
 
-target_compile_definitions(${PROJECT_NAME} PUBLIC DAWN_ENABLE_BACKEND_METAL DAWN_ENABLE_BACKEND_NULL TINT_BUILD_WGSL_READER)
+target_compile_definitions(${PROJECT_NAME} PUBLIC DAWN_ENABLE_BACKEND_METAL DAWN_ENABLE_BACKEND_NULL TINT_BUILD_SPV_READER)
 
 # Link third party libraries
 target_link_libraries(${PROJECT_NAME} PUBLIC

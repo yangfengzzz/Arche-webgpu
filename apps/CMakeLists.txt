@@ -49,7 +49,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         ../third_party/dawn
         ${CMAKE_CURRENT_SOURCE_DIR})
 
-target_compile_definitions(${PROJECT_NAME} PUBLIC DAWN_ENABLE_BACKEND_METAL DAWN_ENABLE_BACKEND_NULL TINT_BUILD_WGSL_READER)
+target_compile_definitions(${PROJECT_NAME} PUBLIC DAWN_ENABLE_BACKEND_METAL DAWN_ENABLE_BACKEND_NULL TINT_BUILD_SPV_READER)
 
 find_library(Cocoa_LIBRARY Cocoa)
 find_library(Metal_LIBRARY Metal)
@@ -76,6 +76,8 @@ target_link_libraries(${PROJECT_NAME} PRIVATE vox.render vox.math vox.base plugi
         dawn_native
         tint
         tint_diagnostic_utils
+        SPIRV-Tools
+        SPIRV-Tools-opt
         ${Cocoa_LIBRARY}
         ${Metal_LIBRARY}
         ${IOKit_LIBRARY}

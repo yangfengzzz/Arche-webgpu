@@ -9,8 +9,10 @@
 #include "vox.render/components_manager.h"
 #include "vox.render/graphics_application.h"
 #include "vox.render/lighting/light_manager.h"
+#include "vox.render/mesh/mesh_manager.h"
 #include "vox.render/particle/particle_manager.h"
 #include "vox.render/scene_manager.h"
+#include "vox.render/shader/shader_manager.h"
 #include "vox.render/shadow/shadow_manager.h"
 
 namespace vox {
@@ -55,6 +57,9 @@ protected:
     /**
      * @brief Holds all scene information
      */
+    std::unique_ptr<ShaderManager> shader_manager_{nullptr};
+    std::unique_ptr<MeshManager> mesh_manager_{nullptr};
+
     std::unique_ptr<ComponentsManager> _componentsManager{nullptr};
     std::unique_ptr<SceneManager> _sceneManager{nullptr};
     std::unique_ptr<ShadowManager> _shadowManager{nullptr};
