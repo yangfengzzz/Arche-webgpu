@@ -7,17 +7,18 @@
 #include "vox.render/lighting/ambient_light.h"
 
 #include "vox.render/scene.h"
+#include "vox.render/shader/internal_variant_name.h"
 
 namespace vox {
 AmbientLight::AmbientLight()
-    : _envMapProperty(Shader::createProperty("u_envMapLight", ShaderDataGroup::Scene)),
-      _diffuseSHProperty(Shader::createProperty("u_env_sh", ShaderDataGroup::Scene)),
-      _diffuseTextureProperty(Shader::createProperty("u_env_diffuseTexture", ShaderDataGroup::Scene)),
-      _diffuseSamplerProperty(Shader::createProperty("u_env_diffuseSampler", ShaderDataGroup::Scene)),
-      _specularTextureProperty(Shader::createProperty("u_env_specularTexture", ShaderDataGroup::Scene)),
-      _specularSamplerProperty(Shader::createProperty("u_env_specularSampler", ShaderDataGroup::Scene)),
-      _brdfTextureProperty(Shader::createProperty("u_env_brdfTexture", ShaderDataGroup::Scene)),
-      _brdfSamplerProperty(Shader::createProperty("u_env_brdfSampler", ShaderDataGroup::Scene)) {}
+    : _envMapProperty("u_envMapLight"),
+      _diffuseSHProperty("u_env_sh"),
+      _diffuseTextureProperty("u_env_diffuseTexture"),
+      _diffuseSamplerProperty("u_env_diffuseSampler"),
+      _specularTextureProperty("u_env_specularTexture"),
+      _specularSamplerProperty("u_env_specularSampler"),
+      _brdfTextureProperty("u_env_brdfTexture"),
+      _brdfSamplerProperty("u_env_brdfSampler") {}
 
 void AmbientLight::setScene(Scene *value) {
     _scene = value;
@@ -39,13 +40,13 @@ void AmbientLight::setDiffuseMode(DiffuseMode value) {
 
     switch (value) {
         case DiffuseMode::SphericalHarmonics:
-            _scene->shaderData.disableMacro(HAS_DIFFUSE_ENV);
-            _scene->shaderData.enableMacro(HAS_SH);
+            _scene->shaderData.removeDefine(HAS_DIFFUSE_ENV);
+            _scene->shaderData.addDefine(HAS_SH);
             break;
 
         case DiffuseMode::Texture:
-            _scene->shaderData.disableMacro(HAS_SH);
-            _scene->shaderData.enableMacro(HAS_DIFFUSE_ENV);
+            _scene->shaderData.removeDefine(HAS_SH);
+            _scene->shaderData.addDefine(HAS_DIFFUSE_ENV);
             break;
 
         default:
@@ -54,7 +55,7 @@ void AmbientLight::setDiffuseMode(DiffuseMode value) {
 }
 
 Color AmbientLight::diffuseSolidColor() const {
-    return Color(_envMapLight.diffuse.x, _envMapLight.diffuse.y, _envMapLight.diffuse.z);
+    return {_envMapLight.diffuse.x, _envMapLight.diffuse.y, _envMapLight.diffuse.z};
 }
 
 void AmbientLight::setDiffuseSolidColor(const Color &value) {
@@ -82,9 +83,9 @@ void AmbientLight::setDiffuseTexture(const std::shared_ptr<SampledTexture> &valu
     if (value) {
         shaderData.setSampledTexture(AmbientLight::_diffuseTextureProperty, AmbientLight::_diffuseSamplerProperty,
                                      _diffuseTexture);
-        shaderData.enableMacro(HAS_DIFFUSE_ENV);
+        shaderData.removeDefine(HAS_DIFFUSE_ENV);
     } else {
-        shaderData.disableMacro(HAS_DIFFUSE_ENV);
+        shaderData.addDefine(HAS_DIFFUSE_ENV);
     }
 }
 
@@ -115,9 +116,9 @@ void AmbientLight::setSpecularTexture(const std::shared_ptr<SampledTexture> &val
                                      _specularReflection);
         _envMapLight.mipMapLevel = static_cast<uint32_t>(value->mipmapCount() - 1);
         _scene->shaderData.setData(AmbientLight::_envMapProperty, _envMapLight);
-        shaderData.enableMacro(HAS_SPECULAR_ENV);
+        shaderData.removeDefine(HAS_SPECULAR_ENV);
     } else {
-        shaderData.disableMacro(HAS_SPECULAR_ENV);
+        shaderData.addDefine(HAS_SPECULAR_ENV);
     }
 }
 

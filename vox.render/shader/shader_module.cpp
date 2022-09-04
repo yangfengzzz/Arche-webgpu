@@ -56,7 +56,7 @@ inline std::vector<uint8_t> ConvertToBytes(std::vector<std::string> &lines) {
     return bytes;
 }
 
-ShaderModule::ShaderModule(Device &device,
+ShaderModule::ShaderModule(wgpu::Device &device,
                            wgpu::ShaderStage stage,
                            const ShaderSource &glsl_source,
                            const std::string &entry_point,
@@ -96,6 +96,14 @@ ShaderModule::ShaderModule(Device &device,
     std::hash<std::string> hasher{};
     id_ = hasher(std::string{reinterpret_cast<const char *>(spirv_.data()),
                              reinterpret_cast<const char *>(spirv_.data() + spirv_.size())});
+
+    // create WebGPU shader module
+    wgpu::ShaderModuleDescriptor desc;
+    wgpu::ShaderModuleSPIRVDescriptor spirvDesc;
+    desc.nextInChain = &spirvDesc;
+    spirvDesc.code = spirv_.data();
+    spirvDesc.codeSize = spirv_.size();
+    shader_module_ = device.CreateShaderModule(&desc);
 }
 
 ShaderModule::ShaderModule(ShaderModule &&other) noexcept
@@ -106,9 +114,12 @@ ShaderModule::ShaderModule(ShaderModule &&other) noexcept
       debug_name_{other.debug_name_},
       spirv_{other.spirv_},
       resources_{other.resources_},
-      info_log_{other.info_log_} {
+      info_log_{other.info_log_},
+      shader_module_(other.shader_module_) {
     other.stage_ = {};
 }
+
+const wgpu::ShaderModule &ShaderModule::handle() const { return shader_module_; }
 
 size_t ShaderModule::GetId() const { return id_; }
 
@@ -116,7 +127,7 @@ wgpu::ShaderStage ShaderModule::GetStage() const { return stage_; }
 
 const std::string &ShaderModule::GetEntryPoint() const { return entry_point_; }
 
-const std::vector<ShaderResource> &ShaderModule::GetResources() const { return resources_; }
+const std::unordered_map<std::string, ShaderResource> &ShaderModule::GetResources() const { return resources_; }
 
 const std::string &ShaderModule::GetInfoLog() const { return info_log_; }
 
@@ -124,17 +135,20 @@ const std::vector<uint32_t> &ShaderModule::GetBinary() const { return spirv_; }
 
 void ShaderModule::SetResourceMode(const std::string &resource_name, const ShaderResourceMode &resource_mode) {
     auto it = std::find_if(resources_.begin(), resources_.end(),
-                           [&resource_name](const ShaderResource &resource) { return resource.name == resource_name; });
+                           [&resource_name](const std::pair<std::string, ShaderResource> &resource) {
+                               return resource.second.name == resource_name;
+                           });
 
     if (it != resources_.end()) {
         if (resource_mode == ShaderResourceMode::DYNAMIC) {
-            if (it->type == ShaderResourceType::BUFFER_UNIFORM || it->type == ShaderResourceType::BUFFER_STORAGE) {
-                it->mode = resource_mode;
+            if (it->second.type == ShaderResourceType::BUFFER_UNIFORM ||
+                it->second.type == ShaderResourceType::BUFFER_STORAGE) {
+                it->second.mode = resource_mode;
             } else {
                 LOGW("Resource `{}` does not support dynamic.", resource_name)
             }
         } else {
-            it->mode = resource_mode;
+            it->second.mode = resource_mode;
         }
     } else {
         LOGW("Resource `{}` not found for shader.", resource_name)

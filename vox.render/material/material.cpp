@@ -7,6 +7,7 @@
 #include "vox.render/material/material.h"
 
 namespace vox {
-Material::Material(wgpu::Device& device, Shader* shader) : shader(shader), shaderData(device) {}
+Material::Material(wgpu::Device &device, std::string name)
+    : device_(device), shaderData(device), name{std::move(name)} {}
 
 }  // namespace vox

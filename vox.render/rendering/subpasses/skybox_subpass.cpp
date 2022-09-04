@@ -11,7 +11,6 @@
 #include "vox.render/camera.h"
 #include "vox.render/mesh/primitive_mesh.h"
 #include "vox.render/rendering/render_pass.h"
-#include "vox.render/shaderlib/wgsl_skybox.h"
 
 namespace vox {
 SkyboxSubpass::SkyboxSubpass(RenderContext* renderContext,
@@ -20,10 +19,10 @@ SkyboxSubpass::SkyboxSubpass(RenderContext* renderContext,
                              Camera* camera)
     : Subpass(renderContext, scene, camera),
       _depthStencilTextureFormat(depthStencilTextureFormat),
-      _vpMatrix(renderContext->device(), sizeof(Matrix4x4F), wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst) {
+      _vpMatrix(renderContext->device(), sizeof(Matrix4x4F), wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst),
+      vert_shader_("base/skybox.vert"),
+      frag_shader_("base/skybox.frag") {
     createCuboid();
-    _vertexSource = std::make_unique<WGSLSkyboxVertex>();
-    _fragmentSource = std::make_unique<WGSLSkyboxFragment>();
 }
 
 void SkyboxSubpass::createSphere(float radius) {
@@ -53,15 +52,13 @@ void SkyboxSubpass::prepare() {
     _forwardPipelineDescriptor.label = "Skybox Pipeline";
     // Shader
     {
-        ShaderMacroCollection macros;
-        const std::string& vertexSource = _vertexSource->compile(macros).first;
-        // std::cout<<vertexSource<<std::endl;
-        const std::string& fragmentSource = _fragmentSource->compile(macros).first;
-        // std::cout<<fragmentSource<<std::endl;
+        ShaderVariant variant;
         _forwardPipelineDescriptor.vertex.entryPoint = "main";
-        _forwardPipelineDescriptor.vertex.module = _pass->resourceCache().requestShader(vertexSource);
+        _forwardPipelineDescriptor.vertex.module =
+                _pass->resourceCache().requestShaderModule(wgpu::ShaderStage::Vertex, vert_shader_, variant).handle();
         _fragment.entryPoint = "main";
-        _fragment.module = _pass->resourceCache().requestShader(fragmentSource);
+        _fragment.module =
+                _pass->resourceCache().requestShaderModule(wgpu::ShaderStage::Fragment, frag_shader_, variant).handle();
     }
     // BindGroupLayout
     {

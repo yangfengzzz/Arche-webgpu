@@ -17,12 +17,11 @@ namespace vox {
  */
 class PBRBaseMaterial : public BaseMaterial {
 public:
-    struct PBRBaseData {
+    struct alignas(16) PBRBaseData {
         Color baseColor = Color(1, 1, 1, 1);
         Color emissiveColor = Color(0, 0, 0, 1);
         float normalTextureIntensity = 1.f;
         float occlusionTextureIntensity = 1.f;
-        float _pad1, _pad2;
     };
 
     /**
@@ -85,27 +84,27 @@ protected:
     /**
      * Create a pbr base material instance.
      */
-    explicit PBRBaseMaterial(wgpu::Device& device, Shader* shader);
+    explicit PBRBaseMaterial(wgpu::Device& device, const std::string& name);
 
 private:
     PBRBaseData _pbrBaseData;
-    ShaderProperty _pbrBaseProp;
+    const std::string _pbrBaseProp;
 
     SampledTexture2DPtr _baseTexture{nullptr};
-    ShaderProperty _baseTextureProp;
-    ShaderProperty _baseSamplerProp;
+    const std::string _baseTextureProp;
+    const std::string _baseSamplerProp;
 
     SampledTexture2DPtr _normalTexture{nullptr};
-    ShaderProperty _normalTextureProp;
-    ShaderProperty _normalSamplerProp;
+    const std::string _normalTextureProp;
+    const std::string _normalSamplerProp;
 
     SampledTexture2DPtr _emissiveTexture{nullptr};
-    ShaderProperty _emissiveTextureProp;
-    ShaderProperty _emissiveSamplerProp;
+    const std::string _emissiveTextureProp;
+    const std::string _emissiveSamplerProp;
 
     SampledTexture2DPtr _occlusionTexture{nullptr};
-    ShaderProperty _occlusionTextureProp;
-    ShaderProperty _occlusionSamplerProp;
+    const std::string _occlusionTextureProp;
+    const std::string _occlusionSamplerProp;
 };
 
 }  // namespace vox

@@ -6,10 +6,17 @@
 
 #pragma once
 
+#include "vox.render/material/base_material.h"
 #include "vox.render/mesh/buffer_mesh.h"
 #include "vox.render/script.h"
 
 namespace vox {
+// MARK: - SpriteDebugMaterial
+class SpriteDebugMaterial : public BaseMaterial {
+public:
+    SpriteDebugMaterial(wgpu::Device &device, bool isSpotLight);
+};
+
 class SpriteDebug : public Script {
 public:
     /**

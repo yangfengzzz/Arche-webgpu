@@ -8,12 +8,13 @@
 
 #include "vox.render/entity.h"
 #include "vox.render/scene.h"
+#include "vox.render/shader/internal_variant_name.h"
 
 namespace vox {
 std::string GPUSkinnedMeshRenderer::name() { return "GPUSkinnedMeshRenderer"; }
 
 GPUSkinnedMeshRenderer::GPUSkinnedMeshRenderer(Entity* entity)
-    : MeshRenderer(entity), _jointMatrixProperty(Shader::createProperty("u_jointMatrix", ShaderDataGroup::Renderer)) {}
+    : MeshRenderer(entity), _jointMatrixProperty("u_jointMatrix") {}
 
 GPUSkinnedMeshRenderer::SkinPtr GPUSkinnedMeshRenderer::skin() { return _skin; }
 
@@ -36,13 +37,13 @@ void GPUSkinnedMeshRenderer::update(float deltaTime) {
             std::copy(jointMat.data(), jointMat.data() + 16, jointMatrix.data() + i * 16);
         }
         shaderData.setData(_jointMatrixProperty, jointMatrix);
-        shaderData.enableMacro(JOINTS_COUNT, _skin->joints.size());
+        shaderData.addDefine(JOINTS_COUNT + std::to_string(_skin->joints.size()));
     }
 }
 
 void GPUSkinnedMeshRenderer::_initJoints() {
     jointMatrix.resize(_skin->joints.size() * 16);
-    shaderData.enableMacro(HAS_SKIN);
+    shaderData.removeDefine(HAS_SKIN);
 }
 
 // MARK: - Reflection

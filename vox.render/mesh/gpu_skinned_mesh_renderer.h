@@ -60,7 +60,7 @@ private:
     bool _hasInitJoints = false;
 
     std::vector<float> jointMatrix{};
-    ShaderProperty _jointMatrixProperty;
+    const std::string _jointMatrixProperty;
 };
 
 }  // namespace vox

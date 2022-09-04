@@ -40,8 +40,8 @@ private:
     SampledTextureCubePtr _cubeMap{nullptr};
     Buffer _vpMatrix;
 
-    WGSLPtr _vertexSource{nullptr};
-    WGSLPtr _fragmentSource{nullptr};
+    ShaderSource vert_shader_;
+    ShaderSource frag_shader_;
 
     wgpu::RenderPipelineDescriptor _forwardPipelineDescriptor;
     wgpu::DepthStencilState _depthStencil;

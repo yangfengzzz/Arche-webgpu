@@ -11,6 +11,7 @@
 #include "vox.render/material/material.h"
 #include "vox.render/mesh/mesh.h"
 #include "vox.render/renderer.h"
+#include "vox.render/shader/internal_variant_name.h"
 #include "vox.render/shadow/shadow_manager.h"
 
 namespace vox {
@@ -43,94 +44,99 @@ void ForwardSubpass::prepare() {
 }
 
 void ForwardSubpass::draw(wgpu::RenderPassEncoder &passEncoder) {
+    auto compile_variant = ShaderVariant();
+    _scene->shaderData.mergeVariants(compile_variant, compile_variant);
+    if (_camera) {
+        _camera->shaderData.mergeVariants(compile_variant, compile_variant);
+    }
+
     passEncoder.PushDebugGroup("Draw Element");
     if (_mode == RenderMode::MANUAL) {
-        auto compileMacros = ShaderMacroCollection();
-        _scene->shaderData.mergeMacro(compileMacros, compileMacros);
-        _camera->shaderData.mergeMacro(compileMacros, compileMacros);
-        _drawElement(passEncoder, _elements, compileMacros);
+        _drawElement(passEncoder, _elements, compile_variant);
     } else {
-        _drawMeshes(passEncoder);
+        std::vector<RenderElement> opaqueQueue;
+        std::vector<RenderElement> alphaTestQueue;
+        std::vector<RenderElement> transparentQueue;
+        ComponentsManager::getSingleton().callRender(_camera, opaqueQueue, alphaTestQueue, transparentQueue);
+        std::sort(opaqueQueue.begin(), opaqueQueue.end(), _compareFromNearToFar);
+        std::sort(alphaTestQueue.begin(), alphaTestQueue.end(), _compareFromNearToFar);
+        std::sort(transparentQueue.begin(), transparentQueue.end(), _compareFromFarToNear);
+
+        _drawElement(passEncoder, opaqueQueue, compile_variant);
+        _drawElement(passEncoder, alphaTestQueue, compile_variant);
+        _drawElement(passEncoder, transparentQueue, compile_variant);
     }
     passEncoder.PopDebugGroup();
 }
 
-void ForwardSubpass::_drawMeshes(wgpu::RenderPassEncoder &passEncoder) {
-    auto compileMacros = ShaderMacroCollection();
-    _scene->shaderData.mergeMacro(compileMacros, compileMacros);
-    _camera->shaderData.mergeMacro(compileMacros, compileMacros);
-
-    std::vector<RenderElement> opaqueQueue;
-    std::vector<RenderElement> alphaTestQueue;
-    std::vector<RenderElement> transparentQueue;
-    ComponentsManager::getSingleton().callRender(_camera, opaqueQueue, alphaTestQueue, transparentQueue);
-    std::sort(opaqueQueue.begin(), opaqueQueue.end(), _compareFromNearToFar);
-    std::sort(alphaTestQueue.begin(), alphaTestQueue.end(), _compareFromNearToFar);
-    std::sort(transparentQueue.begin(), transparentQueue.end(), _compareFromFarToNear);
-
-    _drawElement(passEncoder, opaqueQueue, compileMacros);
-    _drawElement(passEncoder, alphaTestQueue, compileMacros);
-    _drawElement(passEncoder, transparentQueue, compileMacros);
-}
-
 void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
                                   const std::vector<RenderElement> &items,
-                                  const ShaderMacroCollection &compileMacros) {
+                                  const ShaderVariant &variant) {
     for (auto &element : items) {
-        auto macros = compileMacros;
+        auto macros = variant;
         auto &renderer = element.renderer;
         uint32_t shadowCount = ShadowManager::shadowCount();
         if (renderer->receiveShadow && shadowCount != 0) {
-            renderer->shaderData.enableMacro(SHADOW_MAP_COUNT, shadowCount);
+            renderer->shaderData.addDefine(SHADOW_MAP_COUNT + std::to_string(shadowCount));
         }
         uint32_t cubeShadowCount = ShadowManager::cubeShadowCount();
         if (renderer->receiveShadow && cubeShadowCount != 0) {
-            renderer->shaderData.enableMacro(CUBE_SHADOW_MAP_COUNT, cubeShadowCount);
+            renderer->shaderData.addDefine(CUBE_SHADOW_MAP_COUNT + std::to_string(cubeShadowCount));
         }
 
         renderer->updateShaderData();
-        renderer->shaderData.mergeMacro(macros, macros);
+        renderer->shaderData.mergeVariants(macros, macros);
+
         auto &material = element.material;
-        material->shaderData.mergeMacro(macros, macros);
+        material->shaderData.mergeVariants(macros, macros);
+
         auto &mesh = element.mesh;
         auto &subMesh = element.subMesh;
 
         // PSO
         {
-            const std::string &vertexSource = material->shader->vertexSource(macros);
-            // std::cout<<vertexSource<<std::endl;
-            const std::string &fragmentSource = material->shader->fragmentSource(macros);
-            // std::cout<<fragmentSource<<std::endl;
-            _forwardPipelineDescriptor.vertex.module = _pass->resourceCache().requestShader(vertexSource);
-            _fragment.module = _pass->resourceCache().requestShader(fragmentSource);
+            auto &vert_shader_module = _pass->resourceCache().requestShaderModule(wgpu::ShaderStage::Vertex,
+                                                                                  *material->vertex_source_, macros);
+            auto &frag_shader_module = _pass->resourceCache().requestShaderModule(wgpu::ShaderStage::Fragment,
+                                                                                  *material->fragment_source_, macros);
+            _forwardPipelineDescriptor.vertex.module = vert_shader_module.handle();
+            _fragment.module = frag_shader_module.handle();
 
-            auto bindGroupLayoutDescriptors = material->shader->bindGroupLayoutDescriptors(macros);
+            _bindGroupLayoutEntryVecMap.clear();
+            _bindGroupEntryVecMap.clear();
+            _scene->shaderData.bindData(vert_shader_module.GetResources(), _bindGroupLayoutEntryVecMap,
+                                        _bindGroupEntryVecMap);
+            _scene->shaderData.bindData(frag_shader_module.GetResources(), _bindGroupLayoutEntryVecMap,
+                                        _bindGroupEntryVecMap);
+            _camera->shaderData.bindData(vert_shader_module.GetResources(), _bindGroupLayoutEntryVecMap,
+                                         _bindGroupEntryVecMap);
+            _camera->shaderData.bindData(frag_shader_module.GetResources(), _bindGroupLayoutEntryVecMap,
+                                         _bindGroupEntryVecMap);
+            renderer->shaderData.bindData(vert_shader_module.GetResources(), _bindGroupLayoutEntryVecMap,
+                                          _bindGroupEntryVecMap);
+            renderer->shaderData.bindData(frag_shader_module.GetResources(), _bindGroupLayoutEntryVecMap,
+                                          _bindGroupEntryVecMap);
+            material->shaderData.bindData(vert_shader_module.GetResources(), _bindGroupLayoutEntryVecMap,
+                                          _bindGroupEntryVecMap);
+            material->shaderData.bindData(frag_shader_module.GetResources(), _bindGroupLayoutEntryVecMap,
+                                          _bindGroupEntryVecMap);
+
             std::vector<wgpu::BindGroupLayout> bindGroupLayouts;
-            for (auto &layoutDesc : bindGroupLayoutDescriptors) {
+            for (const auto &bindGroupLayoutEntryVec : _bindGroupLayoutEntryVecMap) {
+                bindGroupLayoutDescriptor.entries = bindGroupLayoutEntryVec.second.data();
+                bindGroupLayoutDescriptor.entryCount = bindGroupLayoutEntryVec.second.size();
                 wgpu::BindGroupLayout bindGroupLayout =
-                        _pass->resourceCache().requestBindGroupLayout(layoutDesc.second);
-                _bindGroupEntries.clear();
-                _bindGroupEntries.resize(layoutDesc.second.entryCount);
-                for (uint32_t i = 0; i < layoutDesc.second.entryCount; i++) {
-                    auto &entry = layoutDesc.second.entries[i];
-                    _bindGroupEntries[i].binding = entry.binding;
-                    if (entry.buffer.type != wgpu::BufferBindingType::Undefined) {
-                        _bindingData(_bindGroupEntries[i], material, renderer);
-                    } else if (entry.texture.sampleType != wgpu::TextureSampleType::Undefined ||
-                               entry.storageTexture.access != wgpu::StorageTextureAccess::Undefined) {
-                        _bindingTexture(_bindGroupEntries[i], material, renderer);
-                    } else if (entry.sampler.type != wgpu::SamplerBindingType::Undefined) {
-                        _bindingSampler(_bindGroupEntries[i], material, renderer);
-                    }
-                }
+                        _pass->resourceCache().requestBindGroupLayout(bindGroupLayoutDescriptor);
+
+                const auto group = bindGroupLayoutEntryVec.first;
+                const auto &bindGroupEntryVec = _bindGroupEntryVecMap[group];
                 _bindGroupDescriptor.layout = bindGroupLayout;
-                _bindGroupDescriptor.entryCount = layoutDesc.second.entryCount;
-                _bindGroupDescriptor.entries = _bindGroupEntries.data();
+                _bindGroupDescriptor.entryCount = bindGroupEntryVec.size();
+                _bindGroupDescriptor.entries = bindGroupEntryVec.data();
                 auto uniformBindGroup = _pass->resourceCache().requestBindGroup(_bindGroupDescriptor);
-                passEncoder.SetBindGroup(layoutDesc.first, uniformBindGroup);
+                passEncoder.SetBindGroup(group, uniformBindGroup);
                 bindGroupLayouts.emplace_back(std::move(bindGroupLayout));
             }
-            material->shader->flush();
 
             _pipelineLayoutDescriptor.bindGroupLayoutCount = static_cast<uint32_t>(bindGroupLayouts.size());
             _pipelineLayoutDescriptor.bindGroupLayouts = bindGroupLayouts.data();
@@ -161,88 +167,6 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
             passEncoder.DrawIndexed(subMesh->count(), mesh->instanceCount(), subMesh->start(), 0, 0);
         } else {
             passEncoder.Draw(subMesh->count(), mesh->instanceCount());
-        }
-    }
-}
-
-void ForwardSubpass::_bindingData(wgpu::BindGroupEntry &entry, const MaterialPtr &mat, Renderer *renderer) {
-    auto group = Shader::getShaderPropertyGroup(entry.binding);
-    if (group.has_value()) {
-        switch (*group) {
-            case ShaderDataGroup::Scene:
-                entry.buffer = _scene->shaderData.getData(entry.binding)->handle();
-                entry.size = _scene->shaderData.getData(entry.binding)->size();
-                break;
-
-            case ShaderDataGroup::Camera:
-                entry.buffer = _camera->shaderData.getData(entry.binding)->handle();
-                entry.size = _camera->shaderData.getData(entry.binding)->size();
-                break;
-
-            case ShaderDataGroup::Renderer:
-                entry.buffer = renderer->shaderData.getData(entry.binding)->handle();
-                entry.size = renderer->shaderData.getData(entry.binding)->size();
-                break;
-
-            case ShaderDataGroup::Material:
-                entry.buffer = mat->shaderData.getData(entry.binding)->handle();
-                entry.size = mat->shaderData.getData(entry.binding)->size();
-                break;
-
-            default:
-                break;
-        }
-    }
-}
-
-void ForwardSubpass::_bindingTexture(wgpu::BindGroupEntry &entry, const MaterialPtr &mat, Renderer *renderer) {
-    auto group = Shader::getShaderPropertyGroup(entry.binding);
-    if (group.has_value()) {
-        switch (*group) {
-            case ShaderDataGroup::Scene:
-                entry.textureView = _scene->shaderData.getTextureView(entry.binding).value();
-                break;
-
-            case ShaderDataGroup::Camera:
-                entry.textureView = _camera->shaderData.getTextureView(entry.binding).value();
-                break;
-
-            case ShaderDataGroup::Renderer:
-                entry.textureView = renderer->shaderData.getTextureView(entry.binding).value();
-                break;
-
-            case ShaderDataGroup::Material:
-                entry.textureView = mat->shaderData.getTextureView(entry.binding).value();
-                break;
-
-            default:
-                break;
-        }
-    }
-}
-
-void ForwardSubpass::_bindingSampler(wgpu::BindGroupEntry &entry, const MaterialPtr &mat, Renderer *renderer) {
-    auto group = Shader::getShaderPropertyGroup(entry.binding);
-    if (group.has_value()) {
-        switch (*group) {
-            case ShaderDataGroup::Scene:
-                entry.sampler = _scene->shaderData.getSampler(entry.binding).value();
-                break;
-
-            case ShaderDataGroup::Camera:
-                entry.sampler = _camera->shaderData.getSampler(entry.binding).value();
-                break;
-
-            case ShaderDataGroup::Renderer:
-                entry.sampler = renderer->shaderData.getSampler(entry.binding).value();
-                break;
-
-            case ShaderDataGroup::Material:
-                entry.sampler = mat->shaderData.getSampler(entry.binding).value();
-                break;
-
-            default:
-                break;
         }
     }
 }

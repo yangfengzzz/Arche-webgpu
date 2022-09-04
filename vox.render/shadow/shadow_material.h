@@ -23,7 +23,7 @@ public:
 
 private:
     Matrix4x4F _vp = Matrix4x4F();
-    ShaderProperty _shadowViewProjectionProp;
+    const std::string _shadowViewProjectionProp;
 };
 
 }  // namespace vox

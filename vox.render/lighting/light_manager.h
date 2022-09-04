@@ -94,15 +94,15 @@ private:
 
     std::vector<PointLight *> _pointLights;
     std::vector<PointLight::PointLightData> _pointLightDatas;
-    ShaderProperty _pointLightProperty;
+    const std::string _pointLightProperty;
 
     std::vector<SpotLight *> _spotLights;
     std::vector<SpotLight::SpotLightData> _spotLightDatas;
-    ShaderProperty _spotLightProperty;
+    const std::string _spotLightProperty;
 
     std::vector<DirectLight *> _directLights;
     std::vector<DirectLight::DirectLightData> _directLightDatas;
-    ShaderProperty _directLightProperty;
+    const std::string _directLightProperty;
 
     void _updateShaderData(ShaderData &shaderData);
 
@@ -118,7 +118,7 @@ private:
         Matrix4x4F viewMatrix;
     };
     ProjectionUniforms _forwardPlusUniforms;
-    ShaderProperty _forwardPlusProp;
+    const std::string _forwardPlusProp;
 
     struct ClusterBounds {
         Vector3F minAABB;
@@ -129,7 +129,7 @@ private:
     struct Clusters {
         std::array<ClusterBounds, TOTAL_TILES> bounds;
     };
-    ShaderProperty _clustersProp;
+    const std::string _clustersProp;
     std::unique_ptr<Buffer> _clustersBuffer;
 
     struct ClusterLights {
@@ -142,7 +142,7 @@ private:
         std::array<ClusterLights, TOTAL_TILES> lights;
         std::array<uint32_t, MAX_LIGHTS_PER_CLUSTER * TOTAL_TILES> indices;
     };
-    ShaderProperty _clusterLightsProp;
+    const std::string _clusterLightsProp;
     std::unique_ptr<Buffer> _clusterLightsBuffer;
 
     ShaderData _shaderData;

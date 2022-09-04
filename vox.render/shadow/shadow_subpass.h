@@ -27,14 +27,15 @@ private:
 
     void _drawElement(wgpu::RenderPassEncoder& passEncoder,
                       const std::vector<RenderElement>& items,
-                      const ShaderMacroCollection& compileMacros);
-
-    void _bindingData(wgpu::BindGroupEntry& entry, const MaterialPtr& mat, Renderer* renderer);
+                      const ShaderVariant& variant);
 
     wgpu::RenderPipelineDescriptor _shadowGenDescriptor;
     wgpu::DepthStencilState _depthStencil;
 
+    std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>> _bindGroupLayoutEntryVecMap;
+    std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>> _bindGroupEntryVecMap;
     wgpu::BindGroupDescriptor _bindGroupDescriptor;
+    wgpu::BindGroupLayoutDescriptor bindGroupLayoutDescriptor;
     std::vector<wgpu::BindGroupEntry> _bindGroupEntries{};
 
     wgpu::PipelineLayoutDescriptor _pipelineLayoutDescriptor;

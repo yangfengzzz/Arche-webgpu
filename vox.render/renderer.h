@@ -133,7 +133,7 @@ private:
     float _distanceForSort = 0;
 
     RendererData _rendererData;
-    ShaderProperty _rendererProperty;
+    const std::string _rendererProperty;
 
     std::unique_ptr<UpdateFlag> _transformChangeFlag;
     BoundingBox3F _bounds = BoundingBox3F();

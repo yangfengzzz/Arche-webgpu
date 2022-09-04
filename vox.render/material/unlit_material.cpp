@@ -6,6 +6,9 @@
 
 #include "vox.render/material/unlit_material.h"
 
+#include "vox.render/shader/internal_variant_name.h"
+#include "vox.render/shader/shader_manager.h"
+
 namespace vox {
 const Color& UnlitMaterial::baseColor() { return _baseColor; }
 
@@ -21,18 +24,21 @@ void UnlitMaterial::setBaseTexture(const SampledTexture2DPtr& newValue) {
     shaderData.setSampledTexture(UnlitMaterial::_baseTextureProp, UnlitMaterial::_baseSamplerProp, newValue);
 
     if (newValue) {
-        shaderData.enableMacro(HAS_BASE_TEXTURE);
+        shaderData.addDefine(HAS_BASE_TEXTURE);
     } else {
-        shaderData.disableMacro(HAS_BASE_TEXTURE);
+        shaderData.removeDefine(HAS_BASE_TEXTURE);
     }
 }
 
-UnlitMaterial::UnlitMaterial(wgpu::Device& device)
-    : BaseMaterial(device, Shader::find("unlit")),
-      _baseColorProp(Shader::createProperty("u_baseColor", ShaderDataGroup::Material)),
-      _baseTextureProp(Shader::createProperty("u_baseTexture", ShaderDataGroup::Material)),
-      _baseSamplerProp(Shader::createProperty("u_baseSampler", ShaderDataGroup::Material)) {
-    shaderData.enableMacro(OMIT_NORMAL);
+UnlitMaterial::UnlitMaterial(wgpu::Device& device, const std::string& name)
+    : BaseMaterial(device, name),
+      _baseColorProp("baseColor"),
+      _baseTextureProp("baseTexture"),
+      _baseSamplerProp("baseSampler") {
+    vertex_source_ = ShaderManager::GetSingleton().LoadShader("base/unlit.vert");
+    fragment_source_ = ShaderManager::GetSingleton().LoadShader("base/unlit.frag");
+
+    shaderData.addDefine(OMIT_NORMAL);
 
     shaderData.setData(_baseColorProp, _baseColor);
 }

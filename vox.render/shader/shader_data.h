@@ -12,10 +12,8 @@
 #include <unordered_map>
 
 #include "vox.render/mesh/buffer.h"
-#include "vox.render/shader/shader.h"
-#include "vox.render/shader/shader_data_group.h"
-#include "vox.render/shader/shader_macro_collection.h"
-#include "vox.render/shader/shader_property.h"
+#include "vox.render/shader/shader_module.h"
+#include "vox.render/shader/shader_variant.h"
 #include "vox.render/std_helpers.h"
 #include "vox.render/texture/sampled_texture.h"
 
@@ -27,63 +25,45 @@ class ShaderData {
 public:
     explicit ShaderData(wgpu::Device& device);
 
-    [[nodiscard]] const std::unordered_map<uint32_t, Buffer>& shaderBuffers() const;
-
-    std::optional<Buffer> getData(const std::string& property_name);
-
-    std::optional<Buffer> getData(const ShaderProperty& property);
-
-    std::optional<Buffer> getData(uint32_t uniqueID);
-
     void setBufferFunctor(const std::string& property_name, const std::function<Buffer()>& functor);
 
-    void setBufferFunctor(const ShaderProperty& property, const std::function<Buffer()>& functor);
+    void bindData(const std::unordered_map<std::string, ShaderResource>& resources,
+                  std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>>& bindGroupLayoutEntryVecMap,
+                  std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>>& bindGroupEntryVecMap);
 
     template <typename T>
-    void setData(const std::string& property_name, const T& value) {
-        auto property = Shader::getPropertyByName(property_name);
-        if (property.has_value()) {
-            setData(property.value(), value);
-        } else {
-            assert(false && "can't find property");
-        }
-    }
-
-    template <typename T>
-    void setData(const ShaderProperty& property, const T& value) {
-        auto iter = _shaderBuffers.find(property.uniqueId);
+    void setData(const std::string& property, const T& value) {
+        auto iter = _shaderBuffers.find(property);
         if (iter == _shaderBuffers.end()) {
             _shaderBuffers.insert(std::make_pair(
-                    property.uniqueId,
-                    Buffer(_device, sizeof(T), wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst)));
+                    property, Buffer(_device, sizeof(T), wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst)));
         }
-        iter = _shaderBuffers.find(property.uniqueId);
+        iter = _shaderBuffers.find(property);
 
         _device.GetQueue().WriteBuffer(iter->second.handle(), 0, &value, sizeof(T));
     }
 
     template <typename T>
-    void setData(const ShaderProperty& property, const std::vector<T>& value) {
-        auto iter = _shaderBuffers.find(property.uniqueId);
+    void setData(const std::string& property, const std::vector<T>& value) {
+        auto iter = _shaderBuffers.find(property);
         if (iter == _shaderBuffers.end()) {
             _shaderBuffers.insert(
-                    std::make_pair(property.uniqueId, Buffer(_device, sizeof(T) * value.size(),
-                                                             wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst)));
+                    std::make_pair(property, Buffer(_device, sizeof(T) * value.size(),
+                                                    wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst)));
         }
-        iter = _shaderBuffers.find(property.uniqueId);
+        iter = _shaderBuffers.find(property);
 
         _device.GetQueue().WriteBuffer(iter->second.handle(), 0, value.data(), sizeof(T) * value.size());
     }
 
     template <typename T, size_t N>
-    void setData(const ShaderProperty& property, const std::array<T, N>& value) {
-        auto iter = _shaderBuffers.find(property.uniqueId);
+    void setData(const std::string& property, const std::array<T, N>& value) {
+        auto iter = _shaderBuffers.find(property);
         if (iter == _shaderBuffers.end()) {
             _shaderBuffers.insert(std::make_pair(
-                    property.uniqueId,
-                    Buffer(_device, sizeof(T) * N, wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst)));
+                    property, Buffer(_device, sizeof(T) * N, wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst)));
         }
-        iter = _shaderBuffers.find(property.uniqueId);
+        iter = _shaderBuffers.find(property);
 
         _device.GetQueue().WriteBuffer(iter->second.handle(), 0, value.data(), sizeof(T) * N);
     }
@@ -93,51 +73,47 @@ public:
                            const std::string& sample_name,
                            const SampledTexturePtr& value);
 
-    void setSampledTexture(const ShaderProperty& texture_prop,
-                           const ShaderProperty& sample_prop,
-                           const SampledTexturePtr& value);
-
-    std::optional<wgpu::TextureView> getTextureView(uint32_t uniqueID);
-
-    std::optional<wgpu::Sampler> getSampler(uint32_t uniqueID);
-
 public:
     /**
-     * Enable macro.
-     * @param macroName - Shader macro
+     * @brief Adds a define macro to the shader
+     * @param def String which should go to the right of a define directive
      */
-    void enableMacro(const std::string& macroName);
-
-    void enableMacro(MacroName macroName);
+    void addDefine(const std::string& def);
 
     /**
-     * Enable macro.
-     * @remarks Name and value will combine one macro, it's equal the macro of "name value".
-     * @param macroName - Macro name
-     * @param value - Macro value
+     * @brief Adds an undef macro to the shader
+     * @param undef String which should go to the right of an undef directive
      */
-    void enableMacro(const std::string& macroName, double value);
+    void removeDefine(const std::string& undef);
 
-    void enableMacro(MacroName macroName, double value);
-
-    /**
-     * Disable macro
-     * @param macroName - Macro name
-     */
-    void disableMacro(const std::string& macroName);
-
-    void disableMacro(MacroName macroName);
-
-    void mergeMacro(const ShaderMacroCollection& macros, ShaderMacroCollection& result) const;
+    void mergeVariants(const ShaderVariant& variant, ShaderVariant& result) const;
 
 private:
-    wgpu::Device& _device;
-    std::unordered_map<uint32_t, Buffer> _shaderBuffers{};
-    std::unordered_map<uint32_t, std::function<Buffer()>> _shaderBufferFunctors{};
-    std::unordered_map<uint32_t, SampledTexturePtr> _shaderTextures{};
-    std::unordered_map<uint32_t, SampledTexturePtr> _shaderSamplers{};
+    static void bindBuffer(
+            const ShaderResource& resource,
+            const Buffer& buffer,
+            std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>>& bindGroupLayoutEntryVecMap,
+            std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>>& bindGroupEntryVecMap);
 
-    ShaderMacroCollection _macroCollection;
+    static void bindTexture(
+            const ShaderResource& resource,
+            const SampledTexturePtr& texture,
+            std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>>& bindGroupLayoutEntryVecMap,
+            std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>>& bindGroupEntryVecMap);
+
+    static void bindSampler(
+            const ShaderResource& resource,
+            const SampledTexturePtr& sampler,
+            std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>>& bindGroupLayoutEntryVecMap,
+            std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>>& bindGroupEntryVecMap);
+
+    wgpu::Device& _device;
+    std::unordered_map<std::string, Buffer> _shaderBuffers{};
+    std::unordered_map<std::string, std::function<Buffer()>> _shaderBufferFunctors{};
+    std::unordered_map<std::string, SampledTexturePtr> _shaderTextures{};
+    std::unordered_map<std::string, SampledTexturePtr> _shaderSamplers{};
+
+    ShaderVariant variant_;
 };
 
 }  // namespace vox

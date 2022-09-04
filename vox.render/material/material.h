@@ -7,8 +7,8 @@
 #pragma once
 
 #include "vox.render/material/enums/render_queue_type.h"
-#include "vox.render/shader/shader.h"
 #include "vox.render/shader/shader_data.h"
+#include "vox.render/shader/shader_source.h"
 #include "vox.render/shader/state/render_state.h"
 
 namespace vox {
@@ -19,20 +19,27 @@ class Material {
 public:
     /** Name. */
     std::string name;
-    /** Shader used by the material. */
-    Shader *shader;
+
     /** Render queue type. */
     RenderQueueType::Enum renderQueueType = RenderQueueType::Enum::Opaque;
+
+    /** Shader used by the material. */
+    std::shared_ptr<ShaderSource> vertex_source_{nullptr};
+    std::shared_ptr<ShaderSource> fragment_source_{nullptr};
+
     /** Shader data. */
     ShaderData shaderData;
+
     /** Render state. */
     RenderState renderState = RenderState();
 
     /**
      * Create a material instance.
-     * @param shader - Shader used by the material
      */
-    Material(wgpu::Device &device, Shader *shader);
+    explicit Material(wgpu::Device &device, std::string name = "");
+
+protected:
+    wgpu::Device &device_;
 };
 using MaterialPtr = std::shared_ptr<Material>;
 

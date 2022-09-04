@@ -7,9 +7,7 @@
 #include "vox.render/particle/particle_manager.h"
 
 #include "vox.base/logging.h"
-#include "vox.render/particle/wgsl/wgsl_particle_draw.h"
-#include "vox.render/particle/wgsl/wgsl_particle_emission.h"
-#include "vox.render/particle/wgsl/wgsl_particle_simulation.h"
+#include "vox.render/shader/shader_manager.h"
 
 namespace vox {
 ParticleManager* ParticleManager::getSingletonPtr() { return ms_singleton; }
@@ -20,11 +18,10 @@ ParticleManager& ParticleManager::getSingleton() {
 }
 //-----------------------------------------------------------------------
 ParticleManager::ParticleManager(wgpu::Device& device) {
-    Shader::create("particle_instancing", std::make_unique<WGSLParticleVertex>(),
-                   std::make_unique<WGSLParticleFragment>());
-
-    _emitterPass = std::make_unique<ComputePass>(device, std::make_unique<WGSLParticleEmission>());
-    _simulationPass = std::make_unique<ComputePass>(device, std::make_unique<WGSLParticleSimulation>());
+    _emitterPass = std::make_unique<ComputePass>(
+            device, ShaderManager::GetSingleton().LoadShader("base/particle/particle_emission.comp"));
+    _simulationPass = std::make_unique<ComputePass>(
+            device, ShaderManager::GetSingleton().LoadShader("base/particle/particle_simulation.comp"));
 }
 
 const std::vector<ParticleRenderer*>& ParticleManager::particles() const { return _particles; }

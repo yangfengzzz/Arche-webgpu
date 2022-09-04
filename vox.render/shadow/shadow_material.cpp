@@ -8,8 +8,7 @@
 
 namespace vox {
 ShadowMaterial::ShadowMaterial(wgpu::Device& device)
-    : BaseMaterial(device, Shader::find("shadow")),
-      _shadowViewProjectionProp(Shader::createProperty("u_shadowVPMat", ShaderDataGroup::Material)) {}
+    : BaseMaterial(device), _shadowViewProjectionProp("u_shadowVPMat") {}
 
 void ShadowMaterial::setViewProjectionMatrix(const Matrix4x4F& vp) {
     _vp = vp;

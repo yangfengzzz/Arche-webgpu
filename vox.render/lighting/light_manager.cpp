@@ -8,9 +8,8 @@
 
 #include "vox.base/logging.h"
 #include "vox.render/camera.h"
-#include "vox.render/lighting/wgsl/wgsl_cluster_compute.h"
-#include "vox.render/lighting/wgsl/wgsl_cluster_debug.h"
-#include "vox.render/shaderlib/wgsl_unlit.h"
+#include "vox.render/shader/internal_variant_name.h"
+#include "vox.render/shader/shader_manager.h"
 
 namespace vox {
 LightManager *LightManager::getSingletonPtr() { return ms_singleton; }
@@ -23,14 +22,14 @@ LightManager &LightManager::getSingleton() {
 LightManager::LightManager(Scene *scene)
     : _scene(scene),
       _shaderData(scene->device()),
-      _pointLightProperty(Shader::createProperty("u_pointLight", ShaderDataGroup::Scene)),
-      _spotLightProperty(Shader::createProperty("u_spotLight", ShaderDataGroup::Scene)),
-      _directLightProperty(Shader::createProperty("u_directLight", ShaderDataGroup::Scene)),
-      _forwardPlusProp(Shader::createProperty("u_cluster_uniform", ShaderDataGroup::Scene)),
-      _clustersProp(Shader::createProperty("u_clusters", ShaderDataGroup::Compute)),
-      _clusterLightsProp(Shader::createProperty("u_clusterLights", ShaderDataGroup::Scene)) {
-    Shader::create("cluster_debug", std::make_unique<WGSLUnlitVertex>(),
-                   std::make_unique<WGSLClusterDebug>(TILE_COUNT, MAX_LIGHTS_PER_CLUSTER));
+      _pointLightProperty("u_pointLight"),
+      _spotLightProperty("u_spotLight"),
+      _directLightProperty("u_directLight"),
+      _forwardPlusProp("u_cluster_uniform"),
+      _clustersProp("u_clusters"),
+      _clusterLightsProp("u_clusterLights") {
+    //    Shader::create("cluster_debug", std::make_unique<WGSLUnlitVertex>(),
+    //                   std::make_unique<WGSLClusterDebug>(TILE_COUNT, MAX_LIGHTS_PER_CLUSTER));
 
     auto &device = _scene->device();
     _clustersBuffer =
@@ -42,13 +41,13 @@ LightManager::LightManager(Scene *scene)
     _scene->shaderData.setBufferFunctor(_clusterLightsProp, [this]() -> Buffer { return *_clusterLightsBuffer; });
 
     _clusterBoundsCompute = std::make_unique<ComputePass>(
-            device, std::make_unique<WGSLClusterBoundsSource>(TILE_COUNT, MAX_LIGHTS_PER_CLUSTER, WORKGROUP_SIZE));
+            device, ShaderManager::GetSingleton().LoadShader("base/light/cluster_bounds.comp"));
     _clusterBoundsCompute->attachShaderData(&_shaderData);
     _clusterBoundsCompute->attachShaderData(&_scene->shaderData);
     _clusterBoundsCompute->setDispatchCount(DISPATCH_SIZE[0], DISPATCH_SIZE[1], DISPATCH_SIZE[2]);
 
     _clusterLightsCompute = std::make_unique<ComputePass>(
-            device, std::make_unique<WGSLClusterLightsSource>(TILE_COUNT, MAX_LIGHTS_PER_CLUSTER, WORKGROUP_SIZE));
+            device, ShaderManager::GetSingleton().LoadShader("base/light/cluster_light.comp"));
     _clusterLightsCompute->attachShaderData(&_shaderData);
     _clusterLightsCompute->attachShaderData(&_scene->shaderData);
     _clusterLightsCompute->setDispatchCount(DISPATCH_SIZE[0], DISPATCH_SIZE[1], DISPATCH_SIZE[2]);
@@ -134,24 +133,24 @@ void LightManager::_updateShaderData(ShaderData &shaderData) {
     }
 
     if (directLightCount) {
-        shaderData.enableMacro(DIRECT_LIGHT_COUNT, directLightCount);
+        shaderData.removeDefine(DIRECT_LIGHT_COUNT + std::to_string(directLightCount));
         shaderData.setData(LightManager::_directLightProperty, _directLightDatas);
     } else {
-        shaderData.disableMacro(DIRECT_LIGHT_COUNT);
+        shaderData.addDefine(DIRECT_LIGHT_COUNT);
     }
 
     if (pointLightCount) {
-        shaderData.enableMacro(POINT_LIGHT_COUNT, pointLightCount);
+        shaderData.removeDefine(POINT_LIGHT_COUNT + std::to_string(pointLightCount));
         shaderData.setData(LightManager::_pointLightProperty, _pointLightDatas);
     } else {
-        shaderData.disableMacro(POINT_LIGHT_COUNT);
+        shaderData.addDefine(POINT_LIGHT_COUNT);
     }
 
     if (spotLightCount) {
-        shaderData.enableMacro(SPOT_LIGHT_COUNT, spotLightCount);
+        shaderData.removeDefine(SPOT_LIGHT_COUNT + std::to_string(spotLightCount));
         shaderData.setData(LightManager::_spotLightProperty, _spotLightDatas);
     } else {
-        shaderData.disableMacro(SPOT_LIGHT_COUNT);
+        shaderData.addDefine(SPOT_LIGHT_COUNT);
     }
 }
 

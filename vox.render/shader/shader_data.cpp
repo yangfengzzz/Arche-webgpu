@@ -6,119 +6,153 @@
 
 #include "vox.render/shader/shader_data.h"
 
-#include <utility>
-
-#include "shader.h"
-
 namespace vox {
 ShaderData::ShaderData(wgpu::Device &device) : _device(device) {}
 
-std::optional<Buffer> ShaderData::getData(const std::string &property_name) {
-    auto property = Shader::getPropertyByName(property_name);
-    if (property.has_value()) {
-        return getData(property.value().uniqueId);
+void ShaderData::bindData(
+        const std::unordered_map<std::string, ShaderResource> &resources,
+        std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>> &bindGroupLayoutEntryVecMap,
+        std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>> &bindGroupEntryVecMap) {
+    for (auto &buffer : _shaderBuffers) {
+        auto iter = resources.find(buffer.first);
+        if (iter != resources.end()) {
+            ShaderData::bindBuffer(iter->second, buffer.second, bindGroupLayoutEntryVecMap, bindGroupEntryVecMap);
+        }
+    }
+
+    for (auto &texture : _shaderTextures) {
+        auto iter = resources.find(texture.first);
+        if (iter != resources.end()) {
+            ShaderData::bindTexture(iter->second, texture.second, bindGroupLayoutEntryVecMap, bindGroupEntryVecMap);
+        }
+    }
+
+    for (auto &sampler : _shaderSamplers) {
+        auto iter = resources.find(sampler.first);
+        if (iter != resources.end()) {
+            ShaderData::bindSampler(iter->second, sampler.second, bindGroupLayoutEntryVecMap, bindGroupEntryVecMap);
+        }
+    }
+}
+
+void ShaderData::bindBuffer(
+        const ShaderResource &resource,
+        const Buffer &buffer,
+        std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>> &bindGroupLayoutEntryVecMap,
+        std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>> &bindGroupEntryVecMap) {
+    auto bindGroupLayoutIter = bindGroupLayoutEntryVecMap.find(resource.set);
+    if (bindGroupLayoutIter != bindGroupLayoutEntryVecMap.end()) {
+        bool alreadyExist = false;
+        for (auto &bindGroupLayout : bindGroupLayoutIter->second) {
+            if (bindGroupLayout.binding == resource.binding) {
+                bindGroupLayout.visibility &= resource.stages;
+                alreadyExist = true;
+                break;
+            }
+        }
+        if (!alreadyExist) {
+            wgpu::BindGroupEntry entry;
+            entry.binding = resource.binding;
+            entry.buffer = buffer.handle();
+            entry.size = buffer.size();
+            bindGroupEntryVecMap[resource.set].push_back(entry);
+
+            wgpu::BindGroupLayoutEntry layout_entry;
+            layout_entry.visibility = resource.stages;
+            layout_entry.buffer.type = wgpu::BufferBindingType::Uniform;
+            bindGroupLayoutIter->second.push_back(layout_entry);
+        }
     } else {
-        return std::nullopt;
+        bindGroupLayoutEntryVecMap[resource.set] = {};
+        bindGroupEntryVecMap[resource.set] = {};
     }
 }
 
-std::optional<Buffer> ShaderData::getData(const ShaderProperty &property) { return getData(property.uniqueId); }
+void ShaderData::bindTexture(
+        const ShaderResource &resource,
+        const SampledTexturePtr &texture,
+        std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>> &bindGroupLayoutEntryVecMap,
+        std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>> &bindGroupEntryVecMap) {
+    auto bindGroupLayoutIter = bindGroupLayoutEntryVecMap.find(resource.set);
+    if (bindGroupLayoutIter != bindGroupLayoutEntryVecMap.end()) {
+        bool alreadyExist = false;
+        for (auto &bindGroupLayout : bindGroupLayoutIter->second) {
+            if (bindGroupLayout.binding == resource.binding) {
+                bindGroupLayout.visibility &= resource.stages;
+                alreadyExist = true;
+                break;
+            }
+        }
+        if (!alreadyExist) {
+            wgpu::BindGroupEntry entry;
+            entry.binding = resource.binding;
+            entry.textureView = texture->textureView();
+            bindGroupEntryVecMap[resource.set].push_back(entry);
 
-std::optional<Buffer> ShaderData::getData(uint32_t uniqueID) {
-    auto iter = _shaderBuffers.find(uniqueID);
-    if (iter != _shaderBuffers.end()) {
-        return iter->second;
-    }
-
-    auto functorIter = _shaderBufferFunctors.find(uniqueID);
-    if (functorIter != _shaderBufferFunctors.end()) {
-        return functorIter->second();
-    }
-
-    return std::nullopt;
-}
-
-const std::unordered_map<uint32_t, Buffer> &ShaderData::shaderBuffers() const { return _shaderBuffers; }
-
-void ShaderData::setBufferFunctor(const std::string &property_name, const std::function<Buffer()> &functor) {
-    auto property = Shader::getPropertyByName(property_name);
-    if (property.has_value()) {
-        setBufferFunctor(property.value(), functor);
+            wgpu::BindGroupLayoutEntry layout_entry;
+            layout_entry.visibility = resource.stages;
+            layout_entry.texture.sampleType;
+            layout_entry.texture.multisampled = false;
+            layout_entry.texture.viewDimension = texture->textureViewDimension();
+            bindGroupLayoutIter->second.push_back(layout_entry);
+        }
     } else {
-        assert(false && "can't find property");
+        bindGroupLayoutEntryVecMap[resource.set] = {};
+        bindGroupEntryVecMap[resource.set] = {};
     }
 }
 
-void ShaderData::setBufferFunctor(const ShaderProperty &property, const std::function<Buffer()> &functor) {
-    _shaderBufferFunctors.insert(std::make_pair(property.uniqueId, functor));
+void ShaderData::bindSampler(
+        const ShaderResource &resource,
+        const SampledTexturePtr &sampler,
+        std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>> &bindGroupLayoutEntryVecMap,
+        std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>> &bindGroupEntryVecMap) {
+    auto bindGroupLayoutIter = bindGroupLayoutEntryVecMap.find(resource.set);
+    if (bindGroupLayoutIter != bindGroupLayoutEntryVecMap.end()) {
+        bool alreadyExist = false;
+        for (auto &bindGroupLayout : bindGroupLayoutIter->second) {
+            if (bindGroupLayout.binding == resource.binding) {
+                bindGroupLayout.visibility &= resource.stages;
+                alreadyExist = true;
+                break;
+            }
+        }
+        if (!alreadyExist) {
+            wgpu::BindGroupEntry entry;
+            entry.binding = resource.binding;
+            entry.sampler = sampler->sampler();
+            bindGroupEntryVecMap[resource.set].push_back(entry);
+
+            wgpu::BindGroupLayoutEntry layout_entry;
+            layout_entry.visibility = resource.stages;
+            layout_entry.sampler.type;
+            bindGroupLayoutIter->second.push_back(layout_entry);
+        }
+    } else {
+        bindGroupLayoutEntryVecMap[resource.set] = {};
+        bindGroupEntryVecMap[resource.set] = {};
+    }
+}
+
+void ShaderData::setBufferFunctor(const std::string &property, const std::function<Buffer()> &functor) {
+    _shaderBufferFunctors.insert(std::make_pair(property, functor));
 }
 
 // MARK: - Sampler&&Texture
-void ShaderData::setSampledTexture(const std::string &texture_name,
-                                   const std::string &sample_name,
+void ShaderData::setSampledTexture(const std::string &texture_prop,
+                                   const std::string &sample_prop,
                                    const SampledTexturePtr &value) {
-    // Texture
-    {
-        auto property = Shader::getPropertyByName(texture_name);
-        if (property.has_value()) {
-            _shaderTextures[property->uniqueId] = value;
-        } else {
-            assert(false && "can't find property");
-        }
-    }
-    // Sampler
-    {
-        auto property = Shader::getPropertyByName(sample_name);
-        if (property.has_value()) {
-            _shaderSamplers[property->uniqueId] = value;
-        } else {
-            assert(false && "can't find property");
-        }
-    }
-}
-
-void ShaderData::setSampledTexture(const ShaderProperty &texture_prop,
-                                   const ShaderProperty &sample_prop,
-                                   const SampledTexturePtr &value) {
-    _shaderTextures[texture_prop.uniqueId] = value;
-    _shaderSamplers[sample_prop.uniqueId] = value;
-}
-
-std::optional<wgpu::TextureView> ShaderData::getTextureView(uint32_t uniqueID) {
-    auto iter = _shaderTextures.find(uniqueID);
-    if (iter != _shaderTextures.end()) {
-        return iter->second->textureView();
-    } else {
-        return std::nullopt;
-    }
-}
-
-std::optional<wgpu::Sampler> ShaderData::getSampler(uint32_t uniqueID) {
-    auto iter = _shaderSamplers.find(uniqueID);
-    if (iter != _shaderSamplers.end()) {
-        return iter->second->sampler();
-    } else {
-        return std::nullopt;
-    }
+    _shaderTextures[texture_prop] = value;
+    _shaderSamplers[sample_prop] = value;
 }
 
 // MARK: - Macro
-void ShaderData::enableMacro(const std::string &macroName) { _macroCollection.enableMacro(macroName); }
+void ShaderData::addDefine(const std::string &def) { variant_.AddDefine(def); }
 
-void ShaderData::enableMacro(const std::string &macroName, double value) {
-    _macroCollection.enableMacro(macroName, value);
-}
+void ShaderData::removeDefine(const std::string &undef) { variant_.RemoveDefine(undef); }
 
-void ShaderData::disableMacro(const std::string &macroName) { _macroCollection.disableMacro(macroName); }
-
-void ShaderData::enableMacro(MacroName macroName) { _macroCollection.enableMacro(macroName); }
-
-void ShaderData::enableMacro(MacroName macroName, double value) { _macroCollection.enableMacro(macroName, value); }
-
-void ShaderData::disableMacro(MacroName macroName) { _macroCollection.disableMacro(macroName); }
-
-void ShaderData::mergeMacro(const ShaderMacroCollection &macros, ShaderMacroCollection &result) const {
-    ShaderMacroCollection::unionCollection(macros, _macroCollection, result);
+void ShaderData::mergeVariants(const ShaderVariant &variant, ShaderVariant &result) const {
+    ShaderVariant::UnionCollection(variant, variant_, result);
 }
 
 }  // namespace vox

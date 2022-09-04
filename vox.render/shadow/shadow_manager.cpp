@@ -10,7 +10,6 @@
 #include "vox.render/camera.h"
 #include "vox.render/entity.h"
 #include "vox.render/lighting/light_manager.h"
-#include "vox.render/shader/shader.h"
 #include "vox.render/texture/sampled_texture2d.h"
 #include "vox.render/texture/sampled_texturecube.h"
 #include "vox.render/texture/texture_utils.h"
@@ -33,13 +32,13 @@ ShadowManager& ShadowManager::getSingleton() {
 ShadowManager::ShadowManager(Scene* scene, Camera* camera)
     : _scene(scene),
       _camera(camera),
-      _shadowMapProp(Shader::createProperty("u_shadowMap", ShaderDataGroup::Scene)),
-      _shadowSamplerProp(Shader::createProperty("u_shadowSampler", ShaderDataGroup::Scene)),
-      _shadowDataProp(Shader::createProperty("u_shadowData", ShaderDataGroup::Scene)),
+      _shadowMapProp("u_shadowMap"),
+      _shadowSamplerProp("u_shadowSampler"),
+      _shadowDataProp("u_shadowData"),
 
-      _cubeShadowMapProp(Shader::createProperty("u_cubeShadowMap", ShaderDataGroup::Scene)),
-      _cubeShadowSamplerProp(Shader::createProperty("u_cubeShadowSampler", ShaderDataGroup::Scene)),
-      _cubeShadowDataProp(Shader::createProperty("u_cubeShadowData", ShaderDataGroup::Scene)) {
+      _cubeShadowMapProp("u_cubeShadowMap"),
+      _cubeShadowSamplerProp("u_cubeShadowSampler"),
+      _cubeShadowDataProp("u_cubeShadowData") {
     _renderPassDescriptor.colorAttachmentCount = 0;
     _renderPassDescriptor.colorAttachments = nullptr;
     _renderPassDescriptor.depthStencilAttachment = &_depthStencilAttachment;

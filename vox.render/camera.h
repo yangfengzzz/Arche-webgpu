@@ -37,14 +37,13 @@ public:
      */
     std::string name() override;
 
-    struct CameraData {
+    struct alignas(16) CameraData {
         Matrix4x4F u_viewMat;
         Matrix4x4F u_projMat;
         Matrix4x4F u_VPMat;
         Matrix4x4F u_viewInvMat;
         Matrix4x4F u_projInvMat;
         Point3F u_cameraPos;
-        float _cameraPosPad;  // for align
     };
 
     /** Shader data. */
@@ -274,7 +273,7 @@ private:
     Matrix4x4F invViewProjMat();
 
     CameraData _cameraData;
-    ShaderProperty _cameraProperty;
+    const std::string _cameraProperty;
 
     BoundingFrustum _frustum = BoundingFrustum();
 

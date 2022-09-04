@@ -6,11 +6,14 @@
 
 #include "vox.render/particle/particle_material.h"
 
+#include "vox.render/shader/shader_manager.h"
+
 namespace vox {
-ParticleMaterial::ParticleMaterial(wgpu::Device& device)
-    : BaseMaterial(device, Shader::find("particle_instancing")),
-      _particleDataProp(Shader::createProperty("u_particleData", ShaderDataGroup::Material)) {
+ParticleMaterial::ParticleMaterial(wgpu::Device& device) : BaseMaterial(device), _particleDataProp("u_particleData") {
     shaderData.setData(_particleDataProp, _particleData);
+
+    vertex_source_ = ShaderManager::GetSingleton().LoadShader("base/particle/particle_render_instancing.vert");
+    fragment_source_ = ShaderManager::GetSingleton().LoadShader("base/particle/particle_render_instancing.frag");
 
     setIsTransparent(true);
     setBlendMode(BlendMode::Additive);

@@ -354,10 +354,6 @@ set(MESH_FILES
         mesh/wireframe_primitive_mesh.h
         mesh/wireframe_primitive_mesh.cpp)
 
-file(GLOB SHADERLIB_FILES
-        ${CMAKE_CURRENT_SOURCE_DIR}/shaderlib/*.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/shaderlib/functors/*.cpp)
-
 set(SHADER_FILES shader/glsl_compiler.h
         shader/glsl_compiler.cpp
         shader/shader_common.h
@@ -372,18 +368,9 @@ set(SHADER_FILES shader/glsl_compiler.h
         shader/shader_manager.h
         shader/shader_manager.cpp
 
-        shader/shader.h
-        shader/shader.cpp
         shader/shader_data.h
         shader/shader_data.cpp
-        shader/shader_data_group.h
-        shader/internal_macro_name.h
-        shader/shader_pool.h
-        shader/shader_pool.cpp
-        shader/shader_property.h
-        shader/shader_property.cpp
-        shader/shader_macro_collection.h
-        shader/shader_macro_collection.cpp
+        shader/internal_variant_name.h
 
         shader/state/blend_state.h
         shader/state/blend_state.cpp
@@ -431,18 +418,10 @@ set(LIGHT_FILE
         lighting/light_manager.cpp
         lighting/ambient_light.h
         lighting/ambient_light.cpp
-        lighting/cluster_debug_material.h
-        lighting/cluster_debug_material.cpp
-        lighting/sprite/sprite_debug.h
-        lighting/sprite/sprite_debug.cpp
-        lighting/sprite/sprite_debug_material.h
-        lighting/sprite/sprite_debug_material.cpp
-        lighting/wgsl/wgsl_cluster_common.h
-        lighting/wgsl/wgsl_cluster_common.cpp
-        lighting/wgsl/wgsl_cluster_compute.h
-        lighting/wgsl/wgsl_cluster_compute.cpp
-        lighting/wgsl/wgsl_cluster_debug.h
-        lighting/wgsl/wgsl_cluster_debug.cpp)
+        lighting/debug/sprite_debug.h
+        lighting/debug/sprite_debug.cpp
+        lighting/debug/cluster_debug_material.h
+        lighting/debug/cluster_debug_material.cpp)
 
 set(SHADOW_FILE
         shadow/shadow_manager.cpp
@@ -452,23 +431,10 @@ set(SHADOW_FILE
         shadow/shadow_debug_material.h
         shadow/shadow_debug_material.cpp
         shadow/shadow_material.h
-        shadow/shadow_material.cpp
-        shadow/wgsl_shadow.h
-        shadow/wgsl_shadow.cpp
-        shadow/wgsl/wgsl_shadow_common.h
-        shadow/wgsl/wgsl_shadow_common.cpp
-        shadow/wgsl/wgsl_shadow_debug.h
-        shadow/wgsl/wgsl_shadow_debug.cpp
-        shadow/wgsl/wgsl_shadow_frag.h
-        shadow/wgsl/wgsl_shadow_frag.cpp
-        shadow/wgsl/wgsl_shadow_share.h
-        shadow/wgsl/wgsl_shadow_share.cpp
-        shadow/wgsl/wgsl_shadow_vert.h
-        shadow/wgsl/wgsl_shadow_vert.cpp)
+        shadow/shadow_material.cpp)
 
 file(GLOB PARTICLE_FILE
-        ${CMAKE_CURRENT_SOURCE_DIR}/particle/*.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/particle/wgsl/*.cpp)
+        ${CMAKE_CURRENT_SOURCE_DIR}/particle/*.cpp)
 
 set(PLUGINS_FILE
         plugins/force_close.h
@@ -528,7 +494,6 @@ set(PROJECT_FILES
         ${SCENE_FILES}
         ${CONTROL_FILES}
         ${MESH_FILES}
-        ${SHADERLIB_FILES}
         ${SHADER_FILES}
         ${MATERIAL_FILES}
         ${LIGHT_FILE}

@@ -57,7 +57,7 @@ public:
 
 private:
     ParticleData _particleData;
-    ShaderProperty _particleDataProp;
+    const std::string _particleDataProp;
 };
 
 }  // namespace vox

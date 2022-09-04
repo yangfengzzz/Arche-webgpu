@@ -9,7 +9,6 @@
 #include <dawn/dawn_proc.h>
 
 #include "vox.render/platform/platform.h"
-#include "vox.render/shader/shader_pool.h"
 
 namespace vox {
 // Default to D3D12, Metal, Vulkan, OpenGL in that order as D3D12 and Metal are the preferred on
@@ -28,7 +27,7 @@ static wgpu::BackendType backendType = wgpu::BackendType::OpenGL;
 #error
 #endif
 
-GraphicsApplication::GraphicsApplication() { ShaderPool::init(); }
+GraphicsApplication::GraphicsApplication() = default;
 
 GraphicsApplication::~GraphicsApplication() { _renderContext.reset(); }
 

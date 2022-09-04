@@ -6,6 +6,9 @@
 
 #include "vox.render/material/blinn_phong_material.h"
 
+#include "vox.render/shader/internal_variant_name.h"
+#include "vox.render/shader/shader_manager.h"
+
 namespace vox {
 const Color& BlinnPhongMaterial::baseColor() const { return _blinnPhongData.baseColor; }
 
@@ -21,9 +24,9 @@ void BlinnPhongMaterial::setBaseTexture(const SampledTexture2DPtr& newValue) {
     shaderData.setSampledTexture(BlinnPhongMaterial::_baseTextureProp, BlinnPhongMaterial::_baseSamplerProp, newValue);
 
     if (newValue) {
-        shaderData.enableMacro(HAS_DIFFUSE_TEXTURE);
+        shaderData.addDefine(HAS_DIFFUSE_TEXTURE);
     } else {
-        shaderData.disableMacro(HAS_DIFFUSE_TEXTURE);
+        shaderData.removeDefine(HAS_DIFFUSE_TEXTURE);
     }
 }
 
@@ -41,9 +44,9 @@ void BlinnPhongMaterial::setSpecularTexture(const SampledTexture2DPtr& newValue)
     shaderData.setSampledTexture(BlinnPhongMaterial::_specularTextureProp, BlinnPhongMaterial::_specularSamplerProp,
                                  newValue);
     if (newValue) {
-        shaderData.enableMacro(HAS_SPECULAR_TEXTURE);
+        shaderData.addDefine(HAS_SPECULAR_TEXTURE);
     } else {
-        shaderData.disableMacro(HAS_SPECULAR_TEXTURE);
+        shaderData.removeDefine(HAS_SPECULAR_TEXTURE);
     }
 }
 
@@ -61,9 +64,9 @@ void BlinnPhongMaterial::BlinnPhongMaterial::setEmissiveTexture(const SampledTex
     shaderData.setSampledTexture(BlinnPhongMaterial::_emissiveTextureProp, BlinnPhongMaterial::_emissiveSamplerProp,
                                  newValue);
     if (newValue) {
-        shaderData.enableMacro(HAS_EMISSIVE_TEXTURE);
+        shaderData.addDefine(HAS_EMISSIVE_TEXTURE);
     } else {
-        shaderData.disableMacro(HAS_EMISSIVE_TEXTURE);
+        shaderData.removeDefine(HAS_EMISSIVE_TEXTURE);
     }
 }
 
@@ -74,9 +77,9 @@ void BlinnPhongMaterial::setNormalTexture(const SampledTexture2DPtr& newValue) {
     shaderData.setSampledTexture(BlinnPhongMaterial::_normalTextureProp, BlinnPhongMaterial::_normalSamplerProp,
                                  newValue);
     if (newValue) {
-        shaderData.enableMacro(HAS_NORMAL_TEXTURE);
+        shaderData.addDefine(HAS_NORMAL_TEXTURE);
     } else {
-        shaderData.disableMacro(HAS_NORMAL_TEXTURE);
+        shaderData.removeDefine(HAS_NORMAL_TEXTURE);
     }
 }
 
@@ -94,22 +97,25 @@ void BlinnPhongMaterial::setShininess(float newValue) {
     shaderData.setData(BlinnPhongMaterial::_blinnPhongProp, _blinnPhongData);
 }
 
-BlinnPhongMaterial::BlinnPhongMaterial(wgpu::Device& device)
-    : BaseMaterial(device, Shader::find("blinn-phong")),
-      _blinnPhongProp(Shader::createProperty("u_blinnPhongData", ShaderDataGroup::Material)),
+BlinnPhongMaterial::BlinnPhongMaterial(wgpu::Device& device, const std::string& name)
+    : BaseMaterial(device, name),
+      _blinnPhongProp("u_blinnPhongData"),
 
-      _baseTextureProp(Shader::createProperty("u_diffuseTexture", ShaderDataGroup::Material)),
-      _baseSamplerProp(Shader::createProperty("u_diffuseSampler", ShaderDataGroup::Material)),
+      _baseTextureProp("u_diffuseTexture"),
+      _baseSamplerProp("u_diffuseSampler"),
 
-      _specularTextureProp(Shader::createProperty("u_specularTexture", ShaderDataGroup::Material)),
-      _specularSamplerProp(Shader::createProperty("u_specularSampler", ShaderDataGroup::Material)),
+      _specularTextureProp("u_specularTexture"),
+      _specularSamplerProp("u_specularSampler"),
 
-      _emissiveTextureProp(Shader::createProperty("u_emissiveTexture", ShaderDataGroup::Material)),
-      _emissiveSamplerProp(Shader::createProperty("u_emissiveSampler", ShaderDataGroup::Material)),
+      _emissiveTextureProp("u_emissiveTexture"),
+      _emissiveSamplerProp("u_emissiveSampler"),
 
-      _normalTextureProp(Shader::createProperty("u_normalTexture", ShaderDataGroup::Material)),
-      _normalSamplerProp(Shader::createProperty("u_normalSampler", ShaderDataGroup::Material)) {
-    shaderData.enableMacro(NEED_WORLDPOS);
+      _normalTextureProp("u_normalTexture"),
+      _normalSamplerProp("u_normalSampler") {
+    vertex_source_ = ShaderManager::GetSingleton().LoadShader("base/blinn-phong.vert");
+    fragment_source_ = ShaderManager::GetSingleton().LoadShader("base/blinn-phong.frag");
+
+    shaderData.addDefine(NEED_WORLDPOS);
     shaderData.setData(_blinnPhongProp, _blinnPhongData);
 }
 

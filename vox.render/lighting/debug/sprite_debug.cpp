@@ -4,22 +4,26 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.render/lighting/sprite/sprite_debug.h"
+#include "vox.render/lighting/debug/sprite_debug.h"
 
 #include "vox.render/entity.h"
 #include "vox.render/lighting/light_manager.h"
-#include "vox.render/lighting/sprite/sprite_debug_material.h"
 #include "vox.render/mesh/mesh_renderer.h"
+#include "vox.render/shader/shader_manager.h"
 
 namespace vox {
+// MARK: - SpriteDebugMaterial
+SpriteDebugMaterial::SpriteDebugMaterial(wgpu::Device& device, bool isSpotLight) : BaseMaterial(device) {
+    setIsTransparent(true);
+    setBlendMode(BlendMode::Additive);
+
+    vertex_source_ = ShaderManager::GetSingleton().LoadShader("base/light/light_sprite.vert");
+    fragment_source_ = ShaderManager::GetSingleton().LoadShader("base/light/light_sprite.frag");
+}
+
 std::string SpriteDebug::name() { return "SpriteDebug"; }
 
-SpriteDebug::SpriteDebug(Entity *entity) : Script(entity) {
-    Shader::create("spotlight_sprite_debug", std::make_unique<WGSLSpriteDebugVertex>(true),
-                   std::make_unique<WGSLSpriteDebugFragment>());
-    Shader::create("pointlight_sprite_debug", std::make_unique<WGSLSpriteDebugVertex>(false),
-                   std::make_unique<WGSLSpriteDebugFragment>());
-
+SpriteDebug::SpriteDebug(Entity* entity) : Script(entity) {
     _spotLightMesh = std::make_shared<BufferMesh>();
     _spotLightMesh->addSubMesh(0, 4, wgpu::PrimitiveTopology::TriangleStrip);
     _spotEntity = entity->createChild();

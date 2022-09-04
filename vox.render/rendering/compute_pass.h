@@ -16,7 +16,7 @@ public:
     using BindGroupLayoutEntryVecMap = std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>>;
     using BindGroupLayoutDescriptorMap = std::unordered_map<uint32_t, wgpu::BindGroupLayoutDescriptor>;
 
-    ComputePass(wgpu::Device& device, WGSLPtr&& source);
+    ComputePass(wgpu::Device& device, std::shared_ptr<ShaderSource>&& source);
 
     ComputePass(const ComputePass&) = delete;
 
@@ -48,35 +48,25 @@ public:
     virtual void compute(wgpu::ComputePassEncoder& commandEncoder);
 
 protected:
-    wgpu::ShaderModule& _compileShader(const ShaderMacroCollection& macros);
-
-    void _bindingData(wgpu::BindGroupEntry& entry);
-
-    void _bindingTexture(wgpu::BindGroupEntry& entry);
-
-    void _bindingSampler(wgpu::BindGroupEntry& entry);
-
-    void _flush();
-
     uint32_t _workgroupCountX = 1;
     uint32_t _workgroupCountY = 1;
     uint32_t _workgroupCountZ = 1;
 
     std::vector<ShaderData*> _data{};
-    WGSLPtr _source{};
-    BindGroupLayoutEntryVecMap _bindGroupLayoutEntryVecMap{};
-    BindGroupLayoutDescriptorMap _bindGroupLayoutDescriptorMap{};
+    std::shared_ptr<ShaderSource> _source{};
+
+    std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>> _bindGroupLayoutEntryVecMap;
+    std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>> _bindGroupEntryVecMap;
+    wgpu::BindGroupDescriptor _bindGroupDescriptor;
+    wgpu::BindGroupLayoutDescriptor bindGroupLayoutDescriptor;
 
     wgpu::ComputePipelineDescriptor _computePipelineDescriptor;
-    wgpu::BindGroupDescriptor _bindGroupDescriptor;
     std::vector<wgpu::BindGroupEntry> _bindGroupEntries{};
 
     wgpu::PipelineLayoutDescriptor _pipelineLayoutDescriptor;
     wgpu::PipelineLayout _pipelineLayout;
 
 private:
-    wgpu::BindGroupLayoutEntry _findEntry(uint32_t group, uint32_t binding);
-
     ResourceCache _resourceCache;
 };
 

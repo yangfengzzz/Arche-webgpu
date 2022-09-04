@@ -17,13 +17,12 @@ namespace vox {
  */
 class BlinnPhongMaterial : public BaseMaterial {
 public:
-    struct BlinnPhongData {
+    struct alignas(16) BlinnPhongData {
         Color baseColor = Color(1, 1, 1, 1);
         Color specularColor = Color(1, 1, 1, 1);
         Color emissiveColor = Color(0, 0, 0, 1);
         float normalIntensity = 1.f;
         float shininess = 16.f;
-        float _pad1, _pad2;  // align
     };
 
     /**
@@ -90,27 +89,27 @@ public:
 
     void setShininess(float newValue);
 
-    explicit BlinnPhongMaterial(wgpu::Device& device);
+    explicit BlinnPhongMaterial(wgpu::Device& device, const std::string& name = "");
 
 private:
     BlinnPhongData _blinnPhongData;
-    ShaderProperty _blinnPhongProp;
+    const std::string _blinnPhongProp;
 
     SampledTexture2DPtr _baseTexture{nullptr};
-    ShaderProperty _baseTextureProp;
-    ShaderProperty _baseSamplerProp;
+    const std::string _baseTextureProp;
+    const std::string _baseSamplerProp;
 
     SampledTexture2DPtr _specularTexture{nullptr};
-    ShaderProperty _specularTextureProp;
-    ShaderProperty _specularSamplerProp;
+    const std::string _specularTextureProp;
+    const std::string _specularSamplerProp;
 
     SampledTexture2DPtr _emissiveTexture{nullptr};
-    ShaderProperty _emissiveTextureProp;
-    ShaderProperty _emissiveSamplerProp;
+    const std::string _emissiveTextureProp;
+    const std::string _emissiveSamplerProp;
 
     SampledTexture2DPtr _normalTexture{nullptr};
-    ShaderProperty _normalTextureProp;
-    ShaderProperty _normalSamplerProp;
+    const std::string _normalTextureProp;
+    const std::string _normalSamplerProp;
 };
 
 }  // namespace vox

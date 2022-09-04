@@ -6,9 +6,9 @@
 
 #pragma once
 
-#include "vox.render/singleton.h"
 #include "vox.render/particle/particle_renderer.h"
 #include "vox.render/rendering/compute_pass.h"
+#include "vox.render/singleton.h"
 
 namespace vox {
 class ParticleManager : public Singleton<ParticleManager> {

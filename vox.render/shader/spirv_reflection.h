@@ -24,23 +24,23 @@ public:
     /// @param variant ShaderVariant used for reflection to specify the size of the runtime arrays in Storage Buffers
     static bool ReflectShaderResources(wgpu::ShaderStage stage,
                                        const std::vector<uint32_t> &spirv,
-                                       std::vector<ShaderResource> &resources,
+                                       std::unordered_map<std::string, ShaderResource> &resources,
                                        const ShaderVariant &variant);
 
 private:
     static void ParseShaderResources(const spirv_cross::Compiler &compiler,
                                      wgpu::ShaderStage stage,
-                                     std::vector<ShaderResource> &resources,
+                                     std::unordered_map<std::string, ShaderResource> &resources,
                                      const ShaderVariant &variant);
 
     static void ParsePushConstants(const spirv_cross::Compiler &compiler,
                                    wgpu::ShaderStage stage,
-                                   std::vector<ShaderResource> &resources,
+                                   std::unordered_map<std::string, ShaderResource> &resources,
                                    const ShaderVariant &variant);
 
     static void ParseSpecializationConstants(const spirv_cross::Compiler &compiler,
                                              wgpu::ShaderStage stage,
-                                             std::vector<ShaderResource> &resources,
+                                             std::unordered_map<std::string, ShaderResource> &resources,
                                              const ShaderVariant &variant);
 };
 

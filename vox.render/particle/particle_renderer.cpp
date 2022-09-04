@@ -8,6 +8,7 @@
 
 #include "vox.render/entity.h"
 #include "vox.render/particle/particle_manager.h"
+#include "vox.render/shader/internal_variant_name.h"
 
 namespace vox {
 namespace {
@@ -23,18 +24,18 @@ std::string ParticleRenderer::name() { return "ParticleRenderer"; }
 
 ParticleRenderer::ParticleRenderer(Entity *entity)
     : Renderer(entity),
-      _randomBufferProp(Shader::createProperty("u_randomBuffer", ShaderDataGroup::Renderer)),
-      _simulationDataProp(Shader::createProperty("u_simulationData", ShaderDataGroup::Renderer)),
-      _emitterDataProp(Shader::createProperty("u_emitterData", ShaderDataGroup::Renderer)),
-      _vectorFieldTextureProp(Shader::createProperty("u_vectorFieldTexture", ShaderDataGroup::Renderer)),
-      _vectorFieldSamplerProp(Shader::createProperty("u_vectorFieldSampler", ShaderDataGroup::Renderer)),
+      _randomBufferProp("u_randomBuffer"),
+      _simulationDataProp("u_simulationData"),
+      _emitterDataProp("u_emitterData"),
+      _vectorFieldTextureProp("u_vectorFieldTexture"),
+      _vectorFieldSamplerProp("u_vectorFieldSampler"),
 
-      _readAtomicBufferProp(Shader::createProperty("u_readAtomicBuffer", ShaderDataGroup::Renderer)),
-      _writeAtomicBufferProp(Shader::createProperty("u_writeAtomicBuffer", ShaderDataGroup::Renderer)),
-      _readConsumeBufferProp(Shader::createProperty("u_readConsumeBuffer", ShaderDataGroup::Renderer)),
-      _writeConsumeBufferProp(Shader::createProperty("u_writeConsumeBuffer", ShaderDataGroup::Renderer)),
-      _dpBufferProp(Shader::createProperty("u_dpBuffer", ShaderDataGroup::Renderer)),
-      _sortIndicesBufferProp(Shader::createProperty("u_sortIndicesBuffer", ShaderDataGroup::Renderer)) {
+      _readAtomicBufferProp("u_readAtomicBuffer"),
+      _writeAtomicBufferProp("u_writeAtomicBuffer"),
+      _readConsumeBufferProp("u_readConsumeBuffer"),
+      _writeConsumeBufferProp("u_writeConsumeBuffer"),
+      _dpBufferProp("u_dpBuffer"),
+      _sortIndicesBufferProp("u_sortIndicesBuffer") {
     _allocBuffer();
 
     _mesh = std::make_shared<BufferMesh>();
@@ -61,7 +62,7 @@ void ParticleRenderer::_allocBuffer() {
 
     /* Assert than the number of particles will be a factor of threadGroupWidth */
     uint32_t numParticles = ParticleManager::floorParticleCount(kMaxParticleCount);  //
-    shaderData.enableMacro(PARTICLE_COUNT, numParticles);
+    shaderData.addDefine(PARTICLE_COUNT + std::to_string(numParticles));
     fprintf(stderr, "[ %u particles, %u per batch ]\n", numParticles, kBatchEmitCount);
 
     /* Random value buffer */
@@ -164,14 +165,14 @@ float ParticleRenderer::scatteringFactor() const { return _simulationData.scatte
 void ParticleRenderer::setScatteringFactor(float factor) {
     _simulationData.scatteringFactor = factor;
     shaderData.setData(_simulationDataProp, _simulationData);
-    shaderData.enableMacro(NEED_PARTICLE_SCATTERING);
+    shaderData.addDefine(NEED_PARTICLE_SCATTERING);
 }
 
 std::shared_ptr<SampledTexture3D> ParticleRenderer::vectorFieldTexture() const { return _vectorFieldTexture; }
 
 void ParticleRenderer::setVectorFieldTexture(const std::shared_ptr<SampledTexture3D> &field) {
     _vectorFieldTexture = field;
-    shaderData.enableMacro(NEED_PARTICLE_VECTOR_FIELD);
+    shaderData.addDefine(NEED_PARTICLE_VECTOR_FIELD);
     shaderData.setSampledTexture(_vectorFieldTextureProp, _vectorFieldSamplerProp, field);
 }
 
@@ -186,7 +187,7 @@ float ParticleRenderer::curlNoiseFactor() const { return _simulationData.curlNoi
 
 void ParticleRenderer::setCurlNoiseFactor(float factor) {
     _simulationData.curlNoiseFactor = factor;
-    shaderData.enableMacro(NEED_PARTICLE_CURL_NOISE);
+    shaderData.addDefine(NEED_PARTICLE_CURL_NOISE);
     shaderData.setData(_simulationDataProp, _simulationData);
 }
 
@@ -194,7 +195,7 @@ float ParticleRenderer::curlNoiseScale() const { return _simulationData.curlNois
 
 void ParticleRenderer::setCurlNoiseScale(float scale) {
     _simulationData.curlNoiseScale = scale;
-    shaderData.enableMacro(NEED_PARTICLE_CURL_NOISE);
+    shaderData.addDefine(NEED_PARTICLE_CURL_NOISE);
     shaderData.setData(_simulationDataProp, _simulationData);
 }
 
@@ -202,7 +203,7 @@ float ParticleRenderer::velocityFactor() const { return _simulationData.velocity
 
 void ParticleRenderer::setVelocityFactor(float factor) {
     _simulationData.velocityFactor = factor;
-    shaderData.enableMacro(NEED_PARTICLE_VELOCITY_CONTROL);
+    shaderData.addDefine(NEED_PARTICLE_VELOCITY_CONTROL);
     shaderData.setData(_simulationDataProp, _simulationData);
 }
 

@@ -6,6 +6,9 @@
 
 #include "vox.render/material/pbr_material.h"
 
+#include "vox.render/shader/internal_variant_name.h"
+#include "vox.render/shader/shader_manager.h"
+
 namespace vox {
 float PBRMaterial::metallic() const { return _pbrData.metallic; }
 
@@ -23,22 +26,26 @@ void PBRMaterial::setRoughness(float newValue) {
 
 SampledTexture2DPtr PBRMaterial::metallicRoughnessTexture() { return _metallicRoughnessTexture; }
 
-void PBRMaterial::setMetallicRoughnessTexture(const SampledTexture2DPtr& newValue) {
+void PBRMaterial::setMetallicRoughnessTexture(const SampledTexture2DPtr &newValue) {
     _metallicRoughnessTexture = newValue;
     shaderData.setSampledTexture(PBRMaterial::_metallicRoughnessTextureProp, PBRMaterial::_metallicRoughnessSamplerProp,
                                  newValue);
     if (newValue) {
-        shaderData.enableMacro(HAS_METALROUGHNESSMAP);
+        shaderData.addDefine(HAS_METALROUGHNESSMAP);
     } else {
-        shaderData.disableMacro(HAS_METALROUGHNESSMAP);
+        shaderData.removeDefine(HAS_METALROUGHNESSMAP);
     }
 }
 
-PBRMaterial::PBRMaterial(wgpu::Device& device)
-    : PBRBaseMaterial(device, Shader::find("pbr")),
-      _pbrProp(Shader::createProperty("u_pbrData", ShaderDataGroup::Material)),
-      _metallicRoughnessTextureProp(Shader::createProperty("u_metallicRoughnessTexture", ShaderDataGroup::Material)),
-      _metallicRoughnessSamplerProp(Shader::createProperty("u_metallicRoughnessSampler", ShaderDataGroup::Material)) {
+PBRMaterial::PBRMaterial(wgpu::Device &device, const std::string &name)
+    : PBRBaseMaterial(device, name),
+      _pbrProp("u_pbrData"),
+      _metallicRoughnessTextureProp("u_metallicRoughnessTexture"),
+      _metallicRoughnessSamplerProp("u_metallicRoughnessSampler") {
+    vertex_source_ = ShaderManager::GetSingleton().LoadShader("base/blinn-phong.vert");
+    fragment_source_ = ShaderManager::GetSingleton().LoadShader("base/pbr.frag");
+
+    shaderData.addDefine("IS_METALLIC_WORKFLOW");
     shaderData.setData(PBRMaterial::_pbrProp, _pbrData);
 }
 

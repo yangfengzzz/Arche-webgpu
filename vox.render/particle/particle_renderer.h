@@ -178,32 +178,32 @@ private:
     float _minValue = 0.0;
     float _maxValue = 1.0;
     std::vector<float> _randomVec{};
-    ShaderProperty _randomBufferProp;
+    const std::string _randomBufferProp;
 
     ParticleSimulationData _simulationData{};
-    ShaderProperty _simulationDataProp;
+    const std::string _simulationDataProp;
 
     ParticleEmitterData _emitterData;
-    ShaderProperty _emitterDataProp;
+    const std::string _emitterDataProp;
 
     SampledTexture3DPtr _vectorFieldTexture{nullptr};
-    ShaderProperty _vectorFieldTextureProp;
-    ShaderProperty _vectorFieldSamplerProp;
+    const std::string _vectorFieldTextureProp;
+    const std::string _vectorFieldSamplerProp;
 
 private:
     uint32_t _read = 0;
     uint32_t _write = 1;
     std::unique_ptr<Buffer> _atomicBuffer[2] = {nullptr, nullptr};
-    ShaderProperty _readAtomicBufferProp;
-    ShaderProperty _writeAtomicBufferProp;
+    const std::string _readAtomicBufferProp;
+    const std::string _writeAtomicBufferProp;
 
     std::unique_ptr<Buffer> _appendConsumeBuffer[2] = {nullptr, nullptr};
-    ShaderProperty _readConsumeBufferProp;
-    ShaderProperty _writeConsumeBufferProp;
+    const std::string _readConsumeBufferProp;
+    const std::string _writeConsumeBufferProp;
 
     std::unique_ptr<Buffer> _dpBuffer{nullptr};
-    ShaderProperty _dpBufferProp;
+    const std::string _dpBufferProp;
     std::unique_ptr<Buffer> _sortIndicesBuffer{nullptr};
-    ShaderProperty _sortIndicesBufferProp;
+    const std::string _sortIndicesBufferProp;
 };
 }  // namespace vox

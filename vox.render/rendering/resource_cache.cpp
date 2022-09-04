@@ -392,21 +392,19 @@ wgpu::ComputePipeline &ResourceCache::requestPipeline(wgpu::ComputePipelineDescr
     }
 }
 
-wgpu::ShaderModule &ResourceCache::requestShader(const std::string &source) {
+ShaderModule &ResourceCache::requestShaderModule(wgpu::ShaderStage stage,
+                                                 const ShaderSource &glsl_source,
+                                                 const ShaderVariant &shader_variant) {
     std::size_t hash{0U};
-    hash_combine(hash, std::hash<std::string>{}(source));
+    hash_combine(hash, std::hash<std::string>{}(glsl_source.GetSource()));
 
-    auto iter = _state.shaders.find(hash);
-    if (iter == _state.shaders.end()) {
-        wgpu::ShaderModuleDescriptor desc;
-        wgpu::ShaderModuleWGSLDescriptor wgslDesc;
-        desc.nextInChain = &wgslDesc;
-
-        wgslDesc.source = source.c_str();
-        _state.shaders[hash] = _device.CreateShaderModule(&desc);
-        return _state.shaders[hash];
+    auto iter = _state.shaderModules.find(hash);
+    if (iter == _state.shaderModules.end()) {
+        _state.shaderModules[hash] =
+                std::make_unique<ShaderModule>(_device, stage, glsl_source, "main", shader_variant);
+        return *_state.shaderModules[hash];
     } else {
-        return iter->second;
+        return *iter->second;
     }
 }
 

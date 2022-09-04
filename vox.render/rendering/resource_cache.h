@@ -10,6 +10,8 @@
 
 #include <unordered_map>
 
+#include "vox.render/shader/shader_module.h"
+
 namespace vox {
 /**
  * @brief Struct to hold the internal state of the Resource Cache
@@ -23,7 +25,7 @@ struct ResourceCacheState {
 
     std::unordered_map<std::size_t, wgpu::ComputePipeline> computePipelines;
 
-    std::unordered_map<std::size_t, wgpu::ShaderModule> shaders;
+    std::unordered_map<std::size_t, std::unique_ptr<ShaderModule>> shaderModules;
 };
 
 /**
@@ -61,7 +63,9 @@ public:
 
     wgpu::ComputePipeline &requestPipeline(wgpu::ComputePipelineDescriptor &descriptor);
 
-    wgpu::ShaderModule &requestShader(const std::string &source);
+    ShaderModule &requestShaderModule(wgpu::ShaderStage stage,
+                                      const ShaderSource &glsl_source,
+                                      const ShaderVariant &shader_variant);
 
 private:
     wgpu::Device &_device;

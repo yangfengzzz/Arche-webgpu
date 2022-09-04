@@ -6,6 +6,8 @@
 
 #include "vox.render/material/pbr_base_material.h"
 
+#include "vox.render/shader/internal_variant_name.h"
+
 namespace vox {
 const Color& PBRBaseMaterial::baseColor() const { return _pbrBaseData.baseColor; }
 
@@ -20,9 +22,9 @@ void PBRBaseMaterial::setBaseTexture(const SampledTexture2DPtr& newValue) {
     _baseTexture = newValue;
     shaderData.setSampledTexture(PBRBaseMaterial::_baseTextureProp, PBRBaseMaterial::_baseSamplerProp, newValue);
     if (newValue) {
-        shaderData.enableMacro(HAS_BASE_COLORMAP);
+        shaderData.addDefine(HAS_BASE_COLORMAP);
     } else {
-        shaderData.disableMacro(HAS_BASE_COLORMAP);
+        shaderData.removeDefine(HAS_BASE_COLORMAP);
     }
 }
 
@@ -32,9 +34,9 @@ void PBRBaseMaterial::setNormalTexture(const SampledTexture2DPtr& newValue) {
     _normalTexture = newValue;
     shaderData.setSampledTexture(PBRBaseMaterial::_normalTextureProp, PBRBaseMaterial::_normalSamplerProp, newValue);
     if (newValue) {
-        shaderData.enableMacro(HAS_NORMAL_TEXTURE);
+        shaderData.addDefine(HAS_NORMAL_TEXTURE);
     } else {
-        shaderData.disableMacro(HAS_NORMAL_TEXTURE);
+        shaderData.removeDefine(HAS_NORMAL_TEXTURE);
     }
 }
 
@@ -59,9 +61,9 @@ void PBRBaseMaterial::setEmissiveTexture(const SampledTexture2DPtr& newValue) {
     shaderData.setSampledTexture(PBRBaseMaterial::_emissiveTextureProp, PBRBaseMaterial::_emissiveSamplerProp,
                                  newValue);
     if (newValue) {
-        shaderData.enableMacro(HAS_EMISSIVEMAP);
+        shaderData.addDefine(HAS_EMISSIVEMAP);
     } else {
-        shaderData.disableMacro(HAS_EMISSIVEMAP);
+        shaderData.removeDefine(HAS_EMISSIVEMAP);
     }
 }
 
@@ -72,9 +74,9 @@ void PBRBaseMaterial::setOcclusionTexture(const SampledTexture2DPtr& newValue) {
     shaderData.setSampledTexture(PBRBaseMaterial::_occlusionTextureProp, PBRBaseMaterial::_occlusionSamplerProp,
                                  newValue);
     if (newValue) {
-        shaderData.enableMacro(HAS_OCCLUSIONMAP);
+        shaderData.addDefine(HAS_OCCLUSIONMAP);
     } else {
-        shaderData.disableMacro(HAS_OCCLUSIONMAP);
+        shaderData.removeDefine(HAS_OCCLUSIONMAP);
     }
 }
 
@@ -85,22 +87,22 @@ void PBRBaseMaterial::setOcclusionTextureIntensity(float newValue) {
     shaderData.setData(PBRBaseMaterial::_pbrBaseProp, _pbrBaseData);
 }
 
-PBRBaseMaterial::PBRBaseMaterial(wgpu::Device& device, Shader* shader)
-    : BaseMaterial(device, shader),
-      _pbrBaseProp(Shader::createProperty("u_pbrBaseData", ShaderDataGroup::Material)),
+PBRBaseMaterial::PBRBaseMaterial(wgpu::Device& device, const std::string& name)
+    : BaseMaterial(device, name),
+      _pbrBaseProp("u_pbrBaseData"),
 
-      _baseTextureProp(Shader::createProperty("u_baseColorTexture", ShaderDataGroup::Material)),
-      _baseSamplerProp(Shader::createProperty("u_baseColorSampler", ShaderDataGroup::Material)),
+      _baseTextureProp("u_baseColorTexture"),
+      _baseSamplerProp("u_baseColorSampler"),
 
-      _normalTextureProp(Shader::createProperty("u_normalTexture", ShaderDataGroup::Material)),
-      _normalSamplerProp(Shader::createProperty("u_normalSampler", ShaderDataGroup::Material)),
+      _normalTextureProp("u_normalTexture"),
+      _normalSamplerProp("u_normalSampler"),
 
-      _emissiveTextureProp(Shader::createProperty("u_emissiveTexture", ShaderDataGroup::Material)),
-      _emissiveSamplerProp(Shader::createProperty("u_emissiveSampler", ShaderDataGroup::Material)),
+      _emissiveTextureProp("u_emissiveTexture"),
+      _emissiveSamplerProp("u_emissiveSampler"),
 
-      _occlusionTextureProp(Shader::createProperty("u_occlusionTexture", ShaderDataGroup::Material)),
-      _occlusionSamplerProp(Shader::createProperty("u_occlusionSampler", ShaderDataGroup::Material)) {
-    shaderData.enableMacro(NEED_WORLDPOS);
+      _occlusionTextureProp("u_occlusionTexture"),
+      _occlusionSamplerProp("u_occlusionSampler") {
+    shaderData.addDefine(NEED_WORLDPOS);
     shaderData.setData(PBRBaseMaterial::_pbrBaseProp, _pbrBaseData);
 }
 

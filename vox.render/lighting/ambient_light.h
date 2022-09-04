@@ -6,10 +6,11 @@
 
 #pragma once
 
+#include <string>
+
 #include "vox.math/matrix4x4.h"
 #include "vox.math/spherical_harmonics3.h"
 #include "vox.render/scene_forward.h"
-#include "vox.render/shader/shader_property.h"
 #include "vox.render/texture/sampled_texture.h"
 
 namespace vox {
@@ -37,12 +38,11 @@ enum class DiffuseMode {
  */
 class AmbientLight {
 public:
-    struct EnvMapLight {
+    struct alignas(16) EnvMapLight {
         Vector3F diffuse;
         uint32_t mipMapLevel;
         float diffuseIntensity;
         float specularIntensity;
-        float _pad1, _pad2;
     };
 
     AmbientLight();
@@ -123,24 +123,24 @@ private:
     std::array<float, 27> _preComputeSH(const SphericalHarmonics3 &sh);
 
     EnvMapLight _envMapLight;
-    ShaderProperty _envMapProperty;
+    const std::string _envMapProperty;
 
     SphericalHarmonics3 _diffuseSphericalHarmonics;
     std::array<float, 27> _shArray{};
-    ShaderProperty _diffuseSHProperty;
+    const std::string _diffuseSHProperty;
 
     std::shared_ptr<SampledTexture> _diffuseTexture{nullptr};
-    ShaderProperty _diffuseTextureProperty;
-    ShaderProperty _diffuseSamplerProperty;
+    const std::string _diffuseTextureProperty;
+    const std::string _diffuseSamplerProperty;
 
     bool _specularTextureDecodeRGBM{false};
     std::shared_ptr<SampledTexture> _specularReflection{nullptr};
-    ShaderProperty _specularTextureProperty;
-    ShaderProperty _specularSamplerProperty;
+    const std::string _specularTextureProperty;
+    const std::string _specularSamplerProperty;
 
     std::shared_ptr<SampledTexture> _brdfLutTexture{nullptr};
-    ShaderProperty _brdfTextureProperty;
-    ShaderProperty _brdfSamplerProperty;
+    const std::string _brdfTextureProperty;
+    const std::string _brdfSamplerProperty;
 
     Scene *_scene{};
     DiffuseMode _diffuseMode = DiffuseMode::SolidColor;

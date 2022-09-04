@@ -6,7 +6,7 @@
 
 #include "vox.render/mesh/model_mesh.h"
 
-#include "vox.render/shaderlib/wgsl_common.h"
+#include "vox.render/shader/shader_common.h"
 
 namespace vox {
 bool ModelMesh::accessible() const { return _accessible; }
@@ -222,25 +222,25 @@ void ModelMesh::uploadData(bool noLongerAccessible) {
 
 wgpu::VertexBufferLayout ModelMesh::_updateVertexLayouts() {
     _vertexAttribute.resize(1);
-    _vertexAttribute[0] = wgpu::VertexAttribute{wgpu::VertexFormat::Float32x3, 0, (uint32_t)Attributes::Position};
+    _vertexAttribute[0] = wgpu::VertexAttribute{wgpu::VertexFormat::Float32x3, 0, (uint32_t)Attributes::POSITION};
 
     size_t offset = 12;
     size_t elementCount = 3;
     if (!_normals.empty()) {
         _vertexAttribute.push_back(
-                wgpu::VertexAttribute{wgpu::VertexFormat::Float32x3, offset, (uint32_t)Attributes::Normal});
+                wgpu::VertexAttribute{wgpu::VertexFormat::Float32x3, offset, (uint32_t)Attributes::NORMAL});
         offset += 12;
         elementCount += 3;
     }
     if (!_colors.empty()) {
         _vertexAttribute.push_back(
-                wgpu::VertexAttribute{wgpu::VertexFormat::Float32x4, offset, (uint32_t)Attributes::Color_0});
+                wgpu::VertexAttribute{wgpu::VertexFormat::Float32x4, offset, (uint32_t)Attributes::COLOR_0});
         offset += 16;
         elementCount += 4;
     }
     if (!_tangents.empty()) {
         _vertexAttribute.push_back(
-                wgpu::VertexAttribute{wgpu::VertexFormat::Float32x4, offset, (uint32_t)Attributes::Tangent});
+                wgpu::VertexAttribute{wgpu::VertexFormat::Float32x4, offset, (uint32_t)Attributes::TANGENT});
         offset += 16;
         elementCount += 4;
     }

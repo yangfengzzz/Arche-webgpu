@@ -14,11 +14,9 @@ namespace vox {
  */
 class PBRSpecularMaterial : public PBRBaseMaterial {
 public:
-    struct PBRSpecularData {
+    struct alignas(16) PBRSpecularData {
         Color specularColor = Color(1, 1, 1, 1);
         float glossiness = 1.f;
-        ;
-        float _pad1, _pad2, _pad3;
     };
 
     /**
@@ -46,15 +44,15 @@ public:
     /**
      * Create a pbr specular-glossiness workflow material instance.
      */
-    explicit PBRSpecularMaterial(wgpu::Device& device);
+    explicit PBRSpecularMaterial(wgpu::Device& device, const std::string& name = "");
 
 private:
     PBRSpecularData _pbrSpecularData;
-    ShaderProperty _pbrSpecularProp;
+    const std::string _pbrSpecularProp;
 
     SampledTexture2DPtr _specularGlossinessTexture{nullptr};
-    ShaderProperty _specularGlossinessTextureProp;
-    ShaderProperty _specularGlossinessSamplerProp;
+    const std::string _specularGlossinessTextureProp;
+    const std::string _specularGlossinessSamplerProp;
 };
 
 }  // namespace vox

@@ -6,6 +6,8 @@
 
 #include "vox.render/material/base_material.h"
 
+#include "vox.render/shader/internal_variant_name.h"
+
 namespace vox {
 bool BaseMaterial::isTransparent() const { return _isTransparent; }
 
@@ -25,7 +27,7 @@ void BaseMaterial::setIsTransparent(bool newValue) {
     } else {
         targetBlendState.enabled = false;
         depthState.writeEnabled = true;
-        renderQueueType = _alphaCutoff ? RenderQueueType::AlphaTest : RenderQueueType::Opaque;
+        renderQueueType = _alphaCutoff > 0 ? RenderQueueType::AlphaTest : RenderQueueType::Opaque;
     }
 }
 
@@ -36,10 +38,10 @@ void BaseMaterial::setAlphaCutoff(float newValue) {
     shaderData.setData(BaseMaterial::_alphaCutoffProp, newValue);
 
     if (newValue > 0) {
-        shaderData.enableMacro(NEED_ALPHA_CUTOFF);
+        shaderData.addDefine(NEED_ALPHA_CUTOFF);
         renderQueueType = _isTransparent ? RenderQueueType::Transparent : RenderQueueType::AlphaTest;
     } else {
-        shaderData.disableMacro(NEED_ALPHA_CUTOFF);
+        shaderData.removeDefine(NEED_ALPHA_CUTOFF);
         renderQueueType = _isTransparent ? RenderQueueType::Transparent : RenderQueueType::Opaque;
     }
 }
@@ -96,14 +98,12 @@ void BaseMaterial::setBlendMode(const BlendMode &newValue) {
     }
 }
 
-BaseMaterial::BaseMaterial(wgpu::Device &device, Shader *shader)
-    : Material(device, shader),
-      _alphaCutoffProp(Shader::createProperty("u_alphaCutoff", ShaderDataGroup::Material)),
-      _tilingOffsetProp(Shader::createProperty("u_tilingOffset", ShaderDataGroup::Material)) {
+BaseMaterial::BaseMaterial(wgpu::Device &device, const std::string &name)
+    : Material(device, name), _alphaCutoffProp("alphaCutoff"), _tilingOffsetProp("tilingOffset") {
     setBlendMode(BlendMode::Normal);
     shaderData.setData(_alphaCutoffProp, 0.0f);
     shaderData.setData(_tilingOffsetProp, _tilingOffset);
-    shaderData.enableMacro(NEED_TILINGOFFSET);
+    shaderData.addDefine(NEED_TILINGOFFSET);
 }
 
 }  // namespace vox

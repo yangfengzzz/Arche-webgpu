@@ -694,7 +694,6 @@
 		047BF0D027AC0D59003F3599 /* light_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF0C827AC0D59003F3599 /* light_manager.h */; };
 		047BF0D127AC0D59003F3599 /* spot_light.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF0C927AC0D59003F3599 /* spot_light.cpp */; };
 		047BF0D227ACB183003F3599 /* light_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF0C227AC0D59003F3599 /* light_manager.cpp */; };
-		047BF12F27ACEFFA003F3599 /* scoped_autorelease_pool.mm in Sources */ = {isa = PBXBuildFile; fileRef = 049546AC279F948800783C84 /* scoped_autorelease_pool.mm */; };
 		047BF15527AD0776003F3599 /* wgsl_pbr_frag_define.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF15327AD0776003F3599 /* wgsl_pbr_frag_define.cpp */; };
 		047BF15627AD0776003F3599 /* wgsl_pbr_frag_define.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF15427AD0776003F3599 /* wgsl_pbr_frag_define.h */; };
 		047BF15927AD0FF4003F3599 /* wgsl_pbr_helper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF15727AD0FF4003F3599 /* wgsl_pbr_helper.cpp */; };
@@ -5471,7 +5470,6 @@
 				0495476227A2954200783C84 /* primitive_app.cpp in Sources */,
 				047BF18727AE48FE003F3599 /* Irradiance_app.cpp in Sources */,
 				045A396128C44F3C003FEE10 /* stop_after.cpp in Sources */,
-				047BF12F27ACEFFA003F3599 /* scoped_autorelease_pool.mm in Sources */,
 				0443E8E627C4CBBC0099E13A /* omni_shadowmap_app.cpp in Sources */,
 				045A395B28C44F32003FEE10 /* file_logger.cpp in Sources */,
 				045A395528C44F29003FEE10 /* window_options.cpp in Sources */,
@@ -6107,7 +6105,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
-				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = apps/apps.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
@@ -6239,7 +6237,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
-				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = apps/apps.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;

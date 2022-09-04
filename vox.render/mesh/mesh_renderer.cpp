@@ -8,6 +8,8 @@
 
 #include "vox.render/entity.h"
 #include "vox.render/mesh/mesh.h"
+#include "vox.render/shader/internal_variant_name.h"
+#include "vox.render/shader/shader_common.h"
 
 namespace vox {
 std::string MeshRenderer::name() { return "MeshRenderer"; }
@@ -36,24 +38,24 @@ void MeshRenderer::_render(std::vector<RenderElement> &opaqueQueue,
         if (_meshUpdateFlag->flag) {
             const auto &vertexLayouts = _mesh->vertexBufferLayouts();
 
-            shaderData.disableMacro(HAS_UV);
-            shaderData.disableMacro(HAS_NORMAL);
-            shaderData.disableMacro(HAS_TANGENT);
-            shaderData.disableMacro(HAS_VERTEXCOLOR);
+            shaderData.removeDefine(HAS_UV);
+            shaderData.removeDefine(HAS_NORMAL);
+            shaderData.removeDefine(HAS_TANGENT);
+            shaderData.removeDefine(HAS_VERTEXCOLOR);
 
             for (const auto &vertexLayout : vertexLayouts) {
                 for (uint32_t j = 0, m = vertexLayout.attributeCount; j < m; j++) {
                     if (vertexLayout.attributes[j].shaderLocation == (uint32_t)Attributes::UV_0) {
-                        shaderData.enableMacro(HAS_UV);
+                        shaderData.addDefine(HAS_UV);
                     }
-                    if (vertexLayout.attributes[j].shaderLocation == (uint32_t)Attributes::Normal) {
-                        shaderData.enableMacro(HAS_NORMAL);
+                    if (vertexLayout.attributes[j].shaderLocation == (uint32_t)Attributes::NORMAL) {
+                        shaderData.addDefine(HAS_NORMAL);
                     }
-                    if (vertexLayout.attributes[j].shaderLocation == (uint32_t)Attributes::Tangent) {
-                        shaderData.enableMacro(HAS_TANGENT);
+                    if (vertexLayout.attributes[j].shaderLocation == (uint32_t)Attributes::TANGENT) {
+                        shaderData.addDefine(HAS_TANGENT);
                     }
-                    if (vertexLayout.attributes[j].shaderLocation == (uint32_t)Attributes::Color_0) {
-                        shaderData.enableMacro(HAS_VERTEXCOLOR);
+                    if (vertexLayout.attributes[j].shaderLocation == (uint32_t)Attributes::COLOR_0) {
+                        shaderData.addDefine(HAS_VERTEXCOLOR);
                     }
                 }
             }

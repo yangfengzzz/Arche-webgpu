@@ -39,20 +39,20 @@ public:
      */
     SampledTexture2DPtr metallicRoughnessTexture();
 
-    void setMetallicRoughnessTexture(const SampledTexture2DPtr& newValue);
+    void setMetallicRoughnessTexture(const SampledTexture2DPtr &newValue);
 
     /**
      * Create a pbr metallic-roughness workflow material instance.
      */
-    explicit PBRMaterial(wgpu::Device& device);
+    explicit PBRMaterial(wgpu::Device &device, const std::string &name = "");
 
 private:
     PBRData _pbrData;
-    ShaderProperty _pbrProp;
+    const std::string _pbrProp;
 
     SampledTexture2DPtr _metallicRoughnessTexture{nullptr};
-    ShaderProperty _metallicRoughnessTextureProp;
-    ShaderProperty _metallicRoughnessSamplerProp;
+    const std::string _metallicRoughnessTextureProp;
+    const std::string _metallicRoughnessSamplerProp;
 };
 
 }  // namespace vox

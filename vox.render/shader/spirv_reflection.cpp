@@ -13,7 +13,7 @@ namespace {
 template <ShaderResourceType T>
 inline void ReadShaderResource(const spirv_cross::Compiler &compiler,
                                wgpu::ShaderStage stage,
-                               std::vector<ShaderResource> &resources,
+                               std::unordered_map<std::string, ShaderResource> &resources,
                                const ShaderVariant &variant) {
     LOGE("Not implemented! Read shader resources of type.")
 }
@@ -135,7 +135,7 @@ inline void ReadResourceSize(const spirv_cross::Compiler &compiler,
 template <>
 inline void ReadShaderResource<ShaderResourceType::INPUT>(const spirv_cross::Compiler &compiler,
                                                           wgpu::ShaderStage stage,
-                                                          std::vector<ShaderResource> &resources,
+                                                          std::unordered_map<std::string, ShaderResource> &resources,
                                                           const ShaderVariant &variant) {
     auto input_resources = compiler.get_shader_resources().stage_inputs;
 
@@ -149,15 +149,16 @@ inline void ReadShaderResource<ShaderResourceType::INPUT>(const spirv_cross::Com
         ReadResourceArraySize(compiler, resource, shader_resource, variant);
         ReadResourceDecoration<spv::DecorationLocation>(compiler, resource, shader_resource, variant);
 
-        resources.push_back(shader_resource);
+        resources[shader_resource.name] = shader_resource;
     }
 }
 
 template <>
-inline void ReadShaderResource<ShaderResourceType::INPUT_ATTACHMENT>(const spirv_cross::Compiler &compiler,
-                                                                     wgpu::ShaderStage /*stage*/ stage,
-                                                                     std::vector<ShaderResource> &resources,
-                                                                     const ShaderVariant &variant) {
+inline void ReadShaderResource<ShaderResourceType::INPUT_ATTACHMENT>(
+        const spirv_cross::Compiler &compiler,
+        wgpu::ShaderStage /*stage*/ stage,
+        std::unordered_map<std::string, ShaderResource> &resources,
+        const ShaderVariant &variant) {
     auto subpass_resources = compiler.get_shader_resources().subpass_inputs;
 
     for (auto &resource : subpass_resources) {
@@ -171,14 +172,14 @@ inline void ReadShaderResource<ShaderResourceType::INPUT_ATTACHMENT>(const spirv
         ReadResourceDecoration<spv::DecorationDescriptorSet>(compiler, resource, shader_resource, variant);
         ReadResourceDecoration<spv::DecorationBinding>(compiler, resource, shader_resource, variant);
 
-        resources.push_back(shader_resource);
+        resources[shader_resource.name] = shader_resource;
     }
 }
 
 template <>
 inline void ReadShaderResource<ShaderResourceType::OUTPUT>(const spirv_cross::Compiler &compiler,
                                                            wgpu::ShaderStage stage,
-                                                           std::vector<ShaderResource> &resources,
+                                                           std::unordered_map<std::string, ShaderResource> &resources,
                                                            const ShaderVariant &variant) {
     auto output_resources = compiler.get_shader_resources().stage_outputs;
 
@@ -192,14 +193,14 @@ inline void ReadShaderResource<ShaderResourceType::OUTPUT>(const spirv_cross::Co
         ReadResourceVecSize(compiler, resource, shader_resource, variant);
         ReadResourceDecoration<spv::DecorationLocation>(compiler, resource, shader_resource, variant);
 
-        resources.push_back(shader_resource);
+        resources[shader_resource.name] = shader_resource;
     }
 }
 
 template <>
 inline void ReadShaderResource<ShaderResourceType::IMAGE>(const spirv_cross::Compiler &compiler,
                                                           wgpu::ShaderStage stage,
-                                                          std::vector<ShaderResource> &resources,
+                                                          std::unordered_map<std::string, ShaderResource> &resources,
                                                           const ShaderVariant &variant) {
     auto image_resources = compiler.get_shader_resources().separate_images;
 
@@ -213,15 +214,16 @@ inline void ReadShaderResource<ShaderResourceType::IMAGE>(const spirv_cross::Com
         ReadResourceDecoration<spv::DecorationDescriptorSet>(compiler, resource, shader_resource, variant);
         ReadResourceDecoration<spv::DecorationBinding>(compiler, resource, shader_resource, variant);
 
-        resources.push_back(shader_resource);
+        resources[shader_resource.name] = shader_resource;
     }
 }
 
 template <>
-inline void ReadShaderResource<ShaderResourceType::IMAGE_SAMPLER>(const spirv_cross::Compiler &compiler,
-                                                                  wgpu::ShaderStage stage,
-                                                                  std::vector<ShaderResource> &resources,
-                                                                  const ShaderVariant &variant) {
+inline void ReadShaderResource<ShaderResourceType::IMAGE_SAMPLER>(
+        const spirv_cross::Compiler &compiler,
+        wgpu::ShaderStage stage,
+        std::unordered_map<std::string, ShaderResource> &resources,
+        const ShaderVariant &variant) {
     auto image_resources = compiler.get_shader_resources().sampled_images;
 
     for (auto &resource : image_resources) {
@@ -234,15 +236,16 @@ inline void ReadShaderResource<ShaderResourceType::IMAGE_SAMPLER>(const spirv_cr
         ReadResourceDecoration<spv::DecorationDescriptorSet>(compiler, resource, shader_resource, variant);
         ReadResourceDecoration<spv::DecorationBinding>(compiler, resource, shader_resource, variant);
 
-        resources.push_back(shader_resource);
+        resources[shader_resource.name] = shader_resource;
     }
 }
 
 template <>
-inline void ReadShaderResource<ShaderResourceType::IMAGE_STORAGE>(const spirv_cross::Compiler &compiler,
-                                                                  wgpu::ShaderStage stage,
-                                                                  std::vector<ShaderResource> &resources,
-                                                                  const ShaderVariant &variant) {
+inline void ReadShaderResource<ShaderResourceType::IMAGE_STORAGE>(
+        const spirv_cross::Compiler &compiler,
+        wgpu::ShaderStage stage,
+        std::unordered_map<std::string, ShaderResource> &resources,
+        const ShaderVariant &variant) {
     auto storage_resources = compiler.get_shader_resources().storage_images;
 
     for (auto &resource : storage_resources) {
@@ -257,14 +260,14 @@ inline void ReadShaderResource<ShaderResourceType::IMAGE_STORAGE>(const spirv_cr
         ReadResourceDecoration<spv::DecorationDescriptorSet>(compiler, resource, shader_resource, variant);
         ReadResourceDecoration<spv::DecorationBinding>(compiler, resource, shader_resource, variant);
 
-        resources.push_back(shader_resource);
+        resources[shader_resource.name] = shader_resource;
     }
 }
 
 template <>
 inline void ReadShaderResource<ShaderResourceType::SAMPLER>(const spirv_cross::Compiler &compiler,
                                                             wgpu::ShaderStage stage,
-                                                            std::vector<ShaderResource> &resources,
+                                                            std::unordered_map<std::string, ShaderResource> &resources,
                                                             const ShaderVariant &variant) {
     auto sampler_resources = compiler.get_shader_resources().separate_samplers;
 
@@ -278,15 +281,16 @@ inline void ReadShaderResource<ShaderResourceType::SAMPLER>(const spirv_cross::C
         ReadResourceDecoration<spv::DecorationDescriptorSet>(compiler, resource, shader_resource, variant);
         ReadResourceDecoration<spv::DecorationBinding>(compiler, resource, shader_resource, variant);
 
-        resources.push_back(shader_resource);
+        resources[shader_resource.name] = shader_resource;
     }
 }
 
 template <>
-inline void ReadShaderResource<ShaderResourceType::BUFFER_UNIFORM>(const spirv_cross::Compiler &compiler,
-                                                                   wgpu::ShaderStage stage,
-                                                                   std::vector<ShaderResource> &resources,
-                                                                   const ShaderVariant &variant) {
+inline void ReadShaderResource<ShaderResourceType::BUFFER_UNIFORM>(
+        const spirv_cross::Compiler &compiler,
+        wgpu::ShaderStage stage,
+        std::unordered_map<std::string, ShaderResource> &resources,
+        const ShaderVariant &variant) {
     auto uniform_resources = compiler.get_shader_resources().uniform_buffers;
 
     for (auto &resource : uniform_resources) {
@@ -300,15 +304,16 @@ inline void ReadShaderResource<ShaderResourceType::BUFFER_UNIFORM>(const spirv_c
         ReadResourceDecoration<spv::DecorationDescriptorSet>(compiler, resource, shader_resource, variant);
         ReadResourceDecoration<spv::DecorationBinding>(compiler, resource, shader_resource, variant);
 
-        resources.push_back(shader_resource);
+        resources[shader_resource.name] = shader_resource;
     }
 }
 
 template <>
-inline void ReadShaderResource<ShaderResourceType::BUFFER_STORAGE>(const spirv_cross::Compiler &compiler,
-                                                                   wgpu::ShaderStage stage,
-                                                                   std::vector<ShaderResource> &resources,
-                                                                   const ShaderVariant &variant) {
+inline void ReadShaderResource<ShaderResourceType::BUFFER_STORAGE>(
+        const spirv_cross::Compiler &compiler,
+        wgpu::ShaderStage stage,
+        std::unordered_map<std::string, ShaderResource> &resources,
+        const ShaderVariant &variant) {
     auto storage_resources = compiler.get_shader_resources().storage_buffers;
 
     for (auto &resource : storage_resources) {
@@ -324,14 +329,14 @@ inline void ReadShaderResource<ShaderResourceType::BUFFER_STORAGE>(const spirv_c
         ReadResourceDecoration<spv::DecorationDescriptorSet>(compiler, resource, shader_resource, variant);
         ReadResourceDecoration<spv::DecorationBinding>(compiler, resource, shader_resource, variant);
 
-        resources.push_back(shader_resource);
+        resources[shader_resource.name] = shader_resource;
     }
 }
 }  // namespace
 
 bool SpirvReflection::ReflectShaderResources(wgpu::ShaderStage stage,
                                              const std::vector<uint32_t> &spirv,
-                                             std::vector<ShaderResource> &resources,
+                                             std::unordered_map<std::string, ShaderResource> &resources,
                                              const ShaderVariant &variant) {
     spirv_cross::CompilerGLSL compiler{spirv};
 
@@ -349,7 +354,7 @@ bool SpirvReflection::ReflectShaderResources(wgpu::ShaderStage stage,
 
 void SpirvReflection::ParseShaderResources(const spirv_cross::Compiler &compiler,
                                            wgpu::ShaderStage stage,
-                                           std::vector<ShaderResource> &resources,
+                                           std::unordered_map<std::string, ShaderResource> &resources,
                                            const ShaderVariant &variant) {
     ReadShaderResource<ShaderResourceType::INPUT>(compiler, stage, resources, variant);
     ReadShaderResource<ShaderResourceType::INPUT_ATTACHMENT>(compiler, stage, resources, variant);
@@ -364,7 +369,7 @@ void SpirvReflection::ParseShaderResources(const spirv_cross::Compiler &compiler
 
 void SpirvReflection::ParsePushConstants(const spirv_cross::Compiler &compiler,
                                          wgpu::ShaderStage stage,
-                                         std::vector<ShaderResource> &resources,
+                                         std::unordered_map<std::string, ShaderResource> &resources,
                                          const ShaderVariant &variant) {
     auto shader_resources = compiler.get_shader_resources();
 
@@ -389,13 +394,13 @@ void SpirvReflection::ParsePushConstants(const spirv_cross::Compiler &compiler,
 
         shader_resource.size -= shader_resource.offset;
 
-        resources.push_back(shader_resource);
+        resources[shader_resource.name] = shader_resource;
     }
 }
 
 void SpirvReflection::ParseSpecializationConstants(const spirv_cross::Compiler &compiler,
                                                    wgpu::ShaderStage stage,
-                                                   std::vector<ShaderResource> &resources,
+                                                   std::unordered_map<std::string, ShaderResource> &resources,
                                                    const ShaderVariant &variant) {
     auto specialization_constants = compiler.get_specialization_constants();
 
@@ -411,7 +416,7 @@ void SpirvReflection::ParseSpecializationConstants(const spirv_cross::Compiler &
 
         ReadResourceSize(compiler, spirv_value, shader_resource, variant);
 
-        resources.push_back(shader_resource);
+        resources[shader_resource.name] = shader_resource;
     }
 }
 

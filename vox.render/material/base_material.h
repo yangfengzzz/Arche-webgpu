@@ -59,16 +59,15 @@ public:
 
     /**
      * Create a BaseMaterial instance.
-     * @param shader - Shader used by the material
      */
-    BaseMaterial(wgpu::Device &device, Shader *shader);
+    explicit BaseMaterial(wgpu::Device &device, const std::string &name = "");
 
 private:
     float _alphaCutoff = 0.0;
-    ShaderProperty _alphaCutoffProp;
+    const std::string _alphaCutoffProp;
 
     Vector4F _tilingOffset = Vector4F(1, 1, 0, 0);
-    ShaderProperty _tilingOffsetProp;
+    const std::string _tilingOffsetProp;
 
     RenderFace _renderFace = RenderFace::Back;
     BlendMode _blendMode = BlendMode::Normal;

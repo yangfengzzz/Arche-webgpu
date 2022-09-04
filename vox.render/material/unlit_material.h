@@ -33,15 +33,15 @@ public:
     /**
      * Create a unlit material instance.
      */
-    explicit UnlitMaterial(wgpu::Device& device);
+    explicit UnlitMaterial(wgpu::Device& device, const std::string& name = "");
 
 private:
     Color _baseColor = Color(1, 1, 1, 1);
-    ShaderProperty _baseColorProp;
+    const std::string _baseColorProp;
 
     SampledTexture2DPtr _baseTexture = nullptr;
-    ShaderProperty _baseTextureProp;
-    ShaderProperty _baseSamplerProp;
+    const std::string _baseTextureProp;
+    const std::string _baseSamplerProp;
 };
 
 }  // namespace vox

@@ -6,6 +6,9 @@
 
 #include "vox.render/material/pbr_specular_material.h"
 
+#include "vox.render/shader/internal_variant_name.h"
+#include "vox.render/shader/shader_manager.h"
+
 namespace vox {
 const Color& PBRSpecularMaterial::specularColor() const { return _pbrSpecularData.specularColor; }
 
@@ -28,17 +31,19 @@ void PBRSpecularMaterial::setSpecularGlossinessTexture(const SampledTexture2DPtr
     shaderData.setSampledTexture(PBRSpecularMaterial::_specularGlossinessTextureProp,
                                  PBRSpecularMaterial::_specularGlossinessSamplerProp, newValue);
     if (newValue) {
-        shaderData.enableMacro(HAS_SPECULARGLOSSINESSMAP);
+        shaderData.addDefine(HAS_SPECULARGLOSSINESSMAP);
     } else {
-        shaderData.disableMacro(HAS_SPECULARGLOSSINESSMAP);
+        shaderData.removeDefine(HAS_SPECULARGLOSSINESSMAP);
     }
 }
 
-PBRSpecularMaterial::PBRSpecularMaterial(wgpu::Device& device)
-    : PBRBaseMaterial(device, Shader::find("pbr-specular")),
-      _pbrSpecularProp(Shader::createProperty("u_pbrSpecularData", ShaderDataGroup::Material)),
-      _specularGlossinessTextureProp(Shader::createProperty("_specularGlossinessTexture", ShaderDataGroup::Material)),
-      _specularGlossinessSamplerProp(Shader::createProperty("_specularGlossinessSampler", ShaderDataGroup::Material)) {
+PBRSpecularMaterial::PBRSpecularMaterial(wgpu::Device& device, const std::string& name)
+    : PBRBaseMaterial(device, name),
+      _pbrSpecularProp("u_pbrSpecularData"),
+      _specularGlossinessTextureProp("_specularGlossinessTexture"),
+      _specularGlossinessSamplerProp("_specularGlossinessSampler") {
+    vertex_source_ = ShaderManager::GetSingleton().LoadShader("base/blinn-phong.vert");
+    fragment_source_ = ShaderManager::GetSingleton().LoadShader("base/pbr.frag");
     shaderData.setData(PBRSpecularMaterial::_pbrSpecularProp, _pbrSpecularData);
 }
 

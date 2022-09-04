@@ -16,7 +16,6 @@
 #endif
 
 namespace vox {
-class Device;
 
 /// Types of shader resources
 enum class ShaderResourceType {
@@ -91,7 +90,7 @@ struct ShaderResource {
  */
 class ShaderModule {
 public:
-    ShaderModule(Device &device,
+    ShaderModule(wgpu::Device &device,
                  wgpu::ShaderStage stage,
                  const ShaderSource &glsl_source,
                  const std::string &entry_point,
@@ -111,13 +110,15 @@ public:
 
     [[nodiscard]] const std::string &GetEntryPoint() const;
 
-    [[nodiscard]] const std::vector<ShaderResource> &GetResources() const;
+    [[nodiscard]] const std::unordered_map<std::string, ShaderResource> &GetResources() const;
 
     [[nodiscard]] const std::string &GetInfoLog() const;
 
     [[nodiscard]] const std::vector<uint32_t> &GetBinary() const;
 
     [[nodiscard]] inline const std::string &GetDebugName() const { return debug_name_; }
+
+    [[nodiscard]] const wgpu::ShaderModule &handle() const;
 
     inline void SetDebugName(const std::string &name) { debug_name_ = name; }
 
@@ -129,7 +130,8 @@ public:
     void SetResourceMode(const std::string &resource_name, const ShaderResourceMode &resource_mode);
 
 private:
-    Device &device_;
+    wgpu::Device &device_;
+    wgpu::ShaderModule shader_module_;
 
     /// Shader unique id
     size_t id_;
@@ -146,7 +148,7 @@ private:
     /// Compiled source
     std::vector<uint32_t> spirv_;
 
-    std::vector<ShaderResource> resources_;
+    std::unordered_map<std::string, ShaderResource> resources_;
 
     std::string info_log_;
 };
