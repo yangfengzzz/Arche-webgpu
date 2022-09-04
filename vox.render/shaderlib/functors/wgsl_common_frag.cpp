@@ -13,18 +13,18 @@
 namespace vox {
 WGSLCommonFrag::WGSLCommonFrag(const std::string& inputStructName) : _inputStructName(inputStructName) {
     _cameraStruct = "struct CameraData {\n";
-    _cameraStruct += " u_viewMat: mat4x4<f32>;\n";
-    _cameraStruct += " u_projMat: mat4x4<f32>;\n";
-    _cameraStruct += " u_VPMat: mat4x4<f32>;\n";
-    _cameraStruct += " u_viewInvMat: mat4x4<f32>;\n";
-    _cameraStruct += " u_projInvMat: mat4x4<f32>;\n";
-    _cameraStruct += " u_cameraPos: vec3<f32>;\n";
+    _cameraStruct += " u_viewMat: mat4x4<f32>,\n";
+    _cameraStruct += " u_projMat: mat4x4<f32>,\n";
+    _cameraStruct += " u_VPMat: mat4x4<f32>,\n";
+    _cameraStruct += " u_viewInvMat: mat4x4<f32>,\n";
+    _cameraStruct += " u_projInvMat: mat4x4<f32>,\n";
+    _cameraStruct += " u_cameraPos: vec3<f32>\n";
     _cameraStruct += "}\n";
 
     _rendererStruct = "struct RendererData {\n";
-    _rendererStruct += " u_localMat: mat4x4<f32>;\n";
-    _rendererStruct += " u_modelMat: mat4x4<f32>;\n";
-    _rendererStruct += " u_normalMat: mat4x4<f32>;\n";
+    _rendererStruct += " u_localMat: mat4x4<f32>,\n";
+    _rendererStruct += " u_modelMat: mat4x4<f32>,\n";
+    _rendererStruct += " u_normalMat: mat4x4<f32>\n";
     _rendererStruct += "}\n";
 }
 

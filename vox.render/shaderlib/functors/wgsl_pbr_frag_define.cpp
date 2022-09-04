@@ -14,21 +14,21 @@ namespace vox {
 WGSLPbrFragDefine::WGSLPbrFragDefine(const std::string& outputStructName, bool is_metallic_workflow)
     : _is_metallic_workflow(is_metallic_workflow), _outputStructName(outputStructName) {
     _pbrStruct = "struct PbrBaseData {\n";
-    _pbrStruct += "  baseColor : vec4<f32>;\n";
-    _pbrStruct += "  emissiveColor : vec4<f32>;\n";
-    _pbrStruct += "  normalTextureIntensity : f32;\n";
-    _pbrStruct += "  occlusionTextureIntensity : f32;\n";
+    _pbrStruct += "  baseColor : vec4<f32>,\n";
+    _pbrStruct += "  emissiveColor : vec4<f32>,\n";
+    _pbrStruct += "  normalTextureIntensity : f32,\n";
+    _pbrStruct += "  occlusionTextureIntensity : f32,\n";
     _pbrStruct += "};\n";
 
     if (_is_metallic_workflow) {
         _pbrStruct += "struct PbrData {\n";
-        _pbrStruct += "  metallic : f32;\n";
-        _pbrStruct += "  roughness : f32;\n";
+        _pbrStruct += "  metallic : f32,\n";
+        _pbrStruct += "  roughness : f32,\n";
         _pbrStruct += "};\n";
     } else {
         _pbrStruct += "struct PbrSpecularData {\n";
-        _pbrStruct += "  specularColor : vec4<f32>;\n";
-        _pbrStruct += "  glossiness : f32;\n";
+        _pbrStruct += "  specularColor : vec4<f32>,\n";
+        _pbrStruct += "  glossiness : f32,\n";
         _pbrStruct += "};\n";
     }
 }

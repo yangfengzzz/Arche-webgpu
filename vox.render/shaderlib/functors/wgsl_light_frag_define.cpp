@@ -15,8 +15,8 @@ void WGSLLightFragDefine::operator()(WGSLEncoder& encoder, const ShaderMacroColl
     if (macros.contains(DIRECT_LIGHT_COUNT)) {
         encoder.addStruct(
                 "struct DirectLight {\n"
-                "  color : vec3<f32>;\n"
-                "  direction : vec3<f32>;\n"
+                "  color : vec3<f32>,\n"
+                "  direction : vec3<f32>,\n"
                 "};\n");
         encoder.addUniformBinding(
                 "u_directLight", fmt::format("array<DirectLight, {}>", (int)*macros.macroConstant(DIRECT_LIGHT_COUNT)));
@@ -25,9 +25,9 @@ void WGSLLightFragDefine::operator()(WGSLEncoder& encoder, const ShaderMacroColl
     if (macros.contains(POINT_LIGHT_COUNT)) {
         encoder.addStruct(
                 "struct PointLight {\n"
-                "  color : vec3<f32>;\n"
-                "  position : vec3<f32>;\n"
-                "  distance : f32;\n"
+                "  color : vec3<f32>,\n"
+                "  position : vec3<f32>,\n"
+                "  distance : f32,\n"
                 "};\n");
         encoder.addUniformBinding("u_pointLight",
                                   fmt::format("array<PointLight, {}>", (int)*macros.macroConstant(POINT_LIGHT_COUNT)));
@@ -36,12 +36,12 @@ void WGSLLightFragDefine::operator()(WGSLEncoder& encoder, const ShaderMacroColl
     if (macros.contains(SPOT_LIGHT_COUNT)) {
         encoder.addStruct(
                 "struct SpotLight {\n"
-                "  color : vec3<f32>;\n"
-                "  position : vec3<f32>;\n"
-                "  direction : vec3<f32>;\n"
-                "  distance : f32;\n"
-                "  angleCos : f32;\n"
-                "  penumbraCos : f32;\n"
+                "  color : vec3<f32>,\n"
+                "  position : vec3<f32>,\n"
+                "  direction : vec3<f32>,\n"
+                "  distance : f32,\n"
+                "  angleCos : f32,\n"
+                "  penumbraCos : f32\n"
                 "};\n");
         encoder.addUniformBinding("u_spotLight",
                                   fmt::format("array<SpotLight, {}>", (int)*macros.macroConstant(SPOT_LIGHT_COUNT)));
@@ -49,10 +49,10 @@ void WGSLLightFragDefine::operator()(WGSLEncoder& encoder, const ShaderMacroColl
 
     encoder.addStruct(
             "struct EnvMapLight {\n"
-            "  diffuse : vec3<f32>;\n"
-            "  mipMapLevel : f32;\n"
-            "  diffuseIntensity : f32;\n"
-            "  specularIntensity : f32;\n"
+            "  diffuse : vec3<f32>,\n"
+            "  mipMapLevel : f32,\n"
+            "  diffuseIntensity : f32,\n"
+            "  specularIntensity : f32,\n"
             "};\n");
     encoder.addUniformBinding("u_envMapLight", "EnvMapLight");
 

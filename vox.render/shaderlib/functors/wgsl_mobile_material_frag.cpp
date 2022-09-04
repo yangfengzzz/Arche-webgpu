@@ -14,11 +14,11 @@ namespace vox {
 WGSLMobileMaterialShare::WGSLMobileMaterialShare(const std::string& outputStructName)
     : _outputStructName(outputStructName) {
     _blinnPhongStruct = "struct BlinnPhongData {\n";
-    _blinnPhongStruct += "  baseColor : vec4<f32>;\n";
-    _blinnPhongStruct += "  specularColor : vec4<f32>;\n";
-    _blinnPhongStruct += "  emissiveColor : vec4<f32>;\n";
-    _blinnPhongStruct += "  normalIntensity : f32;\n";
-    _blinnPhongStruct += "  shininess : f32;\n";
+    _blinnPhongStruct += "  baseColor : vec4<f32>,\n";
+    _blinnPhongStruct += "  specularColor : vec4<f32>,\n";
+    _blinnPhongStruct += "  emissiveColor : vec4<f32>,\n";
+    _blinnPhongStruct += "  normalIntensity : f32,\n";
+    _blinnPhongStruct += "  shininess : f32\n";
     _blinnPhongStruct += "};\n";
 }
 

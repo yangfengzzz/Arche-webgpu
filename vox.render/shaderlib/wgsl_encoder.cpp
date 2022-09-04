@@ -256,7 +256,7 @@ void WGSLEncoder::addInoutType(const std::string& structName,
                                uint32_t location,
                                const std::string& attributes,
                                const std::string& type) {
-    const std::string formatTemplate = "@location({}) {}: {};";
+    const std::string formatTemplate = "@location({}) {}: {},";
     _inoutType[structName].push_back(fmt::format(formatTemplate, location, attributes, type));
     _needFlush = true;
 }
@@ -272,7 +272,7 @@ void WGSLEncoder::addInoutType(const std::string& structName,
                                BuiltInType builtin,
                                const std::string& attributes,
                                const std::string& type) {
-    const std::string formatTemplate = "@builtin({}) {}: {};";
+    const std::string formatTemplate = "@builtin({}) {}: {},";
     _inoutType[structName].push_back(fmt::format(formatTemplate, toString(builtin), attributes, type));
     _needFlush = true;
 }
@@ -282,9 +282,9 @@ void WGSLEncoder::addEntry(const std::initializer_list<std::pair<std::string, st
                            std::function<void(std::string&)> code,
                            const std::initializer_list<std::pair<std::string, BuiltInType>>& builtIn) {
     if (_currentStage == wgpu::ShaderStage::Vertex) {
-        _entryBlock += "@stage(vertex)\n";
+        _entryBlock += "@vertex\n";
     } else if (_currentStage == wgpu::ShaderStage::Fragment) {
-        _entryBlock += "@stage(fragment)\n";
+        _entryBlock += "@fragment\n";
     } else {
         assert(false && "Use Begin at first");
     }
@@ -319,7 +319,7 @@ void WGSLEncoder::addEntry(const std::array<uint32_t, 3>& workgroupSize,
                            std::function<void(std::string&)> code,
                            const std::initializer_list<std::pair<std::string, BuiltInType>>& builtIn) {
     if (_currentStage == wgpu::ShaderStage::Compute) {
-        _entryBlock += fmt::format("@stage(compute) @workgroup_size({}, {}, {})\n", workgroupSize[0], workgroupSize[1],
+        _entryBlock += fmt::format("@compute @workgroup_size({}, {}, {})\n", workgroupSize[0], workgroupSize[1],
                                    workgroupSize[2]);
     } else {
         assert(false && "Use Begin at first");
