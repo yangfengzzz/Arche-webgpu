@@ -20,7 +20,7 @@
 #include "view/scene_view.h"
 #include "view/asset_view.h"
 
-#include "shaderlib/wgsl_grid.h"
+#include "vox.render/shaderlib/wgsl_grid.h"
 
 namespace vox {
 namespace editor {

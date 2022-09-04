@@ -7,7 +7,6 @@
 #include "apps/atomic_compute_app.h"
 #include "apps/cascade_shadowmap_app.h"
 #include "apps/cluster_forward_app.h"
-#include "apps/gltf_app.h"
 #include "apps/ibl_app.h"
 #include "apps/irradiance_app.h"
 #include "apps/multi_light_app.h"

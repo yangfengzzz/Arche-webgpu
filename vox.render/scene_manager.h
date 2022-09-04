@@ -54,7 +54,6 @@ public:
 
     /**
      * Load specific scene in memory
-     * @param p_doc p_doc
      */
     bool loadSceneFromMemory(const nlohmann::json &data);
 

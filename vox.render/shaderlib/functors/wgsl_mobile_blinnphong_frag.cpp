@@ -8,7 +8,7 @@
 
 #include <spdlog/fmt/fmt.h>
 
-#include "lighting/light_manager.h"
+#include "vox.render/lighting/light_manager.h"
 
 namespace vox {
 WGSLMobileBlinnphongFrag::WGSLMobileBlinnphongFrag(const std::string& input, const std::string& output)

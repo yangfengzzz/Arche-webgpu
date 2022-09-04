@@ -6,7 +6,7 @@
 
 #include "vox.render/image/stb.h"
 #define STB_IMAGE_IMPLEMENTATION
-
+#define STBI_NO_PSD
 #include <stb_image.h>
 
 #include "vox.render/std_helpers.h"

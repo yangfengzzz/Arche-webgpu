@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "shaderlib/wgsl_encoder.h"
+#include "vox.render/shaderlib/wgsl_encoder.h"
 
 namespace vox {
 class WGSLBlendShapeVert {

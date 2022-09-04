@@ -9,7 +9,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "shader/shader_macro_collection.h"
+#include "vox.render/shader/shader_macro_collection.h"
 #include "vox.math/vector3.h"
 #include "wgsl_common.h"
 

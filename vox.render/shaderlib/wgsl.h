@@ -11,9 +11,9 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "shader/shader_macro_collection.h"
-#include "shaderlib/wgsl_encoder.h"
-#include "wgsl_common.h"
+#include "vox.render/shader/shader_macro_collection.h"
+#include "vox.render/shaderlib/wgsl_encoder.h"
+#include "vox.render/shaderlib/wgsl_common.h"
 
 namespace vox {
 class WGSL {

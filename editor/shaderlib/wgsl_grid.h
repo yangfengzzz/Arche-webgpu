@@ -7,8 +7,8 @@
 #ifndef wgsl_grid_hpp
 #define wgsl_grid_hpp
 
-#include "shaderlib/wgsl_cache.h"
-#include "shaderlib/functors/wgsl_common_vert.h"
+#include "vox.render/shaderlib/wgsl_cache.h"
+#include "vox.render/shaderlib/functors/wgsl_common_vert.h"
 
 namespace vox {
 //MARK: - Unlit Vertex Code

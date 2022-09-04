@@ -4,11 +4,11 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "shaderlib/wgsl_encoder.h"
+#include "vox.render/shaderlib/wgsl_encoder.h"
 
 #include <spdlog/fmt/fmt.h>
 
-#include "shader/shader.h"
+#include "vox.render/shader/shader.h"
 #include "vox.render/shaderlib/wgsl.h"
 
 namespace vox {

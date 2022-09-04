@@ -11,7 +11,6 @@
 #include "apps/plugins/benchmark_mode/benchmark_mode.h"
 #include "apps/plugins/file_logger/file_logger.h"
 #include "apps/plugins/fps_logger/fps_logger.h"
-#include "apps/plugins/screenshot/screenshot.h"
 #include "apps/plugins/stop_after/stop_after.h"
 #include "apps/plugins/window_options/window_options.h"
 
@@ -28,7 +27,6 @@ std::vector<vox::Plugin *> GetAll() {
         ADD_PLUGIN(BenchmarkMode);
         ADD_PLUGIN(FileLogger);
         ADD_PLUGIN(FpsLogger);
-        ADD_PLUGIN(Screenshot);
         ADD_PLUGIN(StopAfter);
         ADD_PLUGIN(WindowOptions);
     }

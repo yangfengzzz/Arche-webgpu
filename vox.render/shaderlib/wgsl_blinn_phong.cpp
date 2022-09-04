@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "wgsl_blinn_phong.h"
+#include "vox.render/shaderlib/wgsl_blinn_phong.h"
 
 #include "vox.render/lighting/light_manager.h"
 

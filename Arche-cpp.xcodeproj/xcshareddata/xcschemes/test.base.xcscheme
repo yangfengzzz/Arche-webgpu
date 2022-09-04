@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1330"
+   LastUpgradeVersion = "1340"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "041283AF279ED0D60071BD86"
-               BuildableName = "unit_tests"
-               BlueprintName = "unit_tests"
+               BlueprintIdentifier = "045A353828C44308003FEE10"
+               BuildableName = "test.base"
+               BlueprintName = "test.base"
                ReferencedContainer = "container:Arche-cpp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -36,7 +36,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Users/yangfeng/Desktop/DigitalArche/unit_tests"
+      customWorkingDirectory = "/Users/yangfeng/Desktop/Arche-cpp"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
@@ -45,9 +45,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "041283AF279ED0D60071BD86"
-            BuildableName = "unit_tests"
-            BlueprintName = "unit_tests"
+            BlueprintIdentifier = "045A353828C44308003FEE10"
+            BuildableName = "test.base"
+            BlueprintName = "test.base"
             ReferencedContainer = "container:Arche-cpp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -62,9 +62,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "041283AF279ED0D60071BD86"
-            BuildableName = "unit_tests"
-            BlueprintName = "unit_tests"
+            BlueprintIdentifier = "045A353828C44308003FEE10"
+            BuildableName = "test.base"
+            BlueprintName = "test.base"
             ReferencedContainer = "container:Arche-cpp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

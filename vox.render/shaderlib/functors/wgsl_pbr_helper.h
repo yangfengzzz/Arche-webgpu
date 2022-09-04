@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "shaderlib/wgsl_encoder.h"
+#include "vox.render/shaderlib/wgsl_encoder.h"
 #include "wgsl_brdf.h"
 #include "wgsl_direct_irradiance_frag_define.h"
 #include "wgsl_ibl_frag_define.h"

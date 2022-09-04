@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "singleton.h"
+#include "vox.render/singleton.h"
 #include "vox.render/particle/particle_renderer.h"
 #include "vox.render/rendering/compute_pass.h"
 

@@ -128,7 +128,7 @@ public:
 
     /**
      * @brief Draws the Gui
-     * @param command_buffer Command buffer to register draw-commands
+     * @param passEncoder Command buffer to register draw-commands
      */
     void Render(wgpu::RenderPassEncoder &passEncoder);
 

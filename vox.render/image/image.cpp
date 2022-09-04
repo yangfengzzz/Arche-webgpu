@@ -12,10 +12,10 @@
 #define STB_IMAGE_RESIZE_IMPLEMENTATION
 #include <stb_image_resize.h>
 
-#include "image/astc.h"
-#include "image/ktx_image.h"
-#include "image/stb.h"
-#include "texture/sampled_texture2d.h"
+#include "vox.render/image/astc.h"
+#include "vox.render/image/ktx_image.h"
+#include "vox.render/image/stb.h"
+#include "vox.render/texture/sampled_texture2d.h"
 
 namespace vox {
 Image::Image(std::vector<uint8_t> &&d, std::vector<Mipmap> &&m)
