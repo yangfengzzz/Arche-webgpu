@@ -1,0 +1,15 @@
+#version 450
+
+#include "compute/sdf_common.comp"
+
+layout(local_size_x = THREAD_GROUP_SIZE, local_size_y = 1, local_size_z = 1) in;
+
+
+// One thread for each cell.
+void main() {
+    int numSdfCells = g_NumCellsX * g_NumCellsY * g_NumCellsZ;
+
+    const uint sdfCellIndex = gl_GlobalInvocationID.x;
+    if (sdfCellIndex >= numSdfCells) return;
+    g_SignedDistanceField[sdfCellIndex] = FloatFlip3(INITIAL_DISTANCE);
+}

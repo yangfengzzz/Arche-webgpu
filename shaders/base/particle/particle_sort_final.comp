@@ -1,0 +1,45 @@
+// ============================================================================
+/**
+  * Reorder particles with respect to their sorted indices.
+  *
+  * Despite its simplicity this is the most costly kernel of the pipeline.
+  * (incoherent bank access prevents optimized gathering, changing for a
+  * structure of arrays layout could help better cache use) :
+  * eg.
+  * vec4 positions[]
+  * vec4 velocities[]
+  * vec4 attributes[]
+  * ....
+  * check GL_MAX_COMPUTE_SHADER_STORAGE_BLOCKS  (~ 16)
+  */
+
+// ============================================================================
+
+#include "base/particle/particle_config.h"
+
+#version 450
+
+layout(std430, binding = STORAGE_BINDING_PARTICLES_SECOND)
+readonly buffer ParticleBufferB {
+    TParticle read_particles[];
+};
+
+layout(std430, binding = STORAGE_BINDING_PARTICLES_FIRST)
+writeonly buffer ParticleBufferA {
+    TParticle write_particles[];
+};
+
+layout(std430, binding = STORAGE_BINDING_INDICES_FIRST)
+readonly buffer IndexBuffer {
+    uint indices[];
+};
+
+// ----------------------------------------------------------------------------
+
+layout(local_size_x = PARTICLES_KERNEL_GROUP_WIDTH) in;
+void main() {
+    const uint tid = gl_GlobalInvocationID.x;
+
+    uint read_id = indices[tid];
+    write_particles[tid] = read_particles[read_id];
+}

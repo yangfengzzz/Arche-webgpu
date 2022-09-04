@@ -1,0 +1,75 @@
+#version 450
+
+#include "base/light/cluster_common.comp"
+
+vec3 lineIntersectionToZPlane(vec3 a, vec3 b, float zDistance) {
+    vec3 normal = vec3(0.0, 0.0, 1.0);
+    vec3 ab = b - a;
+    float t = (zDistance - dot(normal, a)) / dot(normal, ab);
+    return a + t * ab;
+}
+
+const mat4 vulkanInverseMap = mat4(1,0,0,0,
+                                    0, -1, 0,0,
+                                    0, 0, 1, 0,
+                                    0, 0, 0, 1);
+
+vec4 clipToView(mat4 inverseMatrix, vec4 clip) {
+    vec4 view = vulkanInverseMap * inverseMatrix * clip;
+    return view / vec4(view.w, view.w, view.w, view.w);
+}
+
+vec4 screen2View(vec4 projection, mat4 inverseMatrix, vec4 screen) {
+    vec2 texCoord = screen.xy / projection.xy;
+    vec4 clip = vec4(vec2(texCoord.x, 1.0 - texCoord.y) * 2.0 - vec2(1.0, 1.0), screen.z, screen.w);
+    return clipToView(inverseMatrix, clip);
+}
+
+layout(local_size_x = 4, local_size_y = 2, local_size_z = 4) in;
+
+const vec3 eyePos = vec3(0.0, 0.0, 0.0);
+
+layout(set = 0, binding = 10) uniform clusterUniform {
+    vec4 value;
+} cluster_uniform;
+
+layout(set = 0, binding = 5) uniform cameraData {
+    mat4 view_mat;
+    mat4 proj_mat;
+    mat4 vp_mat;
+    mat4 view_inv_mat;
+    mat4 proj_inv_mat;
+    vec3 camera_pos;
+} camera_data;
+
+layout(binding = 12) buffer u_clusters {
+    ClusterBounds bounds[32 * 18 * 48]; // TOTAL_TILES
+} clusters;
+
+void main() {
+    uint tileIndex = gl_GlobalInvocationID.x +
+    gl_GlobalInvocationID.y * tileCount.x +
+    gl_GlobalInvocationID.z * tileCount.x * tileCount.y;
+
+    vec2 tileSize = vec2(cluster_uniform.value.x / float(tileCount.x),
+    cluster_uniform.value.y / float(tileCount.y));
+
+    vec4 maxPoint_sS = vec4(vec2(float(gl_GlobalInvocationID.x+1u), float(gl_GlobalInvocationID.y+1u)) * tileSize, 0.0, 1.0);
+    vec4 minPoint_sS = vec4(vec2(float(gl_GlobalInvocationID.x), float(gl_GlobalInvocationID.y)) * tileSize, 0.0, 1.0);
+
+    vec3 maxPoint_vS = screen2View(cluster_uniform.value, camera_data.proj_inv_mat, maxPoint_sS).xyz;
+    vec3 minPoint_vS = screen2View(cluster_uniform.value, camera_data.proj_inv_mat, minPoint_sS).xyz;
+
+    float tileNear = -cluster_uniform.value.z * pow(cluster_uniform.value.w/ cluster_uniform.value.z,
+    float(gl_GlobalInvocationID.z)/float(tileCount.z));
+    float tileFar = -cluster_uniform.value.z * pow(cluster_uniform.value.w/ cluster_uniform.value.z,
+    float(gl_GlobalInvocationID.z+1u)/float(tileCount.z));
+
+    vec3 minPointNear = lineIntersectionToZPlane(eyePos, minPoint_vS, tileNear);
+    vec3 minPointFar = lineIntersectionToZPlane(eyePos, minPoint_vS, tileFar);
+    vec3 maxPointNear = lineIntersectionToZPlane(eyePos, maxPoint_vS, tileNear);
+    vec3 maxPointFar = lineIntersectionToZPlane(eyePos, maxPoint_vS, tileFar);
+
+    clusters.bounds[tileIndex].minAABB = min(min(minPointNear, minPointFar),min(maxPointNear, maxPointFar));
+    clusters.bounds[tileIndex].maxAABB = max(max(minPointNear, minPointFar),max(maxPointNear, maxPointFar));
+}

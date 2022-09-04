@@ -1,0 +1,71 @@
+#version 450
+
+#include "compute/sdf_common.comp"
+
+layout(local_size_x = THREAD_GROUP_SIZE, local_size_y = 1, local_size_z = 1) in;
+
+// One thread per each triangle
+void main() {
+    int triangleIndex = gl_GlobalInvocationID.x;
+
+    uint numTriangleIndices, stride;
+    g_TrimeshVertexIndices.GetDimensions(numTriangleIndices, stride);
+    uint numTriangles = numTriangleIndices / 3;
+
+    if (triangleIndex >= numTriangles) {
+        return;
+    }
+
+    uint index0 = g_TrimeshVertexIndices[triangleIndex * 3 + 0];
+    uint index1 = g_TrimeshVertexIndices[triangleIndex * 3 + 1];
+    uint index2 = g_TrimeshVertexIndices[triangleIndex * 3 + 2];
+
+    vec3 tri0 = collMeshVertexPositions[index0].position;
+    vec3 tri1 = collMeshVertexPositions[index1].position;
+    vec3 tri2 = collMeshVertexPositions[index2].position;
+
+    vec3 aabbMin = min(tri0, min(tri1, tri2)) - vec3(MARGIN, MARGIN, MARGIN);
+    vec3 aabbMax = max(tri0, max(tri1, tri2)) + vec3(MARGIN, MARGIN, MARGIN);
+
+    int3 gridMin = GetSdfCoordinates(aabbMin) - GRID_MARGIN;
+    int3 gridMax = GetSdfCoordinates(aabbMax) + GRID_MARGIN;
+
+    gridMin.x = max(0, min(gridMin.x, g_NumCellsX - 1));
+    gridMin.y = max(0, min(gridMin.y, g_NumCellsY - 1));
+    gridMin.z = max(0, min(gridMin.z, g_NumCellsZ - 1));
+
+    gridMax.x = max(0, min(gridMax.x, g_NumCellsX - 1));
+    gridMax.y = max(0, min(gridMax.y, g_NumCellsY - 1));
+    gridMax.z = max(0, min(gridMax.z, g_NumCellsZ - 1));
+
+
+    //for (int z = gridMin.z; z <= gridMax.z; ++z)
+    //	for (int y = gridMin.y; y <= gridMax.y; ++y)
+    //		for (int x = gridMin.x; x <= gridMax.x; ++x)
+    //		{
+    //			int3 gridCellCoordinate = int3(x, y, z);
+
+    //			int gridCellIndex = GetSdfCellIndex(gridCellCoordinate);
+    //			vec3 cellPosition = GetSdfCellPosition(gridCellCoordinate);
+
+    //			float distance = SignedDistancePointToTriangle(cellPosition, tri0, tri1, tri2);
+    //			//distance -= MARGIN;
+
+    //			uint distanceAsUint = FloatFlip3(distance);
+    //			InterlockedMin(g_SignedDistanceField[gridCellIndex], distanceAsUint);
+    //		}
+
+
+    for (int z = gridMin.z; z <= gridMax.z; ++z)
+    for (int y = gridMin.y; y <= gridMax.y; ++y)
+    for (int x = gridMin.x; x <= gridMax.x; ++x) {
+        int3 gridCellCoordinate = int3(x, y, z);
+        int gridCellIndex = GetSdfCellIndex(gridCellCoordinate);
+        vec3 cellPosition = GetSdfCellPosition(gridCellCoordinate);
+
+        float distance = SignedDistancePointToTriangle(cellPosition, tri0, tri1, tri2);
+        //distance -= MARGIN;
+        uint distanceAsUint = FloatFlip3(distance);
+        InterlockedMin(g_SignedDistanceField[gridCellIndex], distanceAsUint);
+    }
+}

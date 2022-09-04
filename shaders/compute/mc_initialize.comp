@@ -1,0 +1,19 @@
+#version 450
+
+#include "compute/mc_common.comp"
+
+layout(local_size_x = THREAD_GROUP_SIZE, local_size_y = 1, local_size_z = 1) in;
+void main() {
+    int index = gl_GlobalInvocationID.x;
+
+    if (index < g_MaxMarchingCubesVertices) {
+        StandardVertex v;
+        v.position = vec4(0, 0, 0, 0);
+        v.normal = vec4(0, 0, 0, 0);
+
+        g_MarchingCubesTriangleVertices[index] = v;
+    }
+
+    if (index == 0)
+    g_NumMarchingCubesVertices[0] = 0;
+}

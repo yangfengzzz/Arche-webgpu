@@ -1,0 +1,179 @@
+#version 450
+
+#include "compute/sdf_common.comp"
+
+layout(local_size_x = THREAD_GROUP_SIZE, local_size_y = 1, local_size_z = 1) in;
+
+float LinearInterpolate(float a, float b, float t) {
+    return a * (1.0f - t) + b * t;
+}
+
+//    bilinear interpolation
+//
+//         p    :  1-p
+//     c------------+----d
+//     |            |    |
+//     |            |    |
+//     |       1-q  |    |
+//     |            |    |
+//     |            x    |
+//     |            |    |
+//     |         q  |    |
+//     a------------+----b
+//         p    :  1-p
+//
+//    x = BilinearInterpolate(a, b, c, d, p, q)
+//      = LinearInterpolate(LinearInterpolate(a, b, p), LinearInterpolate(c, d, p), q)
+float BilinearInterpolate(float a, float b, float c, float d, float p, float q) {
+    return LinearInterpolate(LinearInterpolate(a, b, p), LinearInterpolate(c, d, p), q);
+}
+
+//    trilinear interpolation
+//
+//                      c        p            1-p    d
+//                       ------------------+----------
+//                      /|                 |        /|
+//                     /                   |       / |
+//                    /  |                 |1-q   /  |
+//                   /                     |     /   |
+//                  /    |                 |    /    |
+//               g ------------------+---------- h   |
+//                 |     |           |     |   |     |
+//                 |                 |     +   |     |
+//                 |     |           |   r/|   |     |
+//                 |                 |   / |q  |     |
+//                 |     |           |  x  |   |     |
+//                 |   a - - - - - - | / - + - |- - -| b
+//                 |    /            |/1-r     |     /
+//                 |                 +         |    /
+//                 |  /              |         |   /
+//                 |                 |         |  /
+//                 |/                |         | /
+//                 ------------------+----------
+//              e                            f
+//
+//		x = TrilinearInterpolate(a, b, c, d, e, f, g, h, p, q, r)
+//		  = LinearInterpolate(BilinearInterpolate(a, b, c, d, p, q), BilinearInterpolate(e, f, g, h, p, q), r)
+float TrilinearInterpolate(float a, float b, float c, float d, float e, float f, float g, float h, float p, float q, float r) {
+    return LinearInterpolate(BilinearInterpolate(a, b, c, d, p, q), BilinearInterpolate(e, f, g, h, p, q), r);
+}
+
+// Get signed distance at the position in world space
+float GetSignedDistance(vec3 positionInWorld) {
+    ivec3 gridCoords = GetSdfCoordinates(positionInWorld);
+
+    if (!(0 <= gridCoords.x && gridCoords.x < g_NumCellsX - 2)
+    || !(0 <= gridCoords.y && gridCoords.y < g_NumCellsY - 2)
+    || !(0 <= gridCoords.z && gridCoords.z < g_NumCellsZ - 2))
+    return INITIAL_DISTANCE;
+
+    int sdfIndices[8];
+    {
+        int index = GetSdfCellIndex(gridCoords);
+        for (int i = 0; i < 8; ++i) sdfIndices[i] = index;
+
+        int x = 1;
+        int y = g_NumCellsX;
+        int z = g_NumCellsY * g_NumCellsX;
+
+        sdfIndices[1] += x;
+        sdfIndices[2] += y;
+        sdfIndices[3] += y + x;
+
+        sdfIndices[4] += z;
+        sdfIndices[5] += z + x;
+        sdfIndices[6] += z + y;
+        sdfIndices[7] += z + y + x;
+    }
+
+    float distances[8];
+
+    for (int j = 0; j < 8; ++j) {
+        int sdfCellIndex = sdfIndices[j];
+        float dist = asfloat(g_SignedDistanceField[sdfCellIndex]);
+
+        if (dist == INITIAL_DISTANCE)
+        return INITIAL_DISTANCE;
+
+        distances[j] = dist;
+    }
+
+    float distance_000 = distances[0];// X,  Y,  Z
+    float distance_100 = distances[1];//+X,  Y,  Z
+    float distance_010 = distances[2];// X, +Y,  Z
+    float distance_110 = distances[3];//+X, +Y,  Z
+    float distance_001 = distances[4];// X,  Y, +Z
+    float distance_101 = distances[5];//+X,  Y, +Z
+    float distance_011 = distances[6];// X, +Y, +Z
+    float distance_111 = distances[7];//+X, +Y, +Z
+
+    vec3 cellPosition = GetSdfCellPosition(gridCoords);
+    vec3 interp = (positionInWorld - cellPosition) / g_CellSize;
+    return TrilinearInterpolate(distance_000, distance_100, distance_010, distance_110,
+    distance_001, distance_101, distance_011, distance_111,
+    interp.x, interp.y, interp.z);
+}
+
+//SDF-Hair collision using forward differences only
+// One thread per one hair vertex
+void main(){
+    int hairVertexGlobalIndex = gl_GlobalInvocationID.x;
+
+    if (hairVertexGlobalIndex >= g_NumTotalHairVertices)
+    return;
+
+    int hairVertexLocalIndex = hairVertexGlobalIndex % g_NumHairVerticesPerStrand;
+
+    // We don't run collision check on the first two vertices in the strand. They are fixed on the skin mesh.
+    if (hairVertexLocalIndex == 0 || hairVertexLocalIndex == 1)
+    return;
+
+    vec4 hairVertex = g_HairVertices[hairVertexGlobalIndex];
+    vec4 vertexInSdfLocalSpace = hairVertex;
+
+    float distance = GetSignedDistance(vertexInSdfLocalSpace.xyz);
+
+    // early exit if the distance is larger than collision margin
+    if (distance > g_CollisionMargin)
+    return;
+
+    // small displacement.
+    float h = 0.1f * g_CellSize;
+
+    vec3 sdfGradient;
+    {
+        //Compute gradient using forward difference
+        vec3 offset[3];
+        offset[0] = vec3(1, 0, 0);
+        offset[1] = vec3(0, 1, 0);
+        offset[2] = vec3(0, 0, 1);
+
+        vec3 neighborCellPositions[3];
+
+        for (int i = 0; i < 3; ++i)
+        neighborCellPositions[i] = vertexInSdfLocalSpace.xyz + offset[i] * h;
+
+        //Use trilinear interpolation to get distances
+        float neighborCellDistances[3];
+
+        for (int j = 0; j < 3; ++j)
+        neighborCellDistances[j] = GetSignedDistance(neighborCellPositions[j]);
+
+        vec3 forwardDistances;
+        forwardDistances.x = neighborCellDistances[0];
+        forwardDistances.y = neighborCellDistances[1];
+        forwardDistances.z = neighborCellDistances[2];
+
+        sdfGradient = (forwardDistances - vec3(distance, distance, distance)) / h;
+    }
+
+    //Project hair vertex out of SDF
+    vec3 normal = normalize(sdfGradient);
+
+    if (distance < g_CollisionMargin)
+    {
+        vec3 projectedVertex = hairVertex.xyz + normal * (g_CollisionMargin - distance);
+        g_HairVertices[hairVertexGlobalIndex].xyz = projectedVertex;
+        g_PrevHairVertices[hairVertexGlobalIndex].xyz = projectedVertex;
+    }
+}

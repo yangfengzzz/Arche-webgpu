@@ -1,0 +1,136 @@
+#version 450
+
+#include "base/light/cluster_common.comp"
+
+float sqDistPointAABB(vec3 point, vec3 minAABB, vec3 maxAABB) {
+    float sqDist = 0.0;
+    // const minAABB : vec3<f32> = clusters.bounds[tileIndex].minAABB;
+    // const maxAABB : vec3<f32> = clusters.bounds[tileIndex].maxAABB;
+
+    // Wait, does this actually work? Just porting code, but it seems suspect?
+    for (int i = 0; i < 3; i = i + 1) {
+        float v = point[i];
+        if (v < minAABB[i]){
+            sqDist = sqDist + (minAABB[i] - v) * (minAABB[i] - v);
+        }
+        if (v > maxAABB[i]){
+            sqDist = sqDist + (v - maxAABB[i]) * (v - maxAABB[i]);
+        }
+    }
+
+    return sqDist;
+}
+
+layout(set = 0, binding = 5) uniform cameraData {
+    mat4 view_mat;
+    mat4 proj_mat;
+    mat4 vp_mat;
+    mat4 view_inv_mat;
+    mat4 proj_inv_mat;
+    vec3 camera_pos;
+} camera_data;
+
+layout(binding = 12) buffer u_clusters {
+    ClusterBounds bounds[32 * 18 * 48];// TOTAL_TILES
+} clusters;
+
+layout(binding = 13) buffer clusterLights {
+    ClusterLightGroup value;
+} cluster_lights;
+
+// point light
+#ifdef POINT_LIGHT_COUNT
+struct PointLight {
+    vec3 color;
+    vec3 position;
+    float distance;
+};
+
+layout(set = 0, binding = 10) uniform pointLight {
+    PointLight value[POINT_LIGHT_COUNT];
+} point_light;
+#endif
+
+// spot light
+#ifdef SPOT_LIGHT_COUNT
+struct SpotLight {
+    vec3 color;
+    vec3 position;
+    vec3 direction;
+    float distance;
+    float angleCos;
+    float penumbraCos;
+};
+
+layout(set = 0, binding = 11) uniform spotLight {
+    SpotLight value[SPOT_LIGHT_COUNT];
+} spot_light;
+#endif
+
+layout(local_size_x = 4, local_size_y = 2, local_size_z = 4) in;
+
+void main() {
+    uint tileIndex = gl_GlobalInvocationID.x +
+    gl_GlobalInvocationID.y * tileCount.x +
+    gl_GlobalInvocationID.z * tileCount.x * tileCount.y;
+
+    uint clusterLightCount = 0u;
+    uint cluserLightIndices[50];
+    #ifdef POINT_LIGHT_COUNT
+        for (uint i = 0u; i < POINT_LIGHT_COUNT; i = i + 1u) {
+            float range = point_light.value[i].distance;
+            // Lights without an explicit range affect every cluster, but this is a poor way to handle that.
+            bool lightInCluster = range <= 0.0;
+
+            if (!lightInCluster) {
+                vec4 lightViewPos = camera_data.view_mat * vec4(point_light.value[i].position, 1.0);
+                float sqDist = sqDistPointAABB(lightViewPos.xyz, clusters.bounds[tileIndex].minAABB, clusters.bounds[tileIndex].maxAABB);
+                lightInCluster = sqDist <= (range * range);
+            }
+
+            if (lightInCluster) {
+                // Light affects this cluster. Add it to the list.
+                cluserLightIndices[clusterLightCount] = i;
+                clusterLightCount = clusterLightCount + 1u;
+            }
+
+            if (clusterLightCount == 50u) {
+                break;
+            }
+        }
+    #endif
+
+    uint pointLightCount = clusterLightCount;
+    #ifdef SPOT_LIGHT_COUNT
+        for (uint i = 0u; i < SPOT_LIGHT_COUNT; i = i + 1u) {
+            float range = spot_light.value[i].distance;
+            // Lights without an explicit range affect every cluster, but this is a poor way to handle that.
+            bool lightInCluster = range <= 0.0;
+
+            if (!lightInCluster) {
+                vec4 lightViewPos = camera_data.view_mat * vec4(spot_light.value[i].position, 1.0);
+                float sqDist = sqDistPointAABB(lightViewPos.xyz, clusters.bounds[tileIndex].minAABB, clusters.bounds[tileIndex].maxAABB);
+                lightInCluster = sqDist <= (range * range);
+            }
+
+            if (lightInCluster) {
+                // Light affects this cluster. Add it to the list.
+                cluserLightIndices[clusterLightCount] = i;
+                clusterLightCount = clusterLightCount + 1u;
+            }
+
+            if (clusterLightCount == 50u) {
+                break;
+            }
+        }
+    #endif
+
+    uint offset = atomicAdd(cluster_lights.value.offset, clusterLightCount);
+
+    for (uint i = 0u; i < clusterLightCount; i = i + 1u) {
+        cluster_lights.value.indices[offset + i] = cluserLightIndices[i];
+    }
+    cluster_lights.value.lights[tileIndex].offset = offset;
+    cluster_lights.value.lights[tileIndex].point_count = pointLightCount;
+    cluster_lights.value.lights[tileIndex].spot_count = clusterLightCount - pointLightCount;
+}

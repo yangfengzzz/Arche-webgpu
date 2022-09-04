@@ -1,0 +1,271 @@
+#version 450
+
+#ifndef THREAD_GROUP_SIZE
+#define THREAD_GROUP_SIZE 64
+#endif
+
+#define INITIAL_DISTANCE 1e10f
+#define MARGIN g_CellSize
+#define GRID_MARGIN ivec3(1, 1, 1)
+
+struct StandardVertex {
+    vec4 position;
+    vec4 normal;
+};
+
+layout(set = 0, binding = 3) uniform ConstBuffer_SDF {
+    vec3 g_Origin;
+    float g_CellSize;
+
+    uint g_NumCellsX;
+    uint g_NumCellsY;
+    uint g_NumCellsZ;
+    uint g_MaxMarchingCubesVertices;
+
+    float g_MarchingCubesIsolevel;
+    float g_CollisionMargin;
+    int g_NumHairVerticesPerStrand;
+    int g_NumTotalHairVertices;
+};
+
+//Actually contains floats; make sure to use asfloat() when accessing. uint is used to allow atomics.
+layout(binding = 4)
+buffer g_SignedDistanceField {
+    uint field[];
+};
+
+//Triangle input to SDF builder
+layout(binding = 5)
+buffer g_TrimeshVertexIndices {
+    uint indices[];
+};
+layout(binding = 6)
+buffer collMeshVertexPositions {
+    vec3 position[];
+};
+
+//When building the SDF we want to find the lowest distance at each SDF cell. In order to allow multiple threads to write to the same
+//cells, it is necessary to use atomics. However, there is no support for atomics with 32-bit floats so we convert the float into unsigned int
+//and use atomic_min() / InterlockedMin() as a workaround.
+//
+//When used with atomic_min, both FloatFlip2() and FloatFlip3() will store the float with the lowest magnitude.
+//The difference is that FloatFlip2() will preper negative values ( InterlockedMin( FloatFlip2(1.0), FloatFlip2(-1.0) ) == -1.0 ),
+//while FloatFlip3() prefers positive values (  InterlockedMin( FloatFlip3(1.0), FloatFlip3(-1.0) ) == 1.0 ).
+//Using FloatFlip3() seems to result in a SDF with higher quality compared to FloatFlip2().
+uint FloatFlip2(float fl) {
+    uint f = floatBitsToUint(fl);
+    //Rotate sign bit to least significant and Flip sign bit so that (0 == negative)
+    return (f << 1) | (f >> 31 ^ 0x00000001);
+}
+
+uint IFloatFlip2(uint f2) {
+    return (f2 >> 1) | (f2 << 31 ^ 0x80000000);
+}
+
+uint FloatFlip3(float fl) {
+    uint f = floatBitsToUint(fl);
+    return (f << 1) | (f >> 31);//Rotate sign bit to least significant
+}
+
+uint IFloatFlip3(uint f2) {
+    return (f2 >> 1) | (f2 << 31);
+}
+
+// Get SDF cell index coordinates (x, y and z) from a point position in world space
+ivec3 GetSdfCoordinates(vec3 positionInWorld) {
+    vec3 sdfPosition = (positionInWorld - g_Origin.xyz) / g_CellSize;
+
+    ivec3 result;
+    result.x = (int)sdfPosition.x;
+    result.y = (int)sdfPosition.y;
+    result.z = (int)sdfPosition.z;
+
+    return result;
+}
+
+vec3 GetSdfCellPosition(ivec3 gridPosition) {
+    vec3 cellCenter = vec3(gridPosition.x, gridPosition.y, gridPosition.z) * g_CellSize;
+    cellCenter += g_Origin.xyz;
+
+    return cellCenter;
+}
+
+int GetSdfCellIndex(ivec3 gridPosition) {
+    int cellsPerLine = g_NumCellsX;
+    int cellsPerPlane = g_NumCellsX * g_NumCellsY;
+
+    return cellsPerPlane*gridPosition.z + cellsPerLine*gridPosition.y + gridPosition.x;
+}
+
+float DistancePointToEdge2(vec3 p, vec3 x0, vec3 x1, out vec3 pointOnEdge) {
+    vec3 x10 = x1 - x0;
+
+    float t = dot(x1 - p, x10) / dot(x10, x10);
+    t = max(0.0f, min(t, 1.0f));
+
+    pointOnEdge = (t*x0 + (1.0f - t)*x1);
+
+    vec3 a = p - pointOnEdge;
+    float d = length(a);
+    vec3 n = a / (d + 1e-30f);
+
+    return d;
+}
+
+float DistancePointToEdge(vec3 p, vec3 x0, vec3 x1, out vec3 n) {
+    vec3 x10 = x1 - x0;
+
+    float t = dot(x1 - p, x10) / dot(x10, x10);
+    t = max(0.0f, min(t, 1.0f));
+
+    vec3 a = p - (t*x0 + (1.0f - t)*x1);
+    float d = length(a);
+    n = a / (d + 1e-30f);
+
+    return d;
+}
+
+// Check if p is in the positive or negative side of triangle (x0, x1, x2)
+// Positive side is where the normal vector of triangle ( (x1-x0) x (x2-x0) ) is pointing to.
+float SignedDistancePointToTriangle(vec3 p, vec3 x0, vec3 x1, vec3 x2) {
+    float d = 0;
+    vec3 x02 = x0 - x2;
+    float l0 = length(x02) + 1e-30f;
+    x02 = x02 / l0;
+    vec3 x12 = x1 - x2;
+    float l1 = dot(x12, x02);
+    x12 = x12 - l1*x02;
+    float l2 = length(x12) + 1e-30f;
+    x12 = x12 / l2;
+    vec3 px2 = p - x2;
+
+    float b = dot(x12, px2) / l2;
+    float a = (dot(x02, px2) - l1*b) / l0;
+    float c = 1 - a - b;
+
+    // normal vector of triangle. Don't need to normalize this yet.
+    vec3 nTri = cross((x1 - x0), (x2 - x0));
+    vec3 n;
+
+    float tol = 1e-8f;
+
+    if (a >= -tol && b >= -tol && c >= -tol) {
+        n = p - (a*x0 + b*x1 + c*x2);
+        d = length(n);
+
+        vec3 n1 = n / d;
+        vec3 n2 = nTri / (length(nTri) + 1e-30f);// if d == 0
+
+        n = (d > 0) ? n1 : n2;
+    } else {
+        vec3 n_12;
+        vec3 n_02;
+        d = DistancePointToEdge(p, x0, x1, n);
+
+        float d12 = DistancePointToEdge(p, x1, x2, n_12);
+        float d02 = DistancePointToEdge(p, x0, x2, n_02);
+
+        d = min(d, d12);
+        d = min(d, d02);
+
+        n = (d == d12) ? n_12 : n;
+        n = (d == d02) ? n_02 : n;
+    }
+
+    d = (dot(p - x0, nTri) < 0.f) ? -d : d;
+
+    return d;
+}
+
+float SignedDistancePointToTriangle2(vec3 p, vec3 x0, vec3 x1, vec3 x2,
+                                    vec3 vertexNormal0, vec3 vertexNormal1, vec3 vertexNormal2,
+                                    vec3 edgeNormal01, vec3 edgeNormal12, vec3 edgeNormal20) {
+    float d = 0;
+    vec3 x02 = x0 - x2;
+    float l0 = length(x02) + 1e-30f;
+    x02 = x02 / l0;
+    vec3 x12 = x1 - x2;
+    float l1 = dot(x12, x02);
+    x12 = x12 - l1*x02;
+    float l2 = length(x12) + 1e-30f;
+    x12 = x12 / l2;
+    vec3 px2 = p - x2;
+
+    float b = dot(x12, px2) / l2;
+    float a = (dot(x02, px2) - l1*b) / l0;
+    float c = 1 - a - b;
+
+    // normal vector of triangle. Don't need to normalize this yet.
+    vec3 nTri = cross((x1 - x0), (x2 - x0));
+    vec3 n;
+
+    float tol = 1e-8f;
+
+    //Check if triangle is in the Voronoi face region
+    if (a >= -tol && b >= -tol && c >= -tol) {
+        n = p - (a*x0 + b*x1 + c*x2);
+        d = length(n);
+
+        vec3 n1 = n / d;
+        vec3 n2 = nTri / (length(nTri) + 1e-30f);// if d == 0
+
+        n = (d > 0) ? n1 : n2;
+        d = (dot(p - x0, nTri) < 0.f) ? -d : d;
+    } else {
+        //Otherwise find the nearest edge/vertex
+        vec3 normals[6];
+        normals[0] = vertexNormal0;
+        normals[1] = vertexNormal1;
+        normals[2] = vertexNormal2;
+        normals[3] = edgeNormal01;
+        normals[4] = edgeNormal12;
+        normals[5] = edgeNormal20;
+
+        vec3 nearestPoint[6];
+        nearestPoint[0] = x0;
+        nearestPoint[1] = x1;
+        nearestPoint[2] = x2;
+
+        float distances[6];
+        distances[0] = length(p - x0);
+        distances[1] = length(p - x1);
+        distances[2] = length(p - x2);
+        distances[3] = DistancePointToEdge2(p, x0, x1, nearestPoint[3]);
+        distances[4] = DistancePointToEdge2(p, x1, x2, nearestPoint[4]);
+        distances[5] = DistancePointToEdge2(p, x0, x2, nearestPoint[5]);
+
+        float minDistance = distances[0];
+        for (int i = 1; i < 6; ++i) minDistance = min(minDistance, distances[i]);
+
+        vec3 pointOnPlane = nearestPoint[0];
+        vec3 normal = normals[0];
+
+        for (int j = 1; j < 6; ++j)
+        {
+            int isMin = (minDistance == distances[j]);
+
+            pointOnPlane = (isMin) ? nearestPoint[j] : pointOnPlane;
+            normal = (isMin) ? normals[j] : normal;
+        }
+
+        d = (dot(p - pointOnPlane, normal) < 0.f) ? -minDistance : minDistance;
+    }
+
+    return d;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

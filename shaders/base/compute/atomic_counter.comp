@@ -1,0 +1,11 @@
+#version 450
+
+layout(binding = 6) buffer atomicCounter {
+    uint value;
+} atomic_counter;
+
+layout(local_size_x = 2, local_size_y = 2, local_size_z = 2) in;
+
+void main() {
+    atomicAdd(atomic_counter.value, 1);
+}
