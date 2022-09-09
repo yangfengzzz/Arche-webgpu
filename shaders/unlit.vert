@@ -3,12 +3,10 @@
 #include "common.h"
 #include "snippet/common_vert_define.h"
 #include "snippet/blendShape_define.h"
-
-//----------------------------------------------------------------------------------------------------------------------
-layout (location = 0) out vec2 v_uv;
+#include "snippet/uv_define.h"
 
 void main() {
-    vec4 position = vec4(POSITION, 1.0);
+#include "snippet/begin_position.vert"
 
     #ifdef HAS_BLENDSHAPE
         #ifdef HAS_BLENDSHAPE_TEXTURE
