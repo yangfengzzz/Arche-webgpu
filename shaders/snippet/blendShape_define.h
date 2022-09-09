@@ -1,8 +1,10 @@
 #ifdef HAS_BLENDSHAPE
     #ifdef HAS_BLENDSHAPE_TEXTURE
-            uniform mediump sampler2DArray u_blendShapeTexture;
-            uniform ivec3 u_blendShapeTextureInfo;
-            uniform float u_blendShapeWeights[HAS_BLENDSHAPE_COUNT];
+        layout(location = 10) uniform mediump sampler2DArray u_blendShapeTexture;
+        layout(location = 11) uniform ivec3 u_blendShapeTextureInfo;
+        layout(set = 0, binding = 8) uniform u_blendShapeWeights {
+            float blendShapeWeights[HAS_BLENDSHAPE_COUNT];
+        };
     #else
         layout(location = 10) in vec3 POSITION_BS0;
         layout(location = 11) in vec3 POSITION_BS1;
