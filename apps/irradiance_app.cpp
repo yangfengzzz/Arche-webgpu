@@ -17,8 +17,8 @@ namespace vox {
 class BakerMaterial : public BaseMaterial {
 public:
     explicit BakerMaterial(wgpu::Device& device) : BaseMaterial(device) {
-        vertex_source_ = ShaderManager::GetSingleton().LoadShader("base/cubemap-debugger.vert");
-        fragment_source_ = ShaderManager::GetSingleton().LoadShader("base/cubemap-debugger.frag");
+        vertex_source_ = ShaderManager::GetSingleton().LoadShader("cubemap-debugger.vert");
+        fragment_source_ = ShaderManager::GetSingleton().LoadShader("cubemap-debugger.frag");
     }
 
     /// Base texture.

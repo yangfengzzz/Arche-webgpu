@@ -10,8 +10,8 @@
 
 namespace vox {
 ClusterDebugMaterial::ClusterDebugMaterial(wgpu::Device& device) : BaseMaterial(device) {
-    vertex_source_ = ShaderManager::GetSingleton().LoadShader("base/unlit.vert");
-    fragment_source_ = ShaderManager::GetSingleton().LoadShader("base/light/cluster_debug.frag");
+    vertex_source_ = ShaderManager::GetSingleton().LoadShader("unlit.vert");
+    fragment_source_ = ShaderManager::GetSingleton().LoadShader("light/cluster_debug.frag");
 }
 
 }  // namespace vox

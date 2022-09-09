@@ -12,8 +12,8 @@ namespace vox {
 ParticleMaterial::ParticleMaterial(wgpu::Device& device) : BaseMaterial(device), _particleDataProp("u_particleData") {
     shaderData.setData(_particleDataProp, _particleData);
 
-    vertex_source_ = ShaderManager::GetSingleton().LoadShader("base/particle/particle_render_instancing.vert");
-    fragment_source_ = ShaderManager::GetSingleton().LoadShader("base/particle/particle_render_instancing.frag");
+    vertex_source_ = ShaderManager::GetSingleton().LoadShader("particle/particle_render_instancing.vert");
+    fragment_source_ = ShaderManager::GetSingleton().LoadShader("particle/particle_render_instancing.frag");
 
     setIsTransparent(true);
     setBlendMode(BlendMode::Additive);

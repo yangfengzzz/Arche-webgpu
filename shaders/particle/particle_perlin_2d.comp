@@ -1,7 +1,7 @@
 #ifndef SHADER_PERLIN_NOISE_2D_GLSL_
 #define SHADER_PERLIN_NOISE_2D_GLSL_
 
-#include "base/particle/particle_perlin.comp"
+#include "particle/particle_perlin.comp"
 
 // ----------------------------------------------------------------------------
 

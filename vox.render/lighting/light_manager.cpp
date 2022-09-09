@@ -38,13 +38,13 @@ LightManager::LightManager(Scene *scene)
     _scene->shaderData.setBufferFunctor(_clusterLightsProp, [this]() -> Buffer { return *_clusterLightsBuffer; });
 
     _clusterBoundsCompute = std::make_unique<ComputePass>(
-            device, ShaderManager::GetSingleton().LoadShader("base/light/cluster_bounds.comp"));
+            device, ShaderManager::GetSingleton().LoadShader("light/cluster_bounds.comp"));
     _clusterBoundsCompute->attachShaderData(&_shaderData);
     _clusterBoundsCompute->attachShaderData(&_scene->shaderData);
     _clusterBoundsCompute->setDispatchCount(DISPATCH_SIZE[0], DISPATCH_SIZE[1], DISPATCH_SIZE[2]);
 
     _clusterLightsCompute = std::make_unique<ComputePass>(
-            device, ShaderManager::GetSingleton().LoadShader("base/light/cluster_light.comp"));
+            device, ShaderManager::GetSingleton().LoadShader("light/cluster_light.comp"));
     _clusterLightsCompute->attachShaderData(&_shaderData);
     _clusterLightsCompute->attachShaderData(&_scene->shaderData);
     _clusterLightsCompute->setDispatchCount(DISPATCH_SIZE[0], DISPATCH_SIZE[1], DISPATCH_SIZE[2]);

@@ -11,8 +11,8 @@
 
 #version 450
 
-#include "base/particle/particle_curl_noise.comp"
-#include "base/particle/particle_config.h"
+#include "particle/particle_curl_noise.comp"
+#include "particle/particle_config.h"
 
 // ----------------------------------------------------------------------------
 

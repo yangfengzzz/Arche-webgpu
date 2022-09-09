@@ -1,6 +1,6 @@
 #version 450
 
-#include "base/light/cluster_common.comp"
+#include "light/cluster_common.comp"
 
 layout(location = 0) in vec2 v_uv;
 layout(location = 0) out vec4 o_color;

@@ -112,8 +112,8 @@ BlinnPhongMaterial::BlinnPhongMaterial(wgpu::Device& device, const std::string& 
 
       _normalTextureProp("u_normalTexture"),
       _normalSamplerProp("u_normalSampler") {
-    vertex_source_ = ShaderManager::GetSingleton().LoadShader("base/blinn-phong.vert");
-    fragment_source_ = ShaderManager::GetSingleton().LoadShader("base/blinn-phong.frag");
+    vertex_source_ = ShaderManager::GetSingleton().LoadShader("blinn-phong.vert");
+    fragment_source_ = ShaderManager::GetSingleton().LoadShader("blinn-phong.frag");
 
     shaderData.addDefine(NEED_WORLDPOS);
     shaderData.setData(_blinnPhongProp, _blinnPhongData);

@@ -9,7 +9,7 @@
 
 #version 450
 
-#include "base/particle/particle_config.h"
+#include "particle/particle_config.h"
 
 // ----------------------------------------------------------------------------
 

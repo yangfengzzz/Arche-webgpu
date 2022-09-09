@@ -1,7 +1,7 @@
 #version 450
 
-#include "base/particle/particle_render_common.comp"
-#include "base/particle/particle_config.h"
+#include "particle/particle_render_common.comp"
+#include "particle/particle_config.h"
 
 const vec2 pos[4] = vec2[](
     vec2(-1.0, 1.0),

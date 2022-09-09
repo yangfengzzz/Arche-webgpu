@@ -1,6 +1,6 @@
 #version 450
 
-#include "base/particle/particle_render_common.comp"
+#include "particle/particle_render_common.comp"
 
 layout (location = 0) in vec2 uv;
 layout (location = 1) in vec3 color;

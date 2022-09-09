@@ -1,7 +1,7 @@
 #version 450
 
-#include "base/shadow/shadow.frag"
-#include "base/light/cluster_common.comp"
+#include "shadow/shadow.frag"
+#include "light/cluster_common.comp"
 
 #define PI 3.14159265359
 #define RECIPROCAL_PI 0.31830988618

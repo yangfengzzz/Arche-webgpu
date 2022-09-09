@@ -1,77 +1,7 @@
 #version 450
 
-#include "base/common.h"
-
-layout(location = Position) in vec3 POSITION;
-
-#ifdef HAS_UV
-    layout(location = UV_0) in vec2 TEXCOORD_0;
-#endif
-
-//----------------------------------------------------------------------------------------------------------------------
-#ifdef HAS_SKIN
-    layout(location = Joints_0) in vec4 JOINTS_0;
-    layout(location = Weights_0) in vec4 WEIGHTS_0;
-
-    #ifdef HAS_JOINT_TEXTURE
-        layout(set = 0, binding = 2) uniform sampler2D u_jointSampler;
-        layout(set = 0, binding = 3) uniform u_jointCount {
-            float joint_count;
-        };
-
-        mat4 getJointMatrix(sampler2D smp, float index) {
-            float base = index / joint_count;
-            float hf = 0.5 / joint_count;
-            float v = base + hf;
-
-            vec4 m0 = texture2D(smp, vec2(0.125, v));
-            vec4 m1 = texture2D(smp, vec2(0.375, v));
-            vec4 m2 = texture2D(smp, vec2(0.625, v));
-            vec4 m3 = texture2D(smp, vec2(0.875, v));
-
-            return mat4(m0, m1, m2, m3);
-        }
-    #else
-        layout(set = 0, binding = 4) uniform u_jointMatrix {
-            mat4 joint_matrix[JOINTS_NUM];
-        };
-    #endif
-#endif
-
-//----------------------------------------------------------------------------------------------------------------------
-#ifdef HAS_VERTEXCOLOR
-    layout(location = Color_0) in vec4 COLOR_0;
-#endif
-
-layout(set = 0, binding = 5) uniform u_cameraData {
-    mat4 view_mat;
-    mat4 proj_mat;
-    mat4 vp_mat;
-    mat4 view_inv_mat;
-    mat4 proj_inv_mat;
-    vec3 camera_pos;
-};
-
-layout(set = 0, binding = 6) uniform u_rendererData {
-    mat4 local_mat;
-    mat4 model_mat;
-    mat4 normal_mat;
-};
-
-layout(set = 0, binding = 7) uniform u_tilingOffset {
-    vec4 tiling_offset;
-};
-
-//----------------------------------------------------------------------------------------------------------------------
-#ifndef OMIT_NORMAL
-    #ifdef HAS_NORMAL
-        layout(location = Normal) in vec3 NORMAL;
-    #endif
-
-    #ifdef HAS_TANGENT
-        layout(location = Tangent) in vec4 TANGENT;
-    #endif
-#endif
+#include "common.h"
+#include "snippet/common_vert_define.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 #ifdef HAS_BLENDSHAPE
@@ -168,9 +98,9 @@ void main() {
     #endif
 
     #ifdef NEED_TILINGOFFSET
-        v_uv = v_uv * tiling_offset.xy + tiling_offset.zw;
+        v_uv = v_uv * tilingOffset.xy + tilingOffset.zw;
     #endif
 
     //------------------------------------------------------------------------------------------------------------------
-    gl_Position = vp_mat * model_mat * position;
+    gl_Position = vp_mat * u_modelMat * position;
 }

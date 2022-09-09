@@ -7,8 +7,8 @@
 
 #version 450
 
-#include "base/particle/particle_math.comp"
-#include "base/particle/particle_config.h"
+#include "particle/particle_math.comp"
+#include "particle/particle_config.h"
 
 //-----------------------------------------------------------------------------
 

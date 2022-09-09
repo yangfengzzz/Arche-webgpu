@@ -26,8 +26,8 @@ public:
           _atomicProp("u_atomic"),
           _atomicBuffer(device, sizeof(uint32_t), wgpu::BufferUsage::Storage) {
         setAtomicBuffer(_atomicBuffer);
-        vertex_source_ = ShaderManager::GetSingleton().LoadShader("base/unlit.vert");
-        fragment_source_ = ShaderManager::GetSingleton().LoadShader("base/compute/atomic_counter.frag");
+        vertex_source_ = ShaderManager::GetSingleton().LoadShader("unlit.vert");
+        fragment_source_ = ShaderManager::GetSingleton().LoadShader("compute/atomic_counter.frag");
     }
 
     const Buffer& atomicBuffer() { return _atomicBuffer; }
@@ -69,7 +69,7 @@ bool AtomicComputeApp::prepare(Platform& platform) {
     ForwardApplication::prepare(platform);
 
     _pass = std::make_unique<ComputePass>(_device,
-                                          ShaderManager::GetSingleton().LoadShader("base/compute/atomic_counter.comp"));
+                                          ShaderManager::GetSingleton().LoadShader("compute/atomic_counter.comp"));
     _pass->setDispatchCount(1, 1, 1);
     _pass->attachShaderData(&_material->shaderData);
 

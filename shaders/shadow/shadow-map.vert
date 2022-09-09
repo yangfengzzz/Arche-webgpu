@@ -1,6 +1,6 @@
 #version 450
 
-#include "base/common.h"
+#include "common.h"
 
 layout(location = Position) in vec3 POSITION;
 

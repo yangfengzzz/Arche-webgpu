@@ -19,9 +19,9 @@ ParticleManager& ParticleManager::getSingleton() {
 //-----------------------------------------------------------------------
 ParticleManager::ParticleManager(wgpu::Device& device) {
     _emitterPass = std::make_unique<ComputePass>(
-            device, ShaderManager::GetSingleton().LoadShader("base/particle/particle_emission.comp"));
+            device, ShaderManager::GetSingleton().LoadShader("particle/particle_emission.comp"));
     _simulationPass = std::make_unique<ComputePass>(
-            device, ShaderManager::GetSingleton().LoadShader("base/particle/particle_simulation.comp"));
+            device, ShaderManager::GetSingleton().LoadShader("particle/particle_simulation.comp"));
 }
 
 const std::vector<ParticleRenderer*>& ParticleManager::particles() const { return _particles; }

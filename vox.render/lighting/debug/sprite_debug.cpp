@@ -17,8 +17,8 @@ SpriteDebugMaterial::SpriteDebugMaterial(wgpu::Device& device, bool isSpotLight)
     setIsTransparent(true);
     setBlendMode(BlendMode::Additive);
 
-    vertex_source_ = ShaderManager::GetSingleton().LoadShader("base/light/light_sprite.vert");
-    fragment_source_ = ShaderManager::GetSingleton().LoadShader("base/light/light_sprite.frag");
+    vertex_source_ = ShaderManager::GetSingleton().LoadShader("light/light_sprite.vert");
+    fragment_source_ = ShaderManager::GetSingleton().LoadShader("light/light_sprite.frag");
 }
 
 std::string SpriteDebug::name() { return "SpriteDebug"; }

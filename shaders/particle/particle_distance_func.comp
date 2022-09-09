@@ -1,7 +1,7 @@
 #ifndef SHADER_DISTANCE_FUNC_GLSL_
 #define SHADER_DISTANCE_FUNC_GLSL_
 
-#include "base/particle/particle_distance_utils.comp"
+#include "particle/particle_distance_utils.comp"
 
 //-----------------------------------------------------------------------------
 

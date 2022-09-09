@@ -1,6 +1,6 @@
 #version 450
 
-#include "base/common.h"
+#include "common.h"
 
 #define PI 3.14159265359
 #define RECIPROCAL_PI 0.31830988618

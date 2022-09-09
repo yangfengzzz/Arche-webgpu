@@ -42,8 +42,8 @@ PBRMaterial::PBRMaterial(wgpu::Device &device, const std::string &name)
       _pbrProp("u_pbrData"),
       _metallicRoughnessTextureProp("u_metallicRoughnessTexture"),
       _metallicRoughnessSamplerProp("u_metallicRoughnessSampler") {
-    vertex_source_ = ShaderManager::GetSingleton().LoadShader("base/blinn-phong.vert");
-    fragment_source_ = ShaderManager::GetSingleton().LoadShader("base/pbr.frag");
+    vertex_source_ = ShaderManager::GetSingleton().LoadShader("blinn-phong.vert");
+    fragment_source_ = ShaderManager::GetSingleton().LoadShader("pbr.frag");
 
     shaderData.addDefine("IS_METALLIC_WORKFLOW");
     shaderData.setData(PBRMaterial::_pbrProp, _pbrData);

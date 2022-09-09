@@ -14,8 +14,8 @@
 #ifndef SHADER_CURLNOISE_GLSL_
 #define SHADER_CURLNOISE_GLSL_
 
-#include "base/particle/particle_perlin_3d.comp"
-#include "base/particle/particle_distance_func.comp"
+#include "particle/particle_perlin_3d.comp"
+#include "particle/particle_distance_func.comp"
 
 // ----------------------------------------------------------------------------
 

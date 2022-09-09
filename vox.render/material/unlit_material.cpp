@@ -35,8 +35,8 @@ UnlitMaterial::UnlitMaterial(wgpu::Device& device, const std::string& name)
       _baseColorProp("u_baseColor"),
       _baseTextureProp("u_baseTexture"),
       _baseSamplerProp("u_baseSampler") {
-    vertex_source_ = ShaderManager::GetSingleton().LoadShader("base/unlit.vert");
-    fragment_source_ = ShaderManager::GetSingleton().LoadShader("base/unlit.frag");
+    vertex_source_ = ShaderManager::GetSingleton().LoadShader("unlit.vert");
+    fragment_source_ = ShaderManager::GetSingleton().LoadShader("unlit.frag");
 
     shaderData.addDefine(OMIT_NORMAL);
 

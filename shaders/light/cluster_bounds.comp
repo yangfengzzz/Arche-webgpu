@@ -1,6 +1,6 @@
 #version 450
 
-#include "base/light/cluster_common.comp"
+#include "light/cluster_common.comp"
 
 vec3 lineIntersectionToZPlane(vec3 a, vec3 b, float zDistance) {
     vec3 normal = vec3(0.0, 0.0, 1.0);

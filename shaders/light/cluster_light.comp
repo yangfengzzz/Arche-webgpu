@@ -1,6 +1,6 @@
 #version 450
 
-#include "base/light/cluster_common.comp"
+#include "light/cluster_common.comp"
 
 float sqDistPointAABB(vec3 point, vec3 minAABB, vec3 maxAABB) {
     float sqDist = 0.0;
