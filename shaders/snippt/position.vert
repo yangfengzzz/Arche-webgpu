@@ -1,0 +1,1 @@
+    gl_Position = u_MVPMat * position;
