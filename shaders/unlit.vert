@@ -2,33 +2,7 @@
 
 #include "common.h"
 #include "snippet/common_vert_define.h"
-
-//----------------------------------------------------------------------------------------------------------------------
-#ifdef HAS_BLENDSHAPE
-    #ifndef HAS_BLENDSHAPE_TEXTURE
-        layout(location = 10) in vec3 POSITION_BS0;
-        layout(location = 11) in vec3 POSITION_BS1;
-        layout(location = 12) in vec3 POSITION_BS2;
-        layout(location = 13) in vec3 POSITION_BS3;
-
-        #ifdef HAS_BLENDSHAPE_NORMAL
-            layout(location = 16) in vec3 NORMAL_BS0;
-            layout(location = 17) in vec3 NORMAL_BS1;
-            layout(location = 18) in vec3 NORMAL_BS2;
-            layout(location = 19) in vec3 NORMAL_BS3;
-        #endif
-
-        #ifdef HAS_BLENDSHAPE_TANGENT
-            layout(location = 20) in vec3 TANGENT_BS0;
-            layout(location = 21) in vec3 TANGENT_BS1;
-            layout(location = 22) in vec3 TANGENT_BS2;
-            layout(location = 23) in vec3 TANGENT_BS3;
-        #endif
-    #endif
-    layout(set = 0, binding = 8) uniform u_blendShapeWeights {
-        float blend_shape_weights[4];
-    };
-#endif
+#include "snippet/blendShape_define.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 layout (location = 0) out vec2 v_uv;
