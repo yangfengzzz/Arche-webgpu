@@ -22,7 +22,7 @@ inline std::vector<std::string> PrecompileShader(const std::string &source) {
     std::vector<std::string> final_file;
 
     auto lines = Split(source, '\n');
-    // todo: include must not have empty space
+    // todo: include must not have empty space and recursive include
     for (auto &line : lines) {
         if (line.find("#include \"") == 0) {
             // Include paths are relative to the base shader directory

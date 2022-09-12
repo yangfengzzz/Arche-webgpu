@@ -78,6 +78,23 @@
 
 #define Blinn_Phong_Data_Location 33
 
+#define PBR_Base_Data_Location 34
+#define PBR_Data_Location 35
+#define PBR_Specular_Data_Data_Location 36
+
+#define Roughness_Metallic_Texture_Location 39
+#define Roughness_Metallic_Sampler_Location 40
+#define Specular_Glossiness_Texture_Location 41
+#define Specular_Glossiness_Sampler_Location 42
+#define Occlusion_Texture_Location 43
+#define Occlusion_Sampler_Location 44
+#define Clear_Coat_Texture_Location 45
+#define Clear_Coat_Sampler_Location 46
+#define Clear_Coat_Roughness_Texture_Location 47
+#define Clear_Coat_Roughness_Sampler_Location 48
+#define Clear_Coat_Normal_Texture_Location 49
+#define Clear_Coat_Normal_Sampler_Location 50
+
 //----------------------------------------------------------------------------------------------------------------------
 #define V_UV 1
 #define V_UV1 2
