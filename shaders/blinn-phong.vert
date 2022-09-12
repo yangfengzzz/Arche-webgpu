@@ -1,4 +1,5 @@
 #version 450
+#define Vert_Shader
 
 #include "common.h"
 #include "snippet/common_define.h"

@@ -38,4 +38,4 @@
 
     #endif
 
-    ambient = vec4(u_envMapLight.diffuse * u_envMapLight.diffuseIntensity, 1.0) * diffuse;
+    ambient = vec4(env_map_light.diffuse * env_map_light.diffuse_intensity, 1.0) * diffuse;

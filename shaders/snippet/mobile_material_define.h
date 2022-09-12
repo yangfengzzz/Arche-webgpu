@@ -1,9 +1,9 @@
 layout(set = 0, binding = Blinn_Phong_Data_Location) uniform u_blinnPhongData {
-    vec4 diffuse_color;
-    vec4 specular_color;
-    vec4 emissive_color;
-    float normal_intensity;
-    float shininess;
+    vec4 u_baseColor;
+    vec4 u_specularColor;
+    vec4 u_emissiveColor;
+    float u_normalIntensity;
+    float u_shininess;
 };
 
 layout(set = 0, binding = Alpha_Cutoff_Location) uniform u_alphaCutoff {

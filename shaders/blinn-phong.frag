@@ -1,4 +1,5 @@
 #version 450
+#define Frag_Shader
 
 #include "common.h"
 #include "snippet/common_define.h"
@@ -25,6 +26,6 @@ void main() {
     o_color.a = diffuse.a;
 
     #ifndef COLORSPACE_GAMMA
-        gl_FragColor = linearToGamma(gl_FragColor);
+        o_color = linearToGamma(o_color);
     #endif
 }

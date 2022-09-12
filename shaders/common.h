@@ -79,10 +79,10 @@
 #define Blinn_Phong_Data_Location 33
 
 //----------------------------------------------------------------------------------------------------------------------
-#define V_UV 0
-#define V_UV1 1
-#define V_Color 2
-#define V_Fog_Depth 3
-#define V_Normal 4
-#define V_TBN 5
-#define V_Pos 6
+#define V_UV 1
+#define V_UV1 2
+#define V_Color 3
+#define V_Fog_Depth 4
+#define V_Normal 5
+#define V_TBN 6
+#define V_Pos 7

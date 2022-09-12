@@ -1,4 +1,5 @@
 #version 450
+#define Frag_Shader
 
 #include "common.h"
 #include "snippet/common_define.h"

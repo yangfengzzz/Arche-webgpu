@@ -1,14 +1,14 @@
 layout(set = 0, binding = Camera_Location) uniform u_cameraData {
-    mat4 view_mat;
-    mat4 proj_mat;
+    mat4 u_viewMat;
+    mat4 u_projMat;
     mat4 vp_mat;
     mat4 view_inv_mat;
     mat4 proj_inv_mat;
-    vec3 camera_pos;
+    vec3 u_cameraPos;
 };
 
 layout(set = 0, binding = Renderer_Location) uniform u_rendererData {
-    mat4 local_mat;
-    mat4 model_mat;
-    mat4 normal_mat;
+    mat4 u_localMat;
+    mat4 u_modelMat;
+    mat4 u_normalMat;
 };
