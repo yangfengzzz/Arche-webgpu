@@ -98,12 +98,23 @@ void BaseMaterial::setBlendMode(const BlendMode &newValue) {
     }
 }
 
-BaseMaterial::BaseMaterial(wgpu::Device &device, const std::string &name)
-    : Material(device, name), _alphaCutoffProp("u_alphaCutoff"), _tilingOffsetProp("u_tilingOffset") {
+BaseMaterial::BaseMaterial(wgpu::Device &device, const std::string &name) : Material(device, name) {
     setBlendMode(BlendMode::Normal);
     shaderData.setData(_alphaCutoffProp, 0.0f);
     shaderData.setData(_tilingOffsetProp, _tilingOffset);
     shaderData.addDefine(NEED_TILINGOFFSET);
 }
+
+const std::string BaseMaterial::_alphaCutoffProp = "u_alphaCutoff";
+const std::string BaseMaterial::_tilingOffsetProp = "u_tilingOffset";
+
+const std::string BaseMaterial::_baseTextureProp = "u_baseColorTexture";
+const std::string BaseMaterial::_baseSamplerProp = "u_baseColorSampler";
+
+const std::string BaseMaterial::_normalTextureProp = "u_normalTexture";
+const std::string BaseMaterial::_normalSamplerProp = "u_normalSampler";
+
+const std::string BaseMaterial::_emissiveTextureProp = "u_emissiveTexture";
+const std::string BaseMaterial::_emissiveSamplerProp = "u_emissiveSampler";
 
 }  // namespace vox

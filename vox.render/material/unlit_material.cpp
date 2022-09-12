@@ -17,7 +17,7 @@ void UnlitMaterial::setBaseColor(const Color& newValue) {
     shaderData.setData(UnlitMaterial::_baseColorProp, newValue);
 }
 
-SampledTexture2DPtr UnlitMaterial::baseTexture() { return _baseTexture; }
+SampledTexture2DPtr UnlitMaterial::baseTexture() const { return _baseTexture; }
 
 void UnlitMaterial::setBaseTexture(const SampledTexture2DPtr& newValue) {
     _baseTexture = newValue;
@@ -30,11 +30,7 @@ void UnlitMaterial::setBaseTexture(const SampledTexture2DPtr& newValue) {
     }
 }
 
-UnlitMaterial::UnlitMaterial(wgpu::Device& device, const std::string& name)
-    : BaseMaterial(device, name),
-      _baseColorProp("u_baseColor"),
-      _baseTextureProp("u_baseTexture"),
-      _baseSamplerProp("u_baseSampler") {
+UnlitMaterial::UnlitMaterial(wgpu::Device& device, const std::string& name) : BaseMaterial(device, name) {
     vertex_source_ = ShaderManager::GetSingleton().LoadShader("unlit.vert");
     fragment_source_ = ShaderManager::GetSingleton().LoadShader("unlit.frag");
 
@@ -42,5 +38,9 @@ UnlitMaterial::UnlitMaterial(wgpu::Device& device, const std::string& name)
 
     shaderData.setData(_baseColorProp, _baseColor);
 }
+
+const std::string UnlitMaterial::_baseColorProp = "u_baseColor";
+const std::string UnlitMaterial::_baseTextureProp = "u_baseTexture";
+const std::string UnlitMaterial::_baseSamplerProp = "u_baseSampler";
 
 }  // namespace vox

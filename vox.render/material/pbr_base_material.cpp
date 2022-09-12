@@ -6,6 +6,7 @@
 
 #include "vox.render/material/pbr_base_material.h"
 
+#include "vox.base/logging.h"
 #include "vox.render/shader/internal_variant_name.h"
 
 namespace vox {
@@ -16,7 +17,7 @@ void PBRBaseMaterial::setBaseColor(const Color& newValue) {
     shaderData.setData(PBRBaseMaterial::_pbrBaseProp, _pbrBaseData);
 }
 
-SampledTexture2DPtr PBRBaseMaterial::baseTexture() { return _baseTexture; }
+SampledTexture2DPtr PBRBaseMaterial::baseTexture() const { return _baseTexture; }
 
 void PBRBaseMaterial::setBaseTexture(const SampledTexture2DPtr& newValue) {
     _baseTexture = newValue;
@@ -28,7 +29,7 @@ void PBRBaseMaterial::setBaseTexture(const SampledTexture2DPtr& newValue) {
     }
 }
 
-SampledTexture2DPtr PBRBaseMaterial::normalTexture() { return _normalTexture; }
+SampledTexture2DPtr PBRBaseMaterial::normalTexture() const { return _normalTexture; }
 
 void PBRBaseMaterial::setNormalTexture(const SampledTexture2DPtr& newValue) {
     _normalTexture = newValue;
@@ -47,14 +48,16 @@ void PBRBaseMaterial::setNormalTextureIntensity(float newValue) {
     shaderData.setData(PBRBaseMaterial::_pbrBaseProp, _pbrBaseData);
 }
 
-const Color& PBRBaseMaterial::emissiveColor() const { return _pbrBaseData.emissiveColor; }
+Color PBRBaseMaterial::emissiveColor() const {
+    return {_pbrBaseData.emissiveColor.x, _pbrBaseData.emissiveColor.y, _pbrBaseData.emissiveColor.z, 1.0};
+}
 
 void PBRBaseMaterial::setEmissiveColor(const Color& newValue) {
-    _pbrBaseData.emissiveColor = newValue;
+    _pbrBaseData.emissiveColor.set(newValue.r, newValue.g, newValue.b);
     shaderData.setData(PBRBaseMaterial::_pbrBaseProp, _pbrBaseData);
 }
 
-SampledTexture2DPtr PBRBaseMaterial::emissiveTexture() { return _emissiveTexture; }
+SampledTexture2DPtr PBRBaseMaterial::emissiveTexture() const { return _emissiveTexture; }
 
 void PBRBaseMaterial::setEmissiveTexture(const SampledTexture2DPtr& newValue) {
     _emissiveTexture = newValue;
@@ -67,7 +70,7 @@ void PBRBaseMaterial::setEmissiveTexture(const SampledTexture2DPtr& newValue) {
     }
 }
 
-SampledTexture2DPtr PBRBaseMaterial::occlusionTexture() { return _occlusionTexture; }
+SampledTexture2DPtr PBRBaseMaterial::occlusionTexture() const { return _occlusionTexture; }
 
 void PBRBaseMaterial::setOcclusionTexture(const SampledTexture2DPtr& newValue) {
     _occlusionTexture = newValue;
@@ -87,23 +90,86 @@ void PBRBaseMaterial::setOcclusionTextureIntensity(float newValue) {
     shaderData.setData(PBRBaseMaterial::_pbrBaseProp, _pbrBaseData);
 }
 
-PBRBaseMaterial::PBRBaseMaterial(wgpu::Device& device, const std::string& name)
-    : BaseMaterial(device, name),
-      _pbrBaseProp("u_pbrBaseData"),
+TextureCoordinate PBRBaseMaterial::occlusionTextureCoord() const { return _pbrBaseData.occlusionTextureCoord; }
 
-      _baseTextureProp("u_baseColorTexture"),
-      _baseSamplerProp("u_baseColorSampler"),
+void PBRBaseMaterial::setOcclusionTextureCoord(TextureCoordinate value) {
+    if (value > TextureCoordinate::UV1) {
+        LOGW("Occlusion texture uv coordinate must be UV0 or UV1.")
+    }
+    _pbrBaseData.occlusionTextureCoord = value;
+    shaderData.setData(PBRBaseMaterial::_pbrBaseProp, _pbrBaseData);
+}
 
-      _normalTextureProp("u_normalTexture"),
-      _normalSamplerProp("u_normalSampler"),
+float PBRBaseMaterial::clearCoat() const { return _pbrBaseData.clearCoat; }
 
-      _emissiveTextureProp("u_emissiveTexture"),
-      _emissiveSamplerProp("u_emissiveSampler"),
+void PBRBaseMaterial::setClearCoat(float value) {
+    if (value == 0) {
+        shaderData.removeDefine("CLEARCOAT");
+    } else {
+        shaderData.addDefine("CLEARCOAT");
+    }
+    _pbrBaseData.clearCoat = value;
+    shaderData.setData(PBRBaseMaterial::_pbrBaseProp, _pbrBaseData);
+}
 
-      _occlusionTextureProp("u_occlusionTexture"),
-      _occlusionSamplerProp("u_occlusionSampler") {
+SampledTexture2DPtr PBRBaseMaterial::clearCoatTexture() const { return _clearCoatTexture; }
+
+void PBRBaseMaterial::setClearCoatTexture(const SampledTexture2DPtr& value) {
+    if (value) {
+        shaderData.addDefine("HAS_CLEARCOATTEXTURE");
+    } else {
+        shaderData.removeDefine("HAS_CLEARCOATTEXTURE");
+    }
+    _clearCoatTexture = value;
+    shaderData.setSampledTexture(PBRBaseMaterial::_clearCoatTextureProp, PBRBaseMaterial::_clearCoatSamplerProp, value);
+}
+
+float PBRBaseMaterial::clearCoatRoughness() const { return _pbrBaseData.clearCoatRoughness; }
+
+void PBRBaseMaterial::setClearCoatRoughness(float value) {
+    _pbrBaseData.clearCoatRoughness = value;
+    shaderData.setData(PBRBaseMaterial::_pbrBaseProp, _pbrBaseData);
+}
+
+SampledTexture2DPtr PBRBaseMaterial::clearCoatRoughnessTexture() const { return _clearCoatRoughnessTexture; }
+
+void PBRBaseMaterial::setClearCoatRoughnessTexture(const SampledTexture2DPtr& value) {
+    if (value) {
+        shaderData.addDefine("HAS_CLEARCOATROUGHNESSTEXTURE");
+    } else {
+        shaderData.removeDefine("HAS_CLEARCOATROUGHNESSTEXTURE");
+    }
+    _clearCoatRoughnessTexture = value;
+    shaderData.setSampledTexture(PBRBaseMaterial::_clearCoatRoughnessTextureProp,
+                                 PBRBaseMaterial::_clearCoatRoughnessSamplerProp, value);
+}
+
+SampledTexture2DPtr PBRBaseMaterial::clearCoatNormalTexture() const { return _clearCoatNormalTexture; }
+
+void PBRBaseMaterial::setClearCoatNormalTexture(const SampledTexture2DPtr& value) {
+    if (value) {
+        shaderData.addDefine("HAS_CLEARCOATNORMALTEXTURE");
+    } else {
+        shaderData.removeDefine("HAS_CLEARCOATNORMALTEXTURE");
+    }
+    _clearCoatNormalTexture = value;
+    shaderData.setSampledTexture(PBRBaseMaterial::_clearCoatNormalTextureProp,
+                                 PBRBaseMaterial::_clearCoatNormalSamplerProp, value);
+}
+
+PBRBaseMaterial::PBRBaseMaterial(wgpu::Device& device, const std::string& name) : BaseMaterial(device, name) {
     shaderData.addDefine(NEED_WORLDPOS);
     shaderData.setData(PBRBaseMaterial::_pbrBaseProp, _pbrBaseData);
 }
 
+const std::string PBRBaseMaterial::_pbrBaseProp = "u_pbrBaseData";
+
+const std::string PBRBaseMaterial::_occlusionTextureProp = "u_occlusionTexture";
+const std::string PBRBaseMaterial::_occlusionSamplerProp = "u_occlusionSampler";
+const std::string PBRBaseMaterial::_clearCoatTextureProp = "u_clearCoatTexture";
+const std::string PBRBaseMaterial::_clearCoatSamplerProp = "u_clearCoatSampler";
+const std::string PBRBaseMaterial::_clearCoatRoughnessTextureProp = "u_clearCoatRoughnessTexture";
+const std::string PBRBaseMaterial::_clearCoatRoughnessSamplerProp = "u_clearCoatRoughnessSampler";
+const std::string PBRBaseMaterial::_clearCoatNormalTextureProp = "u_clearCoatNormalTexture";
+const std::string PBRBaseMaterial::_clearCoatNormalSamplerProp = "u_clearCoatNormalSampler";
 }  // namespace vox

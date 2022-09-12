@@ -15,14 +15,14 @@ namespace vox {
 class PBRSpecularMaterial : public PBRBaseMaterial {
 public:
     struct alignas(16) PBRSpecularData {
-        Color specularColor = Color(1, 1, 1, 1);
+        Vector3F specularColor = Vector3F(1, 1, 1);
         float glossiness = 1.f;
     };
 
     /**
      * Specular color.
      */
-    [[nodiscard]] const Color& specularColor() const;
+    [[nodiscard]] Color specularColor() const;
 
     void setSpecularColor(const Color& newValue);
 
@@ -37,7 +37,7 @@ public:
      * Specular glossiness texture.
      * @remarks RGB is specular, A is glossiness
      */
-    SampledTexture2DPtr specularGlossinessTexture();
+    [[nodiscard]] SampledTexture2DPtr specularGlossinessTexture() const;
 
     void setSpecularGlossinessTexture(const SampledTexture2DPtr& newValue);
 
@@ -48,11 +48,11 @@ public:
 
 private:
     PBRSpecularData _pbrSpecularData;
-    const std::string _pbrSpecularProp;
+    static const std::string _pbrSpecularProp;
 
     SampledTexture2DPtr _specularGlossinessTexture{nullptr};
-    const std::string _specularGlossinessTextureProp;
-    const std::string _specularGlossinessSamplerProp;
+    static const std::string _specularGlossinessTextureProp;
+    static const std::string _specularGlossinessSamplerProp;
 };
 
 }  // namespace vox

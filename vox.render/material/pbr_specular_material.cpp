@@ -10,10 +10,12 @@
 #include "vox.render/shader/shader_manager.h"
 
 namespace vox {
-const Color& PBRSpecularMaterial::specularColor() const { return _pbrSpecularData.specularColor; }
+Color PBRSpecularMaterial::specularColor() const {
+    return {_pbrSpecularData.specularColor.x, _pbrSpecularData.specularColor.y, _pbrSpecularData.specularColor.z, 1.0};
+}
 
 void PBRSpecularMaterial::setSpecularColor(const Color& newValue) {
-    _pbrSpecularData.specularColor = newValue;
+    _pbrSpecularData.specularColor.set(newValue.r, newValue.g, newValue.b);
     shaderData.setData(PBRSpecularMaterial::_pbrSpecularProp, _pbrSpecularData);
 }
 
@@ -24,7 +26,7 @@ void PBRSpecularMaterial::setGlossiness(float newValue) {
     shaderData.setData(PBRSpecularMaterial::_pbrSpecularProp, _pbrSpecularData);
 }
 
-SampledTexture2DPtr PBRSpecularMaterial::specularGlossinessTexture() { return _specularGlossinessTexture; }
+SampledTexture2DPtr PBRSpecularMaterial::specularGlossinessTexture() const { return _specularGlossinessTexture; }
 
 void PBRSpecularMaterial::setSpecularGlossinessTexture(const SampledTexture2DPtr& newValue) {
     _specularGlossinessTexture = newValue;
@@ -38,13 +40,14 @@ void PBRSpecularMaterial::setSpecularGlossinessTexture(const SampledTexture2DPtr
 }
 
 PBRSpecularMaterial::PBRSpecularMaterial(wgpu::Device& device, const std::string& name)
-    : PBRBaseMaterial(device, name),
-      _pbrSpecularProp("u_pbrSpecularData"),
-      _specularGlossinessTextureProp("u_specularGlossinessTexture"),
-      _specularGlossinessSamplerProp("u_specularGlossinessSampler") {
+    : PBRBaseMaterial(device, name) {
     vertex_source_ = ShaderManager::GetSingleton().LoadShader("blinn-phong.vert");
     fragment_source_ = ShaderManager::GetSingleton().LoadShader("pbr.frag");
     shaderData.setData(PBRSpecularMaterial::_pbrSpecularProp, _pbrSpecularData);
 }
+
+const std::string PBRSpecularMaterial::_pbrSpecularProp = "u_pbrSpecularData";
+const std::string PBRSpecularMaterial::_specularGlossinessTextureProp = "u_specularGlossinessTexture";
+const std::string PBRSpecularMaterial::_specularGlossinessSamplerProp = "u_specularGlossinessSampler";
 
 }  // namespace vox

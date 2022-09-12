@@ -10,6 +10,7 @@
 #include "vox.render/material/enums/blend_mode.h"
 #include "vox.render/material/enums/render_face.h"
 #include "vox.render/material/material.h"
+#include "vox.render/texture/sampled_texture2d.h"
 
 namespace vox {
 class BaseMaterial : public Material {
@@ -62,12 +63,24 @@ public:
      */
     explicit BaseMaterial(wgpu::Device &device, const std::string &name = "");
 
-private:
+protected:
     float _alphaCutoff = 0.0;
-    const std::string _alphaCutoffProp;
+    static const std::string _alphaCutoffProp;
 
     Vector4F _tilingOffset = Vector4F(1, 1, 0, 0);
-    const std::string _tilingOffsetProp;
+    static const std::string _tilingOffsetProp;
+
+    SampledTexture2DPtr _baseTexture{nullptr};
+    static const std::string _baseTextureProp;
+    static const std::string _baseSamplerProp;
+
+    SampledTexture2DPtr _normalTexture{nullptr};
+    static const std::string _normalTextureProp;
+    static const std::string _normalSamplerProp;
+
+    SampledTexture2DPtr _emissiveTexture{nullptr};
+    static const std::string _emissiveTextureProp;
+    static const std::string _emissiveSamplerProp;
 
     RenderFace _renderFace = RenderFace::Back;
     BlendMode _blendMode = BlendMode::Normal;

@@ -7,9 +7,10 @@
 #pragma once
 
 #include "vox.math/color.h"
+#include "vox.math/vector3.h"
 #include "vox.math/vector4.h"
 #include "vox.render/material/base_material.h"
-#include "vox.render/texture/sampled_texture2d.h"
+#include "vox.render/material/enums/texture_coordinate.h"
 
 namespace vox {
 /**
@@ -19,9 +20,14 @@ class PBRBaseMaterial : public BaseMaterial {
 public:
     struct alignas(16) PBRBaseData {
         Color baseColor = Color(1, 1, 1, 1);
-        Color emissiveColor = Color(0, 0, 0, 1);
+
+        Vector3F emissiveColor = Vector3F(0, 0, 0);
         float normalTextureIntensity = 1.f;
+
         float occlusionTextureIntensity = 1.f;
+        TextureCoordinate occlusionTextureCoord = TextureCoordinate::UV0;
+        float clearCoat = 0;
+        float clearCoatRoughness = 0;
     };
 
     /**
@@ -34,14 +40,14 @@ public:
     /**
      * Base texture.
      */
-    SampledTexture2DPtr baseTexture();
+    [[nodiscard]] SampledTexture2DPtr baseTexture() const;
 
     void setBaseTexture(const SampledTexture2DPtr& newValue);
 
     /**
      * Normal texture.
      */
-    SampledTexture2DPtr normalTexture();
+    [[nodiscard]] SampledTexture2DPtr normalTexture() const;
 
     void setNormalTexture(const SampledTexture2DPtr& newValue);
 
@@ -55,21 +61,21 @@ public:
     /**
      * Emissive color.
      */
-    [[nodiscard]] const Color& emissiveColor() const;
+    [[nodiscard]] Color emissiveColor() const;
 
     void setEmissiveColor(const Color& newValue);
 
     /**
      * Emissive texture.
      */
-    SampledTexture2DPtr emissiveTexture();
+    [[nodiscard]] SampledTexture2DPtr emissiveTexture() const;
 
     void setEmissiveTexture(const SampledTexture2DPtr& newValue);
 
     /**
      * Occlusion texture.
      */
-    SampledTexture2DPtr occlusionTexture();
+    [[nodiscard]] SampledTexture2DPtr occlusionTexture() const;
 
     void setOcclusionTexture(const SampledTexture2DPtr& newValue);
 
@@ -80,6 +86,49 @@ public:
 
     void setOcclusionTextureIntensity(float newValue);
 
+    /**
+     * Occlusion texture uv coordinate.
+     * @remarks Must be UV0 or UV1.
+     */
+    [[nodiscard]] TextureCoordinate occlusionTextureCoord() const;
+
+    void setOcclusionTextureCoord(TextureCoordinate value);
+
+    /**
+     * The clearCoat layer intensity, default 0.
+     */
+    [[nodiscard]] float clearCoat() const;
+
+    void setClearCoat(float value);
+
+    /**
+     * The clearCoat layer intensity texture.
+     */
+    [[nodiscard]] SampledTexture2DPtr clearCoatTexture() const;
+
+    void setClearCoatTexture(const SampledTexture2DPtr& value);
+
+    /**
+     * The clearCoat layer roughness, default 0.
+     */
+    [[nodiscard]] float clearCoatRoughness() const;
+
+    void setClearCoatRoughness(float value);
+
+    /**
+     * The clearCoat layer roughness texture.
+     */
+    [[nodiscard]] SampledTexture2DPtr clearCoatRoughnessTexture() const;
+
+    void setClearCoatRoughnessTexture(const SampledTexture2DPtr& value);
+
+    /**
+     * The clearCoat normal map texture.
+     */
+    [[nodiscard]] SampledTexture2DPtr clearCoatNormalTexture() const;
+
+    void setClearCoatNormalTexture(const SampledTexture2DPtr& value);
+
 protected:
     /**
      * Create a pbr base material instance.
@@ -88,23 +137,23 @@ protected:
 
 private:
     PBRBaseData _pbrBaseData;
-    const std::string _pbrBaseProp;
-
-    SampledTexture2DPtr _baseTexture{nullptr};
-    const std::string _baseTextureProp;
-    const std::string _baseSamplerProp;
-
-    SampledTexture2DPtr _normalTexture{nullptr};
-    const std::string _normalTextureProp;
-    const std::string _normalSamplerProp;
-
-    SampledTexture2DPtr _emissiveTexture{nullptr};
-    const std::string _emissiveTextureProp;
-    const std::string _emissiveSamplerProp;
+    static const std::string _pbrBaseProp;
 
     SampledTexture2DPtr _occlusionTexture{nullptr};
-    const std::string _occlusionTextureProp;
-    const std::string _occlusionSamplerProp;
+    static const std::string _occlusionTextureProp;
+    static const std::string _occlusionSamplerProp;
+
+    SampledTexture2DPtr _clearCoatTexture{nullptr};
+    static const std::string _clearCoatTextureProp;
+    static const std::string _clearCoatSamplerProp;
+
+    SampledTexture2DPtr _clearCoatRoughnessTexture{nullptr};
+    static const std::string _clearCoatRoughnessTextureProp;
+    static const std::string _clearCoatRoughnessSamplerProp;
+
+    SampledTexture2DPtr _clearCoatNormalTexture{nullptr};
+    static const std::string _clearCoatNormalTextureProp;
+    static const std::string _clearCoatNormalSamplerProp;
 };
 
 }  // namespace vox

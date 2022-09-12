@@ -24,7 +24,7 @@ void PBRMaterial::setRoughness(float newValue) {
     shaderData.setData(PBRMaterial::_pbrProp, _pbrData);
 }
 
-SampledTexture2DPtr PBRMaterial::metallicRoughnessTexture() { return _metallicRoughnessTexture; }
+SampledTexture2DPtr PBRMaterial::metallicRoughnessTexture() const { return _metallicRoughnessTexture; }
 
 void PBRMaterial::setMetallicRoughnessTexture(const SampledTexture2DPtr &newValue) {
     _metallicRoughnessTexture = newValue;
@@ -37,16 +37,16 @@ void PBRMaterial::setMetallicRoughnessTexture(const SampledTexture2DPtr &newValu
     }
 }
 
-PBRMaterial::PBRMaterial(wgpu::Device &device, const std::string &name)
-    : PBRBaseMaterial(device, name),
-      _pbrProp("u_pbrData"),
-      _metallicRoughnessTextureProp("u_metallicRoughnessTexture"),
-      _metallicRoughnessSamplerProp("u_metallicRoughnessSampler") {
+PBRMaterial::PBRMaterial(wgpu::Device &device, const std::string &name) : PBRBaseMaterial(device, name) {
     vertex_source_ = ShaderManager::GetSingleton().LoadShader("blinn-phong.vert");
     fragment_source_ = ShaderManager::GetSingleton().LoadShader("pbr.frag");
 
     shaderData.addDefine("IS_METALLIC_WORKFLOW");
     shaderData.setData(PBRMaterial::_pbrProp, _pbrData);
 }
+
+const std::string PBRMaterial::_pbrProp = "u_pbrData";
+const std::string PBRMaterial::_metallicRoughnessTextureProp = "u_metallicRoughnessTexture";
+const std::string PBRMaterial::_metallicRoughnessSamplerProp = "u_metallicRoughnessSampler";
 
 }  // namespace vox

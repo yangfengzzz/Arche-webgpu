@@ -35,7 +35,7 @@ public:
     /**
      * Base texture.
      */
-    SampledTexture2DPtr baseTexture();
+    [[nodiscard]] SampledTexture2DPtr baseTexture() const;
 
     void setBaseTexture(const SampledTexture2DPtr& newValue);
 
@@ -49,7 +49,7 @@ public:
     /**
      * Specular texture.
      */
-    SampledTexture2DPtr specularTexture();
+    [[nodiscard]] SampledTexture2DPtr specularTexture() const;
 
     void setSpecularTexture(const SampledTexture2DPtr& newValue);
 
@@ -63,14 +63,14 @@ public:
     /**
      * Emissive texture.
      */
-    SampledTexture2DPtr emissiveTexture();
+    [[nodiscard]] SampledTexture2DPtr emissiveTexture() const;
 
     void setEmissiveTexture(const SampledTexture2DPtr& newValue);
 
     /**
      * Normal texture.
      */
-    SampledTexture2DPtr normalTexture();
+    [[nodiscard]] SampledTexture2DPtr normalTexture() const;
 
     void setNormalTexture(const SampledTexture2DPtr& newValue);
 
@@ -93,23 +93,11 @@ public:
 
 private:
     BlinnPhongData _blinnPhongData;
-    const std::string _blinnPhongProp;
-
-    SampledTexture2DPtr _baseTexture{nullptr};
-    const std::string _baseTextureProp;
-    const std::string _baseSamplerProp;
+    static const std::string _blinnPhongProp;
 
     SampledTexture2DPtr _specularTexture{nullptr};
-    const std::string _specularTextureProp;
-    const std::string _specularSamplerProp;
-
-    SampledTexture2DPtr _emissiveTexture{nullptr};
-    const std::string _emissiveTextureProp;
-    const std::string _emissiveSamplerProp;
-
-    SampledTexture2DPtr _normalTexture{nullptr};
-    const std::string _normalTextureProp;
-    const std::string _normalSamplerProp;
+    static const std::string _specularTextureProp;
+    static const std::string _specularSamplerProp;
 };
 
 }  // namespace vox

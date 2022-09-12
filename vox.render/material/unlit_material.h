@@ -26,7 +26,7 @@ public:
     /**
      * Base texture.
      */
-    SampledTexture2DPtr baseTexture();
+    [[nodiscard]] SampledTexture2DPtr baseTexture() const;
 
     void setBaseTexture(const SampledTexture2DPtr& newValue);
 
@@ -37,11 +37,11 @@ public:
 
 private:
     Color _baseColor = Color(1, 1, 1, 1);
-    const std::string _baseColorProp;
+    static const std::string _baseColorProp;
 
     SampledTexture2DPtr _baseTexture = nullptr;
-    const std::string _baseTextureProp;
-    const std::string _baseSamplerProp;
+    static const std::string _baseTextureProp;
+    static const std::string _baseSamplerProp;
 };
 
 }  // namespace vox

@@ -17,7 +17,7 @@ void BlinnPhongMaterial::setBaseColor(const Color& newValue) {
     shaderData.setData(BlinnPhongMaterial::_blinnPhongProp, _blinnPhongData);
 }
 
-SampledTexture2DPtr BlinnPhongMaterial::baseTexture() { return _baseTexture; }
+SampledTexture2DPtr BlinnPhongMaterial::baseTexture() const { return _baseTexture; }
 
 void BlinnPhongMaterial::setBaseTexture(const SampledTexture2DPtr& newValue) {
     _baseTexture = newValue;
@@ -37,7 +37,7 @@ void BlinnPhongMaterial::setSpecularColor(const Color& newValue) {
     shaderData.setData(BlinnPhongMaterial::_blinnPhongProp, _blinnPhongData);
 }
 
-SampledTexture2DPtr BlinnPhongMaterial::specularTexture() { return _specularTexture; }
+SampledTexture2DPtr BlinnPhongMaterial::specularTexture() const { return _specularTexture; }
 
 void BlinnPhongMaterial::setSpecularTexture(const SampledTexture2DPtr& newValue) {
     _specularTexture = newValue;
@@ -57,7 +57,7 @@ void BlinnPhongMaterial::setEmissiveColor(const Color& newValue) {
     shaderData.setData(BlinnPhongMaterial::_blinnPhongProp, _blinnPhongData);
 }
 
-SampledTexture2DPtr BlinnPhongMaterial::emissiveTexture() { return _emissiveTexture; }
+SampledTexture2DPtr BlinnPhongMaterial::emissiveTexture() const { return _emissiveTexture; }
 
 void BlinnPhongMaterial::BlinnPhongMaterial::setEmissiveTexture(const SampledTexture2DPtr& newValue) {
     _emissiveTexture = newValue;
@@ -70,7 +70,7 @@ void BlinnPhongMaterial::BlinnPhongMaterial::setEmissiveTexture(const SampledTex
     }
 }
 
-SampledTexture2DPtr BlinnPhongMaterial::normalTexture() { return _normalTexture; }
+SampledTexture2DPtr BlinnPhongMaterial::normalTexture() const { return _normalTexture; }
 
 void BlinnPhongMaterial::setNormalTexture(const SampledTexture2DPtr& newValue) {
     _normalTexture = newValue;
@@ -97,26 +97,16 @@ void BlinnPhongMaterial::setShininess(float newValue) {
     shaderData.setData(BlinnPhongMaterial::_blinnPhongProp, _blinnPhongData);
 }
 
-BlinnPhongMaterial::BlinnPhongMaterial(wgpu::Device& device, const std::string& name)
-    : BaseMaterial(device, name),
-      _blinnPhongProp("u_blinnPhongData"),
-
-      _baseTextureProp("u_diffuseTexture"),
-      _baseSamplerProp("u_diffuseSampler"),
-
-      _specularTextureProp("u_specularTexture"),
-      _specularSamplerProp("u_specularSampler"),
-
-      _emissiveTextureProp("u_emissiveTexture"),
-      _emissiveSamplerProp("u_emissiveSampler"),
-
-      _normalTextureProp("u_normalTexture"),
-      _normalSamplerProp("u_normalSampler") {
+BlinnPhongMaterial::BlinnPhongMaterial(wgpu::Device& device, const std::string& name) : BaseMaterial(device, name) {
     vertex_source_ = ShaderManager::GetSingleton().LoadShader("blinn-phong.vert");
     fragment_source_ = ShaderManager::GetSingleton().LoadShader("blinn-phong.frag");
 
     shaderData.addDefine(NEED_WORLDPOS);
     shaderData.setData(_blinnPhongProp, _blinnPhongData);
 }
+
+const std::string BlinnPhongMaterial::_blinnPhongProp = "u_blinnPhongData";
+const std::string BlinnPhongMaterial::_specularTextureProp = "u_specularTexture";
+const std::string BlinnPhongMaterial::_specularSamplerProp = "u_specularSampler";
 
 }  // namespace vox

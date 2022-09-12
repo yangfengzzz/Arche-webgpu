@@ -4,9 +4,12 @@ layout(set = 0, binding = Alpha_Cutoff_Location) uniform u_alphaCutoff {
 
 layout(set = 0, binding = PBR_Base_Data_Location) uniform u_pbrBaseData {
     vec4 u_baseColor;
-    vec4 u_emissiveColor;
+
+    vec3 u_emissiveColor;
     float u_normalIntensity;
+
     float u_occlusionIntensity;
+    float u_occlusionTextureCoord;
     float u_clearCoat;
     float u_clearCoatRoughness;
 };

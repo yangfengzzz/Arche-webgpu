@@ -1,5 +1,6 @@
 #version 450
 #define Frag_Shader
+#define IS_METALLIC_WORKFLOW
 
 #include "common.h"
 #include "snippet/common_define.h"

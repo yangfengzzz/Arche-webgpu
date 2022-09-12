@@ -14,10 +14,9 @@ namespace vox {
  */
 class PBRMaterial : public PBRBaseMaterial {
 public:
-    struct PBRData {
+    struct alignas(16) PBRData {
         float metallic = 1.f;
         float roughness = 1.f;
-        float _pad1, _pad2;
     };
     /**
      * Metallic.
@@ -37,7 +36,7 @@ public:
      * Roughness metallic texture.
      * @remarks G channel is roughness, B channel is metallic
      */
-    SampledTexture2DPtr metallicRoughnessTexture();
+    [[nodiscard]] SampledTexture2DPtr metallicRoughnessTexture() const;
 
     void setMetallicRoughnessTexture(const SampledTexture2DPtr &newValue);
 
@@ -48,11 +47,11 @@ public:
 
 private:
     PBRData _pbrData;
-    const std::string _pbrProp;
+    static const std::string _pbrProp;
 
     SampledTexture2DPtr _metallicRoughnessTexture{nullptr};
-    const std::string _metallicRoughnessTextureProp;
-    const std::string _metallicRoughnessSamplerProp;
+    static const std::string _metallicRoughnessTextureProp;
+    static const std::string _metallicRoughnessSamplerProp;
 };
 
 }  // namespace vox
