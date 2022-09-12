@@ -2,28 +2,26 @@
 
 // sh need be pre-scaled in CPU.
 vec3 getLightProbeIrradiance(vec3 sh[9], vec3 normal){
-      normal.x = -normal.x;
-      vec3 result = sh[0] +
+  normal.x = -normal.x;
+  vec3 result = sh[0] +
 
-            sh[1] * (normal.y) +
-            sh[2] * (normal.z) +
-            sh[3] * (normal.x) +
+        sh[1] * (normal.y) +
+        sh[2] * (normal.z) +
+        sh[3] * (normal.x) +
 
-            sh[4] * (normal.y * normal.x) +
-            sh[5] * (normal.y * normal.z) +
-            sh[6] * (3.0 * normal.z * normal.z - 1.0) +
-            sh[7] * (normal.z * normal.x) +
-            sh[8] * (normal.x * normal.x - normal.y * normal.y);
-    
-    return max(result, vec3(0.0));
+        sh[4] * (normal.y * normal.x) +
+        sh[5] * (normal.y * normal.z) +
+        sh[6] * (3.0 * normal.z * normal.z - 1.0) +
+        sh[7] * (normal.z * normal.x) +
+        sh[8] * (normal.x * normal.x - normal.y * normal.y);
 
+  return max(result, vec3(0.0));
 }
 
 // ------------------------Specular------------------------
 
 // ref: https://www.unrealengine.com/blog/physically-based-shading-on-mobile - environmentBRDF for GGX on mobile
 vec3 envBRDFApprox(vec3 specularColor,float roughness, float dotNV ) {
-
     const vec4 c0 = vec4( - 1, - 0.0275, - 0.572, 0.022 );
 
     const vec4 c1 = vec4( 1, 0.0425, 1.04, - 0.04 );
@@ -35,7 +33,6 @@ vec3 envBRDFApprox(vec3 specularColor,float roughness, float dotNV ) {
     vec2 AB = vec2( -1.04, 1.04 ) * a004 + r.zw;
 
     return specularColor * AB.x + AB.y;
-
 }
 
 
@@ -44,13 +41,9 @@ float getSpecularMIPLevel(float roughness, int maxMIPLevel ) {
 }
 
 vec3 getLightProbeRadiance(vec3 viewDir, vec3 normal, float roughness, int maxMIPLevel, float specularIntensity) {
-
     #ifndef USE_SPECULAR_ENV
-
         return vec3(0);
-
     #else
-
         vec3 reflectVec = reflect( -viewDir, normal );
         reflectVec.x = -reflectVec.x; // TextureCube is left-hand,so x need inverse
         
@@ -74,7 +67,5 @@ vec3 getLightProbeRadiance(vec3 viewDir, vec3 normal, float roughness, int maxMI
         #endif
         
         return envMapColor.rgb * specularIntensity;
-
     #endif
-
 }

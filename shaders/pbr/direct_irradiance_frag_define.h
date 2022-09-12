@@ -70,7 +70,7 @@ void addTotalDirectRadiance(Geometry geometry, Material material, inout Reflecte
 
     DirectLight directionalLight;
     for ( int i = 0; i < DIRECT_LIGHT_COUNT; i ++ ) {
-        directionalLight.color = u_directLightColor[i];
+        directionalLight.color = direct_light[i].color;
 #ifdef CALCULATE_SHADOWS
     #ifdef CASCADED_SHADOW_MAP
         if (i == sunIndex) {
@@ -78,7 +78,7 @@ void addTotalDirectRadiance(Geometry geometry, Material material, inout Reflecte
         }
     #endif
 #endif
-        directionalLight.direction = u_directLightDirection[i];
+        directionalLight.direction = direct_light[i].direction;
         addDirectionalDirectLightRadiance( directionalLight, geometry, material, reflectedLight );
     }
 #endif
@@ -87,11 +87,7 @@ void addTotalDirectRadiance(Geometry geometry, Material material, inout Reflecte
     PointLight pointLight;
 
     for ( int i = 0; i < POINT_LIGHT_COUNT; i ++ ) {
-
-        pointLight.color = u_pointLightColor[i];
-        pointLight.position = u_pointLightPosition[i];
-        pointLight.distance = u_pointLightDistance[i];
-
+        pointLight = point_light[i];
         addPointDirectLightRadiance( pointLight, geometry, material, reflectedLight );
     }
 #endif
@@ -100,14 +96,7 @@ void addTotalDirectRadiance(Geometry geometry, Material material, inout Reflecte
     SpotLight spotLight;
 
     for ( int i = 0; i < SPOT_LIGHT_COUNT; i ++ ) {
-
-        spotLight.color = u_spotLightColor[i];
-        spotLight.position = u_spotLightPosition[i];
-        spotLight.direction = u_spotLightDirection[i];
-        spotLight.distance = u_spotLightDistance[i];
-        spotLight.angleCos = u_spotLightAngleCos[i];
-        spotLight.penumbraCos = u_spotLightPenumbraCos[i];
-
+        spotLight = spot_light[i];
         addSpotDirectLightRadiance( spotLight, geometry, material, reflectedLight );
     }
 #endif

@@ -43,73 +43,73 @@ void initGeometry(out Geometry geometry){
 }
 
 void initMaterial(out Material material, const in Geometry geometry){
-        vec4 baseColor = u_baseColor;
-        float metal = u_metal;
-        float roughness = u_roughness;
-        vec3 specularColor = u_PBRSpecularColor;
-        float glossiness = u_glossiness;
-        float alphaCutoff = alpha_cutoff;
+    vec4 baseColor = u_baseColor;
+    float metal = u_metal;
+    float roughness = u_roughness;
+    vec3 specularColor = u_PBRSpecularColor;
+    float glossiness = u_glossiness;
+    float alphaCutoff = alpha_cutoff;
 
-        #ifdef BASETEXTURE
-            vec4 baseTextureColor = texture2D(u_baseTexture, v_uv);
-            #ifndef COLORSPACE_GAMMA
-                baseTextureColor = gammaToLinear(baseTextureColor);
-            #endif
-            baseColor *= baseTextureColor;
+    #ifdef BASETEXTURE
+        vec4 baseTextureColor = texture2D(u_baseTexture, v_uv);
+        #ifndef COLORSPACE_GAMMA
+            baseTextureColor = gammaToLinear(baseTextureColor);
         #endif
+        baseColor *= baseTextureColor;
+    #endif
 
-        #ifdef HAS_VERTEXCOLOR
-            baseColor *= v_color;
+    #ifdef HAS_VERTEXCOLOR
+        baseColor *= v_color;
+    #endif
+
+
+    #ifdef ALPHA_CUTOFF
+        if( baseColor.a < alphaCutoff ) {
+            discard;
+        }
+    #endif
+
+    #ifdef ROUGHNESSMETALLICTEXTURE
+        vec4 metalRoughMapColor = texture2D( u_roughnessMetallicTexture, v_uv );
+        roughness *= metalRoughMapColor.g;
+        metal *= metalRoughMapColor.b;
+    #endif
+
+    #ifdef SPECULARGLOSSINESSTEXTURE
+        vec4 specularGlossinessColor = texture2D(u_specularGlossinessTexture, v_uv );
+        #ifndef COLORSPACE_GAMMA
+            specularGlossinessColor = gammaToLinear(specularGlossinessColor);
         #endif
+        specularColor *= specularGlossinessColor.rgb;
+        glossiness *= specularGlossinessColor.a;
+    #endif
 
 
-        #ifdef ALPHA_CUTOFF
-            if( baseColor.a < alphaCutoff ) {
-                discard;
-            }
+    #ifdef IS_METALLIC_WORKFLOW
+        material.diffuseColor = baseColor.rgb * ( 1.0 - metal );
+        material.specularColor = mix( vec3( 0.04), baseColor.rgb, metal );
+        material.roughness = roughness;
+    #else
+        float specularStrength = max( max( specularColor.r, specularColor.g ), specularColor.b );
+        material.diffuseColor = baseColor.rgb * ( 1.0 - specularStrength );
+        material.specularColor = specularColor;
+        material.roughness = 1.0 - glossiness;
+    #endif
+
+    material.roughness = max(material.roughness, getAARoughnessFactor(geometry.normal));
+
+    #ifdef CLEARCOAT
+        material.clearCoat = u_clearCoat;
+        material.clearCoatRoughness = u_clearCoatRoughness;
+        #ifdef HAS_CLEARCOATTEXTURE
+            material.clearCoat *= texture2D( u_clearCoatTexture, v_uv ).r;
         #endif
-
-        #ifdef ROUGHNESSMETALLICTEXTURE
-            vec4 metalRoughMapColor = texture2D( u_roughnessMetallicTexture, v_uv );
-            roughness *= metalRoughMapColor.g;
-            metal *= metalRoughMapColor.b;
+        #ifdef HAS_CLEARCOATROUGHNESSTEXTURE
+            material.clearCoatRoughness *= texture2D( u_clearCoatRoughnessTexture, v_uv ).g;
         #endif
+        material.clearCoat = saturate( material.clearCoat );
+        material.clearCoatRoughness = max(material.clearCoatRoughness, getAARoughnessFactor(geometry.clearCoatNormal));
+    #endif
 
-        #ifdef SPECULARGLOSSINESSTEXTURE
-            vec4 specularGlossinessColor = texture2D(u_specularGlossinessTexture, v_uv );
-            #ifndef COLORSPACE_GAMMA
-                specularGlossinessColor = gammaToLinear(specularGlossinessColor);
-            #endif
-            specularColor *= specularGlossinessColor.rgb;
-            glossiness *= specularGlossinessColor.a;
-        #endif
-
-
-        #ifdef IS_METALLIC_WORKFLOW
-            material.diffuseColor = baseColor.rgb * ( 1.0 - metal );
-            material.specularColor = mix( vec3( 0.04), baseColor.rgb, metal );
-            material.roughness = roughness;
-        #else
-            float specularStrength = max( max( specularColor.r, specularColor.g ), specularColor.b );
-            material.diffuseColor = baseColor.rgb * ( 1.0 - specularStrength );
-            material.specularColor = specularColor;
-            material.roughness = 1.0 - glossiness;
-        #endif
-
-        material.roughness = max(material.roughness, getAARoughnessFactor(geometry.normal));
-
-        #ifdef CLEARCOAT
-            material.clearCoat = u_clearCoat;
-            material.clearCoatRoughness = u_clearCoatRoughness;
-            #ifdef HAS_CLEARCOATTEXTURE
-                material.clearCoat *= texture2D( u_clearCoatTexture, v_uv ).r;
-            #endif
-            #ifdef HAS_CLEARCOATROUGHNESSTEXTURE
-                material.clearCoatRoughness *= texture2D( u_clearCoatRoughnessTexture, v_uv ).g;
-            #endif
-            material.clearCoat = saturate( material.clearCoat );
-            material.clearCoatRoughness = max(material.clearCoatRoughness, getAARoughnessFactor(geometry.clearCoatNormal));
-        #endif
-
-        material.opacity = baseColor.a;
+    material.opacity = baseColor.a;
 }
