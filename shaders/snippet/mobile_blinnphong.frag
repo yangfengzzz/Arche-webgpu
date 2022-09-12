@@ -9,7 +9,7 @@
     vec3 lightSpecular = vec3( 0.0, 0.0, 0.0 );
     float shadowAttenuation = 1.0;
 
-    #ifdef O3_DIRECT_LIGHT_COUNT
+    #ifdef DIRECT_LIGHT_COUNT
     shadowAttenuation = 1.0;
 #ifdef CASCADED_SHADOW_MAP_COUNT
 #if CASCADED_SHADOW_MAP_COUNT == 1
@@ -23,7 +23,7 @@
 #endif
 
     DirectLight directionalLight;
-    for( int i = 0; i < O3_DIRECT_LIGHT_COUNT; i++ ) {
+    for( int i = 0; i < DIRECT_LIGHT_COUNT; i++ ) {
         directionalLight.color = u_directLightColor[i] * shadowAttenuation;
         directionalLight.direction = u_directLightDirection[i];
 
@@ -37,11 +37,11 @@
 
     #endif
 
-    #ifdef O3_POINT_LIGHT_COUNT
+    #ifdef POINT_LIGHT_COUNT
     
     PointLight pointLight;
 
-    for( int i = 0; i < O3_POINT_LIGHT_COUNT; i++ ) {
+    for( int i = 0; i < POINT_LIGHT_COUNT; i++ ) {
         pointLight.color = u_pointLightColor[i];
         pointLight.position = u_pointLightPosition[i];
         pointLight.distance = u_pointLightDistance[i];
@@ -62,11 +62,11 @@
 
     #endif
 
-    #ifdef O3_SPOT_LIGHT_COUNT
+    #ifdef SPOT_LIGHT_COUNT
    
     SpotLight spotLight;
 
-    for( int i = 0; i < O3_SPOT_LIGHT_COUNT; i++) {
+    for( int i = 0; i < SPOT_LIGHT_COUNT; i++) {
         spotLight.color = u_spotLightColor[i];
         spotLight.position = u_spotLightPosition[i];
         spotLight.direction = u_spotLightDirection[i];

@@ -23,13 +23,13 @@
 
     #endif
 
-     #ifdef O3_HAS_VERTEXCOLOR
+     #ifdef HAS_VERTEXCOLOR
 
         diffuse *= v_color;
 
     #endif
 
-    #ifdef O3_SPECULAR_TEXTURE
+    #ifdef SPECULAR_TEXTURE
         vec4 specularTextureColor = texture2D(u_specularTexture, v_uv);
         #ifndef OASIS_COLORSPACE_GAMMA
             specularTextureColor = gammaToLinear(specularTextureColor);

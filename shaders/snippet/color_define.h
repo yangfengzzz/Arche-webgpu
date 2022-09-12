@@ -1,5 +1,5 @@
-#ifdef O3_HAS_VERTEXCOLOR
+#ifdef HAS_VERTEXCOLOR
 
-varying vec4 v_color;
+layout (location = 1) out vec4 v_color;
 
 #endif

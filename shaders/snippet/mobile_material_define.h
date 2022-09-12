@@ -13,7 +13,7 @@ uniform float u_alphaCutoff;
     uniform sampler2D u_baseTexture;
 #endif
 
-#ifdef O3_SPECULAR_TEXTURE
+#ifdef SPECULAR_TEXTURE
     uniform sampler2D u_specularTexture;
 #endif
 

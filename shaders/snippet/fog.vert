@@ -1,4 +1,4 @@
-    #ifdef O3_HAS_FOG
+    #ifdef HAS_FOG
 
     v_fogDepth = ( u_MVMat * position ).xyz;
 

@@ -68,10 +68,6 @@ layout (location = 0) in vec2 v_uv;
     layout (location = 4) in vec3 v_pos;
 #endif
 
-#ifdef SHADOW_MAP_COUNT
-    layout (location = 5) in vec3 view_pos;
-#endif
-
 //----------------------------------------------------------------------------------------------------------------------
 // directional light
 #ifdef DIRECT_LIGHT_COUNT
@@ -342,17 +338,6 @@ void main() {
 
     diffuse *= vec4(lightDiffuse, 1.0);
     specular *= vec4(lightSpecular, 1.0);
-
-    #ifdef SHADOW_MAP_COUNT
-        float shadow = 0;
-        for( int i = 0; i < SHADOW_MAP_COUNT; i++) {
-            shadow += filterPCF(v_pos, view_pos, i);
-            // shadow += textureProj(v_pos, view_pos, vec2(0), i);
-        }
-        shadow /= SHADOW_MAP_COUNT;
-        diffuse *= shadow;
-        specular *= shadow;
-    #endif
 
     #ifdef NEED_ALPHA_CUTOFF
         if (diffuse.a < alpha_cutoff) {

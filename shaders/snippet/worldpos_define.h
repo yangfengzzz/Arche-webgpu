@@ -1,3 +1,3 @@
-#ifdef O3_NEED_WORLDPOS
-    varying vec3 v_pos;
+#ifdef NEED_WORLDPOS
+    layout (location = 4) out vec3 v_pos;
 #endif
