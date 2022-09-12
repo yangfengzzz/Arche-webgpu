@@ -46,8 +46,10 @@ void initMaterial(out Material material, const in Geometry geometry){
     vec4 baseColor = u_baseColor;
     float metal = u_metal;
     float roughness = u_roughness;
+#ifndef IS_METALLIC_WORKFLOW
     vec3 specularColor = u_PBRSpecularColor;
     float glossiness = u_glossiness;
+#endif
     float alphaCutoff = alpha_cutoff;
 
     #ifdef BASETEXTURE
