@@ -13,18 +13,19 @@ layout(location = Position) in vec3 POSITION;
     layout(location = Weights_0) in vec4 WEIGHTS_0;
 
     #ifdef USE_JOINT_TEXTURE
-        layout(set = 0, binding = 2) uniform sampler2D u_jointSampler;
-        layout(set = 0, binding = 2) uniform float u_jointCount;
+        layout(set = 0, binding = 2) uniform texture2D u_jointTexture;
+        layout(set = 0, binding = 3) uniform sampler u_jointSampler;
+        layout(set = 0, binding = 4) uniform float u_jointCount;
 
         mat4 getJointMatrix(sampler2D smp, float index) {
             float base = index / u_jointCount;
             float hf = 0.5 / u_jointCount;
             float v = base + hf;
 
-            vec4 m0 = texture2D(smp, vec2(0.125, v ));
-            vec4 m1 = texture2D(smp, vec2(0.375, v ));
-            vec4 m2 = texture2D(smp, vec2(0.625, v ));
-            vec4 m3 = texture2D(smp, vec2(0.875, v ));
+            vec4 m0 = texture(smp, vec2(0.125, v ));
+            vec4 m1 = texture(smp, vec2(0.375, v ));
+            vec4 m2 = texture(smp, vec2(0.625, v ));
+            vec4 m3 = texture(smp, vec2(0.875, v ));
 
             return mat4(m0, m1, m2, m3);
         }

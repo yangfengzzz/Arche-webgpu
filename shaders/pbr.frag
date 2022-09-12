@@ -251,7 +251,7 @@ vec3 specularColor, float glossiness, float alphaCutoff){
 
     #ifdef HAS_BASECOLORMAP
         vec4 baseColor = texture(baseColorTexture, v_uv);
-//        #ifndef OASIS_COLORSPACE_GAMMA
+//        #ifndef COLORSPACE_GAMMA
 //            baseColor = gammaToLinear(baseColor);
 //        #endif
         diffuseColor *= baseColor;
@@ -488,11 +488,11 @@ vec3 getLightProbeRadiance(GeometricContext geometry, float roughness, int maxMI
 
         #ifdef DECODE_ENV_RGBM
             envMapColor.rgb = RGBMToLinear(envMapColor, 5.0).rgb;
-//            #ifdef OASIS_COLORSPACE_GAMMA
+//            #ifdef COLORSPACE_GAMMA
 //                envMapColor = linearToGamma(envMapColor);
 //            #endif
         #else
-//            #ifndef OASIS_COLORSPACE_GAMMA
+//            #ifndef COLORSPACE_GAMMA
 //                envMapColor = gammaToLinear(envMapColor);
 //            #endif
         #endif
@@ -518,7 +518,7 @@ void main() {
     // IBL diffuse
     #ifdef HAS_SH
         vec3 irradiance = getLightProbeIrradiance(env_sh.value, geometry.normal);
-//        #ifdef OASIS_COLORSPACE_GAMMA
+//        #ifdef COLORSPACE_GAMMA
 //            irradiance = linearToGamma(vec4(irradiance, 1.0)).rgb;
 //        #endif
         irradiance *= env_map_light.diffuse_intensity;
@@ -548,7 +548,7 @@ void main() {
     vec3 emissiveRadiance = pbr_base_data.emissive_color.rgb;
     #ifdef HAS_EMISSIVEMAP
         vec4 emissiveColor = texture(emissiveTexture, v_uv);
-//        #ifndef OASIS_COLORSPACE_GAMMA
+//        #ifndef COLORSPACE_GAMMA
 //            emissiveColor = gammaToLinear(emissiveColor);
 //        #endif
         emissiveRadiance *= emissiveColor.rgb;
@@ -562,7 +562,7 @@ void main() {
     emissiveRadiance;
 
     vec4 targetColor = vec4(totalRadiance, material.opacity);
-//    #ifndef OASIS_COLORSPACE_GAMMA
+//    #ifndef COLORSPACE_GAMMA
 //        targetColor = linearToGamma(targetColor);
 //    #endif
     o_color = targetColor;

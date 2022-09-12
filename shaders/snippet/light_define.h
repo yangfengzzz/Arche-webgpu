@@ -6,8 +6,9 @@
         vec3 direction;
     };
 
-    uniform vec3 u_directLightColor[DIRECT_LIGHT_COUNT];
-    uniform vec3 u_directLightDirection[DIRECT_LIGHT_COUNT];
+    layout(set = 0, binding = 9) uniform u_directLight {
+        DirectLight direct_light[DIRECT_LIGHT_COUNT];
+    };
 
 #endif
 
@@ -21,9 +22,9 @@
         float distance;
     };
 
-    uniform vec3 u_pointLightColor[ POINT_LIGHT_COUNT ];
-    uniform vec3 u_pointLightPosition[ POINT_LIGHT_COUNT ];
-    uniform float u_pointLightDistance[ POINT_LIGHT_COUNT ];
+    layout(set = 0, binding = 10) uniform u_pointLight {
+        PointLight point_light[POINT_LIGHT_COUNT];
+    };
 
 #endif
 
@@ -40,30 +41,27 @@
         float penumbraCos;
     };
 
-    uniform vec3 u_spotLightColor[ SPOT_LIGHT_COUNT ];
-    uniform vec3 u_spotLightPosition[ SPOT_LIGHT_COUNT ];
-    uniform vec3 u_spotLightDirection[ SPOT_LIGHT_COUNT ];
-    uniform float u_spotLightDistance[ SPOT_LIGHT_COUNT ];
-    uniform float u_spotLightAngleCos[ SPOT_LIGHT_COUNT ];
-    uniform float u_spotLightPenumbraCos[ SPOT_LIGHT_COUNT ];
+    layout(set = 0, binding = 11) uniform u_spotLight {
+        SpotLight spot_light[SPOT_LIGHT_COUNT];
+    };
 
 #endif
 
 // ambient light
-struct EnvMapLight {
+layout(set = 0, binding = 12) uniform u_envMapLight {
     vec3 diffuse;
-    float mipMapLevel;
-    float diffuseIntensity;
-    float specularIntensity;
-};
-
-
-uniform EnvMapLight u_envMapLight;
+    float mip_map_level;
+    float diffuse_intensity;
+    float specular_intensity;
+} env_map_light;
 
 #ifdef USE_SH
-    uniform vec3 u_env_sh[9];
+    layout(set = 0, binding = 13) uniform u_env_sH {
+        float env_sh[9];
+    };
 #endif
 
-#ifdef USE_SPECULAR_ENV
-    uniform samplerCube u_env_specularSampler;
+#ifdef HAS_SPECULAR_ENV
+    layout(set = 0, binding = 14) uniform textureCube u_env_specularTexture;
+    layout(set = 0, binding = 15) uniform sampler u_env_specularSampler;
 #endif
