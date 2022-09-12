@@ -6,30 +6,25 @@
 
 #pragma once
 
-#include "vox.math/color.h"
-#include "vox.render/component.h"
+#include "vox.render/fog/fog.h"
 
 namespace vox {
-/**
- * Fog.
- */
-class Fog : public Component {
-public:
+class Exp2Fog : public Fog {
     /**
-     * Fog color.
+     * Density of fog.
      */
-    [[nodiscard]] Color getColor() const;
+    [[nodiscard]] float getDensity() const;
 
-    void setColor(const Color& value);
+    void setDensity(float value);
 
-    explicit Fog(Entity* entity);
+    explicit Exp2Fog(Entity* entity);
 
     void _onEnable() override;
 
     void _onDisable() override;
 
 private:
-    static const std::string _colorProperty;
-    Color _color;
+    float _density = 0.0025;
+    static const std::string _densityProperty;
 };
 }  // namespace vox

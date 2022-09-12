@@ -4,10 +4,14 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "fog.h"
+#include "vox.render/fog/fog.h"
+
+#include "vox.render/scene.h"
 
 namespace vox {
-Color Fog::getColor() { return _color; }
+const std::string Fog::_colorProperty = "u_fogColor";
+
+Color Fog::getColor() const { return _color; }
 
 void Fog::setColor(const Color& value) {
     _color = value;
