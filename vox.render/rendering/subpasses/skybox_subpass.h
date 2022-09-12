@@ -35,7 +35,7 @@ public:
 
 private:
     enum class SkyBoxType { Cuboid, Sphere };
-    SkyBoxType _type;
+    SkyBoxType _type = SkyBoxType::Cuboid;
     ModelMeshPtr _mesh{nullptr};
     SampledTextureCubePtr _cubeMap{nullptr};
     Buffer _vpMatrix;

@@ -20,8 +20,8 @@ SkyboxSubpass::SkyboxSubpass(RenderContext* renderContext,
     : Subpass(renderContext, scene, camera),
       _depthStencilTextureFormat(depthStencilTextureFormat),
       _vpMatrix(renderContext->device(), sizeof(Matrix4x4F), wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst),
-      vert_shader_("base/skybox.vert"),
-      frag_shader_("base/skybox.frag") {
+      vert_shader_("skybox.vert"),
+      frag_shader_("skybox.frag") {
     createCuboid();
 }
 

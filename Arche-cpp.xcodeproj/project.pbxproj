@@ -9,6 +9,12 @@
 /* Begin PBXBuildFile section */
 		0400D25727D8457C0018FB52 /* shadow_debug_material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0400D25527D8457C0018FB52 /* shadow_debug_material.cpp */; };
 		0400D25827D8457C0018FB52 /* shadow_debug_material.h in Headers */ = {isa = PBXBuildFile; fileRef = 0400D25627D8457C0018FB52 /* shadow_debug_material.h */; };
+		040C551D28CF57E9001BF0FF /* linear_fog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040C551728CF57E9001BF0FF /* linear_fog.cpp */; };
+		040C551E28CF57E9001BF0FF /* linear_fog.h in Headers */ = {isa = PBXBuildFile; fileRef = 040C551828CF57E9001BF0FF /* linear_fog.h */; };
+		040C551F28CF57E9001BF0FF /* fog.h in Headers */ = {isa = PBXBuildFile; fileRef = 040C551928CF57E9001BF0FF /* fog.h */; };
+		040C552028CF57E9001BF0FF /* exp2_fog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040C551A28CF57E9001BF0FF /* exp2_fog.cpp */; };
+		040C552128CF57E9001BF0FF /* fog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040C551B28CF57E9001BF0FF /* fog.cpp */; };
+		040C552228CF57E9001BF0FF /* exp2_fog.h in Headers */ = {isa = PBXBuildFile; fileRef = 040C551C28CF57E9001BF0FF /* exp2_fog.h */; };
 		04128353279ECF6E0071BD86 /* collision_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 041282F9279ECF6B0071BD86 /* collision_utils.cpp */; };
 		04128354279ECF6E0071BD86 /* matrix2x2-inl.h in Headers */ = {isa = PBXBuildFile; fileRef = 041282FA279ECF6B0071BD86 /* matrix2x2-inl.h */; };
 		04128355279ECF6E0071BD86 /* point3-inl.h in Headers */ = {isa = PBXBuildFile; fileRef = 041282FB279ECF6B0071BD86 /* point3-inl.h */; };
@@ -1045,6 +1051,12 @@
 /* Begin PBXFileReference section */
 		0400D25527D8457C0018FB52 /* shadow_debug_material.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = shadow_debug_material.cpp; sourceTree = "<group>"; };
 		0400D25627D8457C0018FB52 /* shadow_debug_material.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shadow_debug_material.h; sourceTree = "<group>"; };
+		040C551728CF57E9001BF0FF /* linear_fog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = linear_fog.cpp; sourceTree = "<group>"; };
+		040C551828CF57E9001BF0FF /* linear_fog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = linear_fog.h; sourceTree = "<group>"; };
+		040C551928CF57E9001BF0FF /* fog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fog.h; sourceTree = "<group>"; };
+		040C551A28CF57E9001BF0FF /* exp2_fog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = exp2_fog.cpp; sourceTree = "<group>"; };
+		040C551B28CF57E9001BF0FF /* fog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fog.cpp; sourceTree = "<group>"; };
+		040C551C28CF57E9001BF0FF /* exp2_fog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = exp2_fog.h; sourceTree = "<group>"; };
 		041282EC279ECF3D0071BD86 /* libvox.math.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libvox.math.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		041282F9279ECF6B0071BD86 /* collision_utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = collision_utils.cpp; sourceTree = "<group>"; };
 		041282FA279ECF6B0071BD86 /* matrix2x2-inl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "matrix2x2-inl.h"; sourceTree = "<group>"; };
@@ -2275,6 +2287,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		040C551628CF57D2001BF0FF /* fog */ = {
+			isa = PBXGroup;
+			children = (
+				040C551928CF57E9001BF0FF /* fog.h */,
+				040C551B28CF57E9001BF0FF /* fog.cpp */,
+				040C551828CF57E9001BF0FF /* linear_fog.h */,
+				040C551728CF57E9001BF0FF /* linear_fog.cpp */,
+				040C551C28CF57E9001BF0FF /* exp2_fog.h */,
+				040C551A28CF57E9001BF0FF /* exp2_fog.cpp */,
+			);
+			path = fog;
+			sourceTree = "<group>";
+		};
 		041282ED279ECF3D0071BD86 /* vox.math */ = {
 			isa = PBXGroup;
 			children = (
@@ -2375,6 +2400,7 @@
 				04128464279EDAF80071BD86 /* shader */,
 				04954642279F8A4400783C84 /* material */,
 				0495474C27A2712F00783C84 /* mesh */,
+				040C551628CF57D2001BF0FF /* fog */,
 				045A38A828C4479A003FEE10 /* assimp_parser.cpp */,
 				045A38AE28C4479A003FEE10 /* assimp_parser.h */,
 				04FDEF8927E70F2900BBE8E4 /* event.h */,
@@ -4176,6 +4202,7 @@
 				04FDEF8E27E7108900BBE8E4 /* vobject.h in Headers */,
 				045A394128C44C40003FEE10 /* shader_module.h in Headers */,
 				04FDF02527E771F100BBE8E4 /* tree_node.h in Headers */,
+				040C551E28CF57E9001BF0FF /* linear_fog.h in Headers */,
 				047BF02927A6659E003F3599 /* astc.h in Headers */,
 				045A391F28C44BCF003FEE10 /* frame_time_stats_provider.h in Headers */,
 				045A397228C45118003FEE10 /* index_buffer_binding.h in Headers */,
@@ -4190,6 +4217,7 @@
 				04FE6BED27ECA32700D7DB2D /* lua_global_binder.h in Headers */,
 				047BF0CB27AC0D59003F3599 /* ambient_light.h in Headers */,
 				045A398128C4AE15003FEE10 /* cluster_debug_material.h in Headers */,
+				040C552228CF57E9001BF0FF /* exp2_fog.h in Headers */,
 				04FDF08827E808E600BBE8E4 /* bullet.h in Headers */,
 				04FDEFFB27E762C100BBE8E4 /* input_float.h in Headers */,
 				0495472527A23CE100783C84 /* sampled_texture.h in Headers */,
@@ -4277,6 +4305,7 @@
 				04954678279F8CD600783C84 /* layer.h in Headers */,
 				04FDF04827E7FA2000BBE8E4 /* color_picker.h in Headers */,
 				04FDF0D227E8C73A00BBE8E4 /* scene_manager.h in Headers */,
+				040C551F28CF57E9001BF0FF /* fog.h in Headers */,
 				045A38B628C4479A003FEE10 /* strings.h in Headers */,
 				04954685279F8CD600783C84 /* scene.h in Headers */,
 				04FDEFA427E71E3200BBE8E4 /* inspector_item.h in Headers */,
@@ -4790,6 +4819,7 @@
 				04F9E91627D4817A00BD291B /* particle_manager.cpp in Sources */,
 				0443E8D427C4BB500099E13A /* shadow_material.cpp in Sources */,
 				04FDF08227E8080400BBE8E4 /* text_wrapped.cpp in Sources */,
+				040C552028CF57E9001BF0FF /* exp2_fog.cpp in Sources */,
 				047BF01C27A65E7F003F3599 /* stb.cpp in Sources */,
 				045A398228C4AE15003FEE10 /* sprite_debug.cpp in Sources */,
 				0443E8CF27C4B2F90099E13A /* shadow_subpass.cpp in Sources */,
@@ -4825,6 +4855,7 @@
 				04FE6BE427ECA22700D7DB2D /* lua_entity_binder.cpp in Sources */,
 				045A38BC28C4479A003FEE10 /* utils.cpp in Sources */,
 				04FDF04327E7F98F00BBE8E4 /* color_edit.cpp in Sources */,
+				040C552128CF57E9001BF0FF /* fog.cpp in Sources */,
 				047BF0CE27AC0D59003F3599 /* ambient_light.cpp in Sources */,
 				04954646279F8A7D00783C84 /* material.cpp in Sources */,
 				04954682279F8CD600783C84 /* renderer.cpp in Sources */,
@@ -4911,6 +4942,7 @@
 				04FDF00F27E7670E00BBE8E4 /* dummy.cpp in Sources */,
 				04FDF02427E771F100BBE8E4 /* tree_node.cpp in Sources */,
 				04954709279FCD3C00783C84 /* orbit_control.cpp in Sources */,
+				040C551D28CF57E9001BF0FF /* linear_fog.cpp in Sources */,
 				0495473927A2564500783C84 /* pbr_specular_material.cpp in Sources */,
 				0495467D279F8CD600783C84 /* update_flag_manager.cpp in Sources */,
 				045A393D28C44C40003FEE10 /* shader_variant.cpp in Sources */,
