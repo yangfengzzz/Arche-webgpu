@@ -46,6 +46,9 @@ file(GLOB IMAGE_FILES
 file(GLOB TEXTURE_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/texture/*.cpp)
 
+file(GLOB FOG_FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/fog/*.cpp)
+
 set(STATS_FILES
         # Header Files
         stats/stats.h
@@ -486,7 +489,7 @@ set(PROJECT_FILES
         ${PARSER_FILES}
         ${COMMON_FILES}
         ${RENDERING_FILES}
-        #        ${SCENE_RESOURCE_FILES}
+        ${FOG_FILES}
         ${STATS_FILES}
         ${UI_FILES}
         ${IMAGE_FILES}
