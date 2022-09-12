@@ -52,13 +52,13 @@ void initMaterial(out Material material, const in Geometry geometry){
 
         #ifdef BASETEXTURE
             vec4 baseTextureColor = texture2D(u_baseTexture, v_uv);
-            #ifndef OASIS_COLORSPACE_GAMMA
+            #ifndef COLORSPACE_GAMMA
                 baseTextureColor = gammaToLinear(baseTextureColor);
             #endif
             baseColor *= baseTextureColor;
         #endif
 
-        #ifdef O3_HAS_VERTEXCOLOR
+        #ifdef HAS_VERTEXCOLOR
             baseColor *= v_color;
         #endif
 
@@ -77,7 +77,7 @@ void initMaterial(out Material material, const in Geometry geometry){
 
         #ifdef SPECULARGLOSSINESSTEXTURE
             vec4 specularGlossinessColor = texture2D(u_specularGlossinessTexture, v_uv );
-            #ifndef OASIS_COLORSPACE_GAMMA
+            #ifndef COLORSPACE_GAMMA
                 specularGlossinessColor = gammaToLinear(specularGlossinessColor);
             #endif
             specularColor *= specularGlossinessColor.rgb;

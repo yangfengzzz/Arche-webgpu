@@ -14,15 +14,15 @@
 #include "snippet/light_define.h"
 #include "snippet/normal_frag_define.h"
 
-#include "snippet/pbr/pbr_frag_define.h"
-#include "snippet/pbr/pbr_helper.h"
-#include "snippet/pbr/brdf.h"
-#include "snippet/pbr/direct_irradiance_frag_define.h"
-#include "snippet/pbr/ibl_frag_define.h"
+#include "pbr/pbr_frag_define.h"
+#include "pbr/pbr_helper.h"
+#include "pbr/brdf.h"
+#include "pbr/direct_irradiance_frag_define.h"
+#include "pbr/ibl_frag_define.h"
 
 layout(location = 0) out vec4 o_color;
 
 void main() {
-#include "snippet/pbr/pbr_frag.h"
-#include "snippet/fog_frag.h"
+#include "pbr/pbr.frag"
+#include "snippet/fog.frag"
 }

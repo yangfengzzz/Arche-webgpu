@@ -9,9 +9,9 @@ initMaterial(material, geometry);
 addTotalDirectRadiance(geometry, material, reflectedLight);
 
 // IBL diffuse
-#ifdef O3_USE_SH
+#ifdef USE_SH
     vec3 irradiance = getLightProbeIrradiance(u_env_sh, geometry.normal);
-    #ifdef OASIS_COLORSPACE_GAMMA
+    #ifdef COLORSPACE_GAMMA
         irradiance = linearToGamma(vec4(irradiance, 1.0)).rgb;
     #endif
     irradiance *= u_envMapLight.diffuseIntensity;
@@ -39,14 +39,14 @@ reflectedLight.indirectSpecular += radianceAttenuation * radiance * envBRDFAppro
 // Occlusion
 #ifdef OCCLUSIONTEXTURE
     vec2 aoUV = v_uv;
-    #ifdef O3_HAS_UV1
+    #ifdef HAS_UV1
         if(u_occlusionTextureCoord == 1.0){
             aoUV = v_uv1;
         }
     #endif
     float ambientOcclusion = (texture2D(u_occlusionTexture, aoUV).r - 1.0) * u_occlusionIntensity + 1.0;
     reflectedLight.indirectDiffuse *= ambientOcclusion;
-    #ifdef O3_USE_SPECULAR_ENV
+    #ifdef USE_SPECULAR_ENV
         reflectedLight.indirectSpecular *= computeSpecularOcclusion(ambientOcclusion, material.roughness, geometry.dotNV);
     #endif
 #endif
@@ -56,7 +56,7 @@ reflectedLight.indirectSpecular += radianceAttenuation * radiance * envBRDFAppro
 vec3 emissiveRadiance = u_emissiveColor;
 #ifdef EMISSIVETEXTURE
     vec4 emissiveColor = texture2D(u_emissiveTexture, v_uv);
-    #ifndef OASIS_COLORSPACE_GAMMA
+    #ifndef COLORSPACE_GAMMA
         emissiveColor = gammaToLinear(emissiveColor);
     #endif
     emissiveRadiance *= emissiveColor.rgb;
@@ -70,7 +70,7 @@ vec3 totalRadiance =    reflectedLight.directDiffuse +
                         emissiveRadiance;
 
 vec4 targetColor =vec4(totalRadiance, material.opacity);
-#ifndef OASIS_COLORSPACE_GAMMA
+#ifndef COLORSPACE_GAMMA
     targetColor = linearToGamma(targetColor);
 #endif
-gl_FragColor = targetColor;
+o_color = targetColor;
