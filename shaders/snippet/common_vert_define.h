@@ -13,9 +13,9 @@ layout(location = Position) in vec3 POSITION;
     layout(location = Weights_0) in vec4 WEIGHTS_0;
 
     #ifdef USE_JOINT_TEXTURE
-        layout(set = 0, binding = 2) uniform texture2D u_jointTexture;
-        layout(set = 0, binding = 3) uniform sampler u_jointSampler;
-        layout(set = 0, binding = 4) uniform float u_jointCount;
+        layout(set = 0, binding = Joint_Texture_Location) uniform texture2D u_jointTexture;
+        layout(set = 0, binding = Joint_Sampler_Location) uniform sampler u_jointSampler;
+        layout(set = 0, binding = Joint_Count_Location) uniform float u_jointCount;
 
         mat4 getJointMatrix(sampler2D smp, float index) {
             float base = index / u_jointCount;
@@ -31,7 +31,7 @@ layout(location = Position) in vec3 POSITION;
         }
 
     #else
-        layout(set = 0, binding = 4) uniform mat4 u_jointMatrix[ JOINTS_NUM ];
+        layout(set = 0, binding = Joint_Matrix_Location) uniform mat4 u_jointMatrix[ JOINTS_NUM ];
     #endif
 #endif
 
@@ -39,7 +39,7 @@ layout(location = Position) in vec3 POSITION;
     layout(location = Color_0) vec4 COLOR_0;
 #endif
 
-layout(set = 0, binding = 5) uniform u_cameraData {
+layout(set = 0, binding = Camera_Location) uniform u_cameraData {
     mat4 u_viewMat;
     mat4 u_projMat;
     mat4 vp_mat;
@@ -48,13 +48,13 @@ layout(set = 0, binding = 5) uniform u_cameraData {
     vec3 u_cameraPos;
 };
 
-layout(set = 0, binding = 6) uniform u_rendererData {
+layout(set = 0, binding = Renderer_Location) uniform u_rendererData {
     mat4 u_localMat;
     mat4 u_modelMat;
     mat4 u_normalMat;
 };
 
-layout(set = 0, binding = 7) uniform u_tilingOffset {
+layout(set = 0, binding = Tilling_Offset_Location) uniform u_tilingOffset {
     vec4 tilingOffset;
 };
 

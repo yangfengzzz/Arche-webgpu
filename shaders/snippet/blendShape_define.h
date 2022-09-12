@@ -1,40 +1,40 @@
 #ifdef HAS_BLENDSHAPE
     #ifdef HAS_BLENDSHAPE_TEXTURE
-        layout(location = 10) uniform mediump texture2DArray u_blendShapeTexture;
-        layout(location = 10) uniform mediump sampler u_blendShapeSampler;
-        layout(location = 11) uniform ivec3 u_blendShapeTextureInfo;
-        layout(set = 0, binding = 8) uniform u_blendShapeWeights {
+        layout(set = 0, binding = Blend_Shape_Texture_Location) uniform mediump texture2DArray u_blendShapeTexture;
+        layout(set = 0, binding = Blend_Shape_Sampler_Location) uniform mediump sampler u_blendShapeSampler;
+        layout(set = 0, binding = Blend_Shape_Texture_Info_Location) uniform ivec3 u_blendShapeTextureInfo;
+        layout(set = 0, binding = Blend_Shape_Weights_Location) uniform u_blendShapeWeights {
             float blendShapeWeights[HAS_BLENDSHAPE_COUNT];
         };
     #else
-        layout(location = 10) in vec3 POSITION_BS0;
-        layout(location = 11) in vec3 POSITION_BS1;
-        layout(location = 12) in vec3 POSITION_BS2;
-        layout(location = 13) in vec3 POSITION_BS3;
+        layout(location = Position_BS0) in vec3 POSITION_BS0;
+        layout(location = Position_BS1) in vec3 POSITION_BS1;
+        layout(location = Position_BS2) in vec3 POSITION_BS2;
+        layout(location = Position_BS3) in vec3 POSITION_BS3;
 
             #if defined( HAS_BLENDSHAPE_NORMAL ) || defined( HAS_BLENDSHAPE_TANGENT )
                 #ifdef HAS_BLENDSHAPE_NORMAL
-                    layout(location = 16) in vec3 NORMAL_BS0;
-                    layout(location = 17) in vec3 NORMAL_BS1;
-                    layout(location = 18) in vec3 NORMAL_BS2;
-                    layout(location = 19) in vec3 NORMAL_BS3;
+                    layout(location = Normal_BS0) in vec3 NORMAL_BS0;
+                    layout(location = Normal_BS1) in vec3 NORMAL_BS1;
+                    layout(location = Normal_BS2) in vec3 NORMAL_BS2;
+                    layout(location = Normal_BS3) in vec3 NORMAL_BS3;
                 #endif
 
                 #ifdef HAS_BLENDSHAPE_TANGENT
-                    layout(location = 20) in vec3 TANGENT_BS0;
-                    layout(location = 21) in vec3 TANGENT_BS1;
-                    layout(location = 22) in vec3 TANGENT_BS2;
-                    layout(location = 23) in vec3 TANGENT_BS3;
+                    layout(location = Tangent_BS0) in vec3 TANGENT_BS0;
+                    layout(location = Tangent_BS1) in vec3 TANGENT_BS1;
+                    layout(location = Tangent_BS2) in vec3 TANGENT_BS2;
+                    layout(location = Tangent_BS3) in vec3 TANGENT_BS3;
                 #endif
-                layout(set = 0, binding = 8) uniform u_blendShapeWeights {
+                layout(set = 0, binding = Blend_Shape_Weights_Location) uniform u_blendShapeWeights {
                     float blendShapeWeights[4];
                 };
             #else
-                ayout(location = 16) in vec3 POSITION_BS4;
-                ayout(location = 17) in vec3 POSITION_BS5;
-                ayout(location = 18) in vec3 POSITION_BS6;
-                ayout(location = 19) in vec3 POSITION_BS7;
-                layout(set = 0, binding = 8) uniform u_blendShapeWeights {
+                layout(location = Position_BS4) in vec3 POSITION_BS4;
+                layout(location = Position_BS5) in vec3 POSITION_BS5;
+                layout(location = Position_BS6) in vec3 POSITION_BS6;
+                layout(location = Position_BS7) in vec3 POSITION_BS7;
+                layout(set = 0, binding = Blend_Shape_Weights_Location) uniform u_blendShapeWeights {
                     float blendShapeWeights[4];
                 };
             #endif

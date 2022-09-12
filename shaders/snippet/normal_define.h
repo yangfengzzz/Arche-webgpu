@@ -1,8 +1,16 @@
 #ifndef OMIT_NORMAL
     #ifdef HAS_NORMAL
-        layout (location = 2) out vec3 v_normal;
+        #ifdef Vert_Shader
+            layout (location = V_Normal) out vec3 v_normal;
+        #else
+            layout (location = V_Normal) in vec3 v_normal;
+        #endif
         #if defined(HAS_TANGENT) && ( defined(NORMALTEXTURE) || defined(HAS_CLEARCOATNORMALTEXTURE) )
-            layout (location = 3) out mat3 v_TBN;
+            #ifdef Vert_Shader
+                layout (location = V_TBN) out mat3 v_TBN;
+            #else
+                layout (location = V_TBN) in mat3 v_TBN;
+            #endif
         #endif
     #endif
 #endif

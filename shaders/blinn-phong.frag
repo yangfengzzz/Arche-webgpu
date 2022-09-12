@@ -1,5 +1,6 @@
 #version 450
 
+#include "common.h"
 #include "snippet/common_define.h"
 #include "snippet/common_frag_define.h"
 

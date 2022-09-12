@@ -1,3 +1,7 @@
 #ifdef NEED_WORLDPOS
-    layout (location = 4) out vec3 v_pos;
+    #ifdef Vert_Shader
+        layout (location = V_Pos) out vec3 v_pos;
+    #else
+        layout (location = V_Pos) in vec3 v_pos;
+    #endif
 #endif

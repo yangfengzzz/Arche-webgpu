@@ -1,20 +1,21 @@
 #version 450
 
+#include "common.h"
 #include "snippet/common_define.h"
 
-layout(set = 0, binding = 1) uniform u_baseColor {
+layout(set = 0, binding = Base_Color_Location) uniform u_baseColor {
     vec4 base_color;
 };
-layout(set = 0, binding = 2) uniform u_alphaCutoff {
+layout(set = 0, binding = Alpha_Cutoff_Location) uniform u_alphaCutoff {
     float alpha_cutoff;
 };
 
 #ifdef HAS_BASE_TEXTURE
-    layout(set = 0, binding = 3) uniform texture2D u_baseTexture;
-    layout(set = 0, binding = 4) uniform sampler u_baseSampler;
+    layout(set = 0, binding = Base_Texture_Location) uniform texture2D u_baseTexture;
+    layout(set = 0, binding = Base_Sampler_Location) uniform sampler u_baseSampler;
 #endif
 
-layout(location = 0) in vec2 v_uv;
+layout(location = V_UV) in vec2 v_uv;
 layout(location = 0) out vec4 o_color;
 
 void main() {
