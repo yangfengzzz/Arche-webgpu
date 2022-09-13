@@ -15,6 +15,7 @@
 		040C552028CF57E9001BF0FF /* exp2_fog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040C551A28CF57E9001BF0FF /* exp2_fog.cpp */; };
 		040C552128CF57E9001BF0FF /* fog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040C551B28CF57E9001BF0FF /* fog.cpp */; };
 		040C552228CF57E9001BF0FF /* exp2_fog.h in Headers */ = {isa = PBXBuildFile; fileRef = 040C551C28CF57E9001BF0FF /* exp2_fog.h */; };
+		040C552428CF73E9001BF0FF /* texture_coordinate.h in Headers */ = {isa = PBXBuildFile; fileRef = 040C552328CF73E9001BF0FF /* texture_coordinate.h */; };
 		04128353279ECF6E0071BD86 /* collision_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 041282F9279ECF6B0071BD86 /* collision_utils.cpp */; };
 		04128354279ECF6E0071BD86 /* matrix2x2-inl.h in Headers */ = {isa = PBXBuildFile; fileRef = 041282FA279ECF6B0071BD86 /* matrix2x2-inl.h */; };
 		04128355279ECF6E0071BD86 /* point3-inl.h in Headers */ = {isa = PBXBuildFile; fileRef = 041282FB279ECF6B0071BD86 /* point3-inl.h */; };
@@ -1057,6 +1058,7 @@
 		040C551A28CF57E9001BF0FF /* exp2_fog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = exp2_fog.cpp; sourceTree = "<group>"; };
 		040C551B28CF57E9001BF0FF /* fog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fog.cpp; sourceTree = "<group>"; };
 		040C551C28CF57E9001BF0FF /* exp2_fog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = exp2_fog.h; sourceTree = "<group>"; };
+		040C552328CF73E9001BF0FF /* texture_coordinate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = texture_coordinate.h; sourceTree = "<group>"; };
 		041282EC279ECF3D0071BD86 /* libvox.math.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libvox.math.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		041282F9279ECF6B0071BD86 /* collision_utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = collision_utils.cpp; sourceTree = "<group>"; };
 		041282FA279ECF6B0071BD86 /* matrix2x2-inl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "matrix2x2-inl.h"; sourceTree = "<group>"; };
@@ -3578,6 +3580,7 @@
 		04954643279F8A5000783C84 /* enums */ = {
 			isa = PBXGroup;
 			children = (
+				040C552328CF73E9001BF0FF /* texture_coordinate.h */,
 				0495464A279F8A8700783C84 /* blend_mode.h */,
 				04954648279F8A8700783C84 /* render_face.h */,
 				04954649279F8A8700783C84 /* render_queue_type.h */,
@@ -4201,6 +4204,7 @@
 				04FDEFAE27E720D500BBE8E4 /* converter.h in Headers */,
 				04FDEF8E27E7108900BBE8E4 /* vobject.h in Headers */,
 				045A394128C44C40003FEE10 /* shader_module.h in Headers */,
+				040C552428CF73E9001BF0FF /* texture_coordinate.h in Headers */,
 				04FDF02527E771F100BBE8E4 /* tree_node.h in Headers */,
 				040C551E28CF57E9001BF0FF /* linear_fog.h in Headers */,
 				047BF02927A6659E003F3599 /* astc.h in Headers */,
