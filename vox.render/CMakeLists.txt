@@ -323,6 +323,7 @@ set(LUA_FILES
 
 set(LUA_SOURCE
         ../third_party/sol2/include
+        /usr/local/include/lua
         /opt/homebrew/include/lua
         )
 
