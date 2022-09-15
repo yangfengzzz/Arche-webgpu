@@ -48,12 +48,7 @@ vec3 getLightProbeRadiance(vec3 viewDir, vec3 normal, float roughness, int maxMI
         reflectVec.x = -reflectVec.x; // TextureCube is left-hand,so x need inverse
         
         float specularMIPLevel = getSpecularMIPLevel(roughness, maxMIPLevel );
-
-        #ifdef HAS_TEX_LOD
-            vec4 envMapColor = textureCubeLodEXT( u_env_specularSampler, reflectVec, specularMIPLevel );
-        #else
-            vec4 envMapColor = textureCube( u_env_specularSampler, reflectVec, specularMIPLevel );
-        #endif
+        vec4 envMapColor = texture( samplerCube(u_env_specularTexture, u_env_specularSampler), reflectVec, specularMIPLevel );
 
         #ifdef DECODE_ENV_RGBM
             envMapColor.rgb = RGBMToLinear(envMapColor, 5.0).rgb;

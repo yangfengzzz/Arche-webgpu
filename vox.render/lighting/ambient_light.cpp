@@ -89,9 +89,9 @@ void AmbientLight::setSpecularTexture(const std::shared_ptr<SampledTexture> &val
                                      _specularReflection);
         _envMapLight.mipMapLevel = static_cast<uint32_t>(value->mipmapCount() - 1);
         _scene->shaderData.setData(AmbientLight::_envMapProperty, _envMapLight);
-        shaderData.removeDefine(HAS_SPECULAR_ENV);
-    } else {
         shaderData.addDefine(HAS_SPECULAR_ENV);
+    } else {
+        shaderData.removeDefine(HAS_SPECULAR_ENV);
     }
 }
 
