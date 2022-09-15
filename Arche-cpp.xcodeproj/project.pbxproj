@@ -5347,7 +5347,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
-				EXCLUDED_ARCHS = x86_64;
+				EXCLUDED_ARCHS = arm64;
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
 				GCC_ENABLE_CPP_RTTI = YES;
@@ -5362,7 +5362,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
-				EXCLUDED_ARCHS = x86_64;
+				EXCLUDED_ARCHS = arm64;
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
 				GCC_ENABLE_CPP_RTTI = YES;
@@ -5378,7 +5378,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
-				EXCLUDED_ARCHS = x86_64;
+				EXCLUDED_ARCHS = arm64;
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
 				GCC_ENABLE_CPP_RTTI = YES;
@@ -5421,6 +5421,7 @@
 					./third_party/nlohmann/include,
 					./third_party/sol2/include,
 					/opt/homebrew/include/lua,
+					/usr/local/include/lua,
 					./third_party/dawn,
 					./third_party/dawn/include,
 					"./third_party/dawn/cmake-debug/gen/include",
@@ -5436,7 +5437,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
-				EXCLUDED_ARCHS = x86_64;
+				EXCLUDED_ARCHS = arm64;
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
 				GCC_ENABLE_CPP_RTTI = YES;
@@ -5479,6 +5480,7 @@
 					./third_party/nlohmann/include,
 					./third_party/sol2/include,
 					/opt/homebrew/include/lua,
+					/usr/local/include/lua,
 					./third_party/dawn,
 					./third_party/dawn/include,
 					"./third_party/dawn/cmake-release/gen/include",
@@ -5611,7 +5613,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
-				EXCLUDED_ARCHS = x86_64;
+				EXCLUDED_ARCHS = arm64;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"'ROOT_PATH_SIZE=39'",
 					VKB_VULKAN_DEBUG,
@@ -5630,7 +5632,10 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
-				LD_RUNPATH_SEARCH_PATHS = ./third_party/assimp/build_debug/bin;
+				LD_RUNPATH_SEARCH_PATHS = (
+					./third_party/assimp/build_debug/bin,
+					./third_party/ktx/build,
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"./third_party/dawn/cmake-debug/src/dawn",
 					"./third_party/dawn/cmake-debug/src/dawn/common",
@@ -5645,14 +5650,14 @@
 					"./third_party/dawn/cmake-debug/third_party/abseil/absl/numeric",
 					"./third_party/dawn/cmake-debug/third_party/glfw/src",
 					./third_party/ktx/build,
-					"./cmake-build-debug/third_party/lib/Debug/arm64",
-					"./cmake-build-debug/third_party/glfw/src/lib/Debug/arm64",
-					"./cmake-build-debug/third_party/glslang/glslang/lib/Debug/arm64",
-					"./cmake-build-debug/third_party/glslang/glslang/OSDependent/Unix/lib/Debug/arm64",
-					"./cmake-build-debug/third_party/glslang/SPIRV/lib/Debug/arm64",
-					"./cmake-build-debug/third_party/spirv-cross/lib/Debug/arm64",
-					"./cmake-build-debug/third_party/hwcpipe/lib/Debug/arm64",
-					"./cmake-build-debug/third_party/glslang/OGLCompilersDLL/lib/Debug/arm64",
+					"./cmake-build-debug/third_party/lib/Debug/x86_64",
+					"./cmake-build-debug/third_party/glfw/src/lib/Debug/x86_64",
+					"./cmake-build-debug/third_party/glslang/glslang/lib/Debug/x86_64",
+					"./cmake-build-debug/third_party/glslang/glslang/OSDependent/Unix/lib/Debug/x86_64",
+					"./cmake-build-debug/third_party/glslang/SPIRV/lib/Debug/x86_64",
+					"./cmake-build-debug/third_party/spirv-cross/lib/Debug/x86_64",
+					"./cmake-build-debug/third_party/hwcpipe/lib/Debug/x86_64",
+					"./cmake-build-debug/third_party/glslang/OGLCompilersDLL/lib/Debug/x86_64",
 					./third_party/assimp/build_debug/bin,
 				);
 				OTHER_LDFLAGS = (
@@ -5716,6 +5721,7 @@
 					./third_party/nlohmann/include,
 					./third_party/sol2/include,
 					/opt/homebrew/include/lua,
+					/usr/local/include/lua,
 					./third_party/dawn,
 					./third_party/dawn/include,
 					"./third_party/dawn/cmake-debug/gen/include",
@@ -5736,7 +5742,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
-				EXCLUDED_ARCHS = x86_64;
+				EXCLUDED_ARCHS = arm64;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"'ROOT_PATH_SIZE=39'",
 					VKB_VULKAN_DEBUG,
@@ -5754,7 +5760,10 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
-				LD_RUNPATH_SEARCH_PATHS = ./third_party/assimp/build_release/bin;
+				LD_RUNPATH_SEARCH_PATHS = (
+					./third_party/assimp/build_release/bin,
+					./third_party/ktx/build,
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"./third_party/dawn/cmake-release/src/dawn",
 					"./third_party/dawn/cmake-release/src/dawn/common",
@@ -5769,14 +5778,14 @@
 					"./third_party/dawn/cmake-release/third_party/abseil/absl/numeric",
 					"./third_party/dawn/cmake-release/third_party/glfw/src",
 					./third_party/ktx/build,
-					"./cmake-build-release/third_party/lib/Release/arm64",
-					"./cmake-build-release/third_party/glfw/src/lib/Release/arm64",
-					"./cmake-build-release/third_party/glslang/glslang/lib/Release/arm64",
-					"./cmake-build-release/third_party/glslang/glslang/OSDependent/Unix/lib/Release/arm64",
-					"./cmake-build-release/third_party/glslang/SPIRV/lib/Release/arm64",
-					"./cmake-build-release/third_party/spirv-cross/lib/Release/arm64",
-					"./cmake-build-release/third_party/hwcpipe/lib/Release/arm64",
-					"./cmake-build-release/third_party/glslang/OGLCompilersDLL/lib/Release/arm64",
+					"./cmake-build-release/third_party/lib/Release/x86_64",
+					"./cmake-build-release/third_party/glfw/src/lib/Release/x86_64",
+					"./cmake-build-release/third_party/glslang/glslang/lib/Release/x86_64",
+					"./cmake-build-release/third_party/glslang/glslang/OSDependent/Unix/lib/Release/x86_64",
+					"./cmake-build-release/third_party/glslang/SPIRV/lib/Release/x86_64",
+					"./cmake-build-release/third_party/spirv-cross/lib/Release/x86_64",
+					"./cmake-build-release/third_party/hwcpipe/lib/Release/x86_64",
+					"./cmake-build-release/third_party/glslang/OGLCompilersDLL/lib/Release/x86_64",
 					./third_party/assimp/build_release/bin,
 				);
 				OTHER_LDFLAGS = (
@@ -5840,6 +5849,7 @@
 					./third_party/nlohmann/include,
 					./third_party/sol2/include,
 					/opt/homebrew/include/lua,
+					/usr/local/include/lua,
 					./third_party/dawn,
 					./third_party/dawn/include,
 					"./third_party/dawn/cmake-release/gen/include",
@@ -5857,7 +5867,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
-				EXCLUDED_ARCHS = x86_64;
+				EXCLUDED_ARCHS = arm64;
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
 				GCC_ENABLE_CPP_RTTI = YES;
@@ -5875,7 +5885,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
-				EXCLUDED_ARCHS = x86_64;
+				EXCLUDED_ARCHS = arm64;
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
 				GCC_ENABLE_CPP_RTTI = YES;
@@ -5895,7 +5905,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
-				EXCLUDED_ARCHS = x86_64;
+				EXCLUDED_ARCHS = arm64;
 				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
 				LIBRARY_SEARCH_PATHS = ./third_party/googletest/build/lib;
 				OTHER_LDFLAGS = (
@@ -5920,7 +5930,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
-				EXCLUDED_ARCHS = x86_64;
+				EXCLUDED_ARCHS = arm64;
 				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
 				LIBRARY_SEARCH_PATHS = ./third_party/googletest/build/lib;
 				OTHER_LDFLAGS = (
@@ -5944,6 +5954,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
+				EXCLUDED_ARCHS = arm64;
 				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
 				LIBRARY_SEARCH_PATHS = ./third_party/googletest/build/lib;
 				OTHER_LDFLAGS = (
@@ -5967,6 +5978,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
+				EXCLUDED_ARCHS = arm64;
 				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
 				LIBRARY_SEARCH_PATHS = ./third_party/googletest/build/lib;
 				OTHER_LDFLAGS = (
@@ -5990,6 +6002,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
+				EXCLUDED_ARCHS = arm64;
 				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
 				LIBRARY_SEARCH_PATHS = ./third_party/googletest/build/lib;
 				OTHER_LDFLAGS = (
@@ -6013,6 +6026,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
+				EXCLUDED_ARCHS = arm64;
 				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
 				LIBRARY_SEARCH_PATHS = ./third_party/googletest/build/lib;
 				OTHER_LDFLAGS = (
@@ -6034,6 +6048,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
+				EXCLUDED_ARCHS = arm64;
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
 				GCC_ENABLE_CPP_RTTI = YES;
@@ -6053,6 +6068,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
+				EXCLUDED_ARCHS = arm64;
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
 				GCC_ENABLE_CPP_RTTI = YES;
@@ -6075,7 +6091,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
-				EXCLUDED_ARCHS = x86_64;
+				EXCLUDED_ARCHS = arm64;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
 					DAWN_ENABLE_BACKEND_METAL,
@@ -6231,7 +6247,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
-				EXCLUDED_ARCHS = x86_64;
+				EXCLUDED_ARCHS = arm64;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
 					DAWN_ENABLE_BACKEND_METAL,
