@@ -9,7 +9,7 @@ initMaterial(material, geometry);
 addTotalDirectRadiance(geometry, material, reflectedLight);
 
 // IBL diffuse
-#ifdef USE_SH
+#ifdef HAS_SH
     vec3 irradiance = getLightProbeIrradiance(u_env_sh, geometry.normal);
     #ifdef COLORSPACE_GAMMA
         irradiance = linearToGamma(vec4(irradiance, 1.0)).rgb;
@@ -46,7 +46,7 @@ reflectedLight.indirectSpecular += radianceAttenuation * radiance * envBRDFAppro
     #endif
     float ambientOcclusion = (texture2D(u_occlusionTexture, aoUV).r - 1.0) * u_occlusionIntensity + 1.0;
     reflectedLight.indirectDiffuse *= ambientOcclusion;
-    #ifdef USE_SPECULAR_ENV
+    #ifdef HAS_SPECULAR_ENV
         reflectedLight.indirectSpecular *= computeSpecularOcclusion(ambientOcclusion, material.roughness, geometry.dotNV);
     #endif
 #endif

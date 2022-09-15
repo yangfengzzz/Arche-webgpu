@@ -21,9 +21,6 @@ enum class DiffuseMode {
     /** Solid color mode. */
     SolidColor,
 
-    /** Texture mode. */
-    Texture,
-
     /**
      * SH mode
      * @remarks
@@ -39,10 +36,10 @@ enum class DiffuseMode {
 class AmbientLight {
 public:
     struct alignas(16) EnvMapLight {
-        Vector3F diffuse;
-        uint32_t mipMapLevel;
-        float diffuseIntensity;
-        float specularIntensity;
+        Vector3F diffuse = Vector3F(0.212, 0.227, 0.259);
+        uint32_t mipMapLevel = 0;
+        float diffuseIntensity = 1.0;
+        float specularIntensity = 1.0;
     };
 
     AmbientLight();
@@ -71,14 +68,6 @@ public:
     const SphericalHarmonics3 &diffuseSphericalHarmonics();
 
     void setDiffuseSphericalHarmonics(const SphericalHarmonics3 &value);
-
-    /**
-     * Diffuse reflection texture.
-     * @remarks This texture must be baked from MetalLoader::createIrradianceTexture
-     */
-    std::shared_ptr<SampledTexture> diffuseTexture();
-
-    void setDiffuseTexture(const std::shared_ptr<SampledTexture> &value);
 
     /**
      * Diffuse reflection intensity.
@@ -110,37 +99,20 @@ public:
 
     void setSpecularIntensity(float value);
 
-public:
-    /**
-     * brdf loopup texture.
-     * @remarks This texture must be baked from MetalLoader::createBRDFLookupTable
-     */
-    std::shared_ptr<SampledTexture> brdfTexture();
-
-    void setBRDFTexture(const std::shared_ptr<SampledTexture> &value);
-
 private:
-    std::array<float, 27> _preComputeSH(const SphericalHarmonics3 &sh);
+    static std::array<float, 27> _preComputeSH(const SphericalHarmonics3 &sh);
 
     EnvMapLight _envMapLight;
-    const std::string _envMapProperty;
+    static const std::string _envMapProperty;
 
     SphericalHarmonics3 _diffuseSphericalHarmonics;
     std::array<float, 27> _shArray{};
-    const std::string _diffuseSHProperty;
-
-    std::shared_ptr<SampledTexture> _diffuseTexture{nullptr};
-    const std::string _diffuseTextureProperty;
-    const std::string _diffuseSamplerProperty;
+    static const std::string _diffuseSHProperty;
 
     bool _specularTextureDecodeRGBM{false};
     std::shared_ptr<SampledTexture> _specularReflection{nullptr};
-    const std::string _specularTextureProperty;
-    const std::string _specularSamplerProperty;
-
-    std::shared_ptr<SampledTexture> _brdfLutTexture{nullptr};
-    const std::string _brdfTextureProperty;
-    const std::string _brdfSamplerProperty;
+    static const std::string _specularTextureProperty;
+    static const std::string _specularSamplerProperty;
 
     Scene *_scene{};
     DiffuseMode _diffuseMode = DiffuseMode::SolidColor;

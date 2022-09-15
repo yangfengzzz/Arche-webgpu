@@ -49,7 +49,7 @@ layout(set = 0, binding = EnvMap_Light_Location) uniform u_envMapLight {
     float specular_intensity;
 } env_map_light;
 
-#ifdef USE_SH
+#ifdef HAS_SH
     layout(set = 0, binding = Env_SH_Location) uniform u_env_sh {
         float env_sh[9];
     };

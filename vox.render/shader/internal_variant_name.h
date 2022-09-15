@@ -54,6 +54,7 @@ const std::string SPOT_LIGHT_COUNT = "SPOT_LIGHT_COUNT ";
 const std::string HAS_SH = "HAS_SH";
 const std::string HAS_SPECULAR_ENV = "HAS_SPECULAR_ENV";
 const std::string HAS_DIFFUSE_ENV = "HAS_DIFFUSE_ENV";
+const std::string DECODE_ENV_RGBM = "DECODE_ENV_RGBM";
 
 // Particle Render
 const std::string NEED_PARTICLE_SCATTERING = "NEED_PARTICLE_SCATTERING";

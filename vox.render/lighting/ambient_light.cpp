@@ -10,26 +10,18 @@
 #include "vox.render/shader/internal_variant_name.h"
 
 namespace vox {
-AmbientLight::AmbientLight()
-    : _envMapProperty("u_envMapLight"),
-      _diffuseSHProperty("u_env_sh"),
-      _diffuseTextureProperty("u_env_diffuseTexture"),
-      _diffuseSamplerProperty("u_env_diffuseSampler"),
-      _specularTextureProperty("u_env_specularTexture"),
-      _specularSamplerProperty("u_env_specularSampler"),
-      _brdfTextureProperty("u_env_brdfTexture"),
-      _brdfSamplerProperty("u_env_brdfSampler") {}
+const std::string AmbientLight::_envMapProperty = "u_envMapLight";
+const std::string AmbientLight::_diffuseSHProperty = "u_env_sh";
+const std::string AmbientLight::_specularTextureProperty = "u_env_specularTexture";
+const std::string AmbientLight::_specularSamplerProperty = "u_env_specularSampler";
+
+AmbientLight::AmbientLight() = default;
 
 void AmbientLight::setScene(Scene *value) {
     _scene = value;
     if (!value) return;
 
-    _envMapLight.diffuse = Vector3F(0.212, 0.227, 0.259);
-    _envMapLight.diffuseIntensity = 1.0;
-    _envMapLight.specularIntensity = 1.0;
     _scene->shaderData.setData(AmbientLight::_envMapProperty, _envMapLight);
-    // _scene->shaderData.setData(AmbientLight::_brdfTextureProperty,
-    //                           value->engine()->resourceLoader()->createBRDFLookupTable());
 }
 
 DiffuseMode AmbientLight::diffuseMode() { return _diffuseMode; }
@@ -38,19 +30,10 @@ void AmbientLight::setDiffuseMode(DiffuseMode value) {
     _diffuseMode = value;
     if (!_scene) return;
 
-    switch (value) {
-        case DiffuseMode::SphericalHarmonics:
-            _scene->shaderData.removeDefine(HAS_DIFFUSE_ENV);
-            _scene->shaderData.addDefine(HAS_SH);
-            break;
-
-        case DiffuseMode::Texture:
-            _scene->shaderData.removeDefine(HAS_SH);
-            _scene->shaderData.addDefine(HAS_DIFFUSE_ENV);
-            break;
-
-        default:
-            break;
+    if (value == DiffuseMode::SphericalHarmonics) {
+        _scene->shaderData.addDefine(HAS_SH);
+    } else {
+        _scene->shaderData.removeDefine(HAS_SH);
     }
 }
 
@@ -72,23 +55,6 @@ void AmbientLight::setDiffuseSphericalHarmonics(const SphericalHarmonics3 &value
     _scene->shaderData.setData(AmbientLight::_diffuseSHProperty, _preComputeSH(value));
 }
 
-std::shared_ptr<SampledTexture> AmbientLight::diffuseTexture() { return _diffuseTexture; }
-
-void AmbientLight::setDiffuseTexture(const std::shared_ptr<SampledTexture> &value) {
-    _diffuseTexture = value;
-    if (!_scene) return;
-
-    auto &shaderData = _scene->shaderData;
-
-    if (value) {
-        shaderData.setSampledTexture(AmbientLight::_diffuseTextureProperty, AmbientLight::_diffuseSamplerProperty,
-                                     _diffuseTexture);
-        shaderData.removeDefine(HAS_DIFFUSE_ENV);
-    } else {
-        shaderData.addDefine(HAS_DIFFUSE_ENV);
-    }
-}
-
 float AmbientLight::diffuseIntensity() const { return _envMapLight.diffuseIntensity; }
 
 void AmbientLight::setDiffuseIntensity(float value) {
@@ -101,7 +67,14 @@ void AmbientLight::setDiffuseIntensity(float value) {
 // MARK: - Specular
 bool AmbientLight::specularTextureDecodeRGBM() const { return _specularTextureDecodeRGBM; }
 
-void AmbientLight::setSpecularTextureDecodeRGBM(bool value) {}
+void AmbientLight::setSpecularTextureDecodeRGBM(bool value) {
+    this->_specularTextureDecodeRGBM = value;
+    if (value) {
+        _scene->shaderData.addDefine(DECODE_ENV_RGBM);
+    } else {
+        _scene->shaderData.removeDefine(DECODE_ENV_RGBM);
+    }
+}
 
 std::shared_ptr<SampledTexture> AmbientLight::specularTexture() { return _specularReflection; }
 
@@ -130,11 +103,6 @@ void AmbientLight::setSpecularIntensity(float value) {
 
     _scene->shaderData.setData(AmbientLight::_envMapProperty, _envMapLight);
 }
-
-// MARK: - BRDF Texture
-std::shared_ptr<SampledTexture> AmbientLight::brdfTexture() { return _brdfLutTexture; }
-
-void AmbientLight::setBRDFTexture(const std::shared_ptr<SampledTexture> &value) {}
 
 std::array<float, 27> AmbientLight::_preComputeSH(const SphericalHarmonics3 &sh) {
     /**
