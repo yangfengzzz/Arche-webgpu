@@ -45,7 +45,7 @@ public:
 
         _layer = [CAMetalLayer layer];
         [_layer setDevice:_mtlDevice];
-        [_layer setPixelFormat:MTLPixelFormatBGRA8Unorm_sRGB];
+        [_layer setPixelFormat:MTLPixelFormatBGRA8Unorm];
         [_layer setDrawableSize:size];
 
         constexpr uint32_t kFramebufferOnlyTextureUsages = WGPUTextureUsage_RenderAttachment | WGPUTextureUsage_Present;

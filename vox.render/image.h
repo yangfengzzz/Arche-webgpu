@@ -95,7 +95,7 @@ private:
 
     wgpu::TextureFormat _format{wgpu::TextureFormat::Undefined};
 
-    uint32_t layers_{1};
+    uint32_t _layers{1};
 
     std::vector<Mipmap> _mipmaps{{}};
 

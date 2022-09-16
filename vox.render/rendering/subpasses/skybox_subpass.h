@@ -26,6 +26,8 @@ public:
 
     void createCuboid();
 
+    void flipVertically();
+
     /**
      * Texture cube map of the sky box material.
      */
@@ -38,6 +40,8 @@ public:
 private:
     enum class SkyBoxType { Cuboid, Sphere };
     SkyBoxType _type = SkyBoxType::Cuboid;
+
+    bool _isFlipVertically_{false};
     ModelMeshPtr _mesh{nullptr};
     std::shared_ptr<Image> _cubeMap{nullptr};
     Buffer _vpMatrix;

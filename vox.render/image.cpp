@@ -33,7 +33,7 @@ wgpu::TextureFormat Image::format() const { return _format; }
 
 const wgpu::Extent3D &Image::extent() const { return _mipmaps.at(0).extent; }
 
-uint32_t Image::layers() const { return _mipmaps.at(0).extent.depthOrArrayLayers; }
+uint32_t Image::layers() const { return _layers; }
 
 const std::vector<Mipmap> &Image::mipmaps() const { return _mipmaps; }
 
@@ -45,6 +45,9 @@ void Image::createTexture(wgpu::Device &device, wgpu::TextureUsage usage) {
     desc.usage = usage;
     desc.format = _format;
     desc.size = _mipmaps.at(0).extent;
+    if (_layers > 1) {
+        desc.size.depthOrArrayLayers = _layers;
+    }
     desc.mipLevelCount = _mipmaps.size();
     _texture = device.CreateTexture(&desc);
 }
@@ -133,7 +136,7 @@ void Image::setHeight(const uint32_t height) { _mipmaps.at(0).extent.height = he
 
 void Image::setDepth(const uint32_t depth) { _mipmaps.at(0).extent.depthOrArrayLayers = depth; }
 
-void Image::setLayers(uint32_t l) { _mipmaps.at(0).extent.depthOrArrayLayers = l; }
+void Image::setLayers(uint32_t l) { _layers = l; }
 
 void Image::setOffsets(const std::vector<std::vector<uint64_t>> &o) { _offsets = o; }
 

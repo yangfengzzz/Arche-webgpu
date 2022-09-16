@@ -42,6 +42,8 @@ void SkyboxSubpass::setTextureCubeMap(const std::shared_ptr<Image>& v) { _cubeMa
 
 void SkyboxSubpass::setTextureCubeSampler(const wgpu::SamplerDescriptor& desc) { _samplerDesc = desc; }
 
+void SkyboxSubpass::flipVertically() { _isFlipVertically_ = true; }
+
 // MARK: - Render
 void SkyboxSubpass::prepare() {
     _depthStencil.format = _depthStencilTextureFormat;
@@ -56,11 +58,6 @@ void SkyboxSubpass::prepare() {
     // Shader
     {
         ShaderVariant variant;
-        _forwardPipelineDescriptor.vertex.entryPoint = "main";
-        _forwardPipelineDescriptor.vertex.module =
-                ResourceCache::GetSingleton()
-                        .requestShaderModule(wgpu::ShaderStage::Vertex, vert_shader_, variant)
-                        .handle();
         _fragment.entryPoint = "main";
         _fragment.module = ResourceCache::GetSingleton()
                                    .requestShaderModule(wgpu::ShaderStage::Fragment, frag_shader_, variant)
@@ -110,12 +107,22 @@ void SkyboxSubpass::prepare() {
         _forwardPipelineDescriptor.primitive.topology = wgpu::PrimitiveTopology::TriangleList;
         _forwardPipelineDescriptor.vertex.bufferCount = static_cast<uint32_t>(_mesh->vertexBufferLayouts().size());
         _forwardPipelineDescriptor.vertex.buffers = _mesh->vertexBufferLayouts().data();
-        _renderPipeline = ResourceCache::GetSingleton().requestPipeline(_forwardPipelineDescriptor);
     }
 }
 
 void SkyboxSubpass::draw(wgpu::RenderPassEncoder& passEncoder) {
     passEncoder.PushDebugGroup("Draw Skybox");
+
+    ShaderVariant variant;
+    if (_isFlipVertically_) {
+        variant.AddDefine("NEED_FLIP_Y");
+    }
+    _forwardPipelineDescriptor.vertex.entryPoint = "main";
+    _forwardPipelineDescriptor.vertex.module =
+            ResourceCache::GetSingleton()
+                    .requestShaderModule(wgpu::ShaderStage::Vertex, vert_shader_, variant)
+                    .handle();
+    _renderPipeline = ResourceCache::GetSingleton().requestPipeline(_forwardPipelineDescriptor);
 
     const auto projectionMatrix = _camera->projectionMatrix();
     auto viewMatrix = _camera->viewMatrix();

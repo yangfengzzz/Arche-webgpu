@@ -39,43 +39,35 @@ std::shared_ptr<Image> ImageManager::loadTexture(const std::string &file) {
 
 void ImageManager::uploadImage(Image *image) {
     auto data = image->data();
-    wgpu::BufferDescriptor descriptor;
-    descriptor.size = data.size();
-    descriptor.usage = wgpu::BufferUsage::CopySrc | wgpu::BufferUsage::CopyDst;
-    wgpu::Buffer stagingBuffer = _device.CreateBuffer(&descriptor);
-    _device.GetQueue().WriteBuffer(stagingBuffer, 0, data.data(), data.size());
-
     auto &mipmaps = image->mipmaps();
     const auto &layers = image->layers();
     auto &offsets = image->offsets();
     auto bytesPerPixel = _bytesPerPixel(image->format());
-    wgpu::CommandEncoder encoder = _device.CreateCommandEncoder();
 
     for (uint32_t layer = 0; layer < layers; layer++) {
         for (size_t i = 0; i < mipmaps.size(); i++) {
             auto width = image->extent().width >> i;
             auto height = image->extent().height >> i;
 
-            wgpu::ImageCopyBuffer imageCopyBuffer = _createImageCopyBuffer(
-                    stagingBuffer, layers > 1 ? offsets[layer][i] : mipmaps[i].offset, bytesPerPixel * width);
-
             wgpu::ImageCopyTexture imageCopyTexture;
             imageCopyTexture.texture = image->getTexture();
             imageCopyTexture.mipLevel = i;
-            imageCopyTexture.origin = {0, 0, 0};
+            imageCopyTexture.origin = {0, 0, layer};
             imageCopyTexture.aspect = wgpu::TextureAspect::All;
 
-            wgpu::Extent3D copySize = {width, height, layer};
-            encoder.CopyBufferToTexture(&imageCopyBuffer, &imageCopyTexture, &copySize);
+            wgpu::Extent3D copySize = {width, height, 1};
+
+            wgpu::TextureDataLayout textureDataLayout;
+            textureDataLayout.offset = layers > 1 ? offsets[layer][i] : mipmaps[i].offset;
+            textureDataLayout.bytesPerRow = bytesPerPixel * width;
+            textureDataLayout.rowsPerImage = height;
+
+            _device.GetQueue().WriteTexture(&imageCopyTexture, data.data(), data.size(), &textureDataLayout, &copySize);
         }
     }
-    wgpu::CommandBuffer copy = encoder.Finish();
-    _device.GetQueue().Submit(1, &copy);
 }
 
-std::shared_ptr<Image> ImageManager::generateIBL(const std::string &file) {
-    return nullptr;
-}
+std::shared_ptr<Image> ImageManager::generateIBL(const std::string &file) { return nullptr; }
 
 SphericalHarmonics3 ImageManager::generateSH(const std::string &file) {
     auto source = loadTexture(file);
@@ -184,9 +176,9 @@ uint32_t ImageManager::_bytesPerPixel(wgpu::TextureFormat format) {
         case wgpu::TextureFormat::RG8Snorm:
             return 2;
 
-        case wgpu::TextureFormat::R32Float:
         case wgpu::TextureFormat::R32Uint:
         case wgpu::TextureFormat::R32Sint:
+        case wgpu::TextureFormat::R32Float:
         case wgpu::TextureFormat::RG16Uint:
         case wgpu::TextureFormat::RG16Sint:
         case wgpu::TextureFormat::RG16Float:
@@ -199,15 +191,17 @@ uint32_t ImageManager::_bytesPerPixel(wgpu::TextureFormat format) {
         case wgpu::TextureFormat::BGRA8UnormSrgb:
             return 4;
 
-        case wgpu::TextureFormat::RG32Float:
         case wgpu::TextureFormat::RG32Uint:
         case wgpu::TextureFormat::RG32Sint:
+        case wgpu::TextureFormat::RG32Float:
         case wgpu::TextureFormat::RGBA16Uint:
         case wgpu::TextureFormat::RGBA16Sint:
+        case wgpu::TextureFormat::RGBA16Float:
             return 8;
 
-        case wgpu::TextureFormat::RGBA32Float:
         case wgpu::TextureFormat::RGBA32Sint:
+        case wgpu::TextureFormat::RGBA32Uint:
+        case wgpu::TextureFormat::RGBA32Float:
             return 16;
 
         default:
