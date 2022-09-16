@@ -23,7 +23,7 @@ private:
 public:
     explicit AtomicMaterial(wgpu::Device& device)
         : BaseMaterial(device),
-          _atomicProp("u_atomic"),
+          _atomicProp("u_atomicCounter"),
           _atomicBuffer(device, sizeof(uint32_t), wgpu::BufferUsage::Storage) {
         setAtomicBuffer(_atomicBuffer);
         vertex_source_ = ShaderManager::GetSingleton().LoadShader("unlit.vert");

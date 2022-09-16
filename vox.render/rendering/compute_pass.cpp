@@ -48,7 +48,7 @@ void ComputePass::compute(wgpu::ComputePassEncoder& passEncoder) {
         shaderData->mergeVariants(compileMacros, compileMacros);
     }
 
-    auto& shader_module = _resourceCache.requestShaderModule(wgpu::ShaderStage::Vertex, *_source, compileMacros);
+    auto& shader_module = _resourceCache.requestShaderModule(wgpu::ShaderStage::Compute, *_source, compileMacros);
     _computePipelineDescriptor.compute.module = shader_module.handle();
 
     _bindGroupLayoutEntryVecMap.clear();
@@ -80,7 +80,7 @@ void ComputePass::compute(wgpu::ComputePassEncoder& passEncoder) {
     auto renderPipeline = _resourceCache.requestPipeline(_computePipelineDescriptor);
     passEncoder.SetPipeline(renderPipeline);
 
-    passEncoder.Dispatch(_workgroupCountX, _workgroupCountY, _workgroupCountZ);
+    passEncoder.DispatchWorkgroups(_workgroupCountX, _workgroupCountY, _workgroupCountZ);
 }
 
 }  // namespace vox

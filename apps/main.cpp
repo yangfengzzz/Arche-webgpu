@@ -47,7 +47,7 @@ int main(int argc, char* argv[]) {
 
     auto code = platform.Initialize(plugins::GetAll());
     if (code == vox::ExitCode::SUCCESS) {
-        platform.SetApp(std::make_unique<vox::IrradianceApp>());
+        platform.SetApp(std::make_unique<vox::AtomicComputeApp>());
         code = platform.MainLoop();
     }
     platform.Terminate(code);
