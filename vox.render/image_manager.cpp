@@ -73,7 +73,9 @@ void ImageManager::uploadImage(Image *image) {
     _device.GetQueue().Submit(1, &copy);
 }
 
-std::shared_ptr<Image> ImageManager::generateIBL(const std::string &file) {}
+std::shared_ptr<Image> ImageManager::generateIBL(const std::string &file) {
+    return nullptr;
+}
 
 SphericalHarmonics3 ImageManager::generateSH(const std::string &file) {
     auto source = loadTexture(file);
