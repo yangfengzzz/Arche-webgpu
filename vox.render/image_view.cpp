@@ -7,7 +7,7 @@
 #include "vox.render/image_view.h"
 
 namespace vox {
-ImageView::ImageView(Image* image,
+ImageView::ImageView(const Image* image,
                      wgpu::TextureViewDimension view_type,
                      uint32_t base_mip_level,
                      uint32_t base_array_layer,
@@ -18,8 +18,8 @@ ImageView::ImageView(Image* image,
     _desc.dimension = view_type;
     _desc.baseMipLevel = base_mip_level;
     _desc.baseArrayLayer = base_array_layer;
-    _desc.mipLevelCount = n_mip_levels;
-    _desc.arrayLayerCount = n_array_layers;
+    _desc.mipLevelCount = n_mip_levels == 0 ? image->mipmaps().size() : n_mip_levels;
+    _desc.arrayLayerCount = n_array_layers == 0 ? image->layers() : n_array_layers;
     _handle = image->getTexture().CreateView(&_desc);
     _sampleCount = image->getTexture().GetSampleCount();
 }

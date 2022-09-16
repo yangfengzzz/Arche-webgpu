@@ -34,7 +34,7 @@ public:
 
     explicit Image(std::string name, std::vector<uint8_t> &&data = {}, std::vector<Mipmap> &&mipmaps = {{}});
 
-    static std::unique_ptr<Image> load(const std::string &name, const std::string &uri, bool flipY = false);
+    static std::shared_ptr<Image> load(const std::string &name, const std::string &uri, bool flipY = false);
 
     virtual ~Image() = default;
 
@@ -100,9 +100,9 @@ private:
     std::vector<Mipmap> _mipmaps{{}};
 
     // Offsets stored like offsets[array_layer][mipmap_layer]
-    std::vector<std::vector<uint64_t>> _offsets;
+    std::vector<std::vector<uint64_t>> _offsets{};
 
-    wgpu::Texture _texture;
+    wgpu::Texture _texture{};
 
     std::unordered_map<size_t, std::shared_ptr<ImageView>> _image_views;
 };

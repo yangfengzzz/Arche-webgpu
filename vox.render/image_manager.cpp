@@ -32,7 +32,7 @@ std::shared_ptr<Image> ImageManager::loadTexture(const std::string &file) {
         auto image = Image::load(file, file);
         image->createTexture(_device);
         uploadImage(image.get());
-        _image_pool.insert(std::make_pair(file, std::move(image)));
+        _image_pool.insert(std::make_pair(file, image));
         return image;
     }
 }
@@ -48,8 +48,7 @@ void ImageManager::uploadImage(Image *image) {
     auto &mipmaps = image->mipmaps();
     const auto &layers = image->layers();
     auto &offsets = image->offsets();
-    auto &texture = image->getTexture();
-    auto bytesPerPixel = _bytesPerPixel(texture.GetFormat());
+    auto bytesPerPixel = _bytesPerPixel(image->format());
     wgpu::CommandEncoder encoder = _device.CreateCommandEncoder();
 
     for (uint32_t layer = 0; layer < layers; layer++) {
@@ -61,7 +60,7 @@ void ImageManager::uploadImage(Image *image) {
                     stagingBuffer, layers > 1 ? offsets[layer][i] : mipmaps[i].offset, bytesPerPixel * width);
 
             wgpu::ImageCopyTexture imageCopyTexture;
-            imageCopyTexture.texture = texture;
+            imageCopyTexture.texture = image->getTexture();
             imageCopyTexture.mipLevel = i;
             imageCopyTexture.origin = {0, 0, 0};
             imageCopyTexture.aspect = wgpu::TextureAspect::All;

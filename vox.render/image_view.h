@@ -11,7 +11,7 @@
 namespace vox {
 class ImageView {
 public:
-    explicit ImageView(Image* image,
+    explicit ImageView(const Image* image,
                        wgpu::TextureViewDimension view_type,
                        uint32_t base_mip_level,
                        uint32_t base_array_layer,

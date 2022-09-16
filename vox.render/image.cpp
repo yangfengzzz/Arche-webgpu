@@ -46,6 +46,7 @@ void Image::createTexture(wgpu::Device &device, wgpu::TextureUsage usage) {
     desc.format = _format;
     desc.size = _mipmaps.at(0).extent;
     desc.mipLevelCount = _mipmaps.size();
+    _texture = device.CreateTexture(&desc);
 }
 
 const wgpu::Texture &Image::getTexture() const { return _texture; }
@@ -136,19 +137,19 @@ void Image::setLayers(uint32_t l) { _mipmaps.at(0).extent.depthOrArrayLayers = l
 
 void Image::setOffsets(const std::vector<std::vector<uint64_t>> &o) { _offsets = o; }
 
-std::unique_ptr<Image> Image::load(const std::string &name, const std::string &uri, bool flipY) {
-    std::unique_ptr<Image> image{nullptr};
+std::shared_ptr<Image> Image::load(const std::string &name, const std::string &uri, bool flipY) {
+    std::shared_ptr<Image> image{nullptr};
 
     auto data = fs::ReadAsset(uri);
 
     // Get extension
     auto extension = fs::ExtraExtension(uri);
     if (extension == "png" || extension == "jpg") {
-        image = std::make_unique<Stb>(name, data, flipY);
+        image = std::make_shared<Stb>(name, data, flipY);
     } else if (extension == "astc") {
-        image = std::make_unique<Astc>(name, data, flipY);
+        image = std::make_shared<Astc>(name, data, flipY);
     } else if (extension == "ktx" || extension == "ktx2") {
-        image = std::make_unique<Ktx>(name, data, flipY);
+        image = std::make_shared<Ktx>(name, data, flipY);
     }
     return image;
 }
