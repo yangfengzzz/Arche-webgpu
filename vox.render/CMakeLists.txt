@@ -43,6 +43,7 @@ set(RENDERING_FILES
 file(GLOB IMAGE_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/image/*.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/image.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/image_manager.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/sampler.cpp)
 
 file(GLOB FOG_FILES

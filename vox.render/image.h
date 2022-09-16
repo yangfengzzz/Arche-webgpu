@@ -57,7 +57,7 @@ public:
     void createTexture(wgpu::Device &device,
                        wgpu::TextureUsage usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst);
 
-    [[nodiscard]] const wgpu::Texture &GetTexture() const;
+    [[nodiscard]] const wgpu::Texture &getTexture() const;
 
     [[nodiscard]] const wgpu::TextureView &getTextureView(wgpu::TextureViewDimension view_type = wgpu::TextureViewDimension::e2D,
                                                         uint32_t base_mip_level = 0,

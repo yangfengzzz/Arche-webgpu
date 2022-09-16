@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.render/texture.h"
+#include "vox.render/image.h"
 
 #include "vox.render/helper.h"
 #include "vox.render/platform/filesystem.h"
@@ -13,9 +13,9 @@
 #define STB_IMAGE_RESIZE_IMPLEMENTATION
 #include <stb_image_resize.h>
 
-#include "vox.render/texture/astc_tex.h"
-#include "vox.render/texture/ktx_tex.h"
-#include "vox.render/texture/stb_tex.h"
+#include "vox.render/image/astc_img.h"
+#include "vox.render/image/ktx_img.h"
+#include "vox.render/image/stb_img.h"
 
 namespace vox {
 Image::Image(std::string name, std::vector<uint8_t> &&d, std::vector<Mipmap> &&m)
@@ -47,7 +47,7 @@ void Image::createTexture(wgpu::Device &device, wgpu::TextureUsage usage) {
     desc.mipLevelCount = _mipmaps.size();
 }
 
-const wgpu::Texture &Image::GetTexture() const { return _texture; }
+const wgpu::Texture &Image::getTexture() const { return _texture; }
 
 const wgpu::TextureView &Image::getTextureView(wgpu::TextureViewDimension view_type,
                                                uint32_t base_mip_level,
@@ -149,13 +149,11 @@ std::unique_ptr<Image> Image::load(const std::string &name, const std::string &u
     // Get extension
     auto extension = fs::ExtraExtension(uri);
     if (extension == "png" || extension == "jpg") {
-        image = std::make_unique<Stb>(data, flipY);
+        image = std::make_unique<Stb>(name, data, flipY);
     } else if (extension == "astc") {
-        image = std::make_unique<Astc>(data, flipY);
-    } else if (extension == "ktx") {
-        image = std::make_unique<Ktx>(data, flipY);
-    } else if (extension == "ktx2") {
-        image = std::make_unique<Ktx>(data, flipY);
+        image = std::make_unique<Astc>(name, data, flipY);
+    } else if (extension == "ktx" || extension == "ktx2") {
+        image = std::make_unique<Ktx>(name, data, flipY);
     }
     return image;
 }
