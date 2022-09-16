@@ -59,13 +59,16 @@ public:
 
     [[nodiscard]] const wgpu::Texture &getTexture() const;
 
-    [[nodiscard]] const wgpu::TextureView &getTextureView(wgpu::TextureViewDimension view_type = wgpu::TextureViewDimension::e2D,
-                                                        uint32_t base_mip_level = 0,
-                                                        uint32_t base_array_layer = 0,
-                                                        uint32_t n_mip_levels = 0,
-                                                        uint32_t n_array_layers = 0);
+    [[nodiscard]] const wgpu::TextureView &getTextureView(
+            wgpu::TextureViewDimension view_type = wgpu::TextureViewDimension::e2D,
+            uint32_t base_mip_level = 0,
+            uint32_t base_array_layer = 0,
+            uint32_t n_mip_levels = 0,
+            uint32_t n_array_layers = 0);
 
 protected:
+    friend class ImageManager;
+
     std::vector<uint8_t> &data();
 
     void setData(const uint8_t *raw_data, size_t size);

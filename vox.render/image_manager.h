@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include "vox.math/spherical_harmonics3.h"
 #include "vox.render/image.h"
 #include "vox.render/singleton.h"
 
@@ -22,7 +23,27 @@ public:
 
     void collectGarbage();
 
+public:
+    /**
+     * @brief Loads in a ktx 2D texture
+     */
+    std::shared_ptr<Image> loadTexture(const std::string &file);
+
+    void uploadImage(Image *image);
+
+public:
+    std::shared_ptr<Image> generateIBL(const std::string &file);
+
+    SphericalHarmonics3 generateSH(const std::string &file);
+
 private:
+    static uint32_t _bytesPerPixel(wgpu::TextureFormat format);
+
+    static wgpu::ImageCopyBuffer _createImageCopyBuffer(wgpu::Buffer buffer,
+                                                        uint64_t offset,
+                                                        uint32_t bytesPerRow,
+                                                        uint32_t rowsPerImage = wgpu::kCopyStrideUndefined);
+
     wgpu::Device &_device;
     std::unordered_map<std::string, std::shared_ptr<Image>> _image_pool{};
 };
