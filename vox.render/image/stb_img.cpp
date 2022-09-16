@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.render/texture/stb_tex.h"
+#include "vox.render/image/stb_img.h"
 #define STB_IMAGE_IMPLEMENTATION
 #define STBI_NO_PSD
 #include <stb_image.h>
@@ -12,7 +12,7 @@
 #include "vox.render/std_helpers.h"
 
 namespace vox {
-Stb::Stb(const std::vector<uint8_t> &data, bool flipY) : Image{} {
+Stb::Stb(const std::string &name, const std::vector<uint8_t> &data, bool flipY) : Image{name} {
     int width;
     int height;
     int comp;

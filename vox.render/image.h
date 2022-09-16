@@ -9,11 +9,10 @@
 #include <webgpu/webgpu_cpp.h>
 
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 namespace vox {
-class SampledTexture2D;
-
 /**
  * @brief Mipmap information
  */
@@ -30,9 +29,11 @@ struct Mipmap {
 
 class Image {
 public:
-    explicit Image(std::vector<uint8_t> &&data = {}, std::vector<Mipmap> &&mipmaps = {{}});
+    std::string name;
 
-    static std::unique_ptr<Image> load(const std::string &uri, bool flipY = false);
+    explicit Image(std::string name, std::vector<uint8_t> &&data = {}, std::vector<Mipmap> &&mipmaps = {{}});
+
+    static std::unique_ptr<Image> load(const std::string &name, const std::string &uri, bool flipY = false);
 
     virtual ~Image() = default;
 
@@ -53,9 +54,16 @@ public:
     void generateMipmaps();
 
 public:
-    std::shared_ptr<SampledTexture2D> createSampledTexture(
-            wgpu::Device &device,
-            wgpu::TextureUsage usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst);
+    void createTexture(wgpu::Device &device,
+                       wgpu::TextureUsage usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst);
+
+    [[nodiscard]] const wgpu::Texture &GetTexture() const;
+
+    [[nodiscard]] const wgpu::TextureView &getTextureView(wgpu::TextureViewDimension view_type = wgpu::TextureViewDimension::e2D,
+                                                        uint32_t base_mip_level = 0,
+                                                        uint32_t base_array_layer = 0,
+                                                        uint32_t n_mip_levels = 0,
+                                                        uint32_t n_array_layers = 0);
 
 protected:
     std::vector<uint8_t> &data();
@@ -83,10 +91,16 @@ private:
 
     wgpu::TextureFormat _format{wgpu::TextureFormat::Undefined};
 
+    uint32_t layers_{1};
+
     std::vector<Mipmap> _mipmaps{{}};
 
     // Offsets stored like offsets[array_layer][mipmap_layer]
     std::vector<std::vector<uint64_t>> _offsets;
+
+    wgpu::Texture _texture;
+
+    std::unordered_map<size_t, wgpu::TextureView> _texture_views;
 };
 
 }  // namespace vox

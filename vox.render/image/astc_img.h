@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "vox.render/texture.h"
+#include "vox.render/image.h"
 
 namespace vox {
 struct BlockDim {
@@ -18,7 +18,7 @@ struct BlockDim {
 class Astc : public Image {
 public:
     /**
-     * @brief Decodes an ASTC texture
+     * @brief Decodes an ASTC image
      * @param image Image to decode
      */
     Astc(const Image &image, bool flipY);
@@ -27,7 +27,7 @@ public:
      * @brief Decodes ASTC data with an ASTC header
      * @param data ASTC data with header
      */
-    Astc(const std::vector<uint8_t> &data, bool flipY);
+    Astc(const std::string &name, const std::vector<uint8_t> &data, bool flipY);
 
     ~Astc() override = default;
 
@@ -35,8 +35,8 @@ private:
     /**
      * @brief Decodes ASTC data
      * @param blockdim Dimensions of the block
-     * @param extent Extent of the texture
-     * @param data Pointer to ASTC texture data
+     * @param extent Extent of the image
+     * @param data Pointer to ASTC image data
      */
     void decode(BlockDim blockdim, wgpu::Extent3D extent, const uint8_t *data);
 

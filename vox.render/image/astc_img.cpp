@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.render/texture/astc_tex.h"
+#include "vox.render/image/astc_img.h"
 
 #include <astc_codec_internals.h>
 
@@ -142,12 +142,12 @@ void Astc::decode(BlockDim blockdim, wgpu::Extent3D extent, const uint8_t *data_
     destroy_image(astc_image);
 }
 
-Astc::Astc(const Image &image, bool flipY) : Image{} {
+Astc::Astc(const Image &image, bool flipY) : Image{image.name} {
     init();
     decode(toBlockdim(image.format()), image.extent(), image.data().data());
 }
 
-Astc::Astc(const std::vector<uint8_t> &data, bool flipY) : Image{} {
+Astc::Astc(const std::string &name, const std::vector<uint8_t> &data, bool flipY) : Image{name} {
     init();
 
     // Read header

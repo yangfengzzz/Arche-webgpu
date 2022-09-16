@@ -40,9 +40,10 @@ set(RENDERING_FILES
         rendering/subpasses/skybox_subpass.h
         rendering/subpasses/skybox_subpass.cpp)
 
-file(GLOB TEXTURE_FILES
-        ${CMAKE_CURRENT_SOURCE_DIR}/texture/*.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/texture.cpp)
+file(GLOB IMAGE_FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/image/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/image.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/sampler.cpp)
 
 file(GLOB FOG_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/fog/*.cpp)
@@ -491,7 +492,7 @@ set(PROJECT_FILES
         ${FOG_FILES}
         ${STATS_FILES}
         ${UI_FILES}
-        ${TEXTURE_FILES}
+        ${IMAGE_FILES}
         ${SCENE_FILES}
         ${CONTROL_FILES}
         ${MESH_FILES}

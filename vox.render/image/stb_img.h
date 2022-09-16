@@ -6,12 +6,12 @@
 
 #pragma once
 
-#include "vox.render/texture.h"
+#include "vox.render/image.h"
 
 namespace vox {
 class Stb : public Image {
 public:
-    Stb(const std::vector<uint8_t> &data, bool flipY);
+    Stb(const std::string &name, const std::vector<uint8_t> &data, bool flipY);
 
     ~Stb() override = default;
 };

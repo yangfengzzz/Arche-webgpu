@@ -6,6 +6,7 @@
 
 #include "vox.render/texture.h"
 
+#include "vox.render/helper.h"
 #include "vox.render/platform/filesystem.h"
 #include "vox.render/std_helpers.h"
 
@@ -17,8 +18,8 @@
 #include "vox.render/texture/stb_tex.h"
 
 namespace vox {
-Image::Image(std::vector<uint8_t> &&d, std::vector<Mipmap> &&m)
-    : _data{std::move(d)}, _format{wgpu::TextureFormat::RGBA8Unorm}, _mipmaps{std::move(m)} {}
+Image::Image(std::string name, std::vector<uint8_t> &&d, std::vector<Mipmap> &&m)
+    : name{std::move(name)}, _data{std::move(d)}, _format{wgpu::TextureFormat::RGBA8Unorm}, _mipmaps{std::move(m)} {}
 
 const std::vector<uint8_t> &Image::data() const { return _data; }
 
@@ -37,12 +38,41 @@ const std::vector<Mipmap> &Image::mipmaps() const { return _mipmaps; }
 
 const std::vector<std::vector<uint64_t>> &Image::offsets() const { return _offsets; }
 
-std::shared_ptr<SampledTexture2D> Image::createSampledTexture(wgpu::Device &device, wgpu::TextureUsage usage) {
-    auto sampledTex = std::make_shared<SampledTexture2D>(
-            device, _mipmaps.at(0).extent.width, _mipmaps.at(0).extent.height, _mipmaps.at(0).extent.depthOrArrayLayers,
-            _format, usage, _mipmaps.size() > 1);
-    sampledTex->setImageSource(this);
-    return sampledTex;
+void Image::createTexture(wgpu::Device &device, wgpu::TextureUsage usage) {
+    auto desc = wgpu::TextureDescriptor();
+    desc.label = name.c_str();
+    desc.usage = usage;
+    desc.format = _format;
+    desc.size = _mipmaps.at(0).extent;
+    desc.mipLevelCount = _mipmaps.size();
+}
+
+const wgpu::Texture &Image::GetTexture() const { return _texture; }
+
+const wgpu::TextureView &Image::getTextureView(wgpu::TextureViewDimension view_type,
+                                               uint32_t base_mip_level,
+                                               uint32_t base_array_layer,
+                                               uint32_t n_mip_levels,
+                                               uint32_t n_array_layers) {
+    std::size_t key = 0;
+    vox::utility::hash_combine(key, view_type);
+    vox::utility::hash_combine(key, base_mip_level);
+    vox::utility::hash_combine(key, base_array_layer);
+    vox::utility::hash_combine(key, n_mip_levels);
+    vox::utility::hash_combine(key, n_array_layers);
+    auto iter = _texture_views.find(key);
+    if (iter == _texture_views.end()) {
+        wgpu::TextureViewDescriptor desc{};
+        desc.label = name.c_str();
+        desc.format = _texture.GetFormat();
+        desc.dimension = view_type;
+        desc.baseMipLevel = base_mip_level;
+        desc.baseArrayLayer = base_array_layer;
+        desc.mipLevelCount = n_mip_levels;
+        desc.arrayLayerCount = n_array_layers;
+        _texture_views.insert(std::make_pair(key, _texture.CreateView(&desc)));
+    }
+    return _texture_views.find(key)->second;
 }
 
 Mipmap &Image::mipmap(const size_t index) { return _mipmaps.at(index); }
@@ -111,7 +141,7 @@ void Image::setLayers(uint32_t l) { _mipmaps.at(0).extent.depthOrArrayLayers = l
 
 void Image::setOffsets(const std::vector<std::vector<uint64_t>> &o) { _offsets = o; }
 
-std::unique_ptr<Image> Image::load(const std::string &uri, bool flipY) {
+std::unique_ptr<Image> Image::load(const std::string &name, const std::string &uri, bool flipY) {
     std::unique_ptr<Image> image{nullptr};
 
     auto data = fs::ReadAsset(uri);

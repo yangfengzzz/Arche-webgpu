@@ -6,12 +6,12 @@
 
 #pragma once
 
-#include "vox.render/texture.h"
+#include "vox.render/image.h"
 
 namespace vox {
 class Ktx : public Image {
 public:
-    Ktx(const std::vector<uint8_t> &data, bool flipY);
+    Ktx(const std::string &name, const std::vector<uint8_t> &data, bool flipY);
 
     ~Ktx() override = default;
 };

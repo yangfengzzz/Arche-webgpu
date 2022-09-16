@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.render/texture/sampler.h"
+#include "vox.render/sampler.h"
 
 namespace vox {
 Sampler::Sampler(wgpu::Device& device,
