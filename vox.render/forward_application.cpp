@@ -27,6 +27,9 @@ ForwardApplication::~ForwardApplication() {
     shader_manager_.reset();
     mesh_manager_->CollectGarbage();
     mesh_manager_.reset();
+    image_manager_->collectGarbage();
+    image_manager_.reset();
+    resource_cache_.reset();
 }
 
 bool ForwardApplication::prepare(Platform& platform) {
@@ -35,6 +38,8 @@ bool ForwardApplication::prepare(Platform& platform) {
     // resource loader
     shader_manager_ = std::make_unique<ShaderManager>();
     mesh_manager_ = std::make_unique<MeshManager>(_device);
+    image_manager_ = std::make_unique<ImageManager>(_device);
+    resource_cache_ = std::make_unique<ResourceCache>(_device);
 
     // logic system
     _componentsManager = std::make_unique<ComponentsManager>();

@@ -10,9 +10,7 @@
 #include "vox.render/camera.h"
 #include "vox.render/entity.h"
 #include "vox.render/lighting/light_manager.h"
-#include "vox.render/texture/sampled_texture2d.h"
-#include "vox.render/texture/sampled_texturecube.h"
-#include "vox.render/texture/texture_utils.h"
+#include "vox.render/image.h"
 
 namespace vox {
 uint32_t ShadowManager::_shadowCount = 0;

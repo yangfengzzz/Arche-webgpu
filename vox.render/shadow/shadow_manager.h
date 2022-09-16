@@ -126,7 +126,7 @@ private:
 
     static uint32_t _shadowCount;
     std::vector<wgpu::Texture> _shadowMaps{};
-    SampledTexturePtr _packedTexture{nullptr};
+    std::shared_ptr<Image> _packedTexture{nullptr};
     const std::string _shadowMapProp;
     const std::string _shadowSamplerProp;
     const std::string _shadowDataProp;
@@ -134,7 +134,7 @@ private:
 
     static uint32_t _cubeShadowCount;
     std::vector<wgpu::Texture> _cubeShadowMaps{};
-    SampledTexturePtr _packedCubeTexture{nullptr};
+    std::shared_ptr<Image> _packedCubeTexture{nullptr};
     const std::string _cubeShadowMapProp;
     const std::string _cubeShadowSamplerProp;
     const std::string _cubeShadowDataProp;

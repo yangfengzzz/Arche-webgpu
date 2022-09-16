@@ -10,7 +10,7 @@
 #include "vox.render/material/enums/blend_mode.h"
 #include "vox.render/material/enums/render_face.h"
 #include "vox.render/material/material.h"
-#include "vox.render/texture/sampled_texture2d.h"
+#include "vox.render/image.h"
 
 namespace vox {
 class BaseMaterial : public Material {
@@ -70,15 +70,15 @@ protected:
     Vector4F _tilingOffset = Vector4F(1, 1, 0, 0);
     static const std::string _tilingOffsetProp;
 
-    SampledTexture2DPtr _baseTexture{nullptr};
+    std::shared_ptr<Image> _baseTexture{nullptr};
     static const std::string _baseTextureProp;
     static const std::string _baseSamplerProp;
 
-    SampledTexture2DPtr _normalTexture{nullptr};
+    std::shared_ptr<Image> _normalTexture{nullptr};
     static const std::string _normalTextureProp;
     static const std::string _normalSamplerProp;
 
-    SampledTexture2DPtr _emissiveTexture{nullptr};
+    std::shared_ptr<Image> _emissiveTexture{nullptr};
     static const std::string _emissiveTextureProp;
     static const std::string _emissiveSamplerProp;
 

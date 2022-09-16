@@ -11,7 +11,7 @@
 #include "vox.render/mesh/buffer_mesh.h"
 #include "vox.render/particle/particle_material.h"
 #include "vox.render/renderer.h"
-#include "vox.render/texture/sampled_texture3d.h"
+#include "vox.render/image.h"
 
 namespace vox {
 class ParticleRenderer : public Renderer {
@@ -97,9 +97,9 @@ public:
 
     void setVectorFieldFactor(float factor);
 
-    [[nodiscard]] std::shared_ptr<SampledTexture3D> vectorFieldTexture() const;
+    [[nodiscard]] std::shared_ptr<Image> vectorFieldTexture() const;
 
-    void setVectorFieldTexture(const std::shared_ptr<SampledTexture3D> &field);
+    void setVectorFieldTexture(const std::shared_ptr<Image> &field);
 
     [[nodiscard]] float curlNoiseFactor() const;
 
@@ -186,7 +186,7 @@ private:
     ParticleEmitterData _emitterData;
     const std::string _emitterDataProp;
 
-    SampledTexture3DPtr _vectorFieldTexture{nullptr};
+    std::shared_ptr<Image> _vectorFieldTexture{nullptr};
     const std::string _vectorFieldTextureProp;
     const std::string _vectorFieldSamplerProp;
 

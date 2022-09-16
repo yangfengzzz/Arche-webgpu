@@ -24,17 +24,21 @@ void PBRMaterial::setRoughness(float newValue) {
     shaderData.setData(PBRMaterial::_pbrProp, _pbrData);
 }
 
-SampledTexture2DPtr PBRMaterial::metallicRoughnessTexture() const { return _metallicRoughnessTexture; }
+std::shared_ptr<Image> PBRMaterial::metallicRoughnessTexture() const { return _metallicRoughnessTexture; }
 
-void PBRMaterial::setMetallicRoughnessTexture(const SampledTexture2DPtr &newValue) {
+void PBRMaterial::setMetallicRoughnessTexture(const std::shared_ptr<Image> &newValue) {
     _metallicRoughnessTexture = newValue;
-    shaderData.setSampledTexture(PBRMaterial::_metallicRoughnessTextureProp, PBRMaterial::_metallicRoughnessSamplerProp,
-                                 newValue);
+    shaderData.setImageView(PBRMaterial::_metallicRoughnessTextureProp, PBRMaterial::_metallicRoughnessSamplerProp,
+                            newValue->getImageView());
     if (newValue) {
         shaderData.addDefine(HAS_METALROUGHNESSMAP);
     } else {
         shaderData.removeDefine(HAS_METALROUGHNESSMAP);
     }
+}
+
+void PBRMaterial::setMetallicRoughnessSampler(const wgpu::SamplerDescriptor &newValue) {
+    shaderData.setSampler(PBRMaterial::_metallicRoughnessSamplerProp, newValue);
 }
 
 PBRMaterial::PBRMaterial(wgpu::Device &device, const std::string &name) : PBRBaseMaterial(device, name) {

@@ -17,17 +17,22 @@ void BlinnPhongMaterial::setBaseColor(const Color& newValue) {
     shaderData.setData(BlinnPhongMaterial::_blinnPhongProp, _blinnPhongData);
 }
 
-SampledTexture2DPtr BlinnPhongMaterial::baseTexture() const { return _baseTexture; }
+std::shared_ptr<Image> BlinnPhongMaterial::baseTexture() const { return _baseTexture; }
 
-void BlinnPhongMaterial::setBaseTexture(const SampledTexture2DPtr& newValue) {
+void BlinnPhongMaterial::setBaseTexture(const std::shared_ptr<Image>& newValue) {
     _baseTexture = newValue;
-    shaderData.setSampledTexture(BlinnPhongMaterial::_baseTextureProp, BlinnPhongMaterial::_baseSamplerProp, newValue);
+    shaderData.setImageView(BlinnPhongMaterial::_baseTextureProp, BlinnPhongMaterial::_baseSamplerProp,
+                            newValue->getImageView());
 
     if (newValue) {
         shaderData.addDefine(HAS_DIFFUSE_TEXTURE);
     } else {
         shaderData.removeDefine(HAS_DIFFUSE_TEXTURE);
     }
+}
+
+void BlinnPhongMaterial::setBaseSampler(const wgpu::SamplerDescriptor& newValue) {
+    shaderData.setSampler(BlinnPhongMaterial::_baseSamplerProp, newValue);
 }
 
 const Color& BlinnPhongMaterial::specularColor() const { return _blinnPhongData.specularColor; }
@@ -37,17 +42,21 @@ void BlinnPhongMaterial::setSpecularColor(const Color& newValue) {
     shaderData.setData(BlinnPhongMaterial::_blinnPhongProp, _blinnPhongData);
 }
 
-SampledTexture2DPtr BlinnPhongMaterial::specularTexture() const { return _specularTexture; }
+std::shared_ptr<Image> BlinnPhongMaterial::specularTexture() const { return _specularTexture; }
 
-void BlinnPhongMaterial::setSpecularTexture(const SampledTexture2DPtr& newValue) {
+void BlinnPhongMaterial::setSpecularTexture(const std::shared_ptr<Image>& newValue) {
     _specularTexture = newValue;
-    shaderData.setSampledTexture(BlinnPhongMaterial::_specularTextureProp, BlinnPhongMaterial::_specularSamplerProp,
-                                 newValue);
+    shaderData.setImageView(BlinnPhongMaterial::_specularTextureProp, BlinnPhongMaterial::_specularSamplerProp,
+                            newValue->getImageView());
     if (newValue) {
         shaderData.addDefine(HAS_SPECULAR_TEXTURE);
     } else {
         shaderData.removeDefine(HAS_SPECULAR_TEXTURE);
     }
+}
+
+void BlinnPhongMaterial::setSpecularSampler(const wgpu::SamplerDescriptor& newValue) {
+    shaderData.setSampler(BlinnPhongMaterial::_specularSamplerProp, newValue);
 }
 
 const Color& BlinnPhongMaterial::emissiveColor() const { return _blinnPhongData.emissiveColor; }
@@ -57,12 +66,12 @@ void BlinnPhongMaterial::setEmissiveColor(const Color& newValue) {
     shaderData.setData(BlinnPhongMaterial::_blinnPhongProp, _blinnPhongData);
 }
 
-SampledTexture2DPtr BlinnPhongMaterial::emissiveTexture() const { return _emissiveTexture; }
+std::shared_ptr<Image> BlinnPhongMaterial::emissiveTexture() const { return _emissiveTexture; }
 
-void BlinnPhongMaterial::BlinnPhongMaterial::setEmissiveTexture(const SampledTexture2DPtr& newValue) {
+void BlinnPhongMaterial::BlinnPhongMaterial::setEmissiveTexture(const std::shared_ptr<Image>& newValue) {
     _emissiveTexture = newValue;
-    shaderData.setSampledTexture(BlinnPhongMaterial::_emissiveTextureProp, BlinnPhongMaterial::_emissiveSamplerProp,
-                                 newValue);
+    shaderData.setImageView(BlinnPhongMaterial::_emissiveTextureProp, BlinnPhongMaterial::_emissiveSamplerProp,
+                            newValue->getImageView());
     if (newValue) {
         shaderData.addDefine(HAS_EMISSIVE_TEXTURE);
     } else {
@@ -70,17 +79,25 @@ void BlinnPhongMaterial::BlinnPhongMaterial::setEmissiveTexture(const SampledTex
     }
 }
 
-SampledTexture2DPtr BlinnPhongMaterial::normalTexture() const { return _normalTexture; }
+void BlinnPhongMaterial::setEmissiveSampler(const wgpu::SamplerDescriptor& newValue) {
+    shaderData.setSampler(BlinnPhongMaterial::_emissiveSamplerProp, newValue);
+}
 
-void BlinnPhongMaterial::setNormalTexture(const SampledTexture2DPtr& newValue) {
+std::shared_ptr<Image> BlinnPhongMaterial::normalTexture() const { return _normalTexture; }
+
+void BlinnPhongMaterial::setNormalTexture(const std::shared_ptr<Image>& newValue) {
     _normalTexture = newValue;
-    shaderData.setSampledTexture(BlinnPhongMaterial::_normalTextureProp, BlinnPhongMaterial::_normalSamplerProp,
-                                 newValue);
+    shaderData.setImageView(BlinnPhongMaterial::_normalTextureProp, BlinnPhongMaterial::_normalSamplerProp,
+                            newValue->getImageView());
     if (newValue) {
         shaderData.addDefine(HAS_NORMAL_TEXTURE);
     } else {
         shaderData.removeDefine(HAS_NORMAL_TEXTURE);
     }
+}
+
+void BlinnPhongMaterial::setNormalSampler(const wgpu::SamplerDescriptor& newValue) {
+    shaderData.setSampler(BlinnPhongMaterial::_normalSamplerProp, newValue);
 }
 
 float BlinnPhongMaterial::normalIntensity() const { return _blinnPhongData.normalIntensity; }

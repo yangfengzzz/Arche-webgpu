@@ -8,14 +8,13 @@
 
 #include <webgpu/webgpu_cpp.h>
 
-#include <any>
 #include <unordered_map>
 
+#include "vox.render/image_view.h"
 #include "vox.render/mesh/buffer.h"
 #include "vox.render/shader/shader_module.h"
 #include "vox.render/shader/shader_variant.h"
 #include "vox.render/std_helpers.h"
-#include "vox.render/texture/sampled_texture.h"
 
 namespace vox {
 /**
@@ -25,11 +24,11 @@ class ShaderData {
 public:
     explicit ShaderData(wgpu::Device& device);
 
-    void setBufferFunctor(const std::string& property_name, const std::function<Buffer()>& functor);
-
     void bindData(const std::unordered_map<std::string, ShaderResource>& resources,
                   std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>>& bindGroupLayoutEntryVecMap,
                   std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>>& bindGroupEntryVecMap);
+
+    void setBufferFunctor(const std::string& property_name, const std::function<Buffer()>& functor);
 
     template <typename T>
     void setData(const std::string& property, const T& value) {
@@ -69,9 +68,13 @@ public:
     }
 
 public:
-    void setSampledTexture(const std::string& texture_name,
-                           const std::string& sample_name,
-                           const SampledTexturePtr& value);
+    void setImageView(const std::string& texture_name,
+                      const std::string& sampler_name,
+                      const std::shared_ptr<ImageView>& value);
+
+    void setStorageImageView(const std::string& texture_name, const std::shared_ptr<ImageView>& value);
+
+    void setSampler(const std::string& sampler_name, wgpu::SamplerDescriptor desc);
 
 public:
     /**
@@ -98,21 +101,22 @@ private:
 
     static void bindTexture(
             const ShaderResource& resource,
-            const SampledTexturePtr& texture,
+            const std::shared_ptr<ImageView>& imageView,
             std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>>& bindGroupLayoutEntryVecMap,
             std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>>& bindGroupEntryVecMap);
 
     static void bindSampler(
             const ShaderResource& resource,
-            const SampledTexturePtr& sampler,
+            const wgpu::SamplerDescriptor& sampler,
             std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>>& bindGroupLayoutEntryVecMap,
             std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>>& bindGroupEntryVecMap);
 
     wgpu::Device& _device;
-    std::unordered_map<std::string, Buffer> _shaderBuffers{};
     std::unordered_map<std::string, std::function<Buffer()>> _shaderBufferFunctors{};
-    std::unordered_map<std::string, SampledTexturePtr> _shaderTextures{};
-    std::unordered_map<std::string, SampledTexturePtr> _shaderSamplers{};
+    std::unordered_map<std::string, Buffer> _shaderBuffers{};
+    std::unordered_map<std::string, std::shared_ptr<ImageView>> _imageViews{};
+    std::unordered_map<std::string, wgpu::SamplerDescriptor> _samplers{};
+    static wgpu::SamplerDescriptor _defaultSamplerDesc;
 
     ShaderVariant variant_;
 };

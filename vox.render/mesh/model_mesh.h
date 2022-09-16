@@ -8,7 +8,7 @@
 
 #include "vox.math/color.h"
 #include "vox.render/mesh/mesh.h"
-#include "vox.render/texture/sampled_texture2d.h"
+#include "vox.render/image.h"
 
 namespace vox {
 struct ValueChanged {
@@ -147,7 +147,7 @@ private:
     bool _hasBlendShape = false;
     bool _useBlendShapeNormal = false;
     bool _useBlendShapeTangent = false;
-    SampledTexture2DPtr _blendShapeTexture{nullptr};
+    std::shared_ptr<Image> _blendShapeTexture{nullptr};
 
     size_t _vertexCount = 0;
     bool _accessible = true;

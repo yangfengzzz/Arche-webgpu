@@ -9,7 +9,7 @@
 #include "vox.math/color.h"
 #include "vox.math/vector4.h"
 #include "vox.render/material/base_material.h"
-#include "vox.render/texture/sampled_texture2d.h"
+#include "vox.render/image.h"
 
 namespace vox {
 /**
@@ -35,9 +35,11 @@ public:
     /**
      * Base texture.
      */
-    [[nodiscard]] SampledTexture2DPtr baseTexture() const;
+    [[nodiscard]] std::shared_ptr<Image> baseTexture() const;
 
-    void setBaseTexture(const SampledTexture2DPtr& newValue);
+    void setBaseTexture(const std::shared_ptr<Image>& newValue);
+
+    void setBaseSampler(const wgpu::SamplerDescriptor& newValue);
 
     /**
      * Specular color.
@@ -49,9 +51,11 @@ public:
     /**
      * Specular texture.
      */
-    [[nodiscard]] SampledTexture2DPtr specularTexture() const;
+    [[nodiscard]] std::shared_ptr<Image> specularTexture() const;
 
-    void setSpecularTexture(const SampledTexture2DPtr& newValue);
+    void setSpecularTexture(const std::shared_ptr<Image>& newValue);
+
+    void setSpecularSampler(const wgpu::SamplerDescriptor& newValue);
 
     /**
      * Emissive color.
@@ -63,16 +67,20 @@ public:
     /**
      * Emissive texture.
      */
-    [[nodiscard]] SampledTexture2DPtr emissiveTexture() const;
+    [[nodiscard]] std::shared_ptr<Image> emissiveTexture() const;
 
-    void setEmissiveTexture(const SampledTexture2DPtr& newValue);
+    void setEmissiveTexture(const std::shared_ptr<Image>& newValue);
+
+    void setEmissiveSampler(const wgpu::SamplerDescriptor& newValue);
 
     /**
      * Normal texture.
      */
-    [[nodiscard]] SampledTexture2DPtr normalTexture() const;
+    [[nodiscard]] std::shared_ptr<Image> normalTexture() const;
 
-    void setNormalTexture(const SampledTexture2DPtr& newValue);
+    void setNormalTexture(const std::shared_ptr<Image>& newValue);
+
+    void setNormalSampler(const wgpu::SamplerDescriptor& newValue);
 
     /**
      * Normal texture intensity.
@@ -95,7 +103,7 @@ private:
     BlinnPhongData _blinnPhongData;
     static const std::string _blinnPhongProp;
 
-    SampledTexture2DPtr _specularTexture{nullptr};
+    std::shared_ptr<Image> _specularTexture{nullptr};
     static const std::string _specularTextureProp;
     static const std::string _specularSamplerProp;
 };

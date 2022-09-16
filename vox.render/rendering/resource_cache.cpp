@@ -321,13 +321,40 @@ struct hash<wgpu::ComputePipelineDescriptor> {
     }
 };
 
+template <>
+struct hash<wgpu::SamplerDescriptor> {
+    std::size_t operator()(const wgpu::SamplerDescriptor &descriptor) const {
+        std::size_t result = 0;
+
+        hash_combine(result, descriptor.addressModeU);
+        hash_combine(result, descriptor.addressModeV);
+        hash_combine(result, descriptor.addressModeW);
+        hash_combine(result, descriptor.minFilter);
+        hash_combine(result, descriptor.magFilter);
+        hash_combine(result, descriptor.mipmapFilter);
+        hash_combine(result, descriptor.lodMinClamp);
+        hash_combine(result, descriptor.lodMaxClamp);
+        hash_combine(result, descriptor.compare);
+        hash_combine(result, descriptor.maxAnisotropy);
+
+        return result;
+    }
+};
+
 }  // namespace std
 
 // MARK: - ResourceCache
 namespace vox {
+ResourceCache *ResourceCache::GetSingletonPtr() { return ms_singleton; }
+
+ResourceCache &ResourceCache::GetSingleton() {
+    assert(ms_singleton);
+    return (*ms_singleton);
+}
+
 ResourceCache::ResourceCache(wgpu::Device &device) : _device{device} {}
 
-wgpu::BindGroupLayout &ResourceCache::requestBindGroupLayout(wgpu::BindGroupLayoutDescriptor &descriptor) {
+wgpu::BindGroupLayout &ResourceCache::requestBindGroupLayout(const wgpu::BindGroupLayoutDescriptor &descriptor) {
     std::hash<wgpu::BindGroupLayoutDescriptor> hasher;
     size_t hash = hasher(descriptor);
 
@@ -340,7 +367,7 @@ wgpu::BindGroupLayout &ResourceCache::requestBindGroupLayout(wgpu::BindGroupLayo
     }
 }
 
-wgpu::PipelineLayout &ResourceCache::requestPipelineLayout(wgpu::PipelineLayoutDescriptor &descriptor) {
+wgpu::PipelineLayout &ResourceCache::requestPipelineLayout(const wgpu::PipelineLayoutDescriptor &descriptor) {
     std::hash<wgpu::PipelineLayoutDescriptor> hasher;
     size_t hash = hasher(descriptor);
 
@@ -353,7 +380,7 @@ wgpu::PipelineLayout &ResourceCache::requestPipelineLayout(wgpu::PipelineLayoutD
     }
 }
 
-wgpu::BindGroup &ResourceCache::requestBindGroup(wgpu::BindGroupDescriptor &descriptor) {
+wgpu::BindGroup &ResourceCache::requestBindGroup(const wgpu::BindGroupDescriptor &descriptor) {
     std::hash<wgpu::BindGroupDescriptor> hasher;
     size_t hash = hasher(descriptor);
 
@@ -366,7 +393,7 @@ wgpu::BindGroup &ResourceCache::requestBindGroup(wgpu::BindGroupDescriptor &desc
     }
 }
 
-wgpu::RenderPipeline &ResourceCache::requestPipeline(wgpu::RenderPipelineDescriptor &descriptor) {
+wgpu::RenderPipeline &ResourceCache::requestPipeline(const wgpu::RenderPipelineDescriptor &descriptor) {
     std::hash<wgpu::RenderPipelineDescriptor> hasher;
     size_t hash = hasher(descriptor);
 
@@ -379,7 +406,7 @@ wgpu::RenderPipeline &ResourceCache::requestPipeline(wgpu::RenderPipelineDescrip
     }
 }
 
-wgpu::ComputePipeline &ResourceCache::requestPipeline(wgpu::ComputePipelineDescriptor &descriptor) {
+wgpu::ComputePipeline &ResourceCache::requestPipeline(const wgpu::ComputePipelineDescriptor &descriptor) {
     std::hash<wgpu::ComputePipelineDescriptor> hasher;
     size_t hash = hasher(descriptor);
 
@@ -387,6 +414,19 @@ wgpu::ComputePipeline &ResourceCache::requestPipeline(wgpu::ComputePipelineDescr
     if (iter == _state.computePipelines.end()) {
         _state.computePipelines[hash] = _device.CreateComputePipeline(&descriptor);
         return _state.computePipelines[hash];
+    } else {
+        return iter->second;
+    }
+}
+
+wgpu::Sampler &ResourceCache::requestSampler(const wgpu::SamplerDescriptor &descriptor) {
+    std::hash<wgpu::SamplerDescriptor> hasher;
+    size_t hash = hasher(descriptor);
+
+    auto iter = _state.samplers.find(hash);
+    if (iter == _state.samplers.end()) {
+        _state.samplers[hash] = _device.CreateSampler(&descriptor);
+        return _state.samplers[hash];
     } else {
         return iter->second;
     }

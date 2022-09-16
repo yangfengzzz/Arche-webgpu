@@ -11,6 +11,7 @@
 #include "vox.render/camera.h"
 #include "vox.render/mesh/primitive_mesh.h"
 #include "vox.render/rendering/render_pass.h"
+#include "vox.render/rendering/resource_cache.h"
 
 namespace vox {
 SkyboxSubpass::SkyboxSubpass(RenderContext* renderContext,
@@ -35,9 +36,11 @@ void SkyboxSubpass::createCuboid() {
     _type = SkyBoxType::Cuboid;
 }
 
-SampledTextureCubePtr SkyboxSubpass::textureCubeMap() { return _cubeMap; }
+std::shared_ptr<Image> SkyboxSubpass::textureCubeMap() { return _cubeMap; }
 
-void SkyboxSubpass::setTextureCubeMap(SampledTextureCubePtr v) { _cubeMap = std::move(v); }
+void SkyboxSubpass::setTextureCubeMap(const std::shared_ptr<Image>& v) { _cubeMap = v; }
+
+void SkyboxSubpass::setTextureCubeSampler(const wgpu::SamplerDescriptor& desc) { _samplerDesc = desc; }
 
 // MARK: - Render
 void SkyboxSubpass::prepare() {
@@ -55,10 +58,13 @@ void SkyboxSubpass::prepare() {
         ShaderVariant variant;
         _forwardPipelineDescriptor.vertex.entryPoint = "main";
         _forwardPipelineDescriptor.vertex.module =
-                _pass->resourceCache().requestShaderModule(wgpu::ShaderStage::Vertex, vert_shader_, variant).handle();
+                ResourceCache::GetSingleton()
+                        .requestShaderModule(wgpu::ShaderStage::Vertex, vert_shader_, variant)
+                        .handle();
         _fragment.entryPoint = "main";
-        _fragment.module =
-                _pass->resourceCache().requestShaderModule(wgpu::ShaderStage::Fragment, frag_shader_, variant).handle();
+        _fragment.module = ResourceCache::GetSingleton()
+                                   .requestShaderModule(wgpu::ShaderStage::Fragment, frag_shader_, variant)
+                                   .handle();
     }
     // BindGroupLayout
     {
@@ -76,7 +82,7 @@ void SkyboxSubpass::prepare() {
         _bindGroupLayoutEntry[2].sampler.type = wgpu::SamplerBindingType::Filtering;
         _bindGroupLayoutDescriptor.entryCount = static_cast<uint32_t>(_bindGroupLayoutEntry.size());
         _bindGroupLayoutDescriptor.entries = _bindGroupLayoutEntry.data();
-        _bindGroupLayout = _pass->resourceCache().requestBindGroupLayout(_bindGroupLayoutDescriptor);
+        _bindGroupLayout = ResourceCache::GetSingleton().requestBindGroupLayout(_bindGroupLayoutDescriptor);
     }
     // BindGroup
     {
@@ -94,7 +100,7 @@ void SkyboxSubpass::prepare() {
     {
         _pipelineLayoutDescriptor.bindGroupLayoutCount = 1;
         _pipelineLayoutDescriptor.bindGroupLayouts = &_bindGroupLayout;
-        _pipelineLayout = _pass->resourceCache().requestPipelineLayout(_pipelineLayoutDescriptor);
+        _pipelineLayout = ResourceCache::GetSingleton().requestPipelineLayout(_pipelineLayoutDescriptor);
         _forwardPipelineDescriptor.layout = _pipelineLayout;
     }
     // RenderPipeline
@@ -104,7 +110,7 @@ void SkyboxSubpass::prepare() {
         _forwardPipelineDescriptor.primitive.topology = wgpu::PrimitiveTopology::TriangleList;
         _forwardPipelineDescriptor.vertex.bufferCount = static_cast<uint32_t>(_mesh->vertexBufferLayouts().size());
         _forwardPipelineDescriptor.vertex.buffers = _mesh->vertexBufferLayouts().data();
-        _renderPipeline = _pass->resourceCache().requestPipeline(_forwardPipelineDescriptor);
+        _renderPipeline = ResourceCache::GetSingleton().requestPipeline(_forwardPipelineDescriptor);
     }
 }
 
@@ -123,9 +129,9 @@ void SkyboxSubpass::draw(wgpu::RenderPassEncoder& passEncoder) {
     std::vector<uint8_t> bytes = to_bytes(_matrix);
     _renderContext->device().GetQueue().WriteBuffer(_vpMatrix.handle(), 0, bytes.data(), sizeof(Matrix4x4F));
 
-    _bindGroupEntries[1].textureView = _cubeMap->textureView();
-    _bindGroupEntries[2].sampler = _cubeMap->sampler();
-    passEncoder.SetBindGroup(0, _pass->resourceCache().requestBindGroup(_bindGroupDescriptor));
+    _bindGroupEntries[1].textureView = _cubeMap->getImageView(wgpu::TextureViewDimension::Cube)->handle();
+    _bindGroupEntries[2].sampler = ResourceCache::GetSingleton().requestSampler(_samplerDesc);
+    passEncoder.SetBindGroup(0, ResourceCache::GetSingleton().requestBindGroup(_bindGroupDescriptor));
     passEncoder.SetPipeline(_renderPipeline);
 
     // Draw Call

@@ -6,8 +6,8 @@
 
 #pragma once
 
+#include "vox.render/image.h"
 #include "vox.render/rendering/subpass.h"
-#include "vox.render/texture/sampled_texturecube.h"
 
 namespace vox {
 class SkyboxSubpass : public Subpass {
@@ -29,15 +29,17 @@ public:
     /**
      * Texture cube map of the sky box material.
      */
-    SampledTextureCubePtr textureCubeMap();
+    std::shared_ptr<Image> textureCubeMap();
 
-    void setTextureCubeMap(SampledTextureCubePtr v);
+    void setTextureCubeMap(const std::shared_ptr<Image>& v);
+
+    void setTextureCubeSampler(const wgpu::SamplerDescriptor& desc);
 
 private:
     enum class SkyBoxType { Cuboid, Sphere };
     SkyBoxType _type = SkyBoxType::Cuboid;
     ModelMeshPtr _mesh{nullptr};
-    SampledTextureCubePtr _cubeMap{nullptr};
+    std::shared_ptr<Image> _cubeMap{nullptr};
     Buffer _vpMatrix;
 
     ShaderSource vert_shader_;
@@ -61,6 +63,7 @@ private:
     wgpu::RenderPipeline _renderPipeline;
 
     wgpu::TextureFormat _depthStencilTextureFormat;
+    wgpu::SamplerDescriptor _samplerDesc;
 };
 
 }  // namespace vox

@@ -40,16 +40,20 @@ public:
     /**
      * Base texture.
      */
-    [[nodiscard]] SampledTexture2DPtr baseTexture() const;
+    [[nodiscard]] std::shared_ptr<Image> baseTexture() const;
 
-    void setBaseTexture(const SampledTexture2DPtr& newValue);
+    void setBaseTexture(const std::shared_ptr<Image>& newValue);
+
+    void setBaseSampler(const wgpu::SamplerDescriptor& newValue);
 
     /**
      * Normal texture.
      */
-    [[nodiscard]] SampledTexture2DPtr normalTexture() const;
+    [[nodiscard]] std::shared_ptr<Image> normalTexture() const;
 
-    void setNormalTexture(const SampledTexture2DPtr& newValue);
+    void setNormalTexture(const std::shared_ptr<Image>& newValue);
+
+    void setNormalSampler(const wgpu::SamplerDescriptor& newValue);
 
     /**
      * Normal texture intensity.
@@ -68,16 +72,20 @@ public:
     /**
      * Emissive texture.
      */
-    [[nodiscard]] SampledTexture2DPtr emissiveTexture() const;
+    [[nodiscard]] std::shared_ptr<Image> emissiveTexture() const;
 
-    void setEmissiveTexture(const SampledTexture2DPtr& newValue);
+    void setEmissiveTexture(const std::shared_ptr<Image>& newValue);
+
+    void setEmissiveSampler(const wgpu::SamplerDescriptor& newValue);
 
     /**
      * Occlusion texture.
      */
-    [[nodiscard]] SampledTexture2DPtr occlusionTexture() const;
+    [[nodiscard]] std::shared_ptr<Image> occlusionTexture() const;
 
-    void setOcclusionTexture(const SampledTexture2DPtr& newValue);
+    void setOcclusionTexture(const std::shared_ptr<Image>& newValue);
+
+    void setOcclusionSampler(const wgpu::SamplerDescriptor& newValue);
 
     /**
      * Occlusion texture intensity.
@@ -104,9 +112,11 @@ public:
     /**
      * The clearCoat layer intensity texture.
      */
-    [[nodiscard]] SampledTexture2DPtr clearCoatTexture() const;
+    [[nodiscard]] std::shared_ptr<Image> clearCoatTexture() const;
 
-    void setClearCoatTexture(const SampledTexture2DPtr& value);
+    void setClearCoatTexture(const std::shared_ptr<Image>& value);
+
+    void setClearCoatSampler(const wgpu::SamplerDescriptor& newValue);
 
     /**
      * The clearCoat layer roughness, default 0.
@@ -118,16 +128,20 @@ public:
     /**
      * The clearCoat layer roughness texture.
      */
-    [[nodiscard]] SampledTexture2DPtr clearCoatRoughnessTexture() const;
+    [[nodiscard]] std::shared_ptr<Image> clearCoatRoughnessTexture() const;
 
-    void setClearCoatRoughnessTexture(const SampledTexture2DPtr& value);
+    void setClearCoatRoughnessTexture(const std::shared_ptr<Image>& value);
+
+    void setClearCoatRoughnessSampler(const wgpu::SamplerDescriptor& newValue);
 
     /**
      * The clearCoat normal map texture.
      */
-    [[nodiscard]] SampledTexture2DPtr clearCoatNormalTexture() const;
+    [[nodiscard]] std::shared_ptr<Image> clearCoatNormalTexture() const;
 
-    void setClearCoatNormalTexture(const SampledTexture2DPtr& value);
+    void setClearCoatNormalTexture(const std::shared_ptr<Image>& value);
+
+    void setClearCoatNormalSampler(const wgpu::SamplerDescriptor& newValue);
 
 protected:
     /**
@@ -139,19 +153,19 @@ private:
     PBRBaseData _pbrBaseData;
     static const std::string _pbrBaseProp;
 
-    SampledTexture2DPtr _occlusionTexture{nullptr};
+    std::shared_ptr<Image> _occlusionTexture{nullptr};
     static const std::string _occlusionTextureProp;
     static const std::string _occlusionSamplerProp;
 
-    SampledTexture2DPtr _clearCoatTexture{nullptr};
+    std::shared_ptr<Image> _clearCoatTexture{nullptr};
     static const std::string _clearCoatTextureProp;
     static const std::string _clearCoatSamplerProp;
 
-    SampledTexture2DPtr _clearCoatRoughnessTexture{nullptr};
+    std::shared_ptr<Image> _clearCoatRoughnessTexture{nullptr};
     static const std::string _clearCoatRoughnessTextureProp;
     static const std::string _clearCoatRoughnessSamplerProp;
 
-    SampledTexture2DPtr _clearCoatNormalTexture{nullptr};
+    std::shared_ptr<Image> _clearCoatNormalTexture{nullptr};
     static const std::string _clearCoatNormalTextureProp;
     static const std::string _clearCoatNormalSamplerProp;
 };

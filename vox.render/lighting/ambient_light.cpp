@@ -76,23 +76,27 @@ void AmbientLight::setSpecularTextureDecodeRGBM(bool value) {
     }
 }
 
-std::shared_ptr<SampledTexture> AmbientLight::specularTexture() { return _specularReflection; }
+std::shared_ptr<Image> AmbientLight::specularTexture() { return _specularReflection; }
 
-void AmbientLight::setSpecularTexture(const std::shared_ptr<SampledTexture> &value) {
+void AmbientLight::setSpecularTexture(const std::shared_ptr<Image> &value) {
     _specularReflection = value;
     if (!_scene) return;
 
     auto &shaderData = _scene->shaderData;
 
     if (value) {
-        shaderData.setSampledTexture(AmbientLight::_specularTextureProperty, AmbientLight::_specularSamplerProperty,
-                                     _specularReflection);
-        _envMapLight.mipMapLevel = static_cast<uint32_t>(value->mipmapCount() - 1);
+        shaderData.setImageView(AmbientLight::_specularTextureProperty, AmbientLight::_specularSamplerProperty,
+                                _specularReflection->getImageView(wgpu::TextureViewDimension::Cube));
+        _envMapLight.mipMapLevel = static_cast<uint32_t>(value->getTexture().GetMipLevelCount() - 1);
         _scene->shaderData.setData(AmbientLight::_envMapProperty, _envMapLight);
         shaderData.addDefine(HAS_SPECULAR_ENV);
     } else {
         shaderData.removeDefine(HAS_SPECULAR_ENV);
     }
+}
+
+void AmbientLight::setSpecularSampler(const wgpu::SamplerDescriptor& newValue) {
+    _scene->shaderData.setSampler(AmbientLight::_specularSamplerProperty, newValue);
 }
 
 float AmbientLight::specularIntensity() const { return _envMapLight.specularIntensity; }

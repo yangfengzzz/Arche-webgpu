@@ -37,9 +37,11 @@ public:
      * Specular glossiness texture.
      * @remarks RGB is specular, A is glossiness
      */
-    [[nodiscard]] SampledTexture2DPtr specularGlossinessTexture() const;
+    [[nodiscard]] std::shared_ptr<Image> specularGlossinessTexture() const;
 
-    void setSpecularGlossinessTexture(const SampledTexture2DPtr& newValue);
+    void setSpecularGlossinessTexture(const std::shared_ptr<Image>& newValue);
+
+    void setSpecularGlossinessSampler(const wgpu::SamplerDescriptor &newValue);
 
     /**
      * Create a pbr specular-glossiness workflow material instance.
@@ -50,7 +52,7 @@ private:
     PBRSpecularData _pbrSpecularData;
     static const std::string _pbrSpecularProp;
 
-    SampledTexture2DPtr _specularGlossinessTexture{nullptr};
+    std::shared_ptr<Image> _specularGlossinessTexture{nullptr};
     static const std::string _specularGlossinessTextureProp;
     static const std::string _specularGlossinessSamplerProp;
 };

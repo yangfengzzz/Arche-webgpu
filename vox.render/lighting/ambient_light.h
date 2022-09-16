@@ -11,7 +11,7 @@
 #include "vox.math/matrix4x4.h"
 #include "vox.math/spherical_harmonics3.h"
 #include "vox.render/scene_forward.h"
-#include "vox.render/texture/sampled_texture.h"
+#include "vox.render/image.h"
 
 namespace vox {
 /**
@@ -88,9 +88,11 @@ public:
      * Specular reflection texture.
      * @remarks This texture must be baked from MetalLoader::createSpecularTexture
      */
-    std::shared_ptr<SampledTexture> specularTexture();
+    std::shared_ptr<Image> specularTexture();
 
-    void setSpecularTexture(const std::shared_ptr<SampledTexture> &value);
+    void setSpecularTexture(const std::shared_ptr<Image> &value);
+
+    void setSpecularSampler(const wgpu::SamplerDescriptor& newValue);
 
     /**
      * Specular reflection intensity.
@@ -110,7 +112,7 @@ private:
     static const std::string _diffuseSHProperty;
 
     bool _specularTextureDecodeRGBM{false};
-    std::shared_ptr<SampledTexture> _specularReflection{nullptr};
+    std::shared_ptr<Image> _specularReflection{nullptr};
     static const std::string _specularTextureProperty;
     static const std::string _specularSamplerProperty;
 

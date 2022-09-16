@@ -44,7 +44,7 @@ file(GLOB IMAGE_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/image/*.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/image.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/image_manager.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/sampler.cpp)
+        ${CMAKE_CURRENT_SOURCE_DIR}/image_view.cpp)
 
 file(GLOB FOG_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/fog/*.cpp)
@@ -500,8 +500,8 @@ set(PROJECT_FILES
         ${SHADER_FILES}
         ${MATERIAL_FILES}
         ${LIGHT_FILE}
-        ${SHADOW_FILE}
-        ${PARTICLE_FILE}
+#        ${SHADOW_FILE}
+#        ${PARTICLE_FILE}
         ${PLUGINS_FILE}
         ${LUA_FILES}
         )

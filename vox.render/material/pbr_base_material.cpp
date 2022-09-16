@@ -17,11 +17,12 @@ void PBRBaseMaterial::setBaseColor(const Color& newValue) {
     shaderData.setData(PBRBaseMaterial::_pbrBaseProp, _pbrBaseData);
 }
 
-SampledTexture2DPtr PBRBaseMaterial::baseTexture() const { return _baseTexture; }
+std::shared_ptr<Image> PBRBaseMaterial::baseTexture() const { return _baseTexture; }
 
-void PBRBaseMaterial::setBaseTexture(const SampledTexture2DPtr& newValue) {
+void PBRBaseMaterial::setBaseTexture(const std::shared_ptr<Image>& newValue) {
     _baseTexture = newValue;
-    shaderData.setSampledTexture(PBRBaseMaterial::_baseTextureProp, PBRBaseMaterial::_baseSamplerProp, newValue);
+    shaderData.setImageView(PBRBaseMaterial::_baseTextureProp, PBRBaseMaterial::_baseSamplerProp,
+                            newValue->getImageView());
     if (newValue) {
         shaderData.addDefine(HAS_BASE_COLORMAP);
     } else {
@@ -29,16 +30,25 @@ void PBRBaseMaterial::setBaseTexture(const SampledTexture2DPtr& newValue) {
     }
 }
 
-SampledTexture2DPtr PBRBaseMaterial::normalTexture() const { return _normalTexture; }
+void PBRBaseMaterial::setBaseSampler(const wgpu::SamplerDescriptor& newValue) {
+    shaderData.setSampler(PBRBaseMaterial::_baseSamplerProp, newValue);
+}
 
-void PBRBaseMaterial::setNormalTexture(const SampledTexture2DPtr& newValue) {
+std::shared_ptr<Image> PBRBaseMaterial::normalTexture() const { return _normalTexture; }
+
+void PBRBaseMaterial::setNormalTexture(const std::shared_ptr<Image>& newValue) {
     _normalTexture = newValue;
-    shaderData.setSampledTexture(PBRBaseMaterial::_normalTextureProp, PBRBaseMaterial::_normalSamplerProp, newValue);
+    shaderData.setImageView(PBRBaseMaterial::_normalTextureProp, PBRBaseMaterial::_normalSamplerProp,
+                            newValue->getImageView());
     if (newValue) {
         shaderData.addDefine(HAS_NORMAL_TEXTURE);
     } else {
         shaderData.removeDefine(HAS_NORMAL_TEXTURE);
     }
+}
+
+void PBRBaseMaterial::setNormalSampler(const wgpu::SamplerDescriptor& newValue) {
+    shaderData.setSampler(PBRBaseMaterial::_normalSamplerProp, newValue);
 }
 
 float PBRBaseMaterial::normalTextureIntensity() const { return _pbrBaseData.normalTextureIntensity; }
@@ -57,12 +67,12 @@ void PBRBaseMaterial::setEmissiveColor(const Color& newValue) {
     shaderData.setData(PBRBaseMaterial::_pbrBaseProp, _pbrBaseData);
 }
 
-SampledTexture2DPtr PBRBaseMaterial::emissiveTexture() const { return _emissiveTexture; }
+std::shared_ptr<Image> PBRBaseMaterial::emissiveTexture() const { return _emissiveTexture; }
 
-void PBRBaseMaterial::setEmissiveTexture(const SampledTexture2DPtr& newValue) {
+void PBRBaseMaterial::setEmissiveTexture(const std::shared_ptr<Image>& newValue) {
     _emissiveTexture = newValue;
-    shaderData.setSampledTexture(PBRBaseMaterial::_emissiveTextureProp, PBRBaseMaterial::_emissiveSamplerProp,
-                                 newValue);
+    shaderData.setImageView(PBRBaseMaterial::_emissiveTextureProp, PBRBaseMaterial::_emissiveSamplerProp,
+                            newValue->getImageView());
     if (newValue) {
         shaderData.addDefine(HAS_EMISSIVEMAP);
     } else {
@@ -70,17 +80,25 @@ void PBRBaseMaterial::setEmissiveTexture(const SampledTexture2DPtr& newValue) {
     }
 }
 
-SampledTexture2DPtr PBRBaseMaterial::occlusionTexture() const { return _occlusionTexture; }
+void PBRBaseMaterial::setEmissiveSampler(const wgpu::SamplerDescriptor& newValue) {
+    shaderData.setSampler(PBRBaseMaterial::_emissiveSamplerProp, newValue);
+}
 
-void PBRBaseMaterial::setOcclusionTexture(const SampledTexture2DPtr& newValue) {
+std::shared_ptr<Image> PBRBaseMaterial::occlusionTexture() const { return _occlusionTexture; }
+
+void PBRBaseMaterial::setOcclusionTexture(const std::shared_ptr<Image>& newValue) {
     _occlusionTexture = newValue;
-    shaderData.setSampledTexture(PBRBaseMaterial::_occlusionTextureProp, PBRBaseMaterial::_occlusionSamplerProp,
-                                 newValue);
+    shaderData.setImageView(PBRBaseMaterial::_occlusionTextureProp, PBRBaseMaterial::_occlusionSamplerProp,
+                            newValue->getImageView());
     if (newValue) {
         shaderData.addDefine(HAS_OCCLUSIONMAP);
     } else {
         shaderData.removeDefine(HAS_OCCLUSIONMAP);
     }
+}
+
+void PBRBaseMaterial::setOcclusionSampler(const wgpu::SamplerDescriptor& newValue) {
+    shaderData.setSampler(PBRBaseMaterial::_occlusionSamplerProp, newValue);
 }
 
 float PBRBaseMaterial::occlusionTextureIntensity() const { return _pbrBaseData.occlusionTextureIntensity; }
@@ -112,16 +130,21 @@ void PBRBaseMaterial::setClearCoat(float value) {
     shaderData.setData(PBRBaseMaterial::_pbrBaseProp, _pbrBaseData);
 }
 
-SampledTexture2DPtr PBRBaseMaterial::clearCoatTexture() const { return _clearCoatTexture; }
+std::shared_ptr<Image> PBRBaseMaterial::clearCoatTexture() const { return _clearCoatTexture; }
 
-void PBRBaseMaterial::setClearCoatTexture(const SampledTexture2DPtr& value) {
+void PBRBaseMaterial::setClearCoatTexture(const std::shared_ptr<Image>& value) {
     if (value) {
         shaderData.addDefine("HAS_CLEARCOATTEXTURE");
     } else {
         shaderData.removeDefine("HAS_CLEARCOATTEXTURE");
     }
     _clearCoatTexture = value;
-    shaderData.setSampledTexture(PBRBaseMaterial::_clearCoatTextureProp, PBRBaseMaterial::_clearCoatSamplerProp, value);
+    shaderData.setImageView(PBRBaseMaterial::_clearCoatTextureProp, PBRBaseMaterial::_clearCoatSamplerProp,
+                            value->getImageView());
+}
+
+void PBRBaseMaterial::setClearCoatSampler(const wgpu::SamplerDescriptor& newValue) {
+    shaderData.setSampler(PBRBaseMaterial::_clearCoatSamplerProp, newValue);
 }
 
 float PBRBaseMaterial::clearCoatRoughness() const { return _pbrBaseData.clearCoatRoughness; }
@@ -131,30 +154,38 @@ void PBRBaseMaterial::setClearCoatRoughness(float value) {
     shaderData.setData(PBRBaseMaterial::_pbrBaseProp, _pbrBaseData);
 }
 
-SampledTexture2DPtr PBRBaseMaterial::clearCoatRoughnessTexture() const { return _clearCoatRoughnessTexture; }
+std::shared_ptr<Image> PBRBaseMaterial::clearCoatRoughnessTexture() const { return _clearCoatRoughnessTexture; }
 
-void PBRBaseMaterial::setClearCoatRoughnessTexture(const SampledTexture2DPtr& value) {
+void PBRBaseMaterial::setClearCoatRoughnessTexture(const std::shared_ptr<Image>& value) {
     if (value) {
         shaderData.addDefine("HAS_CLEARCOATROUGHNESSTEXTURE");
     } else {
         shaderData.removeDefine("HAS_CLEARCOATROUGHNESSTEXTURE");
     }
     _clearCoatRoughnessTexture = value;
-    shaderData.setSampledTexture(PBRBaseMaterial::_clearCoatRoughnessTextureProp,
-                                 PBRBaseMaterial::_clearCoatRoughnessSamplerProp, value);
+    shaderData.setImageView(PBRBaseMaterial::_clearCoatRoughnessTextureProp,
+                            PBRBaseMaterial::_clearCoatRoughnessSamplerProp, value->getImageView());
 }
 
-SampledTexture2DPtr PBRBaseMaterial::clearCoatNormalTexture() const { return _clearCoatNormalTexture; }
+void PBRBaseMaterial::setClearCoatRoughnessSampler(const wgpu::SamplerDescriptor& newValue) {
+    shaderData.setSampler(PBRBaseMaterial::_clearCoatRoughnessSamplerProp, newValue);
+}
 
-void PBRBaseMaterial::setClearCoatNormalTexture(const SampledTexture2DPtr& value) {
+std::shared_ptr<Image> PBRBaseMaterial::clearCoatNormalTexture() const { return _clearCoatNormalTexture; }
+
+void PBRBaseMaterial::setClearCoatNormalTexture(const std::shared_ptr<Image>& value) {
     if (value) {
         shaderData.addDefine("HAS_CLEARCOATNORMALTEXTURE");
     } else {
         shaderData.removeDefine("HAS_CLEARCOATNORMALTEXTURE");
     }
     _clearCoatNormalTexture = value;
-    shaderData.setSampledTexture(PBRBaseMaterial::_clearCoatNormalTextureProp,
-                                 PBRBaseMaterial::_clearCoatNormalSamplerProp, value);
+    shaderData.setImageView(PBRBaseMaterial::_clearCoatNormalTextureProp, PBRBaseMaterial::_clearCoatNormalSamplerProp,
+                            value->getImageView());
+}
+
+void PBRBaseMaterial::setClearCoatNormalSampler(const wgpu::SamplerDescriptor& newValue) {
+    shaderData.setSampler(PBRBaseMaterial::_clearCoatNormalSamplerProp, newValue);
 }
 
 PBRBaseMaterial::PBRBaseMaterial(wgpu::Device& device, const std::string& name) : BaseMaterial(device, name) {

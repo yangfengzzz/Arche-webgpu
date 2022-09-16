@@ -6,7 +6,7 @@
 
 #include "vox.render/shader/shader_data.h"
 
-#include "vox.render/texture/texture_utils.h"
+#include "vox.render/rendering/resource_cache.h"
 
 namespace vox {
 ShaderData::ShaderData(wgpu::Device &device) : _device(device) {}
@@ -25,18 +25,19 @@ void ShaderData::bindData(
     for (auto &bufferFunctor : _shaderBufferFunctors) {
         auto iter = resources.find(bufferFunctor.first);
         if (iter != resources.end()) {
-            ShaderData::bindBuffer(iter->second, bufferFunctor.second(), bindGroupLayoutEntryVecMap, bindGroupEntryVecMap, false);
+            ShaderData::bindBuffer(iter->second, bufferFunctor.second(), bindGroupLayoutEntryVecMap,
+                                   bindGroupEntryVecMap, false);
         }
     }
 
-    for (auto &texture : _shaderTextures) {
+    for (auto &texture : _imageViews) {
         auto iter = resources.find(texture.first);
         if (iter != resources.end()) {
             ShaderData::bindTexture(iter->second, texture.second, bindGroupLayoutEntryVecMap, bindGroupEntryVecMap);
         }
     }
 
-    for (auto &sampler : _shaderSamplers) {
+    for (auto &sampler : _samplers) {
         auto iter = resources.find(sampler.first);
         if (iter != resources.end()) {
             ShaderData::bindSampler(iter->second, sampler.second, bindGroupLayoutEntryVecMap, bindGroupEntryVecMap);
@@ -48,7 +49,8 @@ void ShaderData::bindBuffer(
         const ShaderResource &resource,
         const Buffer &buffer,
         std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>> &bindGroupLayoutEntryVecMap,
-        std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>> &bindGroupEntryVecMap, bool isUniform) {
+        std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>> &bindGroupEntryVecMap,
+        bool isUniform) {
     auto insertFunctor = [&]() {
         wgpu::BindGroupEntry entry;
         entry.binding = resource.binding;
@@ -59,7 +61,7 @@ void ShaderData::bindBuffer(
         wgpu::BindGroupLayoutEntry layout_entry;
         layout_entry.binding = resource.binding;
         layout_entry.visibility = resource.stages;
-        layout_entry.buffer.type = isUniform? wgpu::BufferBindingType::Uniform : wgpu::BufferBindingType::Storage;
+        layout_entry.buffer.type = isUniform ? wgpu::BufferBindingType::Uniform : wgpu::BufferBindingType::Storage;
         bindGroupLayoutEntryVecMap[resource.set].push_back(layout_entry);
     };
 
@@ -85,21 +87,21 @@ void ShaderData::bindBuffer(
 
 void ShaderData::bindTexture(
         const ShaderResource &resource,
-        const SampledTexturePtr &texture,
+        const std::shared_ptr<ImageView> &imageView,
         std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>> &bindGroupLayoutEntryVecMap,
         std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>> &bindGroupEntryVecMap) {
     auto insertFunctor = [&]() {
         wgpu::BindGroupEntry entry;
         entry.binding = resource.binding;
-        entry.textureView = texture->textureView();
+        entry.textureView = imageView->handle();
         bindGroupEntryVecMap[resource.set].push_back(entry);
 
         wgpu::BindGroupLayoutEntry layout_entry;
         layout_entry.binding = resource.binding;
         layout_entry.visibility = resource.stages;
-        layout_entry.texture.sampleType = wgpu::TextureSampleType::Float; //todo: don't support other now
-        layout_entry.texture.multisampled = texture->sampleCount() > 1;
-        layout_entry.texture.viewDimension = texture->textureViewDimension();
+        layout_entry.texture.sampleType = wgpu::TextureSampleType::Float;  // todo: don't support other now
+        layout_entry.texture.multisampled = imageView->sampleCount() > 1;
+        layout_entry.texture.viewDimension = imageView->dimension();
         bindGroupLayoutEntryVecMap[resource.set].push_back(layout_entry);
     };
 
@@ -125,19 +127,19 @@ void ShaderData::bindTexture(
 
 void ShaderData::bindSampler(
         const ShaderResource &resource,
-        const SampledTexturePtr &sampler,
+        const wgpu::SamplerDescriptor &sampler,
         std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>> &bindGroupLayoutEntryVecMap,
         std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>> &bindGroupEntryVecMap) {
     auto insertFunctor = [&]() {
         wgpu::BindGroupEntry entry;
         entry.binding = resource.binding;
-        entry.sampler = sampler->sampler();
+        entry.sampler = ResourceCache::GetSingleton().requestSampler(sampler);
         bindGroupEntryVecMap[resource.set].push_back(entry);
 
         wgpu::BindGroupLayoutEntry layout_entry;
         layout_entry.binding = resource.binding;
         layout_entry.visibility = resource.stages;
-        layout_entry.sampler.type = sampler->compareFunction() != wgpu::CompareFunction::Undefined
+        layout_entry.sampler.type = sampler.compare != wgpu::CompareFunction::Undefined
                                             ? wgpu::SamplerBindingType::Comparison
                                             : wgpu::SamplerBindingType::Filtering;
         bindGroupLayoutEntryVecMap[resource.set].push_back(layout_entry);
@@ -168,11 +170,22 @@ void ShaderData::setBufferFunctor(const std::string &property, const std::functi
 }
 
 // MARK: - Sampler&&Texture
-void ShaderData::setSampledTexture(const std::string &texture_prop,
-                                   const std::string &sample_prop,
-                                   const SampledTexturePtr &value) {
-    _shaderTextures[texture_prop] = value;
-    _shaderSamplers[sample_prop] = value;
+void ShaderData::setImageView(const std::string &texture_name,
+                              const std::string &sampler_name,
+                              const std::shared_ptr<ImageView> &value) {
+    _imageViews[texture_name] = value;
+    auto iter = _samplers.find(sampler_name);
+    if (iter == _samplers.end()) {
+        _samplers[sampler_name] = ShaderData::_defaultSamplerDesc;
+    }
+}
+
+void ShaderData::setStorageImageView(const std::string &texture_name, const std::shared_ptr<ImageView> &value) {
+    _imageViews[texture_name] = value;
+}
+
+void ShaderData::setSampler(const std::string &sampler_name, wgpu::SamplerDescriptor value) {
+    _samplers[sampler_name] = value;
 }
 
 // MARK: - Macro

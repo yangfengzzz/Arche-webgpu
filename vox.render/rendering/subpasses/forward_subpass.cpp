@@ -11,6 +11,7 @@
 #include "vox.render/material/material.h"
 #include "vox.render/mesh/mesh.h"
 #include "vox.render/renderer.h"
+#include "vox.render/rendering/resource_cache.h"
 #include "vox.render/shader/internal_variant_name.h"
 #include "vox.render/shadow/shadow_manager.h"
 
@@ -95,10 +96,10 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
 
         // PSO
         {
-            auto &vert_shader_module = _pass->resourceCache().requestShaderModule(wgpu::ShaderStage::Vertex,
-                                                                                  *material->vertex_source_, macros);
-            auto &frag_shader_module = _pass->resourceCache().requestShaderModule(wgpu::ShaderStage::Fragment,
-                                                                                  *material->fragment_source_, macros);
+            auto &vert_shader_module = ResourceCache::GetSingleton().requestShaderModule(
+                    wgpu::ShaderStage::Vertex, *material->vertex_source_, macros);
+            auto &frag_shader_module = ResourceCache::GetSingleton().requestShaderModule(
+                    wgpu::ShaderStage::Fragment, *material->fragment_source_, macros);
             _forwardPipelineDescriptor.vertex.module = vert_shader_module.handle();
             _fragment.module = frag_shader_module.handle();
 
@@ -126,21 +127,21 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
                 bindGroupLayoutDescriptor.entries = bindGroupLayoutEntryVec.second.data();
                 bindGroupLayoutDescriptor.entryCount = bindGroupLayoutEntryVec.second.size();
                 wgpu::BindGroupLayout bindGroupLayout =
-                        _pass->resourceCache().requestBindGroupLayout(bindGroupLayoutDescriptor);
+                        ResourceCache::GetSingleton().requestBindGroupLayout(bindGroupLayoutDescriptor);
 
                 const auto group = bindGroupLayoutEntryVec.first;
                 const auto &bindGroupEntryVec = _bindGroupEntryVecMap[group];
                 _bindGroupDescriptor.layout = bindGroupLayout;
                 _bindGroupDescriptor.entryCount = bindGroupEntryVec.size();
                 _bindGroupDescriptor.entries = bindGroupEntryVec.data();
-                auto uniformBindGroup = _pass->resourceCache().requestBindGroup(_bindGroupDescriptor);
+                auto uniformBindGroup = ResourceCache::GetSingleton().requestBindGroup(_bindGroupDescriptor);
                 passEncoder.SetBindGroup(group, uniformBindGroup);
                 bindGroupLayouts.emplace_back(std::move(bindGroupLayout));
             }
 
             _pipelineLayoutDescriptor.bindGroupLayoutCount = static_cast<uint32_t>(bindGroupLayouts.size());
             _pipelineLayoutDescriptor.bindGroupLayouts = bindGroupLayouts.data();
-            _pipelineLayout = _pass->resourceCache().requestPipelineLayout(_pipelineLayoutDescriptor);
+            _pipelineLayout = ResourceCache::GetSingleton().requestPipelineLayout(_pipelineLayoutDescriptor);
             _forwardPipelineDescriptor.layout = _pipelineLayout;
 
             material->renderState.apply(&_colorTargetState, &_depthStencil, _forwardPipelineDescriptor, passEncoder,
@@ -150,7 +151,7 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
             _forwardPipelineDescriptor.vertex.buffers = mesh->vertexBufferLayouts().data();
             _forwardPipelineDescriptor.primitive.topology = subMesh->topology();
 
-            auto renderPipeline = _pass->resourceCache().requestPipeline(_forwardPipelineDescriptor);
+            auto renderPipeline = ResourceCache::GetSingleton().requestPipeline(_forwardPipelineDescriptor);
             passEncoder.SetPipeline(renderPipeline);
         }
 

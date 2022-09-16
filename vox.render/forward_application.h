@@ -13,6 +13,8 @@
 #include "vox.render/particle/particle_manager.h"
 #include "vox.render/scene_manager.h"
 #include "vox.render/shader/shader_manager.h"
+#include "vox.render/rendering/resource_cache.h"
+#include "vox.render/image_manager.h"
 #include "vox.render/shadow/shadow_manager.h"
 
 namespace vox {
@@ -59,6 +61,8 @@ protected:
      */
     std::unique_ptr<ShaderManager> shader_manager_{nullptr};
     std::unique_ptr<MeshManager> mesh_manager_{nullptr};
+    std::unique_ptr<ImageManager> image_manager_{nullptr};
+    std::unique_ptr<ResourceCache> resource_cache_{nullptr};
 
     std::unique_ptr<ComponentsManager> _componentsManager{nullptr};
     std::unique_ptr<SceneManager> _sceneManager{nullptr};

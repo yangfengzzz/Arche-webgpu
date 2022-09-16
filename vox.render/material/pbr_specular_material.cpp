@@ -26,17 +26,21 @@ void PBRSpecularMaterial::setGlossiness(float newValue) {
     shaderData.setData(PBRSpecularMaterial::_pbrSpecularProp, _pbrSpecularData);
 }
 
-SampledTexture2DPtr PBRSpecularMaterial::specularGlossinessTexture() const { return _specularGlossinessTexture; }
+std::shared_ptr<Image> PBRSpecularMaterial::specularGlossinessTexture() const { return _specularGlossinessTexture; }
 
-void PBRSpecularMaterial::setSpecularGlossinessTexture(const SampledTexture2DPtr& newValue) {
+void PBRSpecularMaterial::setSpecularGlossinessTexture(const std::shared_ptr<Image>& newValue) {
     _specularGlossinessTexture = newValue;
-    shaderData.setSampledTexture(PBRSpecularMaterial::_specularGlossinessTextureProp,
-                                 PBRSpecularMaterial::_specularGlossinessSamplerProp, newValue);
+    shaderData.setImageView(PBRSpecularMaterial::_specularGlossinessTextureProp,
+                            PBRSpecularMaterial::_specularGlossinessSamplerProp, newValue->getImageView());
     if (newValue) {
         shaderData.addDefine(HAS_SPECULARGLOSSINESSMAP);
     } else {
         shaderData.removeDefine(HAS_SPECULARGLOSSINESSMAP);
     }
+}
+
+void PBRSpecularMaterial::setSpecularGlossinessSampler(const wgpu::SamplerDescriptor& newValue) {
+    shaderData.setSampler(PBRSpecularMaterial::_specularGlossinessSamplerProp, newValue);
 }
 
 PBRSpecularMaterial::PBRSpecularMaterial(wgpu::Device& device, const std::string& name)

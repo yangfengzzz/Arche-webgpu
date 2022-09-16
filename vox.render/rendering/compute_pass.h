@@ -65,9 +65,6 @@ protected:
 
     wgpu::PipelineLayoutDescriptor _pipelineLayoutDescriptor;
     wgpu::PipelineLayout _pipelineLayout;
-
-private:
-    ResourceCache _resourceCache;
 };
 
 }  // namespace vox

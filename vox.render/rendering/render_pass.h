@@ -54,9 +54,6 @@ public:
 
     void clearParentPass();
 
-public:
-    ResourceCache& resourceCache();
-
 private:
     wgpu::RenderPassDescriptor& _desc;
 
@@ -64,8 +61,6 @@ private:
     size_t _activeSubpassIndex{0};
 
     std::unordered_map<std::string, RenderPass*> _parentPass;
-
-    ResourceCache _resourceCache;
 };
 
 }  // namespace vox

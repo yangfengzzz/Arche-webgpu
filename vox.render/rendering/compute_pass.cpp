@@ -10,7 +10,7 @@
 
 namespace vox {
 ComputePass::ComputePass(wgpu::Device& device, std::shared_ptr<ShaderSource>&& source)
-    : _source(std::move(source)), _resourceCache(device) {
+    : _source(std::move(source)) {
     _computePipelineDescriptor.compute.entryPoint = "main";
 }
 
@@ -48,7 +48,7 @@ void ComputePass::compute(wgpu::ComputePassEncoder& passEncoder) {
         shaderData->mergeVariants(compileMacros, compileMacros);
     }
 
-    auto& shader_module = _resourceCache.requestShaderModule(wgpu::ShaderStage::Compute, *_source, compileMacros);
+    auto& shader_module = ResourceCache::GetSingleton().requestShaderModule(wgpu::ShaderStage::Compute, *_source, compileMacros);
     _computePipelineDescriptor.compute.module = shader_module.handle();
 
     _bindGroupLayoutEntryVecMap.clear();
@@ -61,23 +61,23 @@ void ComputePass::compute(wgpu::ComputePassEncoder& passEncoder) {
     for (const auto& bindGroupLayoutEntryVec : _bindGroupLayoutEntryVecMap) {
         bindGroupLayoutDescriptor.entries = bindGroupLayoutEntryVec.second.data();
         bindGroupLayoutDescriptor.entryCount = bindGroupLayoutEntryVec.second.size();
-        wgpu::BindGroupLayout bindGroupLayout = _resourceCache.requestBindGroupLayout(bindGroupLayoutDescriptor);
+        wgpu::BindGroupLayout bindGroupLayout = ResourceCache::GetSingleton().requestBindGroupLayout(bindGroupLayoutDescriptor);
 
         const auto group = bindGroupLayoutEntryVec.first;
         const auto& bindGroupEntryVec = _bindGroupEntryVecMap[group];
         _bindGroupDescriptor.layout = bindGroupLayout;
         _bindGroupDescriptor.entryCount = bindGroupEntryVec.size();
         _bindGroupDescriptor.entries = bindGroupEntryVec.data();
-        auto uniformBindGroup = _resourceCache.requestBindGroup(_bindGroupDescriptor);
+        auto uniformBindGroup = ResourceCache::GetSingleton().requestBindGroup(_bindGroupDescriptor);
         passEncoder.SetBindGroup(group, uniformBindGroup);
         bindGroupLayouts.emplace_back(std::move(bindGroupLayout));
     }
 
     _pipelineLayoutDescriptor.bindGroupLayoutCount = static_cast<uint32_t>(bindGroupLayouts.size());
     _pipelineLayoutDescriptor.bindGroupLayouts = bindGroupLayouts.data();
-    _pipelineLayout = _resourceCache.requestPipelineLayout(_pipelineLayoutDescriptor);
+    _pipelineLayout = ResourceCache::GetSingleton().requestPipelineLayout(_pipelineLayoutDescriptor);
     _computePipelineDescriptor.layout = _pipelineLayout;
-    auto renderPipeline = _resourceCache.requestPipeline(_computePipelineDescriptor);
+    auto renderPipeline = ResourceCache::GetSingleton().requestPipeline(_computePipelineDescriptor);
     passEncoder.SetPipeline(renderPipeline);
 
     passEncoder.DispatchWorkgroups(_workgroupCountX, _workgroupCountY, _workgroupCountZ);

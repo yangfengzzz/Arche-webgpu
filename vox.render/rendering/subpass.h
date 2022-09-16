@@ -27,8 +27,6 @@ public:
 
     Subpass &operator=(Subpass &&) = delete;
 
-    void setRenderPass(RenderPass *pass);
-
     /**
      * @brief Draw virtual function
      * @param commandEncoder CommandEncoder to use to record draw commands
@@ -44,8 +42,6 @@ protected:
     static bool _compareFromNearToFar(const RenderElement &a, const RenderElement &b);
 
     static bool _compareFromFarToNear(const RenderElement &a, const RenderElement &b);
-
-    RenderPass *_pass{nullptr};
 
     RenderContext *_renderContext{nullptr};
     Scene *_scene{nullptr};

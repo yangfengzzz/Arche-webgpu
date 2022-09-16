@@ -8,7 +8,7 @@
 
 #include "vox.math/color.h"
 #include "vox.render/material/base_material.h"
-#include "vox.render/texture/sampled_texture2d.h"
+#include "vox.render/image.h"
 
 namespace vox {
 /**
@@ -26,9 +26,11 @@ public:
     /**
      * Base texture.
      */
-    [[nodiscard]] SampledTexture2DPtr baseTexture() const;
+    [[nodiscard]] std::shared_ptr<Image> baseTexture() const;
 
-    void setBaseTexture(const SampledTexture2DPtr& newValue);
+    void setBaseTexture(const std::shared_ptr<Image>& newValue);
+
+    void setBaseSampler(const wgpu::SamplerDescriptor &desc);
 
     /**
      * Create a unlit material instance.
@@ -39,7 +41,7 @@ private:
     Color _baseColor = Color(1, 1, 1, 1);
     static const std::string _baseColorProp;
 
-    SampledTexture2DPtr _baseTexture = nullptr;
+    std::shared_ptr<Image> _baseTexture = nullptr;
     static const std::string _baseTextureProp;
     static const std::string _baseSamplerProp;
 };

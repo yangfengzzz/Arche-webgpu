@@ -17,17 +17,21 @@ void UnlitMaterial::setBaseColor(const Color& newValue) {
     shaderData.setData(UnlitMaterial::_baseColorProp, newValue);
 }
 
-SampledTexture2DPtr UnlitMaterial::baseTexture() const { return _baseTexture; }
+std::shared_ptr<Image> UnlitMaterial::baseTexture() const { return _baseTexture; }
 
-void UnlitMaterial::setBaseTexture(const SampledTexture2DPtr& newValue) {
+void UnlitMaterial::setBaseTexture(const std::shared_ptr<Image>& newValue) {
     _baseTexture = newValue;
-    shaderData.setSampledTexture(UnlitMaterial::_baseTextureProp, UnlitMaterial::_baseSamplerProp, newValue);
+    shaderData.setImageView(UnlitMaterial::_baseTextureProp, UnlitMaterial::_baseSamplerProp, newValue->getImageView());
 
     if (newValue) {
         shaderData.addDefine(HAS_BASE_TEXTURE);
     } else {
         shaderData.removeDefine(HAS_BASE_TEXTURE);
     }
+}
+
+void UnlitMaterial::setBaseSampler(const wgpu::SamplerDescriptor &desc) {
+    shaderData.setSampler(UnlitMaterial::_baseSamplerProp, desc);
 }
 
 UnlitMaterial::UnlitMaterial(wgpu::Device& device, const std::string& name) : BaseMaterial(device, name) {

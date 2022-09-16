@@ -10,7 +10,7 @@
 #include "vox.render/rendering/subpass.h"
 
 namespace vox {
-RenderPass::RenderPass(wgpu::Device& device, wgpu::RenderPassDescriptor& desc) : _desc(desc), _resourceCache(device) {}
+RenderPass::RenderPass(wgpu::Device& device, wgpu::RenderPassDescriptor& desc) : _desc(desc) {}
 
 const wgpu::RenderPassDescriptor& RenderPass::renderPassDescriptor() { return _desc; }
 
@@ -31,7 +31,7 @@ void RenderPass::draw(wgpu::CommandEncoder& commandEncoder, std::optional<std::s
 }
 
 void RenderPass::addSubpass(std::unique_ptr<Subpass>&& subpass) {
-    subpass->setRenderPass(this);
+    subpass->prepare();
     _subpasses.emplace_back(std::move(subpass));
 }
 
@@ -71,7 +71,5 @@ RenderPass* RenderPass::findPass(const std::string& name) {
 }
 
 void RenderPass::clearParentPass() { _parentPass.clear(); }
-
-ResourceCache& RenderPass::resourceCache() { return _resourceCache; }
 
 }  // namespace vox

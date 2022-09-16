@@ -13,6 +13,7 @@
 #include <vector>
 
 namespace vox {
+class ImageView;
 /**
  * @brief Mipmap information
  */
@@ -59,7 +60,7 @@ public:
 
     [[nodiscard]] const wgpu::Texture &getTexture() const;
 
-    [[nodiscard]] const wgpu::TextureView &getTextureView(
+    [[nodiscard]] const std::shared_ptr<ImageView> &getImageView(
             wgpu::TextureViewDimension view_type = wgpu::TextureViewDimension::e2D,
             uint32_t base_mip_level = 0,
             uint32_t base_array_layer = 0,
@@ -103,7 +104,7 @@ private:
 
     wgpu::Texture _texture;
 
-    std::unordered_map<size_t, wgpu::TextureView> _texture_views;
+    std::unordered_map<size_t, std::shared_ptr<ImageView>> _image_views;
 };
 
 }  // namespace vox

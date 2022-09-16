@@ -36,9 +36,11 @@ public:
      * Roughness metallic texture.
      * @remarks G channel is roughness, B channel is metallic
      */
-    [[nodiscard]] SampledTexture2DPtr metallicRoughnessTexture() const;
+    [[nodiscard]] std::shared_ptr<Image> metallicRoughnessTexture() const;
 
-    void setMetallicRoughnessTexture(const SampledTexture2DPtr &newValue);
+    void setMetallicRoughnessTexture(const std::shared_ptr<Image> &newValue);
+
+    void setMetallicRoughnessSampler(const wgpu::SamplerDescriptor &newValue);
 
     /**
      * Create a pbr metallic-roughness workflow material instance.
@@ -49,7 +51,7 @@ private:
     PBRData _pbrData;
     static const std::string _pbrProp;
 
-    SampledTexture2DPtr _metallicRoughnessTexture{nullptr};
+    std::shared_ptr<Image> _metallicRoughnessTexture{nullptr};
     static const std::string _metallicRoughnessTextureProp;
     static const std::string _metallicRoughnessSamplerProp;
 };

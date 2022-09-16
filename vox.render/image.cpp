@@ -7,6 +7,7 @@
 #include "vox.render/image.h"
 
 #include "vox.render/helper.h"
+#include "vox.render/image_view.h"
 #include "vox.render/platform/filesystem.h"
 #include "vox.render/std_helpers.h"
 
@@ -49,30 +50,24 @@ void Image::createTexture(wgpu::Device &device, wgpu::TextureUsage usage) {
 
 const wgpu::Texture &Image::getTexture() const { return _texture; }
 
-const wgpu::TextureView &Image::getTextureView(wgpu::TextureViewDimension view_type,
-                                               uint32_t base_mip_level,
-                                               uint32_t base_array_layer,
-                                               uint32_t n_mip_levels,
-                                               uint32_t n_array_layers) {
+const std::shared_ptr<ImageView> &Image::getImageView(wgpu::TextureViewDimension view_type,
+                                                      uint32_t base_mip_level,
+                                                      uint32_t base_array_layer,
+                                                      uint32_t n_mip_levels,
+                                                      uint32_t n_array_layers) {
     std::size_t key = 0;
     vox::utility::hash_combine(key, view_type);
     vox::utility::hash_combine(key, base_mip_level);
     vox::utility::hash_combine(key, base_array_layer);
     vox::utility::hash_combine(key, n_mip_levels);
     vox::utility::hash_combine(key, n_array_layers);
-    auto iter = _texture_views.find(key);
-    if (iter == _texture_views.end()) {
-        wgpu::TextureViewDescriptor desc{};
-        desc.label = name.c_str();
-        desc.format = _texture.GetFormat();
-        desc.dimension = view_type;
-        desc.baseMipLevel = base_mip_level;
-        desc.baseArrayLayer = base_array_layer;
-        desc.mipLevelCount = n_mip_levels;
-        desc.arrayLayerCount = n_array_layers;
-        _texture_views.insert(std::make_pair(key, _texture.CreateView(&desc)));
+    auto iter = _image_views.find(key);
+    if (iter == _image_views.end()) {
+        _image_views.insert(
+                std::make_pair(key, std::make_shared<ImageView>(this, view_type, base_mip_level, base_array_layer,
+                                                                n_mip_levels, n_array_layers)));
     }
-    return _texture_views.find(key)->second;
+    return _image_views.find(key)->second;
 }
 
 Mipmap &Image::mipmap(const size_t index) { return _mipmaps.at(index); }
