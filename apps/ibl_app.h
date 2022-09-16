@@ -6,9 +6,10 @@
 
 #pragma once
 
+#include <utility>
+
 #include "vox.render/controls/orbit_control.h"
 #include "vox.render/forward_application.h"
-#include "vox.render/texture/sampled_texturecube.h"
 
 namespace vox {
 class IBLApp : public ForwardApplication {
@@ -18,17 +19,15 @@ public:
     void loadScene() override;
 
 private:
-    SampledTextureCubePtr _cubeMap{nullptr};
-
     struct Material {
         std::string name;
         Color baseColor;
-        float roughness;
-        float metallic;
+        float roughness{};
+        float metallic{};
 
-        Material(){};
+        Material() = default;
 
-        Material(std::string n, Color c, float r, float m) : name(n) {
+        Material(std::string n, Color c, float r, float m) : name(std::move(n)) {
             roughness = r;
             metallic = m;
             baseColor = c;

@@ -76,14 +76,14 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
     for (auto &element : items) {
         auto macros = variant;
         auto &renderer = element.renderer;
-        uint32_t shadowCount = ShadowManager::shadowCount();
-        if (renderer->receiveShadow && shadowCount != 0) {
-            renderer->shaderData.addDefine(SHADOW_MAP_COUNT + std::to_string(shadowCount));
-        }
-        uint32_t cubeShadowCount = ShadowManager::cubeShadowCount();
-        if (renderer->receiveShadow && cubeShadowCount != 0) {
-            renderer->shaderData.addDefine(CUBE_SHADOW_MAP_COUNT + std::to_string(cubeShadowCount));
-        }
+//        uint32_t shadowCount = ShadowManager::shadowCount();
+//        if (renderer->receiveShadow && shadowCount != 0) {
+//            renderer->shaderData.addDefine(SHADOW_MAP_COUNT + std::to_string(shadowCount));
+//        }
+//        uint32_t cubeShadowCount = ShadowManager::cubeShadowCount();
+//        if (renderer->receiveShadow && cubeShadowCount != 0) {
+//            renderer->shaderData.addDefine(CUBE_SHADOW_MAP_COUNT + std::to_string(cubeShadowCount));
+//        }
 
         renderer->updateShaderData();
         renderer->shaderData.mergeVariants(macros, macros);

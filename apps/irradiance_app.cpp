@@ -22,11 +22,8 @@ public:
     }
 
     /// Base texture.
-    SampledTexture2DPtr baseTexture() { return _texture; }
-
-    void setBaseTexture(const SampledTexture2DPtr& newValue) {
-        _texture = newValue;
-        shaderData.setSampledTexture(_baseTextureProp, _baseSamplerProp, newValue);
+    void setBaseTexture(const std::shared_ptr<ImageView>& newValue) {
+        shaderData.setImageView(_baseTextureProp, _baseSamplerProp, newValue);
     }
 
     /// Tiling and offset of main textures.
@@ -38,7 +35,6 @@ public:
     }
 
 private:
-    SampledTexture2DPtr _texture{nullptr};
     const std::string _baseTextureProp = "u_baseTexture";
     const std::string _baseSamplerProp = "u_baseSampler";
 
@@ -88,24 +84,13 @@ void IrradianceApp::loadScene() {
     planes[4]->transform->setPosition(-1, 0, 0);  // PZ
     planes[5]->transform->setPosition(3, 0, 0);   // NZ
 
-    const std::string path = "SkyMap/country/";
-    const std::array<std::string, 6> imageNames = {"posx.png", "negx.png", "posy.png",
-                                                   "negy.png", "posz.png", "negz.png"};
-    std::array<std::unique_ptr<Image>, 6> images;
-    std::array<Image*, 6> imagePtr{};
-    for (int i = 0; i < 6; i++) {
-        images[i] = Image::load(path + imageNames[i]);
-        imagePtr[i] = images[i].get();
-    }
-    _cubeMap = std::make_shared<SampledTextureCube>(_device, images[0]->extent().width, images[0]->extent().height, 1,
-                                                    images[0]->format());
-    _cubeMap->setPixelBuffer(imagePtr);
+    auto ibl_map = ImageManager::GetSingleton().generateIBL("Textures/uffizi_rgba16f_cube.ktx");
     scene->ambientLight()->setSpecularTexture(_cubeMap);
 
     auto changeMip = [&](uint32_t mipLevel) {
         for (uint32_t i = 0; i < 6; i++) {
             auto material = planeMaterials[i];
-            material->setBaseTexture(_cubeMap->textureView2D(mipLevel, i));
+            material->setBaseTexture(_cubeMap->getImageView(wgpu::TextureViewDimension::e2D, mipLevel, i, 1, 1));
             material->setFaceIndex(i);
         }
     };

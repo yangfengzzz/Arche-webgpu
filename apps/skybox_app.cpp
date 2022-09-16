@@ -8,7 +8,6 @@
 
 #include "vox.render/camera.h"
 #include "vox.render/entity.h"
-#include "vox.render/texture/stb.h"
 #include "vox.render/material/unlit_material.h"
 #include "vox.render/mesh/mesh_renderer.h"
 #include "vox.render/mesh/primitive_mesh.h"
@@ -18,23 +17,10 @@ namespace vox {
 bool SkyboxApp::prepare(Platform &platform) {
     ForwardApplication::prepare(platform);
 
-    const std::string path = "SkyMap/country/";
-    const std::array<std::string, 6> imageNames = {"posx.png", "negx.png", "posy.png",
-                                                   "negy.png", "posz.png", "negz.png"};
-    std::array<std::unique_ptr<Image>, 6> images;
-    std::array<Image *, 6> imagePtr{};
-    for (int i = 0; i < 6; i++) {
-        images[i] = Image::load(path + imageNames[i]);
-        imagePtr[i] = images[i].get();
-    }
-    auto cubeMap = std::make_shared<SampledTextureCube>(_device, images[0]->extent().width, images[0]->extent().height,
-                                                        1, images[0]->format());
-    cubeMap->setPixelBuffer(imagePtr);
-
     auto scene = _sceneManager->currentScene();
     auto skybox = std::make_unique<SkyboxSubpass>(_renderContext.get(), _depthStencilTextureFormat, scene, _mainCamera);
     skybox->createCuboid();
-    skybox->setTextureCubeMap(cubeMap);
+    skybox->setTextureCubeMap(ImageManager::GetSingleton().loadTexture("Textures/uffizi_rgba16f_cube.ktx"));
     _renderPass->addSubpass(std::move(skybox));
 
     return true;

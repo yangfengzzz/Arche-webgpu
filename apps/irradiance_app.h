@@ -8,7 +8,7 @@
 
 #include "vox.render/controls/orbit_control.h"
 #include "vox.render/forward_application.h"
-#include "vox.render/texture/sampled_texturecube.h"
+#include "vox.render/image.h"
 
 namespace vox {
 class IrradianceApp : public ForwardApplication {
@@ -16,6 +16,6 @@ public:
     void loadScene() override;
 
 private:
-    SampledTextureCubePtr _cubeMap{nullptr};
+    std::shared_ptr<Image> _cubeMap{nullptr};
 };
 }  // namespace vox

@@ -9,6 +9,8 @@
 #include "vox.render/rendering/resource_cache.h"
 
 namespace vox {
+wgpu::SamplerDescriptor ShaderData::_defaultSamplerDesc{};
+
 ShaderData::ShaderData(wgpu::Device &device) : _device(device) {}
 
 void ShaderData::bindData(

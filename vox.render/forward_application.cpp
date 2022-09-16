@@ -20,8 +20,8 @@ ForwardApplication::~ForwardApplication() {
 
     _componentsManager.reset();
     _lightManager.reset();
-    _shadowManager.reset();
-    _particleManager.reset();
+//    _shadowManager.reset();
+//    _particleManager.reset();
 
     shader_manager_->CollectGarbage();
     shader_manager_.reset();
@@ -46,7 +46,7 @@ bool ForwardApplication::prepare(Platform& platform) {
     _sceneManager = std::make_unique<SceneManager>(_device);
     auto scene = _sceneManager->currentScene();
 
-    _particleManager = std::make_unique<ParticleManager>(_device);
+//    _particleManager = std::make_unique<ParticleManager>(_device);
     _lightManager = std::make_unique<LightManager>(scene);
     {
         loadScene();
@@ -58,7 +58,7 @@ bool ForwardApplication::prepare(Platform& platform) {
         _depthStencilTexture = _createDepthStencilView(factor * extent.width, factor * extent.height);
     }
     _lightManager->setCamera(_mainCamera);
-    _shadowManager = std::make_unique<ShadowManager>(scene, _mainCamera);
+//    _shadowManager = std::make_unique<ShadowManager>(scene, _mainCamera);
 
     // Create a render pass descriptor for the lighting and composition pass
     // Whatever rendered in the final pass needs to be stored, so it can be displayed
@@ -110,9 +110,9 @@ void ForwardApplication::update(float deltaTime) {
 }
 
 void ForwardApplication::updateGPUTask(wgpu::CommandEncoder& commandEncoder) {
-    _shadowManager->draw(commandEncoder);
+//    _shadowManager->draw(commandEncoder);
     _lightManager->draw(commandEncoder);
-    _particleManager->draw(commandEncoder);
+//    _particleManager->draw(commandEncoder);
 }
 
 bool ForwardApplication::resize(uint32_t win_width, uint32_t win_height, uint32_t fb_width, uint32_t fb_height) {

@@ -20,7 +20,7 @@ bool IBLApp::prepare(Platform &platform) {
     auto scene = _sceneManager->currentScene();
     auto skybox = std::make_unique<SkyboxSubpass>(_renderContext.get(), _depthStencilTextureFormat, scene, _mainCamera);
     skybox->createCuboid();
-    skybox->setTextureCubeMap(_cubeMap);
+    skybox->setTextureCubeMap(ImageManager::GetSingleton().loadTexture("Textures/uffizi_rgba16f_cube.ktx"));
     _renderPass->addSubpass(std::move(skybox));
 
     return true;
@@ -44,22 +44,13 @@ void IBLApp::loadScene() {
     const int materialIndex = 7;
     Material mat = _materials[materialIndex];
 
-    const std::string path = "SkyMap/country/";
-    const std::array<std::string, 6> imageNames = {"posx.png", "negx.png", "posy.png",
-                                                   "negy.png", "posz.png", "negz.png"};
-    std::array<std::unique_ptr<Image>, 6> images;
-    std::array<Image *, 6> imagePtr{};
-    for (int i = 0; i < 6; i++) {
-        images[i] = Image::load(path + imageNames[i]);
-        imagePtr[i] = images[i].get();
-    }
-    _cubeMap = std::make_shared<SampledTextureCube>(_device, images[0]->extent().width, images[0]->extent().height, 1,
-                                                    images[0]->format());
-    _cubeMap->setPixelBuffer(imagePtr);
+    auto ibl_map = ImageManager::GetSingleton().generateIBL("Textures/uffizi_rgba16f_cube.ktx");
+    auto sh = ImageManager::GetSingleton().generateSH("Textures/uffizi_rgba16f_cube.ktx");
 
     auto scene = _sceneManager->currentScene();
-    scene->ambientLight()->setSpecularTexture(_cubeMap);
-//    scene->ambientLight()->setDiffuseTexture(_cubeMap);
+    scene->ambientLight()->setSpecularTexture(ibl_map);
+    scene->ambientLight()->setDiffuseMode(DiffuseMode::SphericalHarmonics);
+    scene->ambientLight()->setDiffuseSphericalHarmonics(sh);
 
     auto rootEntity = scene->createRootEntity();
     auto cameraEntity = rootEntity->createChild();
