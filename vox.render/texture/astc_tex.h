@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "vox.render/image/image.h"
+#include "vox.render/texture.h"
 
 namespace vox {
 struct BlockDim {
@@ -18,7 +18,7 @@ struct BlockDim {
 class Astc : public Image {
 public:
     /**
-     * @brief Decodes an ASTC image
+     * @brief Decodes an ASTC texture
      * @param image Image to decode
      */
     Astc(const Image &image, bool flipY);
@@ -35,8 +35,8 @@ private:
     /**
      * @brief Decodes ASTC data
      * @param blockdim Dimensions of the block
-     * @param extent Extent of the image
-     * @param data Pointer to ASTC image data
+     * @param extent Extent of the texture
+     * @param data Pointer to ASTC texture data
      */
     void decode(BlockDim blockdim, wgpu::Extent3D extent, const uint8_t *data);
 

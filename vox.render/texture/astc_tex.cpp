@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.render/image/astc.h"
+#include "vox.render/texture/astc_tex.h"
 
 #include <astc_codec_internals.h>
 

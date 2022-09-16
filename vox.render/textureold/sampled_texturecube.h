@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "vox.render/image/image.h"
+#include "vox.render/texture/image.h"
 #include "vox.render/texture/sampled_texture2d_view.h"
 
 namespace vox {
@@ -14,11 +14,11 @@ class SampledTextureCube : public SampledTexture {
 public:
     /**
      * Create TextureCube.
-     * @param device - Define the engine to use to render this texture
+     * @param device - Define the engine to use to render this textureold
      * @param width - Texture width
      * @param height - Texture height
      * @param format - Texture format. default  `TextureFormat.R8G8B8A8`
-     * @param mipmap - Whether to use multi-level texture
+     * @param mipmap - Whether to use multi-level textureold
      */
     SampledTextureCube(wgpu::Device& device,
                        uint32_t width,

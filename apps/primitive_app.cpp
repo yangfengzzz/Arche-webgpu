@@ -9,7 +9,7 @@
 #include "vox.render/camera.h"
 #include "vox.render/controls/orbit_control.h"
 #include "vox.render/entity.h"
-#include "vox.render/image/stb.h"
+#include "vox.render/texture/stb.h"
 #include "vox.render/material/blinn_phong_material.h"
 #include "vox.render/material/unlit_material.h"
 #include "vox.render/mesh/mesh_renderer.h"

@@ -4,13 +4,13 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.render/image/ktx_image.h"
+#include "vox.render/texture/ktx_tex.h"
 
 #include <ktx.h>
 
 namespace vox {
 /// Row padding is different between KTX (pad to 4) and Vulkan (none).
-/// Also region->bufferOffset, i.e. the start of each image, has
+/// Also region->bufferOffset, i.e. the start of each texture, has
 /// to be a multiple of 4 and also a multiple of the element size.
 static ktx_error_code_e KTX_APIENTRY optimal_tiling_callback(int mip_level,
                                                              int face,
@@ -59,7 +59,7 @@ Ktx::Ktx(const std::vector<uint8_t> &data, bool flipY) : Image{} {
         mut_data.resize(size);
         auto load_data_result = ktxTexture_LoadImageData(texture, mut_data.data(), size);
         if (load_data_result != KTX_SUCCESS) {
-            throw std::runtime_error{"Error loading KTX image data"};
+            throw std::runtime_error{"Error loading KTX texture data"};
         }
     }
 

@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "vox.render/image/image.h"
+#include "vox.render/texture.h"
 
 namespace vox {
 class Ktx : public Image {

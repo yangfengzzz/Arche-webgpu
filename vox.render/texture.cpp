@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.render/image/image.h"
+#include "vox.render/texture.h"
 
 #include "vox.render/platform/filesystem.h"
 #include "vox.render/std_helpers.h"
@@ -12,10 +12,9 @@
 #define STB_IMAGE_RESIZE_IMPLEMENTATION
 #include <stb_image_resize.h>
 
-#include "vox.render/image/astc.h"
-#include "vox.render/image/ktx_image.h"
-#include "vox.render/image/stb.h"
-#include "vox.render/texture/sampled_texture2d.h"
+#include "vox.render/texture/astc_tex.h"
+#include "vox.render/texture/ktx_tex.h"
+#include "vox.render/texture/stb_tex.h"
 
 namespace vox {
 Image::Image(std::vector<uint8_t> &&d, std::vector<Mipmap> &&m)

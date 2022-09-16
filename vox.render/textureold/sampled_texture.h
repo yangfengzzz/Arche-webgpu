@@ -18,17 +18,17 @@ public:
     explicit SampledTexture(wgpu::Device& device);
 
     /**
-     * The width of the texture.
+     * The width of the textureold.
      */
     [[nodiscard]] uint32_t width() const;
 
     /**
-     * The height of the texture.
+     * The height of the textureold.
      */
     [[nodiscard]] uint32_t height() const;
 
     /**
-     * The depthOrArrayLayers of the texture.
+     * The depthOrArrayLayers of the textureold.
      */
     [[nodiscard]] uint32_t depthOrArrayLayers() const;
 
@@ -55,42 +55,42 @@ public:
 
 public:
     /**
-     * Wrapping mode for texture coordinate S.
+     * Wrapping mode for textureold coordinate S.
      */
     [[nodiscard]] wgpu::AddressMode addressModeU() const;
 
     void setAddressModeU(wgpu::AddressMode value);
 
     /**
-     * Wrapping mode for texture coordinate T.
+     * Wrapping mode for textureold coordinate T.
      */
     [[nodiscard]] wgpu::AddressMode addressModeV() const;
 
     void setAddressModeV(wgpu::AddressMode value);
 
     /**
-     * Filter mode for texture.
+     * Filter mode for textureold.
      */
     [[nodiscard]] wgpu::FilterMode minFilterMode() const;
 
     void setMinFilterMode(wgpu::FilterMode value);
 
     /**
-     * Filter mode for texture.
+     * Filter mode for textureold.
      */
     [[nodiscard]] wgpu::FilterMode magFilterMode() const;
 
     void setMagFilterMode(wgpu::FilterMode value);
 
     /**
-     * Filter mode for texture.
+     * Filter mode for textureold.
      */
     [[nodiscard]] wgpu::FilterMode mipmapFilter() const;
 
     void setMipmapFilter(wgpu::FilterMode value);
 
     /**
-     * Anisotropic level for texture.
+     * Anisotropic level for textureold.
      */
     [[nodiscard]] uint16_t anisoLevel() const;
 

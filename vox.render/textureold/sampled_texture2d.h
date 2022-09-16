@@ -6,20 +6,21 @@
 
 #pragma once
 
+#include "vox.render/texture/image.h"
 #include "vox.render/texture/sampled_texture.h"
 
 namespace vox {
-class SampledTexture3D : public SampledTexture {
+class SampledTexture2D : public SampledTexture {
 public:
     /**
-     * Create TextureCube.
-     * @param device - Define the engine to use to render this texture
+     * Create Texture2D.
+     * @param device - Define the engine to use to render this textureold
      * @param width - Texture width
      * @param height - Texture height
      * @param format - Texture format. default  `TextureFormat.R8G8B8A8`
-     * @param mipmap - Whether to use multi-level texture
+     * @param mipmap - Whether to use multi-level textureold
      */
-    SampledTexture3D(wgpu::Device& device,
+    SampledTexture2D(wgpu::Device& device,
                      uint32_t width,
                      uint32_t height,
                      uint32_t depthOrArrayLayers = 1,
@@ -28,7 +29,20 @@ public:
                      bool mipmap = true);
 
     wgpu::TextureView textureView() override;
+
+    void setPixelBuffer(const std::vector<uint8_t>& data,
+                        uint32_t width,
+                        uint32_t height,
+                        uint32_t mipLevel = 0,
+                        uint32_t offset = 0,
+                        uint32_t x = 0,
+                        uint32_t y = 0);
+
+    void setImageSource(const ::vox::Image* data);
+
+protected:
+    explicit SampledTexture2D(wgpu::Device& device);
 };
-using SampledTexture3DPtr = std::shared_ptr<SampledTexture3D>;
+using SampledTexture2DPtr = std::shared_ptr<SampledTexture2D>;
 
 }  // namespace vox
