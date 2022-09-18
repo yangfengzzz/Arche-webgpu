@@ -31,9 +31,9 @@ void MeshRenderer::setMesh(const MeshPtr &newValue) {
 
 MeshPtr MeshRenderer::mesh() { return _mesh; }
 
-void MeshRenderer::_render(std::vector<RenderElement> &opaqueQueue,
-                           std::vector<RenderElement> &alphaTestQueue,
-                           std::vector<RenderElement> &transparentQueue) {
+void MeshRenderer::render(std::vector<RenderElement> &opaqueQueue,
+                          std::vector<RenderElement> &alphaTestQueue,
+                          std::vector<RenderElement> &transparentQueue) {
     if (_mesh != nullptr) {
         if (_meshUpdateFlag->flag) {
             const auto &vertexLayouts = _mesh->vertexBufferLayouts();
@@ -75,8 +75,6 @@ void MeshRenderer::_render(std::vector<RenderElement> &opaqueQueue,
                 pushPrimitive(element, opaqueQueue, alphaTestQueue, transparentQueue);
             }
         }
-    } else {
-        assert(false && "mesh is nullptr.");
     }
 }
 

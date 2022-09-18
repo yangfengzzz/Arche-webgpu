@@ -8,10 +8,10 @@
 
 #include <random>
 
+#include "vox.render/image.h"
 #include "vox.render/mesh/buffer_mesh.h"
 #include "vox.render/particle/particle_material.h"
 #include "vox.render/renderer.h"
-#include "vox.render/image.h"
 
 namespace vox {
 class ParticleRenderer : public Renderer {
@@ -68,9 +68,9 @@ public:
     [[nodiscard]] const uint32_t numAliveParticles() const;
 
 public:
-    void _render(std::vector<RenderElement> &opaqueQueue,
-                 std::vector<RenderElement> &alphaTestQueue,
-                 std::vector<RenderElement> &transparentQueue) override;
+    void render(std::vector<RenderElement> &opaqueQueue,
+                std::vector<RenderElement> &alphaTestQueue,
+                std::vector<RenderElement> &transparentQueue) override;
 
     void _updateBounds(BoundingBox3F &worldBounds) override;
 

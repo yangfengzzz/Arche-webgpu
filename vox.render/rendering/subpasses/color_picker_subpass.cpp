@@ -55,7 +55,7 @@ void ColorPickerSubpass::_drawMeshes(wgpu::RenderPassEncoder &passEncoder) {
     std::vector<RenderElement> opaqueQueue;
     std::vector<RenderElement> alphaTestQueue;
     std::vector<RenderElement> transparentQueue;
-    ComponentsManager::getSingleton().callRender(_camera, opaqueQueue, alphaTestQueue, transparentQueue);
+//    ComponentsManager::getSingleton().callRender(_camera, opaqueQueue, alphaTestQueue, transparentQueue);
     std::sort(opaqueQueue.begin(), opaqueQueue.end(), _compareFromNearToFar);
     std::sort(alphaTestQueue.begin(), alphaTestQueue.end(), _compareFromNearToFar);
     std::sort(transparentQueue.begin(), transparentQueue.end(), _compareFromFarToNear);

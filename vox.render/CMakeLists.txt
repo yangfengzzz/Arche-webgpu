@@ -19,26 +19,9 @@ set(COMMON_FILES
         utils.cpp
         strings.cpp)
 
-set(RENDERING_FILES
-        # Header files
-        rendering/compute_pass.h
-        rendering/compute_pass.cpp
-        rendering/render_context.h
-        rendering/render_context.cpp
-        rendering/render_element.h
-        rendering/render_element.cpp
-        rendering/render_pass.h
-        rendering/render_pass.cpp
-        rendering/resource_cache.h
-        rendering/resource_cache.cpp
-        rendering/subpass.h
-        rendering/subpass.cpp
-        rendering/subpasses/forward_subpass.h
-        rendering/subpasses/forward_subpass.cpp
-        rendering/subpasses/color_picker_subpass.h
-        rendering/subpasses/color_picker_subpass.cpp
-        rendering/subpasses/skybox_subpass.h
-        rendering/subpasses/skybox_subpass.cpp)
+file(GLOB RENDERING_FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/rendering/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/rendering/subpasses/*.cpp)
 
 file(GLOB IMAGE_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/image/*.cpp

@@ -48,6 +48,10 @@ public:
 
     explicit Renderer(Entity *entity);
 
+    virtual void render(std::vector<RenderElement> &opaqueQueue,
+                        std::vector<RenderElement> &alphaTestQueue,
+                        std::vector<RenderElement> &transparentQueue) = 0;
+
 public:
     /**
      * Get the first instance material by index.
@@ -98,11 +102,6 @@ public:
      */
     void setMaterials(const std::vector<MaterialPtr> &materials);
 
-    void pushPrimitive(const RenderElement &element,
-                       std::vector<RenderElement> &opaqueQueue,
-                       std::vector<RenderElement> &alphaTestQueue,
-                       std::vector<RenderElement> &transparentQueue);
-
     void setDistanceForSort(float dist);
 
     [[nodiscard]] float distanceForSort() const;
@@ -114,13 +113,14 @@ protected:
 
     void _onDisable() override;
 
-    virtual void _render(std::vector<RenderElement> &opaqueQueue,
-                         std::vector<RenderElement> &alphaTestQueue,
-                         std::vector<RenderElement> &transparentQueue) = 0;
-
     virtual void _updateBounds(BoundingBox3F &worldBounds) {}
 
     virtual void update(float deltaTime) {}
+
+    void pushPrimitive(const RenderElement &element,
+                       std::vector<RenderElement> &opaqueQueue,
+                       std::vector<RenderElement> &alphaTestQueue,
+                       std::vector<RenderElement> &transparentQueue);
 
 protected:
     MaterialPtr _createInstanceMaterial(const MaterialPtr &material, size_t index);

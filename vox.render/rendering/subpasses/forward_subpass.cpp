@@ -4,16 +4,13 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.render/rendering/subpasses/forward_subpass.h"
+#include "vox.render/rendering/subpasses/geometry_subpass.h"
 
 #include "vox.render/camera.h"
-#include "vox.render/components_manager.h"
 #include "vox.render/material/material.h"
 #include "vox.render/mesh/mesh.h"
 #include "vox.render/renderer.h"
 #include "vox.render/rendering/resource_cache.h"
-#include "vox.render/shader/internal_variant_name.h"
-#include "vox.render/shadow/shadow_manager.h"
 
 namespace vox {
 ForwardSubpass::ForwardSubpass(RenderContext *renderContext,
@@ -21,14 +18,6 @@ ForwardSubpass::ForwardSubpass(RenderContext *renderContext,
                                Scene *scene,
                                Camera *camera)
     : Subpass(renderContext, scene, camera), _depthStencilTextureFormat(depthStencilTextureFormat) {}
-
-ForwardSubpass::RenderMode ForwardSubpass::renderMode() const { return _mode; }
-
-void ForwardSubpass::setRenderMode(RenderMode mode) { _mode = mode; }
-
-void ForwardSubpass::addRenderElement(const RenderElement &element) { _elements.emplace_back(element); }
-
-void ForwardSubpass::clearAllRenderElement() { _elements.clear(); }
 
 void ForwardSubpass::prepare() {
     _depthStencil.format = _depthStencilTextureFormat;
@@ -52,21 +41,7 @@ void ForwardSubpass::draw(wgpu::RenderPassEncoder &passEncoder) {
     }
 
     passEncoder.PushDebugGroup("Draw Element");
-    if (_mode == RenderMode::MANUAL) {
-        _drawElement(passEncoder, _elements, compile_variant);
-    } else {
-        std::vector<RenderElement> opaqueQueue;
-        std::vector<RenderElement> alphaTestQueue;
-        std::vector<RenderElement> transparentQueue;
-        ComponentsManager::getSingleton().callRender(_camera, opaqueQueue, alphaTestQueue, transparentQueue);
-        std::sort(opaqueQueue.begin(), opaqueQueue.end(), _compareFromNearToFar);
-        std::sort(alphaTestQueue.begin(), alphaTestQueue.end(), _compareFromNearToFar);
-        std::sort(transparentQueue.begin(), transparentQueue.end(), _compareFromFarToNear);
-
-        _drawElement(passEncoder, opaqueQueue, compile_variant);
-        _drawElement(passEncoder, alphaTestQueue, compile_variant);
-        _drawElement(passEncoder, transparentQueue, compile_variant);
-    }
+    _drawElement(passEncoder, compile_variant);
     passEncoder.PopDebugGroup();
 }
 
@@ -76,15 +51,6 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
     for (auto &element : items) {
         auto macros = variant;
         auto &renderer = element.renderer;
-//        uint32_t shadowCount = ShadowManager::shadowCount();
-//        if (renderer->receiveShadow && shadowCount != 0) {
-//            renderer->shaderData.addDefine(SHADOW_MAP_COUNT + std::to_string(shadowCount));
-//        }
-//        uint32_t cubeShadowCount = ShadowManager::cubeShadowCount();
-//        if (renderer->receiveShadow && cubeShadowCount != 0) {
-//            renderer->shaderData.addDefine(CUBE_SHADOW_MAP_COUNT + std::to_string(cubeShadowCount));
-//        }
-
         renderer->updateShaderData();
         renderer->shaderData.mergeVariants(macros, macros);
 

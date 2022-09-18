@@ -55,11 +55,6 @@ public:
 
     void callRendererOnUpdate(float deltaTime);
 
-    void callRender(Camera *camera,
-                    std::vector<RenderElement> &opaqueQueue,
-                    std::vector<RenderElement> &alphaTestQueue,
-                    std::vector<RenderElement> &transparentQueue);
-
     void callRender(const BoundingFrustum &frustum,
                     std::vector<RenderElement> &opaqueQueue,
                     std::vector<RenderElement> &alphaTestQueue,
@@ -81,14 +76,15 @@ public:
 
     void putActiveChangedTempList(std::vector<Component *> &componentContainer);
 
+public:
+    // only internal use
+    std::vector<Renderer *> _renderers;
+
 private:
     // Script
     std::vector<Script *> _onStartScripts;
     std::vector<Script *> _onUpdateScripts;
     std::vector<Script *> _destroyComponents;
-
-    // Render
-    std::vector<Renderer *> _renderers;
 
     // Delay dispose active/inActive Pool
     std::vector<std::vector<Component *>> _componentsContainerPool;

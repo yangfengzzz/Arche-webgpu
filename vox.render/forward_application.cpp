@@ -8,7 +8,7 @@
 
 #include "vox.render/camera.h"
 #include "vox.render/platform/platform.h"
-#include "vox.render/rendering/subpasses/forward_subpass.h"
+#include "vox.render/rendering/subpasses/geometry_subpass.h"
 
 namespace vox {
 Camera* ForwardApplication::mainCamera() { return _mainCamera; }
@@ -77,7 +77,7 @@ bool ForwardApplication::prepare(Platform& platform) {
     _depthStencilAttachment.stencilStoreOp = wgpu::StoreOp::Discard;
     _renderPass = std::make_unique<RenderPass>(_device, _renderPassDescriptor);
     _renderPass->addSubpass(
-            std::make_unique<ForwardSubpass>(_renderContext.get(), _depthStencilTextureFormat, scene, _mainCamera));
+            std::make_unique<GeometrySubpass>(_renderContext.get(), _depthStencilTextureFormat, scene, _mainCamera));
 
     return true;
 }

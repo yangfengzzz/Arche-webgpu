@@ -133,39 +133,6 @@ void ComponentsManager::callRendererOnUpdate(float deltaTime) {
     }
 }
 
-void ComponentsManager::callRender(Camera *camera,
-                                   std::vector<RenderElement> &opaqueQueue,
-                                   std::vector<RenderElement> &alphaTestQueue,
-                                   std::vector<RenderElement> &transparentQueue) {
-    for (auto &element : _renderers) {
-        // filter by camera culling mask.
-        if (!(camera->cullingMask & element->_entity->layer)) {
-            continue;
-        }
-
-        // filter by camera frustum.
-        if (camera->enableFrustumCulling) {
-            element->isCulled = !camera->frustum().intersectsBox(element->bounds());
-            if (element->isCulled) {
-                continue;
-            }
-        }
-
-        const auto &transform = camera->entity()->transform;
-        const auto position = transform->worldPosition();
-        auto center = element->bounds().midPoint();
-        if (camera->isOrthographic()) {
-            const auto forward = transform->worldForward();
-            const auto offset = center - position;
-            element->setDistanceForSort(offset.dot(forward));
-        } else {
-            element->setDistanceForSort(center.distanceSquaredTo(position));
-        }
-
-        element->_render(opaqueQueue, alphaTestQueue, transparentQueue);
-    }
-}
-
 void ComponentsManager::callRender(const BoundingFrustum &frustum,
                                    std::vector<RenderElement> &opaqueQueue,
                                    std::vector<RenderElement> &alphaTestQueue,
@@ -173,7 +140,7 @@ void ComponentsManager::callRender(const BoundingFrustum &frustum,
     for (auto &renderer : _renderers) {
         // filter by renderer castShadow and frustum cull
         if (frustum.intersectsBox(renderer->bounds())) {
-            renderer->_render(opaqueQueue, alphaTestQueue, transparentQueue);
+            renderer->render(opaqueQueue, alphaTestQueue, transparentQueue);
         }
     }
 }
