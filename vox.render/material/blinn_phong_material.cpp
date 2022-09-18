@@ -21,10 +21,9 @@ std::shared_ptr<Image> BlinnPhongMaterial::baseTexture() const { return _baseTex
 
 void BlinnPhongMaterial::setBaseTexture(const std::shared_ptr<Image>& newValue) {
     _baseTexture = newValue;
-    shaderData.setImageView(BlinnPhongMaterial::_baseTextureProp, BlinnPhongMaterial::_baseSamplerProp,
-                            newValue->getImageView());
-
     if (newValue) {
+        shaderData.setImageView(BlinnPhongMaterial::_baseTextureProp, BlinnPhongMaterial::_baseSamplerProp,
+                                newValue->getImageView());
         shaderData.addDefine(HAS_DIFFUSE_TEXTURE);
     } else {
         shaderData.removeDefine(HAS_DIFFUSE_TEXTURE);
@@ -46,9 +45,9 @@ std::shared_ptr<Image> BlinnPhongMaterial::specularTexture() const { return _spe
 
 void BlinnPhongMaterial::setSpecularTexture(const std::shared_ptr<Image>& newValue) {
     _specularTexture = newValue;
-    shaderData.setImageView(BlinnPhongMaterial::_specularTextureProp, BlinnPhongMaterial::_specularSamplerProp,
-                            newValue->getImageView());
     if (newValue) {
+        shaderData.setImageView(BlinnPhongMaterial::_specularTextureProp, BlinnPhongMaterial::_specularSamplerProp,
+                                newValue->getImageView());
         shaderData.addDefine(HAS_SPECULAR_TEXTURE);
     } else {
         shaderData.removeDefine(HAS_SPECULAR_TEXTURE);
@@ -70,9 +69,9 @@ std::shared_ptr<Image> BlinnPhongMaterial::emissiveTexture() const { return _emi
 
 void BlinnPhongMaterial::BlinnPhongMaterial::setEmissiveTexture(const std::shared_ptr<Image>& newValue) {
     _emissiveTexture = newValue;
-    shaderData.setImageView(BlinnPhongMaterial::_emissiveTextureProp, BlinnPhongMaterial::_emissiveSamplerProp,
-                            newValue->getImageView());
     if (newValue) {
+        shaderData.setImageView(BlinnPhongMaterial::_emissiveTextureProp, BlinnPhongMaterial::_emissiveSamplerProp,
+                                newValue->getImageView());
         shaderData.addDefine(HAS_EMISSIVE_TEXTURE);
     } else {
         shaderData.removeDefine(HAS_EMISSIVE_TEXTURE);
@@ -87,9 +86,9 @@ std::shared_ptr<Image> BlinnPhongMaterial::normalTexture() const { return _norma
 
 void BlinnPhongMaterial::setNormalTexture(const std::shared_ptr<Image>& newValue) {
     _normalTexture = newValue;
-    shaderData.setImageView(BlinnPhongMaterial::_normalTextureProp, BlinnPhongMaterial::_normalSamplerProp,
-                            newValue->getImageView());
     if (newValue) {
+        shaderData.setImageView(BlinnPhongMaterial::_normalTextureProp, BlinnPhongMaterial::_normalSamplerProp,
+                                newValue->getImageView());
         shaderData.addDefine(HAS_NORMAL_TEXTURE);
     } else {
         shaderData.removeDefine(HAS_NORMAL_TEXTURE);

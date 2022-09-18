@@ -21,9 +21,8 @@ std::shared_ptr<Image> UnlitMaterial::baseTexture() const { return _baseTexture;
 
 void UnlitMaterial::setBaseTexture(const std::shared_ptr<Image>& newValue) {
     _baseTexture = newValue;
-    shaderData.setImageView(UnlitMaterial::_baseTextureProp, UnlitMaterial::_baseSamplerProp, newValue->getImageView());
-
     if (newValue) {
+        shaderData.setImageView(UnlitMaterial::_baseTextureProp, UnlitMaterial::_baseSamplerProp, newValue->getImageView());
         shaderData.addDefine(HAS_BASE_TEXTURE);
     } else {
         shaderData.removeDefine(HAS_BASE_TEXTURE);
