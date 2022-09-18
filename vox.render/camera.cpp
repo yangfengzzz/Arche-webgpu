@@ -13,8 +13,9 @@
 namespace vox {
 std::string Camera::name() { return "Camera"; }
 
-Camera::Camera(Entity *entity)
-    : Component(entity), shaderData(entity->scene()->device()), _cameraProperty("u_cameraData") {
+const std::string Camera::_cameraProperty = "u_cameraData";
+
+Camera::Camera(Entity *entity) : Component(entity), shaderData(entity->scene()->device()) {
     auto transform = entity->transform;
     _transform = transform;
     _isViewMatrixDirty = transform->registerWorldChangeFlag();

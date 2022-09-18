@@ -18,7 +18,7 @@ class BufferAllocation {
 public:
     BufferAllocation() = default;
 
-    BufferAllocation(Buffer &buffer, uint32_t size, uint32_t offset);
+    BufferAllocation(Buffer &buffer, uint64_t size, uint64_t offset);
 
     BufferAllocation(const BufferAllocation &) = delete;
 
@@ -28,27 +28,27 @@ public:
 
     BufferAllocation &operator=(BufferAllocation &&) = default;
 
-    void update(wgpu::Device &device, const std::vector<uint8_t> &data, uint32_t offset = 0);
+    void update(wgpu::Device &device, const std::vector<uint8_t> &data, uint64_t offset = 0);
 
     template <class T>
-    void update(wgpu::Device &device, const T &value, uint32_t offset = 0) {
+    void update(wgpu::Device &device, const T &value, uint64_t offset = 0) {
         update(device, utility::ToBytes(value), offset);
     }
 
     [[nodiscard]] bool empty() const;
 
-    [[nodiscard]] uint32_t getSize() const;
+    [[nodiscard]] uint64_t getSize() const;
 
-    [[nodiscard]] uint32_t getOffset() const;
+    [[nodiscard]] uint64_t getOffset() const;
 
     [[nodiscard]] const Buffer &getBuffer() const;
 
 private:
     Buffer *buffer_{nullptr};
 
-    uint32_t base_offset_{0};
+    uint64_t base_offset_{0};
 
-    uint32_t size_{0};
+    uint64_t size_{0};
 };
 
 /**
@@ -56,14 +56,14 @@ private:
  */
 class BufferBlock {
 public:
-    BufferBlock(wgpu::Device &device, uint32_t size, wgpu::BufferUsage usage);
+    BufferBlock(wgpu::Device &device, uint64_t size, wgpu::BufferUsage usage);
 
     /**
      * @return An usable view on a portion of the underlying buffer
      */
-    BufferAllocation allocate(uint32_t size);
+    BufferAllocation allocate(uint64_t size);
 
-    [[nodiscard]] uint32_t getSize() const;
+    [[nodiscard]] uint64_t getSize() const;
 
     void reset();
 
@@ -71,10 +71,10 @@ private:
     Buffer buffer_;
 
     // Memory alignment, it may change according to the usage
-    uint32_t alignment_{16};
+    uint64_t alignment_{16};
 
     // Current offset, it increases on every allocation
-    uint32_t offset_{0};
+    uint64_t offset_{0};
 };
 
 /**
@@ -95,9 +95,9 @@ private:
  */
 class BufferPool {
 public:
-    BufferPool(wgpu::Device &device, uint32_t block_size, wgpu::BufferUsage usage);
+    BufferPool(wgpu::Device &device, uint64_t block_size, wgpu::BufferUsage usage);
 
-    BufferBlock &requestBufferBlock(uint32_t minimum_size);
+    BufferBlock &requestBufferBlock(uint64_t minimum_size);
 
     void reset();
 
@@ -108,12 +108,12 @@ private:
     std::vector<std::unique_ptr<BufferBlock>> buffer_blocks_;
 
     /// Minimum size of the blocks
-    uint32_t block_size_{0};
+    uint64_t block_size_{0};
 
     wgpu::BufferUsage usage_{};
 
     /// Numbers of active blocks from the start of buffer_blocks
-    uint32_t active_buffer_block_count_{0};
+    uint64_t active_buffer_block_count_{0};
 };
 
 }  // namespace vox

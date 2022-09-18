@@ -273,7 +273,7 @@ private:
     Matrix4x4F invViewProjMat();
 
     CameraData _cameraData;
-    const std::string _cameraProperty;
+    static const std::string _cameraProperty;
 
     BoundingFrustum _frustum = BoundingFrustum();
 

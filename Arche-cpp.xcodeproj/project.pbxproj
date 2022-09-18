@@ -615,6 +615,8 @@
 		045B391328D4B69400DA1D32 /* image_view.h in Headers */ = {isa = PBXBuildFile; fileRef = 045B390D28D4B69300DA1D32 /* image_view.h */; };
 		045B391428D4B69400DA1D32 /* image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045B390E28D4B69300DA1D32 /* image.cpp */; };
 		045B391528D4B69400DA1D32 /* image_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = 045B390F28D4B69400DA1D32 /* image_manager.h */; };
+		045B391828D6EE3D00DA1D32 /* buffer_pool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045B391628D6EE3D00DA1D32 /* buffer_pool.cpp */; };
+		045B391928D6EE3D00DA1D32 /* buffer_pool.h in Headers */ = {isa = PBXBuildFile; fileRef = 045B391728D6EE3D00DA1D32 /* buffer_pool.h */; };
 		047BB59B2800148600CD5749 /* libvox.math.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 041282EC279ECF3D0071BD86 /* libvox.math.a */; };
 		047BF0BC27AC086B003F3599 /* light.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF0BA27AC086B003F3599 /* light.cpp */; };
 		047BF0BD27AC086B003F3599 /* light.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF0BB27AC086B003F3599 /* light.h */; };
@@ -1711,6 +1713,8 @@
 		045B390D28D4B69300DA1D32 /* image_view.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = image_view.h; sourceTree = "<group>"; };
 		045B390E28D4B69300DA1D32 /* image.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = image.cpp; sourceTree = "<group>"; };
 		045B390F28D4B69400DA1D32 /* image_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = image_manager.h; sourceTree = "<group>"; };
+		045B391628D6EE3D00DA1D32 /* buffer_pool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = buffer_pool.cpp; sourceTree = "<group>"; };
+		045B391728D6EE3D00DA1D32 /* buffer_pool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = buffer_pool.h; sourceTree = "<group>"; };
 		047BB58A2800140A00CD5749 /* libvox.geometry.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libvox.geometry.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		047BF0BA27AC086B003F3599 /* light.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = light.cpp; sourceTree = "<group>"; };
 		047BF0BB27AC086B003F3599 /* light.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = light.h; sourceTree = "<group>"; };
@@ -3619,6 +3623,8 @@
 			children = (
 				045A396B28C45118003FEE10 /* buffer.cpp */,
 				045A396C28C45118003FEE10 /* buffer.h */,
+				045B391728D6EE3D00DA1D32 /* buffer_pool.h */,
+				045B391628D6EE3D00DA1D32 /* buffer_pool.cpp */,
 				045A396928C45117003FEE10 /* index_buffer_binding.cpp */,
 				045A396828C45117003FEE10 /* index_buffer_binding.h */,
 				045A397028C45118003FEE10 /* mesh_manager.cpp */,
@@ -4248,6 +4254,7 @@
 				0495468E279F8D3700783C84 /* component.h in Headers */,
 				04954678279F8CD600783C84 /* layer.h in Headers */,
 				04FDF04827E7FA2000BBE8E4 /* color_picker.h in Headers */,
+				045B391928D6EE3D00DA1D32 /* buffer_pool.h in Headers */,
 				04FDF0D227E8C73A00BBE8E4 /* scene_manager.h in Headers */,
 				040C551F28CF57E9001BF0FF /* fog.h in Headers */,
 				045A38B628C4479A003FEE10 /* strings.h in Headers */,
@@ -4857,6 +4864,7 @@
 				045A397528C45118003FEE10 /* buffer.cpp in Sources */,
 				047BF0D227ACB183003F3599 /* light_manager.cpp in Sources */,
 				04FDF05327E7FFD300BBE8E4 /* radio_button_linker.cpp in Sources */,
+				045B391828D6EE3D00DA1D32 /* buffer_pool.cpp in Sources */,
 				04FDF07627E8069700BBE8E4 /* text_disabled.cpp in Sources */,
 				04FDF07E27E8079800BBE8E4 /* text_selectable.cpp in Sources */,
 				045B391228D4B69400DA1D32 /* image_manager.cpp in Sources */,

@@ -9,10 +9,10 @@
 #include "vox.base/logging.h"
 
 namespace vox {
-BufferAllocation::BufferAllocation(Buffer &buffer, uint32_t size, uint32_t offset)
+BufferAllocation::BufferAllocation(Buffer &buffer, uint64_t size, uint64_t offset)
     : buffer_{&buffer}, size_{size}, base_offset_{offset} {}
 
-void BufferAllocation::update(wgpu::Device &device, const std::vector<uint8_t> &data, uint32_t offset) {
+void BufferAllocation::update(wgpu::Device &device, const std::vector<uint8_t> &data, uint64_t offset) {
     assert(buffer_ && "Invalid buffer pointer");
 
     if (offset + data.size() <= size_) {
@@ -24,9 +24,9 @@ void BufferAllocation::update(wgpu::Device &device, const std::vector<uint8_t> &
 
 bool BufferAllocation::empty() const { return size_ == 0 || buffer_ == nullptr; }
 
-uint32_t BufferAllocation::getSize() const { return size_; }
+uint64_t BufferAllocation::getSize() const { return size_; }
 
-uint32_t BufferAllocation::getOffset() const { return base_offset_; }
+uint64_t BufferAllocation::getOffset() const { return base_offset_; }
 
 const Buffer &BufferAllocation::getBuffer() const {
     assert(buffer_ && "Invalid buffer pointer");
@@ -34,9 +34,9 @@ const Buffer &BufferAllocation::getBuffer() const {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-BufferBlock::BufferBlock(wgpu::Device &device, uint32_t size, wgpu::BufferUsage usage) : buffer_{device, size, usage} {}
+BufferBlock::BufferBlock(wgpu::Device &device, uint64_t size, wgpu::BufferUsage usage) : buffer_{device, size, usage} {}
 
-BufferAllocation BufferBlock::allocate(const uint32_t allocate_size) {
+BufferAllocation BufferBlock::allocate(const uint64_t allocate_size) {
     assert(allocate_size > 0 && "Allocation size must be greater than zero");
 
     auto aligned_offset = (offset_ + alignment_ - 1) & ~(alignment_ - 1);
@@ -51,20 +51,20 @@ BufferAllocation BufferBlock::allocate(const uint32_t allocate_size) {
     return BufferAllocation{buffer_, allocate_size, aligned_offset};
 }
 
-uint32_t BufferBlock::getSize() const { return buffer_.size(); }
+uint64_t BufferBlock::getSize() const { return buffer_.size(); }
 
 void BufferBlock::reset() { offset_ = 0; }
 
 //----------------------------------------------------------------------------------------------------------------------
-BufferPool::BufferPool(wgpu::Device &device, uint32_t block_size, wgpu::BufferUsage usage)
+BufferPool::BufferPool(wgpu::Device &device, uint64_t block_size, wgpu::BufferUsage usage)
     : device_{device}, block_size_{block_size}, usage_{usage} {}
 
-BufferBlock &BufferPool::requestBufferBlock(uint32_t minimum_size) {
+BufferBlock &BufferPool::requestBufferBlock(uint64_t minimum_size) {
     // Find the first block in the range of the inactive blocks
     // which can fit the minimum size
     auto it = std::upper_bound(
             buffer_blocks_.begin() + active_buffer_block_count_, buffer_blocks_.end(), minimum_size,
-            [](const uint32_t &a, const std::unique_ptr<BufferBlock> &b) -> bool { return a <= b->getSize(); });
+            [](const uint64_t &a, const std::unique_ptr<BufferBlock> &b) -> bool { return a <= b->getSize(); });
 
     if (it != buffer_blocks_.end()) {
         // Recycle inactive block

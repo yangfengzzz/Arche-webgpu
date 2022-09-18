@@ -23,11 +23,12 @@ BoundingBox3F Renderer::bounds() {
     return _bounds;
 }
 
+const std::string Renderer::_rendererProperty = "u_rendererData";
+
 Renderer::Renderer(Entity *entity)
     : Component(entity),
       shaderData(entity->scene()->device()),
-      _transformChangeFlag(entity->transform->registerWorldChangeFlag()),
-      _rendererProperty("u_rendererData") {}
+      _transformChangeFlag(entity->transform->registerWorldChangeFlag()) {}
 
 void Renderer::_onEnable() { ComponentsManager::getSingleton().addRenderer(this); }
 

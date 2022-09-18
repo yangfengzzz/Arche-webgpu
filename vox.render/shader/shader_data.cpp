@@ -27,7 +27,7 @@ void ShaderData::bindData(
     for (auto &buffer : _shaderBuffers) {
         auto iter = resources.find(buffer.first);
         if (iter != resources.end()) {
-            ShaderData::bindBuffer(iter->second, buffer.second, bindGroupLayoutEntryVecMap, bindGroupEntryVecMap, true);
+            ShaderData::bindBuffer(iter->second, buffer.second, bindGroupLayoutEntryVecMap, bindGroupEntryVecMap);
         }
     }
 
@@ -35,7 +35,7 @@ void ShaderData::bindData(
         auto iter = resources.find(bufferFunctor.first);
         if (iter != resources.end()) {
             ShaderData::bindBuffer(iter->second, bufferFunctor.second(), bindGroupLayoutEntryVecMap,
-                                   bindGroupEntryVecMap, false);
+                                   bindGroupEntryVecMap);
         }
     }
 
@@ -98,8 +98,7 @@ void ShaderData::bindBuffer(
         const ShaderResource &resource,
         const Buffer &buffer,
         std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>> &bindGroupLayoutEntryVecMap,
-        std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>> &bindGroupEntryVecMap,
-        bool isUniform) {
+        std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>> &bindGroupEntryVecMap) {
     auto insertFunctor = [&]() {
         wgpu::BindGroupEntry entry;
         entry.binding = resource.binding;
@@ -110,7 +109,11 @@ void ShaderData::bindBuffer(
         wgpu::BindGroupLayoutEntry layout_entry;
         layout_entry.binding = resource.binding;
         layout_entry.visibility = resource.stages;
-        layout_entry.buffer.type = isUniform ? wgpu::BufferBindingType::Uniform : wgpu::BufferBindingType::Storage;
+        if (resource.type == ShaderResourceType::BUFFER_STORAGE) {
+            layout_entry.buffer.type = wgpu::BufferBindingType::Storage;
+        } else {
+            layout_entry.buffer.type = wgpu::BufferBindingType::Uniform;
+        }
         bindGroupLayoutEntryVecMap[resource.set].push_back(layout_entry);
     };
 

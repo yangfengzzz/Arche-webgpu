@@ -102,8 +102,7 @@ private:
             const ShaderResource& resource,
             const Buffer& buffer,
             std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>>& bindGroupLayoutEntryVecMap,
-            std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>>& bindGroupEntryVecMap,
-            bool isUniform);
+            std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>>& bindGroupEntryVecMap);
 
     static void bindTexture(
             const ShaderResource& resource,
