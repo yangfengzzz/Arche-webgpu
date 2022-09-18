@@ -632,7 +632,7 @@
 		047BF17C27AE0ECA003F3599 /* skybox_subpass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF17A27AE0ECA003F3599 /* skybox_subpass.cpp */; };
 		047BF17D27AE0ECA003F3599 /* skybox_subpass.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF17B27AE0ECA003F3599 /* skybox_subpass.h */; };
 		047BF18427AE1DF7003F3599 /* skybox_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF18227AE1DF7003F3599 /* skybox_app.cpp */; };
-		047BF18727AE48FE003F3599 /* Irradiance_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF18627AE48FE003F3599 /* Irradiance_app.cpp */; };
+		047BF18727AE48FE003F3599 /* irradiance_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF18627AE48FE003F3599 /* irradiance_app.cpp */; };
 		047BF18E27AE6AF0003F3599 /* ibl_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF18C27AE6AEF003F3599 /* ibl_app.cpp */; };
 		047BF19327AE6F74003F3599 /* scene_animator.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF18F27AE6F74003F3599 /* scene_animator.h */; };
 		047BF19427AE6F74003F3599 /* scene_animator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF19027AE6F74003F3599 /* scene_animator.cpp */; };
@@ -1731,8 +1731,8 @@
 		047BF17B27AE0ECA003F3599 /* skybox_subpass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = skybox_subpass.h; sourceTree = "<group>"; };
 		047BF18227AE1DF7003F3599 /* skybox_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = skybox_app.cpp; sourceTree = "<group>"; };
 		047BF18327AE1DF7003F3599 /* skybox_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = skybox_app.h; sourceTree = "<group>"; };
-		047BF18527AE48FE003F3599 /* Irradiance_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Irradiance_app.h; sourceTree = "<group>"; };
-		047BF18627AE48FE003F3599 /* Irradiance_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Irradiance_app.cpp; sourceTree = "<group>"; };
+		047BF18527AE48FE003F3599 /* irradiance_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = irradiance_app.h; sourceTree = "<group>"; };
+		047BF18627AE48FE003F3599 /* irradiance_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = irradiance_app.cpp; sourceTree = "<group>"; };
 		047BF18C27AE6AEF003F3599 /* ibl_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ibl_app.cpp; sourceTree = "<group>"; };
 		047BF18D27AE6AEF003F3599 /* ibl_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ibl_app.h; sourceTree = "<group>"; };
 		047BF18F27AE6F74003F3599 /* scene_animator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scene_animator.h; sourceTree = "<group>"; };
@@ -2647,8 +2647,8 @@
 				04F9E90227D2157B00BD291B /* atomic_compute_app.cpp */,
 				047BF17027AD51B2003F3599 /* pbr_app.h */,
 				047BF16F27AD51B2003F3599 /* pbr_app.cpp */,
-				047BF18527AE48FE003F3599 /* Irradiance_app.h */,
-				047BF18627AE48FE003F3599 /* Irradiance_app.cpp */,
+				047BF18527AE48FE003F3599 /* irradiance_app.h */,
+				047BF18627AE48FE003F3599 /* irradiance_app.cpp */,
 				047BF18D27AE6AEF003F3599 /* ibl_app.h */,
 				047BF18C27AE6AEF003F3599 /* ibl_app.cpp */,
 				0443E8DF27C4CB300099E13A /* shadowmap_app.h */,
@@ -4903,7 +4903,7 @@
 				047BF17127AD51B2003F3599 /* pbr_app.cpp in Sources */,
 				047BF18E27AE6AF0003F3599 /* ibl_app.cpp in Sources */,
 				0495476227A2954200783C84 /* primitive_app.cpp in Sources */,
-				047BF18727AE48FE003F3599 /* Irradiance_app.cpp in Sources */,
+				047BF18727AE48FE003F3599 /* irradiance_app.cpp in Sources */,
 				045A396128C44F3C003FEE10 /* stop_after.cpp in Sources */,
 				045A395B28C44F32003FEE10 /* file_logger.cpp in Sources */,
 				045A395528C44F29003FEE10 /* window_options.cpp in Sources */,

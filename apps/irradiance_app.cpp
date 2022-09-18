@@ -84,7 +84,7 @@ void IrradianceApp::loadScene() {
     planes[4]->transform->setPosition(-1, 0, 0);  // PZ
     planes[5]->transform->setPosition(3, 0, 0);   // NZ
 
-    auto ibl_map = ImageManager::GetSingleton().loadTexture("Textures/uffizi_rgba16f_cube.ktx");
+    auto ibl_map = ImageManager::GetSingleton().generateIBL("Textures/uffizi_rgba16f_cube.ktx");
     scene->ambientLight()->setSpecularTexture(ibl_map);
 
     auto changeMip = [&](uint32_t mipLevel) {

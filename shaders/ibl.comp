@@ -1,12 +1,14 @@
 #version 450
 
-layout(set = 0, binding = 5) uniform samplerCube environmentMap;
+layout(set = 0, binding = 4) uniform textureCube u_environmentTexture;
+layout(set = 0, binding = 5) uniform sampler u_environmentSampler;
+
 layout(set = 0, binding = 6) uniform lodRoughness {
-    float value;
-} lod_roughness;
+    float lod_roughness;
+};
 layout(set = 0, binding = 7) uniform textureSize {
-    uint value;
-} texture_size;
+    uint texture_size;
+};
 
 #define PI 3.14159265359
 #define RECIPROCAL_PI 0.31830988618
@@ -141,20 +143,20 @@ vec3 specular(vec3 N) {
 
     for (uint i = 0u; i < SAMPLE_COUNT; ++i) {
         vec2 Xi = hammersley(i, SAMPLE_COUNT);
-        vec3 H  = importanceSampleGGX(Xi, N, lod_roughness.value);
+        vec3 H  = importanceSampleGGX(Xi, N, lod_roughness);
         vec3 L  = normalize(2.0 * dot(V, H) * H - V);
 
         float NdotL = max(dot(N, L), 0.0);
 
         if (NdotL > 0.0) {
             float dotNH = dot(N, H);
-            float D   = D_GGX(lod_roughness.value, dotNH);
+            float D   = D_GGX(lod_roughness, dotNH);
             float pdf = (D * dotNH / (4.0 * dotNH)) + 0.0001;
-            float saTexel  = 4.0 * PI / (6.0 * texture_size.value * texture_size.value);
+            float saTexel  = 4.0 * PI / (6.0 * texture_size * texture_size);
             float saSample = 1.0 / (float(SAMPLE_COUNT) * pdf + 0.0001);
-            float mipLevel = lod_roughness.value == 0.0 ? 0.0 : 0.5 * log2(saSample / saTexel);
+            float mipLevel = lod_roughness == 0.0 ? 0.0 : 0.5 * log2(saSample / saTexel);
 
-            vec4 samplerColor = textureLod(environmentMap, L, mipLevel);
+            vec4 samplerColor = textureLod(samplerCube(u_environmentTexture, u_environmentSampler), L, mipLevel);
             vec3 linearColor = toLinear(samplerColor).rgb;
 
             prefilteredColor += linearColor * NdotL;
@@ -166,10 +168,10 @@ vec3 specular(vec3 N) {
 }
 
 layout(local_size_x = 8, local_size_y = 8) in;
-layout(set = 0, binding = 1) writeonly uniform mediump imageCube o_results;
+layout(set = 0, binding = 1, rgba16f) restrict writeonly uniform image2DArray o_results;
 
 void main() {
-    uint inputWidth = texture_size.value;
+    uint inputWidth = texture_size;
     uint width = imageSize(o_results).x;
     float scale = float(inputWidth) / float(width);
     uint face = gl_GlobalInvocationID.z;
@@ -200,8 +202,8 @@ void main() {
     dir = normalize(dir);
 
     vec4 color;
-    if (lod_roughness.value == 0.) {
-        color = toLinear(texture(environmentMap, dir));
+    if (lod_roughness == 0.) {
+        color = toLinear(texture(samplerCube(u_environmentTexture, u_environmentSampler), dir));
     } else {
         vec3 integratedBRDF = specular(dir);
         color = vec4(integratedBRDF, 1.);

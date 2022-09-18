@@ -90,7 +90,7 @@ std::shared_ptr<Image> ImageManager::generateIBL(const std::string &file) {
 
         if (!_pass) {
             _pass = std::make_unique<ComputePass>(
-                    _device, ShaderManager::GetSingleton().LoadShader("compute/atomic_counter.comp"));
+                    _device, ShaderManager::GetSingleton().LoadShader("ibl.comp"));
             _pass->attachShaderData(&_shaderData);
         }
         _shaderData.setImageView("u_environmentTexture", "u_environmentSampler",
@@ -105,7 +105,7 @@ std::shared_ptr<Image> ImageManager::generateIBL(const std::string &file) {
             _shaderData.setData("lodRoughness", std::move(allocation));
 
             _shaderData.setStorageImageView("o_results",
-                                            target->getImageView(wgpu::TextureViewDimension::Cube, lod, 0, 1, 0));
+                                            target->getImageView(wgpu::TextureViewDimension::e2DArray, lod, 0, 1, 0));
             _pass->setDispatchCount((source_width + 8) / 8, (source_width + 8) / 8, 6);
             _pass->compute(encoder);
         }

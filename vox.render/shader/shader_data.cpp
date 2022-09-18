@@ -140,17 +140,23 @@ void ShaderData::bindTexture(
         std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>> &bindGroupLayoutEntryVecMap,
         std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>> &bindGroupEntryVecMap) {
     auto insertFunctor = [&]() {
-        wgpu::BindGroupEntry entry;
+        wgpu::BindGroupEntry entry{};
         entry.binding = resource.binding;
         entry.textureView = imageView->handle();
         bindGroupEntryVecMap[resource.set].push_back(entry);
 
-        wgpu::BindGroupLayoutEntry layout_entry;
+        wgpu::BindGroupLayoutEntry layout_entry{};
         layout_entry.binding = resource.binding;
         layout_entry.visibility = resource.stages;
-        layout_entry.texture.sampleType = wgpu::TextureSampleType::Float;  // todo: don't support other now
-        layout_entry.texture.multisampled = imageView->sampleCount() > 1;
-        layout_entry.texture.viewDimension = imageView->dimension();
+        if (resource.type == ShaderResourceType::IMAGE_STORAGE) {
+            layout_entry.storageTexture.format = imageView->format();
+            layout_entry.storageTexture.access = wgpu::StorageTextureAccess::WriteOnly;
+            layout_entry.storageTexture.viewDimension = imageView->dimension();
+        } else {
+            layout_entry.texture.sampleType = wgpu::TextureSampleType::Float;
+            layout_entry.texture.multisampled = imageView->sampleCount() > 1;
+            layout_entry.texture.viewDimension = imageView->dimension();
+        }
         bindGroupLayoutEntryVecMap[resource.set].push_back(layout_entry);
     };
 
