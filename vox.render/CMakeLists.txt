@@ -334,108 +334,27 @@ set(CONTROL_FILES controls/spherical.h
         controls/free_control.h
         controls/free_control.cpp)
 
-set(MESH_FILES
-        mesh/buffer.h
-        mesh/buffer.cpp
-        mesh/index_buffer_binding.h
-        mesh/index_buffer_binding.cpp
-        mesh/sub_mesh.h
-        mesh/sub_mesh.cpp
-        mesh/mesh.h
-        mesh/mesh.cpp
-        mesh/buffer_mesh.h
-        mesh/buffer_mesh.cpp
-        mesh/model_mesh.h
-        mesh/model_mesh.cpp
-        mesh/mesh_renderer.h
-        mesh/mesh_renderer.cpp
-        mesh/gpu_skinned_mesh_renderer.h
-        mesh/gpu_skinned_mesh_renderer.cpp
-        mesh/primitive_mesh.h
-        mesh/primitive_mesh.cpp
-        mesh/mesh_manager.h
-        mesh/mesh_manager.cpp
-        mesh/wireframe_primitive_mesh.h
-        mesh/wireframe_primitive_mesh.cpp)
+file(GLOB MESH_FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/mesh/*.cpp)
 
-set(SHADER_FILES shader/glsl_compiler.h
-        shader/glsl_compiler.cpp
-        shader/shader_common.h
-        shader/shader_module.h
-        shader/shader_module.cpp
-        shader/shader_source.h
-        shader/shader_source.cpp
-        shader/shader_variant.h
-        shader/shader_variant.cpp
-        shader/spirv_reflection.h
-        shader/spirv_reflection.cpp
-        shader/shader_manager.h
-        shader/shader_manager.cpp
+file(GLOB SHADER_FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/shader/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/shader/state/*.cpp)
 
-        shader/shader_data.h
-        shader/shader_data.cpp
-        shader/internal_variant_name.h
+file(GLOB MATERIAL_FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/material/*.cpp)
 
-        shader/state/blend_state.h
-        shader/state/blend_state.cpp
-        shader/state/depth_state.h
-        shader/state/depth_state.cpp
-        shader/state/raster_state.h
-        shader/state/raster_state.cpp
-        shader/state/render_state.h
-        shader/state/render_state.cpp
-        shader/state/render_target_blend_state.h
-        shader/state/stencil_state.h
-        shader/state/stencil_state.cpp
-        )
+file(GLOB LIGHT_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/lighting/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/lighting/debug/*.cpp)
 
-set(MATERIAL_FILES material/material.h
-        material/material.cpp
-        material/base_material.h
-        material/base_material.cpp
-        material/unlit_material.h
-        material/unlit_material.cpp
-        material/pbr_base_material.h
-        material/pbr_base_material.cpp
-        material/pbr_material.h
-        material/pbr_material.cpp
-        material/pbr_specular_material.h
-        material/pbr_specular_material.cpp
-        material/blinn_phong_material.h
-        material/blinn_phong_material.cpp)
+file(GLOB SHADOW_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/shadow/*.cpp)
 
 set(LOADER_FILES assimp_parser.h
         assimp_parser.cpp)
 set(LOADER_SOURCE ../third_party/assimp/include
         ../third_party/assimp/build_release/include)
-
-set(LIGHT_FILE
-        lighting/light.h
-        lighting/light.cpp
-        lighting/point_light.h
-        lighting/point_light.cpp
-        lighting/spot_light.h
-        lighting/spot_light.cpp
-        lighting/direct_light.h
-        lighting/direct_light.cpp
-        lighting/light_manager.h
-        lighting/light_manager.cpp
-        lighting/ambient_light.h
-        lighting/ambient_light.cpp
-        lighting/debug/sprite_debug.h
-        lighting/debug/sprite_debug.cpp
-        lighting/debug/cluster_debug_material.h
-        lighting/debug/cluster_debug_material.cpp)
-
-set(SHADOW_FILE
-        shadow/shadow_manager.cpp
-        shadow/shadow_manager.h
-        shadow/shadow_subpass.cpp
-        shadow/shadow_subpass.h
-        shadow/shadow_debug_material.h
-        shadow/shadow_debug_material.cpp
-        shadow/shadow_material.h
-        shadow/shadow_material.cpp)
 
 file(GLOB PARTICLE_FILE
         ${CMAKE_CURRENT_SOURCE_DIR}/particle/*.cpp)

@@ -14,8 +14,5 @@ namespace vox {
 class IrradianceApp : public ForwardApplication {
 public:
     void loadScene() override;
-
-private:
-    std::shared_ptr<Image> _cubeMap{nullptr};
 };
 }  // namespace vox

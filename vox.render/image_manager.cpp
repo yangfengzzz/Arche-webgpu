@@ -6,6 +6,8 @@
 
 #include "vox.render/image_manager.h"
 
+#include "vox.render/shader/shader_manager.h"
+
 namespace vox {
 ImageManager *ImageManager::GetSingletonPtr() { return ms_singleton; }
 
@@ -14,7 +16,10 @@ ImageManager &ImageManager::GetSingleton() {
     return (*ms_singleton);
 }
 
-ImageManager::ImageManager(wgpu::Device &device) : _device(device) {}
+ImageManager::ImageManager(wgpu::Device &device)
+    : _device(device),
+      _shaderData(device),
+      _bufferPool(device, 1024, wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst) {}
 
 void ImageManager::collectGarbage() {
     for (auto &image : _image_pool) {
@@ -67,7 +72,51 @@ void ImageManager::uploadImage(Image *image) {
     }
 }
 
-std::shared_ptr<Image> ImageManager::generateIBL(const std::string &file) { return nullptr; }
+std::shared_ptr<Image> ImageManager::generateIBL(const std::string &file) {
+    auto iter = _image_pool.find(file + "ibl");
+    if (iter != _image_pool.end()) {
+        return iter->second;
+    } else {
+        wgpu::CommandEncoder commandEncoder = _device.CreateCommandEncoder();
+        auto encoder = commandEncoder.BeginComputePass();
+        auto source = loadTexture(file);
+        auto baker_mipmap_count = static_cast<uint32_t>(source->mipmaps().size());
+        std::vector<Mipmap> mipmap = source->mipmaps();
+
+        auto target = std::make_shared<Image>(file + "ibl", std::vector<uint8_t>(), std::move(mipmap));
+        target->setLayers(source->layers());
+        target->setFormat(source->format());
+        target->createTexture(_device, wgpu::TextureUsage::StorageBinding | wgpu::TextureUsage::TextureBinding);
+
+        if (!_pass) {
+            _pass = std::make_unique<ComputePass>(
+                    _device, ShaderManager::GetSingleton().LoadShader("compute/atomic_counter.comp"));
+            _pass->attachShaderData(&_shaderData);
+        }
+        _shaderData.setImageView("u_environmentTexture", "u_environmentSampler",
+                                 source->getImageView(wgpu::TextureViewDimension::Cube));
+        uint32_t source_width = source->extent().width;
+        _shaderData.setData("textureSize", source_width);
+        for (uint32_t lod = 0; lod < baker_mipmap_count; lod++) {
+            float lod_roughness = float(lod) / float(baker_mipmap_count - 1);  // linear
+            auto &bufferBlock = _bufferPool.requestBufferBlock(sizeof(float));
+            auto allocation = bufferBlock.allocate(sizeof(float));
+            allocation.update(_device, lod_roughness);
+            _shaderData.setData("lodRoughness", std::move(allocation));
+
+            _shaderData.setStorageImageView("o_results",
+                                            target->getImageView(wgpu::TextureViewDimension::Cube, lod, 0, 1, 0));
+            _pass->setDispatchCount((source_width + 8) / 8, (source_width + 8) / 8, 6);
+            _pass->compute(encoder);
+        }
+        encoder.End();
+        wgpu::CommandBuffer commands = commandEncoder.Finish();
+        _device.GetQueue().Submit(1, &commands);
+
+        _image_pool.insert(std::make_pair(file + "ibl", target));
+        return target;
+    }
+}
 
 SphericalHarmonics3 ImageManager::generateSH(const std::string &file) {
     auto source = loadTexture(file);

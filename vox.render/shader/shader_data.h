@@ -12,6 +12,7 @@
 
 #include "vox.render/image_view.h"
 #include "vox.render/mesh/buffer.h"
+#include "vox.render/mesh/buffer_pool.h"
 #include "vox.render/shader/shader_module.h"
 #include "vox.render/shader/shader_variant.h"
 #include "vox.render/std_helpers.h"
@@ -30,6 +31,8 @@ public:
 
     void setBufferFunctor(const std::string& property_name, const std::function<Buffer()>& functor);
 
+    void setData(const std::string& property_name, BufferAllocation&& value);
+
     template <typename T>
     void setData(const std::string& property, const T& value) {
         auto iter = _shaderBuffers.find(property);
@@ -38,8 +41,7 @@ public:
                     property, Buffer(_device, sizeof(T), wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst)));
         }
         iter = _shaderBuffers.find(property);
-
-        _device.GetQueue().WriteBuffer(iter->second.handle(), 0, &value, sizeof(T));
+        iter->second.uploadData(_device, &value, sizeof(T));
     }
 
     template <typename T>
@@ -51,8 +53,7 @@ public:
                                                     wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst)));
         }
         iter = _shaderBuffers.find(property);
-
-        _device.GetQueue().WriteBuffer(iter->second.handle(), 0, value.data(), sizeof(T) * value.size());
+        iter->second.uploadData(_device, value.data(), sizeof(T) * value.size());
     }
 
     template <typename T, size_t N>
@@ -63,8 +64,7 @@ public:
                     property, Buffer(_device, sizeof(T) * N, wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst)));
         }
         iter = _shaderBuffers.find(property);
-
-        _device.GetQueue().WriteBuffer(iter->second.handle(), 0, value.data(), sizeof(T) * N);
+        iter->second.uploadData(_device, value.data(), sizeof(T) * N);
     }
 
 public:
@@ -94,6 +94,12 @@ public:
 private:
     static void bindBuffer(
             const ShaderResource& resource,
+            const BufferAllocation& bufferAllocation,
+            std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>>& bindGroupLayoutEntryVecMap,
+            std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>>& bindGroupEntryVecMap);
+
+    static void bindBuffer(
+            const ShaderResource& resource,
             const Buffer& buffer,
             std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>>& bindGroupLayoutEntryVecMap,
             std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>>& bindGroupEntryVecMap,
@@ -112,6 +118,7 @@ private:
             std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>>& bindGroupEntryVecMap);
 
     wgpu::Device& _device;
+    std::unordered_map<std::string, BufferAllocation> _shaderBufferPools{};
     std::unordered_map<std::string, std::function<Buffer()>> _shaderBufferFunctors{};
     std::unordered_map<std::string, Buffer> _shaderBuffers{};
     std::unordered_map<std::string, std::shared_ptr<ImageView>> _imageViews{};

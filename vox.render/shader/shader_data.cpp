@@ -17,6 +17,13 @@ void ShaderData::bindData(
         const std::unordered_map<std::string, ShaderResource> &resources,
         std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>> &bindGroupLayoutEntryVecMap,
         std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>> &bindGroupEntryVecMap) {
+    for (auto &buffer : _shaderBufferPools) {
+        auto iter = resources.find(buffer.first);
+        if (iter != resources.end()) {
+            ShaderData::bindBuffer(iter->second, buffer.second, bindGroupLayoutEntryVecMap, bindGroupEntryVecMap);
+        }
+    }
+
     for (auto &buffer : _shaderBuffers) {
         auto iter = resources.find(buffer.first);
         if (iter != resources.end()) {
@@ -44,6 +51,46 @@ void ShaderData::bindData(
         if (iter != resources.end()) {
             ShaderData::bindSampler(iter->second, sampler.second, bindGroupLayoutEntryVecMap, bindGroupEntryVecMap);
         }
+    }
+}
+
+void ShaderData::bindBuffer(
+        const ShaderResource &resource,
+        const BufferAllocation &bufferAllocation,
+        std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>> &bindGroupLayoutEntryVecMap,
+        std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>> &bindGroupEntryVecMap) {
+    auto insertFunctor = [&]() {
+        wgpu::BindGroupEntry entry;
+        entry.binding = resource.binding;
+        entry.buffer = bufferAllocation.getBuffer().handle();
+        entry.size = bufferAllocation.getSize();
+        entry.offset = bufferAllocation.getOffset();
+        bindGroupEntryVecMap[resource.set].push_back(entry);
+
+        wgpu::BindGroupLayoutEntry layout_entry;
+        layout_entry.binding = resource.binding;
+        layout_entry.visibility = resource.stages;
+        layout_entry.buffer.type = wgpu::BufferBindingType::Uniform;
+        bindGroupLayoutEntryVecMap[resource.set].push_back(layout_entry);
+    };
+
+    auto bindGroupLayoutIter = bindGroupLayoutEntryVecMap.find(resource.set);
+    if (bindGroupLayoutIter != bindGroupLayoutEntryVecMap.end()) {
+        bool alreadyExist = false;
+        for (auto &bindGroupLayout : bindGroupLayoutIter->second) {
+            if (bindGroupLayout.binding == resource.binding) {
+                bindGroupLayout.visibility |= resource.stages;
+                alreadyExist = true;
+                break;
+            }
+        }
+        if (!alreadyExist) {
+            insertFunctor();
+        }
+    } else {
+        bindGroupLayoutEntryVecMap[resource.set] = {};
+        bindGroupEntryVecMap[resource.set] = {};
+        insertFunctor();
     }
 }
 
@@ -165,6 +212,10 @@ void ShaderData::bindSampler(
         bindGroupEntryVecMap[resource.set] = {};
         insertFunctor();
     }
+}
+
+void ShaderData::setData(const std::string &property_name, BufferAllocation &&value) {
+    _shaderBufferPools.insert(std::make_pair(property_name, std::move(value)));
 }
 
 void ShaderData::setBufferFunctor(const std::string &property, const std::function<Buffer()> &functor) {

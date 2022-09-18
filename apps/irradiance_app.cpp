@@ -84,13 +84,13 @@ void IrradianceApp::loadScene() {
     planes[4]->transform->setPosition(-1, 0, 0);  // PZ
     planes[5]->transform->setPosition(3, 0, 0);   // NZ
 
-    auto ibl_map = ImageManager::GetSingleton().generateIBL("Textures/uffizi_rgba16f_cube.ktx");
-    scene->ambientLight()->setSpecularTexture(_cubeMap);
+    auto ibl_map = ImageManager::GetSingleton().loadTexture("Textures/uffizi_rgba16f_cube.ktx");
+    scene->ambientLight()->setSpecularTexture(ibl_map);
 
     auto changeMip = [&](uint32_t mipLevel) {
         for (uint32_t i = 0; i < 6; i++) {
             auto material = planeMaterials[i];
-            material->setBaseTexture(_cubeMap->getImageView(wgpu::TextureViewDimension::e2D, mipLevel, i, 1, 1));
+            material->setBaseTexture(ibl_map->getImageView(wgpu::TextureViewDimension::e2D, mipLevel, i, 1, 1));
             material->setFaceIndex(i);
         }
     };

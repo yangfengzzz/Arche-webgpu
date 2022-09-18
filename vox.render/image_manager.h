@@ -8,6 +8,8 @@
 
 #include "vox.math/spherical_harmonics3.h"
 #include "vox.render/image.h"
+#include "vox.render/mesh/buffer_pool.h"
+#include "vox.render/rendering/compute_pass.h"
 #include "vox.render/singleton.h"
 
 namespace vox {
@@ -46,6 +48,9 @@ private:
 
     wgpu::Device &_device;
     std::unordered_map<std::string, std::shared_ptr<Image>> _image_pool{};
+    std::unique_ptr<ComputePass> _pass{nullptr};
+    ShaderData _shaderData;
+    BufferPool _bufferPool;
 };
 template <>
 inline ImageManager *Singleton<ImageManager>::ms_singleton{nullptr};
