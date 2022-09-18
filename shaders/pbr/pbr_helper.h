@@ -19,7 +19,7 @@ void initGeometry(out Geometry geometry){
     #endif
 
     #ifdef HAS_NORMAL_TEXTURE
-        geometry.normal = getNormalByNormalTexture(tbn, u_normalTexture, u_normalIntensity, v_uv);
+        geometry.normal = getNormalByNormalTexture(tbn, u_normalTexture, u_normalSampler, u_normalIntensity, v_uv);
     #else
         geometry.normal = getNormal();
     #endif
@@ -29,7 +29,7 @@ void initGeometry(out Geometry geometry){
 
     #ifdef HAS_CLEARCOAT
         #ifdef HAS_CLEARCOATNORMAL_TEXTURE
-            geometry.clearCoatNormal = getNormalByNormalTexture(tbn, u_clearCoatNormalTexture, u_normalIntensity, v_uv);
+            geometry.clearCoatNormal = getNormalByNormalTexture(tbn, u_clearCoatNormalTexture, u_clearCoatNormalSampler, u_normalIntensity, v_uv);
         #else
             geometry.clearCoatNormal = getNormal();
         #endif
@@ -49,7 +49,7 @@ void initMaterial(out Material material, const in Geometry geometry){
     float alphaCutoff = alpha_cutoff;
 
     #ifdef HAS_BASE_TEXTURE
-        vec4 baseTextureColor = texture2D(u_baseTexture, v_uv);
+        vec4 baseTextureColor = texture(sampler2D(u_baseColorTexture, u_baseColorSampler), v_uv);
         #ifndef COLORSPACE_GAMMA
             baseTextureColor = gammaToLinear(baseTextureColor);
         #endif
@@ -68,13 +68,13 @@ void initMaterial(out Material material, const in Geometry geometry){
     #endif
 
     #ifdef HAS_ROUGHNESSMETALLIC_TEXTURE
-        vec4 metalRoughMapColor = texture2D( u_roughnessMetallicTexture, v_uv );
+        vec4 metalRoughMapColor = texture(sampler2D(u_roughnessMetallicTexture, u_roughnessMetallicSampler), v_uv );
         roughness *= metalRoughMapColor.g;
         metal *= metalRoughMapColor.b;
     #endif
 
     #ifdef HAS_SPECULARGLOSSINESS_TEXTURE
-        vec4 specularGlossinessColor = texture2D(u_specularGlossinessTexture, v_uv );
+        vec4 specularGlossinessColor = texture(sampler2D(u_specularGlossinessTexture, u_specularGlossinessSampler), v_uv );
         #ifndef COLORSPACE_GAMMA
             specularGlossinessColor = gammaToLinear(specularGlossinessColor);
         #endif
@@ -100,10 +100,10 @@ void initMaterial(out Material material, const in Geometry geometry){
         material.clearCoat = u_clearCoat;
         material.clearCoatRoughness = u_clearCoatRoughness;
         #ifdef HAS_CLEARCOAT_TEXTURE
-            material.clearCoat *= texture2D( u_clearCoatTexture, v_uv ).r;
+            material.clearCoat *= texture(sampler2D(u_clearCoatTexture, u_clearCoatSampler), v_uv ).r;
         #endif
         #ifdef HAS_CLEARCOATROUGHNESS_TEXTURE
-            material.clearCoatRoughness *= texture2D( u_clearCoatRoughnessTexture, v_uv ).g;
+            material.clearCoatRoughness *= texture(sampler2D(u_clearCoatRoughnessTexture, u_clearCoatRoughnessSampler), v_uv ).g;
         #endif
         material.clearCoat = saturate( material.clearCoat );
         material.clearCoatRoughness = max(material.clearCoatRoughness, getAARoughnessFactor(geometry.clearCoatNormal));

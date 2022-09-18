@@ -619,6 +619,7 @@
 		045B391928D6EE3D00DA1D32 /* buffer_pool.h in Headers */ = {isa = PBXBuildFile; fileRef = 045B391728D6EE3D00DA1D32 /* buffer_pool.h */; };
 		045B391C28D6F45A00DA1D32 /* assimp_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045B391B28D6F45A00DA1D32 /* assimp_app.cpp */; };
 		045B391D28D6F49700DA1D32 /* assimp_parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045A38A828C4479A003FEE10 /* assimp_parser.cpp */; };
+		045B391F28D703AF00DA1D32 /* internal_variant_name.h in Headers */ = {isa = PBXBuildFile; fileRef = 045B391E28D703AF00DA1D32 /* internal_variant_name.h */; };
 		047BB59B2800148600CD5749 /* libvox.math.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 041282EC279ECF3D0071BD86 /* libvox.math.a */; };
 		047BF0BC27AC086B003F3599 /* light.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF0BA27AC086B003F3599 /* light.cpp */; };
 		047BF0BD27AC086B003F3599 /* light.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF0BB27AC086B003F3599 /* light.h */; };
@@ -1719,6 +1720,7 @@
 		045B391728D6EE3D00DA1D32 /* buffer_pool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = buffer_pool.h; sourceTree = "<group>"; };
 		045B391A28D6F45A00DA1D32 /* assimp_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = assimp_app.h; sourceTree = "<group>"; };
 		045B391B28D6F45A00DA1D32 /* assimp_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = assimp_app.cpp; sourceTree = "<group>"; };
+		045B391E28D703AF00DA1D32 /* internal_variant_name.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = internal_variant_name.h; sourceTree = "<group>"; };
 		047BB58A2800140A00CD5749 /* libvox.geometry.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libvox.geometry.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		047BF0BA27AC086B003F3599 /* light.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = light.cpp; sourceTree = "<group>"; };
 		047BF0BB27AC086B003F3599 /* light.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = light.h; sourceTree = "<group>"; };
@@ -2434,6 +2436,7 @@
 		04128464279EDAF80071BD86 /* shader */ = {
 			isa = PBXGroup;
 			children = (
+				045B391E28D703AF00DA1D32 /* internal_variant_name.h */,
 				04954634279F89E400783C84 /* shader_data.h */,
 				04954636279F89E400783C84 /* shader_data.cpp */,
 				04128465279EDB030071BD86 /* state */,
@@ -4184,6 +4187,7 @@
 				04FDF08827E808E600BBE8E4 /* bullet.h in Headers */,
 				04FDEFFB27E762C100BBE8E4 /* input_float.h in Headers */,
 				04FE6BD627EBE7AA00D7DB2D /* lua_math_binder.h in Headers */,
+				045B391F28D703AF00DA1D32 /* internal_variant_name.h in Headers */,
 				04954654279F8AE900783C84 /* base_material.h in Headers */,
 				04128472279EED090071BD86 /* stencil_state.h in Headers */,
 				045A38EA28C44B25003FEE10 /* platform.h in Headers */,

@@ -16,8 +16,8 @@ layout(set = 0, binding = Emissive_Sampler_Location) uniform sampler u_emissiveS
 #endif
 
 #ifdef HAS_BASE_TEXTURE
-layout(set = 0, binding = Diffuse_Texture_Location) uniform texture2D u_baseTexture;
-layout(set = 0, binding = Diffuse_Sampler_Location) uniform sampler u_baseSampler;
+layout(set = 0, binding = Base_Texture_Location) uniform texture2D u_baseColorTexture;
+layout(set = 0, binding = Base_Sampler_Location) uniform sampler u_baseColorSampler;
 #endif
 
 #ifdef HAS_SPECULAR_TEXTURE

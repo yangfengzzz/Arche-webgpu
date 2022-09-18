@@ -69,8 +69,6 @@
 
 #define Emissive_Texture_Location 25
 #define Emissive_Sampler_Location 26
-#define Diffuse_Texture_Location 27
-#define Diffuse_Sampler_Location 28
 #define Specular_Texture_Location 29
 #define Specular_Sampler_Location 30
 #define Normal_Texture_Location 31

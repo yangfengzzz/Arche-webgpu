@@ -26,8 +26,8 @@ layout(set = 0, binding = PBR_Specular_Data_Data_Location) uniform u_pbrSpecular
 
 // Texture
 #ifdef HAS_BASE_TEXTURE
-    layout(set = 0, binding = Base_Texture_Location) uniform texture2D u_baseTexture;
-    layout(set = 0, binding = Base_Sampler_Location) uniform sampler u_baseSampler;
+    layout(set = 0, binding = Base_Texture_Location) uniform texture2D u_baseColorTexture;
+    layout(set = 0, binding = Base_Sampler_Location) uniform sampler u_baseColorSampler;
 #endif
 
 #ifdef HAS_NORMAL_TEXTURE

@@ -1,10 +1,10 @@
 #ifdef HAS_SKIN
     #ifdef USE_JOINT_TEXTURE
         mat4 skinMatrix =
-            WEIGHTS_0.x * getJointMatrix(u_jointSampler, JOINTS_0.x ) +
-            WEIGHTS_0.y * getJointMatrix(u_jointSampler, JOINTS_0.y ) +
-            WEIGHTS_0.z * getJointMatrix(u_jointSampler, JOINTS_0.z ) +
-            WEIGHTS_0.w * getJointMatrix(u_jointSampler, JOINTS_0.w );
+            WEIGHTS_0.x * getJointMatrix(sampler2d(u_jointTexture, u_jointSampler), JOINTS_0.x ) +
+            WEIGHTS_0.y * getJointMatrix(sampler2d(u_jointTexture, u_jointSampler), JOINTS_0.y ) +
+            WEIGHTS_0.z * getJointMatrix(sampler2d(u_jointTexture, u_jointSampler), JOINTS_0.z ) +
+            WEIGHTS_0.w * getJointMatrix(sampler2d(u_jointTexture, u_jointSampler), JOINTS_0.w );
 
     #else
         mat4 skinMatrix =

@@ -3,10 +3,8 @@
     vec4 diffuse = u_baseColor;
     vec4 specular = u_specularColor;
 
-    
-
     #ifdef HAS_EMISSIVE_TEXTURE
-        vec4 emissiveTextureColor = texture(u_emissiveTexture, v_uv);
+        vec4 emissiveTextureColor = texture(sampler2D(u_emissiveTexture, u_emissiveSampler), v_uv);
         #ifndef COLORSPACE_GAMMA
             emissiveTextureColor = gammaToLinear(emissiveTextureColor);
         #endif
@@ -15,7 +13,7 @@
     #endif
 
     #ifdef HAS_BASE_TEXTURE
-        vec4 diffuseTextureColor = texture(u_baseTexture, v_uv);
+        vec4 diffuseTextureColor = texture(sampler2D(u_baseColorTexture, u_baseColorSampler), v_uv);
         #ifndef COLORSPACE_GAMMA
             diffuseTextureColor = gammaToLinear(diffuseTextureColor);
         #endif
@@ -30,7 +28,7 @@
     #endif
 
     #ifdef HAS_SPECULAR_TEXTURE
-        vec4 specularTextureColor = texture(u_specularTexture, v_uv);
+        vec4 specularTextureColor = texture(sampler2D(u_specularTexture, u_specularSampler), v_uv);
         #ifndef COLORSPACE_GAMMA
             specularTextureColor = gammaToLinear(specularTextureColor);
         #endif
