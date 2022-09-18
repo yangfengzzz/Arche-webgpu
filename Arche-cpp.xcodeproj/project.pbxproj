@@ -620,6 +620,8 @@
 		045B391C28D6F45A00DA1D32 /* assimp_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045B391B28D6F45A00DA1D32 /* assimp_app.cpp */; };
 		045B391D28D6F49700DA1D32 /* assimp_parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045A38A828C4479A003FEE10 /* assimp_parser.cpp */; };
 		045B391F28D703AF00DA1D32 /* internal_variant_name.h in Headers */ = {isa = PBXBuildFile; fileRef = 045B391E28D703AF00DA1D32 /* internal_variant_name.h */; };
+		045B392228D75D9900DA1D32 /* geometry_subpass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045B392028D75D9900DA1D32 /* geometry_subpass.cpp */; };
+		045B392328D75D9900DA1D32 /* geometry_subpass.h in Headers */ = {isa = PBXBuildFile; fileRef = 045B392128D75D9900DA1D32 /* geometry_subpass.h */; };
 		047BB59B2800148600CD5749 /* libvox.math.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 041282EC279ECF3D0071BD86 /* libvox.math.a */; };
 		047BF0BC27AC086B003F3599 /* light.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF0BA27AC086B003F3599 /* light.cpp */; };
 		047BF0BD27AC086B003F3599 /* light.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF0BB27AC086B003F3599 /* light.h */; };
@@ -1721,6 +1723,8 @@
 		045B391A28D6F45A00DA1D32 /* assimp_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = assimp_app.h; sourceTree = "<group>"; };
 		045B391B28D6F45A00DA1D32 /* assimp_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = assimp_app.cpp; sourceTree = "<group>"; };
 		045B391E28D703AF00DA1D32 /* internal_variant_name.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = internal_variant_name.h; sourceTree = "<group>"; };
+		045B392028D75D9900DA1D32 /* geometry_subpass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = geometry_subpass.cpp; sourceTree = "<group>"; };
+		045B392128D75D9900DA1D32 /* geometry_subpass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = geometry_subpass.h; sourceTree = "<group>"; };
 		047BB58A2800140A00CD5749 /* libvox.geometry.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libvox.geometry.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		047BF0BA27AC086B003F3599 /* light.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = light.cpp; sourceTree = "<group>"; };
 		047BF0BB27AC086B003F3599 /* light.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = light.h; sourceTree = "<group>"; };
@@ -2384,6 +2388,7 @@
 				04954642279F8A4400783C84 /* material */,
 				0495474C27A2712F00783C84 /* mesh */,
 				040C551628CF57D2001BF0FF /* fog */,
+				045B392428D75DB100DA1D32 /* sky */,
 				045A38AE28C4479A003FEE10 /* assimp_parser.h */,
 				045A38A828C4479A003FEE10 /* assimp_parser.cpp */,
 				04FDEF8927E70F2900BBE8E4 /* event.h */,
@@ -3354,6 +3359,15 @@
 			path = debug;
 			sourceTree = "<group>";
 		};
+		045B392428D75DB100DA1D32 /* sky */ = {
+			isa = PBXGroup;
+			children = (
+				047BF17B27AE0ECA003F3599 /* skybox_subpass.h */,
+				047BF17A27AE0ECA003F3599 /* skybox_subpass.cpp */,
+			);
+			path = sky;
+			sourceTree = "<group>";
+		};
 		047BB58B2800140A00CD5749 /* vox.geometry */ = {
 			isa = PBXGroup;
 			children = (
@@ -3606,8 +3620,8 @@
 			children = (
 				049546F5279FC92B00783C84 /* forward_subpass.h */,
 				049546F4279FC92B00783C84 /* forward_subpass.cpp */,
-				047BF17B27AE0ECA003F3599 /* skybox_subpass.h */,
-				047BF17A27AE0ECA003F3599 /* skybox_subpass.cpp */,
+				045B392128D75D9900DA1D32 /* geometry_subpass.h */,
+				045B392028D75D9900DA1D32 /* geometry_subpass.cpp */,
 				047BF1B127AFA079003F3599 /* color_picker_subpass.h */,
 				047BF1B227AFA079003F3599 /* color_picker_subpass.cpp */,
 			);
@@ -4231,6 +4245,7 @@
 				045A393F28C44C40003FEE10 /* shader_variant.h in Headers */,
 				045B391028D4B69400DA1D32 /* image.h in Headers */,
 				0495473627A24BE000783C84 /* pbr_material.h in Headers */,
+				045B392328D75D9900DA1D32 /* geometry_subpass.h in Headers */,
 				049D2FF227DC856A0037DC6A /* wireframe_primitive_mesh.h in Headers */,
 				0495468A279F8CD600783C84 /* script.h in Headers */,
 				045A392528C44BCF003FEE10 /* stats_provider.h in Headers */,
@@ -4808,6 +4823,7 @@
 				045B391128D4B69400DA1D32 /* image_view.cpp in Sources */,
 				04FDF04327E7F98F00BBE8E4 /* color_edit.cpp in Sources */,
 				040C552128CF57E9001BF0FF /* fog.cpp in Sources */,
+				045B392228D75D9900DA1D32 /* geometry_subpass.cpp in Sources */,
 				047BF0CE27AC0D59003F3599 /* ambient_light.cpp in Sources */,
 				04954646279F8A7D00783C84 /* material.cpp in Sources */,
 				04954682279F8CD600783C84 /* renderer.cpp in Sources */,

@@ -19,6 +19,9 @@ set(COMMON_FILES
         utils.cpp
         strings.cpp)
 
+file(GLOB SKY_FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/sky/*.cpp)
+
 file(GLOB RENDERING_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/rendering/*.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/rendering/subpasses/*.cpp)
@@ -404,6 +407,7 @@ set(PROJECT_FILES
         ${LIGHT_FILE}
 #        ${SHADOW_FILE}
 #        ${PARTICLE_FILE}
+        ${SKY_FILES}
         ${LOADER_FILES}
         ${PLUGINS_FILE}
         ${LUA_FILES}

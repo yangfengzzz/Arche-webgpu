@@ -11,7 +11,7 @@
 #include "vox.render/material/pbr_material.h"
 #include "vox.render/mesh/mesh_renderer.h"
 #include "vox.render/mesh/primitive_mesh.h"
-#include "vox.render/rendering/subpasses/skybox_subpass.h"
+#include "vox.render/sky/skybox_subpass.h"
 
 namespace vox {
 bool IBLApp::prepare(Platform &platform) {

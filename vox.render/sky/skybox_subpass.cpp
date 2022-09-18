@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.render/rendering/subpasses/skybox_subpass.h"
+#include "vox.render/sky/skybox_subpass.h"
 
 #include <utility>
 
