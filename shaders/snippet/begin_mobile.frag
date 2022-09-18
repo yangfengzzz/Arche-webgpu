@@ -9,7 +9,6 @@
             emissiveTextureColor = gammaToLinear(emissiveTextureColor);
         #endif
         emission *= emissiveTextureColor;
-
     #endif
 
     #ifdef HAS_BASE_TEXTURE
@@ -18,13 +17,10 @@
             diffuseTextureColor = gammaToLinear(diffuseTextureColor);
         #endif
         diffuse *= diffuseTextureColor;
-
     #endif
 
      #ifdef HAS_VERTEXCOLOR
-
         diffuse *= v_color;
-
     #endif
 
     #ifdef HAS_SPECULAR_TEXTURE
@@ -33,7 +29,6 @@
             specularTextureColor = gammaToLinear(specularTextureColor);
         #endif
         specular *= specularTextureColor;
-
     #endif
 
     ambient = vec4(env_map_light.diffuse * env_map_light.diffuse_intensity, 1.0) * diffuse;

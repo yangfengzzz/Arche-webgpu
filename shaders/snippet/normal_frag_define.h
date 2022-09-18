@@ -11,14 +11,6 @@ vec3 getNormal(){
     return normal;
 }
 
-vec3 getNormalByNormalTexture(mat3 tbn, texture2D normalTexture, sampler normalSampler, float normalIntensity, vec2 uv){
-    vec3 normal = texture(sampler2D(normalTexture, normalSampler), uv).rgb;
-    normal = normalize(tbn * ((2.0 * normal - 1.0) * vec3(normalIntensity, normalIntensity, 1.0)));
-    // normal *= float( gl_FrontFacing ) * 2.0 - 1.0;
-
-    return normal;
-}
-
 mat3 getTBN(){
     #if defined(HAS_NORMAL) && defined(HAS_TANGENT) && ( defined(HAS_NORMAL_TEXTURE) || defined(HAS_CLEARCOATNORMAL_TEXTURE) )
         mat3 tbn = v_TBN;

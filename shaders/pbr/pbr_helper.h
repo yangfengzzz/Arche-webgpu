@@ -19,7 +19,8 @@ void initGeometry(out Geometry geometry){
     #endif
 
     #ifdef HAS_NORMAL_TEXTURE
-        geometry.normal = getNormalByNormalTexture(tbn, u_normalTexture, u_normalSampler, u_normalIntensity, v_uv);
+        vec3 N = texture(sampler2D(u_normalTexture, u_normalSampler), v_uv).rgb;
+        geometry.normal = normalize(tbn * ((2.0 * N - 1.0) * vec3(u_normalIntensity, u_normalIntensity, 1.0)));
     #else
         geometry.normal = getNormal();
     #endif
@@ -29,7 +30,8 @@ void initGeometry(out Geometry geometry){
 
     #ifdef HAS_CLEARCOAT
         #ifdef HAS_CLEARCOATNORMAL_TEXTURE
-            geometry.clearCoatNormal = getNormalByNormalTexture(tbn, u_clearCoatNormalTexture, u_clearCoatNormalSampler, u_normalIntensity, v_uv);
+            vec3 N = texture(sampler2D(u_clearCoatNormalTexture, u_clearCoatNormalSampler), v_uv).rgb;
+            geometry.clearCoatNormal = normalize(tbn * ((2.0 * N - 1.0) * vec3(u_normalIntensity, u_normalIntensity, 1.0)));
         #else
             geometry.clearCoatNormal = getNormal();
         #endif

@@ -1,6 +1,7 @@
     #ifdef HAS_NORMAL_TEXTURE
         mat3 tbn = getTBN();
-        vec3 N = getNormalByNormalTexture(tbn, u_normalTexture, u_normalSampler, u_normalIntensity, v_uv);
+        vec3 N = texture(sampler2D(u_normalTexture, u_normalSampler), v_uv).rgb;
+        N = normalize(tbn * ((2.0 * N - 1.0) * vec3(u_normalIntensity, u_normalIntensity, 1.0)));
     #else
         vec3 N = getNormal();
     #endif
