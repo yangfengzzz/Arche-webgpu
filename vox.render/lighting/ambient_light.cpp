@@ -108,7 +108,7 @@ void AmbientLight::setSpecularIntensity(float value) {
     _scene->shaderData.setData(AmbientLight::_envMapProperty, _envMapLight);
 }
 
-std::array<float, 27> AmbientLight::_preComputeSH(const SphericalHarmonics3 &sh) {
+std::array<float, 36> AmbientLight::_preComputeSH(const SphericalHarmonics3 &sh) {
     /**
      * Basis constants
      *
@@ -134,40 +134,54 @@ std::array<float, 27> AmbientLight::_preComputeSH(const SphericalHarmonics3 &sh)
      */
 
     const auto &src = sh.coefficients();
-    std::array<float, 27> out{};
+    std::array<float, 36> out{};
     // l0
     out[0] = src[0] * 0.886227f;  // kernel0 * basis0 = 0.886227
     out[1] = src[1] * 0.886227f;
     out[2] = src[2] * 0.886227f;
+    out[3] = 0;
 
     // l1
-    out[3] = src[3] * -1.023327f;  // kernel1 * basis1 = -1.023327;
-    out[4] = src[4] * -1.023327f;
-    out[5] = src[5] * -1.023327f;
-    out[6] = src[6] * 1.023327f;  // kernel1 * basis2 = 1.023327
-    out[7] = src[7] * 1.023327f;
-    out[8] = src[8] * 1.023327f;
-    out[9] = src[9] * -1.023327f;  // kernel1 * basis3 = -1.023327
-    out[10] = src[10] * -1.023327f;
-    out[11] = src[11] * -1.023327f;
+    out[4] = src[3] * -1.023327f;  // kernel1 * basis1 = -1.023327;
+    out[5] = src[4] * -1.023327f;
+    out[6] = src[5] * -1.023327f;
+    out[7] = 0;
+
+    out[8] = src[6] * 1.023327f;  // kernel1 * basis2 = 1.023327
+    out[9] = src[7] * 1.023327f;
+    out[10] = src[8] * 1.023327f;
+    out[11] = 0;
+
+    out[12] = src[9] * -1.023327f;  // kernel1 * basis3 = -1.023327
+    out[13] = src[10] * -1.023327f;
+    out[14] = src[11] * -1.023327f;
+    out[15] = 0;
 
     // l2
-    out[12] = src[12] * 0.858086f;  // kernel2 * basis4 = 0.858086
-    out[13] = src[13] * 0.858086f;
-    out[14] = src[14] * 0.858086f;
-    out[15] = src[15] * -0.858086f;  // kernel2 * basis5 = -0.858086
-    out[16] = src[16] * -0.858086f;
-    out[17] = src[17] * -0.858086f;
-    out[18] = src[18] * 0.247708f;  // kernel2 * basis6 = 0.247708
-    out[19] = src[19] * 0.247708f;
-    out[20] = src[20] * 0.247708f;
-    out[21] = src[21] * -0.858086f;  // kernel2 * basis7 = -0.858086
-    out[22] = src[22] * -0.858086f;
-    out[23] = src[23] * -0.858086f;
-    out[24] = src[24] * 0.429042f;  // kernel2 * basis8 = 0.429042
-    out[25] = src[25] * 0.429042f;
-    out[26] = src[26] * 0.429042f;
+    out[16] = src[12] * 0.858086f;  // kernel2 * basis4 = 0.858086
+    out[17] = src[13] * 0.858086f;
+    out[18] = src[14] * 0.858086f;
+    out[19] = 0;
 
+    out[20] = src[15] * -0.858086f;  // kernel2 * basis5 = -0.858086
+    out[21] = src[16] * -0.858086f;
+    out[22] = src[17] * -0.858086f;
+    out[23] = 0;
+
+    out[24] = src[18] * 0.247708f;  // kernel2 * basis6 = 0.247708
+    out[25] = src[19] * 0.247708f;
+    out[26] = src[20] * 0.247708f;
+    out[27] = 0;
+
+    out[28] = src[21] * -0.858086f;  // kernel2 * basis7 = -0.858086
+    out[29] = src[22] * -0.858086f;
+    out[30] = src[23] * -0.858086f;
+    out[31] = 0;
+
+    out[32] = src[24] * 0.429042f;  // kernel2 * basis8 = 0.429042
+    out[33] = src[25] * 0.429042f;
+    out[34] = src[26] * 0.429042f;
+    out[35] = 0;
     return out;
 }
 

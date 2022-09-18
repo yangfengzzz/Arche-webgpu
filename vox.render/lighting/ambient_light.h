@@ -102,7 +102,7 @@ public:
     void setSpecularIntensity(float value);
 
 private:
-    static std::array<float, 27> _preComputeSH(const SphericalHarmonics3 &sh);
+    static std::array<float, 36> _preComputeSH(const SphericalHarmonics3 &sh);
 
     EnvMapLight _envMapLight;
     static const std::string _envMapProperty;

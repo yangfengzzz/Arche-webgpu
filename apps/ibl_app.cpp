@@ -20,6 +20,7 @@ bool IBLApp::prepare(Platform &platform) {
     auto scene = _sceneManager->currentScene();
     auto skybox = std::make_unique<SkyboxSubpass>(_renderContext.get(), _depthStencilTextureFormat, scene, _mainCamera);
     skybox->createCuboid();
+    skybox->flipVertically();
     skybox->setTextureCubeMap(ImageManager::GetSingleton().loadTexture("Textures/uffizi_rgba16f_cube.ktx"));
     _renderPass->addSubpass(std::move(skybox));
 

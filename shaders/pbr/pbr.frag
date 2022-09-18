@@ -10,7 +10,7 @@ addTotalDirectRadiance(geometry, material, reflectedLight);
 
 // IBL diffuse
 #ifdef HAS_SH
-    vec3 irradiance = getLightProbeIrradiance(u_env_sh, geometry.normal);
+    vec3 irradiance = getLightProbeIrradiance(env_sh, geometry.normal);
     #ifdef COLORSPACE_GAMMA
         irradiance = linearToGamma(vec4(irradiance, 1.0)).rgb;
     #endif

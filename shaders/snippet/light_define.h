@@ -51,7 +51,7 @@ layout(set = 0, binding = EnvMap_Light_Location) uniform u_envMapLight {
 
 #ifdef HAS_SH
     layout(set = 0, binding = Env_SH_Location) uniform u_env_sh {
-        float env_sh[9];
+        vec3 env_sh[9];
     };
 #endif
 
