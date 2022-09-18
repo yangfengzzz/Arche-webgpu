@@ -25,47 +25,47 @@ layout(set = 0, binding = PBR_Specular_Data_Data_Location) uniform u_pbrSpecular
 };
 
 // Texture
-#ifdef BASETEXTURE
+#ifdef HAS_BASE_TEXTURE
     layout(set = 0, binding = Base_Texture_Location) uniform texture2D u_baseTexture;
     layout(set = 0, binding = Base_Sampler_Location) uniform sampler u_baseSampler;
 #endif
 
-#ifdef NORMALTEXTURE
+#ifdef HAS_NORMAL_TEXTURE
     layout(set = 0, binding = Normal_Texture_Location) uniform texture2D u_normalTexture;
     layout(set = 0, binding = Normal_Sampler_Location) uniform sampler u_normalSampler;
 #endif
 
-#ifdef EMISSIVETEXTURE
+#ifdef HAS_EMISSIVE_TEXTURE
     layout(set = 0, binding = Emissive_Texture_Location) uniform texture2D u_emissiveTexture;
     layout(set = 0, binding = Emissive_Sampler_Location) uniform sampler u_emissiveSampler;
 #endif
 
-#ifdef ROUGHNESSMETALLICTEXTURE
+#ifdef HAS_ROUGHNESSMETALLIC_TEXTURE
     layout(set = 0, binding = Roughness_Metallic_Texture_Location) uniform texture2D u_roughnessMetallicTexture;
     layout(set = 0, binding = Roughness_Metallic_Sampler_Location) uniform sampler u_roughnessMetallicSampler;
 #endif
 
-#ifdef SPECULARGLOSSINESSTEXTURE
+#ifdef HAS_SPECULARGLOSSINESS_TEXTURE
     layout(set = 0, binding = Specular_Glossiness_Texture_Location) uniform texture2D u_specularGlossinessTexture;
     layout(set = 0, binding = Specular_Glossiness_Sampler_Location) uniform sampler u_specularGlossinessSampler;
 #endif
 
-#ifdef OCCLUSIONTEXTURE
+#ifdef HAS_OCCLUSION_TEXTURE
     layout(set = 0, binding = Occlusion_Texture_Location) uniform texture2D u_occlusionTexture;
     layout(set = 0, binding = Occlusion_Sampler_Location) uniform sampler u_occlusionSampler;
 #endif
 
-#ifdef HAS_CLEARCOATTEXTURE
+#ifdef HAS_CLEARCOAT_TEXTURE
     layout(set = 0, binding = Clear_Coat_Texture_Location) uniform texture2D u_clearCoatTexture;
     layout(set = 0, binding = Clear_Coat_Sampler_Location) uniform sampler u_clearCoatSampler;
 #endif
 
-#ifdef HAS_CLEARCOATROUGHNESSTEXTURE
+#ifdef HAS_CLEARCOATROUGHNESS_TEXTURE
     layout(set = 0, binding = Clear_Coat_Roughness_Texture_Location) uniform texture2D u_clearCoatRoughnessTexture;
     layout(set = 0, binding = Clear_Coat_Roughness_Sampler_Location) uniform sampler u_clearCoatRoughnessSampler;
 #endif
 
-#ifdef HAS_CLEARCOATNORMALTEXTURE
+#ifdef HAS_CLEARCOATNORMAL_TEXTURE
     layout(set = 0, binding = Clear_Coat_Normal_Texture_Location) uniform texture2D u_clearCoatNormalTexture;
     layout(set = 0, binding = Clear_Coat_Normal_Sampler_Location) uniform sampler u_clearCoatNormalSampler;
 #endif
@@ -84,7 +84,7 @@ struct Geometry {
     vec3  viewDir;
     float dotNV;
     
-    #ifdef CLEARCOAT
+    #ifdef HAS_CLEARCOAT
         vec3 clearCoatNormal;
         float clearCoatDotNV;
     #endif
@@ -96,7 +96,7 @@ struct Material {
     float roughness;
     vec3  specularColor;
     float opacity;
-    #ifdef CLEARCOAT
+    #ifdef HAS_CLEARCOAT
         float clearCoat;
         float clearCoatRoughness;
     #endif

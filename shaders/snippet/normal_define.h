@@ -5,7 +5,7 @@
         #else
             layout (location = V_Normal) in vec3 v_normal;
         #endif
-        #if defined(HAS_TANGENT) && ( defined(NORMALTEXTURE) || defined(HAS_CLEARCOATNORMALTEXTURE) )
+        #if defined(HAS_TANGENT) && ( defined(HAS_NORMAL_TEXTURE) || defined(HAS_CLEARCOATNORMAL_TEXTURE) )
             #ifdef Vert_Shader
                 layout (location = V_TBN) out mat3 v_TBN;
             #else

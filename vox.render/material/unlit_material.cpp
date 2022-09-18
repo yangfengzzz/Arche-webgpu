@@ -43,7 +43,5 @@ UnlitMaterial::UnlitMaterial(wgpu::Device& device, const std::string& name) : Ba
 }
 
 const std::string UnlitMaterial::_baseColorProp = "u_baseColor";
-const std::string UnlitMaterial::_baseTextureProp = "u_baseTexture";
-const std::string UnlitMaterial::_baseSamplerProp = "u_baseSampler";
 
 }  // namespace vox

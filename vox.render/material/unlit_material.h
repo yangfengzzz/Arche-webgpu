@@ -40,10 +40,6 @@ public:
 private:
     Color _baseColor = Color(1, 1, 1, 1);
     static const std::string _baseColorProp;
-
-    std::shared_ptr<Image> _baseTexture = nullptr;
-    static const std::string _baseTextureProp;
-    static const std::string _baseSamplerProp;
 };
 
 }  // namespace vox

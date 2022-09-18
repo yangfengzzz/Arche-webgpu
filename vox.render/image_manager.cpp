@@ -50,7 +50,7 @@ void ImageManager::uploadImage(Image *image) {
     auto bytesPerPixel = _bytesPerPixel(image->format());
 
     for (uint32_t layer = 0; layer < layers; layer++) {
-        for (size_t i = 0; i < mipmaps.size(); i++) {
+        for (uint32_t i = 0; i < mipmaps.size(); i++) {
             auto width = image->extent().width >> i;
             auto height = image->extent().height >> i;
 

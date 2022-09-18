@@ -12,8 +12,8 @@ layout(set = 0, binding = Alpha_Cutoff_Location) uniform u_alphaCutoff {
 };
 
 #ifdef HAS_BASE_TEXTURE
-    layout(set = 0, binding = Base_Texture_Location) uniform texture2D u_baseTexture;
-    layout(set = 0, binding = Base_Sampler_Location) uniform sampler u_baseSampler;
+    layout(set = 0, binding = Base_Texture_Location) uniform texture2D u_baseColorTexture;
+    layout(set = 0, binding = Base_Sampler_Location) uniform sampler u_baseColorSampler;
 #endif
 
 layout(location = V_UV) in vec2 v_uv;
@@ -23,7 +23,7 @@ void main() {
     vec4 baseColor = base_color;
     
 #ifdef HAS_BASE_TEXTURE
-    vec4 textureColor = texture(sampler2D(u_baseTexture, u_baseSampler), v_uv);
+    vec4 textureColor = texture(sampler2D(u_baseColorTexture, u_baseColorSampler), v_uv);
     baseColor *= textureColor;
 #endif
     

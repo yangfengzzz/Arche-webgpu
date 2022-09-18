@@ -617,6 +617,8 @@
 		045B391528D4B69400DA1D32 /* image_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = 045B390F28D4B69400DA1D32 /* image_manager.h */; };
 		045B391828D6EE3D00DA1D32 /* buffer_pool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045B391628D6EE3D00DA1D32 /* buffer_pool.cpp */; };
 		045B391928D6EE3D00DA1D32 /* buffer_pool.h in Headers */ = {isa = PBXBuildFile; fileRef = 045B391728D6EE3D00DA1D32 /* buffer_pool.h */; };
+		045B391C28D6F45A00DA1D32 /* assimp_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045B391B28D6F45A00DA1D32 /* assimp_app.cpp */; };
+		045B391D28D6F49700DA1D32 /* assimp_parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045A38A828C4479A003FEE10 /* assimp_parser.cpp */; };
 		047BB59B2800148600CD5749 /* libvox.math.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 041282EC279ECF3D0071BD86 /* libvox.math.a */; };
 		047BF0BC27AC086B003F3599 /* light.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF0BA27AC086B003F3599 /* light.cpp */; };
 		047BF0BD27AC086B003F3599 /* light.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF0BB27AC086B003F3599 /* light.h */; };
@@ -1715,6 +1717,8 @@
 		045B390F28D4B69400DA1D32 /* image_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = image_manager.h; sourceTree = "<group>"; };
 		045B391628D6EE3D00DA1D32 /* buffer_pool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = buffer_pool.cpp; sourceTree = "<group>"; };
 		045B391728D6EE3D00DA1D32 /* buffer_pool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = buffer_pool.h; sourceTree = "<group>"; };
+		045B391A28D6F45A00DA1D32 /* assimp_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = assimp_app.h; sourceTree = "<group>"; };
+		045B391B28D6F45A00DA1D32 /* assimp_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = assimp_app.cpp; sourceTree = "<group>"; };
 		047BB58A2800140A00CD5749 /* libvox.geometry.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libvox.geometry.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		047BF0BA27AC086B003F3599 /* light.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = light.cpp; sourceTree = "<group>"; };
 		047BF0BB27AC086B003F3599 /* light.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = light.h; sourceTree = "<group>"; };
@@ -2378,8 +2382,8 @@
 				04954642279F8A4400783C84 /* material */,
 				0495474C27A2712F00783C84 /* mesh */,
 				040C551628CF57D2001BF0FF /* fog */,
-				045A38A828C4479A003FEE10 /* assimp_parser.cpp */,
 				045A38AE28C4479A003FEE10 /* assimp_parser.h */,
+				045A38A828C4479A003FEE10 /* assimp_parser.cpp */,
 				04FDEF8927E70F2900BBE8E4 /* event.h */,
 				04FDEF8A27E70F3E00BBE8E4 /* event-inl.h */,
 				04FDEF8F27E7118F00BBE8E4 /* ui */,
@@ -2645,6 +2649,8 @@
 				0495475E27A294E600783C84 /* main.cpp */,
 				0495476127A2954200783C84 /* primitive_app.h */,
 				0495476027A2954200783C84 /* primitive_app.cpp */,
+				045B391A28D6F45A00DA1D32 /* assimp_app.h */,
+				045B391B28D6F45A00DA1D32 /* assimp_app.cpp */,
 				047BF18327AE1DF7003F3599 /* skybox_app.h */,
 				047BF18227AE1DF7003F3599 /* skybox_app.cpp */,
 				04F9E90327D2157B00BD291B /* atomic_compute_app.h */,
@@ -4855,6 +4861,7 @@
 				045A393C28C44C40003FEE10 /* spirv_reflection.cpp in Sources */,
 				04FDEFFE27E7633100BBE8E4 /* input_double.cpp in Sources */,
 				04FDF08727E808E600BBE8E4 /* bullet.cpp in Sources */,
+				045B391D28D6F49700DA1D32 /* assimp_parser.cpp in Sources */,
 				04FDF01827E770C100BBE8E4 /* group_collapsable.cpp in Sources */,
 				04954652279F8AE900783C84 /* base_material.cpp in Sources */,
 				04FDF03A27E7839D00BBE8E4 /* plot_histogram.cpp in Sources */,
@@ -4916,6 +4923,7 @@
 				045A395B28C44F32003FEE10 /* file_logger.cpp in Sources */,
 				045A395528C44F29003FEE10 /* window_options.cpp in Sources */,
 				04F9E90627D3684E00BD291B /* atomic_compute_app.cpp in Sources */,
+				045B391C28D6F45A00DA1D32 /* assimp_app.cpp in Sources */,
 				04311AE727D7302B00B918E3 /* multi_light_app.cpp in Sources */,
 				045A395228C44F1F003FEE10 /* plugins.cpp in Sources */,
 				047BF18427AE1DF7003F3599 /* skybox_app.cpp in Sources */,

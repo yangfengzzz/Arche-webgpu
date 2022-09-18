@@ -243,6 +243,7 @@ std::shared_ptr<Material> AssimpParser::processMaterial(aiMaterial *material) {
             }
             mat->setBaseTexture(processTextures(material, aiTextureType_DIFFUSE));
             mat->setNormalTexture(processTextures(material, aiTextureType_NORMALS));
+            mat->setNormalTexture(processTextures(material, aiTextureType_HEIGHT));
             mat->setEmissiveTexture(processTextures(material, aiTextureType_EMISSIVE));
             mat->setSpecularTexture(processTextures(material, aiTextureType_SPECULAR));
             result = mat;

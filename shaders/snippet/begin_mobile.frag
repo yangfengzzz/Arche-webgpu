@@ -5,7 +5,7 @@
 
     
 
-    #ifdef EMISSIVETEXTURE
+    #ifdef HAS_EMISSIVE_TEXTURE
         vec4 emissiveTextureColor = texture(u_emissiveTexture, v_uv);
         #ifndef COLORSPACE_GAMMA
             emissiveTextureColor = gammaToLinear(emissiveTextureColor);
@@ -14,7 +14,7 @@
 
     #endif
 
-    #ifdef BASETEXTURE
+    #ifdef HAS_BASE_TEXTURE
         vec4 diffuseTextureColor = texture(u_baseTexture, v_uv);
         #ifndef COLORSPACE_GAMMA
             diffuseTextureColor = gammaToLinear(diffuseTextureColor);
@@ -29,7 +29,7 @@
 
     #endif
 
-    #ifdef SPECULAR_TEXTURE
+    #ifdef HAS_SPECULAR_TEXTURE
         vec4 specularTextureColor = texture(u_specularTexture, v_uv);
         #ifndef COLORSPACE_GAMMA
             specularTextureColor = gammaToLinear(specularTextureColor);

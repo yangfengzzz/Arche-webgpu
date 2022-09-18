@@ -24,9 +24,9 @@ void BlinnPhongMaterial::setBaseTexture(const std::shared_ptr<Image>& newValue) 
     if (newValue) {
         shaderData.setImageView(BlinnPhongMaterial::_baseTextureProp, BlinnPhongMaterial::_baseSamplerProp,
                                 newValue->getImageView());
-        shaderData.addDefine(HAS_DIFFUSE_TEXTURE);
+        shaderData.addDefine(HAS_BASE_TEXTURE);
     } else {
-        shaderData.removeDefine(HAS_DIFFUSE_TEXTURE);
+        shaderData.removeDefine(HAS_BASE_TEXTURE);
     }
 }
 

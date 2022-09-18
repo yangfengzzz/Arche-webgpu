@@ -1,4 +1,4 @@
-    #ifdef NORMALTEXTURE
+    #ifdef HAS_NORMAL_TEXTURE
         mat3 tbn = getTBN();
         vec3 N = getNormalByNormalTexture(tbn, u_normalTexture, u_normalIntensity, v_uv);
     #else
@@ -86,7 +86,7 @@
     diffuse *= vec4( lightDiffuse, 1.0 );
     specular *= vec4( lightSpecular, 1.0 );
 
-    #ifdef ALPHA_CUTOFF
+    #ifdef NEED_ALPHA_CUTOFF
         if( diffuse.a < alpha_cutoff ) {
             discard;
         }

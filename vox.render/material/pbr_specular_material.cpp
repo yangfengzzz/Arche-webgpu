@@ -33,9 +33,9 @@ void PBRSpecularMaterial::setSpecularGlossinessTexture(const std::shared_ptr<Ima
     if (newValue) {
         shaderData.setImageView(PBRSpecularMaterial::_specularGlossinessTextureProp,
                                 PBRSpecularMaterial::_specularGlossinessSamplerProp, newValue->getImageView());
-        shaderData.addDefine(HAS_SPECULARGLOSSINESSMAP);
+        shaderData.addDefine(HAS_SPECULARGLOSSINESS_TEXTURE);
     } else {
-        shaderData.removeDefine(HAS_SPECULARGLOSSINESSMAP);
+        shaderData.removeDefine(HAS_SPECULARGLOSSINESS_TEXTURE);
     }
 }
 

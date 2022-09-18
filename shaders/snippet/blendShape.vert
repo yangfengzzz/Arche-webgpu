@@ -12,7 +12,7 @@
 					normal += getBlendShapeVertexElement(i, vertexElementOffset) * weight;
 				#endif
 
-				#if defined( HAS_TANGENT ) && defined(HAS_BLENDSHAPE_TANGENT) && ( defined(NORMALTEXTURE) || defined(HAS_CLEARCOATNORMALTEXTURE) )
+				#if defined( HAS_TANGENT ) && defined(HAS_BLENDSHAPE_TANGENT) && ( defined(HAS_NORMAL_TEXTURE) || defined(HAS_CLEARCOATNORMAL_TEXTURE) )
 					vertexElementOffset += 1;
 					tangent.xyz += getBlendShapeVertexElement(i, vertexElementOffset) * weight;
 				#endif
@@ -33,7 +33,7 @@
 					normal += NORMAL_BS3 * blendShapeWeights[3];
 				#endif
 
-				#if defined( HAS_TANGENT ) && defined(HAS_BLENDSHAPE_TANGENT) && ( defined(NORMALTEXTURE) || defined(HAS_CLEARCOATNORMALTEXTURE) )
+				#if defined( HAS_TANGENT ) && defined(HAS_BLENDSHAPE_TANGENT) && ( defined(HAS_NORMAL_TEXTURE) || defined(HAS_CLEARCOATNORMAL_TEXTURE) )
 					tangent.xyz += TANGENT_BS0 * blendShapeWeights[0];
 					tangent.xyz += TANGENT_BS1 * blendShapeWeights[1];
 					tangent.xyz += TANGENT_BS2 * blendShapeWeights[2];

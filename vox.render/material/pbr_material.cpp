@@ -31,9 +31,9 @@ void PBRMaterial::setMetallicRoughnessTexture(const std::shared_ptr<Image> &newV
     if (newValue) {
         shaderData.setImageView(PBRMaterial::_metallicRoughnessTextureProp, PBRMaterial::_metallicRoughnessSamplerProp,
                                 newValue->getImageView());
-        shaderData.addDefine(HAS_METALROUGHNESSMAP);
+        shaderData.addDefine(HAS_METALROUGHNESS_TEXTURE);
     } else {
-        shaderData.removeDefine(HAS_METALROUGHNESSMAP);
+        shaderData.removeDefine(HAS_METALROUGHNESS_TEXTURE);
     }
 }
 

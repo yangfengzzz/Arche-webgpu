@@ -37,7 +37,7 @@ reflectedLight.indirectSpecular += radianceAttenuation * radiance * envBRDFAppro
 
 
 // Occlusion
-#ifdef OCCLUSIONTEXTURE
+#ifdef HAS_OCCLUSION_TEXTURE
     vec2 aoUV = v_uv;
     #ifdef HAS_UV1
         if(u_occlusionTextureCoord == 1.0){
@@ -54,7 +54,7 @@ reflectedLight.indirectSpecular += radianceAttenuation * radiance * envBRDFAppro
 
 // Emissive
 vec3 emissiveRadiance = u_emissiveColor;
-#ifdef EMISSIVETEXTURE
+#ifdef HAS_EMISSIVE_TEXTURE
     vec4 emissiveColor = texture2D(u_emissiveTexture, v_uv);
     #ifndef COLORSPACE_GAMMA
         emissiveColor = gammaToLinear(emissiveColor);

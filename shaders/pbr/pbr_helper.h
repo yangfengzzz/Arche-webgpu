@@ -6,23 +6,19 @@ float getAARoughnessFactor(vec3 normal) {
     // Kaplanyan 2016, "Stable specular highlights"
     // Tokuyoshi 2017, "Error Reduction and Simplification for Shading Anti-Aliasing"
     // Tokuyoshi and Kaplanyan 2019, "Improved Geometric Specular Antialiasing"
-    #ifdef HAS_DERIVATIVES
-        vec3 dxy = max( abs(dFdx(normal)), abs(dFdy(normal)) );
-        return 0.04 + max( max(dxy.x, dxy.y), dxy.z );
-    #else
-        return 0.04;
-    #endif
+    vec3 dxy = max( abs(dFdx(normal)), abs(dFdy(normal)) );
+    return 0.04 + max( max(dxy.x, dxy.y), dxy.z );
 }
 
 void initGeometry(out Geometry geometry){
     geometry.position = v_pos;
     geometry.viewDir =  normalize(u_cameraPos - v_pos);
 
-    #if defined(NORMALTEXTURE) || defined(HAS_CLEARCOATNORMALTEXTURE)
+    #if defined(HAS_NORMAL_TEXTURE) || defined(HAS_CLEARCOATNORMAL_TEXTURE)
         mat3 tbn = getTBN();
     #endif
 
-    #ifdef NORMALTEXTURE
+    #ifdef HAS_NORMAL_TEXTURE
         geometry.normal = getNormalByNormalTexture(tbn, u_normalTexture, u_normalIntensity, v_uv);
     #else
         geometry.normal = getNormal();
@@ -31,8 +27,8 @@ void initGeometry(out Geometry geometry){
     geometry.dotNV = saturate( dot(geometry.normal, geometry.viewDir) );
 
 
-    #ifdef CLEARCOAT
-        #ifdef HAS_CLEARCOATNORMALTEXTURE
+    #ifdef HAS_CLEARCOAT
+        #ifdef HAS_CLEARCOATNORMAL_TEXTURE
             geometry.clearCoatNormal = getNormalByNormalTexture(tbn, u_clearCoatNormalTexture, u_normalIntensity, v_uv);
         #else
             geometry.clearCoatNormal = getNormal();
@@ -52,7 +48,7 @@ void initMaterial(out Material material, const in Geometry geometry){
 #endif
     float alphaCutoff = alpha_cutoff;
 
-    #ifdef BASETEXTURE
+    #ifdef HAS_BASE_TEXTURE
         vec4 baseTextureColor = texture2D(u_baseTexture, v_uv);
         #ifndef COLORSPACE_GAMMA
             baseTextureColor = gammaToLinear(baseTextureColor);
@@ -65,19 +61,19 @@ void initMaterial(out Material material, const in Geometry geometry){
     #endif
 
 
-    #ifdef ALPHA_CUTOFF
+    #ifdef NEED_ALPHA_CUTOFF
         if( baseColor.a < alphaCutoff ) {
             discard;
         }
     #endif
 
-    #ifdef ROUGHNESSMETALLICTEXTURE
+    #ifdef HAS_ROUGHNESSMETALLIC_TEXTURE
         vec4 metalRoughMapColor = texture2D( u_roughnessMetallicTexture, v_uv );
         roughness *= metalRoughMapColor.g;
         metal *= metalRoughMapColor.b;
     #endif
 
-    #ifdef SPECULARGLOSSINESSTEXTURE
+    #ifdef HAS_SPECULARGLOSSINESS_TEXTURE
         vec4 specularGlossinessColor = texture2D(u_specularGlossinessTexture, v_uv );
         #ifndef COLORSPACE_GAMMA
             specularGlossinessColor = gammaToLinear(specularGlossinessColor);
@@ -100,13 +96,13 @@ void initMaterial(out Material material, const in Geometry geometry){
 
     material.roughness = max(material.roughness, getAARoughnessFactor(geometry.normal));
 
-    #ifdef CLEARCOAT
+    #ifdef HAS_CLEARCOAT
         material.clearCoat = u_clearCoat;
         material.clearCoatRoughness = u_clearCoatRoughness;
-        #ifdef HAS_CLEARCOATTEXTURE
+        #ifdef HAS_CLEARCOAT_TEXTURE
             material.clearCoat *= texture2D( u_clearCoatTexture, v_uv ).r;
         #endif
-        #ifdef HAS_CLEARCOATROUGHNESSTEXTURE
+        #ifdef HAS_CLEARCOATROUGHNESS_TEXTURE
             material.clearCoatRoughness *= texture2D( u_clearCoatRoughnessTexture, v_uv ).g;
         #endif
         material.clearCoat = saturate( material.clearCoat );

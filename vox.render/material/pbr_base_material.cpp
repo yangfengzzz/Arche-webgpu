@@ -24,9 +24,9 @@ void PBRBaseMaterial::setBaseTexture(const std::shared_ptr<Image>& newValue) {
     if (newValue) {
         shaderData.setImageView(PBRBaseMaterial::_baseTextureProp, PBRBaseMaterial::_baseSamplerProp,
                                 newValue->getImageView());
-        shaderData.addDefine(HAS_BASE_COLORMAP);
+        shaderData.addDefine(HAS_BASE_TEXTURE);
     } else {
-        shaderData.removeDefine(HAS_BASE_COLORMAP);
+        shaderData.removeDefine(HAS_BASE_TEXTURE);
     }
 }
 
@@ -74,9 +74,9 @@ void PBRBaseMaterial::setEmissiveTexture(const std::shared_ptr<Image>& newValue)
     if (newValue) {
         shaderData.setImageView(PBRBaseMaterial::_emissiveTextureProp, PBRBaseMaterial::_emissiveSamplerProp,
                                 newValue->getImageView());
-        shaderData.addDefine(HAS_EMISSIVEMAP);
+        shaderData.addDefine(HAS_EMISSIVE_TEXTURE);
     } else {
-        shaderData.removeDefine(HAS_EMISSIVEMAP);
+        shaderData.removeDefine(HAS_EMISSIVE_TEXTURE);
     }
 }
 
@@ -91,9 +91,9 @@ void PBRBaseMaterial::setOcclusionTexture(const std::shared_ptr<Image>& newValue
     if (newValue) {
         shaderData.setImageView(PBRBaseMaterial::_occlusionTextureProp, PBRBaseMaterial::_occlusionSamplerProp,
                                 newValue->getImageView());
-        shaderData.addDefine(HAS_OCCLUSIONMAP);
+        shaderData.addDefine(HAS_OCCLUSION_TEXTURE);
     } else {
-        shaderData.removeDefine(HAS_OCCLUSIONMAP);
+        shaderData.removeDefine(HAS_OCCLUSION_TEXTURE);
     }
 }
 
@@ -122,9 +122,9 @@ float PBRBaseMaterial::clearCoat() const { return _pbrBaseData.clearCoat; }
 
 void PBRBaseMaterial::setClearCoat(float value) {
     if (value == 0) {
-        shaderData.removeDefine("CLEARCOAT");
+        shaderData.removeDefine(HAS_CLEARCOAT);
     } else {
-        shaderData.addDefine("CLEARCOAT");
+        shaderData.addDefine(HAS_CLEARCOAT);
     }
     _pbrBaseData.clearCoat = value;
     shaderData.setData(PBRBaseMaterial::_pbrBaseProp, _pbrBaseData);
@@ -137,9 +137,9 @@ void PBRBaseMaterial::setClearCoatTexture(const std::shared_ptr<Image>& value) {
     if (value) {
         shaderData.setImageView(PBRBaseMaterial::_clearCoatTextureProp, PBRBaseMaterial::_clearCoatSamplerProp,
                                 value->getImageView());
-        shaderData.addDefine("HAS_CLEARCOATTEXTURE");
+        shaderData.addDefine(HAS_CLEARCOAT_TEXTURE);
     } else {
-        shaderData.removeDefine("HAS_CLEARCOATTEXTURE");
+        shaderData.removeDefine(HAS_CLEARCOAT_TEXTURE);
     }
 }
 
@@ -161,9 +161,9 @@ void PBRBaseMaterial::setClearCoatRoughnessTexture(const std::shared_ptr<Image>&
     if (value) {
         shaderData.setImageView(PBRBaseMaterial::_clearCoatRoughnessTextureProp,
                                 PBRBaseMaterial::_clearCoatRoughnessSamplerProp, value->getImageView());
-        shaderData.addDefine("HAS_CLEARCOATROUGHNESSTEXTURE");
+        shaderData.addDefine(HAS_CLEARCOATROUGHNESS_TEXTURE);
     } else {
-        shaderData.removeDefine("HAS_CLEARCOATROUGHNESSTEXTURE");
+        shaderData.removeDefine(HAS_CLEARCOATROUGHNESS_TEXTURE);
     }
 }
 
@@ -178,9 +178,9 @@ void PBRBaseMaterial::setClearCoatNormalTexture(const std::shared_ptr<Image>& va
     if (value) {
         shaderData.setImageView(PBRBaseMaterial::_clearCoatNormalTextureProp, PBRBaseMaterial::_clearCoatNormalSamplerProp,
                                 value->getImageView());
-        shaderData.addDefine("HAS_CLEARCOATNORMALTEXTURE");
+        shaderData.addDefine(HAS_CLEARCOATNORMAL_TEXTURE);
     } else {
-        shaderData.removeDefine("HAS_CLEARCOATNORMALTEXTURE");
+        shaderData.removeDefine(HAS_CLEARCOATNORMAL_TEXTURE);
     }
 }
 
