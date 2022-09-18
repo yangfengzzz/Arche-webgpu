@@ -60,31 +60,33 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
 
     // PSO
     {
-        auto &vert_shader_module = ResourceCache::GetSingleton().requestShaderModule(wgpu::ShaderStage::Vertex,
-                                                                                     *material->vertex_source_, macros);
-        auto &frag_shader_module = ResourceCache::GetSingleton().requestShaderModule(
-                wgpu::ShaderStage::Fragment, *material->fragment_source_, macros);
-        _forwardPipelineDescriptor.vertex.module = vert_shader_module.handle();
-        _fragment.module = frag_shader_module.handle();
-
         _bindGroupLayoutEntryVecMap.clear();
         _bindGroupEntryVecMap.clear();
+        auto &vert_shader_module = ResourceCache::GetSingleton().requestShaderModule(wgpu::ShaderStage::Vertex,
+                                                                                     *material->vertex_source_, macros);
+        _forwardPipelineDescriptor.vertex.module = vert_shader_module.handle();
         _scene->shaderData.bindData(vert_shader_module.GetResources(), _bindGroupLayoutEntryVecMap,
-                                    _bindGroupEntryVecMap);
-        _scene->shaderData.bindData(frag_shader_module.GetResources(), _bindGroupLayoutEntryVecMap,
                                     _bindGroupEntryVecMap);
         _camera->shaderData.bindData(vert_shader_module.GetResources(), _bindGroupLayoutEntryVecMap,
                                      _bindGroupEntryVecMap);
-        _camera->shaderData.bindData(frag_shader_module.GetResources(), _bindGroupLayoutEntryVecMap,
-                                     _bindGroupEntryVecMap);
         renderer->shaderData.bindData(vert_shader_module.GetResources(), _bindGroupLayoutEntryVecMap,
-                                      _bindGroupEntryVecMap);
-        renderer->shaderData.bindData(frag_shader_module.GetResources(), _bindGroupLayoutEntryVecMap,
                                       _bindGroupEntryVecMap);
         material->shaderData.bindData(vert_shader_module.GetResources(), _bindGroupLayoutEntryVecMap,
                                       _bindGroupEntryVecMap);
-        material->shaderData.bindData(frag_shader_module.GetResources(), _bindGroupLayoutEntryVecMap,
-                                      _bindGroupEntryVecMap);
+
+        if (fragmentEnabled) {
+            auto &frag_shader_module = ResourceCache::GetSingleton().requestShaderModule(
+                    wgpu::ShaderStage::Fragment, *material->fragment_source_, macros);
+            _fragment.module = frag_shader_module.handle();
+            _scene->shaderData.bindData(frag_shader_module.GetResources(), _bindGroupLayoutEntryVecMap,
+                                        _bindGroupEntryVecMap);
+            _camera->shaderData.bindData(frag_shader_module.GetResources(), _bindGroupLayoutEntryVecMap,
+                                         _bindGroupEntryVecMap);
+            renderer->shaderData.bindData(frag_shader_module.GetResources(), _bindGroupLayoutEntryVecMap,
+                                          _bindGroupEntryVecMap);
+            material->shaderData.bindData(frag_shader_module.GetResources(), _bindGroupLayoutEntryVecMap,
+                                          _bindGroupEntryVecMap);
+        }
 
         std::vector<wgpu::BindGroupLayout> bindGroupLayouts;
         for (const auto &bindGroupLayoutEntryVec : _bindGroupLayoutEntryVecMap) {

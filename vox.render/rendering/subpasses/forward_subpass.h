@@ -12,9 +12,9 @@ namespace vox {
 class ForwardSubpass : public Subpass {
 public:
     ForwardSubpass(RenderContext* renderContext,
-                    wgpu::TextureFormat depthStencilTextureFormat,
-                    Scene* scene,
-                    Camera* camera);
+                   wgpu::TextureFormat depthStencilTextureFormat,
+                   Scene* scene,
+                   Camera* camera);
 
     void prepare() override;
 
@@ -22,10 +22,11 @@ public:
 
     virtual void _drawElement(wgpu::RenderPassEncoder& passEncoder, const ShaderVariant& variant) = 0;
 
+public:
+    bool fragmentEnabled{true};
+
 protected:
-    void _drawElement(wgpu::RenderPassEncoder& passEncoder,
-                      const RenderElement& items,
-                      const ShaderVariant& variant);
+    void _drawElement(wgpu::RenderPassEncoder& passEncoder, const RenderElement& items, const ShaderVariant& variant);
 
 private:
     wgpu::RenderPipelineDescriptor _forwardPipelineDescriptor;

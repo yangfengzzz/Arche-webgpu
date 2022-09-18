@@ -6,12 +6,9 @@
 
 #include "vox.render/sky/skybox_subpass.h"
 
-#include <utility>
-
 #include "vox.render/camera.h"
 #include "vox.render/mesh/primitive_mesh.h"
 #include "vox.render/rendering/render_pass.h"
-#include "vox.render/rendering/resource_cache.h"
 
 namespace vox {
 SkyboxSubpass::SkyboxSubpass(RenderContext* renderContext,
