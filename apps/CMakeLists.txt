@@ -26,6 +26,7 @@ set(SRC
         primitive_app.cpp
 #        shadowmap_app.cpp
         skybox_app.cpp
+        assimp_app.cpp
         )
 
 source_group("\\" FILES ${SRC})

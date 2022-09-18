@@ -10,38 +10,37 @@
 
 #include <string>
 
-#include "vox.render/core/device.h"
+#include "vox.render/image.h"
 #include "vox.render/scene_forward.h"
-#include "vox.render/texture.h"
 
 namespace vox {
 class AssimpParser {
 public:
-    explicit AssimpParser(Device &device);
+    explicit AssimpParser(wgpu::Device &device);
 
     /**
      * Simply load meshes from a file using assimp
      * Return true on success
      */
-    void LoadModel(Entity *root, const std::string &file, unsigned int p_flags);
+    void loadModel(Entity *root, const std::string &file, unsigned int p_flags);
 
     /**
      * Processes a node in a recursive fashion.
      * Processes each individual mesh located at the node and repeats this process on its children nodes (if any).
      */
-    void ProcessNode(Entity *root, aiNode *node, const aiScene *scene);
+    void processNode(Entity *root, aiNode *node, const aiScene *scene);
 
-    void ProcessMesh(Entity *root, aiMesh *mesh, const aiScene *scene);
+    void processMesh(Entity *root, aiMesh *mesh, const aiScene *scene);
 
-    std::shared_ptr<Material> ProcessMaterial(aiMaterial *material);
+    std::shared_ptr<Material> processMaterial(aiMaterial *material);
 
-    std::shared_ptr<Texture> ProcessTextures(aiMaterial *mat, aiTextureType type);
+    std::shared_ptr<Image> processTextures(aiMaterial *mat, aiTextureType type);
 
 private:
-    static std::string ToString(aiShadingMode mode);
+    static std::string toString(aiShadingMode mode);
 
-    std::string directory_;
-    Device &device_;
+    std::string _directory;
+    wgpu::Device &_device;
 };
 
 }  // namespace vox

@@ -421,6 +421,7 @@ set(PROJECT_FILES
         ${LIGHT_FILE}
 #        ${SHADOW_FILE}
 #        ${PARTICLE_FILE}
+        ${LOADER_FILES}
         ${PLUGINS_FILE}
         ${LUA_FILES}
         )

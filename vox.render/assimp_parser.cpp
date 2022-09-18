@@ -14,6 +14,7 @@
 
 #include "vox.base/logging.h"
 #include "vox.render/entity.h"
+#include "vox.render/image_manager.h"
 #include "vox.render/material/blinn_phong_material.h"
 #include "vox.render/material/pbr_material.h"
 #include "vox.render/material/pbr_specular_material.h"
@@ -21,14 +22,13 @@
 #include "vox.render/mesh/mesh_manager.h"
 #include "vox.render/mesh/mesh_renderer.h"
 #include "vox.render/platform/filesystem.h"
-#include "vox.render/texture_manager.h"
 
 namespace vox {
-AssimpParser::AssimpParser(Device &device) : device_(device) {}
+AssimpParser::AssimpParser(wgpu::Device &device) : _device(device) {}
 
-void AssimpParser::LoadModel(Entity *root, const std::string &file, unsigned int p_flags) {
+void AssimpParser::loadModel(Entity *root, const std::string &file, unsigned int p_flags) {
     // retrieve the directory path of the filepath
-    directory_ = file.substr(0, file.find_last_of('/'));
+    _directory = file.substr(0, file.find_last_of('/'));
 
     Assimp::Importer importer;
     const aiScene *scene =
@@ -39,14 +39,14 @@ void AssimpParser::LoadModel(Entity *root, const std::string &file, unsigned int
     }
 
     // process ASSIMP's root node recursively
-    ProcessNode(root, scene->mRootNode, scene);
+    processNode(root, scene->mRootNode, scene);
 }
 
-void AssimpParser::ProcessNode(Entity *root, aiNode *node, const aiScene *scene) {
-    auto entity = root->CreateChild();
+void AssimpParser::processNode(Entity *root, aiNode *node, const aiScene *scene) {
+    auto entity = root->createChild();
     entity->name = node->mName.C_Str();
     auto &transform = node->mTransformation;
-    entity->transform->SetLocalMatrix(Matrix4x4F(transform.a1, transform.b1, transform.c1, transform.d1, transform.a2,
+    entity->transform->setLocalMatrix(Matrix4x4F(transform.a1, transform.b1, transform.c1, transform.d1, transform.a2,
                                                  transform.b2, transform.c2, transform.d2, transform.a3, transform.b3,
                                                  transform.c3, transform.d3, transform.a4, transform.b4, transform.c4,
                                                  transform.d4));
@@ -55,19 +55,19 @@ void AssimpParser::ProcessNode(Entity *root, aiNode *node, const aiScene *scene)
     for (unsigned int i = 0; i < node->mNumMeshes; i++) {
         // the node object only contains indices to index the actual objects in the scene.
         // the scene contains all the data, node is just to keep stuff organized (like relations between nodes).
-        ProcessMesh(entity, scene->mMeshes[node->mMeshes[i]], scene);
+        processMesh(entity, scene->mMeshes[node->mMeshes[i]], scene);
     }
 
     // after we've processed all the meshes (if any) we then recursively process each of the children nodes
     for (unsigned int i = 0; i < node->mNumChildren; i++) {
-        ProcessNode(entity, node->mChildren[i], scene);
+        processNode(entity, node->mChildren[i], scene);
     }
 }
 
-void AssimpParser::ProcessMesh(Entity *root, aiMesh *mesh, const aiScene *scene) {
-    auto renderer = root->AddComponent<MeshRenderer>();
+void AssimpParser::processMesh(Entity *root, aiMesh *mesh, const aiScene *scene) {
+    auto renderer = root->addComponent<MeshRenderer>();
     auto model_mesh = MeshManager::GetSingleton().LoadModelMesh();
-    renderer->SetMesh(model_mesh);
+    renderer->setMesh(model_mesh);
 
     std::vector<Vector3F> vec3_array(mesh->mNumVertices);
     for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
@@ -75,7 +75,7 @@ void AssimpParser::ProcessMesh(Entity *root, aiMesh *mesh, const aiScene *scene)
         vec3_array[i].y = mesh->mVertices[i].y;
         vec3_array[i].z = mesh->mVertices[i].z;
     }
-    model_mesh->SetPositions(vec3_array);
+    model_mesh->setPositions(vec3_array);
 
     if (mesh->HasNormals()) {
         for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
@@ -83,7 +83,7 @@ void AssimpParser::ProcessMesh(Entity *root, aiMesh *mesh, const aiScene *scene)
             vec3_array[i].y = mesh->mNormals[i].y;
             vec3_array[i].z = mesh->mNormals[i].z;
         }
-        model_mesh->SetNormals(vec3_array);
+        model_mesh->setNormals(vec3_array);
     }
 
     if (mesh->mTextureCoords[0]) {
@@ -94,7 +94,7 @@ void AssimpParser::ProcessMesh(Entity *root, aiMesh *mesh, const aiScene *scene)
             vec2_array[i].x = mesh->mTextureCoords[0][i].x;
             vec2_array[i].y = mesh->mTextureCoords[0][i].y;
         }
-        model_mesh->SetUvs(vec2_array);
+        model_mesh->setUVs(vec2_array);
 
         for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
             vec3_array[i].x = mesh->mTangents[i].x;
@@ -119,7 +119,7 @@ void AssimpParser::ProcessMesh(Entity *root, aiMesh *mesh, const aiScene *scene)
             color_array[i].b = mesh->mColors[0][i].b;
             color_array[i].a = mesh->mColors[0][i].a;
         }
-        model_mesh->SetColors(color_array);
+        model_mesh->setColors(color_array);
     }
 
     std::vector<uint32_t> indices;
@@ -130,33 +130,33 @@ void AssimpParser::ProcessMesh(Entity *root, aiMesh *mesh, const aiScene *scene)
         // retrieve all indices of the face and store them in the indices vector
         for (unsigned int j = 0; j < face.mNumIndices; j++) indices.push_back(face.mIndices[j]);
     }
-    model_mesh->SetIndices(indices);
-    model_mesh->AddSubMesh(0, static_cast<uint32_t>(indices.size()));
-    model_mesh->UploadData(true);
+    model_mesh->setIndices(indices);
+    model_mesh->addSubMesh(0, static_cast<uint32_t>(indices.size()));
+    model_mesh->uploadData(true);
 
     const auto &min = mesh->mAABB.mMin;
     const auto &max = mesh->mAABB.mMax;
-    model_mesh->bounds_.upper_corner = Point3F(max.x, max.y, max.z);
-    model_mesh->bounds_.lower_corner = Point3F(min.x, min.y, min.z);
+    model_mesh->bounds.upper_corner = Point3F(max.x, max.y, max.z);
+    model_mesh->bounds.lower_corner = Point3F(min.x, min.y, min.z);
 
     // process materials
-    renderer->SetMaterial(ProcessMaterial(scene->mMaterials[mesh->mMaterialIndex]));
+    renderer->setMaterial(processMaterial(scene->mMaterials[mesh->mMaterialIndex]));
 }
 
-std::shared_ptr<Material> AssimpParser::ProcessMaterial(aiMaterial *material) {
+std::shared_ptr<Material> AssimpParser::processMaterial(aiMaterial *material) {
     std::shared_ptr<Material> result{nullptr};
     aiShadingMode mode;
     material->Get(AI_MATKEY_SHADING_MODEL, mode);
     switch (mode) {
         case aiShadingMode_Unlit: {
-            auto mat = std::make_shared<UnlitMaterial>(device_);
+            auto mat = std::make_shared<UnlitMaterial>(_device);
             aiColor4D color;
             auto info = material->Get(AI_MATKEY_BASE_COLOR, color);
             if (info == AI_SUCCESS) {
-                mat->SetBaseColor(Color(color.r, color.g, color.b, color.a));
+                mat->setBaseColor(Color(color.r, color.g, color.b, color.a));
             }
 
-            mat->SetBaseTexture(ProcessTextures(material, aiTextureType_DIFFUSE));
+            mat->setBaseTexture(processTextures(material, aiTextureType_DIFFUSE));
             result = mat;
             break;
         }
@@ -165,41 +165,41 @@ std::shared_ptr<Material> AssimpParser::ProcessMaterial(aiMaterial *material) {
             float factor;
             auto info = material->Get(AI_MATKEY_ROUGHNESS_FACTOR, factor);
             if (info == AI_FAILURE) {
-                auto mat = std::make_shared<PbrSpecularMaterial>(device_);
+                auto mat = std::make_shared<PBRSpecularMaterial>(_device);
                 float value;
                 info = material->Get(AI_MATKEY_GLOSSINESS_FACTOR, value);
                 if (info == AI_SUCCESS) {
-                    mat->SetGlossiness(value);
+                    mat->setGlossiness(value);
                 }
 
                 aiColor3D color;
                 info = material->Get(AI_MATKEY_SPECULAR_FACTOR, color);
                 if (info == AI_SUCCESS) {
-                    mat->SetSpecularColor(Color(color.r, color.g, color.b, 1.0));
+                    mat->setSpecularColor(Color(color.r, color.g, color.b, 1.0));
                 }
-                mat->SetBaseTexture(ProcessTextures(material, aiTextureType_DIFFUSE));
-                mat->SetNormalTexture(ProcessTextures(material, aiTextureType_NORMALS));
-                mat->SetEmissiveTexture(ProcessTextures(material, aiTextureType_EMISSIVE));
-                mat->SetOcclusionTexture(ProcessTextures(material, aiTextureType_AMBIENT_OCCLUSION));
-                mat->SetSpecularGlossinessTexture(ProcessTextures(material, aiTextureType_DIFFUSE));
+                mat->setBaseTexture(processTextures(material, aiTextureType_DIFFUSE));
+                mat->setNormalTexture(processTextures(material, aiTextureType_NORMALS));
+                mat->setEmissiveTexture(processTextures(material, aiTextureType_EMISSIVE));
+                mat->setOcclusionTexture(processTextures(material, aiTextureType_AMBIENT_OCCLUSION));
+                mat->setSpecularGlossinessTexture(processTextures(material, aiTextureType_DIFFUSE));
                 result = mat;
             } else {
-                auto mat = std::make_shared<PbrMaterial>(device_);
+                auto mat = std::make_shared<PBRMaterial>(_device);
                 float value;
                 info = material->Get(AI_MATKEY_METALLIC_FACTOR, value);
                 if (info == AI_SUCCESS) {
-                    mat->SetMetallic(value);
+                    mat->setMetallic(value);
                 }
 
                 info = material->Get(AI_MATKEY_ROUGHNESS_FACTOR, value);
                 if (info == AI_SUCCESS) {
-                    mat->SetRoughness(value);
+                    mat->setRoughness(value);
                 }
-                mat->SetBaseTexture(ProcessTextures(material, aiTextureType_DIFFUSE));
-                mat->SetNormalTexture(ProcessTextures(material, aiTextureType_NORMALS));
-                mat->SetEmissiveTexture(ProcessTextures(material, aiTextureType_EMISSIVE));
-                mat->SetOcclusionTexture(ProcessTextures(material, aiTextureType_AMBIENT_OCCLUSION));
-                mat->SetMetallicRoughnessTexture(ProcessTextures(material, aiTextureType_DIFFUSE_ROUGHNESS));
+                mat->setBaseTexture(processTextures(material, aiTextureType_DIFFUSE));
+                mat->setNormalTexture(processTextures(material, aiTextureType_NORMALS));
+                mat->setEmissiveTexture(processTextures(material, aiTextureType_EMISSIVE));
+                mat->setOcclusionTexture(processTextures(material, aiTextureType_AMBIENT_OCCLUSION));
+                mat->setMetallicRoughnessTexture(processTextures(material, aiTextureType_DIFFUSE_ROUGHNESS));
                 result = mat;
             }
             break;
@@ -207,44 +207,44 @@ std::shared_ptr<Material> AssimpParser::ProcessMaterial(aiMaterial *material) {
 
         case aiShadingMode_Blinn:
         case aiShadingMode_Phong: {
-            auto mat = std::make_shared<BlinnPhongMaterial>(device_);
+            auto mat = std::make_shared<BlinnPhongMaterial>(_device);
             float value;
             auto info = material->Get(AI_MATKEY_SHININESS, value);
             if (info == AI_SUCCESS) {
-                mat->SetShininess(value);
+                mat->setShininess(value);
             }
 
             aiColor4D color;
             info = material->Get(AI_MATKEY_BASE_COLOR, color);
             if (info == AI_SUCCESS) {
-                mat->SetBaseColor(Color(color.r, color.g, color.b, color.a));
+                mat->setBaseColor(Color(color.r, color.g, color.b, color.a));
             }
-            mat->SetBaseTexture(ProcessTextures(material, aiTextureType_DIFFUSE));
-            mat->SetNormalTexture(ProcessTextures(material, aiTextureType_NORMALS));
-            mat->SetEmissiveTexture(ProcessTextures(material, aiTextureType_EMISSIVE));
-            mat->SetSpecularTexture(ProcessTextures(material, aiTextureType_SPECULAR));
+            mat->setBaseTexture(processTextures(material, aiTextureType_DIFFUSE));
+            mat->setNormalTexture(processTextures(material, aiTextureType_NORMALS));
+            mat->setEmissiveTexture(processTextures(material, aiTextureType_EMISSIVE));
+            mat->setSpecularTexture(processTextures(material, aiTextureType_SPECULAR));
             result = mat;
             break;
         }
 
         default: {
-            LOGI("Unknown material type: {}, use Blinn-Phong as default mat", ToString(mode))
-            auto mat = std::make_shared<BlinnPhongMaterial>(device_);
+            LOGI("Unknown material type: {}, use Blinn-Phong as default mat", toString(mode))
+            auto mat = std::make_shared<BlinnPhongMaterial>(_device);
             float value;
             auto info = material->Get(AI_MATKEY_SHININESS, value);
             if (info == AI_SUCCESS) {
-                mat->SetShininess(value);
+                mat->setShininess(value);
             }
 
             aiColor4D color;
             info = material->Get(AI_MATKEY_BASE_COLOR, color);
             if (info == AI_SUCCESS) {
-                mat->SetBaseColor(Color(color.r, color.g, color.b, color.a));
+                mat->setBaseColor(Color(color.r, color.g, color.b, color.a));
             }
-            mat->SetBaseTexture(ProcessTextures(material, aiTextureType_DIFFUSE));
-            mat->SetNormalTexture(ProcessTextures(material, aiTextureType_NORMALS));
-            mat->SetEmissiveTexture(ProcessTextures(material, aiTextureType_EMISSIVE));
-            mat->SetSpecularTexture(ProcessTextures(material, aiTextureType_SPECULAR));
+            mat->setBaseTexture(processTextures(material, aiTextureType_DIFFUSE));
+            mat->setNormalTexture(processTextures(material, aiTextureType_NORMALS));
+            mat->setEmissiveTexture(processTextures(material, aiTextureType_EMISSIVE));
+            mat->setSpecularTexture(processTextures(material, aiTextureType_SPECULAR));
             result = mat;
 
             break;
@@ -254,19 +254,19 @@ std::shared_ptr<Material> AssimpParser::ProcessMaterial(aiMaterial *material) {
     return result;
 }
 
-std::shared_ptr<Texture> AssimpParser::ProcessTextures(aiMaterial *mat, aiTextureType type) {
+std::shared_ptr<Image> AssimpParser::processTextures(aiMaterial *mat, aiTextureType type) {
     auto count = mat->GetTextureCount(type);
     if (count > 0) {
         aiString str;
         mat->GetTexture(type, 0, &str);
         std::string filename(str.C_Str());
-        filename = directory_ + '/' + filename;
-        return TextureManager::GetSingleton().LoadTexture(filename);
+        filename = _directory + '/' + filename;
+        return ImageManager::GetSingleton().loadTexture(filename);
     }
     return nullptr;
 }
 
-std::string AssimpParser::ToString(aiShadingMode mode) {
+std::string AssimpParser::toString(aiShadingMode mode) {
     switch (mode) {
         case aiShadingMode_Flat:
             return "Flat shading.";
