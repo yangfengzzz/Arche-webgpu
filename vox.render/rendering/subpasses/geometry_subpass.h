@@ -18,7 +18,7 @@ public:
 
     void _drawElement(wgpu::RenderPassEncoder& passEncoder, const ShaderVariant& variant) override;
 
-private:
+protected:
     void _callRender(Camera* camera);
 
     std::vector<RenderElement> opaqueQueue;

@@ -27,9 +27,15 @@ void GeometrySubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder, const S
     std::sort(alphaTestQueue.begin(), alphaTestQueue.end(), _compareFromNearToFar);
     std::sort(transparentQueue.begin(), transparentQueue.end(), _compareFromFarToNear);
 
-    ForwardSubpass::_drawElement(passEncoder, opaqueQueue, variant);
-    ForwardSubpass::_drawElement(passEncoder, alphaTestQueue, variant);
-    ForwardSubpass::_drawElement(passEncoder, transparentQueue, variant);
+    for (const auto& element : opaqueQueue) {
+        ForwardSubpass::_drawElement(passEncoder, element, variant);
+    }
+    for (const auto& element : alphaTestQueue) {
+        ForwardSubpass::_drawElement(passEncoder, element, variant);
+    }
+    for (const auto& element : transparentQueue) {
+        ForwardSubpass::_drawElement(passEncoder, element, variant);
+    }
 }
 
 void GeometrySubpass::_callRender(Camera *camera) {

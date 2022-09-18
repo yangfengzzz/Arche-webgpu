@@ -13,6 +13,14 @@ wgpu::SamplerDescriptor ShaderData::_defaultSamplerDesc{};
 
 ShaderData::ShaderData(wgpu::Device &device) : _device(device) {}
 
+void ShaderData::clear() {
+    _shaderBufferPools.clear();
+    _shaderBufferFunctors.clear();
+    _shaderBuffers.clear();
+    _imageViews.clear();
+    _samplers.clear();
+}
+
 void ShaderData::bindData(
         const std::unordered_map<std::string, ShaderResource> &resources,
         std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>> &bindGroupLayoutEntryVecMap,

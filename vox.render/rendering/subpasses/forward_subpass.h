@@ -24,7 +24,7 @@ public:
 
 protected:
     void _drawElement(wgpu::RenderPassEncoder& passEncoder,
-                      const std::vector<RenderElement>& items,
+                      const RenderElement& items,
                       const ShaderVariant& variant);
 
 private:

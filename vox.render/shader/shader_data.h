@@ -25,6 +25,8 @@ class ShaderData {
 public:
     explicit ShaderData(wgpu::Device& device);
 
+    void clear();
+
     void bindData(const std::unordered_map<std::string, ShaderResource>& resources,
                   std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>>& bindGroupLayoutEntryVecMap,
                   std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>>& bindGroupEntryVecMap);

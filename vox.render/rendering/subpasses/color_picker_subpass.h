@@ -6,32 +6,31 @@
 
 #pragma once
 
+#include "vox.render/mesh/buffer_pool.h"
 #include "vox.render/material/unlit_material.h"
-#include "vox.render/rendering/subpass.h"
+#include "vox.render/rendering/subpasses/geometry_subpass.h"
 
 namespace vox {
-class ColorPickerSubpass : public Subpass {
+class ColorPickerSubpass : public GeometrySubpass {
 public:
     ColorPickerSubpass(RenderContext* renderContext,
                        wgpu::TextureFormat depthStencilTextureFormat,
                        Scene* scene,
                        Camera* camera);
 
-    void prepare() override;
-
-    void draw(wgpu::RenderPassEncoder& passEncoder) override;
+    void _drawElement(wgpu::RenderPassEncoder& passEncoder, const ShaderVariant& variant) override;
 
 public:
     /**
      * Convert id to RGB color value, 0 and 0xffffff are illegal values.
      */
-    Vector3F id2Color(uint32_t id);
+    static Vector3F id2Color(uint32_t id);
 
     /**
      * Convert RGB color to id.
      * @param color - Color
      */
-    uint32_t color2Id(const std::array<uint8_t, 4>& color);
+    static uint32_t color2Id(const std::array<uint8_t, 4>& color);
 
     /**
      * Get renderer element by color.
@@ -39,31 +38,12 @@ public:
     std::pair<Renderer*, MeshPtr> getObjectByColor(const std::array<uint8_t, 4>& color);
 
 private:
-    void _drawMeshes(wgpu::RenderPassEncoder& passEncoder);
-
-    void _drawElement(wgpu::RenderPassEncoder& passEncoder,
-                      const std::vector<RenderElement>& items,
-                      const ShaderVariant& variant);
-
-    wgpu::RenderPipelineDescriptor _forwardPipelineDescriptor;
-    wgpu::DepthStencilState _depthStencil;
-    wgpu::FragmentState _fragment;
-    wgpu::ColorTargetState _colorTargetState;
-
-    std::unordered_map<uint32_t, std::vector<wgpu::BindGroupLayoutEntry>> _bindGroupLayoutEntryVecMap;
-    std::unordered_map<uint32_t, std::vector<wgpu::BindGroupEntry>> _bindGroupEntryVecMap;
-    wgpu::BindGroupDescriptor _bindGroupDescriptor;
-    wgpu::BindGroupLayoutDescriptor bindGroupLayoutDescriptor;
-
-    wgpu::PipelineLayoutDescriptor _pipelineLayoutDescriptor;
-    wgpu::PipelineLayout _pipelineLayout;
+    void _uploadColor(RenderElement& element);
 
     uint32_t _currentId = 0;
-    std::unordered_map<size_t, std::pair<Renderer*, MeshPtr>> _primitivesMap;
-    std::vector<Buffer> _bufferPool;
+    std::unordered_map<size_t, std::pair<Renderer*, MeshPtr>> _primitivesMap{};
+    BufferPool _bufferPool;
     std::shared_ptr<UnlitMaterial> _material{nullptr};
-
-    wgpu::TextureFormat _depthStencilTextureFormat;
 };
 
 }  // namespace vox
