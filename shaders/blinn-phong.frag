@@ -13,6 +13,7 @@
 #include "snippet/light_define.h"
 #include "snippet/mobile_material_define.h"
 #include "snippet/normal_frag_define.h"
+#include "shadow/shadow_frag_define.h"
 
 layout(location = 0) out vec4 o_color;
 

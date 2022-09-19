@@ -20,6 +20,7 @@
 #include "pbr/brdf.h"
 #include "pbr/direct_irradiance_frag_define.h"
 #include "pbr/ibl_frag_define.h"
+#include "shadow/shadow_frag_define.h"
 
 layout(location = 0) out vec4 o_color;
 

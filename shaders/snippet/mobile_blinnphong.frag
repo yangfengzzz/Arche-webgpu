@@ -10,22 +10,25 @@
     vec3 lightSpecular = vec3( 0.0, 0.0, 0.0 );
     float shadowAttenuation = 1.0;
 
-    #ifdef DIRECT_LIGHT_COUNT
-        shadowAttenuation = 1.0;
-#ifdef CASCADED_SHADOW_MAP_COUNT
-#if CASCADED_SHADOW_MAP_COUNT == 1
-        shadowAttenuation *= sampleShadowMap(u_shadowMaps[0], u_shadowInfos[0].x, u_shadowInfos[0].y);
-#endif
-
-#if CASCADED_SHADOW_MAP_COUNT == 2
-        shadowAttenuation *= sampleShadowMap(u_shadowMaps[0], u_shadowInfos[0].x, u_shadowInfos[0].y);
-        shadowAttenuation *= sampleShadowMap(u_shadowMaps[1], u_shadowInfos[1].x, u_shadowInfos[1].y);
-#endif
+#ifdef DIRECT_LIGHT_COUNT
+    shadowAttenuation = 1.0;
+#ifdef CALCULATE_SHADOWS
+    #ifdef CASCADED_SHADOW_MAP
+        shadowAttenuation *= sampleShadowMap();
+        int sunIndex = int(u_shadowInfo.z);
+    #endif
 #endif
 
         DirectLight directionalLight;
         for( int i = 0; i < DIRECT_LIGHT_COUNT; i++ ) {
             directionalLight.color = direct_light[i].color * shadowAttenuation;
+#ifdef CALCULATE_SHADOWS
+    #ifdef CASCADED_SHADOW_MAP
+                if (i == sunIndex) {
+                    directionalLight.color *= shadowAttenuation;
+                }
+    #endif
+#endif
             directionalLight.direction = direct_light[i].direction;
 
             float d = max(dot(N, -directionalLight.direction), 0.0);
