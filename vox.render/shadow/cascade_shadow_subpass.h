@@ -15,38 +15,28 @@
 namespace vox {
 class CascadedShadowSubpass : public ForwardSubpass {
 public:
-    /** How this light casts shadows */
-    ShadowMode shadowMode = ShadowMode::SoftLow;
-    /** The resolution of the shadow maps. */
-    ShadowResolution shadowResolution = ShadowResolution::High;
-    /** Number of cascades to use for directional light shadows. */
-    ShadowCascadesMode shadowCascades = ShadowCascadesMode::FourCascades;
-    /** The splits of two cascade distribution. */
-    float shadowTwoCascadeSplits = 1.0 / 3.0;
-    /** The splits of four cascade distribution. */
-    Vector3F shadowFourCascadeSplits = Vector3F(1.0 / 15, 3.0 / 15.0, 7.0 / 15.0);
-
-    CascadedShadowSubpass(RenderContext* renderContext,
-                          wgpu::TextureFormat depthStencilTextureFormat,
-                          Scene* scene,
-                          Camera* camera);
-
-    void _drawElement(wgpu::RenderPassEncoder& passEncoder, const ShaderVariant& variant) override;
+    CascadedShadowSubpass(RenderContext* renderContext, Scene* scene, Camera* camera);
 
 private:
+    void _drawElement(wgpu::RenderPassEncoder& passEncoder, const ShaderVariant& variant) override;
+
     void _renderDirectShadowMap(wgpu::RenderPassEncoder& passEncoder, const ShaderVariant& variant);
 
     void _updateReceiversShaderData();
 
     void _getCascadesSplitDistance();
 
-    static float _getFarWithRadius(float radius, float denominator);
-
     void _updateShadowSettings();
 
     void _updateSingleShadowCasterShaderData(DirectLight* light, const ShadowSliceData& shadowSliceData);
 
+    void _getAvailableRenderTarget();
+
+    static float _getFarWithRadius(float radius, float denominator);
+
 private:
+    friend class ShadowManager;
+
     std::vector<RenderElement> opaqueQueue;
     std::vector<RenderElement> alphaTestQueue;
     std::vector<RenderElement> transparentQueue;
@@ -80,8 +70,12 @@ private:
     std::array<Matrix4x4F, 4> _vpMatrix{};
     // strength, resolution, lightIndex
     Vector3F _shadowInfos{};
-    wgpu::Texture _depthTexture;
     std::array<Vector2F, 4> _viewportOffsets{};
+
+    wgpu::SamplerDescriptor _samplerDescriptor;
+    wgpu::TextureDescriptor _textureDescriptor;
+    wgpu::Texture _depthTexture;
+    wgpu::RenderPassDepthStencilAttachment _depthStencilAttachment;
 };
 
 }  // namespace vox

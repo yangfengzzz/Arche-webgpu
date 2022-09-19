@@ -9,16 +9,10 @@
 #include "vox.geometry/matrix_utils.h"
 #include "vox.render/camera.h"
 #include "vox.render/entity.h"
-#include "vox.render/lighting/light_manager.h"
 #include "vox.render/image.h"
+#include "vox.render/lighting/light_manager.h"
 
 namespace vox {
-uint32_t ShadowManager::_shadowCount = 0;
-uint32_t ShadowManager::_cubeShadowCount = 0;
-uint32_t ShadowManager::shadowCount() { return _shadowCount; }
-
-uint32_t ShadowManager::cubeShadowCount() { return _cubeShadowCount; }
-
 ShadowManager* ShadowManager::getSingletonPtr() { return ms_singleton; }
 
 ShadowManager& ShadowManager::getSingleton() {
@@ -27,352 +21,29 @@ ShadowManager& ShadowManager::getSingleton() {
 }
 
 //-----------------------------------------------------------------------
-ShadowManager::ShadowManager(Scene* scene, Camera* camera)
-    : _scene(scene),
-      _camera(camera),
-      _shadowMapProp("u_shadowMap"),
-      _shadowSamplerProp("u_shadowSampler"),
-      _shadowDataProp("u_shadowData"),
+ShadowManager::ShadowManager(Scene* scene, Camera* camera) : _scene(scene), _camera(camera) {
+    _renderPass = std::make_unique<RenderPass>(_scene->device(), _renderPassDescriptor);
+    auto shadowSubpass = std::make_unique<CascadedShadowSubpass>(nullptr, _scene, _camera);
+    _cascadedShadowSubpass = shadowSubpass.get();
+    _renderPass->addSubpass(std::move(shadowSubpass));
 
-      _cubeShadowMapProp("u_cubeShadowMap"),
-      _cubeShadowSamplerProp("u_cubeShadowSampler"),
-      _cubeShadowDataProp("u_cubeShadowData") {
     _renderPassDescriptor.colorAttachmentCount = 0;
     _renderPassDescriptor.colorAttachments = nullptr;
-    _renderPassDescriptor.depthStencilAttachment = &_depthStencilAttachment;
-    _depthStencilAttachment.depthLoadOp = wgpu::LoadOp::Clear;
-    _depthStencilAttachment.depthClearValue = 1.0;
-    _depthStencilAttachment.depthStoreOp = wgpu::StoreOp::Store;
-
-    _renderPass = std::make_unique<RenderPass>(_scene->device(), _renderPassDescriptor);
-    auto shadowSubpass = std::make_unique<ShadowSubpass>(nullptr, _scene, _camera);
-    _shadowSubpass = shadowSubpass.get();
-    _renderPass->addSubpass(std::move(shadowSubpass));
+    _renderPassDescriptor.depthStencilAttachment = &_cascadedShadowSubpass->_depthStencilAttachment;
 }
-
-float ShadowManager::cascadeSplitLambda() const { return _cascadeSplitLambda; }
-
-void ShadowManager::setCascadeSplitLambda(float value) { _cascadeSplitLambda = value; }
 
 void ShadowManager::draw(wgpu::CommandEncoder& commandEncoder) {
-    _numOfdrawCall = 0;
-    _shadowCount = 0;
     _drawSpotShadowMap(commandEncoder);
     _drawDirectShadowMap(commandEncoder);
-    if (_shadowCount) {
-        if (!_packedTexture || _packedTexture->depthOrArrayLayers() != _shadowCount) {
-            _packedTexture = std::make_shared<SampledTexture2D>(
-                    _scene->device(), SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION, _shadowCount, SHADOW_MAP_FORMAT,
-                    wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst, false);
-            if (_shadowCount == 1) {
-                _packedTexture->setTextureViewDimension(wgpu::TextureViewDimension::e2D);
-            } else {
-                _packedTexture->setTextureViewDimension(wgpu::TextureViewDimension::e2DArray);
-            }
-            _packedTexture->setCompareFunction(wgpu::CompareFunction::Less);
-            _packedTexture->setAddressModeU(wgpu::AddressMode::ClampToEdge);
-            _packedTexture->setAddressModeV(wgpu::AddressMode::ClampToEdge);
-        }
-        TextureUtils::buildTextureArray(_shadowMaps.begin(), _shadowMaps.begin() + _shadowCount, SHADOW_MAP_RESOLUTION,
-                                        SHADOW_MAP_RESOLUTION, _packedTexture->texture(), commandEncoder);
-
-        _scene->shaderData.setSampledTexture(_shadowMapProp, _shadowSamplerProp, _packedTexture);
-        _scene->shaderData.setData(_shadowDataProp, _shadowDatas);
-    }
-
-    _cubeShadowCount = 0;
     _drawPointShadowMap(commandEncoder);
-    if (_cubeShadowCount) {
-        if (!_packedCubeTexture) {
-            _packedCubeTexture = std::make_shared<SampledTextureCube>(
-                    _scene->device(), SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION, _cubeShadowCount, SHADOW_MAP_FORMAT,
-                    wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst, false);
-            _packedCubeTexture->setTextureViewDimension(wgpu::TextureViewDimension::CubeArray);
-            _packedCubeTexture->setCompareFunction(wgpu::CompareFunction::Less);
-            _packedCubeTexture->setAddressModeU(wgpu::AddressMode::ClampToEdge);
-            _packedCubeTexture->setAddressModeV(wgpu::AddressMode::ClampToEdge);
-        }
-        TextureUtils::buildCubeTextureArray(_cubeShadowMaps.begin(), _cubeShadowMaps.begin() + _cubeShadowCount,
-                                            SHADOW_MAP_RESOLUTION, SHADOW_MAP_RESOLUTION, _packedCubeTexture->texture(),
-                                            commandEncoder);
-
-        _scene->shaderData.setSampledTexture(_cubeShadowMapProp, _cubeShadowSamplerProp, _packedCubeTexture);
-        _scene->shaderData.setData(_cubeShadowDataProp, _cubeShadowDatas);
-    }
 }
 
-void ShadowManager::_drawSpotShadowMap(wgpu::CommandEncoder& commandEncoder) {
-    const auto& lights = LightManager::getSingleton().spotLights();
-    for (const auto& light : lights) {
-        if (light->enableShadow() && _shadowCount < MAX_SHADOW) {
-            _updateSpotShadow(light, _shadowDatas[_shadowCount]);
-
-            wgpu::Texture texture = nullptr;
-            if (_shadowCount < _shadowMaps.size()) {
-                texture = _shadowMaps[_shadowCount];
-            } else {
-                wgpu::TextureDescriptor descriptor;
-                descriptor.size.width = SHADOW_MAP_RESOLUTION;
-                descriptor.size.height = SHADOW_MAP_RESOLUTION;
-                descriptor.format = SHADOW_MAP_FORMAT;
-                descriptor.usage = wgpu::TextureUsage::RenderAttachment | wgpu::TextureUsage::CopyDst |
-                                   wgpu::TextureUsage::CopySrc;
-                texture = _scene->device().CreateTexture(&descriptor);
-
-                _shadowMaps.push_back(texture);
-            }
-
-            _depthStencilAttachment.view = texture.CreateView();
-            {
-                std::shared_ptr<ShadowMaterial> material{nullptr};
-                if (_numOfdrawCall < _materialPool.size()) {
-                    material = _materialPool[_numOfdrawCall];
-                } else {
-                    material = std::make_shared<ShadowMaterial>(_scene->device());
-                    _materialPool.emplace_back(material);
-                }
-                material->setViewProjectionMatrix(_shadowDatas[_shadowCount].vp[0]);
-                _shadowSubpass->setShadowMaterial(material);
-                _renderPass->draw(commandEncoder, "Spot Shadow Pass");
-                _numOfdrawCall++;
-            }
-            _shadowCount++;
-        }
-    }
-}
+void ShadowManager::_drawSpotShadowMap(wgpu::CommandEncoder& commandEncoder) {}
 
 void ShadowManager::_drawDirectShadowMap(wgpu::CommandEncoder& commandEncoder) {
-    const auto& lights = LightManager::getSingleton().directLights();
-    for (const auto& light : lights) {
-        if (light->enableShadow() && _shadowCount < MAX_SHADOW) {
-            _updateCascadesShadow(light, _shadowDatas[_shadowCount]);
-
-            wgpu::Texture texture = nullptr;
-            if (_shadowCount < _shadowMaps.size()) {
-                texture = _shadowMaps[_shadowCount];
-            } else {
-                wgpu::TextureDescriptor descriptor;
-                descriptor.size.width = SHADOW_MAP_RESOLUTION;
-                descriptor.size.height = SHADOW_MAP_RESOLUTION;
-                descriptor.format = SHADOW_MAP_FORMAT;
-                descriptor.usage = wgpu::TextureUsage::RenderAttachment | wgpu::TextureUsage::CopyDst |
-                                   wgpu::TextureUsage::CopySrc;
-                texture = _scene->device().CreateTexture(&descriptor);
-
-                _shadowMaps.push_back(texture);
-            }
-            _depthStencilAttachment.view = texture.CreateView();
-
-            for (int i = 0; i < SHADOW_MAP_CASCADE_COUNT; i++) {
-                std::shared_ptr<ShadowMaterial> material{nullptr};
-                if (_numOfdrawCall < _materialPool.size()) {
-                    material = _materialPool[_numOfdrawCall];
-                } else {
-                    material = std::make_shared<ShadowMaterial>(_scene->device());
-                    _materialPool.emplace_back(material);
-                }
-                material->setViewProjectionMatrix(_shadowDatas[_shadowCount].vp[i]);
-                _shadowSubpass->setShadowMaterial(material);
-
-                _shadowSubpass->setViewport(_viewport[i]);
-                if (i == 0) {
-                    _depthStencilAttachment.depthLoadOp = wgpu::LoadOp::Clear;
-                } else {
-                    _depthStencilAttachment.depthLoadOp = wgpu::LoadOp::Load;
-                }
-                _renderPass->draw(commandEncoder, "Direct Shadow Pass");
-                _numOfdrawCall++;
-            }
-            _shadowCount++;
-        }
-    }
-    _depthStencilAttachment.depthLoadOp = wgpu::LoadOp::Clear;
-    _shadowSubpass->setViewport(std::nullopt);
+    _renderPass->draw(commandEncoder, "Direct Shadow Pass");
 }
 
-void ShadowManager::_drawPointShadowMap(wgpu::CommandEncoder& commandEncoder) {
-    const auto& lights = LightManager::getSingleton().pointLights();
-    for (const auto& light : lights) {
-        if (light->enableShadow() && _cubeShadowCount < MAX_CUBE_SHADOW) {
-            wgpu::Texture texture = nullptr;
-            if (_cubeShadowCount < _cubeShadowMaps.size()) {
-                texture = _cubeShadowMaps[_cubeShadowCount];
-            } else {
-                wgpu::TextureDescriptor descriptor;
-                descriptor.size.width = SHADOW_MAP_RESOLUTION;
-                descriptor.size.height = SHADOW_MAP_RESOLUTION;
-                descriptor.size.depthOrArrayLayers = 6;
-                descriptor.format = SHADOW_MAP_FORMAT;
-                descriptor.usage = wgpu::TextureUsage::RenderAttachment | wgpu::TextureUsage::CopyDst |
-                                   wgpu::TextureUsage::CopySrc;
-                texture = _scene->device().CreateTexture(&descriptor);
-
-                _cubeShadowMaps.push_back(texture);
-            }
-
-            _updatePointShadow(light, _cubeShadowDatas[_cubeShadowCount]);
-            wgpu::TextureViewDescriptor descriptor;
-            descriptor.format = SHADOW_MAP_FORMAT;
-            descriptor.dimension = wgpu::TextureViewDimension::e2D;
-            descriptor.arrayLayerCount = 1;
-            for (int i = 0; i < 6; i++) {
-                descriptor.baseArrayLayer = i;
-                _depthStencilAttachment.view = texture.CreateView(&descriptor);
-
-                std::shared_ptr<ShadowMaterial> material{nullptr};
-                if (_numOfdrawCall < _materialPool.size()) {
-                    material = _materialPool[_numOfdrawCall];
-                } else {
-                    material = std::make_shared<ShadowMaterial>(_scene->device());
-                    _materialPool.emplace_back(material);
-                }
-                material->setViewProjectionMatrix(_cubeShadowDatas[_cubeShadowCount].vp[i]);
-                _shadowSubpass->setShadowMaterial(material);
-                _renderPass->draw(commandEncoder, "Point Shadow Pass");
-                _numOfdrawCall++;
-            }
-            _cubeShadowCount++;
-        }
-    }
-}
-
-void ShadowManager::_updateSpotShadow(SpotLight* light, ShadowManager::ShadowData& shadowData) {
-    shadowData.radius = light->shadowRadius();
-    shadowData.bias = light->shadowBias();
-    shadowData.intensity = light->shadowIntensity();
-
-    auto viewMatrix = light->entity()->transform->worldMatrix().inverse();
-    auto projMatrix = light->shadowProjectionMatrix();
-    shadowData.vp[0] = projMatrix * viewMatrix;
-    shadowData.cascadeSplits[0] = 1;
-    shadowData.cascadeSplits[1] = -1;  // mark cascade with negative sign
-}
-
-void ShadowManager::_updateCascadesShadow(DirectLight* light, ShadowManager::ShadowData& shadowData) {
-    shadowData.radius = light->shadowRadius();
-    shadowData.bias = light->shadowBias();
-    shadowData.intensity = light->shadowIntensity();
-
-    std::array<float, SHADOW_MAP_CASCADE_COUNT> cascadeSplits{};
-    auto worldPos = light->entity()->transform->worldPosition();
-
-    float nearClip = _camera->nearClipPlane();
-    float farClip = _camera->farClipPlane();
-    float clipRange = farClip - nearClip;
-
-    float minZ = nearClip;
-    float maxZ = nearClip + clipRange;
-
-    float range = maxZ - minZ;
-    float ratio = maxZ / minZ;
-
-    // Calculate split depths based on view camera frustum
-    // Based on method presented in https://developer.nvidia.com/gpugems/GPUGems3/gpugems3_ch10.html
-    for (uint32_t i = 0; i < SHADOW_MAP_CASCADE_COUNT; i++) {
-        float p = (i + 1) / static_cast<float>(SHADOW_MAP_CASCADE_COUNT);
-        float log = minZ * std::pow(ratio, p);
-        float uniform = minZ + range * p;
-        float d = _cascadeSplitLambda * (log - uniform) + uniform;
-        cascadeSplits[i] = (d - nearClip) / clipRange;
-    }
-
-    std::array<Point3F, 8> frustumCorners = {
-            Point3F(-1.0f, 1.0f, 0.0f),  Point3F(1.0f, 1.0f, 0.0f),   Point3F(1.0f, -1.0f, 0.0f),
-            Point3F(-1.0f, -1.0f, 0.0f), Point3F(-1.0f, 1.0f, 1.0f),  Point3F(1.0f, 1.0f, 1.0f),
-            Point3F(1.0f, -1.0f, 1.0f),  Point3F(-1.0f, -1.0f, 1.0f),
-    };
-
-    // Project frustum corners into world space
-    Matrix4x4F invCam = (_camera->projectionMatrix() * _camera->viewMatrix()).inverse();
-    for (uint32_t i = 0; i < 8; i++) {
-        frustumCorners[i] = invCam * frustumCorners[i];
-    }
-
-    // Calculate orthographic projection matrix for each cascade
-    float lastSplitDist = 0.0;
-    for (uint32_t i = 0; i < SHADOW_MAP_CASCADE_COUNT; i++) {
-        float splitDist = cascadeSplits[i];
-        std::array<Point3F, 8> _frustumCorners = frustumCorners;
-
-        for (uint32_t i = 0; i < 4; i++) {
-            Vector3F dist = _frustumCorners[i + 4] - _frustumCorners[i];
-            _frustumCorners[i + 4] = _frustumCorners[i] + (dist * splitDist);
-            _frustumCorners[i] = _frustumCorners[i] + (dist * lastSplitDist);
-        }
-
-        auto lightMat = light->entity()->transform->worldMatrix();
-        auto lightViewMat = lightMat.inverse();
-        for (uint32_t i = 0; i < 8; i++) {
-            _frustumCorners[i] = lightViewMat * _frustumCorners[i];
-        }
-        float farDist = _frustumCorners[7].distanceTo(_frustumCorners[5]);
-        float crossDist = _frustumCorners[7].distanceTo(_frustumCorners[1]);
-        float maxDist = farDist > crossDist ? farDist : crossDist;
-
-        float minX = std::numeric_limits<float>::infinity();
-        float maxX = -std::numeric_limits<float>::infinity();
-        float minY = std::numeric_limits<float>::infinity();
-        float maxY = -std::numeric_limits<float>::infinity();
-        float minZ = std::numeric_limits<float>::infinity();
-        float maxZ = -std::numeric_limits<float>::infinity();
-        for (uint32_t i = 0; i < 8; i++) {
-            minX = std::min(minX, _frustumCorners[i].x);
-            maxX = std::max(maxX, _frustumCorners[i].x);
-            minY = std::min(minY, _frustumCorners[i].y);
-            maxY = std::max(maxY, _frustumCorners[i].y);
-            minZ = std::min(minZ, _frustumCorners[i].z);
-            maxZ = std::max(maxZ, _frustumCorners[i].z);
-        }
-
-        // texel tile
-        float fWorldUnitsPerTexel = maxDist / (float)1000;
-        float posX = (minX + maxX) * 0.5f;
-        posX /= fWorldUnitsPerTexel;
-        posX = std::floor(posX);
-        posX *= fWorldUnitsPerTexel;
-
-        float posY = (minY + maxY) * 0.5f;
-        posY /= fWorldUnitsPerTexel;
-        posY = std::floor(posY);
-        posY *= fWorldUnitsPerTexel;
-
-        float posZ = maxZ;
-        posZ /= fWorldUnitsPerTexel;
-        posZ = std::floor(posZ);
-        posZ *= fWorldUnitsPerTexel;
-
-        Point3F center = Point3F(posX, posY, posZ);
-        center = lightMat * center;
-        light->entity()->transform->setWorldPosition(center);
-
-        float radius = maxDist / 2.0;
-        Vector3F maxExtents = Vector3F(radius, radius, radius);
-        Vector3F minExtents = -maxExtents;
-        Matrix4x4F lightOrthoMatrix =
-                makeOrtho(minExtents.x, maxExtents.x, minExtents.y, maxExtents.y, 0.0f, maxZ - minZ);
-
-        // Store split distance and matrix in cascade
-        shadowData.cascadeSplits[i] = (_camera->nearClipPlane() + splitDist * clipRange) * -1.0f;
-        shadowData.vp[i] = lightOrthoMatrix * light->entity()->transform->worldMatrix().inverse();
-        light->entity()->transform->setWorldPosition(worldPos);
-        lastSplitDist = cascadeSplits[i];
-    }
-}
-
-void ShadowManager::_updatePointShadow(PointLight* light, ShadowManager::CubeShadowData& shadowData) {
-    shadowData.radius = light->shadowRadius();
-    shadowData.bias = light->shadowBias();
-    shadowData.intensity = light->shadowIntensity();
-
-    auto projMatrix = light->shadowProjectionMatrix();
-    auto worldPos = light->entity()->transform->worldPosition();
-    shadowData.lightPos = Vector4F(worldPos.x, worldPos.y, worldPos.z, 1.0);
-
-    for (int i = 0; i < 6; i++) {
-        light->entity()->transform->lookAt(worldPos + _cubeMapDirection[i].first, _cubeMapDirection[i].second);
-        auto viewMatrix = light->entity()->transform->worldMatrix().inverse();
-        shadowData.vp[i] = projMatrix * viewMatrix;
-    }
-}
+void ShadowManager::_drawPointShadowMap(wgpu::CommandEncoder& commandEncoder) {}
 
 }  // namespace vox

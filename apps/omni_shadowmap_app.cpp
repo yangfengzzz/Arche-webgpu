@@ -52,7 +52,7 @@ void OminiShadowMapApp::loadScene() {
     light->transform->setPosition(0, 0, 0);
     auto directLight = light->addComponent<PointLight>();
     directLight->intensity = 0.5;
-    directLight->setEnableShadow(true);
+    directLight->enableShadow = true;
 
     auto planeMesh = PrimitiveMesh::createPlane(_device, 10, 10);
 

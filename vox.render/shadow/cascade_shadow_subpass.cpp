@@ -15,6 +15,7 @@
 #include "vox.render/mesh/mesh.h"
 #include "vox.render/renderer.h"
 #include "vox.render/rendering/render_pass.h"
+#include "vox.render/shadow/shadow_manager.h"
 #include "vox.render/shadow/shadow_utils.h"
 
 namespace vox {
@@ -29,11 +30,15 @@ const std::string CascadedShadowSubpass::_shadowSplitSpheresProperty = "u_shadow
 
 std::array<float, 5> CascadedShadowSubpass::_cascadesSplitDistance{};
 
-CascadedShadowSubpass::CascadedShadowSubpass(RenderContext* renderContext,
-                                             wgpu::TextureFormat depthStencilTextureFormat,
-                                             Scene* scene,
-                                             Camera* camera)
-    : ForwardSubpass(renderContext, depthStencilTextureFormat, scene, camera) {
+CascadedShadowSubpass::CascadedShadowSubpass(RenderContext* renderContext, Scene* scene, Camera* camera)
+    : ForwardSubpass(renderContext, wgpu::TextureFormat::Depth16Unorm, scene, camera) {
+    _depthStencilAttachment.depthLoadOp = wgpu::LoadOp::Clear;
+    _depthStencilAttachment.depthClearValue = 1.0;
+    _depthStencilAttachment.depthStoreOp = wgpu::StoreOp::Store;
+
+    _textureDescriptor.usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::RenderAttachment;
+    _samplerDescriptor.compare = wgpu::CompareFunction::Less;
+
     fragmentEnabled = false;
 }
 
@@ -51,6 +56,7 @@ void CascadedShadowSubpass::_drawElement(wgpu::RenderPassEncoder& passEncoder, c
 }
 
 void CascadedShadowSubpass::_renderDirectShadowMap(wgpu::RenderPassEncoder& passEncoder, const ShaderVariant& variant) {
+    ShadowCascadesMode shadowCascades = ShadowManager::GetSingleton().shadowCascades;
     const auto& lights = LightManager::GetSingleton().directLights();
     const uint32_t sunLightIndex = LightManager::GetSingleton().getSunLightIndex();
     const auto& boundSphere = _shadowSliceData.splitBoundSphere;
@@ -59,6 +65,9 @@ void CascadedShadowSubpass::_renderDirectShadowMap(wgpu::RenderPassEncoder& pass
     if (sunLightIndex != -1) {
         const auto& light = lights[sunLightIndex];
         if (light->enableShadow) {
+            _getAvailableRenderTarget();
+            _depthStencilAttachment.view = _depthTexture.CreateView();
+
             _shadowInfos.x = light->shadowStrength;
             _shadowInfos.y = _shadowTileResolution;
             _shadowInfos.z = float(sunLightIndex);
@@ -72,6 +81,14 @@ void CascadedShadowSubpass::_renderDirectShadowMap(wgpu::RenderPassEncoder& pass
             auto cameraWorldForward = _camera->entity()->transform->worldForward();
 
             for (uint32_t j = 0; j < shadowCascades; j++) {
+                if (j == 0) {
+                    _depthStencilAttachment.depthLoadOp = wgpu::LoadOp::Clear;
+                } else {
+                    _depthStencilAttachment.depthLoadOp = wgpu::LoadOp::Load;
+                }
+                passEncoder.SetViewport(_viewportOffsets[j].x, _viewportOffsets[j].y, _shadowTileResolution,
+                                        _shadowTileResolution, 0, 1);
+
                 ShadowUtils::getBoundSphereByFrustum(_cascadesSplitDistance[j], _cascadesSplitDistance[j + 1], _camera,
                                                      cameraWorldForward.normalized(), _shadowSliceData);
                 ShadowUtils::getDirectionLightShadowCullPlanes(_camera->frustum(), _cascadesSplitDistance[j],
@@ -109,12 +126,14 @@ void CascadedShadowSubpass::_renderDirectShadowMap(wgpu::RenderPassEncoder& pass
                     ForwardSubpass::_drawElement(passEncoder, element, variant);
                 }
             }
+            _depthStencilAttachment.depthLoadOp = wgpu::LoadOp::Clear;
             _existShadowMap = true;
         }
     }
 }
 
 void CascadedShadowSubpass::_updateReceiversShaderData() {
+    ShadowCascadesMode shadowCascades = ShadowManager::GetSingleton().shadowCascades;
     for (uint32_t i = shadowCascades * 4, n = 4 * 4; i < n; i++) {
         _splitBoundSpheres[i] = 0.0;
     }
@@ -128,6 +147,9 @@ void CascadedShadowSubpass::_updateReceiversShaderData() {
 }
 
 void CascadedShadowSubpass::_getCascadesSplitDistance() {
+    ShadowCascadesMode shadowCascades = ShadowManager::GetSingleton().shadowCascades;
+    float shadowTwoCascadeSplits = ShadowManager::GetSingleton().shadowTwoCascadeSplits;
+    Vector3F shadowFourCascadeSplits = ShadowManager::GetSingleton().shadowFourCascadeSplits;
     float nearClipPlane = _camera->nearClipPlane();
     float farClipPlane = _camera->farClipPlane();
     float aspectRatio = _camera->aspectRatio();
@@ -167,7 +189,21 @@ float CascadedShadowSubpass::_getFarWithRadius(float radius, float denominator) 
     return std::sqrt((radius * radius) / denominator);
 }
 
+void CascadedShadowSubpass::_getAvailableRenderTarget() {
+    if (_textureDescriptor.size.width != uint32_t(_shadowMapSize.x) ||
+        _textureDescriptor.size.height != uint32_t(_shadowMapSize.y) || _textureDescriptor.format != _shadowMapFormat) {
+        _textureDescriptor.size.width = uint32_t(_shadowMapSize.x);
+        _textureDescriptor.size.height = uint32_t(_shadowMapSize.y);
+        _textureDescriptor.format = _shadowMapFormat;
+        _depthTexture = _scene->device().CreateTexture(&_textureDescriptor);
+    }
+}
+
 void CascadedShadowSubpass::_updateShadowSettings() {
+    ShadowCascadesMode shadowCascades = ShadowManager::GetSingleton().shadowCascades;
+    ShadowResolution shadowResolution = ShadowManager::GetSingleton().shadowResolution;
+    ShadowMode shadowMode = ShadowManager::GetSingleton().shadowMode;
+
     auto& sceneShaderData = _scene->shaderData;
     const wgpu::TextureFormat shadowFormat = ShadowUtils::shadowDepthFormat(shadowResolution);
     const float resolution = ShadowUtils::shadowResolution(shadowResolution);
