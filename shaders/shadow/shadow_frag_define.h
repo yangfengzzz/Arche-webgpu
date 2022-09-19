@@ -16,9 +16,9 @@
         };
 
         layout(set = 0, binding = 54) uniform texture2D u_shadowTexture;
-        layout(set = 0, binding = 55) uniform sampler u_shadowSampler;
+        layout(set = 0, binding = 55) uniform samplerShadow u_shadowSampler;
 
-        #define SAMPLE_TEXTURE2D_SHADOW(coord3) (texture(sampler2D(u_shadowTexture, u_shadowSampler), coord3.xy).r < coord3.z ? 0.0 : 1.0)
+        #define SAMPLE_TEXTURE2D_SHADOW(coord3) textureLod(sampler2DShadow(u_shadowTexture, u_shadowSampler), coord3, 0.0)
 
         const vec2 offsets[4] = vec2[](
                 vec2(0, 0),

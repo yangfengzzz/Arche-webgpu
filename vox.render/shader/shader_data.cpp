@@ -164,7 +164,17 @@ void ShaderData::bindTexture(
             layout_entry.storageTexture.access = wgpu::StorageTextureAccess::WriteOnly;
             layout_entry.storageTexture.viewDimension = imageView->dimension();
         } else {
-            layout_entry.texture.sampleType = wgpu::TextureSampleType::Float;
+            switch (imageView->format()) {
+                case wgpu::TextureFormat::Depth16Unorm:
+                case wgpu::TextureFormat::Depth32Float:
+                case wgpu::TextureFormat::Depth24Plus:
+                case wgpu::TextureFormat::Depth24PlusStencil8:
+                case wgpu::TextureFormat::Depth32FloatStencil8:
+                    layout_entry.texture.sampleType = wgpu::TextureSampleType::Depth;
+                    break;
+                default:
+                    layout_entry.texture.sampleType = wgpu::TextureSampleType::Float;
+            }
             layout_entry.texture.multisampled = imageView->sampleCount() > 1;
             layout_entry.texture.viewDimension = imageView->dimension();
         }
