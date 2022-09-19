@@ -69,7 +69,7 @@ public:
 
 protected:
     friend class ImageManager;
-    friend class CascadedShadowSubpass;
+    friend class ShadowManager;
 
     std::vector<uint8_t> &data();
 

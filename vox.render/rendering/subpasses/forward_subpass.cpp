@@ -21,10 +21,13 @@ ForwardSubpass::ForwardSubpass(RenderContext *renderContext,
 void ForwardSubpass::prepare() {
     _depthStencil.format = _depthStencilTextureFormat;
     _forwardPipelineDescriptor.depthStencil = &_depthStencil;
-    _colorTargetState.format = _renderContext->drawableTextureFormat();
-    _fragment.targetCount = 1;
-    _fragment.targets = &_colorTargetState;
-    _forwardPipelineDescriptor.fragment = &_fragment;
+    if (_renderContext) {
+        _colorTargetState.format = _renderContext->drawableTextureFormat();
+        _fragment.targetCount = 1;
+        _fragment.targets = &_colorTargetState;
+        _forwardPipelineDescriptor.fragment = &_fragment;
+    }
+
     _forwardPipelineDescriptor.label = "Forward Pipeline";
     {
         _forwardPipelineDescriptor.vertex.entryPoint = "main";

@@ -16,7 +16,8 @@
 namespace vox {
 class CascadedShadowSubpass : public ForwardSubpass {
 public:
-    CascadedShadowSubpass(RenderContext* renderContext, Scene* scene, Camera* camera);
+    CascadedShadowSubpass(RenderContext* renderContext, Scene* scene, Camera* camera,
+                          wgpu::RenderPassDepthStencilAttachment &depthStencilAttachment);
 
 private:
     void _drawElement(wgpu::RenderPassEncoder& passEncoder, const ShaderVariant& variant) override;
@@ -31,12 +32,11 @@ private:
 
     void _updateSingleShadowCasterShaderData(DirectLight* light, const ShadowSliceData& shadowSliceData);
 
-    void _getAvailableRenderTarget();
-
     static float _getFarWithRadius(float radius, float denominator);
 
 private:
     friend class ShadowManager;
+    wgpu::RenderPassDepthStencilAttachment &_depthStencilAttachment;
 
     std::vector<RenderElement> opaqueQueue{};
     std::vector<RenderElement> alphaTestQueue{};
@@ -48,8 +48,6 @@ private:
 
     static const std::string _viewProjMatFromLightProperty;
     static const std::string _shadowInfosProperty;
-    static const std::string _shadowTextureProperty;
-    static const std::string _shadowSamplerProperty;
     static const std::string _shadowSplitSpheresProperty;
 
     static std::array<float, 5> _cascadesSplitDistance;
@@ -73,10 +71,6 @@ private:
     // strength, resolution, lightIndex
     Vector3F _shadowInfos{};
     std::array<Vector2F, 4> _viewportOffsets{};
-
-    wgpu::SamplerDescriptor _samplerDescriptor{};
-    std::unique_ptr<Image> _depthTexture{};
-    wgpu::RenderPassDepthStencilAttachment _depthStencilAttachment{};
 
     std::shared_ptr<ShadowMaterial> _shadowMaterial{};
 };

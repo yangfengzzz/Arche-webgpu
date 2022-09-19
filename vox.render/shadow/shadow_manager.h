@@ -41,15 +41,22 @@ private:
 
     void _drawPointShadowMap(wgpu::CommandEncoder& commandEncoder);
 
+    void _getAvailableRenderTarget();
+
 private:
     Scene* _scene{nullptr};
     Camera* _camera{nullptr};
 
-    wgpu::RenderPassDescriptor _renderPassDescriptor;
-    wgpu::RenderPassDepthStencilAttachment _depthStencilAttachment;
+    wgpu::RenderPassDescriptor _renderPassDescriptor{};
+    wgpu::RenderPassDepthStencilAttachment _depthStencilAttachment{};
 
     std::unique_ptr<RenderPass> _renderPass{nullptr};
     CascadedShadowSubpass* _cascadedShadowSubpass{nullptr};
+
+    wgpu::SamplerDescriptor _samplerDescriptor{};
+    std::unique_ptr<Image> _depthTexture{};
+    static const std::string _shadowTextureProperty;
+    static const std::string _shadowSamplerProperty;
 };
 
 template <>
