@@ -22,9 +22,6 @@ public:
 
     virtual void _drawElement(wgpu::RenderPassEncoder& passEncoder, const ShaderVariant& variant) = 0;
 
-public:
-    bool fragmentEnabled{true};
-
 protected:
     void _drawElement(wgpu::RenderPassEncoder& passEncoder, const RenderElement& items, const ShaderVariant& variant);
 

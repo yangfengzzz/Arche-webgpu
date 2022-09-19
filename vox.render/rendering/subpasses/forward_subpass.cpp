@@ -74,7 +74,7 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
         material->shaderData.bindData(vert_shader_module.GetResources(), _bindGroupLayoutEntryVecMap,
                                       _bindGroupEntryVecMap);
 
-        if (fragmentEnabled) {
+        if (material->fragment_source_) {
             auto &frag_shader_module = ResourceCache::GetSingleton().requestShaderModule(
                     wgpu::ShaderStage::Fragment, *material->fragment_source_, macros);
             _fragment.module = frag_shader_module.handle();

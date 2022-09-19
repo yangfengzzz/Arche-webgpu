@@ -11,7 +11,6 @@
 #include "vox.render/entity.h"
 #include "vox.render/lighting/direct_light.h"
 #include "vox.render/lighting/light_manager.h"
-#include "vox.render/material/material.h"
 #include "vox.render/mesh/mesh.h"
 #include "vox.render/renderer.h"
 #include "vox.render/rendering/render_pass.h"
@@ -41,7 +40,7 @@ CascadedShadowSubpass::CascadedShadowSubpass(RenderContext* renderContext, Scene
     _depthTexture = std::make_unique<Image>("cascade shadowMap");
     _samplerDescriptor.compare = wgpu::CompareFunction::Less;
 
-    fragmentEnabled = false;
+    _shadowMaterial = std::make_shared<ShadowMaterial>(scene->device());
 }
 
 void CascadedShadowSubpass::_drawElement(wgpu::RenderPassEncoder& passEncoder, const ShaderVariant& variant) {
@@ -120,10 +119,12 @@ void CascadedShadowSubpass::_renderDirectShadowMap(wgpu::RenderPassEncoder& pass
                 std::sort(opaqueQueue.begin(), opaqueQueue.end(), _compareFromNearToFar);
                 std::sort(alphaTestQueue.begin(), alphaTestQueue.end(), _compareFromNearToFar);
 
-                for (const auto& element : opaqueQueue) {
+                for (auto& element : opaqueQueue) {
+                    element.material = _shadowMaterial;
                     ForwardSubpass::_drawElement(passEncoder, element, variant);
                 }
-                for (const auto& element : alphaTestQueue) {
+                for (auto& element : alphaTestQueue) {
+                    element.material = _shadowMaterial;
                     ForwardSubpass::_drawElement(passEncoder, element, variant);
                 }
             }

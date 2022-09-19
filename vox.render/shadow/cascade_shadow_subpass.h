@@ -11,6 +11,7 @@
 #include "vox.render/shadow/enum/shadow_mode.h"
 #include "vox.render/shadow/enum/shadow_resolution.h"
 #include "vox.render/shadow/shadow_slice_data.h"
+#include "vox.render/shadow/shadow_material.h"
 
 namespace vox {
 class CascadedShadowSubpass : public ForwardSubpass {
@@ -76,6 +77,8 @@ private:
     wgpu::SamplerDescriptor _samplerDescriptor{};
     std::unique_ptr<Image> _depthTexture{};
     wgpu::RenderPassDepthStencilAttachment _depthStencilAttachment{};
+
+    std::shared_ptr<ShadowMaterial> _shadowMaterial{};
 };
 
 }  // namespace vox
