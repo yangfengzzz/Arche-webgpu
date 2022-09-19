@@ -1,20 +1,49 @@
-#version 450
+#include <common>
+#include <common_vert>
+#include <blendShape_input>
+#include <normal_share>
 
-#include "common.h"
+layout(set = 0, binding = 51) uniform u_lightViewProjMat {
+    mat4 light_view_proj_mat;
+};
 
-layout(location = Position) in vec3 POSITION;
+// x: depth bias, y: normal bias
+layout(set = 0, binding = 52) uniform u_shadowBias {
+    vec2 shadow_bias;
+};
 
-layout(set = 0, binding = 6) uniform rendererData {
-    mat4 local_mat;
-    mat4 model_mat;
-    mat4 normal_mat;
-} renderer_data;
+layout(set = 0, binding = 53) uniform u_lightDirection {
+    vec3 light_direction;
+};
 
-layout(set = 0, binding = 10) uniform viewProjMat {
-    mat4 value;
-} view_proj;
+vec3 applyShadowBias(vec3 positionWS) {
+    positionWS -= light_direction * shadow_bias.x;
+    return positionWS;
+}
+
+vec3 applyShadowNormalBias(vec3 positionWS, vec3 normalWS) {
+    float invNdotL = 1.0 - clamp(dot(-light_direction, normalWS), 0.0, 1.0);
+    float scale = invNdotL * shadow_bias.y;
+    positionWS += normalWS * vec3(scale);
+    return positionWS;
+}
 
 void main() {
-    vec4 position = vec4(POSITION, 1.0);
-    gl_Position = view_proj.value * renderer_data.model_mat * position;
+#include <begin_position_vert>
+#include <begin_normal_vert>
+#include <blendShape_vert>
+#include <skinning_vert>
+#include <normal_vert>
+    vec4 temp_pos = u_modelMat * position;
+    vec3 v_pos = temp_pos.xyz / temp_pos.w;
+
+    v_pos = applyShadowBias(v_pos);
+    #ifndef OMIT_NORMAL
+        #ifdef O3_HAS_NORMAL
+            v_pos = applyShadowNormalBias(v_pos, v_normal);
+        #endif
+    #endif
+
+    gl_Position = light_view_proj_mat * vec4(v_pos, 1.0);
+
 }
