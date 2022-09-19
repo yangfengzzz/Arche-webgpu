@@ -6,12 +6,6 @@
 
 #include "vox.render/shadow/shadow_manager.h"
 
-#include "vox.geometry/matrix_utils.h"
-#include "vox.render/camera.h"
-#include "vox.render/entity.h"
-#include "vox.render/image.h"
-#include "vox.render/lighting/light_manager.h"
-
 namespace vox {
 ShadowManager* ShadowManager::getSingletonPtr() { return ms_singleton; }
 

@@ -28,7 +28,6 @@ public:
 protected:
     void _drawElement(wgpu::RenderPassEncoder& passEncoder, const RenderElement& items, const ShaderVariant& variant);
 
-private:
     wgpu::RenderPipelineDescriptor _forwardPipelineDescriptor;
     wgpu::DepthStencilState _depthStencil;
     wgpu::FragmentState _fragment;

@@ -47,7 +47,8 @@ private:
 
     static const std::string _viewProjMatFromLightProperty;
     static const std::string _shadowInfosProperty;
-    static const std::string _shadowMapsProperty;
+    static const std::string _shadowTextureProperty;
+    static const std::string _shadowSamplerProperty;
     static const std::string _shadowSplitSpheresProperty;
 
     static std::array<float, 5> _cascadesSplitDistance;
@@ -73,8 +74,7 @@ private:
     std::array<Vector2F, 4> _viewportOffsets{};
 
     wgpu::SamplerDescriptor _samplerDescriptor;
-    wgpu::TextureDescriptor _textureDescriptor;
-    wgpu::Texture _depthTexture;
+    std::unique_ptr<Image> _depthTexture;
     wgpu::RenderPassDepthStencilAttachment _depthStencilAttachment;
 };
 

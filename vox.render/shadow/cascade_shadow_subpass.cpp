@@ -25,7 +25,8 @@ const std::string CascadedShadowSubpass::_lightDirectionProperty = "u_lightDirec
 
 const std::string CascadedShadowSubpass::_viewProjMatFromLightProperty = "u_viewProjMatFromLight";
 const std::string CascadedShadowSubpass::_shadowInfosProperty = "u_shadowInfo";
-const std::string CascadedShadowSubpass::_shadowMapsProperty = "u_shadowMap";
+const std::string CascadedShadowSubpass::_shadowTextureProperty = "u_shadowTexture";
+const std::string CascadedShadowSubpass::_shadowSamplerProperty = "u_shadowSampler";
 const std::string CascadedShadowSubpass::_shadowSplitSpheresProperty = "u_shadowSplitSpheres";
 
 std::array<float, 5> CascadedShadowSubpass::_cascadesSplitDistance{};
@@ -36,7 +37,7 @@ CascadedShadowSubpass::CascadedShadowSubpass(RenderContext* renderContext, Scene
     _depthStencilAttachment.depthClearValue = 1.0;
     _depthStencilAttachment.depthStoreOp = wgpu::StoreOp::Store;
 
-    _textureDescriptor.usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::RenderAttachment;
+    _depthTexture = std::make_unique<Image>("cascade shadowMap");
     _samplerDescriptor.compare = wgpu::CompareFunction::Less;
 
     fragmentEnabled = false;
@@ -66,7 +67,7 @@ void CascadedShadowSubpass::_renderDirectShadowMap(wgpu::RenderPassEncoder& pass
         const auto& light = lights[sunLightIndex];
         if (light->enableShadow) {
             _getAvailableRenderTarget();
-            _depthStencilAttachment.view = _depthTexture.CreateView();
+            _depthStencilAttachment.view = _depthTexture->getImageView()->handle();
 
             _shadowInfos.x = light->shadowStrength;
             _shadowInfos.y = _shadowTileResolution;
@@ -143,7 +144,9 @@ void CascadedShadowSubpass::_updateReceiversShaderData() {
     shaderData.setData(CascadedShadowSubpass::_shadowInfosProperty, _shadowInfos);
     shaderData.setData(CascadedShadowSubpass::_shadowSplitSpheresProperty, _splitBoundSpheres);
 
-    shaderData.setData(CascadedShadowSubpass::_shadowMapsProperty, _depthTexture);  // todo
+    shaderData.setImageView(CascadedShadowSubpass::_shadowTextureProperty,
+                            CascadedShadowSubpass::_shadowSamplerProperty, _depthTexture->getImageView());
+    shaderData.setSampler(CascadedShadowSubpass::_shadowSamplerProperty, _samplerDescriptor);
 }
 
 void CascadedShadowSubpass::_getCascadesSplitDistance() {
@@ -190,12 +193,15 @@ float CascadedShadowSubpass::_getFarWithRadius(float radius, float denominator) 
 }
 
 void CascadedShadowSubpass::_getAvailableRenderTarget() {
-    if (_textureDescriptor.size.width != uint32_t(_shadowMapSize.x) ||
-        _textureDescriptor.size.height != uint32_t(_shadowMapSize.y) || _textureDescriptor.format != _shadowMapFormat) {
-        _textureDescriptor.size.width = uint32_t(_shadowMapSize.x);
-        _textureDescriptor.size.height = uint32_t(_shadowMapSize.y);
-        _textureDescriptor.format = _shadowMapFormat;
-        _depthTexture = _scene->device().CreateTexture(&_textureDescriptor);
+    if (_depthTexture->extent().width != uint32_t(_shadowMapSize.x) ||
+        _depthTexture->extent().height != uint32_t(_shadowMapSize.y) || _depthTexture->format() != _shadowMapFormat) {
+        _depthTexture->setWidth(uint32_t(_shadowMapSize.x));
+        _depthTexture->setHeight(uint32_t(_shadowMapSize.y));
+        _depthTexture->setFormat(_shadowMapFormat);
+        _depthTexture->createTexture(_scene->device(),
+                                     wgpu::TextureUsage::RenderAttachment | wgpu::TextureUsage::TextureBinding);
+
+        _depthStencil.format = _shadowMapFormat;
     }
 }
 
