@@ -15,8 +15,8 @@
             vec4 shadow_split_spheres[4];
         };
 
-        layout(set = 0, binding = 54) uniform mediump texture2D u_shadowTexture;
-        layout(set = 0, binding = 55) uniform mediump sampler u_shadowSampler;
+        layout(set = 0, binding = 54) uniform texture2D u_shadowTexture;
+        layout(set = 0, binding = 55) uniform sampler u_shadowSampler;
 
         #define SAMPLE_TEXTURE2D_SHADOW(coord3) (texture(sampler2D(u_shadowTexture, u_shadowSampler), coord3.xy).r < coord3.z ? 0.0 : 1.0)
 
@@ -27,20 +27,20 @@
                 vec2(0.5, 0.5)
         );
 
-        mediump int computeCascadeIndex(vec3 positionWS) {
+        int computeCascadeIndex(vec3 positionWS) {
             vec3 fromCenter0 = positionWS - shadow_split_spheres[0].xyz;
             vec3 fromCenter1 = positionWS - shadow_split_spheres[1].xyz;
             vec3 fromCenter2 = positionWS - shadow_split_spheres[2].xyz;
             vec3 fromCenter3 = positionWS - shadow_split_spheres[3].xyz;
 
-            mediump vec4 comparison = vec4(
+            vec4 comparison = vec4(
                 dot(fromCenter0, fromCenter0) < shadow_split_spheres[0].w,
                 dot(fromCenter1, fromCenter1) < shadow_split_spheres[1].w,
                 dot(fromCenter2, fromCenter2) < shadow_split_spheres[2].w,
                 dot(fromCenter3, fromCenter3) < shadow_split_spheres[3].w);
             comparison.yzw = clamp(comparison.yzw - comparison.xyz,0.0,1.0);//keep the nearest
-            mediump vec4 indexCoefficient = vec4(4.0,3.0,2.0,1.0);
-            mediump int index = 4 - int(dot(comparison, indexCoefficient));
+            vec4 indexCoefficient = vec4(4.0,3.0,2.0,1.0);
+            int index = 4 - int(dot(comparison, indexCoefficient));
             return index;
         }
 
@@ -124,11 +124,11 @@
         #endif
 
         #if SHADOW_MODE == 2
-                attenuation = sampleShadowMapFiltered4(u_shadowMap, shadowCoord, shadow_info.y);
+                attenuation = sampleShadowMapFiltered4(shadowCoord, shadow_info.y);
         #endif
 
         #if SHADOW_MODE == 3
-                attenuation = sampleShadowMapFiltered9(u_shadowMap, shadowCoord, shadow_info.y);
+                attenuation = sampleShadowMapFiltered9(shadowCoord, shadow_info.y);
         #endif
                 attenuation = mix(1.0, attenuation, shadow_info.x);
             }

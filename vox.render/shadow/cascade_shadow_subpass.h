@@ -54,13 +54,13 @@ private:
 
     static std::array<float, 5> _cascadesSplitDistance;
 
-    ShadowMode _shadowMode = ShadowMode::SoftLow;
+    ShadowMode _shadowMode = ShadowMode::None;
     float _shadowMapResolution{};
     Vector2F _shadowMapSize{};
     float _shadowTileResolution{};
     Vector2F _shadowBias{};
     wgpu::TextureFormat _shadowMapFormat = wgpu::TextureFormat::Undefined;
-    ShadowCascadesMode _shadowCascadeMode = ShadowCascadesMode::FourCascades;
+    ShadowCascadesMode _shadowCascadeMode = ShadowCascadesMode::NoCascades;
     ShadowSliceData _shadowSliceData{};
     Vector3F _lightUp{};
     Vector3F _lightSide{};

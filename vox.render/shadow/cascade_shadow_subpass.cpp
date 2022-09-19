@@ -44,9 +44,9 @@ void CascadedShadowSubpass::_drawElement(wgpu::RenderPassEncoder& passEncoder, S
 
     if (_existShadowMap) {
         _updateReceiversShaderData();
-        variant.AddDefine(CASCADED_SHADOW_MAP);
+        _scene->shaderData.addDefine(CASCADED_SHADOW_MAP);
     } else {
-        variant.RemoveDefine(CASCADED_SHADOW_MAP);
+        _scene->shaderData.removeDefine(CASCADED_SHADOW_MAP);
     }
 }
 

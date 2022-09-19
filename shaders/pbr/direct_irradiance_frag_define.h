@@ -64,7 +64,7 @@ void addTotalDirectRadiance(Geometry geometry, Material material, inout Reflecte
     #ifdef CALCULATE_SHADOWS
         #ifdef CASCADED_SHADOW_MAP
             shadowAttenuation *= sampleShadowMap();
-            int sunIndex = int(u_shadowInfo.z);
+            int sunIndex = int(shadow_info.z);
         #endif
     #endif
 

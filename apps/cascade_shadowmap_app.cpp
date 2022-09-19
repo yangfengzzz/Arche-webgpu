@@ -45,6 +45,7 @@ void CascadeShadowMapApp::loadScene() {
         boxRenderer->setMesh(boxMesh);
         boxRenderer->setMaterial(boxMtl);
         boxRenderer->castShadow = true;
+        boxRenderer->setReceiveShadows(true);
     }
 
     auto planeEntity = rootEntity->createChild("PlaneEntity");
