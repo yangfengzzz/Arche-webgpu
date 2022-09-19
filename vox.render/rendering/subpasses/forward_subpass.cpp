@@ -94,14 +94,14 @@ void ForwardSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder,
         std::vector<wgpu::BindGroupLayout> bindGroupLayouts;
         for (const auto &bindGroupLayoutEntryVec : _bindGroupLayoutEntryVecMap) {
             bindGroupLayoutDescriptor.entries = bindGroupLayoutEntryVec.second.data();
-            bindGroupLayoutDescriptor.entryCount = bindGroupLayoutEntryVec.second.size();
+            bindGroupLayoutDescriptor.entryCount = static_cast<uint32_t>(bindGroupLayoutEntryVec.second.size());
             wgpu::BindGroupLayout bindGroupLayout =
                     ResourceCache::GetSingleton().requestBindGroupLayout(bindGroupLayoutDescriptor);
 
             const auto group = bindGroupLayoutEntryVec.first;
             const auto &bindGroupEntryVec = _bindGroupEntryVecMap[group];
             _bindGroupDescriptor.layout = bindGroupLayout;
-            _bindGroupDescriptor.entryCount = bindGroupEntryVec.size();
+            _bindGroupDescriptor.entryCount = static_cast<uint32_t>(bindGroupEntryVec.size());
             _bindGroupDescriptor.entries = bindGroupEntryVec.data();
             auto uniformBindGroup = ResourceCache::GetSingleton().requestBindGroup(_bindGroupDescriptor);
             passEncoder.SetBindGroup(group, uniformBindGroup);

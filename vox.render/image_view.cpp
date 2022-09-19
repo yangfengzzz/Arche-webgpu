@@ -18,7 +18,7 @@ ImageView::ImageView(const Image* image,
     _desc.dimension = view_type;
     _desc.baseMipLevel = base_mip_level;
     _desc.baseArrayLayer = base_array_layer;
-    _desc.mipLevelCount = n_mip_levels == 0 ? image->mipmaps().size() : n_mip_levels;
+    _desc.mipLevelCount = n_mip_levels == 0 ? static_cast<uint32_t>(image->mipmaps().size()) : n_mip_levels;
     _desc.arrayLayerCount = n_array_layers == 0 ? image->layers() : n_array_layers;
     _handle = image->getTexture().CreateView(&_desc);
     _sampleCount = image->getTexture().GetSampleCount();

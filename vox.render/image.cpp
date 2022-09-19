@@ -48,7 +48,7 @@ void Image::createTexture(wgpu::Device &device, wgpu::TextureUsage usage) {
     if (_layers > 1) {
         desc.size.depthOrArrayLayers = _layers;
     }
-    desc.mipLevelCount = _mipmaps.size();
+    desc.mipLevelCount = static_cast<uint32_t>(_mipmaps.size());
     _texture = device.CreateTexture(&desc);
 }
 

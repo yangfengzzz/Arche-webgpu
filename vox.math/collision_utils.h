@@ -45,7 +45,7 @@ enum class ContainmentType {
  * @param  p1 - Plane 1
  * @param  p2 - Plane 2
  * @param  p3 - Plane 3
- * @param out - intersection point
+ * @return -intersection point
  */
 Point3F intersectionPointThreePlanes(const BoundingPlane3F &p1, const BoundingPlane3F &p2, const BoundingPlane3F &p3);
 

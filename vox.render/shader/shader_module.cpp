@@ -102,7 +102,7 @@ ShaderModule::ShaderModule(wgpu::Device &device,
     wgpu::ShaderModuleSPIRVDescriptor spirvDesc;
     desc.nextInChain = &spirvDesc;
     spirvDesc.code = spirv_.data();
-    spirvDesc.codeSize = spirv_.size();
+    spirvDesc.codeSize = static_cast<uint32_t>(spirv_.size());
     shader_module_ = device.CreateShaderModule(&desc);
 }
 

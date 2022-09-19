@@ -113,7 +113,7 @@ uint32_t LightManager::getSunLightIndex() const {
     uint32_t sunLightIndex = -1;
     float maxIntensity = -std::numeric_limits<float>::max();
     bool hasShadowLight = false;
-    for (size_t i = 0, n = _directLights.size(); i < n; i++) {
+    for (uint32_t i = 0, n = _directLights.size(); i < n; i++) {
         const auto &directLight = _directLights[i];
         if (directLight->enableShadow && !hasShadowLight) {
             maxIntensity = -std::numeric_limits<float>::max();
