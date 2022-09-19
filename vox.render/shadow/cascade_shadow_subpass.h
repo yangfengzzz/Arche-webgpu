@@ -75,6 +75,7 @@ private:
     std::array<Vector2F, 4> _viewportOffsets{};
 
     std::shared_ptr<ShadowMaterial> _shadowMaterial{};
+    BufferPool _bufferPool;
 };
 
 }  // namespace vox

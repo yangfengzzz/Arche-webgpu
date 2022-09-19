@@ -34,11 +34,13 @@ CascadedShadowSubpass::CascadedShadowSubpass(RenderContext* renderContext,
                                              Camera* camera,
                                              wgpu::RenderPassDepthStencilAttachment& depthStencilAttachment)
     : ForwardSubpass(renderContext, wgpu::TextureFormat::Depth16Unorm, scene, camera),
+      _bufferPool(scene->device(), 64 * 4, wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst),
       _depthStencilAttachment(depthStencilAttachment) {
     _shadowMaterial = std::make_shared<ShadowMaterial>(scene->device());
 }
 
 void CascadedShadowSubpass::_drawElement(wgpu::RenderPassEncoder& passEncoder, ShaderVariant& variant) {
+    _bufferPool.reset();
     _existShadowMap = false;
     _renderDirectShadowMap(passEncoder, variant);
 
@@ -244,7 +246,11 @@ void CascadedShadowSubpass::_updateSingleShadowCasterShaderData(DirectLight* lig
     auto& sceneShaderData = _scene->shaderData;
     sceneShaderData.setData(CascadedShadowSubpass::_lightShadowBiasProperty, _shadowBias);
     sceneShaderData.setData(CascadedShadowSubpass::_lightDirectionProperty, light->direction());
-    sceneShaderData.setData(CascadedShadowSubpass::_lightViewProjMatProperty, shadowSliceData.viewProjectMatrix);
+
+    auto& bufferBlock = _bufferPool.requestBufferBlock(sizeof(Matrix4x4F));
+    auto allocation = bufferBlock.allocate(sizeof(Matrix4x4F));
+    allocation.update(_scene->device(), shadowSliceData.viewProjectMatrix);
+    sceneShaderData.setData(CascadedShadowSubpass::_lightViewProjMatProperty, std::move(allocation));
 }
 
 }  // namespace vox
