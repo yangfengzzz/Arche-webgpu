@@ -16,7 +16,7 @@ public:
                     Scene* scene,
                     Camera* camera);
 
-    void _drawElement(wgpu::RenderPassEncoder& passEncoder, const ShaderVariant& variant) override;
+    void _drawElement(wgpu::RenderPassEncoder& passEncoder, ShaderVariant& variant) override;
 
 protected:
     void _callRender(Camera* camera);

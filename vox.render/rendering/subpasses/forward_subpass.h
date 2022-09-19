@@ -20,7 +20,7 @@ public:
 
     void draw(wgpu::RenderPassEncoder& passEncoder) override;
 
-    virtual void _drawElement(wgpu::RenderPassEncoder& passEncoder, const ShaderVariant& variant) = 0;
+    virtual void _drawElement(wgpu::RenderPassEncoder& passEncoder, ShaderVariant& variant) = 0;
 
 protected:
     void _drawElement(wgpu::RenderPassEncoder& passEncoder, const RenderElement& items, const ShaderVariant& variant);

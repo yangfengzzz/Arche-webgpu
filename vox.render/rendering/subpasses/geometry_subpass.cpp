@@ -21,19 +21,22 @@ GeometrySubpass::GeometrySubpass(RenderContext *renderContext,
                                  Camera *camera)
     : ForwardSubpass(renderContext, depthStencilTextureFormat, scene, camera) {}
 
-void GeometrySubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder, const ShaderVariant &variant) {
+void GeometrySubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder, ShaderVariant &variant) {
+    opaqueQueue.clear();
+    alphaTestQueue.clear();
+    transparentQueue.clear();
     _callRender(_camera);
     std::sort(opaqueQueue.begin(), opaqueQueue.end(), _compareFromNearToFar);
     std::sort(alphaTestQueue.begin(), alphaTestQueue.end(), _compareFromNearToFar);
     std::sort(transparentQueue.begin(), transparentQueue.end(), _compareFromFarToNear);
 
-    for (const auto& element : opaqueQueue) {
+    for (const auto &element : opaqueQueue) {
         ForwardSubpass::_drawElement(passEncoder, element, variant);
     }
-    for (const auto& element : alphaTestQueue) {
+    for (const auto &element : alphaTestQueue) {
         ForwardSubpass::_drawElement(passEncoder, element, variant);
     }
-    for (const auto& element : transparentQueue) {
+    for (const auto &element : transparentQueue) {
         ForwardSubpass::_drawElement(passEncoder, element, variant);
     }
 }

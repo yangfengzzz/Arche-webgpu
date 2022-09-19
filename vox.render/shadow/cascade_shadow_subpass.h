@@ -10,17 +10,19 @@
 #include "vox.render/shadow/enum/shadow_cascades_mode.h"
 #include "vox.render/shadow/enum/shadow_mode.h"
 #include "vox.render/shadow/enum/shadow_resolution.h"
-#include "vox.render/shadow/shadow_slice_data.h"
 #include "vox.render/shadow/shadow_material.h"
+#include "vox.render/shadow/shadow_slice_data.h"
 
 namespace vox {
 class CascadedShadowSubpass : public ForwardSubpass {
 public:
-    CascadedShadowSubpass(RenderContext* renderContext, Scene* scene, Camera* camera,
-                          wgpu::RenderPassDepthStencilAttachment &depthStencilAttachment);
+    CascadedShadowSubpass(RenderContext* renderContext,
+                          Scene* scene,
+                          Camera* camera,
+                          wgpu::RenderPassDepthStencilAttachment& depthStencilAttachment);
 
 private:
-    void _drawElement(wgpu::RenderPassEncoder& passEncoder, const ShaderVariant& variant) override;
+    void _drawElement(wgpu::RenderPassEncoder& passEncoder, ShaderVariant& variant) override;
 
     void _renderDirectShadowMap(wgpu::RenderPassEncoder& passEncoder, const ShaderVariant& variant);
 
@@ -36,7 +38,7 @@ private:
 
 private:
     friend class ShadowManager;
-    wgpu::RenderPassDepthStencilAttachment &_depthStencilAttachment;
+    wgpu::RenderPassDepthStencilAttachment& _depthStencilAttachment;
 
     std::vector<RenderElement> opaqueQueue{};
     std::vector<RenderElement> alphaTestQueue{};
@@ -57,7 +59,7 @@ private:
     Vector2F _shadowMapSize{};
     float _shadowTileResolution{};
     Vector2F _shadowBias{};
-    wgpu::TextureFormat _shadowMapFormat =  wgpu::TextureFormat::Undefined;
+    wgpu::TextureFormat _shadowMapFormat = wgpu::TextureFormat::Undefined;
     ShadowCascadesMode _shadowCascadeMode = ShadowCascadesMode::FourCascades;
     ShadowSliceData _shadowSliceData{};
     Vector3F _lightUp{};

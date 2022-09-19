@@ -23,7 +23,7 @@ ColorPickerSubpass::ColorPickerSubpass(RenderContext *renderContext,
     _material->shaderData.clear();
 }
 
-void ColorPickerSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder, const ShaderVariant &variant) {
+void ColorPickerSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder, ShaderVariant &variant) {
     _currentId = 0;
     _primitivesMap.clear();
 

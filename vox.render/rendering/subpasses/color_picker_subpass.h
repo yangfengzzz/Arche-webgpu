@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include "vox.render/mesh/buffer_pool.h"
 #include "vox.render/material/unlit_material.h"
+#include "vox.render/mesh/buffer_pool.h"
 #include "vox.render/rendering/subpasses/geometry_subpass.h"
 
 namespace vox {
@@ -18,7 +18,7 @@ public:
                        Scene* scene,
                        Camera* camera);
 
-    void _drawElement(wgpu::RenderPassEncoder& passEncoder, const ShaderVariant& variant) override;
+    void _drawElement(wgpu::RenderPassEncoder& passEncoder, ShaderVariant& variant) override;
 
 public:
     /**

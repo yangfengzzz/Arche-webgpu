@@ -38,15 +38,15 @@ CascadedShadowSubpass::CascadedShadowSubpass(RenderContext* renderContext,
     _shadowMaterial = std::make_shared<ShadowMaterial>(scene->device());
 }
 
-void CascadedShadowSubpass::_drawElement(wgpu::RenderPassEncoder& passEncoder, const ShaderVariant& variant) {
+void CascadedShadowSubpass::_drawElement(wgpu::RenderPassEncoder& passEncoder, ShaderVariant& variant) {
     _existShadowMap = false;
     _renderDirectShadowMap(passEncoder, variant);
 
     if (_existShadowMap) {
         _updateReceiversShaderData();
-        _scene->shaderData.addDefine(CASCADED_SHADOW_MAP);
+        variant.AddDefine(CASCADED_SHADOW_MAP);
     } else {
-        _scene->shaderData.removeDefine(CASCADED_SHADOW_MAP);
+        variant.RemoveDefine(CASCADED_SHADOW_MAP);
     }
 }
 
