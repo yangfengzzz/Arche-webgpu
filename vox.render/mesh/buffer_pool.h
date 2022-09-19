@@ -71,7 +71,7 @@ private:
     Buffer buffer_;
 
     // Memory alignment, it may change according to the usage
-    uint64_t alignment_{16};
+    uint64_t alignment_{256};
 
     // Current offset, it increases on every allocation
     uint64_t offset_{0};

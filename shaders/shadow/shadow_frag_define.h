@@ -66,8 +66,10 @@
 
             vec4 positionFromLight = viewProjMatFromLight * vec4(v_pos, 1.0);
             vec3 shadowCoord = positionFromLight.xyz / positionFromLight.w;
-            shadowCoord = shadowCoord * 0.5 + 0.5;
+            shadowCoord.xy = shadowCoord.xy * 0.5 + 0.5;
             vec3 coord = shadowCoord.xyz;
+            coord.y = 1-coord.y;
+
             coord.x *= scaleX;
             coord.y *= scaleY;
             coord.xy += offsets;

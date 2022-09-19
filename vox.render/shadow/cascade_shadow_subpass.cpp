@@ -34,7 +34,7 @@ CascadedShadowSubpass::CascadedShadowSubpass(RenderContext* renderContext,
                                              Camera* camera,
                                              wgpu::RenderPassDepthStencilAttachment& depthStencilAttachment)
     : ForwardSubpass(renderContext, wgpu::TextureFormat::Depth16Unorm, scene, camera),
-      _bufferPool(scene->device(), 64 * 4, wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst),
+      _bufferPool(scene->device(), 256 * 4, wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst),
       _depthStencilAttachment(depthStencilAttachment) {
     _shadowMaterial = std::make_shared<ShadowMaterial>(scene->device());
 }
@@ -57,6 +57,7 @@ void CascadedShadowSubpass::_renderDirectShadowMap(wgpu::RenderPassEncoder& pass
     const auto& lights = LightManager::GetSingleton().directLights();
     const uint32_t sunLightIndex = LightManager::GetSingleton().getSunLightIndex();
     const auto& boundSphere = _shadowSliceData.splitBoundSphere;
+    auto& bufferBlock = _bufferPool.requestBufferBlock(4 * sizeof(Matrix4x4F));
 
     _getCascadesSplitDistance();
     if (sunLightIndex != -1) {
@@ -89,7 +90,7 @@ void CascadedShadowSubpass::_renderDirectShadowMap(wgpu::RenderPassEncoder& pass
                                                                _shadowSliceData);
                 ShadowUtils::getDirectionalLightMatrices(_lightUp, _lightSide, _lightForward, light->shadowNearPlane,
                                                          _shadowTileResolution, _shadowSliceData);
-                _updateSingleShadowCasterShaderData(light, _shadowSliceData);
+                _updateSingleShadowCasterShaderData(bufferBlock, light, _shadowSliceData);
 
                 // upload pre-cascade infos.
                 const auto& center = boundSphere.center;
@@ -234,7 +235,8 @@ void CascadedShadowSubpass::_updateShadowSettings() {
     }
 }
 
-void CascadedShadowSubpass::_updateSingleShadowCasterShaderData(DirectLight* light,
+void CascadedShadowSubpass::_updateSingleShadowCasterShaderData(BufferBlock& bufferBlock,
+                                                                DirectLight* light,
                                                                 const ShadowSliceData& shadowSliceData) {
     // Frustum size is guaranteed to be a cube as we wrap shadow frustum around a sphere
     // elements[0] = 2.0 / (right - left)
@@ -247,7 +249,6 @@ void CascadedShadowSubpass::_updateSingleShadowCasterShaderData(DirectLight* lig
     sceneShaderData.setData(CascadedShadowSubpass::_lightShadowBiasProperty, _shadowBias);
     sceneShaderData.setData(CascadedShadowSubpass::_lightDirectionProperty, light->direction());
 
-    auto& bufferBlock = _bufferPool.requestBufferBlock(sizeof(Matrix4x4F));
     auto allocation = bufferBlock.allocate(sizeof(Matrix4x4F));
     allocation.update(_scene->device(), shadowSliceData.viewProjectMatrix);
     sceneShaderData.setData(CascadedShadowSubpass::_lightViewProjMatProperty, std::move(allocation));

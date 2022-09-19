@@ -242,7 +242,7 @@ void ShaderData::bindSampler(
 }
 
 void ShaderData::setData(const std::string &property_name, BufferAllocation &&value) {
-    _shaderBufferPools.insert(std::make_pair(property_name, std::move(value)));
+    _shaderBufferPools[property_name] = std::move(value);
 }
 
 void ShaderData::setBufferFunctor(const std::string &property, const std::function<Buffer()> &functor) {

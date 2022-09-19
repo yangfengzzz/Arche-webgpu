@@ -97,10 +97,8 @@ void ShadowUtils::getBoundSphereByFrustum(
         radius = 0.5f *
                  std::sqrt(farSNear * farSNear + 2.f * (far * far + near * near) * k2 + farANear * farANear * k2 * k2);
     }
-    const auto& worldPosition = camera->entity()->transform->worldPosition();
-
     shadowSliceData.splitBoundSphere.radius = radius;
-    shadowSliceData.splitBoundSphere.center = worldPosition + forward * centerZ;
+    shadowSliceData.splitBoundSphere.center = camera->entity()->transform->worldPosition() + forward * centerZ;
     shadowSliceData.sphereCenterZ = centerZ;
 }
 
@@ -213,7 +211,8 @@ void ShadowUtils::getDirectionalLightMatrices(const Vector3F& lightUp,
     // Direction light use shadow pancaking tech,do special dispose with nearPlane.
     shadowSliceData.position = center - lightForward * (radius + nearPlane);
     shadowSliceData.viewMatrix = makeLookAtMatrix(shadowSliceData.position, center, lightUp);
-    shadowSliceData.projectionMatrix = makeOrtho(-borderRadius, borderRadius, -borderRadius, borderRadius, 0.f, radius * 2.f + nearPlane);
+    shadowSliceData.projectionMatrix =
+            makeOrtho(-borderRadius, borderRadius, -borderRadius, borderRadius, 0.f, radius * 2.f + nearPlane);
     shadowSliceData.viewProjectMatrix = shadowSliceData.projectionMatrix * shadowSliceData.viewMatrix;
 }
 
