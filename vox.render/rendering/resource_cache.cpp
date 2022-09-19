@@ -437,6 +437,7 @@ ShaderModule &ResourceCache::requestShaderModule(wgpu::ShaderStage stage,
                                                  const ShaderVariant &shader_variant) {
     std::size_t hash{0U};
     hash_combine(hash, std::hash<std::string>{}(glsl_source.GetSource()));
+    hash_combine(hash, std::hash<std::string>{}(shader_variant.GetPreamble()));
 
     auto iter = _state.shaderModules.find(hash);
     if (iter == _state.shaderModules.end()) {

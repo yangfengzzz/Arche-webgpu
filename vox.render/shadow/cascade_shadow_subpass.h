@@ -32,7 +32,9 @@ private:
 
     void _updateShadowSettings();
 
-    void _updateSingleShadowCasterShaderData(BufferBlock& bufferBlock, DirectLight* light, const ShadowSliceData& shadowSliceData);
+    void _updateSingleShadowCasterShaderData(BufferBlock& bufferBlock,
+                                             DirectLight* light,
+                                             const ShadowSliceData& shadowSliceData);
 
     static float _getFarWithRadius(float radius, float denominator);
 
