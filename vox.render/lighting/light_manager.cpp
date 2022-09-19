@@ -43,8 +43,8 @@ LightManager::LightManager(Scene *scene)
     _clusterBoundsCompute->attachShaderData(&_scene->shaderData);
     _clusterBoundsCompute->setDispatchCount(DISPATCH_SIZE[0], DISPATCH_SIZE[1], DISPATCH_SIZE[2]);
 
-    _clusterLightsCompute = std::make_unique<ComputePass>(
-            device, ShaderManager::GetSingleton().LoadShader("light/cluster_light.comp"));
+    _clusterLightsCompute =
+            std::make_unique<ComputePass>(device, ShaderManager::GetSingleton().LoadShader("light/cluster_light.comp"));
     _clusterLightsCompute->attachShaderData(&_shaderData);
     _clusterLightsCompute->attachShaderData(&_scene->shaderData);
     _clusterLightsCompute->setDispatchCount(DISPATCH_SIZE[0], DISPATCH_SIZE[1], DISPATCH_SIZE[2]);
@@ -108,6 +108,33 @@ void LightManager::detachDirectLight(DirectLight *light) {
 }
 
 const std::vector<DirectLight *> &LightManager::directLights() const { return _directLights; }
+
+uint32_t LightManager::getSunLightIndex() const {
+    uint32_t sunLightIndex = -1;
+    float maxIntensity = -std::numeric_limits<float>::max();
+    bool hasShadowLight = false;
+    for (size_t i = 0, n = _directLights.size(); i < n; i++) {
+        const auto &directLight = _directLights[i];
+        if (directLight->enableShadow && !hasShadowLight) {
+            maxIntensity = -std::numeric_limits<float>::max();
+            hasShadowLight = true;
+        }
+
+        float intensity = directLight->intensity * directLight->color.getBrightness();
+        if (hasShadowLight) {
+            if (directLight->enableShadow && maxIntensity < intensity) {
+                maxIntensity = intensity;
+                sunLightIndex = i;
+            }
+        } else {
+            if (maxIntensity < intensity) {
+                maxIntensity = intensity;
+                sunLightIndex = i;
+            }
+        }
+    }
+    return sunLightIndex;
+}
 
 void LightManager::_updateShaderData(ShaderData &shaderData) {
     size_t pointLightCount = _pointLights.size();

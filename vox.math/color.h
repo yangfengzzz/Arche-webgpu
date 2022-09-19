@@ -94,6 +94,12 @@ struct Color {
 
     [[nodiscard]] unsigned int toABGR32() const;
 
+    /**
+     * Gets the brightness.
+     * @returns The Hue-Saturation-Brightness (HSB) saturation for this
+     */
+    [[nodiscard]] float getBrightness() const;
+
     static const Color red;
     static const Color green;
     static const Color blue;
@@ -119,7 +125,9 @@ inline Color operator-(const Color &left, const Color &right) {
     return {left.r - right.r, left.g - right.g, left.b - right.b, left.a - right.a};
 }
 
-inline Color operator*(const float s, const Color &right) { return {right.r * s, right.g * s, right.b * s, right.a * s}; }
+inline Color operator*(const float s, const Color &right) {
+    return {right.r * s, right.g * s, right.b * s, right.a * s};
+}
 
 inline Color operator*(const Color &left, const float s) { return {left.r * s, left.g * s, left.b * s, left.a * s}; }
 

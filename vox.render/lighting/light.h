@@ -7,6 +7,7 @@
 #pragma once
 
 #include "vox.math/matrix4x4.h"
+#include "vox.math/color.h"
 #include "vox.render/component.h"
 
 namespace vox {
@@ -19,6 +20,22 @@ public:
      * Each type of light source is at most 10, beyond which it will not take effect.
      * */
     static constexpr uint32_t MAX_LIGHT = 10;
+
+    /** Light Color */
+    Color color = Color(1, 1, 1, 1);
+    /** Light Intensity */
+    float intensity = 1;
+
+    /** whether enable shadow */
+    bool enableShadow = false;
+    /** Shadow bias.*/
+    float shadowBias = 1;
+    /** Shadow mapping normal-based bias. */
+    float shadowNormalBias = 0;
+    /** Near plane value to use for shadow frustums. */
+    float shadowNearPlane = 0.1;
+    /** Shadow intensity, the larger the value, the clearer and darker the shadow. */
+    float shadowStrength = 1.0;
 
     explicit Light(Entity *entity);
 
@@ -33,38 +50,7 @@ public:
     Matrix4x4F inverseViewMatrix();
 
 public:
-    [[nodiscard]] bool enableShadow() const;
-
-    void setEnableShadow(bool enabled);
-
-    /**
-     * Shadow bias.
-     */
-    [[nodiscard]] float shadowBias() const;
-
-    void setShadowBias(float value);
-
-    /**
-     * Shadow intensity, the larger the value, the clearer and darker the shadow.
-     */
-    [[nodiscard]] float shadowIntensity() const;
-
-    void setShadowIntensity(float value);
-
-    /**
-     * Pixel range used for shadow PCF interpolation.
-     */
-    [[nodiscard]] float shadowRadius() const;
-
-    void setShadowRadius(float value);
-
-    virtual Matrix4x4F shadowProjectionMatrix() = 0;
-
-private:
-    bool _enableShadow = false;
-    float _shadowBias = 0.005;
-    float _shadowIntensity = 0.2;
-    float _shadowRadius = 1;
+    virtual Matrix4x4F shadowProjectionMatrix() { return {}; }
 };
 
 }  // namespace vox

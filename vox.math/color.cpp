@@ -31,4 +31,16 @@ unsigned int Color::toABGR32() const {
     return ((new_a << 24) | (new_b << 16) | (new_g << 8) | new_r);
 }
 
+float Color::getBrightness() const {
+    float max = r;
+    float min = r;
+    if (g > max) max = g;
+    if (b > max) max = b;
+
+    if (g < min) min = g;
+    if (b < min) min = b;
+
+    return (max + min) / 2;
+}
+
 }  // namespace vox

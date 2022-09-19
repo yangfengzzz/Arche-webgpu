@@ -27,10 +27,7 @@ void DirectLight::_updateShaderData(DirectLightData &shaderData) {
 // MARK: - Shadow
 Vector3F DirectLight::direction() { return entity()->transform->worldForward(); }
 
-Matrix4x4F DirectLight::shadowProjectionMatrix() {
-    assert(false && "cascade shadow don't use this projection");
-    throw std::exception();
-}
+Vector3F DirectLight::reverseDirection() { return -entity()->transform->worldForward(); }
 
 // MARK: - Reflection
 void DirectLight::onSerialize(nlohmann::json &data) {}

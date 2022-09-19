@@ -6,7 +6,6 @@
 
 #pragma once
 
-#include "vox.math/color.h"
 #include "vox.render/lighting/light.h"
 
 namespace vox {
@@ -33,10 +32,6 @@ public:
         float _pad2;  // for align
     };
 
-    /** Light color. */
-    Color color = Color(1, 1, 1, 1);
-    /** Light intensity. */
-    float intensity = 1.0;
     /** Defines a distance cutoff at which the light's intensity must be considered zero. */
     float distance = 5;
     /** Angle, in radians, from centre of spotlight where falloff begins. */

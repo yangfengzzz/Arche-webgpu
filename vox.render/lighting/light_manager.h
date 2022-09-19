@@ -83,6 +83,8 @@ public:
 
     [[nodiscard]] const std::vector<DirectLight *> &directLights() const;
 
+    [[nodiscard]] uint32_t getSunLightIndex() const;
+
 public:
     [[nodiscard]] bool enableForwardPlus() const;
 

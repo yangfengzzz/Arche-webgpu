@@ -6,7 +6,6 @@
 
 #pragma once
 
-#include "vox.math/color.h"
 #include "vox.render/lighting/light.h"
 
 namespace vox {
@@ -27,17 +26,12 @@ public:
         float _directionPad;  // for align
     };
 
-    /** Light color. */
-    Color color = Color(1, 1, 1, 1);
-    /** Light intensity. */
-    float intensity = 1.0;
-
     explicit DirectLight(Entity *entity);
 
 public:
-    Matrix4x4F shadowProjectionMatrix() override;
-
     Vector3F direction();
+
+    Vector3F reverseDirection();
 
 public:
     /**

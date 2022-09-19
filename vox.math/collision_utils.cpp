@@ -212,7 +212,7 @@ bool intersectsFrustumAndBox(const BoundingFrustum &frustum, const BoundingBox3F
     Vector3F back;
 
     for (int i = 0; i < 6; ++i) {
-        const auto kPlane = frustum.getPlane(i);
+        const auto kPlane = frustum.getPlane(FrustumFace(i));
         const auto &normal = kPlane.normal;
 
         back.x = normal.x >= 0 ? min.x : max.x;
@@ -234,7 +234,7 @@ ContainmentType frustumContainsBox(const BoundingFrustum &frustum, const Boundin
     auto result = ContainmentType::Contains;
 
     for (int i = 0; i < 6; ++i) {
-        const auto kPlane = frustum.getPlane(i);
+        const auto kPlane = frustum.getPlane(FrustumFace(i));
         const auto &normal = kPlane.normal;
 
         if (normal.x >= 0) {
