@@ -37,9 +37,9 @@ private:
 private:
     friend class ShadowManager;
 
-    std::vector<RenderElement> opaqueQueue;
-    std::vector<RenderElement> alphaTestQueue;
-    std::vector<RenderElement> transparentQueue;
+    std::vector<RenderElement> opaqueQueue{};
+    std::vector<RenderElement> alphaTestQueue{};
+    std::vector<RenderElement> transparentQueue{};
 
     static const std::string _lightViewProjMatProperty;
     static const std::string _lightShadowBiasProperty;
@@ -53,13 +53,13 @@ private:
 
     static std::array<float, 5> _cascadesSplitDistance;
 
-    ShadowMode _shadowMode;
+    ShadowMode _shadowMode = ShadowMode::SoftLow;
     float _shadowMapResolution{};
     Vector2F _shadowMapSize{};
     float _shadowTileResolution{};
-    Vector2F _shadowBias;
-    wgpu::TextureFormat _shadowMapFormat;
-    ShadowCascadesMode _shadowCascadeMode;
+    Vector2F _shadowBias{};
+    wgpu::TextureFormat _shadowMapFormat =  wgpu::TextureFormat::Undefined;
+    ShadowCascadesMode _shadowCascadeMode = ShadowCascadesMode::FourCascades;
     ShadowSliceData _shadowSliceData{};
     Vector3F _lightUp{};
     Vector3F _lightSide{};
@@ -73,9 +73,9 @@ private:
     Vector3F _shadowInfos{};
     std::array<Vector2F, 4> _viewportOffsets{};
 
-    wgpu::SamplerDescriptor _samplerDescriptor;
-    std::unique_ptr<Image> _depthTexture;
-    wgpu::RenderPassDepthStencilAttachment _depthStencilAttachment;
+    wgpu::SamplerDescriptor _samplerDescriptor{};
+    std::unique_ptr<Image> _depthTexture{};
+    wgpu::RenderPassDepthStencilAttachment _depthStencilAttachment{};
 };
 
 }  // namespace vox

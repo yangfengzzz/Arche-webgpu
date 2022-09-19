@@ -15,6 +15,7 @@
 #include "vox.render/mesh/mesh.h"
 #include "vox.render/renderer.h"
 #include "vox.render/rendering/render_pass.h"
+#include "vox.render/shader/internal_variant_name.h"
 #include "vox.render/shadow/shadow_manager.h"
 #include "vox.render/shadow/shadow_utils.h"
 
@@ -50,9 +51,9 @@ void CascadedShadowSubpass::_drawElement(wgpu::RenderPassEncoder& passEncoder, c
 
     if (_existShadowMap) {
         _updateReceiversShaderData();
-        _scene->shaderData.addDefine("CASCADED_SHADOW_MAP");
+        _scene->shaderData.addDefine(CASCADED_SHADOW_MAP);
     } else {
-        _scene->shaderData.removeDefine("CASCADED_SHADOW_MAP");
+        _scene->shaderData.removeDefine(CASCADED_SHADOW_MAP);
     }
 }
 
@@ -75,7 +76,6 @@ void CascadedShadowSubpass::_renderDirectShadowMap(wgpu::RenderPassEncoder& pass
 
             // prepare light and camera direction
             Matrix4x4F lightWorld = light->entity()->transform->worldRotationQuaternion().matrix4();
-
             _lightSide.set(lightWorld[0], lightWorld[1], lightWorld[2]);
             _lightUp.set(lightWorld[4], lightWorld[5], lightWorld[6]);
             _lightForward.set(-lightWorld[8], -lightWorld[9], -lightWorld[10]);
@@ -214,10 +214,10 @@ void CascadedShadowSubpass::_updateShadowSettings() {
     const wgpu::TextureFormat shadowFormat = ShadowUtils::shadowDepthFormat(shadowResolution);
     const float resolution = ShadowUtils::shadowResolution(shadowResolution);
     if (shadowCascades != _shadowCascadeMode) {
-        sceneShaderData.addDefine("CASCADED_COUNT" + std::to_string(shadowCascades));
+        sceneShaderData.addDefine(CASCADED_COUNT + std::to_string(shadowCascades));
     }
     if (shadowMode != _shadowMode) {
-        sceneShaderData.addDefine("SHADOW_MODE" + std::to_string(shadowMode));
+        sceneShaderData.addDefine(SHADOW_MODE + std::to_string(shadowMode));
         _shadowMode = shadowMode;
     }
 

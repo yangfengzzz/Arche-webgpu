@@ -51,6 +51,12 @@ const std::string DIRECT_LIGHT_COUNT = "DIRECT_LIGHT_COUNT ";
 const std::string POINT_LIGHT_COUNT = "POINT_LIGHT_COUNT ";
 const std::string SPOT_LIGHT_COUNT = "SPOT_LIGHT_COUNT ";
 
+// Shadow
+const std::string RECEIVE_SHADOWS = "RECEIVE_SHADOWS";
+const std::string CASCADED_COUNT = "CASCADED_COUNT ";
+const std::string SHADOW_MODE = "SHADOW_MODE ";
+const std::string CASCADED_SHADOW_MAP = "CASCADED_SHADOW_MAP";
+
 // Enviroment
 const std::string HAS_SH = "HAS_SH";
 const std::string HAS_SPECULAR_ENV = "HAS_SPECULAR_ENV";
@@ -63,9 +69,5 @@ const std::string NEED_PARTICLE_VECTOR_FIELD = "NEED_PARTICLE_VECTOR_FIELD";
 const std::string NEED_PARTICLE_CURL_NOISE = "NEED_PARTICLE_CURL_NOISE";
 const std::string NEED_PARTICLE_VELOCITY_CONTROL = "NEED_PARTICLE_VELOCITY_CONTROL";
 const std::string PARTICLE_COUNT = "PARTICLE_COUNT ";
-
-// Shadow
-const std::string SHADOW_MAP_COUNT = "SHADOW_MAP_COUNT ";
-const std::string CUBE_SHADOW_MAP_COUNT = "CUBE_SHADOW_MAP_COUNT ";
 
 }  // namespace vox

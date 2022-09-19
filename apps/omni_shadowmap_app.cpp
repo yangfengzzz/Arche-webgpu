@@ -64,7 +64,7 @@ void OminiShadowMapApp::loadScene() {
     auto planeRenderer = planeEntity->addComponent<MeshRenderer>();
     planeRenderer->setMesh(planeMesh);
     planeRenderer->setMaterial(planeMtl);
-    planeRenderer->receiveShadow = true;
+    planeRenderer->setReceiveShadows(true);
 
     auto planeEntity2 = rootEntity->createChild("PlaneEntity2");
     planeEntity2->transform->setPosition(0, -5, 0);
@@ -74,7 +74,7 @@ void OminiShadowMapApp::loadScene() {
     auto planeRenderer2 = planeEntity2->addComponent<MeshRenderer>();
     planeRenderer2->setMesh(planeMesh);
     planeRenderer2->setMaterial(planeMtl2);
-    planeRenderer2->receiveShadow = true;
+    planeRenderer2->setReceiveShadows(true);
 
     auto planeEntity3 = rootEntity->createChild("PlaneEntity3");
     planeEntity3->transform->setPosition(5, 0, 0);
@@ -85,7 +85,7 @@ void OminiShadowMapApp::loadScene() {
     auto planeRenderer3 = planeEntity3->addComponent<MeshRenderer>();
     planeRenderer3->setMesh(planeMesh);
     planeRenderer3->setMaterial(planeMtl3);
-    planeRenderer3->receiveShadow = true;
+    planeRenderer3->setReceiveShadows(true);
 
     auto planeEntity4 = rootEntity->createChild("PlaneEntity4");
     planeEntity4->transform->setPosition(-5, 0, 0);
@@ -96,7 +96,7 @@ void OminiShadowMapApp::loadScene() {
     auto planeRenderer4 = planeEntity4->addComponent<MeshRenderer>();
     planeRenderer4->setMesh(planeMesh);
     planeRenderer4->setMaterial(planeMtl4);
-    planeRenderer4->receiveShadow = true;
+    planeRenderer4->setReceiveShadows(true);
 
     auto planeEntity5 = rootEntity->createChild("PlaneEntity5");
     planeEntity5->transform->setPosition(0, 0, -5);
@@ -107,7 +107,7 @@ void OminiShadowMapApp::loadScene() {
     auto planeRenderer5 = planeEntity5->addComponent<MeshRenderer>();
     planeRenderer5->setMesh(planeMesh);
     planeRenderer5->setMaterial(planeMtl5);
-    planeRenderer5->receiveShadow = true;
+    planeRenderer5->setReceiveShadows(true);
 
     // create box test entity
     float cubeSize = 1.0;

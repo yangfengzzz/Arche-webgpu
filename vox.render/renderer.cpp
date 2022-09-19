@@ -10,6 +10,7 @@
 #include "vox.render/entity.h"
 #include "vox.render/material/material.h"
 #include "vox.render/scene.h"
+#include "vox.render/shader/internal_variant_name.h"
 
 namespace vox {
 size_t Renderer::materialCount() { return _materials.size(); }
@@ -29,6 +30,19 @@ Renderer::Renderer(Entity *entity)
     : Component(entity),
       shaderData(entity->scene()->device()),
       _transformChangeFlag(entity->transform->registerWorldChangeFlag()) {}
+
+bool Renderer::receiveShadows() const { return _receiveShadows; }
+
+void Renderer::setReceiveShadows(bool value) {
+    if (_receiveShadows != value) {
+        if (value) {
+            shaderData.addDefine(RECEIVE_SHADOWS);
+        } else {
+            shaderData.removeDefine(RECEIVE_SHADOWS);
+        }
+        _receiveShadows = value;
+    }
+}
 
 void Renderer::_onEnable() { ComponentsManager::getSingleton().addRenderer(this); }
 

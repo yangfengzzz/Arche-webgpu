@@ -30,7 +30,7 @@ void CascadeShadowMapApp::loadScene() {
     light->transform->lookAt(Point3F());
     auto directLight = light->addComponent<DirectLight>();
     directLight->intensity = 1.0;
-    directLight->setEnableShadow(true);
+    directLight->enableShadow = true;
 
     // create box test entity
     float cubeSize = 2.0;
@@ -58,7 +58,7 @@ void CascadeShadowMapApp::loadScene() {
     planeRenderer->setMesh(PrimitiveMesh::createPlane(_device, 10, 400));
     planeRenderer->setMaterial(planeMtl);
     // planeRenderer->setMaterial(shadowDebug);
-    planeRenderer->receiveShadow = true;
+    planeRenderer->setReceiveShadows(true);
 
     scene->play();
 }

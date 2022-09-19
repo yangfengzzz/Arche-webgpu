@@ -14,17 +14,17 @@ add_subdirectory(plugins)
 
 set(SRC
         atomic_compute_app.cpp
-#        cascade_shadowmap_app.cpp
+        shadowmap_app.cpp
+        cascade_shadowmap_app.cpp
+        omni_shadowmap_app.cpp
         cluster_forward_app.cpp
         ibl_app.cpp
         irradiance_app.cpp
         main.cpp
         multi_light_app.cpp
-        omni_shadowmap_app.cpp
 #        particle_app.cpp
         pbr_app.cpp
         primitive_app.cpp
-#        shadowmap_app.cpp
         skybox_app.cpp
         assimp_app.cpp
         )

@@ -31,8 +31,13 @@ public:
     /** Whether it is clipped by the frustum, needs to be turned on camera.enableFrustumCulling. */
     bool isCulled = false;
 
-    /** Set whether the renderer to receive shadows. */
-    bool receiveShadow = false;
+    /**
+     * Whether receive shadow.
+     */
+    [[nodiscard]] bool receiveShadows() const;
+
+    void setReceiveShadows(bool value);
+
     /** Set whether the renderer to cast shadows. */
     bool castShadow = false;
 
@@ -139,6 +144,8 @@ private:
     BoundingBox3F _bounds = BoundingBox3F();
     Matrix4x4F _normalMatrix = Matrix4x4F();
     std::vector<bool> _materialsInstanced;
+
+    bool _receiveShadows{false};
 };
 
 }  // namespace vox

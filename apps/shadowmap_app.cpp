@@ -61,20 +61,20 @@ void ShadowMapApp::loadScene() {
     light->addComponent<lightMovement>();
     auto spotLight = light->addComponent<SpotLight>();
     spotLight->intensity = 0.2;
-    spotLight->setEnableShadow(true);
+    spotLight->enableShadow = true;
 
     auto light2 = rootEntity->createChild("light2");
     light2->transform->setPosition(0, 10, 0);
     light2->transform->lookAt(Point3F(0, 0, 0), Vector3F(1, 0, 0));
     auto pointLight = light2->addComponent<PointLight>();
     pointLight->intensity = 0.2;
-    pointLight->setEnableShadow(true);  // slow
+    pointLight->enableShadow = true;  // slow
 
     auto light3 = rootEntity->createChild("light3");
     light3->addComponent<lightMovementReverse>();
     auto directLight = light3->addComponent<DirectLight>();
     directLight->intensity = 0.2;
-    directLight->setEnableShadow(true);
+    directLight->enableShadow = true;
 
     // create box test entity
     float cubeSize = 2.0;
@@ -96,7 +96,7 @@ void ShadowMapApp::loadScene() {
     auto planeRenderer = planeEntity->addComponent<MeshRenderer>();
     planeRenderer->setMesh(PrimitiveMesh::createPlane(_device, 10, 10));
     planeRenderer->setMaterial(planeMtl);
-    planeRenderer->receiveShadow = true;
+    planeRenderer->setReceiveShadows(true);
 
     scene->play();
 }
