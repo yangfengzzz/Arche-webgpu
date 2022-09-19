@@ -65,6 +65,7 @@ void ShadowManager::_getAvailableRenderTarget() {
         _depthTexture->format() != _cascadedShadowSubpass->_shadowMapFormat) {
         _depthTexture->setWidth(uint32_t(_cascadedShadowSubpass->_shadowMapSize.x));
         _depthTexture->setHeight(uint32_t(_cascadedShadowSubpass->_shadowMapSize.y));
+        _depthTexture->setDepth(1);
         _depthTexture->setFormat(_cascadedShadowSubpass->_shadowMapFormat);
         _depthTexture->createTexture(_scene->device(),
                                      wgpu::TextureUsage::RenderAttachment | wgpu::TextureUsage::TextureBinding);

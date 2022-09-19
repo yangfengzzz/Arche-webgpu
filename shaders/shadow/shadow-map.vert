@@ -1,7 +1,10 @@
-#include <common>
-#include <common_vert>
-#include <blendShape_input>
-#include <normal_share>
+#version 450
+#define Vert_Shader
+
+#include "common.h"
+#include "snippet/common_vert_define.h"
+#include "snippet/blendShape_define.h"
+#include "snippet/normal_define.h"
 
 layout(set = 0, binding = 51) uniform u_lightViewProjMat {
     mat4 light_view_proj_mat;
@@ -29,17 +32,18 @@ vec3 applyShadowNormalBias(vec3 positionWS, vec3 normalWS) {
 }
 
 void main() {
-#include <begin_position_vert>
-#include <begin_normal_vert>
-#include <blendShape_vert>
-#include <skinning_vert>
-#include <normal_vert>
+#include "snippet/begin_position.vert"
+#include "snippet/begin_normal.vert"
+#include "snippet/blendShape.vert"
+#include "snippet/skinning.vert"
+#include "snippet/normal.vert"
+
     vec4 temp_pos = u_modelMat * position;
     vec3 v_pos = temp_pos.xyz / temp_pos.w;
 
     v_pos = applyShadowBias(v_pos);
     #ifndef OMIT_NORMAL
-        #ifdef O3_HAS_NORMAL
+        #ifdef HAS_NORMAL
             v_pos = applyShadowNormalBias(v_pos, v_normal);
         #endif
     #endif

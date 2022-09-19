@@ -204,11 +204,11 @@ void CascadedShadowSubpass::_updateShadowSettings() {
         _depthStencil.format = _shadowMapFormat;
 
         if (shadowCascades == ShadowCascadesMode::NoCascades) {
-            _shadowTileResolution = shadowResolution;
-            _shadowMapSize.set(shadowResolution, shadowResolution);
+            _shadowTileResolution = resolution;
+            _shadowMapSize.set(resolution, resolution);
         } else {
             const float shadowTileResolution =
-                    ShadowUtils::getMaxTileResolutionInAtlas(shadowResolution, shadowResolution, shadowCascades);
+                    ShadowUtils::getMaxTileResolutionInAtlas(resolution, resolution, shadowCascades);
             _shadowTileResolution = shadowTileResolution;
             _shadowMapSize.set(shadowTileResolution * 2, shadowCascades == ShadowCascadesMode::TwoCascades
                                                                  ? shadowTileResolution
