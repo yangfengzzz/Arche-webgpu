@@ -38,22 +38,19 @@ CascadedShadowSubpass::CascadedShadowSubpass(RenderContext* renderContext,
 }
 
 void CascadedShadowSubpass::_drawElement(wgpu::RenderPassEncoder& passEncoder, const ShaderVariant& variant) {
-    std::sort(opaqueQueue.begin(), opaqueQueue.end(), _compareFromNearToFar);
-    std::sort(alphaTestQueue.begin(), alphaTestQueue.end(), _compareFromNearToFar);
-    std::sort(transparentQueue.begin(), transparentQueue.end(), _compareFromFarToNear);
+    _updateShadowSettings();
+    _existShadowMap = false;
+    _renderDirectShadowMap(passEncoder, variant);
 
-    for (const auto& element : opaqueQueue) {
-        ForwardSubpass::_drawElement(passEncoder, element, variant);
-    }
-    for (const auto& element : alphaTestQueue) {
-        ForwardSubpass::_drawElement(passEncoder, element, variant);
-    }
-    for (const auto& element : transparentQueue) {
-        ForwardSubpass::_drawElement(passEncoder, element, variant);
+    if (_existShadowMap) {
+        _updateReceiversShaderData();
+        _scene->shaderData.addDefine("CASCADED_SHADOW_MAP");
+    } else {
+        _scene->shaderData.removeDefine("CASCADED_SHADOW_MAP");
     }
 }
 
-void CascadedShadowSubpass::_renderDirectShadowMap() {
+void CascadedShadowSubpass::_renderDirectShadowMap(wgpu::RenderPassEncoder& passEncoder, const ShaderVariant& variant) {
     const auto& lights = LightManager::GetSingleton().directLights();
     const uint32_t sunLightIndex = LightManager::GetSingleton().getSunLightIndex();
     const auto& boundSphere = _shadowSliceData.splitBoundSphere;
@@ -98,12 +95,19 @@ void CascadedShadowSubpass::_renderDirectShadowMap() {
                 alphaTestQueue.clear();
                 transparentQueue.clear();
                 const auto& renderers = ComponentsManager::GetSingleton()._renderers;
-                for (size_t k = renderers.size() - 1; k >= 0; --k) {
-                    ShadowUtils::shadowCullFrustum(renderers[k], _shadowSliceData, opaqueQueue, alphaTestQueue,
+                for (auto renderer : renderers) {
+                    ShadowUtils::shadowCullFrustum(renderer, _shadowSliceData, opaqueQueue, alphaTestQueue,
                                                    transparentQueue);
                 }
                 std::sort(opaqueQueue.begin(), opaqueQueue.end(), _compareFromNearToFar);
                 std::sort(alphaTestQueue.begin(), alphaTestQueue.end(), _compareFromNearToFar);
+
+                for (const auto& element : opaqueQueue) {
+                    ForwardSubpass::_drawElement(passEncoder, element, variant);
+                }
+                for (const auto& element : alphaTestQueue) {
+                    ForwardSubpass::_drawElement(passEncoder, element, variant);
+                }
             }
             _existShadowMap = true;
         }

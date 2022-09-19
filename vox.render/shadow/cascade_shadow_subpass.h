@@ -34,7 +34,7 @@ public:
     void _drawElement(wgpu::RenderPassEncoder& passEncoder, const ShaderVariant& variant) override;
 
 private:
-    void _renderDirectShadowMap();
+    void _renderDirectShadowMap(wgpu::RenderPassEncoder& passEncoder, const ShaderVariant& variant);
 
     void _updateReceiversShaderData();
 
