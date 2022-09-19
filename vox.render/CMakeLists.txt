@@ -405,7 +405,7 @@ set(PROJECT_FILES
         ${SHADER_FILES}
         ${MATERIAL_FILES}
         ${LIGHT_FILE}
-#        ${SHADOW_FILE}
+        ${SHADOW_FILE}
 #        ${PARTICLE_FILE}
         ${SKY_FILES}
         ${LOADER_FILES}

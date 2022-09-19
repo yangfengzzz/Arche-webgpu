@@ -15,10 +15,46 @@
 #include "vox.render/shadow/shadow_manager.h"
 
 namespace vox {
-ShadowSubpass::ShadowSubpass(RenderContext* renderContext, Scene* scene, Camera* camera)
-    : Subpass(renderContext, scene, camera) {
-    _material = std::make_shared<ShadowMaterial>(scene->device());
+ShadowSubpass::ShadowSubpass(RenderContext* renderContext,
+                             wgpu::TextureFormat depthStencilTextureFormat,
+                             Scene* scene,
+                             Camera* camera)
+    : ForwardSubpass(renderContext, depthStencilTextureFormat, scene, camera) {
+    fragmentEnabled = false;
 }
+
+void ShadowSubpass::_drawElement(wgpu::RenderPassEncoder& passEncoder, const ShaderVariant& variant) {
+    std::sort(opaqueQueue.begin(), opaqueQueue.end(), _compareFromNearToFar);
+    std::sort(alphaTestQueue.begin(), alphaTestQueue.end(), _compareFromNearToFar);
+    std::sort(transparentQueue.begin(), transparentQueue.end(), _compareFromFarToNear);
+
+    for (const auto& element : opaqueQueue) {
+        ForwardSubpass::_drawElement(passEncoder, element, variant);
+    }
+    for (const auto& element : alphaTestQueue) {
+        ForwardSubpass::_drawElement(passEncoder, element, variant);
+    }
+    for (const auto& element : transparentQueue) {
+        ForwardSubpass::_drawElement(passEncoder, element, variant);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 void ShadowSubpass::setShadowMaterial(const std::shared_ptr<ShadowMaterial>& mat) { _material = mat; }
 

@@ -1,0 +1,26 @@
+//  Copyright (c) 2022 Feng Yang
+//
+//  I am making my contributions/submissions to this project solely in my
+//  personal capacity and am not conveying any rights to any intellectual
+//  property of any third parties.
+
+#pragma once
+
+#include <cstdlib>
+
+namespace vox {
+/**
+ * Determines which type of shadows should be used.
+ */
+enum ShadowMode {
+    /** Disable Shadows. */
+    None,
+    /** Hard Shadows Only. */
+    Hard,
+    /** Cast "soft" shadows with low range. */
+    SoftLow,
+    /** Cast "soft" shadows with large range. */
+    SoftHigh
+};
+
+}  // namespace vox

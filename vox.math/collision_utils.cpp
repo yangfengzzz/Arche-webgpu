@@ -10,6 +10,26 @@
 
 namespace vox {
 
+Point3F intersectionPointThreePlanes(const BoundingPlane3F &p1, const BoundingPlane3F &p2, const BoundingPlane3F &p3) {
+    const auto &p1Nor = p1.normal;
+    const auto &p2Nor = p2.normal;
+    const auto &p3Nor = p3.normal;
+
+    auto vec30 = p2Nor.cross(p3Nor);
+    auto vec31 = p3Nor.cross(p1Nor);
+    auto vec32 = p1Nor.cross(p2Nor);
+
+    const auto a = -p1Nor.dot(vec30);
+    const auto b = -p2Nor.dot(vec31);
+    const auto c = -p3Nor.dot(vec32);
+
+    vec30 *= p1.distance / a;
+    vec31 *= p2.distance / b;
+    vec32 *= p3.distance / c;
+
+    return {vec30.x + vec31.x + vec32.x, vec30.y + vec31.y + vec32.y, vec30.z + vec31.z + vec32.z};
+}
+
 float distancePlaneAndPoint(const BoundingPlane3F &plane, const Point3F &point) {
     return point.dot(plane.normal) + plane.distance;
 }

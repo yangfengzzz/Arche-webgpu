@@ -21,20 +21,20 @@ BoundingFrustum::BoundingFrustum(const Matrix4x4F &matrix) {
     calculateFromMatrix(matrix);
 }
 
-BoundingPlane3F BoundingFrustum::getPlane(int index) const {
-    switch (index) {
-        case 0:
+BoundingPlane3F BoundingFrustum::getPlane(FrustumFace face) const {
+    switch (face) {
+        case FrustumFace::Near:
             return near;
-        case 1:
+        case FrustumFace::Far:
             return far;
-        case 2:
+        case FrustumFace::Left:
             return left;
-        case 3:
+        case FrustumFace::Right:
             return right;
-        case 4:
-            return top;
-        case 5:
+        case FrustumFace::Bottom:
             return bottom;
+        case FrustumFace::Top:
+            return top;
         default:
             assert(false && "out of bounds");
     }

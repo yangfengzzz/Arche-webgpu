@@ -41,6 +41,15 @@ enum class ContainmentType {
 };
 
 /**
+ * Calculate the intersection point of three plane.
+ * @param  p1 - Plane 1
+ * @param  p2 - Plane 2
+ * @param  p3 - Plane 3
+ * @param out - intersection point
+ */
+Point3F intersectionPointThreePlanes(const BoundingPlane3F &p1, const BoundingPlane3F &p2, const BoundingPlane3F &p3);
+
+/**
  * Calculate the distance from a point to a plane.
  * @param plane - The plane
  * @param point - The point

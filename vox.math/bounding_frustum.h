@@ -15,6 +15,24 @@
 
 namespace vox {
 
+/**
+ * Frustum face
+ */
+enum FrustumFace : uint32_t {
+    /** Near face */
+    Near,
+    /** Far face */
+    Far,
+    /** Left face */
+    Left,
+    /** Right face */
+    Right,
+    /** Bottom face */
+    Bottom,
+    /** Top face */
+    Top
+};
+
 struct BoundingFrustum {
     /** The near plane of this frustum. */
     BoundingPlane3F near;
@@ -24,10 +42,10 @@ struct BoundingFrustum {
     BoundingPlane3F left;
     /** The right plane of this frustum. */
     BoundingPlane3F right;
-    /** The top plane of this frustum. */
-    BoundingPlane3F top;
     /** The bottom plane of this frustum. */
     BoundingPlane3F bottom;
+    /** The top plane of this frustum. */
+    BoundingPlane3F top;
 
     BoundingFrustum();
 
@@ -41,17 +59,11 @@ struct BoundingFrustum {
     BoundingFrustum(const BoundingFrustum &other) = default;
 
     /**
-     * Get the plane by the given index.
-     * 0: near
-     * 1: far
-     * 2: left
-     * 3: right
-     * 4: top
-     * 5: bottom
-     * @param index - The index
-     * @returns The plane get
+   * Get the plane by the given frustum face.
+   * @param face - The frustum face
+   * @returns The plane get
      */
-    [[nodiscard]] BoundingPlane3F getPlane(int index) const;
+    [[nodiscard]] BoundingPlane3F getPlane(FrustumFace face) const;
 
     /**
      * update all planes from the given matrix.
