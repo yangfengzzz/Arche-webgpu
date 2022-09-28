@@ -249,6 +249,18 @@ public:
 
     //! Returns true if \p other is the not same as this vector.
     bool operator!=(const Vector &v) const;
+
+    // Returns a vector with all components set to 0.
+    static VOX_INLINE Vector zero() { return Vector(0.f); }
+
+    // Returns a vector with all components set to 1.
+    static VOX_INLINE Vector one() { return Vector(1.f); }
+
+    // Returns a unitary vector x.
+    static VOX_INLINE Vector x_axis() { return Vector(1.f, 0.f); }
+
+    // Returns a unitary vector y.
+    static VOX_INLINE Vector y_axis() { return Vector(0.f, 1.f); }
 };
 
 //! Type alias for two dimensional vector.

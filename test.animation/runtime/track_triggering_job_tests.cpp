@@ -6,12 +6,11 @@
 
 #include "gtest/gtest.h"
 #include "test.animation/gtest_helper.h"
-#include "test.animation/gtest_math_helper.h"
-#include "vox.base/memory/unique_ptr.h"
 #include "vox.animation/offline/raw_track.h"
 #include "vox.animation/offline/track_builder.h"
 #include "vox.animation/runtime/track.h"
 #include "vox.animation/runtime/track_triggering_job.h"
+#include "vox.base/memory/unique_ptr.h"
 
 using vox::animation::FloatTrack;
 using vox::animation::TrackTriggeringJob;
@@ -170,7 +169,7 @@ TEST(Iterator, TrackEdgeTriggerJob) {
 
     {  // *
         EXPECT_TRUE((*iterator).rising);
-        TrackTriggeringJob::Edge edge;
+        TrackTriggeringJob::Edge edge{};
         EXPECT_ASSERTION(edge = *job.end(), "Can't dereference end iterator");
         (void)edge;
     }
@@ -337,8 +336,7 @@ void TestEdgesExpectationBackward(TrackTriggeringJob::Iterator _fw_iterator, con
 
     // Compare forward and backward iterations.
     ASSERT_EQ(fw_edges.size(), CountEdges(bw_iterator, bw_job.end()));
-    for (vox::vector<TrackTriggeringJob::Edge>::const_reverse_iterator fw_rit = fw_edges.rbegin();
-         fw_rit != fw_edges.rend(); ++fw_rit, ++bw_iterator) {
+    for (auto fw_rit = fw_edges.rbegin(); fw_rit != fw_edges.rend(); ++fw_rit, ++bw_iterator) {
         EXPECT_FLOAT_EQ(fw_rit->ratio, bw_iterator->ratio);
         EXPECT_EQ(fw_rit->rising, !bw_iterator->rising);
     }
@@ -405,7 +403,7 @@ void TestEdgesExpectation(const vox::animation::offline::RawFloatTrack& _raw_tra
         TrackTriggeringJob::Iterator it = iterator;
         for (size_t i = 0; it != job.end(); ++it, ++i) {
             const size_t ie = i % _size;
-            const float loops = static_cast<float>(i / _size);
+            const auto loops = static_cast<float>(i / _size);
             EXPECT_FLOAT_EQ(it->ratio, _expected[ie].ratio + loops);
             EXPECT_EQ(it->rising, _expected[ie].rising);
         }
@@ -414,7 +412,7 @@ void TestEdgesExpectation(const vox::animation::offline::RawFloatTrack& _raw_tra
 
     {  // Forward, first edge to last, last can be included.
 
-        // Last edge is included if it ratio is 1.f.
+        // Last edge is included if its ratio is 1.f.
         const bool last_included = _expected[_size - 1].ratio == 1.f;
 
         job.from = _expected[0].ratio;
@@ -689,7 +687,7 @@ void TestEdgesExpectation(const vox::animation::offline::RawFloatTrack& _raw_tra
     }
 
     {  // Forward [-1, -eps]
-        // Last edge is included if it ratio is not 1.f.
+        // Last edge is included if its ratio is not 1.f.
         const bool last_included = _expected[_size - 1].ratio != 1.f;
 
         job.from = -1.f;
@@ -709,7 +707,7 @@ void TestEdgesExpectation(const vox::animation::offline::RawFloatTrack& _raw_tra
     }
 
     {  // Forward [-eps, ..]
-        // Last edge is included if it ratio is 1.f.
+        // Last edge is included if its ratio is 1.f.
         const bool last_included = _expected[_size - 1].ratio == 1.f;
 
         job.from = nexttowardf(0.f, -1.f);

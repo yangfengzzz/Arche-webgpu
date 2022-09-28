@@ -8,7 +8,6 @@
 #include "vox.animation/offline/animation_builder.h"
 #include "vox.animation/offline/raw_animation.h"
 #include "vox.animation/runtime/animation_utils.h"
-#include "vox.base/memory/unique_ptr.h"
 
 using vox::animation::Animation;
 using vox::animation::offline::AnimationBuilder;

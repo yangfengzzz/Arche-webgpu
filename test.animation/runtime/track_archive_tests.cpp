@@ -5,14 +5,13 @@
 //  property of any third parties.
 
 #include "gtest/gtest.h"
-#include "vox.base/io/archive.h"
-#include "vox.base/io/stream.h"
 #include "test.animation/gtest_math_helper.h"
-#include "vox.base/memory/unique_ptr.h"
 #include "vox.animation/offline/raw_track.h"
 #include "vox.animation/offline/track_builder.h"
 #include "vox.animation/runtime/track.h"
 #include "vox.animation/runtime/track_sampling_job.h"
+#include "vox.base/io/archive.h"
+#include "vox.base/memory/unique_ptr.h"
 
 using vox::animation::Float2Track;
 using vox::animation::Float2TrackSamplingJob;
@@ -263,8 +262,7 @@ TEST(FilledFloat4, TrackSerialize) {
     TrackBuilder builder;
     RawFloat4Track raw_float4_track;
 
-    const RawFloat4Track::Keyframe key0 = {RawTrackInterpolation::kLinear, 0.f,
-                                           vox::Vector4F(0.f, 26.f, 93.f, 5.f)};
+    const RawFloat4Track::Keyframe key0 = {RawTrackInterpolation::kLinear, 0.f, vox::Vector4F(0.f, 26.f, 93.f, 5.f)};
     raw_float4_track.keyframes.push_back(key0);
     const RawFloat4Track::Keyframe key1 = {RawTrackInterpolation::kStep, .5f, vox::Vector4F(46.f, 0.f, 25.f, 25.f)};
     raw_float4_track.keyframes.push_back(key1);

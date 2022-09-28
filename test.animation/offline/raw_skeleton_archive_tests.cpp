@@ -5,9 +5,8 @@
 //  property of any third parties.
 
 #include "gtest/gtest.h"
-#include "vox.base/io/archive.h"
-#include "vox.base/io/stream.h"
 #include "vox.animation/offline/raw_skeleton.h"
+#include "vox.base/io/archive.h"
 
 using vox::animation::offline::RawSkeleton;
 
@@ -89,30 +88,31 @@ TEST(Filled, RawSkeletonSerialize) {
         EXPECT_STREQ(o_skeleton.roots[0].children[1].name.c_str(), i_skeleton.roots[0].children[1].name.c_str());
 
         // Compares skeletons joint's transform.
-        EXPECT_TRUE(Compare(o_skeleton.roots[0].transform.translation, i_skeleton.roots[0].transform.translation, 0.f));
-        EXPECT_TRUE(Compare(o_skeleton.roots[0].transform.rotation, i_skeleton.roots[0].transform.rotation, 0.f));
-        EXPECT_TRUE(Compare(o_skeleton.roots[0].transform.scale, i_skeleton.roots[0].transform.scale, 0.f));
+        EXPECT_TRUE(
+                o_skeleton.roots[0].transform.translation.isSimilar(i_skeleton.roots[0].transform.translation, 0.f));
+        EXPECT_TRUE(o_skeleton.roots[0].transform.rotation.isSimilar(i_skeleton.roots[0].transform.rotation, 0.f));
+        EXPECT_TRUE(o_skeleton.roots[0].transform.scale.isSimilar(i_skeleton.roots[0].transform.scale, 0.f));
 
-        EXPECT_TRUE(Compare(o_skeleton.roots[0].children[0].transform.translation,
-                            i_skeleton.roots[0].children[0].transform.translation, 0.f));
-        EXPECT_TRUE(Compare(o_skeleton.roots[0].children[0].transform.rotation,
-                            i_skeleton.roots[0].children[0].transform.rotation, 0.f));
-        EXPECT_TRUE(Compare(o_skeleton.roots[0].children[0].transform.scale,
-                            i_skeleton.roots[0].children[0].transform.scale, 0.f));
+        EXPECT_TRUE(o_skeleton.roots[0].children[0].transform.translation.isSimilar(
+                i_skeleton.roots[0].children[0].transform.translation, 0.f));
+        EXPECT_TRUE(o_skeleton.roots[0].children[0].transform.rotation.isSimilar(
+                i_skeleton.roots[0].children[0].transform.rotation, 0.f));
+        EXPECT_TRUE(o_skeleton.roots[0].children[0].transform.scale.isSimilar(
+                i_skeleton.roots[0].children[0].transform.scale, 0.f));
 
-        EXPECT_TRUE(Compare(o_skeleton.roots[0].children[0].children[0].transform.translation,
-                            i_skeleton.roots[0].children[0].children[0].transform.translation, 0.f));
-        EXPECT_TRUE(Compare(o_skeleton.roots[0].children[0].children[0].transform.rotation,
-                            i_skeleton.roots[0].children[0].children[0].transform.rotation, 0.f));
-        EXPECT_TRUE(Compare(o_skeleton.roots[0].children[0].children[0].transform.scale,
-                            i_skeleton.roots[0].children[0].children[0].transform.scale, 0.f));
+        EXPECT_TRUE(o_skeleton.roots[0].children[0].children[0].transform.translation.isSimilar(
+                i_skeleton.roots[0].children[0].children[0].transform.translation, 0.f));
+        EXPECT_TRUE(o_skeleton.roots[0].children[0].children[0].transform.rotation.isSimilar(
+                i_skeleton.roots[0].children[0].children[0].transform.rotation, 0.f));
+        EXPECT_TRUE(o_skeleton.roots[0].children[0].children[0].transform.scale.isSimilar(
+                i_skeleton.roots[0].children[0].children[0].transform.scale, 0.f));
 
-        EXPECT_TRUE(Compare(o_skeleton.roots[0].children[1].transform.translation,
-                            i_skeleton.roots[0].children[1].transform.translation, 0.f));
-        EXPECT_TRUE(Compare(o_skeleton.roots[0].children[1].transform.rotation,
-                            i_skeleton.roots[0].children[1].transform.rotation, 0.f));
-        EXPECT_TRUE(Compare(o_skeleton.roots[0].children[1].transform.scale,
-                            i_skeleton.roots[0].children[1].transform.scale, 0.f));
+        EXPECT_TRUE(o_skeleton.roots[0].children[1].transform.translation.isSimilar(
+                i_skeleton.roots[0].children[1].transform.translation, 0.f));
+        EXPECT_TRUE(o_skeleton.roots[0].children[1].transform.rotation.isSimilar(
+                i_skeleton.roots[0].children[1].transform.rotation, 0.f));
+        EXPECT_TRUE(o_skeleton.roots[0].children[1].transform.scale.isSimilar(
+                i_skeleton.roots[0].children[1].transform.scale, 0.f));
     }
 }
 

@@ -484,6 +484,17 @@ inline T Quaternion<T>::lengthSquared() const {
 }
 
 template <typename T>
+bool Quaternion<T>::isEqual(const Quaternion &other) const {
+    return x == other.x && y == other.y && z == other.z && w == other.w;
+}
+
+template <typename T>
+bool Quaternion<T>::isSimilar(const Quaternion &other, T epsilon) const {
+    return (std::fabs(x - other.x) < epsilon) && (std::fabs(y - other.y) < epsilon) &&
+           (std::fabs(z - other.z) < epsilon) && (std::fabs(w - other.w) < epsilon);
+}
+
+template <typename T>
 inline Quaternion<T> Quaternion<T>::inverse() const {
     T denom = w * w + x * x + y * y + z * z;
     return Quaternion(-x / denom, -y / denom, -z / denom, w / denom);

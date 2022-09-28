@@ -227,6 +227,12 @@ public:
      */
     T lengthSquared() const;
 
+    //! Returns true if \p other is the same as this quaternion.
+    bool isEqual(const Quaternion &other) const;
+
+    //! Returns true if \p other is similar to this quaternion.
+    bool isSimilar(const Quaternion &other, T epsilon = std::numeric_limits<T>::epsilon()) const;
+
     //! Returns the inverse quaternion.
     Quaternion inverse() const;
 

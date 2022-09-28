@@ -11,7 +11,6 @@
 #include "vox.animation/offline/raw_skeleton.h"
 #include "vox.animation/offline/skeleton_builder.h"
 #include "vox.animation/runtime/skeleton.h"
-#include "vox.base/memory/unique_ptr.h"
 #include "vox.simd_math/simd_math.h"
 #include "vox.simd_math/soa_transform.h"
 
@@ -670,7 +669,7 @@ TEST(MaxJoints, SkeletonBuilder) {
         EXPECT_TRUE(skeleton);
     }
 
-    {  // Outside of the domain.
+    {  // Outside the domain.
         RawSkeleton raw_skeleton;
         raw_skeleton.roots.resize(Skeleton::kMaxJoints + 1);
 

@@ -6,11 +6,11 @@
 
 #include "gtest/gtest.h"
 #include "test.animation/gtest_math_helper.h"
-#include "vox.base/memory/unique_ptr.h"
 #include "vox.animation/offline/raw_track.h"
 #include "vox.animation/offline/track_builder.h"
 #include "vox.animation/runtime/track.h"
 #include "vox.animation/runtime/track_sampling_job.h"
+#include "vox.base/memory/unique_ptr.h"
 
 using vox::animation::Float2Track;
 using vox::animation::Float3Track;
@@ -182,7 +182,7 @@ TEST(Float, TrackSamplingJob) {
 
 TEST(Float2, TrackSamplingJob) {
     TrackBuilder builder;
-    vox::math::Float2 result;
+    vox::Vector2F result;
 
     vox::animation::offline::RawFloat2Track raw_track;
 

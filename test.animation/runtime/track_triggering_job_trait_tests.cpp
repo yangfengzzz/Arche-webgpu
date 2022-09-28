@@ -7,13 +7,11 @@
 #include <algorithm>
 
 #include "gtest/gtest.h"
-#include "test.animation/gtest_helper.h"
-#include "test.animation/gtest_math_helper.h"
-#include "vox.base/memory/unique_ptr.h"
 #include "vox.animation/offline/raw_track.h"
 #include "vox.animation/offline/track_builder.h"
 #include "vox.animation/runtime/track.h"
 #include "vox.animation/runtime/track_triggering_job_trait.h"
+#include "vox.base/memory/unique_ptr.h"
 
 using vox::animation::FloatTrack;
 using vox::animation::TrackTriggeringJob;

@@ -10,7 +10,6 @@
 #include "vox.animation/offline/skeleton_builder.h"
 #include "vox.animation/runtime/local_to_model_job.h"
 #include "vox.animation/runtime/skeleton.h"
-#include "vox.base/memory/unique_ptr.h"
 #include "vox.simd_math/soa_transform.h"
 
 using vox::animation::LocalToModelJob;

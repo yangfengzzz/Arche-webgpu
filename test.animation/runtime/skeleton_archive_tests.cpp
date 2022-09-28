@@ -9,8 +9,6 @@
 #include "vox.animation/offline/skeleton_builder.h"
 #include "vox.animation/runtime/skeleton.h"
 #include "vox.base/io/archive.h"
-#include "vox.base/io/stream.h"
-#include "vox.base/memory/unique_ptr.h"
 #include "vox.simd_math/soa_transform.h"
 
 using vox::animation::Skeleton;

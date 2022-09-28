@@ -5,15 +5,14 @@
 //  property of any third parties.
 
 #include "gtest/gtest.h"
-#include "vox.base/io/archive.h"
-#include "vox.base/io/stream.h"
 #include "test.animation/gtest_math_helper.h"
-#include "vox.simd_math/soa_transform.h"
-#include "vox.base/memory/unique_ptr.h"
 #include "vox.animation/offline/animation_builder.h"
 #include "vox.animation/offline/raw_animation.h"
 #include "vox.animation/runtime/animation.h"
 #include "vox.animation/runtime/sampling_job.h"
+#include "vox.base/io/archive.h"
+#include "vox.base/memory/unique_ptr.h"
+#include "vox.simd_math/soa_transform.h"
 
 using vox::animation::Animation;
 using vox::animation::offline::AnimationBuilder;

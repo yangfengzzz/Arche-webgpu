@@ -5,16 +5,15 @@
 //  property of any third parties.
 
 #include <algorithm>
-#include <cstring>
 
 #include "gtest/gtest.h"
 #include "test.animation/gtest_helper.h"
 #include "test.animation/gtest_math_helper.h"
-#include "vox.base/memory/unique_ptr.h"
 #include "vox.animation/offline/raw_skeleton.h"
 #include "vox.animation/offline/skeleton_builder.h"
 #include "vox.animation/runtime/skeleton.h"
 #include "vox.animation/runtime/skeleton_utils.h"
+#include "vox.base/memory/unique_ptr.h"
 
 using vox::animation::Skeleton;
 using vox::animation::offline::RawSkeleton;
@@ -104,7 +103,7 @@ public:
         ++num_iterations_;
     }
 
-    int num_iterations() const { return num_iterations_; }
+    [[nodiscard]] int num_iterations() const { return num_iterations_; }
 
 private:
     // Iterated skeleton.
@@ -230,11 +229,11 @@ public:
         }
 
         // A joint is traversed once.
-        vox::vector<int>::const_iterator itc = std::find(processed_joints_.begin(), processed_joints_.end(), _current);
+        auto itc = std::find(processed_joints_.begin(), processed_joints_.end(), _current);
         EXPECT_TRUE(itc == processed_joints_.end());
 
         // A parent can't be traversed before a child.
-        vox::vector<int>::const_iterator itp = std::find(processed_joints_.begin(), processed_joints_.end(), _parent);
+        auto itp = std::find(processed_joints_.begin(), processed_joints_.end(), _parent);
         EXPECT_TRUE(itp == processed_joints_.end());
 
         // joint processed
@@ -246,7 +245,7 @@ public:
         ++num_iterations_;
     }
 
-    int num_iterations() const { return num_iterations_; }
+    [[nodiscard]] int num_iterations() const { return num_iterations_; }
 
 private:
     // Iterated skeleton.

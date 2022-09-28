@@ -8,7 +8,6 @@
 #include "test.animation/gtest_math_helper.h"
 #include "vox.animation/offline/additive_animation_builder.h"
 #include "vox.animation/offline/raw_animation.h"
-#include "vox.base/constants.h"
 #include "vox.math/scalable_transform.h"
 
 using vox::animation::offline::AdditiveAnimationBuilder;
