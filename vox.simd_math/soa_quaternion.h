@@ -11,7 +11,7 @@
 #include "vox.base/macros.h"
 #include "vox.simd_math/soa_float.h"
 
-namespace vox::math {
+namespace vox::simd_math {
 
 struct SoaQuaternion {
     SimdFloat4 x, y, z, w;
@@ -51,7 +51,7 @@ VOX_INLINE SimdFloat4 Dot(const SoaQuaternion& _a, const SoaQuaternion& _b) {
 // Returns the normalized SoaQuaternion _q.
 VOX_INLINE SoaQuaternion Normalize(const SoaQuaternion& _q) {
     const SimdFloat4 len2 = _q.x * _q.x + _q.y * _q.y + _q.z * _q.z + _q.w * _q.w;
-    const SimdFloat4 inv_len = math::simd_float4::one() / Sqrt(len2);
+    const SimdFloat4 inv_len = simd_math::simd_float4::one() / Sqrt(len2);
     const SoaQuaternion r = {_q.x * inv_len, _q.y * inv_len, _q.z * inv_len, _q.w * inv_len};
     return r;
 }
@@ -69,13 +69,13 @@ VOX_INLINE SoaQuaternion NormalizeEst(const SoaQuaternion& _q) {
 // Test if each quaternion of _q is normalized.
 VOX_INLINE SimdInt4 IsNormalized(const SoaQuaternion& _q) {
     const SimdFloat4 len2 = _q.x * _q.x + _q.y * _q.y + _q.z * _q.z + _q.w * _q.w;
-    return CmpLt(Abs(len2 - math::simd_float4::one()), simd_float4::Load1(kNormalizationToleranceSq));
+    return CmpLt(Abs(len2 - simd_math::simd_float4::one()), simd_float4::Load1(kNormalizationToleranceSq));
 }
 
 // Test if each quaternion of _q is normalized. using estimated tolerance.
 VOX_INLINE SimdInt4 IsNormalizedEst(const SoaQuaternion& _q) {
     const SimdFloat4 len2 = _q.x * _q.x + _q.y * _q.y + _q.z * _q.z + _q.w * _q.w;
-    return CmpLt(Abs(len2 - math::simd_float4::one()), simd_float4::Load1(kNormalizationToleranceEstSq));
+    return CmpLt(Abs(len2 - simd_math::simd_float4::one()), simd_float4::Load1(kNormalizationToleranceEstSq));
 }
 
 // Returns the linear interpolation of SoaQuaternion _a and _b with coefficient
@@ -92,7 +92,7 @@ VOX_INLINE SoaQuaternion NLerp(const SoaQuaternion& _a, const SoaQuaternion& _b,
     const SoaFloat4 lerp = {(_b.x - _a.x) * _f + _a.x, (_b.y - _a.y) * _f + _a.y, (_b.z - _a.z) * _f + _a.z,
                             (_b.w - _a.w) * _f + _a.w};
     const SimdFloat4 len2 = lerp.x * lerp.x + lerp.y * lerp.y + lerp.z * lerp.z + lerp.w * lerp.w;
-    const SimdFloat4 inv_len = math::simd_float4::one() / Sqrt(len2);
+    const SimdFloat4 inv_len = simd_math::simd_float4::one() / Sqrt(len2);
     const SoaQuaternion r = {lerp.x * inv_len, lerp.y * inv_len, lerp.z * inv_len, lerp.w * inv_len};
     return r;
 }
@@ -109,24 +109,24 @@ VOX_INLINE SoaQuaternion NLerpEst(const SoaQuaternion& _a, const SoaQuaternion& 
     const SoaQuaternion r = {lerp.x * inv_len, lerp.y * inv_len, lerp.z * inv_len, lerp.w * inv_len};
     return r;
 }
-}  // namespace vox::math
+}  // namespace vox::simd_math
 
 // Returns the addition of _a and _b.
-VOX_INLINE vox::math::SoaQuaternion operator+(const vox::math::SoaQuaternion& _a, const vox::math::SoaQuaternion& _b) {
-    const vox::math::SoaQuaternion r = {_a.x + _b.x, _a.y + _b.y, _a.z + _b.z, _a.w + _b.w};
+VOX_INLINE vox::simd_math::SoaQuaternion operator+(const vox::simd_math::SoaQuaternion& _a, const vox::simd_math::SoaQuaternion& _b) {
+    const vox::simd_math::SoaQuaternion r = {_a.x + _b.x, _a.y + _b.y, _a.z + _b.z, _a.w + _b.w};
     return r;
 }
 
 // Returns the multiplication of _q and scalar value _f.
-VOX_INLINE vox::math::SoaQuaternion operator*(const vox::math::SoaQuaternion& _q, const vox::math::SimdFloat4& _f) {
-    const vox::math::SoaQuaternion r = {_q.x * _f, _q.y * _f, _q.z * _f, _q.w * _f};
+VOX_INLINE vox::simd_math::SoaQuaternion operator*(const vox::simd_math::SoaQuaternion& _q, const vox::simd_math::SimdFloat4& _f) {
+    const vox::simd_math::SoaQuaternion r = {_q.x * _f, _q.y * _f, _q.z * _f, _q.w * _f};
     return r;
 }
 
 // Returns the multiplication of _a and _b. If both _a and _b are normalized,
 // then the result is normalized.
-VOX_INLINE vox::math::SoaQuaternion operator*(const vox::math::SoaQuaternion& _a, const vox::math::SoaQuaternion& _b) {
-    const vox::math::SoaQuaternion r = {_a.w * _b.x + _a.x * _b.w + _a.y * _b.z - _a.z * _b.y,
+VOX_INLINE vox::simd_math::SoaQuaternion operator*(const vox::simd_math::SoaQuaternion& _a, const vox::simd_math::SoaQuaternion& _b) {
+    const vox::simd_math::SoaQuaternion r = {_a.w * _b.x + _a.x * _b.w + _a.y * _b.z - _a.z * _b.y,
                                         _a.w * _b.y + _a.y * _b.w + _a.z * _b.x - _a.x * _b.z,
                                         _a.w * _b.z + _a.z * _b.w + _a.x * _b.y - _a.y * _b.x,
                                         _a.w * _b.w - _a.x * _b.x - _a.y * _b.y - _a.z * _b.z};
@@ -135,10 +135,10 @@ VOX_INLINE vox::math::SoaQuaternion operator*(const vox::math::SoaQuaternion& _a
 
 // Returns true if each element of _a is equal to each element of _b.
 // Uses a bitwise comparison of _a and _b, no tolerance is applied.
-VOX_INLINE vox::math::SimdInt4 operator==(const vox::math::SoaQuaternion& _a, const vox::math::SoaQuaternion& _b) {
-    const vox::math::SimdInt4 x = vox::math::CmpEq(_a.x, _b.x);
-    const vox::math::SimdInt4 y = vox::math::CmpEq(_a.y, _b.y);
-    const vox::math::SimdInt4 z = vox::math::CmpEq(_a.z, _b.z);
-    const vox::math::SimdInt4 w = vox::math::CmpEq(_a.w, _b.w);
-    return vox::math::And(vox::math::And(vox::math::And(x, y), z), w);
+VOX_INLINE vox::simd_math::SimdInt4 operator==(const vox::simd_math::SoaQuaternion& _a, const vox::simd_math::SoaQuaternion& _b) {
+    const vox::simd_math::SimdInt4 x = vox::simd_math::CmpEq(_a.x, _b.x);
+    const vox::simd_math::SimdInt4 y = vox::simd_math::CmpEq(_a.y, _b.y);
+    const vox::simd_math::SimdInt4 z = vox::simd_math::CmpEq(_a.z, _b.z);
+    const vox::simd_math::SimdInt4 w = vox::simd_math::CmpEq(_a.w, _b.w);
+    return vox::simd_math::And(vox::simd_math::And(vox::simd_math::And(x, y), z), w);
 }

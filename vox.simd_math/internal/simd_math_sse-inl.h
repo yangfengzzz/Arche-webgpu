@@ -18,7 +18,7 @@
 #include "vox.base/constants.h"
 
 namespace vox {
-namespace math {
+namespace simd_math {
 
 namespace simd_float4 {
 
@@ -1634,21 +1634,21 @@ inline Float4x4 Float4x4::FromAffine(_SimdFloat4 _translation, _SimdFloat4 _quat
     return ret;
 }
 
-VOX_INLINE vox::math::SimdFloat4 TransformPoint(const vox::math::Float4x4& _m, vox::math::_SimdFloat4 _v) {
+VOX_INLINE vox::simd_math::SimdFloat4 TransformPoint(const vox::simd_math::Float4x4& _m, vox::simd_math::_SimdFloat4 _v) {
     const __m128 xxxx = _mm_mul_ps(VOX_SSE_SPLAT_F(_v, 0), _m.cols[0]);
     const __m128 a23 = VOX_MADD(VOX_SSE_SPLAT_F(_v, 2), _m.cols[2], _m.cols[3]);
     const __m128 a01 = VOX_MADD(VOX_SSE_SPLAT_F(_v, 1), _m.cols[1], xxxx);
     return _mm_add_ps(a01, a23);
 }
 
-VOX_INLINE vox::math::SimdFloat4 TransformVector(const vox::math::Float4x4& _m, vox::math::_SimdFloat4 _v) {
+VOX_INLINE vox::simd_math::SimdFloat4 TransformVector(const vox::simd_math::Float4x4& _m, vox::simd_math::_SimdFloat4 _v) {
     const __m128 xxxx = _mm_mul_ps(_m.cols[0], VOX_SSE_SPLAT_F(_v, 0));
     const __m128 zzzz = _mm_mul_ps(_m.cols[1], VOX_SSE_SPLAT_F(_v, 1));
     const __m128 a21 = VOX_MADD(_m.cols[2], VOX_SSE_SPLAT_F(_v, 2), xxxx);
     return _mm_add_ps(zzzz, a21);
 }
 
-VOX_INLINE vox::math::SimdFloat4 operator*(const vox::math::Float4x4& _m, vox::math::_SimdFloat4 _v) {
+VOX_INLINE vox::simd_math::SimdFloat4 operator*(const vox::simd_math::Float4x4& _m, vox::simd_math::_SimdFloat4 _v) {
     const __m128 xxxx = _mm_mul_ps(VOX_SSE_SPLAT_F(_v, 0), _m.cols[0]);
     const __m128 zzzz = _mm_mul_ps(VOX_SSE_SPLAT_F(_v, 2), _m.cols[2]);
     const __m128 a01 = VOX_MADD(VOX_SSE_SPLAT_F(_v, 1), _m.cols[1], xxxx);
@@ -1656,8 +1656,8 @@ VOX_INLINE vox::math::SimdFloat4 operator*(const vox::math::Float4x4& _m, vox::m
     return _mm_add_ps(a01, a23);
 }
 
-inline vox::math::Float4x4 operator*(const vox::math::Float4x4& _a, const vox::math::Float4x4& _b) {
-    vox::math::Float4x4 ret;
+inline vox::simd_math::Float4x4 operator*(const vox::simd_math::Float4x4& _a, const vox::simd_math::Float4x4& _b) {
+    vox::simd_math::Float4x4 ret;
     {
         const __m128 xxxx = _mm_mul_ps(VOX_SSE_SPLAT_F(_b.cols[0], 0), _a.cols[0]);
         const __m128 zzzz = _mm_mul_ps(VOX_SSE_SPLAT_F(_b.cols[0], 2), _a.cols[2]);
@@ -1689,42 +1689,42 @@ inline vox::math::Float4x4 operator*(const vox::math::Float4x4& _a, const vox::m
     return ret;
 }
 
-VOX_INLINE vox::math::Float4x4 operator+(const vox::math::Float4x4& _a, const vox::math::Float4x4& _b) {
-    const vox::math::Float4x4 ret = {{_mm_add_ps(_a.cols[0], _b.cols[0]), _mm_add_ps(_a.cols[1], _b.cols[1]),
+VOX_INLINE vox::simd_math::Float4x4 operator+(const vox::simd_math::Float4x4& _a, const vox::simd_math::Float4x4& _b) {
+    const vox::simd_math::Float4x4 ret = {{_mm_add_ps(_a.cols[0], _b.cols[0]), _mm_add_ps(_a.cols[1], _b.cols[1]),
                                       _mm_add_ps(_a.cols[2], _b.cols[2]), _mm_add_ps(_a.cols[3], _b.cols[3])}};
     return ret;
 }
 
-VOX_INLINE vox::math::Float4x4 operator-(const vox::math::Float4x4& _a, const vox::math::Float4x4& _b) {
-    const vox::math::Float4x4 ret = {{_mm_sub_ps(_a.cols[0], _b.cols[0]), _mm_sub_ps(_a.cols[1], _b.cols[1]),
+VOX_INLINE vox::simd_math::Float4x4 operator-(const vox::simd_math::Float4x4& _a, const vox::simd_math::Float4x4& _b) {
+    const vox::simd_math::Float4x4 ret = {{_mm_sub_ps(_a.cols[0], _b.cols[0]), _mm_sub_ps(_a.cols[1], _b.cols[1]),
                                       _mm_sub_ps(_a.cols[2], _b.cols[2]), _mm_sub_ps(_a.cols[3], _b.cols[3])}};
     return ret;
 }
-}  // namespace math
+}  // namespace simd_math
 }  // namespace vox
 
 #if !defined(VOX_DISABLE_SSE_NATIVE_OPERATORS)
-VOX_INLINE vox::math::SimdFloat4 operator+(vox::math::_SimdFloat4 _a, vox::math::_SimdFloat4 _b) {
+VOX_INLINE vox::simd_math::SimdFloat4 operator+(vox::simd_math::_SimdFloat4 _a, vox::simd_math::_SimdFloat4 _b) {
     return _mm_add_ps(_a, _b);
 }
 
-VOX_INLINE vox::math::SimdFloat4 operator-(vox::math::_SimdFloat4 _a, vox::math::_SimdFloat4 _b) {
+VOX_INLINE vox::simd_math::SimdFloat4 operator-(vox::simd_math::_SimdFloat4 _a, vox::simd_math::_SimdFloat4 _b) {
     return _mm_sub_ps(_a, _b);
 }
 
-VOX_INLINE vox::math::SimdFloat4 operator-(vox::math::_SimdFloat4 _v) { return _mm_sub_ps(_mm_setzero_ps(), _v); }
+VOX_INLINE vox::simd_math::SimdFloat4 operator-(vox::simd_math::_SimdFloat4 _v) { return _mm_sub_ps(_mm_setzero_ps(), _v); }
 
-VOX_INLINE vox::math::SimdFloat4 operator*(vox::math::_SimdFloat4 _a, vox::math::_SimdFloat4 _b) {
+VOX_INLINE vox::simd_math::SimdFloat4 operator*(vox::simd_math::_SimdFloat4 _a, vox::simd_math::_SimdFloat4 _b) {
     return _mm_mul_ps(_a, _b);
 }
 
-VOX_INLINE vox::math::SimdFloat4 operator/(vox::math::_SimdFloat4 _a, vox::math::_SimdFloat4 _b) {
+VOX_INLINE vox::simd_math::SimdFloat4 operator/(vox::simd_math::_SimdFloat4 _a, vox::simd_math::_SimdFloat4 _b) {
     return _mm_div_ps(_a, _b);
 }
 #endif  // !defined(VOX_DISABLE_SSE_NATIVE_OPERATORS)
 
 namespace vox {
-namespace math {
+namespace simd_math {
 VOX_INLINE uint16_t FloatToHalf(float _f) {
     const int h = _mm_cvtsi128_si32(FloatToHalf(_mm_set1_ps(_f)));
     return static_cast<uint16_t>(h);
@@ -1780,7 +1780,7 @@ VOX_INLINE SimdFloat4 HalfToFloat(_SimdInt4 _h) {
     const __m128 sign_inf = _mm_or_ps(_mm_castsi128_ps(sign), infnanexp);
     return _mm_or_ps(scaled, sign_inf);
 }
-}  // namespace math
+}  // namespace simd_math
 }  // namespace vox
 
 #undef VOX_SHUFFLE_PS1

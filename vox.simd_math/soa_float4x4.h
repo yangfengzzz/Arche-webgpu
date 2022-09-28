@@ -12,7 +12,7 @@
 #include "vox.simd_math/soa_float.h"
 #include "vox.simd_math/soa_quaternion.h"
 
-namespace vox::math {
+namespace vox::simd_math {
 
 // Declare the 4x4 soa matrix type. Uses the column major convention where the
 // matrix-times-vector is written v'=Mv:
@@ -181,11 +181,11 @@ VOX_INLINE SoaFloat4x4 Scale(const SoaFloat4x4& _m, const SoaFloat4& _v) {
                               _m.cols[3]}};
     return ret;
 }
-}  // namespace vox::math
+}  // namespace vox::simd_math
 
 // Computes the multiplication of matrix Float4x4 and vector  _v.
-VOX_INLINE vox::math::SoaFloat4 operator*(const vox::math::SoaFloat4x4& _m, const vox::math::SoaFloat4& _v) {
-    const vox::math::SoaFloat4 ret = {
+VOX_INLINE vox::simd_math::SoaFloat4 operator*(const vox::simd_math::SoaFloat4x4& _m, const vox::simd_math::SoaFloat4& _v) {
+    const vox::simd_math::SoaFloat4 ret = {
             _m.cols[0].x * _v.x + _m.cols[1].x * _v.y + _m.cols[2].x * _v.z + _m.cols[3].x * _v.w,
             _m.cols[0].y * _v.x + _m.cols[1].y * _v.y + _m.cols[2].y * _v.z + _m.cols[3].y * _v.w,
             _m.cols[0].z * _v.x + _m.cols[1].z * _v.y + _m.cols[2].z * _v.z + _m.cols[3].z * _v.w,
@@ -194,14 +194,14 @@ VOX_INLINE vox::math::SoaFloat4 operator*(const vox::math::SoaFloat4x4& _m, cons
 }
 
 // Computes the multiplication of two matrices _a and _b.
-VOX_INLINE vox::math::SoaFloat4x4 operator*(const vox::math::SoaFloat4x4& _a, const vox::math::SoaFloat4x4& _b) {
-    const vox::math::SoaFloat4x4 ret = {{_a * _b.cols[0], _a * _b.cols[1], _a * _b.cols[2], _a * _b.cols[3]}};
+VOX_INLINE vox::simd_math::SoaFloat4x4 operator*(const vox::simd_math::SoaFloat4x4& _a, const vox::simd_math::SoaFloat4x4& _b) {
+    const vox::simd_math::SoaFloat4x4 ret = {{_a * _b.cols[0], _a * _b.cols[1], _a * _b.cols[2], _a * _b.cols[3]}};
     return ret;
 }
 
 // Computes the per element addition of two matrices _a and _b.
-VOX_INLINE vox::math::SoaFloat4x4 operator+(const vox::math::SoaFloat4x4& _a, const vox::math::SoaFloat4x4& _b) {
-    const vox::math::SoaFloat4x4 ret = {{{_a.cols[0].x + _b.cols[0].x, _a.cols[0].y + _b.cols[0].y,
+VOX_INLINE vox::simd_math::SoaFloat4x4 operator+(const vox::simd_math::SoaFloat4x4& _a, const vox::simd_math::SoaFloat4x4& _b) {
+    const vox::simd_math::SoaFloat4x4 ret = {{{_a.cols[0].x + _b.cols[0].x, _a.cols[0].y + _b.cols[0].y,
                                           _a.cols[0].z + _b.cols[0].z, _a.cols[0].w + _b.cols[0].w},
                                          {_a.cols[1].x + _b.cols[1].x, _a.cols[1].y + _b.cols[1].y,
                                           _a.cols[1].z + _b.cols[1].z, _a.cols[1].w + _b.cols[1].w},
@@ -213,8 +213,8 @@ VOX_INLINE vox::math::SoaFloat4x4 operator+(const vox::math::SoaFloat4x4& _a, co
 }
 
 // Computes the per element subtraction of two matrices _a and _b.
-VOX_INLINE vox::math::SoaFloat4x4 operator-(const vox::math::SoaFloat4x4& _a, const vox::math::SoaFloat4x4& _b) {
-    const vox::math::SoaFloat4x4 ret = {{{_a.cols[0].x - _b.cols[0].x, _a.cols[0].y - _b.cols[0].y,
+VOX_INLINE vox::simd_math::SoaFloat4x4 operator-(const vox::simd_math::SoaFloat4x4& _a, const vox::simd_math::SoaFloat4x4& _b) {
+    const vox::simd_math::SoaFloat4x4 ret = {{{_a.cols[0].x - _b.cols[0].x, _a.cols[0].y - _b.cols[0].y,
                                           _a.cols[0].z - _b.cols[0].z, _a.cols[0].w - _b.cols[0].w},
                                          {_a.cols[1].x - _b.cols[1].x, _a.cols[1].y - _b.cols[1].y,
                                           _a.cols[1].z - _b.cols[1].z, _a.cols[1].w - _b.cols[1].w},

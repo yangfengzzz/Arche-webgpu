@@ -68,7 +68,7 @@
 // SEE* intrinsics available
 #if defined(VOX_SIMD_SSEx)
 
-namespace vox::math {
+namespace vox::simd_math {
 
 // Vector of four floating point values.
 typedef __m128 SimdFloat4;
@@ -81,7 +81,7 @@ typedef __m128i SimdInt4;
 
 // Argument type for Int4.
 typedef const __m128i _SimdInt4;
-}  // namespace vox::math
+}  // namespace vox::simd_math
 
 #else  // No builtin simd available
 
@@ -89,7 +89,7 @@ typedef const __m128i _SimdInt4;
 // VOX_SIMD_REF is the generic flag for SIMD reference implementation.
 #define VOX_SIMD_REF
 
-// Declares reference simd float and integer vectors outside of vox::math, in
+// Declares reference simd float and integer vectors outside of vox::simd_math, in
 // order to match non-reference implementation details.
 
 // Vector of four floating point values.
@@ -109,7 +109,7 @@ struct SimdInt4Def {
 };
 
 namespace vox {
-namespace math {
+namespace simd_math {
 
 // Vector of four floating point values.
 typedef SimdFloat4Def SimdFloat4;
@@ -123,7 +123,7 @@ typedef SimdInt4Def SimdInt4;
 // Argument type for SimdInt4.
 typedef const SimdInt4& _SimdInt4;
 
-}  // namespace math
+}  // namespace simd_math
 }  // namespace vox
 #endif  // VOX_SIMD_x
 

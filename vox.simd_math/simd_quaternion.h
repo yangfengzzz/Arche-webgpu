@@ -11,7 +11,7 @@
 #include "vox.simd_math/simd_math.h"
 
 // Implement simd quaternion.
-namespace vox::math {
+namespace vox::simd_math {
 // Declare the Quaternion type.
 struct SimdQuaternion {
     SimdFloat4 xyzw;
@@ -175,9 +175,9 @@ VOX_INLINE SimdQuaternion SimdQuaternion::FromVectors(_SimdFloat4 _from, _SimdFl
         // arbitrary orthogonal axis. Axis normalization can happen later, when we
         // normalize the quaternion.
         float from[4];
-        vox::math::StorePtrU(_from, from);
-        quat.xyzw = std::abs(from[0]) > std::abs(from[2]) ? vox::math::simd_float4::Load(-from[1], from[0], 0.f, 0.f)
-                                                          : vox::math::simd_float4::Load(0.f, -from[2], from[1], 0.f);
+        vox::simd_math::StorePtrU(_from, from);
+        quat.xyzw = std::abs(from[0]) > std::abs(from[2]) ? vox::simd_math::simd_float4::Load(-from[1], from[0], 0.f, 0.f)
+                                                          : vox::simd_math::simd_float4::Load(0.f, -from[2], from[1], 0.f);
     } else {
         // This is the general code path.
         quat.xyzw = SetW(Cross3(_from, _to), real_part);
@@ -187,19 +187,19 @@ VOX_INLINE SimdQuaternion SimdQuaternion::FromVectors(_SimdFloat4 _from, _SimdFl
 
 VOX_INLINE SimdQuaternion SimdQuaternion::FromUnitVectors(_SimdFloat4 _from, _SimdFloat4 _to) {
     // http://lolengine.net/blog/2014/02/24/quaternion-from-two-vectors-final
-    assert(vox::math::AreAllTrue1(And(IsNormalizedEst3(_from), IsNormalizedEst3(_to))) &&
+    assert(vox::simd_math::AreAllTrue1(And(IsNormalizedEst3(_from), IsNormalizedEst3(_to))) &&
            "Input vectors must be normalized.");
 
-    const SimdFloat4 real_part = vox::math::simd_float4::x_axis() + Dot3(_from, _to);
+    const SimdFloat4 real_part = vox::simd_math::simd_float4::x_axis() + Dot3(_from, _to);
     if (GetX(real_part) < 1.e-6f) {
         // If _from and _to are exactly opposite, rotate 180 degrees around an
         // arbitrary orthogonal axis.
         // Normalization isn't needed, as from is already.
         float from[4];
-        vox::math::StorePtrU(_from, from);
+        vox::simd_math::StorePtrU(_from, from);
         SimdQuaternion quat = {std::abs(from[0]) > std::abs(from[2])
-                                       ? vox::math::simd_float4::Load(-from[1], from[0], 0.f, 0.f)
-                                       : vox::math::simd_float4::Load(0.f, -from[2], from[1], 0.f)};
+                                       ? vox::simd_math::simd_float4::Load(-from[1], from[0], 0.f, 0.f)
+                                       : vox::simd_math::simd_float4::Load(0.f, -from[2], from[1], 0.f)};
         return quat;
     } else {
         // This is the general code path.
@@ -219,4 +219,4 @@ VOX_INLINE SimdFloat4 TransformVector(const SimdQuaternion& _q, _SimdFloat4 _v) 
     const SimdFloat4 cross2 = Cross3(_q.xyzw, cross1);
     return _v + cross2 + cross2;
 }
-}  // namespace vox::math
+}  // namespace vox::simd_math

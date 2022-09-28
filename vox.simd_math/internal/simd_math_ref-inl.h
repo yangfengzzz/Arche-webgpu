@@ -17,7 +17,7 @@
 #include "vox.base/constants.h"
 
 namespace vox {
-namespace math {
+namespace simd_math {
 
 namespace internal {
 // Defines union cast helpers that are used internally for binary logical
@@ -1761,24 +1761,24 @@ VOX_INLINE Float4x4 Float4x4::FromAffine(_SimdFloat4 _translation, _SimdFloat4 _
     return ret;
 }
 
-VOX_INLINE vox::math::SimdFloat4 TransformPoint(const vox::math::Float4x4& _m, vox::math::_SimdFloat4 _v) {
-    const vox::math::SimdFloat4 ret = {_m.cols[0].x * _v.x + _m.cols[1].x * _v.y + _m.cols[2].x * _v.z + _m.cols[3].x,
+VOX_INLINE vox::simd_math::SimdFloat4 TransformPoint(const vox::simd_math::Float4x4& _m, vox::simd_math::_SimdFloat4 _v) {
+    const vox::simd_math::SimdFloat4 ret = {_m.cols[0].x * _v.x + _m.cols[1].x * _v.y + _m.cols[2].x * _v.z + _m.cols[3].x,
                                        _m.cols[0].y * _v.x + _m.cols[1].y * _v.y + _m.cols[2].y * _v.z + _m.cols[3].y,
                                        _m.cols[0].z * _v.x + _m.cols[1].z * _v.y + _m.cols[2].z * _v.z + _m.cols[3].z,
                                        _m.cols[0].w * _v.x + _m.cols[1].w * _v.y + _m.cols[2].w * _v.z + _m.cols[3].w};
     return ret;
 }
 
-VOX_INLINE vox::math::SimdFloat4 TransformVector(const vox::math::Float4x4& _m, vox::math::_SimdFloat4 _v) {
-    const vox::math::SimdFloat4 ret = {_m.cols[0].x * _v.x + _m.cols[1].x * _v.y + _m.cols[2].x * _v.z,
+VOX_INLINE vox::simd_math::SimdFloat4 TransformVector(const vox::simd_math::Float4x4& _m, vox::simd_math::_SimdFloat4 _v) {
+    const vox::simd_math::SimdFloat4 ret = {_m.cols[0].x * _v.x + _m.cols[1].x * _v.y + _m.cols[2].x * _v.z,
                                        _m.cols[0].y * _v.x + _m.cols[1].y * _v.y + _m.cols[2].y * _v.z,
                                        _m.cols[0].z * _v.x + _m.cols[1].z * _v.y + _m.cols[2].z * _v.z,
                                        _m.cols[0].w * _v.x + _m.cols[1].w * _v.y + _m.cols[2].w * _v.z};
     return ret;
 }
 
-VOX_INLINE vox::math::SimdFloat4 operator*(const vox::math::Float4x4& _m, vox::math::_SimdFloat4 _v) {
-    const vox::math::SimdFloat4 ret = {
+VOX_INLINE vox::simd_math::SimdFloat4 operator*(const vox::simd_math::Float4x4& _m, vox::simd_math::_SimdFloat4 _v) {
+    const vox::simd_math::SimdFloat4 ret = {
             _m.cols[0].x * _v.x + _m.cols[1].x * _v.y + _m.cols[2].x * _v.z + _m.cols[3].x * _v.w,
             _m.cols[0].y * _v.x + _m.cols[1].y * _v.y + _m.cols[2].y * _v.z + _m.cols[3].y * _v.w,
             _m.cols[0].z * _v.x + _m.cols[1].z * _v.y + _m.cols[2].z * _v.z + _m.cols[3].z * _v.w,
@@ -1786,13 +1786,13 @@ VOX_INLINE vox::math::SimdFloat4 operator*(const vox::math::Float4x4& _m, vox::m
     return ret;
 }
 
-VOX_INLINE vox::math::Float4x4 operator*(const vox::math::Float4x4& _a, const vox::math::Float4x4& _b) {
-    const vox::math::Float4x4 ret = {{_a * _b.cols[0], _a * _b.cols[1], _a * _b.cols[2], _a * _b.cols[3]}};
+VOX_INLINE vox::simd_math::Float4x4 operator*(const vox::simd_math::Float4x4& _a, const vox::simd_math::Float4x4& _b) {
+    const vox::simd_math::Float4x4 ret = {{_a * _b.cols[0], _a * _b.cols[1], _a * _b.cols[2], _a * _b.cols[3]}};
     return ret;
 }
 
-VOX_INLINE vox::math::Float4x4 operator+(const vox::math::Float4x4& _a, const vox::math::Float4x4& _b) {
-    const vox::math::Float4x4 ret = {{{_a.cols[0].x + _b.cols[0].x, _a.cols[0].y + _b.cols[0].y,
+VOX_INLINE vox::simd_math::Float4x4 operator+(const vox::simd_math::Float4x4& _a, const vox::simd_math::Float4x4& _b) {
+    const vox::simd_math::Float4x4 ret = {{{_a.cols[0].x + _b.cols[0].x, _a.cols[0].y + _b.cols[0].y,
                                        _a.cols[0].z + _b.cols[0].z, _a.cols[0].w + _b.cols[0].w},
                                       {_a.cols[1].x + _b.cols[1].x, _a.cols[1].y + _b.cols[1].y,
                                        _a.cols[1].z + _b.cols[1].z, _a.cols[1].w + _b.cols[1].w},
@@ -1803,8 +1803,8 @@ VOX_INLINE vox::math::Float4x4 operator+(const vox::math::Float4x4& _a, const vo
     return ret;
 }
 
-VOX_INLINE vox::math::Float4x4 operator-(const vox::math::Float4x4& _a, const vox::math::Float4x4& _b) {
-    const vox::math::Float4x4 ret = {{{_a.cols[0].x - _b.cols[0].x, _a.cols[0].y - _b.cols[0].y,
+VOX_INLINE vox::simd_math::Float4x4 operator-(const vox::simd_math::Float4x4& _a, const vox::simd_math::Float4x4& _b) {
+    const vox::simd_math::Float4x4 ret = {{{_a.cols[0].x - _b.cols[0].x, _a.cols[0].y - _b.cols[0].y,
                                        _a.cols[0].z - _b.cols[0].z, _a.cols[0].w - _b.cols[0].w},
                                       {_a.cols[1].x - _b.cols[1].x, _a.cols[1].y - _b.cols[1].y,
                                        _a.cols[1].z - _b.cols[1].z, _a.cols[1].w - _b.cols[1].w},
@@ -1814,36 +1814,36 @@ VOX_INLINE vox::math::Float4x4 operator-(const vox::math::Float4x4& _a, const vo
                                        _a.cols[3].z - _b.cols[3].z, _a.cols[3].w - _b.cols[3].w}}};
     return ret;
 }
-}  // namespace math
+}  // namespace simd_math
 }  // namespace vox
 
-VOX_INLINE vox::math::SimdFloat4 operator+(vox::math::_SimdFloat4 _a, vox::math::_SimdFloat4 _b) {
-    const vox::math::SimdFloat4 ret = {_a.x + _b.x, _a.y + _b.y, _a.z + _b.z, _a.w + _b.w};
+VOX_INLINE vox::simd_math::SimdFloat4 operator+(vox::simd_math::_SimdFloat4 _a, vox::simd_math::_SimdFloat4 _b) {
+    const vox::simd_math::SimdFloat4 ret = {_a.x + _b.x, _a.y + _b.y, _a.z + _b.z, _a.w + _b.w};
     return ret;
 }
 
-VOX_INLINE vox::math::SimdFloat4 operator-(vox::math::_SimdFloat4 _a, vox::math::_SimdFloat4 _b) {
-    const vox::math::SimdFloat4 ret = {_a.x - _b.x, _a.y - _b.y, _a.z - _b.z, _a.w - _b.w};
+VOX_INLINE vox::simd_math::SimdFloat4 operator-(vox::simd_math::_SimdFloat4 _a, vox::simd_math::_SimdFloat4 _b) {
+    const vox::simd_math::SimdFloat4 ret = {_a.x - _b.x, _a.y - _b.y, _a.z - _b.z, _a.w - _b.w};
     return ret;
 }
 
-VOX_INLINE vox::math::SimdFloat4 operator-(vox::math::_SimdFloat4 _v) {
-    const vox::math::SimdFloat4 ret = {-_v.x, -_v.y, -_v.z, -_v.w};
+VOX_INLINE vox::simd_math::SimdFloat4 operator-(vox::simd_math::_SimdFloat4 _v) {
+    const vox::simd_math::SimdFloat4 ret = {-_v.x, -_v.y, -_v.z, -_v.w};
     return ret;
 }
 
-VOX_INLINE vox::math::SimdFloat4 operator*(vox::math::_SimdFloat4 _a, vox::math::_SimdFloat4 _b) {
-    const vox::math::SimdFloat4 ret = {_a.x * _b.x, _a.y * _b.y, _a.z * _b.z, _a.w * _b.w};
+VOX_INLINE vox::simd_math::SimdFloat4 operator*(vox::simd_math::_SimdFloat4 _a, vox::simd_math::_SimdFloat4 _b) {
+    const vox::simd_math::SimdFloat4 ret = {_a.x * _b.x, _a.y * _b.y, _a.z * _b.z, _a.w * _b.w};
     return ret;
 }
 
-VOX_INLINE vox::math::SimdFloat4 operator/(vox::math::_SimdFloat4 _a, vox::math::_SimdFloat4 _b) {
-    const vox::math::SimdFloat4 ret = {_a.x / _b.x, _a.y / _b.y, _a.z / _b.z, _a.w / _b.w};
+VOX_INLINE vox::simd_math::SimdFloat4 operator/(vox::simd_math::_SimdFloat4 _a, vox::simd_math::_SimdFloat4 _b) {
+    const vox::simd_math::SimdFloat4 ret = {_a.x / _b.x, _a.y / _b.y, _a.z / _b.z, _a.w / _b.w};
     return ret;
 }
 
 namespace vox {
-namespace math {
+namespace simd_math {
 // Half <-> Float implementation is based on:
 // http://fgiesen.wordpress.com/2012/03/28/half-to-float-done-quic/.
 VOX_INLINE uint16_t FloatToHalf(float _f) {
@@ -1911,16 +1911,16 @@ VOX_INLINE float HalfToFloat(uint16_t _h) {
 }
 
 VOX_INLINE SimdInt4 FloatToHalf(_SimdFloat4 _f) {
-    const vox::math::SimdInt4 ret = {FloatToHalf(_f.x), FloatToHalf(_f.y), FloatToHalf(_f.z), FloatToHalf(_f.w)};
+    const vox::simd_math::SimdInt4 ret = {FloatToHalf(_f.x), FloatToHalf(_f.y), FloatToHalf(_f.z), FloatToHalf(_f.w)};
     return ret;
 }
 
 VOX_INLINE SimdFloat4 HalfToFloat(_SimdInt4 _h) {
-    const vox::math::SimdFloat4 ret = {HalfToFloat(_h.x & 0x0000ffff), HalfToFloat(_h.y & 0x0000ffff),
+    const vox::simd_math::SimdFloat4 ret = {HalfToFloat(_h.x & 0x0000ffff), HalfToFloat(_h.y & 0x0000ffff),
                                        HalfToFloat(_h.z & 0x0000ffff), HalfToFloat(_h.w & 0x0000ffff)};
     return ret;
 }
-}  // namespace math
+}  // namespace simd_math
 }  // namespace vox
 
 #undef VOX_RCP_EST

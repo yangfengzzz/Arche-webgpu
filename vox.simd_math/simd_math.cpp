@@ -7,7 +7,7 @@
 #include "vox.simd_math/simd_math.h"
 
 namespace vox {
-namespace math {
+namespace simd_math {
 
 // Select compile time name of the simd implementation
 #if defined(VOX_SIMD_AVX2) && defined(VOX_SIMD_FMA)
@@ -32,8 +32,8 @@ namespace math {
 // Not defined
 #endif
 
-#pragma message("Ozz libraries were built with " _VOX_SIMD_IMPLEMENTATION " SIMD math implementation")
+#pragma message("Arche-cp libraries were built with " _VOX_SIMD_IMPLEMENTATION " SIMD math implementation")
 
 const char* SimdImplementationName() { return _VOX_SIMD_IMPLEMENTATION; }
-}  // namespace math
+}  // namespace simd_math
 }  // namespace vox

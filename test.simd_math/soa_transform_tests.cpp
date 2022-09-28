@@ -8,7 +8,7 @@
 #include "test.simd_math/gtest_math_helper.h"
 #include "vox.simd_math/soa_transform.h"
 
-using vox::math::SoaTransform;
+using vox::simd_math::SoaTransform;
 
 TEST(SoaTransformConstant, vox_soa_math) {
     EXPECT_SOAFLOAT3_EQ(SoaTransform::identity().translation, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f,

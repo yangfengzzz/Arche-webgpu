@@ -10,7 +10,7 @@
 #include "vox.simd_math/soa_float.h"
 #include "vox.simd_math/soa_quaternion.h"
 
-namespace vox::math {
+namespace vox::simd_math {
 
 // Stores an affine transformation with separate translation, rotation and scale
 // attributes.
@@ -24,4 +24,4 @@ struct SoaTransform {
         return ret;
     }
 };
-}  // namespace vox::math
+}  // namespace vox::simd_math

@@ -25,63 +25,63 @@ inline void ExpectTrue(bool _b) { EXPECT_TRUE(_b); }
 // precision.
 #define EXPECT_FLOAT_EQ_EST(_expected, _x) EXPECT_NEAR(_expected, _x, kFloatNearEstTolerance)
 
-// Macro for testing vox::math::Float4 members with x, y, z, w float values,
+// Macro for testing vox::simd_math::Float4 members with x, y, z, w float values,
 // using EXPECT_FLOAT_EQ internally.
-#define EXPECT_FLOAT4_EQ(_expected, _x, _y, _z, _w)  \
-                                                     \
-    do {                                             \
-        SCOPED_TRACE("");                            \
-        const vox::math::Float4 expected(_expected); \
-        ExpectFloatNear(expected.x, _x);             \
-        ExpectFloatNear(expected.y, _y);             \
-        ExpectFloatNear(expected.z, _z);             \
-        ExpectFloatNear(expected.w, _w);             \
-                                                     \
+#define EXPECT_FLOAT4_EQ(_expected, _x, _y, _z, _w)       \
+                                                          \
+    do {                                                  \
+        SCOPED_TRACE("");                                 \
+        const vox::simd_math::Float4 expected(_expected); \
+        ExpectFloatNear(expected.x, _x);                  \
+        ExpectFloatNear(expected.y, _y);                  \
+        ExpectFloatNear(expected.z, _z);                  \
+        ExpectFloatNear(expected.w, _w);                  \
+                                                          \
     } while (void(0), 0)
 
-// Macro for testing vox::math::Float3 members with x, y, z float values,
+// Macro for testing vox::simd_math::Float3 members with x, y, z float values,
 // using EXPECT_FLOAT_EQ internally.
-#define EXPECT_FLOAT3_EQ(_expected, _x, _y, _z)      \
-                                                     \
-    do {                                             \
-        SCOPED_TRACE("");                            \
-        const vox::math::Float3 expected(_expected); \
-        ExpectFloatNear(expected.x, _x);             \
-        ExpectFloatNear(expected.y, _y);             \
-        ExpectFloatNear(expected.z, _z);             \
-                                                     \
+#define EXPECT_FLOAT3_EQ(_expected, _x, _y, _z)           \
+                                                          \
+    do {                                                  \
+        SCOPED_TRACE("");                                 \
+        const vox::simd_math::Float3 expected(_expected); \
+        ExpectFloatNear(expected.x, _x);                  \
+        ExpectFloatNear(expected.y, _y);                  \
+        ExpectFloatNear(expected.z, _z);                  \
+                                                          \
     } while (void(0), 0)
 
-// Macro for testing vox::math::Float2 members with x, y float values,
+// Macro for testing vox::simd_math::Float2 members with x, y float values,
 // using EXPECT_NEAR internally.
-#define EXPECT_FLOAT2_EQ(_expected, _x, _y)          \
-                                                     \
-    do {                                             \
-        SCOPED_TRACE("");                            \
-        const vox::math::Float2 expected(_expected); \
-        ExpectFloatNear(expected.x, _x);             \
-        ExpectFloatNear(expected.y, _y);             \
-                                                     \
+#define EXPECT_FLOAT2_EQ(_expected, _x, _y)               \
+                                                          \
+    do {                                                  \
+        SCOPED_TRACE("");                                 \
+        const vox::simd_math::Float2 expected(_expected); \
+        ExpectFloatNear(expected.x, _x);                  \
+        ExpectFloatNear(expected.y, _y);                  \
+                                                          \
     } while (void(0), 0)
 
-// Macro for testing vox::math::Quaternion members with x, y, z, w float value.
-#define EXPECT_QUATERNION_EQ(_expected, _x, _y, _z, _w)  \
-                                                         \
-    do {                                                 \
-        SCOPED_TRACE("");                                \
-        const vox::math::Quaternion expected(_expected); \
-        ExpectFloatNear(expected.x, _x);                 \
-        ExpectFloatNear(expected.y, _y);                 \
-        ExpectFloatNear(expected.z, _z);                 \
-        ExpectFloatNear(expected.w, _w);                 \
-                                                         \
+// Macro for testing vox::simd_math::Quaternion members with x, y, z, w float value.
+#define EXPECT_QUATERNION_EQ(_expected, _x, _y, _z, _w)       \
+                                                              \
+    do {                                                      \
+        SCOPED_TRACE("");                                     \
+        const vox::simd_math::Quaternion expected(_expected); \
+        ExpectFloatNear(expected.x, _x);                      \
+        ExpectFloatNear(expected.y, _y);                      \
+        ExpectFloatNear(expected.z, _z);                      \
+        ExpectFloatNear(expected.w, _w);                      \
+                                                              \
     } while (void(0), 0)
 
 #define _IMPL_EXPECT_SIMDFLOAT_EQ_TOL(_expected, _x, _y, _z, _w, _tol) \
                                                                        \
     do {                                                               \
         union {                                                        \
-            vox::math::SimdFloat4 ret;                                 \
+            vox::simd_math::SimdFloat4 ret;                            \
             float af[4];                                               \
         } u = {_expected};                                             \
         ExpectFloatNear(u.af[0], _x, _tol);                            \
@@ -97,7 +97,7 @@ inline void ExpectTrue(bool _b) { EXPECT_TRUE(_b); }
 #define _IMPL_EXPECT_SIMDFLOAT_EQ_EST(_expected, _x, _y, _z, _w) \
     _IMPL_EXPECT_SIMDFLOAT_EQ_TOL(_expected, _x, _y, _z, _w, kFloatNearEstTolerance)
 
-// Macro for testing vox::math::simd::SimdFloat members with x, y, z, w values.
+// Macro for testing vox::simd_math::simd::SimdFloat members with x, y, z, w values.
 #define EXPECT_SIMDFLOAT_EQ(_expected, _x, _y, _z, _w)        \
                                                               \
     do {                                                      \
@@ -106,7 +106,7 @@ inline void ExpectTrue(bool _b) { EXPECT_TRUE(_b); }
                                                               \
     } while (void(0), 0)
 
-// Macro for testing vox::math::simd::SimdFloat members with x, y, z, w values.
+// Macro for testing vox::simd_math::simd::SimdFloat members with x, y, z, w values.
 // Dedicated to estimated functions with a lower precision.
 #define EXPECT_SIMDFLOAT_EQ_EST(_expected, _x, _y, _z, _w)        \
                                                                   \
@@ -116,13 +116,13 @@ inline void ExpectTrue(bool _b) { EXPECT_TRUE(_b); }
                                                                   \
     } while (void(0), 0)
 
-// Macro for testing vox::math::simd::SimdFloat members with x, y values with
+// Macro for testing vox::simd_math::simd::SimdFloat members with x, y values with
 // a user defined precision.
 #define _IMPL_EXPECT_SIMDFLOAT2_EQ_TOL(_expected, _x, _y, _tol) \
                                                                 \
     do {                                                        \
         union {                                                 \
-            vox::math::SimdFloat4 ret;                          \
+            vox::simd_math::SimdFloat4 ret;                     \
             float af[4];                                        \
         } u = {_expected};                                      \
         ExpectFloatNear(u.af[0], _x, _tol);                     \
@@ -130,7 +130,7 @@ inline void ExpectTrue(bool _b) { EXPECT_TRUE(_b); }
                                                                 \
     } while (void(0), 0)
 
-// Macro for testing vox::math::simd::SimdFloat members with x, y values.
+// Macro for testing vox::simd_math::simd::SimdFloat members with x, y values.
 #define EXPECT_SIMDFLOAT2_EQ(_expected, _x, _y)                                 \
                                                                                 \
     do {                                                                        \
@@ -139,7 +139,7 @@ inline void ExpectTrue(bool _b) { EXPECT_TRUE(_b); }
                                                                                 \
     } while (void(0), 0)
 
-// Macro for testing vox::math::simd::SimdFloat members with x, y values.
+// Macro for testing vox::simd_math::simd::SimdFloat members with x, y values.
 // Dedicated to estimated functions with a lower precision.
 #define EXPECT_SIMDFLOAT2_EQ_EST(_expected, _x, _y)                                \
                                                                                    \
@@ -149,7 +149,7 @@ inline void ExpectTrue(bool _b) { EXPECT_TRUE(_b); }
                                                                                    \
     } while (void(0), 0)
 
-// Macro for testing vox::math::simd::SimdFloat members with x, y, z values.
+// Macro for testing vox::simd_math::simd::SimdFloat members with x, y, z values.
 // Dedicated to estimated functions with a user defined precision.
 #define EXPECT_SIMDFLOAT3_EQ_TOL(_expected, _x, _y, _z, _tol)        \
                                                                      \
@@ -159,13 +159,13 @@ inline void ExpectTrue(bool _b) { EXPECT_TRUE(_b); }
                                                                      \
     } while (void(0), 0)
 
-// Macro for testing vox::math::simd::SimdFloat members with x, y, z values with
+// Macro for testing vox::simd_math::simd::SimdFloat members with x, y, z values with
 // a user defined precision.
 #define _IMPL_EXPECT_SIMDFLOAT3_EQ_TOL(_expected, _x, _y, _z, _tol) \
                                                                     \
     do {                                                            \
         union {                                                     \
-            vox::math::SimdFloat4 ret;                              \
+            vox::simd_math::SimdFloat4 ret;                         \
             float af[4];                                            \
         } u = {_expected};                                          \
         ExpectFloatNear(u.af[0], _x, _tol);                         \
@@ -174,7 +174,7 @@ inline void ExpectTrue(bool _b) { EXPECT_TRUE(_b); }
                                                                     \
     } while (void(0), 0)
 
-// Macro for testing vox::math::simd::SimdFloat members with x, y, z values.
+// Macro for testing vox::simd_math::simd::SimdFloat members with x, y, z values.
 #define EXPECT_SIMDFLOAT3_EQ(_expected, _x, _y, _z)                                 \
                                                                                     \
     do {                                                                            \
@@ -183,7 +183,7 @@ inline void ExpectTrue(bool _b) { EXPECT_TRUE(_b); }
                                                                                     \
     } while (void(0), 0)
 
-// Macro for testing vox::math::simd::SimdFloat members with x, y, z values.
+// Macro for testing vox::simd_math::simd::SimdFloat members with x, y, z values.
 // Dedicated to estimated functions with a lower precision.
 #define EXPECT_SIMDFLOAT3_EQ_EST(_expected, _x, _y, _z)                                \
                                                                                        \
@@ -193,7 +193,7 @@ inline void ExpectTrue(bool _b) { EXPECT_TRUE(_b); }
                                                                                        \
     } while (void(0), 0)
 
-// Macro for testing vox::math::simd::SimdFloat members with x, y, z values.
+// Macro for testing vox::simd_math::simd::SimdFloat members with x, y, z values.
 // Dedicated to estimated functions with a user defined precision.
 #define EXPECT_SIMDFLOAT3_EQ_TOL(_expected, _x, _y, _z, _tol)        \
                                                                      \
@@ -203,13 +203,13 @@ inline void ExpectTrue(bool _b) { EXPECT_TRUE(_b); }
                                                                      \
     } while (void(0), 0)
 
-// Macro for testing vox::math::simd::SimdInt members with x, y, z, w values.
+// Macro for testing vox::simd_math::simd::SimdInt members with x, y, z, w values.
 #define EXPECT_SIMDINT_EQ(_expected, _x, _y, _z, _w) \
                                                      \
     do {                                             \
         SCOPED_TRACE("");                            \
         union {                                      \
-            vox::math::SimdInt4 ret;                 \
+            vox::simd_math::SimdInt4 ret;            \
             int ai[4];                               \
         } u = {_expected};                           \
         ExpectIntEq(u.ai[0], static_cast<int>(_x));  \
@@ -219,12 +219,12 @@ inline void ExpectTrue(bool _b) { EXPECT_TRUE(_b); }
                                                      \
     } while (void(0), 0)
 
-// Macro for testing vox::math::SoaFloat4 members with x, y, z, w float values.
+// Macro for testing vox::simd_math::SoaFloat4 members with x, y, z, w float values.
 #define EXPECT_FLOAT4x4_EQ(_expected, _x0, _x1, _x2, _x3, _y0, _y1, _y2, _y3, _z0, _z1, _z2, _z3, _w0, _w1, _w2, _w3) \
                                                                                                                       \
     do {                                                                                                              \
         SCOPED_TRACE("");                                                                                             \
-        const vox::math::Float4x4 expected(_expected);                                                                \
+        const vox::simd_math::Float4x4 expected(_expected);                                                           \
         _IMPL_EXPECT_SIMDFLOAT_EQ(expected.cols[0], _x0, _x1, _x2, _x3);                                              \
         _IMPL_EXPECT_SIMDFLOAT_EQ(expected.cols[1], _y0, _y1, _y2, _y3);                                              \
         _IMPL_EXPECT_SIMDFLOAT_EQ(expected.cols[2], _z0, _z1, _z2, _z3);                                              \
@@ -232,7 +232,7 @@ inline void ExpectTrue(bool _b) { EXPECT_TRUE(_b); }
                                                                                                                       \
     } while (void(0), 0)
 
-// Macro for testing vox::math::simd::SimdQuaternion members with x, y, z, w
+// Macro for testing vox::simd_math::simd::SimdQuaternion members with x, y, z, w
 // values.
 #define EXPECT_SIMDQUATERNION_EQ(_expected, _x, _y, _z, _w)        \
                                                                    \
@@ -242,7 +242,7 @@ inline void ExpectTrue(bool _b) { EXPECT_TRUE(_b); }
                                                                    \
     } while (void(0), 0)
 
-// Macro for testing vox::math::simd::SimdQuaternion members with x, y, z, w
+// Macro for testing vox::simd_math::simd::SimdQuaternion members with x, y, z, w
 // values.
 #define EXPECT_SIMDQUATERNION_EQ_EST(_expected, _x, _y, _z, _w)        \
                                                                        \
@@ -252,7 +252,7 @@ inline void ExpectTrue(bool _b) { EXPECT_TRUE(_b); }
                                                                        \
     } while (void(0), 0)
 
-// Macro for testing vox::math::simd::SimdQuaternion members with x, y, z, w
+// Macro for testing vox::simd_math::simd::SimdQuaternion members with x, y, z, w
 // values.
 #define EXPECT_SIMDQUATERNION_EQ_TOL(_expected, _x, _y, _z, _w, _tol)        \
                                                                              \
@@ -262,12 +262,12 @@ inline void ExpectTrue(bool _b) { EXPECT_TRUE(_b); }
                                                                              \
     } while (void(0), 0)
 
-// Macro for testing vox::math::SoaFloat4 members with x, y, z, w float values.
+// Macro for testing vox::simd_math::SoaFloat4 members with x, y, z, w float values.
 #define EXPECT_SOAFLOAT4_EQ(_expected, _x0, _x1, _x2, _x3, _y0, _y1, _y2, _y3, _z0, _z1, _z2, _z3, _w0, _w1, _w2, _w3) \
                                                                                                                        \
     do {                                                                                                               \
         SCOPED_TRACE("");                                                                                              \
-        const vox::math::SoaFloat4 expected(_expected);                                                                \
+        const vox::simd_math::SoaFloat4 expected(_expected);                                                           \
         _IMPL_EXPECT_SIMDFLOAT_EQ(expected.x, _x0, _x1, _x2, _x3);                                                     \
         _IMPL_EXPECT_SIMDFLOAT_EQ(expected.y, _y0, _y1, _y2, _y3);                                                     \
         _IMPL_EXPECT_SIMDFLOAT_EQ(expected.z, _z0, _z1, _z2, _z3);                                                     \
@@ -275,14 +275,14 @@ inline void ExpectTrue(bool _b) { EXPECT_TRUE(_b); }
                                                                                                                        \
     } while (void(0), 0)
 
-// Macro for testing vox::math::SoaFloat4 members with x, y, z, w float values.
+// Macro for testing vox::simd_math::SoaFloat4 members with x, y, z, w float values.
 // Dedicated to estimated functions with a lower precision.
 #define EXPECT_SOAFLOAT4_EQ_EST(_expected, _x0, _x1, _x2, _x3, _y0, _y1, _y2, _y3, _z0, _z1, _z2, _z3, _w0, _w1, _w2, \
                                 _w3)                                                                                  \
                                                                                                                       \
     do {                                                                                                              \
         SCOPED_TRACE("");                                                                                             \
-        const vox::math::SoaFloat4 expected(_expected);                                                               \
+        const vox::simd_math::SoaFloat4 expected(_expected);                                                          \
         _IMPL_EXPECT_SIMDFLOAT_EQ_EST(expected.x, _x0, _x1, _x2, _x3);                                                \
         _IMPL_EXPECT_SIMDFLOAT_EQ_EST(expected.y, _y0, _y1, _y2, _y3);                                                \
         _IMPL_EXPECT_SIMDFLOAT_EQ_EST(expected.z, _z0, _z1, _z2, _z3);                                                \
@@ -290,70 +290,70 @@ inline void ExpectTrue(bool _b) { EXPECT_TRUE(_b); }
                                                                                                                       \
     } while (void(0), 0)
 
-// Macro for testing vox::math::SoaFloat3 members with x, y, z float values.
+// Macro for testing vox::simd_math::SoaFloat3 members with x, y, z float values.
 #define EXPECT_SOAFLOAT3_EQ(_expected, _x0, _x1, _x2, _x3, _y0, _y1, _y2, _y3, _z0, _z1, _z2, _z3) \
                                                                                                    \
     do {                                                                                           \
         SCOPED_TRACE("");                                                                          \
-        const vox::math::SoaFloat3 expected(_expected);                                            \
+        const vox::simd_math::SoaFloat3 expected(_expected);                                       \
         _IMPL_EXPECT_SIMDFLOAT_EQ(expected.x, _x0, _x1, _x2, _x3);                                 \
         _IMPL_EXPECT_SIMDFLOAT_EQ(expected.y, _y0, _y1, _y2, _y3);                                 \
         _IMPL_EXPECT_SIMDFLOAT_EQ(expected.z, _z0, _z1, _z2, _z3);                                 \
                                                                                                    \
     } while (void(0), 0)
 
-// Macro for testing vox::math::SoaFloat3 members with x, y, z float values.
+// Macro for testing vox::simd_math::SoaFloat3 members with x, y, z float values.
 // Dedicated to estimated functions with a lower precision.
 #define EXPECT_SOAFLOAT3_EQ_EST(_expected, _x0, _x1, _x2, _x3, _y0, _y1, _y2, _y3, _z0, _z1, _z2, _z3) \
                                                                                                        \
     do {                                                                                               \
         SCOPED_TRACE("");                                                                              \
-        const vox::math::SoaFloat3 expected(_expected);                                                \
+        const vox::simd_math::SoaFloat3 expected(_expected);                                           \
         _IMPL_EXPECT_SIMDFLOAT_EQ_EST(expected.x, _x0, _x1, _x2, _x3);                                 \
         _IMPL_EXPECT_SIMDFLOAT_EQ_EST(expected.y, _y0, _y1, _y2, _y3);                                 \
         _IMPL_EXPECT_SIMDFLOAT_EQ_EST(expected.z, _z0, _z1, _z2, _z3);                                 \
                                                                                                        \
     } while (void(0), 0)
 
-// Macro for testing vox::math::SoaFloat2 members with x, y float values.
+// Macro for testing vox::simd_math::SoaFloat2 members with x, y float values.
 #define EXPECT_SOAFLOAT2_EQ(_expected, _x0, _x1, _x2, _x3, _y0, _y1, _y2, _y3) \
                                                                                \
     do {                                                                       \
         SCOPED_TRACE("");                                                      \
-        const vox::math::SoaFloat2 expected(_expected);                        \
+        const vox::simd_math::SoaFloat2 expected(_expected);                   \
         _IMPL_EXPECT_SIMDFLOAT_EQ(expected.x, _x0, _x1, _x2, _x3);             \
         _IMPL_EXPECT_SIMDFLOAT_EQ(expected.y, _y0, _y1, _y2, _y3);             \
                                                                                \
     } while (void(0), 0)
 
-// Macro for testing vox::math::SoaFloat2 members with x, y float values.
+// Macro for testing vox::simd_math::SoaFloat2 members with x, y float values.
 // Dedicated to estimated functions with a lower precision.
 #define EXPECT_SOAFLOAT2_EQ_EST(_expected, _x0, _x1, _x2, _x3, _y0, _y1, _y2, _y3) \
                                                                                    \
     do {                                                                           \
         SCOPED_TRACE("");                                                          \
-        const vox::math::SoaFloat2 expected(_expected);                            \
+        const vox::simd_math::SoaFloat2 expected(_expected);                       \
         _IMPL_EXPECT_SIMDFLOAT_EQ_EST(expected.x, _x0, _x1, _x2, _x3);             \
         _IMPL_EXPECT_SIMDFLOAT_EQ_EST(expected.y, _y0, _y1, _y2, _y3);             \
                                                                                    \
     } while (void(0), 0)
 
-// Macro for testing vox::math::SoaFloat2 members with x, y float values.
+// Macro for testing vox::simd_math::SoaFloat2 members with x, y float values.
 #define EXPECT_SOAFLOAT1_EQ(_expected, _x0, _x1, _x2, _x3) _IMPL_EXPECT_SIMDFLOAT_EQ(_expected, _x0, _x1, _x2, _x3);
 
-// Macro for testing vox::math::SoaFloat2 members with x, y float values.
+// Macro for testing vox::simd_math::SoaFloat2 members with x, y float values.
 // Dedicated to estimated functions with a lower precision.
 #define EXPECT_SOAFLOAT1_EQ_EST(_expected, _x0, _x1, _x2, _x3) \
     _IMPL_EXPECT_SIMDFLOAT_EQ_EST(_expected, _x0, _x1, _x2, _x3);
 
-// Macro for testing vox::math::SoaQuaternion members with x, y, z, w float
+// Macro for testing vox::simd_math::SoaQuaternion members with x, y, z, w float
 // values.
 #define EXPECT_SOAQUATERNION_EQ(_expected, _x0, _x1, _x2, _x3, _y0, _y1, _y2, _y3, _z0, _z1, _z2, _z3, _w0, _w1, _w2, \
                                 _w3)                                                                                  \
                                                                                                                       \
     do {                                                                                                              \
         SCOPED_TRACE("");                                                                                             \
-        const vox::math::SoaQuaternion expected(_expected);                                                           \
+        const vox::simd_math::SoaQuaternion expected(_expected);                                                      \
         _IMPL_EXPECT_SIMDFLOAT_EQ(expected.x, _x0, _x1, _x2, _x3);                                                    \
         _IMPL_EXPECT_SIMDFLOAT_EQ(expected.y, _y0, _y1, _y2, _y3);                                                    \
         _IMPL_EXPECT_SIMDFLOAT_EQ(expected.z, _z0, _z1, _z2, _z3);                                                    \
@@ -361,7 +361,7 @@ inline void ExpectTrue(bool _b) { EXPECT_TRUE(_b); }
                                                                                                                       \
     } while (void(0), 0)
 
-// Macro for testing vox::math::SoaQuaternion members with x, y, z, w float
+// Macro for testing vox::simd_math::SoaQuaternion members with x, y, z, w float
 // values.
 // Dedicated to estimated functions with a lower precision.
 #define EXPECT_SOAQUATERNION_EQ_EST(_expected, _x0, _x1, _x2, _x3, _y0, _y1, _y2, _y3, _z0, _z1, _z2, _z3, _w0, _w1, \
@@ -369,7 +369,7 @@ inline void ExpectTrue(bool _b) { EXPECT_TRUE(_b); }
                                                                                                                      \
     do {                                                                                                             \
         SCOPED_TRACE("");                                                                                            \
-        const vox::math::SoaQuaternion expected(_expected);                                                          \
+        const vox::simd_math::SoaQuaternion expected(_expected);                                                     \
         _IMPL_EXPECT_SIMDFLOAT_EQ_EST(expected.x, _x0, _x1, _x2, _x3);                                               \
         _IMPL_EXPECT_SIMDFLOAT_EQ_EST(expected.y, _y0, _y1, _y2, _y3);                                               \
         _IMPL_EXPECT_SIMDFLOAT_EQ_EST(expected.z, _z0, _z1, _z2, _z3);                                               \
@@ -386,7 +386,7 @@ inline void ExpectTrue(bool _b) { EXPECT_TRUE(_b); }
                                                                                                                       \
     do {                                                                                                              \
         SCOPED_TRACE("");                                                                                             \
-        const vox::math::SoaFloat4x4 expected(_expected);                                                             \
+        const vox::simd_math::SoaFloat4x4 expected(_expected);                                                        \
         _IMPL_EXPECT_SIMDFLOAT_EQ(expected.cols[0].x, col0xx, col0xy, col0xz, col0xw);                                \
         _IMPL_EXPECT_SIMDFLOAT_EQ(expected.cols[0].y, col0yx, col0yy, col0yz, col0yw);                                \
         _IMPL_EXPECT_SIMDFLOAT_EQ(expected.cols[0].z, col0zx, col0zy, col0zz, col0zw);                                \

@@ -9,7 +9,7 @@
 #include "vox.base/macros.h"
 #include "vox.simd_math/internal/simd_math_config.h"
 
-namespace vox::math {
+namespace vox::simd_math {
 
 // Returns SIMDimplementation name has decided at library build time.
 VOX_BASE_DLL const char* SimdImplementationName();
@@ -1123,45 +1123,45 @@ VOX_INLINE bool ToAffine(const Float4x4& _m, SimdFloat4* _translation, SimdFloat
 // Computes the transformation of a Float4x4 matrix and a point _p.
 // This is equivalent to multiplying a matrix by a SimdFloat4 with a w component
 // of 1.
-VOX_INLINE vox::math::SimdFloat4 TransformPoint(const vox::math::Float4x4& _m, vox::math::_SimdFloat4 _v);
+VOX_INLINE vox::simd_math::SimdFloat4 TransformPoint(const vox::simd_math::Float4x4& _m, vox::simd_math::_SimdFloat4 _v);
 
 // Computes the transformation of a Float4x4 matrix and a vector _v.
 // This is equivalent to multiplying a matrix by a SimdFloat4 with a w component
 // of 0.
-VOX_INLINE vox::math::SimdFloat4 TransformVector(const vox::math::Float4x4& _m, vox::math::_SimdFloat4 _v);
+VOX_INLINE vox::simd_math::SimdFloat4 TransformVector(const vox::simd_math::Float4x4& _m, vox::simd_math::_SimdFloat4 _v);
 
 // Computes the multiplication of matrix Float4x4 and vector _v.
-VOX_INLINE vox::math::SimdFloat4 operator*(const vox::math::Float4x4& _m, vox::math::_SimdFloat4 _v);
+VOX_INLINE vox::simd_math::SimdFloat4 operator*(const vox::simd_math::Float4x4& _m, vox::simd_math::_SimdFloat4 _v);
 
 // Computes the multiplication of two matrices _a and _b.
-VOX_INLINE vox::math::Float4x4 operator*(const vox::math::Float4x4& _a, const vox::math::Float4x4& _b);
+VOX_INLINE vox::simd_math::Float4x4 operator*(const vox::simd_math::Float4x4& _a, const vox::simd_math::Float4x4& _b);
 
 // Computes the per element addition of two matrices _a and _b.
-VOX_INLINE vox::math::Float4x4 operator+(const vox::math::Float4x4& _a, const vox::math::Float4x4& _b);
+VOX_INLINE vox::simd_math::Float4x4 operator+(const vox::simd_math::Float4x4& _a, const vox::simd_math::Float4x4& _b);
 
 // Computes the per element subtraction of two matrices _a and _b.
-VOX_INLINE vox::math::Float4x4 operator-(const vox::math::Float4x4& _a, const vox::math::Float4x4& _b);
-}  // namespace vox::math
+VOX_INLINE vox::simd_math::Float4x4 operator-(const vox::simd_math::Float4x4& _a, const vox::simd_math::Float4x4& _b);
+}  // namespace vox::simd_math
 
 #if !defined(VOX_DISABLE_SSE_NATIVE_OPERATORS)
 // Returns per element addition of _a and _b.
-VOX_INLINE vox::math::SimdFloat4 operator+(vox::math::_SimdFloat4 _a, vox::math::_SimdFloat4 _b);
+VOX_INLINE vox::simd_math::SimdFloat4 operator+(vox::simd_math::_SimdFloat4 _a, vox::simd_math::_SimdFloat4 _b);
 
 // Returns per element subtraction of _a and _b.
-VOX_INLINE vox::math::SimdFloat4 operator-(vox::math::_SimdFloat4 _a, vox::math::_SimdFloat4 _b);
+VOX_INLINE vox::simd_math::SimdFloat4 operator-(vox::simd_math::_SimdFloat4 _a, vox::simd_math::_SimdFloat4 _b);
 
 // Returns per element negation of _v.
-VOX_INLINE vox::math::SimdFloat4 operator-(vox::math::_SimdFloat4 _v);
+VOX_INLINE vox::simd_math::SimdFloat4 operator-(vox::simd_math::_SimdFloat4 _v);
 
 // Returns per element multiplication of _a and _b.
-VOX_INLINE vox::math::SimdFloat4 operator*(vox::math::_SimdFloat4 _a, vox::math::_SimdFloat4 _b);
+VOX_INLINE vox::simd_math::SimdFloat4 operator*(vox::simd_math::_SimdFloat4 _a, vox::simd_math::_SimdFloat4 _b);
 
 // Returns per element division of _a and _b.
-VOX_INLINE vox::math::SimdFloat4 operator/(vox::math::_SimdFloat4 _a, vox::math::_SimdFloat4 _b);
+VOX_INLINE vox::simd_math::SimdFloat4 operator/(vox::simd_math::_SimdFloat4 _a, vox::simd_math::_SimdFloat4 _b);
 #endif  // !defined(VOX_DISABLE_SSE_NATIVE_OPERATORS)
 
 // Implement format conversions.
-namespace vox::math {
+namespace vox::simd_math {
 // Converts from a float to a half.
 VOX_INLINE uint16_t FloatToHalf(float _f);
 
@@ -1173,7 +1173,7 @@ VOX_INLINE SimdInt4 FloatToHalf(_SimdFloat4 _f);
 
 // Converts from a half to a float.
 VOX_INLINE SimdFloat4 HalfToFloat(_SimdInt4 _h);
-}  // namespace vox::math
+}  // namespace vox::simd_math
 
 #if defined(VOX_SIMD_SSEx)
 #include "vox.simd_math/internal/simd_math_sse-inl.h"
