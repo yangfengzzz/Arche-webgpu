@@ -70,19 +70,19 @@ TEST(AnimationFilled, RawAnimationSerialize) {
                 const RawAnimation::TranslationKey& o_key = o_track.translations[j];
                 const RawAnimation::TranslationKey& i_key = i_track.translations[j];
                 EXPECT_FLOAT_EQ(o_key.time, i_key.time);
-                EXPECT_TRUE(o_key.value.isSimilar(i_key.value, 0.f));
+                EXPECT_TRUE(o_key.value.isSimilar(i_key.value));
             }
             for (size_t j = 0; j < o_track.rotations.size(); ++j) {
                 const RawAnimation::RotationKey& o_key = o_track.rotations[j];
                 const RawAnimation::RotationKey& i_key = i_track.rotations[j];
                 EXPECT_FLOAT_EQ(o_key.time, i_key.time);
-                EXPECT_TRUE(o_key.value.isSimilar(i_key.value, .1f));
+                EXPECT_TRUE(o_key.value.isSimilar(i_key.value));
             }
             for (size_t j = 0; j < o_track.scales.size(); ++j) {
                 const RawAnimation::ScaleKey& o_key = o_track.scales[j];
                 const RawAnimation::ScaleKey& i_key = i_track.scales[j];
                 EXPECT_FLOAT_EQ(o_key.time, i_key.time);
-                EXPECT_TRUE(o_key.value.isSimilar(i_key.value, 0.f));
+                EXPECT_TRUE(o_key.value.isSimilar(i_key.value));
             }
         }
     }
