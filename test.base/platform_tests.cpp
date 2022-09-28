@@ -100,7 +100,7 @@ TEST(TypeSize, Platform) {
 
 TEST(DebudNDebug, Platform) {
     VOX_IF_DEBUG(assert(true));
-    VOX_IF_NDEBUG(assert(false))
+    VOX_IF_NDEBUG(assert(false));
 }
 
 TEST(ArraySize, Platform) {

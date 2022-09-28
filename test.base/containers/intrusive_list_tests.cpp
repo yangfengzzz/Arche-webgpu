@@ -30,7 +30,7 @@ using vox::containers::Option;
 // Test whether assertion compliance tests can be ran on the container specified
 // as template argument.
 // The default implementation allows to run all tests.
-template <typename _Ty>
+template <typename Ty>
 struct TestAssertCompliance {
     enum { kValue = 1 };
 };
@@ -45,8 +45,8 @@ struct TestAssertCompliance {
 #endif
 
 // Specializes for std::list,  according to compilation settings.
-template <typename _Ty>
-struct TestAssertCompliance<std::list<_Ty>> {
+template <typename Ty>
+struct TestAssertCompliance<std::list<Ty>> {
     enum { kValue = HAS_STD_ASSERTION };
 };
 
@@ -54,15 +54,15 @@ struct TestAssertCompliance<std::list<_Ty>> {
 // listed by an IntrusiveList.
 // Every instance is assigned a value (obtained for a global instance counter)
 // used for instance sorting and comparison.
-template <typename _Options0 = Option<>>
-class TestObj1 : public IntrusiveList<TestObj1<_Options0>, _Options0>::Hook {
+template <typename Options0 = Option<>>
+class TestObj1 : public IntrusiveList<TestObj1<Options0>, Options0>::Hook {
 public:
     // Constructs a TestObj1 and increments global TestObj1 counter.
     TestObj1() : instance_(s_instance_counter_++) {}
 
     // Does not copy the Node itself, just maintains the assigned instance number.
     TestObj1(TestObj1 const& _r)  // NOLINT cannot be explicit as used by std::list
-        : IntrusiveList<TestObj1<_Options0>, _Options0>::Hook(), instance_(_r.instance_) {}
+        : IntrusiveList<TestObj1<Options0>, Options0>::Hook(), instance_(_r.instance_) {}
 
     // Implements comparison operators.
     bool operator==(TestObj1 const& _r) const { return instance_ == _r.instance_; }
@@ -80,61 +80,61 @@ private:
     static int s_instance_counter_;
 };
 
-template <typename _Options0>
-int TestObj1<_Options0>::s_instance_counter_ = 0;
+template <typename Options0>
+int TestObj1<Options0>::s_instance_counter_ = 0;
 
 // Defines a test object that inherits from TestObj1 in order to be listed by
 // two IntrusiveList at a time.
-template <typename _Options1, typename _Options2>
-class TestObj2 : public TestObj1<_Options1>, public IntrusiveList<TestObj2<_Options1, _Options2>, _Options2>::Hook {
+template <typename Options1, typename Options2>
+class TestObj2 : public TestObj1<Options1>, public IntrusiveList<TestObj2<Options1, Options2>, Options2>::Hook {
 public:
     // Constructs a default TestObj2.
-    TestObj2() {}
+    TestObj2() = default;
 
     // Does not copy the Node itself, just maintains the assigned instance number.
-    explicit TestObj2(TestObj2 const& _r)
-        : TestObj1<_Options1>(_r), IntrusiveList<TestObj2<_Options1, _Options2>, _Options2>::Hook() {}
+    TestObj2(TestObj2 const& _r)
+        : TestObj1<Options1>(_r), IntrusiveList<TestObj2<Options1, Options2>, Options2>::Hook() {}
 };
 
 // Applies the _Test function to some std::list<> and Intrusive<> types.
-template <template <typename> class _Test>
+template <template <typename> class Test>
 void BindTypes() {
     // std::list
-    _Test<std::list<TestObj1<>>>()();
+    Test<std::list<TestObj1<>>>()();
 
     // kAuto link mode
-    typedef Option<vox::containers::LinkMode::kAuto, 0> _OptionsAuto0;
-    typedef TestObj1<_OptionsAuto0> AutoTestObj0;
-    _Test<IntrusiveList<AutoTestObj0, _OptionsAuto0>>()();
+    typedef Option<vox::containers::LinkMode::kAuto, 0> OptionsAuto0;
+    typedef TestObj1<OptionsAuto0> AutoTestObj0;
+    Test<IntrusiveList<AutoTestObj0, OptionsAuto0>>()();
 
     // kSafe link mode
-    typedef Option<vox::containers::LinkMode::kSafe, 0> _OptionsSafe0;
-    typedef TestObj1<_OptionsSafe0> SafeTestObj0;
-    _Test<IntrusiveList<SafeTestObj0, _OptionsSafe0>>()();
+    typedef Option<vox::containers::LinkMode::kSafe, 0> OptionsSafe0;
+    typedef TestObj1<OptionsSafe0> SafeTestObj0;
+    Test<IntrusiveList<SafeTestObj0, OptionsSafe0>>()();
 
     // kUnsafe link mode
-    typedef Option<vox::containers::LinkMode::kUnsafe, 0> _OptionsUnsafe0;
-    typedef TestObj1<_OptionsUnsafe0> UnsafeTestObj0;
-    _Test<IntrusiveList<UnsafeTestObj0, _OptionsUnsafe0>>()();
+    typedef Option<vox::containers::LinkMode::kUnsafe, 0> OptionsUnsafe0;
+    typedef TestObj1<OptionsUnsafe0> UnsafeTestObj0;
+    Test<IntrusiveList<UnsafeTestObj0, OptionsUnsafe0>>()();
 
     // Auto link mode and safe link mode of a single object in two different
     // lists.
-    typedef Option<vox::containers::LinkMode::kSafe, 1> _OptionsSafe1;
-    typedef TestObj2<_OptionsAuto0, _OptionsSafe1> LocalTestObj01;
-    _Test<IntrusiveList<LocalTestObj01, _OptionsSafe1>>()();
+    typedef Option<vox::containers::LinkMode::kSafe, 1> OptionsSafe1;
+    typedef TestObj2<OptionsAuto0, OptionsSafe1> LocalTestObj01;
+    Test<IntrusiveList<LocalTestObj01, OptionsSafe1>>()();
 }
 
 // Tests compliance with "front" push/pop function specifications.
-template <typename _List>
+template <typename List>
 struct CompliancePushPopFront {
     void operator()() {
-        typename _List::value_type first;
-        typename _List::value_type second;
+        typename List::value_type first;
+        typename List::value_type second;
 
-        _List l;
-        const _List& r_const_l = l;
+        List l;
+        const List& r_const_l = l;
 
-        if (void(0), TestAssertCompliance<_List>::kValue) {
+        if (void(0), TestAssertCompliance<List>::kValue) {
             EXPECT_ASSERTION(l.front(), "");
             EXPECT_ASSERTION(r_const_l.front(), "");
             EXPECT_ASSERTION(l.back(), "");
@@ -155,14 +155,14 @@ struct CompliancePushPopFront {
 TEST(CompliancePushPopFront, IntrusiveList) { BindTypes<CompliancePushPopFront>(); }
 
 // Tests compliance with "back" push/pop function specifications.
-template <typename _List>
+template <typename List>
 struct CompliancePushPopBack {
     void operator()() {
-        typename _List::value_type first;
-        typename _List::value_type second;
+        typename List::value_type first;
+        typename List::value_type second;
 
-        _List l;
-        const _List& r_const_l = l;
+        List l;
+        const List& r_const_l = l;
         l.push_back(first);
         EXPECT_TRUE(l.size() == 1 && l.front() == first && l.back() == first);
         EXPECT_TRUE(r_const_l.size() == 1 && r_const_l.front() == first && r_const_l.back() == first);
@@ -178,14 +178,14 @@ struct CompliancePushPopBack {
 TEST(CompliancePushPopBack, IntrusiveList) { BindTypes<CompliancePushPopBack>(); }
 
 // Tests compliance of mixed "front" and "back" push/pop.
-template <typename _List>
+template <typename List>
 struct CompliancePushPopMixed {
     void operator()() {
-        typename _List::value_type first;
-        typename _List::value_type second;
-        typename _List::value_type third;
+        typename List::value_type first;
+        typename List::value_type second;
+        typename List::value_type third;
 
-        _List l;
+        List l;
         l.push_back(first);
         EXPECT_TRUE(l.size() == 1 && l.front() == first && l.back() == first);
         l.push_front(second);
@@ -204,15 +204,15 @@ struct CompliancePushPopMixed {
 TEST(CompliancePushPopMixed, IntrusiveList) { BindTypes<CompliancePushPopMixed>(); }
 
 // Tests compliance with std::list begin iterator specifications.
-template <typename _List>
+template <typename List>
 struct ComplianceBegin {
     void operator()() {
-        typename _List::value_type first;
-        typename _List::value_type second;
-        typename _List::value_type third;
+        typename List::value_type first;
+        typename List::value_type second;
+        typename List::value_type third;
 
-        _List l;
-        const _List& r_const_l = l;
+        List l;
+        const List& r_const_l = l;
         EXPECT_TRUE(l.begin() == l.end());
 
         l.push_back(first);
@@ -220,22 +220,22 @@ struct ComplianceBegin {
         l.push_back(third);
 
         {
-            typename _List::iterator it = l.begin();
+            auto it = l.begin();
             EXPECT_TRUE(*it == first);
         }
 
         {
-            typename _List::const_iterator const_iter = r_const_l.begin();
+            auto const_iter = r_const_l.begin();
             EXPECT_TRUE(*const_iter == first);
         }
 
         {
-            typename _List::const_iterator const_iter(l.begin());
+            typename List::const_iterator const_iter(l.begin());
             EXPECT_TRUE(*const_iter == first);
         }
 
         {
-            typename _List::iterator it = l.begin();
+            auto it = l.begin();
             EXPECT_TRUE(*it == first);
             ++it;
             EXPECT_TRUE(*it == second);
@@ -246,7 +246,7 @@ struct ComplianceBegin {
         }
 
         {
-            typename _List::const_iterator it = r_const_l.begin();
+            auto it = r_const_l.begin();
             EXPECT_TRUE(*it == first);
             ++it;
             EXPECT_TRUE(*it == second);
@@ -263,15 +263,15 @@ struct ComplianceBegin {
 TEST(ComplianceBegin, IntrusiveList) { BindTypes<ComplianceBegin>(); }
 
 // Tests compliance of std::list end iterator specifications.
-template <typename _List>
+template <typename List>
 struct ComplianceEnd {
     void operator()() {
-        typename _List::value_type first;
-        typename _List::value_type second;
-        typename _List::value_type third;
+        typename List::value_type first;
+        typename List::value_type second;
+        typename List::value_type third;
 
-        _List l;
-        const _List& r_const_l = l;
+        List l;
+        const List& r_const_l = l;
         EXPECT_TRUE(l.begin() == l.end());
         EXPECT_TRUE(r_const_l.begin() == r_const_l.end());
 
@@ -283,22 +283,22 @@ struct ComplianceEnd {
         EXPECT_TRUE(r_const_l.begin() != r_const_l.end());
 
         {
-            typename _List::iterator it = l.end();
+            auto it = l.end();
             EXPECT_TRUE(*--it == third);
         }
 
         {
-            typename _List::const_iterator const_iter = r_const_l.end();
+            auto const_iter = r_const_l.end();
             EXPECT_TRUE(*--const_iter == third);
         }
 
         {
-            typename _List::const_iterator const_iter = l.end();
+            auto const_iter = l.end();
             EXPECT_TRUE(*--const_iter == third);
         }
 
         {
-            typename _List::iterator it = l.end();
+            auto it = l.end();
             it--;
             EXPECT_TRUE(*it == third);
             it--;
@@ -308,7 +308,7 @@ struct ComplianceEnd {
         }
 
         {
-            typename _List::const_iterator it = r_const_l.end();
+            auto it = r_const_l.end();
             it--;
             EXPECT_TRUE(*it == third);
             it--;
@@ -324,40 +324,40 @@ struct ComplianceEnd {
 TEST(ComplianceEnd, IntrusiveList) { BindTypes<ComplianceEnd>(); }
 
 // Tests compliance with std::list typedefs.
-template <typename _List>
+template <typename List>
 struct ComplianceTypedef {
     void operator()() {
-        typename _List::value_type first;
-        typename _List::value_type second;
+        typename List::value_type first;
+        typename List::value_type second;
 
-        _List l;
-        const _List& r_const_l = l;
+        List l;
+        const List& r_const_l = l;
         l.push_front(first);
         l.push_back(second);
 
-        typename _List::const_iterator const_iter = r_const_l.begin();
+        auto const_iter = r_const_l.begin();
         EXPECT_TRUE(*const_iter == first);
-        typename _List::iterator it = l.begin();
+        auto it = l.begin();
         EXPECT_TRUE(*it == first);
 
-        typename _List::const_reverse_iterator const_rev_iter = r_const_l.rbegin();
+        auto const_rev_iter = r_const_l.rbegin();
         EXPECT_TRUE(*const_rev_iter == second);
-        typename _List::reverse_iterator rev_iter = l.rbegin();
+        auto rev_iter = l.rbegin();
         EXPECT_TRUE(*rev_iter == second);
 
-        typename _List::const_pointer const_p = &r_const_l.front();
+        typename List::const_pointer const_p = &r_const_l.front();
         EXPECT_TRUE(*const_p == first);
-        typename _List::pointer p = &l.front();
+        typename List::pointer p = &l.front();
         EXPECT_TRUE(*p == first);
-        typename _List::const_reference const_r = r_const_l.front();
+        typename List::const_reference const_r = r_const_l.front();
         EXPECT_TRUE(const_r == first);
-        typename _List::reference r = l.front();
+        typename List::reference r = l.front();
         EXPECT_TRUE(r == first);
 
-        typename _List::difference_type diff = std::count(l.begin(), l.end(), first);
+        typename List::difference_type diff = std::count(l.begin(), l.end(), first);
         EXPECT_EQ(diff, 1);
 
-        typename _List::size_type size = l.size();
+        typename List::size_type size = l.size();
         EXPECT_EQ(size, 2u);
 
         l.clear();
@@ -367,15 +367,15 @@ struct ComplianceTypedef {
 TEST(ComplianceTypedef, IntrusiveList) { BindTypes<ComplianceTypedef>(); }
 
 // Tests compliance of std::list iterator specifications.
-template <typename _List>
+template <typename List>
 struct ComplianceIterator {
     void operator()() {
-        typename _List::value_type first;
+        typename List::value_type first;
 
-        _List l1, l2;
+        List l1, l2;
         l1.push_front(first);
 
-        const _List& rcosnt_l1 = l1;
+        const List& rcosnt_l1 = l1;
 
         // Test operators
         EXPECT_TRUE(l1.begin() != l1.end());
@@ -391,27 +391,27 @@ struct ComplianceIterator {
 
         // Dereference iterator
         {
-            typename _List::reference r11 = *l1.begin();
+            typename List::reference r11 = *l1.begin();
             EXPECT_TRUE(r11 == first);
-            typename _List::const_reference r12 = *rcosnt_l1.begin();
+            typename List::const_reference r12 = *rcosnt_l1.begin();
             EXPECT_TRUE(r12 == first);
         }
 
         // Test copy
         {
-            typename _List::iterator it = l1.begin();
-            typename _List::iterator assign_it = it;
+            auto it = l1.begin();
+            auto assign_it = it;
             EXPECT_TRUE(assign_it == it);
-            typename _List::iterator copy_it = it;
+            auto copy_it = it;
             EXPECT_TRUE(copy_it == it);
         }
 
-        if (void(0), TestAssertCompliance<_List>::kValue) {
+        if (void(0), TestAssertCompliance<List>::kValue) {
             // Test comparing iterators of different lists
-            EXPECT_ASSERTION(void(typename _List::iterator() == l1.begin()), "");
-            EXPECT_ASSERTION(void(typename _List::const_iterator() == l1.begin()), "");
-            EXPECT_ASSERTION(void(l1.begin() != static_cast<const _List&>(l2).begin()), "");
-            EXPECT_ASSERTION(void(l1.end() != static_cast<const _List&>(l2).end()), "");
+            EXPECT_ASSERTION(void(typename List::iterator() == l1.begin()), "");
+            EXPECT_ASSERTION(void(typename List::const_iterator() == l1.begin()), "");
+            EXPECT_ASSERTION(void(l1.begin() != static_cast<const List&>(l2).begin()), "");
+            EXPECT_ASSERTION(void(l1.end() != static_cast<const List&>(l2).end()), "");
             EXPECT_ASSERTION(void(rcosnt_l1.begin() != l2.begin()), "");
             EXPECT_ASSERTION(void(rcosnt_l1.end() != l2.end()), "");
 
@@ -427,10 +427,10 @@ struct ComplianceIterator {
             EXPECT_ASSERTION(rcosnt_l1.end()++, "");
 
             // Dereferencing an invalid iterator
-            EXPECT_ASSERTION(*typename _List::iterator(), "");
-            EXPECT_ASSERTION(*typename _List::const_iterator(), "");
-            EXPECT_ASSERTION(*typename _List::reverse_iterator(), "");
-            EXPECT_ASSERTION(*typename _List::const_reverse_iterator(), "");
+            EXPECT_ASSERTION(*typename List::iterator(), "");
+            EXPECT_ASSERTION(*typename List::const_iterator(), "");
+            EXPECT_ASSERTION(*typename List::reverse_iterator(), "");
+            EXPECT_ASSERTION(*typename List::const_reverse_iterator(), "");
             EXPECT_ASSERTION(*l1.end(), "");
             EXPECT_ASSERTION(*rcosnt_l1.end(), "");
             EXPECT_ASSERTION(*l1.rend(), "");
@@ -438,12 +438,12 @@ struct ComplianceIterator {
         }
         // Test iterator std functions
         {
-            typename _List::iterator it = l1.begin();
+            auto it = l1.begin();
             std::advance(it, 1);
             EXPECT_TRUE(it == l1.end());
             std::advance(it, -1);
             EXPECT_TRUE(it == l1.begin());
-            if (void(0), TestAssertCompliance<_List>::kValue) {
+            if (void(0), TestAssertCompliance<List>::kValue) {
                 EXPECT_ASSERTION(std::advance(it, 2), "");
             }
         }
@@ -457,15 +457,15 @@ struct ComplianceIterator {
 TEST(ComplianceIterator, IntrusiveList) { BindTypes<ComplianceIterator>(); }
 
 // Tests compliance with "rbegin" function specifications.
-template <typename _List>
+template <typename List>
 struct ComplianceRBegin {
     void operator()() {
-        typename _List::value_type first;
-        typename _List::value_type second;
-        typename _List::value_type third;
+        typename List::value_type first;
+        typename List::value_type second;
+        typename List::value_type third;
 
-        _List l;
-        const _List& rcosnt_l = l;
+        List l;
+        const List& rcosnt_l = l;
         EXPECT_TRUE(l.rbegin() == l.rend());
 
         l.push_back(first);
@@ -475,13 +475,13 @@ struct ComplianceRBegin {
 
         // rbegin should be at the back of the list
         {
-            typename _List::reverse_iterator rev_iter = l.rbegin();
+            auto rev_iter = l.rbegin();
             EXPECT_TRUE(*rev_iter == third);
         }
 
         // Iterate in reverse order
         {
-            typename _List::const_reverse_iterator const_rev_iter = l.rbegin();
+            auto const_rev_iter = l.rbegin();
             EXPECT_TRUE(*const_rev_iter == third);
             ++const_rev_iter;
             EXPECT_TRUE(*const_rev_iter == second);
@@ -489,7 +489,7 @@ struct ComplianceRBegin {
             EXPECT_TRUE(*const_rev_iter == first);
             ++const_rev_iter;
             EXPECT_TRUE(const_rev_iter == rcosnt_l.rend());
-            if (void(0), TestAssertCompliance<_List>::kValue) {
+            if (void(0), TestAssertCompliance<List>::kValue) {
                 EXPECT_ASSERTION(++const_rev_iter, "");  // Cannot increment beyond rend
             }
         }
@@ -500,15 +500,15 @@ struct ComplianceRBegin {
 TEST(ComplianceRBegin, IntrusiveList) { BindTypes<ComplianceRBegin>(); }
 
 // Tests compliance with "rend" function specifications.
-template <typename _List>
+template <typename List>
 struct ComplianceREnd {
     void operator()() {
-        typename _List::value_type first;
-        typename _List::value_type second;
-        typename _List::value_type third;
+        typename List::value_type first;
+        typename List::value_type second;
+        typename List::value_type third;
 
-        _List l;
-        const _List& rcosnt_l = l;
+        List l;
+        const List& rcosnt_l = l;
         EXPECT_TRUE(l.rbegin() == l.rend());
 
         l.push_back(first);
@@ -518,8 +518,8 @@ struct ComplianceREnd {
 
         // rend should be at the front of the list
         {
-            typename _List::reverse_iterator rev_iter = l.rend();
-            if (void(0), TestAssertCompliance<_List>::kValue) {
+            auto rev_iter = l.rend();
+            if (void(0), TestAssertCompliance<List>::kValue) {
                 EXPECT_ASSERTION(*rev_iter, "");
             }
             --rev_iter;
@@ -528,7 +528,7 @@ struct ComplianceREnd {
 
         // Iterate in reverse order
         {
-            typename _List::const_reverse_iterator const_rev_iter = l.rend();
+            auto const_rev_iter = l.rend();
             --const_rev_iter;
             EXPECT_TRUE(*const_rev_iter == first);
             --const_rev_iter;
@@ -537,7 +537,7 @@ struct ComplianceREnd {
             EXPECT_TRUE(*const_rev_iter == third);
             EXPECT_TRUE(const_rev_iter == rcosnt_l.rbegin());
             // Cannot increment below rbegin
-            if (void(0), TestAssertCompliance<_List>::kValue) {
+            if (void(0), TestAssertCompliance<List>::kValue) {
                 EXPECT_ASSERTION(--const_rev_iter, "");
             }
         }
@@ -548,12 +548,12 @@ struct ComplianceREnd {
 TEST(ComplianceREnd, IntrusiveList) { BindTypes<ComplianceREnd>(); }
 
 // Tests compliance with clear/empty specifications.
-template <typename _List>
+template <typename List>
 struct ComplianceClearEmpty {
     void operator()() {
-        typename _List::value_type first;
+        typename List::value_type first;
 
-        _List l;
+        List l;
         EXPECT_TRUE(l.begin() == l.end());
 
         l.push_back(first);
@@ -571,15 +571,15 @@ struct ComplianceClearEmpty {
 TEST(ComplianceClearEmpty, IntrusiveList) { BindTypes<ComplianceClearEmpty>(); }
 
 // Tests compliance with "remove" function specifications.
-template <typename _List>
+template <typename List>
 struct ComplianceRemove {
     void operator()() {
-        typename _List::value_type first;
-        typename _List::value_type second;
-        typename _List::value_type third;
-        typename _List::value_type fourth;
+        typename List::value_type first;
+        typename List::value_type second;
+        typename List::value_type third;
+        typename List::value_type fourth;
 
-        _List l;
+        List l;
         l.push_back(first);
         l.push_back(second);
         l.push_back(third);
@@ -600,11 +600,11 @@ struct ComplianceRemove {
 TEST(ComplianceRemove, IntrusiveList) { BindTypes<ComplianceRemove>(); }
 
 // Implements a functor used to test "remove_if" function.
-template <typename _List>
+template <typename List>
 class is_to_be_removed {
 public:
     explicit is_to_be_removed(int _which) : which_(_which) {}
-    bool operator()(typename _List::const_reference) { return which_-- == 0; }
+    bool operator()(typename List::const_reference) { return which_-- == 0; }
 
 private:
     void operator=(const is_to_be_removed&);
@@ -613,19 +613,19 @@ private:
 };
 
 // Tests compliance with "remove_if" function specifications.
-template <typename _List>
+template <typename List>
 struct ComplianceRemoveIf {
     void operator()() {
-        typename _List::value_type first;
-        typename _List::value_type second;
-        typename _List::value_type third;
+        typename List::value_type first;
+        typename List::value_type second;
+        typename List::value_type third;
 
-        _List l;
+        List l;
         l.push_back(first);
         l.push_back(second);
         l.push_back(third);
 
-        l.remove_if(is_to_be_removed<_List>(1));
+        l.remove_if(is_to_be_removed<List>(1));
         EXPECT_EQ(l.size(), 2u);
         EXPECT_TRUE(l.front() == first && l.back() == third);
 
@@ -636,17 +636,17 @@ struct ComplianceRemoveIf {
 TEST(ComplianceRemoveIf, IntrusiveList) { BindTypes<ComplianceRemoveIf>(); }
 
 // Tests compliance with "erase" function specifications.
-template <typename _List>
+template <typename List>
 struct ComplianceErase {
     void operator()() {
-        typename _List::value_type first;
-        typename _List::value_type second;
-        typename _List::value_type third;
-        typename _List::value_type fourth;
-        typename _List::value_type fifth;
-        typename _List::value_type sixth;
+        typename List::value_type first;
+        typename List::value_type second;
+        typename List::value_type third;
+        typename List::value_type fourth;
+        typename List::value_type fifth;
+        typename List::value_type sixth;
 
-        _List l;
+        List l;
         l.push_back(first);
         l.push_back(second);
         l.push_back(third);
@@ -655,21 +655,21 @@ struct ComplianceErase {
         l.push_back(sixth);
 
         // Bad range
-        if (void(0), TestAssertCompliance<_List>::kValue) {
-            _List l2;
+        if (void(0), TestAssertCompliance<List>::kValue) {
+            List l2;
             EXPECT_ASSERTION(l.erase(l2.begin(), l.begin()), "");
             EXPECT_ASSERTION(l.erase(++l.begin(), l.begin()), "");
         }
 
         // Erases first element
         {
-            typename _List::iterator ret_it = l.erase(l.begin());
+            auto ret_it = l.erase(l.begin());
             EXPECT_TRUE(ret_it == l.begin() && l.front() == second);
         }
 
         // Erases all elements but the first
         {
-            typename _List::iterator ret_it = l.erase(++l.begin(), l.end());
+            auto ret_it = l.erase(++l.begin(), l.end());
             EXPECT_TRUE(ret_it == l.end() && l.front() == second);
         }
 
@@ -680,17 +680,17 @@ struct ComplianceErase {
 TEST(ComplianceErase, IntrusiveList) { BindTypes<ComplianceErase>(); }
 
 // Tests compliance with "insert" function specifications.
-template <typename _List>
+template <typename List>
 struct ComplianceInsert {
     void operator()() {
-        typename _List::value_type first;
-        typename _List::value_type second;
-        typename _List::value_type third;
-        typename _List::value_type fourth;
-        typename _List::value_type fifth;
-        typename _List::value_type sixth;
+        typename List::value_type first;
+        typename List::value_type second;
+        typename List::value_type third;
+        typename List::value_type fourth;
+        typename List::value_type fifth;
+        typename List::value_type sixth;
 
-        _List l;
+        List l;
         l.push_back(first);
         l.push_back(third);
 
@@ -711,14 +711,14 @@ struct ComplianceInsert {
 TEST(ComplianceInsert, IntrusiveList) { BindTypes<ComplianceInsert>(); }
 
 // Tests compliance with "reverse" function specifications.
-template <typename _List>
+template <typename List>
 struct ComplianceReverse {
     void operator()() {
-        typename _List::value_type first;
-        typename _List::value_type second;
-        typename _List::value_type third;
+        typename List::value_type first;
+        typename List::value_type second;
+        typename List::value_type third;
 
-        _List l;
+        List l;
         l.reverse();  // Reverse empty list
         EXPECT_TRUE(l.empty());
 
@@ -726,7 +726,7 @@ struct ComplianceReverse {
         l.reverse();  // Reverse 1 element list
         EXPECT_EQ(l.size(), 1u);
         {
-            typename _List::const_iterator const_iter = l.begin();
+            auto const_iter = l.begin();
             EXPECT_TRUE(*const_iter == first);
         }
 
@@ -734,7 +734,7 @@ struct ComplianceReverse {
         l.reverse();  // Reverse list of 2 elements
         EXPECT_EQ(l.size(), 2u);
         {
-            typename _List::const_iterator const_iter = l.begin();
+            auto const_iter = l.begin();
             EXPECT_TRUE(*const_iter == second);
             ++const_iter;
             EXPECT_TRUE(*const_iter == first);
@@ -746,7 +746,7 @@ struct ComplianceReverse {
         l.reverse();  // Reverse list of 3 elements
         EXPECT_EQ(l.size(), 3u);
         {
-            typename _List::const_iterator const_iter = l.begin();
+            auto const_iter = l.begin();
             EXPECT_TRUE(*const_iter == third);
             ++const_iter;
             EXPECT_TRUE(*const_iter == second);
@@ -763,44 +763,44 @@ struct ComplianceReverse {
 TEST(ComplianceReverse, IntrusiveList) { BindTypes<ComplianceReverse>(); }
 
 // Tests compliance with "splice" function specifications.
-template <typename _List>
+template <typename List>
 struct ComplianceSplice {
     void operator()() {
-        typename _List::value_type first;
-        typename _List::value_type second;
-        typename _List::value_type third;
-        typename _List::value_type fourth;
-        typename _List::value_type fifth;
-        typename _List::value_type sixth;
-        typename _List::value_type seventh;
-        typename _List::value_type eighth;
-        typename _List::value_type ninth;
-        typename _List::value_type tenth;
-        typename _List::value_type eleventh;
-        typename _List::value_type twelfth;
-        typename _List::value_type thirteenth;
-        _List l1;
+        typename List::value_type first;
+        typename List::value_type second;
+        typename List::value_type third;
+        typename List::value_type fourth;
+        typename List::value_type fifth;
+        typename List::value_type sixth;
+        typename List::value_type seventh;
+        typename List::value_type eighth;
+        typename List::value_type ninth;
+        typename List::value_type tenth;
+        typename List::value_type eleventh;
+        typename List::value_type twelfth;
+        typename List::value_type thirteenth;
+        List l1;
         l1.push_back(first);
         l1.push_back(second);
-        _List l2;
+        List l2;
         l2.push_back(third);
         l2.push_back(fourth);
         l2.push_back(fifth);
-        _List l3;
+        List l3;
         l3.push_back(sixth);
         l3.push_back(seventh);
-        _List l4;
+        List l4;
         l4.push_back(eighth);
         l4.push_back(ninth);
         l4.push_back(tenth);
-        _List l5;
+        List l5;
         l5.push_back(eleventh);
         l5.push_back(twelfth);
         l5.push_back(thirteenth);
-        _List l_empty;
+        List l_empty;
 
         // Bad range
-        if (void(0), TestAssertCompliance<_List>::kValue) {
+        if (void(0), TestAssertCompliance<List>::kValue) {
             EXPECT_ASSERTION(l4.splice(l4.begin(), l5, l4.begin()), "");
             EXPECT_ASSERTION(l4.splice(l4.begin(), l5, l4.begin(), l5.end()), "");
             EXPECT_ASSERTION(l4.splice(l4.begin(), l5, l5.end(), --l5.end()), "");
@@ -810,7 +810,7 @@ struct ComplianceSplice {
         l2.splice(++l2.begin(), l1);
         assert(l1.empty() && l2.size() == 5);
         {
-            typename _List::const_iterator const_iter = l2.begin();
+            auto const_iter = l2.begin();
             EXPECT_TRUE(*const_iter == third);
             ++const_iter;
             EXPECT_TRUE(*const_iter == first);
@@ -828,7 +828,7 @@ struct ComplianceSplice {
         l2.splice(l2.begin(), l_empty);
         EXPECT_EQ(l2.size(), 5u);
         {
-            typename _List::const_iterator const_iter = l2.begin();
+            auto const_iter = l2.begin();
             EXPECT_TRUE(*const_iter == third);
             ++const_iter;
             EXPECT_TRUE(*const_iter == first);
@@ -847,11 +847,11 @@ struct ComplianceSplice {
         l2.splice(++l2.begin(), l3, ++l3.begin(), l3.end());
         EXPECT_TRUE(l3.size() == 1 && l2.size() == 6);
         {
-            typename _List::const_iterator const_iter = l3.begin();
+            auto const_iter = l3.begin();
             EXPECT_TRUE(*const_iter == sixth);
         }
         {
-            typename _List::const_iterator const_iter = l2.begin();
+            auto const_iter = l2.begin();
             EXPECT_TRUE(*const_iter == third);
             ++const_iter;
             EXPECT_TRUE(*const_iter == seventh);
@@ -871,11 +871,11 @@ struct ComplianceSplice {
         l2.splice(l2.begin(), l4, l4.begin(), --l4.end());
         EXPECT_TRUE(l4.size() == 1 && l2.size() == 8);
         {
-            typename _List::const_iterator const_iter = l4.begin();
+            auto const_iter = l4.begin();
             EXPECT_TRUE(*const_iter == tenth);
         }
         {
-            typename _List::const_iterator const_iter = l2.begin();
+            auto const_iter = l2.begin();
             EXPECT_TRUE(*const_iter == eighth);
             ++const_iter;
             EXPECT_TRUE(*const_iter == ninth);
@@ -899,13 +899,13 @@ struct ComplianceSplice {
         l4.splice(l4.begin(), l5, ++l5.begin(), ++l5.begin());
         EXPECT_TRUE(l4.size() == 1 && l5.size() == 3);
         {
-            typename _List::const_iterator const_iter = l4.begin();
+            auto const_iter = l4.begin();
             EXPECT_TRUE(*const_iter == tenth);
             ++const_iter;
             EXPECT_TRUE(const_iter == l4.end());
         }
         {
-            typename _List::const_iterator const_iter = l5.begin();
+            auto const_iter = l5.begin();
             EXPECT_TRUE(*const_iter == eleventh);
             ++const_iter;
             EXPECT_TRUE(*const_iter == twelfth);
@@ -919,7 +919,7 @@ struct ComplianceSplice {
         l5.splice(l5.begin(), l5, ++l5.begin());
         EXPECT_EQ(l5.size(), 3u);
         {
-            typename _List::const_iterator const_iter = l5.begin();
+            auto const_iter = l5.begin();
             EXPECT_TRUE(*const_iter == twelfth);
             ++const_iter;
             EXPECT_TRUE(*const_iter == eleventh);
@@ -933,7 +933,7 @@ struct ComplianceSplice {
         l5.splice(l5.begin(), l5, ++l5.begin(), l5.end());
         EXPECT_EQ(l5.size(), 3u);
         {
-            typename _List::const_iterator const_iter = l5.begin();
+            auto const_iter = l5.begin();
             EXPECT_TRUE(*const_iter == eleventh);
             ++const_iter;
             EXPECT_TRUE(*const_iter == thirteenth);
@@ -947,7 +947,7 @@ struct ComplianceSplice {
         l5.splice(--l5.end(), l5, l5.begin(), --l5.end());
         EXPECT_EQ(l5.size(), 3u);
         {
-            typename _List::const_iterator const_iter = l5.begin();
+            auto const_iter = l5.begin();
             EXPECT_TRUE(*const_iter == eleventh);
             ++const_iter;
             EXPECT_TRUE(*const_iter == thirteenth);
@@ -968,25 +968,25 @@ struct ComplianceSplice {
 TEST(ComplianceSplice, IntrusiveList) { BindTypes<ComplianceSplice>(); }
 
 // Tests compliance with "swap" function specifications.
-template <typename _List>
+template <typename List>
 struct ComplianceSwap {
     void operator()() {
-        typename _List::value_type first;
-        typename _List::value_type second;
-        typename _List::value_type third;
-        typename _List::value_type fourth;
-        typename _List::value_type fifth;
-        typename _List::value_type sixth;
-        typename _List::value_type seventh;
+        typename List::value_type first;
+        typename List::value_type second;
+        typename List::value_type third;
+        typename List::value_type fourth;
+        typename List::value_type fifth;
+        typename List::value_type sixth;
+        typename List::value_type seventh;
 
-        _List l1;
+        List l1;
         l1.push_back(first);
         l1.push_back(second);
-        _List l2;
+        List l2;
         l2.push_back(third);
         l2.push_back(fourth);
         l2.push_back(fifth);
-        _List l3;
+        List l3;
         l3.push_back(sixth);
         l3.push_back(seventh);
 
@@ -994,7 +994,7 @@ struct ComplianceSwap {
         l1.swap(l1);
         EXPECT_EQ(l1.size(), 2u);
         {
-            typename _List::const_iterator const_iter = l1.begin();
+            auto const_iter = l1.begin();
             EXPECT_TRUE(*const_iter == first);
             ++const_iter;
             EXPECT_TRUE(*const_iter == second);
@@ -1006,7 +1006,7 @@ struct ComplianceSwap {
         l1.swap(l2);
         EXPECT_TRUE(l1.size() == 3 && l2.size() == 2);
         {
-            typename _List::const_iterator const_iter = l1.begin();
+            auto const_iter = l1.begin();
             EXPECT_TRUE(*const_iter == third);
             ++const_iter;
             EXPECT_TRUE(*const_iter == fourth);
@@ -1016,7 +1016,7 @@ struct ComplianceSwap {
             EXPECT_TRUE(const_iter == l1.end());
         }
         {
-            typename _List::const_iterator const_iter = l2.begin();
+            auto const_iter = l2.begin();
             EXPECT_TRUE(*const_iter == first);
             ++const_iter;
             EXPECT_TRUE(*const_iter == second);
@@ -1027,7 +1027,7 @@ struct ComplianceSwap {
         // uses std::swap
         swap(l3, l2);
         {
-            typename _List::const_iterator const_iter = l3.begin();
+            auto const_iter = l3.begin();
             EXPECT_TRUE(*const_iter == first);
             ++const_iter;
             EXPECT_TRUE(*const_iter == second);
@@ -1035,7 +1035,7 @@ struct ComplianceSwap {
             EXPECT_TRUE(const_iter == l3.end());
         }
         {
-            typename _List::const_iterator const_iter = l2.begin();
+            auto const_iter = l2.begin();
             EXPECT_TRUE(*const_iter == sixth);
             ++const_iter;
             EXPECT_TRUE(*const_iter == seventh);
@@ -1052,17 +1052,17 @@ struct ComplianceSwap {
 TEST(ComplianceSwap, IntrusiveList) { BindTypes<ComplianceSwap>(); }
 
 // Tests compliance with "sort" function specifications.
-template <typename _List>
+template <typename List>
 struct ComplianceSort {
     void operator()() {
-        typename _List::value_type first;
-        typename _List::value_type second;
-        typename _List::value_type third;
-        typename _List::value_type fourth;
-        typename _List::value_type fifth;
-        typename _List::value_type sixth;
+        typename List::value_type first;
+        typename List::value_type second;
+        typename List::value_type third;
+        typename List::value_type fourth;
+        typename List::value_type fifth;
+        typename List::value_type sixth;
 
-        _List l;
+        List l;
 
         // Sort an empty list
         l.sort();
@@ -1085,7 +1085,7 @@ struct ComplianceSort {
         for (int i = 0; i < 2; i++) {  // Sort twice the same list
             l.sort();
             {
-                typename _List::const_iterator const_iter = l.begin();
+                auto const_iter = l.begin();
                 EXPECT_TRUE(*const_iter == first);
                 ++const_iter;
                 EXPECT_TRUE(*const_iter == second);
@@ -1100,9 +1100,9 @@ struct ComplianceSort {
             }
         }
 
-        l.sort(std::greater<typename _List::value_type>());
+        l.sort(std::greater<typename List::value_type>());
         {
-            typename _List::const_iterator const_iter = l.begin();
+            auto const_iter = l.begin();
             EXPECT_TRUE(*const_iter == sixth);
             ++const_iter;
             EXPECT_TRUE(*const_iter == fifth);
@@ -1123,27 +1123,27 @@ struct ComplianceSort {
 TEST(ComplianceSort, IntrusiveList) { BindTypes<ComplianceSort>(); }
 
 // Tests compliance with "merge" function specifications.
-template <typename _List>
+template <typename List>
 struct ComplianceMerge {
     void operator()() {
-        typename _List::value_type first;
-        typename _List::value_type second;
-        typename _List::value_type third;
-        typename _List::value_type fourth;
-        typename _List::value_type fifth;
-        typename _List::value_type sixth;
+        typename List::value_type first;
+        typename List::value_type second;
+        typename List::value_type third;
+        typename List::value_type fourth;
+        typename List::value_type fifth;
+        typename List::value_type sixth;
 
         {
-            _List l1;
+            List l1;
             l1.push_back(second);
             l1.push_back(fourth);
-            _List l2;
+            List l2;
             l2.push_back(first);
             l2.push_back(third);
             l1.merge(l2);
             EXPECT_TRUE(l1.size() == 4 && l2.empty());
             {
-                typename _List::const_iterator const_iter = l1.begin();
+                auto const_iter = l1.begin();
                 EXPECT_TRUE(*const_iter == first);
                 ++const_iter;
                 EXPECT_TRUE(*const_iter == second);
@@ -1157,15 +1157,15 @@ struct ComplianceMerge {
         }
 
         {
-            _List l1;
+            List l1;
             l1.push_back(second);
             l1.push_back(fourth);
-            _List l2;
+            List l2;
             l2.push_back(third);
             l1.merge(l2);
             EXPECT_TRUE(l1.size() == 3 && l2.empty());
             {
-                typename _List::const_iterator const_iter = l1.begin();
+                auto const_iter = l1.begin();
                 EXPECT_TRUE(*const_iter == second);
                 ++const_iter;
                 EXPECT_TRUE(*const_iter == third);
@@ -1177,15 +1177,15 @@ struct ComplianceMerge {
         }
 
         {
-            _List l1;
+            List l1;
             l1.push_back(second);
             l1.push_back(third);
-            _List l2;
+            List l2;
             l2.push_back(fourth);
             l1.merge(l2);
             EXPECT_TRUE(l1.size() == 3 && l2.empty());
             {
-                typename _List::const_iterator const_iter = l1.begin();
+                auto const_iter = l1.begin();
                 EXPECT_TRUE(*const_iter == second);
                 ++const_iter;
                 EXPECT_TRUE(*const_iter == third);
@@ -1197,15 +1197,15 @@ struct ComplianceMerge {
         }
 
         {
-            _List l1;
+            List l1;
             l1.push_back(second);
-            _List l2;
+            List l2;
             l2.push_back(third);
             l2.push_back(fourth);
             l1.merge(l2);
             EXPECT_TRUE(l1.size() == 3 && l2.empty());
             {
-                typename _List::const_iterator const_iter = l1.begin();
+                auto const_iter = l1.begin();
                 EXPECT_TRUE(*const_iter == second);
                 ++const_iter;
                 EXPECT_TRUE(*const_iter == third);
@@ -1217,16 +1217,16 @@ struct ComplianceMerge {
         }
 
         {
-            _List l1;
+            List l1;
             l1.push_back(first);
             l1.push_back(fourth);
-            _List l2;
+            List l2;
             l2.push_back(second);
             l2.push_back(third);
             l1.merge(l2);
             EXPECT_TRUE(l1.size() == 4 && l2.empty());
             {
-                typename _List::const_iterator const_iter = l1.begin();
+                auto const_iter = l1.begin();
                 EXPECT_TRUE(*const_iter == first);
                 ++const_iter;
                 EXPECT_TRUE(*const_iter == second);
@@ -1240,16 +1240,16 @@ struct ComplianceMerge {
         }
 
         {
-            _List l1;
+            List l1;
             l1.push_back(first);
             l1.push_back(fourth);
-            _List l2;
+            List l2;
             l2.push_back(second);
             l2.push_back(third);
-            l1.merge(l2, std::less<typename _List::value_type>());
+            l1.merge(l2, std::less<typename List::value_type>());
             EXPECT_TRUE(l1.size() == 4 && l2.empty());
             {
-                typename _List::const_iterator const_iter = l1.begin();
+                auto const_iter = l1.begin();
                 EXPECT_TRUE(*const_iter == first);
                 ++const_iter;
                 EXPECT_TRUE(*const_iter == second);
@@ -1263,13 +1263,13 @@ struct ComplianceMerge {
         }
 
         {
-            _List l1;
+            List l1;
             l1.push_back(third);
             l1.push_back(sixth);
-            _List l2;
+            List l2;
             l2.push_back(second);
             l2.push_back(fourth);
-            _List l3;
+            List l3;
             l3.push_back(first);
             l3.push_back(fifth);
 
@@ -1281,7 +1281,7 @@ struct ComplianceMerge {
 
             EXPECT_TRUE(l1.empty() && l2.size() == 4u);
             {
-                typename _List::const_iterator const_iter = l2.begin();
+                auto const_iter = l2.begin();
                 EXPECT_TRUE(*const_iter == second);
                 ++const_iter;
                 EXPECT_TRUE(*const_iter == third);
@@ -1292,27 +1292,27 @@ struct ComplianceMerge {
             }
 
             // l2 and l3 are not sorted "greater"
-            if (void(0), TestAssertCompliance<_List>::kValue) {
-                EXPECT_ASSERTION(l2.merge(l3, std::greater<typename _List::value_type>()), "");
+            if (void(0), TestAssertCompliance<List>::kValue) {
+                EXPECT_ASSERTION(l2.merge(l3, std::greater<typename List::value_type>()), "");
             }
 
             // So sort l2
-            l2.sort(std::greater<typename _List::value_type>());
+            l2.sort(std::greater<typename List::value_type>());
 
             // l3 is still not sorted  "greater"
-            if (void(0), TestAssertCompliance<_List>::kValue) {
-                EXPECT_ASSERTION(l2.merge(l3, std::greater<typename _List::value_type>()), "");
+            if (void(0), TestAssertCompliance<List>::kValue) {
+                EXPECT_ASSERTION(l2.merge(l3, std::greater<typename List::value_type>()), "");
             }
 
             // So sort l3
-            l3.sort(std::greater<typename _List::value_type>());
+            l3.sort(std::greater<typename List::value_type>());
 
             // l2 and l3 are sorted now
-            l2.merge(l3, std::greater<typename _List::value_type>());
+            l2.merge(l3, std::greater<typename List::value_type>());
             EXPECT_TRUE(l3.empty() && l2.size() == 6);
 
             {
-                typename _List::const_iterator const_iter = l2.begin();
+                auto const_iter = l2.begin();
                 EXPECT_TRUE(*const_iter == sixth);
                 ++const_iter;
                 EXPECT_TRUE(*const_iter == fifth);
@@ -1335,54 +1335,54 @@ struct ComplianceMerge {
 TEST(ComplianceMerge, IntrusiveList) { BindTypes<ComplianceMerge>(); }
 
 // Always return the boolean _b.
-template <typename _T, bool _b>
-bool Always(_T) {
+template <typename T, bool _b>
+bool Always(T) {
     return _b;
 }
 
 // Counts the number of time a functor is called
-template <typename _List>
+template <typename List>
 class Count {
 public:
     Count() : num_(0) {}
-    void operator()(typename _List::const_reference) { ++num_; }
+    void operator()(typename List::const_reference) { ++num_; }
     int num_;
 };
 
 // Tests complicance with std::list comparison operators.
-template <typename _List>
+template <typename List>
 struct ComplianceComparisonOperator {
     void operator()() {
-        typename _List::value_type first;
-        typename _List::value_type second;
-        typename _List::value_type third;
-        typename _List::value_type fourth;
-        typename _List::value_type fifth;
-        typename _List::value_type sixth;
+        typename List::value_type first;
+        typename List::value_type second;
+        typename List::value_type third;
+        typename List::value_type fourth;
+        typename List::value_type fifth;
+        typename List::value_type sixth;
 
-        typename _List::value_type first_less(first);
-        typename _List::value_type second_less(second);
-        typename _List::value_type third_less(third);
+        typename List::value_type first_less(first);
+        typename List::value_type second_less(second);
+        typename List::value_type third_less(third);
 
-        typename _List::value_type first_copy(first);
-        typename _List::value_type second_copy(second);
-        typename _List::value_type third_copy(third);
+        typename List::value_type first_copy(first);
+        typename List::value_type second_copy(second);
+        typename List::value_type third_copy(third);
 
-        _List l1;
+        List l1;
         l1.push_back(first);
         l1.push_back(second);
         l1.push_back(third);
 
-        _List l1_less;
+        List l1_less;
         l1_less.push_back(first_less);
         l1_less.push_back(second_less);
 
-        _List l1_copy;
+        List l1_copy;
         l1_copy.push_back(first_copy);
         l1_copy.push_back(second_copy);
         l1_copy.push_back(third_copy);
 
-        _List l2;
+        List l2;
         l2.push_back(fourth);
         l2.push_back(fifth);
 
@@ -1422,21 +1422,21 @@ struct ComplianceComparisonOperator {
 TEST(ComplianceOperator, IntrusiveList) { BindTypes<ComplianceComparisonOperator>(); }
 
 // Tests compliance with std::list algorithms.
-template <typename _List>
+template <typename List>
 struct ComplianceAlgorithm {
     void operator()() {
-        typename _List::value_type first;
-        typename _List::value_type second;
-        typename _List::value_type third;
-        typename _List::value_type fourth;
-        typename _List::value_type fifth;
-        typename _List::value_type sixth;
+        typename List::value_type first;
+        typename List::value_type second;
+        typename List::value_type third;
+        typename List::value_type fourth;
+        typename List::value_type fifth;
+        typename List::value_type sixth;
 
-        _List l1;
+        List l1;
         l1.push_back(first);
         l1.push_back(second);
 
-        _List l2;
+        List l2;
         l2.push_back(third);
         l2.push_back(fourth);
         l2.push_back(fifth);
@@ -1444,11 +1444,11 @@ struct ComplianceAlgorithm {
 
         // Count algorithms
         EXPECT_EQ(std::count(l1.begin(), l1.end(), second), 1);
-        EXPECT_EQ(std::count_if(l1.begin(), l1.end(), Always<typename _List::const_reference, false>), 0);
-        EXPECT_EQ(std::count_if(l1.begin(), l1.end(), Always<typename _List::const_reference, true>), 2);
+        EXPECT_EQ(std::count_if(l1.begin(), l1.end(), Always<typename List::const_reference, false>), 0);
+        EXPECT_EQ(std::count_if(l1.begin(), l1.end(), Always<typename List::const_reference, true>), 2);
 
         // Iteration
-        Count<_List> res = std::for_each(l1.begin(), l1.end(), Count<_List>());
+        Count<List> res = std::for_each(l1.begin(), l1.end(), Count<List>());
         EXPECT_EQ(res.num_, 2);
 
         l1.clear();
@@ -1591,13 +1591,13 @@ TEST(UnsafeLink, IntrusiveList) {
     {  // Destroy the list before the hook
         List l;
         l.push_front(obj);
-    }  // obj is in a undefined state now
+    }  // obj is in an undefined state now
 
     {  // Destroy the hook before the list
         List l;
         {
             LocalTestObj obj2;
             l.push_front(obj2);
-        }  // l is in a undefined state now
+        }  // l is in an undefined state now
     }
 }

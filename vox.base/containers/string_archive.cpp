@@ -45,4 +45,4 @@ void Extern<string>::Load(IArchive& _archive, string* _values, size_t _count, ui
         }
     }
 }
-}  // namespace vox
+}  // namespace vox::io

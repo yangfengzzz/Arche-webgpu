@@ -81,7 +81,7 @@ class VOX_BASE_DLL OArchive {
 public:
     // Constructs an output archive from the Stream _stream that must be valid
     // and opened for writing.
-    OArchive(Stream* _stream, Endianness _endianness = getNativeEndianness());
+    explicit OArchive(Stream* _stream, Endianness _endianness = getNativeEndianness());
 
     // Returns true if an endian swap is required while writing.
     [[nodiscard]] bool endian_swap() const { return endian_swap_; }
@@ -148,7 +148,7 @@ public:
     // Constructs an input archive from the Stream _stream that must be opened for
     // reading, at the same tell (position in the stream) as when it was passed to
     // the OArchive.
-    IArchive(Stream* _stream);
+    explicit IArchive(Stream* _stream);
 
     // Returns true if an endian swap is required while reading.
     [[nodiscard]] bool endian_swap() const { return endian_swap_; }
@@ -335,32 +335,32 @@ VOX_IO_PRIMITIVE_TYPE(float)
 
 // Utility function that instantiates Array wrapper.
 template <typename Ty>
-VOX_INLINE internal::Array<Ty> MakeArray(Ty* _array, size_t _count) {
+VOX_INLINE const internal::Array<Ty> MakeArray(Ty* _array, size_t _count) {
     const internal::Array<Ty> array = {_array, _count};
     return array;
 }
 template <typename Ty>
-VOX_INLINE internal::Array<const Ty> MakeArray(const Ty* _array, size_t _count) {
+VOX_INLINE const internal::Array<const Ty> MakeArray(const Ty* _array, size_t _count) {
     const internal::Array<const Ty> array = {_array, _count};
     return array;
 }
 template <typename Ty>
-VOX_INLINE internal::Array<Ty> MakeArray(span<Ty> _array) {
+VOX_INLINE const internal::Array<Ty> MakeArray(span<Ty> _array) {
     const internal::Array<Ty> array = {_array.data(), _array.size()};
     return array;
 }
 template <typename Ty>
-VOX_INLINE internal::Array<const Ty> MakeArray(span<const Ty> _array) {
+VOX_INLINE const internal::Array<const Ty> MakeArray(span<const Ty> _array) {
     const internal::Array<const Ty> array = {_array.data(), _array.size()};
     return array;
 }
 template <typename Ty, size_t _count>
-VOX_INLINE internal::Array<Ty> MakeArray(Ty (&_array)[_count]) {
+VOX_INLINE const internal::Array<Ty> MakeArray(Ty (&_array)[_count]) {
     const internal::Array<Ty> array = {_array, _count};
     return array;
 }
 template <typename Ty, size_t _count>
-VOX_INLINE internal::Array<const Ty> MakeArray(const Ty (&_array)[_count]) {
+VOX_INLINE const internal::Array<const Ty> MakeArray(const Ty (&_array)[_count]) {
     const internal::Array<const Ty> array = {_array, _count};
     return array;
 }

@@ -77,7 +77,7 @@ public:
 
     // Gives _file ownership to the FileStream, which will be in charge of closing
     // it. _file must be nullptr or a valid std::FILE pointer.
-    File(void* _file);
+    explicit File(void* _file);
 
     // Close the file if it is opened.
     ~File() override;
