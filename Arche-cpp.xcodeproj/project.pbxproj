@@ -2379,15 +2379,15 @@
 			isa = PBXGroup;
 			children = (
 				04F9E91827D481A000BD291B /* singleton.h */,
-				045A38AD28C4479A003FEE10 /* helper.cpp */,
 				045A38AF28C4479A003FEE10 /* helper.h */,
+				045A38AD28C4479A003FEE10 /* helper.cpp */,
 				045A38B028C4479A003FEE10 /* tags.h */,
-				045A38A728C4479A003FEE10 /* strings.cpp */,
 				045A38AB28C4479A003FEE10 /* strings.h */,
-				045A38B128C4479A003FEE10 /* utils.cpp */,
+				045A38A728C4479A003FEE10 /* strings.cpp */,
 				045A38AA28C4479A003FEE10 /* utils.h */,
-				045A38AC28C4479A003FEE10 /* debug_info.cpp */,
+				045A38B128C4479A003FEE10 /* utils.cpp */,
 				045A38A928C4479A003FEE10 /* debug_info.h */,
+				045A38AC28C4479A003FEE10 /* debug_info.cpp */,
 				04954675279F8CD600783C84 /* std_helpers.h */,
 				049546DC279FA2CC00783C84 /* utils */,
 				045A38C828C44ADF003FEE10 /* platform */,
@@ -3290,8 +3290,8 @@
 		045A391028C44B9A003FEE10 /* plugins */ = {
 			isa = PBXGroup;
 			children = (
-				045A391128C44BA6003FEE10 /* force_close.cpp */,
 				045A391228C44BA6003FEE10 /* force_close.h */,
+				045A391128C44BA6003FEE10 /* force_close.cpp */,
 			);
 			path = plugins;
 			sourceTree = "<group>";

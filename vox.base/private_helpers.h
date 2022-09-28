@@ -17,7 +17,7 @@
     std::shared_ptr<ClassName>(new ClassName(*this), [](ClassName* obj) { delete obj; });
 #endif
 
-#ifdef JET_WINDOWS
+#ifdef VOX_WINDOWS
 
 #define WIN32_LEAN_AND_MEAN  // Exclude rarely-used stuff from Windows headers
 #ifndef WIN32_LEAN_AND_MEAN
@@ -53,4 +53,4 @@ inline void throwIfFailed(HRESULT hr) {
     }
 #endif
 
-#endif  // JET_WINDOWS
+#endif  // VOX_WINDOWS
