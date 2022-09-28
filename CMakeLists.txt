@@ -55,6 +55,8 @@ add_subdirectory(test.base)
 # Add math library
 add_subdirectory(vox.math)
 add_subdirectory(test.math)
+add_subdirectory(vox.simd_math)
+add_subdirectory(test.simd_math)
 
 # Add geometry library
 add_subdirectory(vox.geometry)

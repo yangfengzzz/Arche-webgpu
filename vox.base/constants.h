@@ -153,13 +153,13 @@ constexpr T quarterPi() {
     return static_cast<T>(kQuarterPiD);
 }
 
-//! Pi/2 for float.
+//! Pi/4 for float.
 template <>
 constexpr float quarterPi<float>() {
     return kQuarterPiF;
 }
 
-//! Pi/2 for double.
+//! Pi/4 for double.
 template <>
 constexpr double quarterPi<double>() {
     return kQuarterPiD;
@@ -336,5 +336,17 @@ constexpr int kDirectionAll =
 // Angle unit conversion constants.
 constexpr float kDegreeToRadian = kPiF / 180.f;
 constexpr float kRadianToDegree = 180.f / kPiF;
+
+// Defines the square normalization tolerance value.
+constexpr float kNormalizationToleranceSq = 1e-6f;
+constexpr float kNormalizationToleranceEstSq = 2e-3f;
+
+// Defines the square orthogonalisation tolerance value.
+constexpr float kOrthogonalisationToleranceSq = 1e-16f;
+
+constexpr float kSqrt3 = 1.7320508075688772935274463415059f;
+constexpr float kSqrt3_2 = 0.86602540378443864676372317075294f;
+constexpr float kSqrt2 = 1.4142135623730950488016887242097f;
+constexpr float kSqrt2_2 = 0.70710678118654752440084436210485f;
 
 }  // namespace vox
