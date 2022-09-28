@@ -312,6 +312,50 @@ public:
     static Quaternion makeRotationZ(T rad);
 };
 
+// Returns to negate of _q. This represents the same rotation as q.
+template <typename T>
+VOX_INLINE Quaternion<T> operator-(const Quaternion<T> &_q) {
+    return Quaternion(-_q.x, -_q.y, -_q.z, -_q.w);
+}
+
+// Returns true if _q is a normalized quaternion.
+template <typename T>
+VOX_INLINE bool isNormalized(const Quaternion<T> &_q) {
+    const float sq_len = _q.x * _q.x + _q.y * _q.y + _q.z * _q.z + _q.w * _q.w;
+    return std::abs(sq_len - 1.f) < kNormalizationToleranceSq;
+}
+
+// Returns the normalized quaternion _q if the norm of _q is not 0.
+// Otherwise, returns _safer.
+template <typename T>
+VOX_INLINE Quaternion<T> normalizeSafe(const Quaternion<T> &_q, const Quaternion<T> &_safer) {
+    assert(isNormalized(_safer) && "_safer is not normalized");
+    const float sq_len = _q.x * _q.x + _q.y * _q.y + _q.z * _q.z + _q.w * _q.w;
+    if (sq_len == 0) {
+        return _safer;
+    }
+    const float inv_len = 1.f / std::sqrt(sq_len);
+    return Quaternion(_q.x * inv_len, _q.y * inv_len, _q.z * inv_len, _q.w * inv_len);
+}
+
+// Returns the linear interpolation of quaternion _a and _b with coefficient _f.
+template <typename T>
+VOX_INLINE Quaternion<T> lerp(const Quaternion<T> &_a, const Quaternion<T> &_b, float _f) {
+    return Quaternion((_b.x - _a.x) * _f + _a.x, (_b.y - _a.y) * _f + _a.y, (_b.z - _a.z) * _f + _a.z,
+                      (_b.w - _a.w) * _f + _a.w);
+}
+
+// Returns the linear interpolation of quaternion _a and _b with coefficient
+// _f. _a and _n must be from the same hemisphere (aka dot(_a, _b) >= 0).
+template <typename T>
+VOX_INLINE Quaternion<T> nLerp(const Quaternion<T> &_a, const Quaternion<T> &_b, float _f) {
+    const Vector4<T> lerp((_b.x - _a.x) * _f + _a.x, (_b.y - _a.y) * _f + _a.y, (_b.z - _a.z) * _f + _a.z,
+                          (_b.w - _a.w) * _f + _a.w);
+    const float sq_len = lerp.x * lerp.x + lerp.y * lerp.y + lerp.z * lerp.z + lerp.w * lerp.w;
+    const float inv_len = 1.f / std::sqrt(sq_len);
+    return Quaternion(lerp.x * inv_len, lerp.y * inv_len, lerp.z * inv_len, lerp.w * inv_len);
+}
+
 //! Computes spherical linear interpolation.
 template <typename T>
 Quaternion<T> slerp(const Quaternion<T> &a, const Quaternion<T> &b, T t);

@@ -41,6 +41,9 @@ public:
     //! Constructs default vector (0, 0, 0, 0).
     constexpr Vector() : x(0), y(0), z(0), w(0) {}
 
+    //! Constructs vector with given parameters \p x_.
+    constexpr explicit Vector(T x) : x(x), y(x), z(x), w(x) {}
+
     //! Constructs vector with given parameters \p x_, \p y_, \p z_, and \p w_.
     constexpr Vector(T x, T y, T z, T w) : x(x), y(y), z(z), w(w) {}
 

@@ -62,8 +62,8 @@ add_subdirectory(test.simd_math)
 add_subdirectory(vox.geometry)
 add_subdirectory(test.geometry)
 
-# Add force library
-#add_subdirectory(vox.force)
+# Add animation library
+add_subdirectory(vox.animation)
 #add_subdirectory(test.force)
 #add_subdirectory(apps.force)
 
