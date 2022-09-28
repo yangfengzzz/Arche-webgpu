@@ -9,7 +9,7 @@
 #include "vox.animation/offline/raw_animation.h"
 #include "vox.animation/offline/raw_skeleton.h"
 #include "vox.animation/offline/raw_track.h"
-#include "vox.animation/offline/tools/export.h"
+#include "vox.animation/offline/importer/export.h"
 #include "vox.base/containers/string.h"
 #include "vox.base/containers/vector.h"
 #include "vox.base/macros.h"
@@ -26,7 +26,7 @@ namespace offline {
 // to vox skeletons and animations. The tool exposes a set of global options
 // through the command line, and a json configuration file to tune import
 // settings. Reference json configuration is generated at
-// src\animation\offline\tools\reference.json.
+// src\animation\offline\importer\reference.json.
 // To import a new source data format, one will implement the pure virtual
 // functions of this interface. All the conversions end error processing are
 // done by the tool.

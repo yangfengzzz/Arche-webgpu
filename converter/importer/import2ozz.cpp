@@ -10,10 +10,10 @@
 #include <cstdlib>
 #include <cstring>
 
-#include "vox.animation/offline/tools/import2vox.h"
-#include "vox.animation/offline/tools/import2vox_anim.h"
-#include "vox.animation/offline/tools/import2vox_config.h"
-#include "vox.animation/offline/tools/import2vox_skel.h"
+#include "vox.animation/offline/importer/import2ozz.h"
+#include "vox.animation/offline/importer/import2ozz_anim.h"
+#include "vox.animation/offline/importer/import2ozz_config.h"
+#include "vox.animation/offline/importer/import2ozz_skel.h"
 #include "vox.base/io/stream.h"
 #include "vox.base/logging.h"
 #include "vox/options/options.h"

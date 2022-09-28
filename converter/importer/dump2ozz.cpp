@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.animation/offline/tools/import2vox.h"
+#include "vox.animation/offline/importer/import2vox.h"
 
 // Mocks OzzImporter so it can be used to dump default and reference
 // configurations.
