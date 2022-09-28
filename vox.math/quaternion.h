@@ -18,9 +18,6 @@ struct Quaternion {
 public:
     static_assert(std::is_floating_point<T>::value, "Quaternion only can be instantiated with floating point types");
 
-    //! Real part.
-    T w;
-
     //!< Imaginary part (i).
     T x;
 
@@ -29,6 +26,9 @@ public:
 
     //!< Imaginary part (k).
     T z;
+
+    //! Real part.
+    T w;
 
     // MARK: - Constructors
 

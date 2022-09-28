@@ -152,3 +152,33 @@ TEST(MathUtils, MonotonicCatmullRom) {
         }
     }
 }
+
+TEST(MathUtils, select) {
+    int a = -27, b = 46;
+    int *pa = &a, *pb = &b;
+    int *cpa = &a, *cpb = &b;
+
+    {  // Integer select
+        EXPECT_EQ(vox::select(true, a, b), a);
+        EXPECT_EQ(vox::select(true, b, a), b);
+        EXPECT_EQ(vox::select(false, a, b), b);
+    }
+
+    {  // Float select
+        EXPECT_FLOAT_EQ(vox::select(true, 46.f, 27.f), 46.f);
+        EXPECT_FLOAT_EQ(vox::select(false, 99.f, 46.f), 46.f);
+    }
+
+    {  // Pointer select
+        EXPECT_EQ(vox::select(true, pa, pb), pa);
+        EXPECT_EQ(vox::select(true, pb, pa), pb);
+        EXPECT_EQ(vox::select(false, pa, pb), pb);
+    }
+
+    {  // Const pointer select
+        EXPECT_EQ(vox::select(true, cpa, cpb), cpa);
+        EXPECT_EQ(vox::select(true, cpb, cpa), cpb);
+        EXPECT_EQ(vox::select(false, cpa, cpb), cpb);
+        EXPECT_EQ(vox::select(false, pa, cpb), cpb);
+    }
+}

@@ -558,12 +558,12 @@ inline Quaternion<T> &Quaternion<T>::operator*=(const Quaternion &other) {
 // Getter operators
 template <typename T>
 inline T &Quaternion<T>::operator[](size_t i) {
-    return (&w)[i];
+    return (&x)[i];
 }
 
 template <typename T>
 inline const T &Quaternion<T>::operator[](size_t i) const {
-    return (&w)[i];
+    return (&x)[i];
 }
 
 template <typename T>

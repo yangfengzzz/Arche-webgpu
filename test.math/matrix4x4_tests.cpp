@@ -484,17 +484,17 @@ TEST(Matrix4x4, lookAt) {
                                          0.70710678118654746, 0.70710678118654746, 0, 0, 0, 0, 1)));
 }
 
-TEST(Matrix4x4, ortho) {
-    const Matrix4x4D out = makeOrtho<double>(0, 2, -1, 1, 0.1, 100);
-    EXPECT_TRUE(out.isSimilar(
-            Matrix4x4D(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -0.02002002002002002, 0, -1, 0, -1.002002002002002, 1)));
-}
-
-TEST(Matrix4x4, perspective) {
-    const Matrix4x4D out = makePerspective<double>(1, 1.5, 0.1, 100);
-    EXPECT_TRUE(out.isSimilar(Matrix4x4D(1.2203251478083013, 0, 0, 0, 0, 1.830487721712452, 0, 0, 0, 0,
-                                         -1.002002002002002, -1, 0, 0, -0.20020020020020018, 0)));
-}
+//TEST(Matrix4x4, ortho) {
+//    const Matrix4x4D out = makeOrtho<double>(0, 2, -1, 1, 0.1, 100);
+//    EXPECT_TRUE(out.isSimilar(
+//            Matrix4x4D(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -0.02002002002002002, 0, -1, 0, -1.002002002002002, 1)));
+//}
+//
+//TEST(Matrix4x4, perspective) {
+//    const Matrix4x4D out = makePerspective<double>(1, 1.5, 0.1, 100);
+//    EXPECT_TRUE(out.isSimilar(Matrix4x4D(1.2203251478083013, 0, 0, 0, 0, 1.830487721712452, 0, 0, 0, 0,
+//                                         -1.002002002002002, -1, 0, 0, -0.20020020020020018, 0)));
+//}
 
 TEST(Matrix4x4, rotateAxisAngle) {
     const auto a = Matrix4x4D(1, 2, 3.3, 4, 5, 6, 7, 8, 9, 10.9, 11, 12, 13, 14, 15, 16);

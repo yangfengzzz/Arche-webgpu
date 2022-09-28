@@ -311,10 +311,10 @@ TEST(Quaternion, SetterOperators) {
 TEST(Quaternion, GetterOperators) {
     QuaternionD q(2, 3, 4, 1);
 
-    EXPECT_EQ(1.0, q[0]);
-    EXPECT_EQ(2.0, q[1]);
-    EXPECT_EQ(3.0, q[2]);
-    EXPECT_EQ(4.0, q[3]);
+    EXPECT_EQ(2.0, q[0]);
+    EXPECT_EQ(3.0, q[1]);
+    EXPECT_EQ(4.0, q[2]);
+    EXPECT_EQ(1.0, q[3]);
 
     QuaternionD q2(2, 3, 4, 1);
     EXPECT_TRUE(q == q2);
