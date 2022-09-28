@@ -3,7 +3,10 @@ cmake_minimum_required(VERSION 3.12)
 project(test.base LANGUAGES C CXX)
 
 file(GLOB sources
-        ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+        ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/containers/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/io/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/memory/*.cpp)
 
 add_executable(${PROJECT_NAME} ${sources})
 

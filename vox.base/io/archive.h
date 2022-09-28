@@ -1,0 +1,399 @@
+//  Copyright (c) 2022 Feng Yang
+//
+//  I am making my contributions/submissions to this project solely in my
+//  personal capacity and am not conveying any rights to any intellectual
+//  property of any third parties.
+
+#pragma once
+
+// Provides input (IArchive) and output (OArchive) serialization containers.
+// Archive are similar to c++ iostream. Data can be saved to a OArchive with
+// the << operator, or loaded from a IArchive with the >> operator.
+// Primitive data types are simply saved/loaded to/from archives, while struct
+// and class are saved/loaded through Save/Load intrusive or non-intrusive
+// functions:
+// - The intrusive function prototypes are "void Save(vox::io::OArchive*) const"
+// and "void Load(vox::io::IArchive*)".
+// - The non-intrusive functions allow to work on arrays of objects. They must
+// be implemented in vox::io namespace, by specializing the following template
+// struct:
+// template <typename _Ty>
+// struct Extern {
+//   static void Save(OArchive& _archive, const _Ty* _ty, size_t _count);
+//   static void Load(IArchive& _archive, _Ty* _ty, size_t _count,
+//                    uint32_t _version);
+// };
+//
+// Arrays of struct/class or primitive types can be saved/loaded with the
+// helper function vox::io::MakeArray() that is then streamed in or out using
+// << and >> archive operators: archive << vox::io::MakeArray(my_array, count);
+//
+// Versioning can be done using VOX_IO_TYPE_VERSION macros. Type version
+// is saved in the OArchive, and is given back to Load functions to allow to
+// manually handle version modifications. Versioning can be disabled using
+// VOX_IO_TYPE_NOT_VERSIONABLE like macros. It can not be re-enabled afterward.
+//
+// Objects can be assigned a tag using VOX_IO_TYPE_TAG macros. A tag allows to
+// check the type of the next object to read from an archive. An automatic
+// assertion check is performed for each object that has a tag. It can also be
+// done manually to ensure an archive has the expected content.
+//
+// Endianness (big-endian or little-endian) can be specified while constructing
+// an output archive (vox::io::OArchive). Input archives automatically handle
+// endianness conversion if the native platform endian mode differs from the
+// archive one.
+//
+// IArchive and OArchive expect valid streams as argument, respectively opened
+// for reading and writing. Archives do NOT perform error detection while
+// reading or writing. All errors are considered programming errors. This leads
+// to the following assertions on the user side:
+// - When writing: the stream must be big (or grow-able) enough to support the
+// data being written.
+// - When reading: Stream's tell (position in the stream) must match the object
+// being read. To help with this requirement, archives provide a tag mechanism
+// that allows to check the tag (ie the type) of the next object to read. Stream
+// integrity, like data corruption or file truncation, must also be validated on
+// the user side.
+
+#include <cassert>
+#include <cstdint>
+
+#include "vox.base/endianness.h"
+#include "vox.base/io/archive_traits.h"
+#include "vox.base/io/stream.h"
+#include "vox.base/macros.h"
+#include "vox.base/span.h"
+
+namespace vox::io {
+namespace internal {
+// Defines Tagger helper object struct.
+// The boolean template argument is used to automatically select a template
+// specialization, whether _Ty has a tag or not.
+template <typename Ty, bool HasTag = internal::Tag<const Ty>::kTagLength != 0>
+struct Tagger;
+}  // namespace internal
+
+// Implements output archive concept used to save/serialize data from a Stream.
+// The output endianness mode is set at construction time. It is written to the
+// stream to allow the IArchive to perform the required conversion to the native
+// endianness mode while reading.
+class VOX_BASE_DLL OArchive {
+public:
+    // Constructs an output archive from the Stream _stream that must be valid
+    // and opened for writing.
+    OArchive(Stream* _stream, Endianness _endianness = getNativeEndianness());
+
+    // Returns true if an endian swap is required while writing.
+    [[nodiscard]] bool endian_swap() const { return endian_swap_; }
+
+    // Saves _size bytes of binary data from _data.
+    size_t SaveBinary(const void* _data, size_t _size) { return stream_->Write(_data, _size); }
+
+    // Class type saving.
+    template <typename Ty>
+    void operator<<(const Ty& _ty) {
+        internal::Tagger<const Ty>::Write(*this);
+        SaveVersion<Ty>();
+        Extern<Ty>::Save(*this, &_ty, 1);
+    }
+
+// Primitive type saving.
+#define VOX_IO_PRIMITIVE_TYPE(_type)                                  \
+    void operator<<(_type _v) {                                       \
+        _type v = endian_swap_ ? EndianSwapper<_type>::swap(_v) : _v; \
+        VOX_IF_DEBUG(size_t size =) stream_->Write(&v, sizeof(v));    \
+        assert(size == sizeof(v));                                    \
+    }
+
+    VOX_IO_PRIMITIVE_TYPE(char)
+    VOX_IO_PRIMITIVE_TYPE(int8_t)
+    VOX_IO_PRIMITIVE_TYPE(uint8_t)
+    VOX_IO_PRIMITIVE_TYPE(int16_t)
+    VOX_IO_PRIMITIVE_TYPE(uint16_t)
+    VOX_IO_PRIMITIVE_TYPE(int32_t)
+    VOX_IO_PRIMITIVE_TYPE(uint32_t)
+    VOX_IO_PRIMITIVE_TYPE(int64_t)
+    VOX_IO_PRIMITIVE_TYPE(uint64_t)
+    VOX_IO_PRIMITIVE_TYPE(bool)
+    VOX_IO_PRIMITIVE_TYPE(float)
+#undef VOX_IO_PRIMITIVE_TYPE
+
+    // Returns output stream.
+    [[nodiscard]] Stream* stream() const { return stream_; }
+
+private:
+    template <typename Ty>
+    void SaveVersion() {
+        // Compilation could fail here if the version is not defined for _Ty, or if
+        // the .h file containing its definition is not included by the caller of
+        // this function.
+        if (void(0), internal::Version<const Ty>::kValue != 0) {
+            uint32_t version = internal::Version<const Ty>::kValue;
+            *this << version;
+        }
+    }
+
+    // The output stream.
+    Stream* stream_;
+
+    // Endian swap state, true if a conversion is required while writing.
+    bool endian_swap_;
+};
+
+// Implements input archive concept used to load/de-serialize data to a Stream.
+// Endianness conversions are automatically performed according to the Archive
+// and the native formats.
+class VOX_BASE_DLL IArchive {
+public:
+    // Constructs an input archive from the Stream _stream that must be opened for
+    // reading, at the same tell (position in the stream) as when it was passed to
+    // the OArchive.
+    IArchive(Stream* _stream);
+
+    // Returns true if an endian swap is required while reading.
+    [[nodiscard]] bool endian_swap() const { return endian_swap_; }
+
+    // Loads _size bytes of binary data to _data.
+    size_t LoadBinary(void* _data, size_t _size) { return stream_->Read(_data, _size); }
+
+    // Class type loading.
+    template <typename Ty>
+    void operator>>(Ty& _ty) {
+        // Only uses tag validation for assertions, as reading cannot fail.
+        VOX_IF_DEBUG(bool valid =) internal::Tagger<const Ty>::Validate(*this);
+        assert(valid && "Type tag does not match archive content.");
+
+        // Loads instance.
+        uint32_t version = LoadVersion<Ty>();
+        Extern<Ty>::Load(*this, &_ty, 1, version);
+    }
+
+// Primitive type loading.
+#define VOX_IO_PRIMITIVE_TYPE(_type)                              \
+    void operator>>(_type& _v) {                                  \
+        _type v;                                                  \
+        VOX_IF_DEBUG(size_t size =) stream_->Read(&v, sizeof(v)); \
+        assert(size == sizeof(v));                                \
+        _v = endian_swap_ ? EndianSwapper<_type>::swap(v) : v;    \
+    }
+
+    VOX_IO_PRIMITIVE_TYPE(char)
+    VOX_IO_PRIMITIVE_TYPE(int8_t)
+    VOX_IO_PRIMITIVE_TYPE(uint8_t)
+    VOX_IO_PRIMITIVE_TYPE(int16_t)
+    VOX_IO_PRIMITIVE_TYPE(uint16_t)
+    VOX_IO_PRIMITIVE_TYPE(int32_t)
+    VOX_IO_PRIMITIVE_TYPE(uint32_t)
+    VOX_IO_PRIMITIVE_TYPE(int64_t)
+    VOX_IO_PRIMITIVE_TYPE(uint64_t)
+    VOX_IO_PRIMITIVE_TYPE(bool)
+    VOX_IO_PRIMITIVE_TYPE(float)
+#undef VOX_IO_PRIMITIVE_TYPE
+
+    template <typename Ty>
+    bool TestTag() {
+        // Only tagged types can be tested. If compilations fails here, it can
+        // mean the file containing tag declaration is not included.
+        static_assert(internal::Tag<const Ty>::kTagLength != 0, "Tag unknown for type.");
+
+        const int tell = stream_->Tell();
+        bool valid = internal::Tagger<const Ty>::Validate(*this);
+        stream_->Seek(tell, Stream::kSet);  // Rewinds before the tag test.
+        return valid;
+    }
+
+    // Returns input stream.
+    [[nodiscard]] Stream* stream() const { return stream_; }
+
+private:
+    template <typename Ty>
+    uint32_t LoadVersion() {
+        uint32_t version = 0;
+        if (void(0), internal::Version<const Ty>::kValue != 0) {
+            *this >> version;
+        }
+        return version;
+    }
+
+    // The input stream.
+    Stream* stream_;
+
+    // Endian swap state, true if a conversion is required while reading.
+    bool endian_swap_;
+};
+
+// Primitive type are not versionable.
+VOX_IO_TYPE_NOT_VERSIONABLE(char)
+VOX_IO_TYPE_NOT_VERSIONABLE(int8_t)
+VOX_IO_TYPE_NOT_VERSIONABLE(uint8_t)
+VOX_IO_TYPE_NOT_VERSIONABLE(int16_t)
+VOX_IO_TYPE_NOT_VERSIONABLE(uint16_t)
+VOX_IO_TYPE_NOT_VERSIONABLE(int32_t)
+VOX_IO_TYPE_NOT_VERSIONABLE(uint32_t)
+VOX_IO_TYPE_NOT_VERSIONABLE(int64_t)
+VOX_IO_TYPE_NOT_VERSIONABLE(uint64_t)
+VOX_IO_TYPE_NOT_VERSIONABLE(bool)
+VOX_IO_TYPE_NOT_VERSIONABLE(float)
+
+// Default loading and saving external implementation.
+template <typename Ty>
+struct Extern {
+    inline static void Save(OArchive& _archive, const Ty* _ty, size_t _count) {
+        for (size_t i = 0; i < _count; ++i) {
+            _ty[i].Save(_archive);
+        }
+    }
+    inline static void Load(IArchive& _archive, Ty* _ty, size_t _count, uint32_t _version) {
+        for (size_t i = 0; i < _count; ++i) {
+            _ty[i].Load(_archive, _version);
+        }
+    }
+};
+
+// Wrapper for dynamic array serialization.
+// Must be used through vox::io::MakeArray.
+namespace internal {
+template <typename Ty>
+struct Array {
+    VOX_INLINE void Save(OArchive& _archive) const { vox::io::Extern<Ty>::Save(_archive, array, count); }
+    VOX_INLINE void Load(IArchive& _archive, uint32_t _version) const {
+        vox::io::Extern<Ty>::Load(_archive, array, count, _version);
+    }
+    Ty* array;
+    size_t count;
+};
+// Specialize for const _Ty which can only be saved.
+template <typename Ty>
+struct Array<const Ty> {
+    VOX_INLINE void Save(OArchive& _archive) const { vox::io::Extern<Ty>::Save(_archive, array, count); }
+    const Ty* array;
+    size_t count;
+};
+
+// Array copies version from the type it contains.
+// Definition of Array of _Ty version: _Ty version.
+template <typename Ty>
+struct Version<const Array<Ty>> {
+    enum { kValue = Version<const Ty>::kValue };
+};
+
+// Specializes Array Save/Load for primitive types.
+#define VOX_IO_PRIMITIVE_TYPE(_type)                                                  \
+    template <>                                                                       \
+    inline void Array<const _type>::Save(OArchive& _archive) const {                  \
+        if (_archive.endian_swap()) {                                                 \
+            /* Save element by element as swapping in place the whole buffer is*/     \
+            /* not possible.*/                                                        \
+            for (size_t i = 0; i < count; ++i) {                                      \
+                _archive << array[i];                                                 \
+            }                                                                         \
+        } else {                                                                      \
+            VOX_IF_DEBUG(size_t size =)                                               \
+            _archive.SaveBinary(array, count * sizeof(_type));                        \
+            assert(size == count * sizeof(_type));                                    \
+        }                                                                             \
+    }                                                                                 \
+                                                                                      \
+    template <>                                                                       \
+    inline void Array<_type>::Save(OArchive& _archive) const {                        \
+        if (_archive.endian_swap()) {                                                 \
+            /* Save element by element as swapping in place the whole buffer is*/     \
+            /* not possible.*/                                                        \
+            for (size_t i = 0; i < count; ++i) {                                      \
+                _archive << array[i];                                                 \
+            }                                                                         \
+        } else {                                                                      \
+            VOX_IF_DEBUG(size_t size =)                                               \
+            _archive.SaveBinary(array, count * sizeof(_type));                        \
+            assert(size == count * sizeof(_type));                                    \
+        }                                                                             \
+    }                                                                                 \
+                                                                                      \
+    template <>                                                                       \
+    inline void Array<_type>::Load(IArchive& _archive, uint32_t /*_version*/) const { \
+        VOX_IF_DEBUG(size_t size =)                                                   \
+        _archive.LoadBinary(array, count * sizeof(_type));                            \
+        assert(size == count * sizeof(_type));                                        \
+        if (_archive.endian_swap()) { /*Can swap in-place.*/                          \
+            EndianSwapper<_type>::swap(array, count);                                 \
+        }                                                                             \
+    }
+
+VOX_IO_PRIMITIVE_TYPE(char)
+VOX_IO_PRIMITIVE_TYPE(int8_t)
+VOX_IO_PRIMITIVE_TYPE(uint8_t)
+VOX_IO_PRIMITIVE_TYPE(int16_t)
+VOX_IO_PRIMITIVE_TYPE(uint16_t)
+VOX_IO_PRIMITIVE_TYPE(int32_t)
+VOX_IO_PRIMITIVE_TYPE(uint32_t)
+VOX_IO_PRIMITIVE_TYPE(int64_t)
+VOX_IO_PRIMITIVE_TYPE(uint64_t)
+VOX_IO_PRIMITIVE_TYPE(bool)
+VOX_IO_PRIMITIVE_TYPE(float)
+#undef VOX_IO_PRIMITIVE_TYPE
+}  // namespace internal
+
+// Utility function that instantiates Array wrapper.
+template <typename Ty>
+VOX_INLINE internal::Array<Ty> MakeArray(Ty* _array, size_t _count) {
+    const internal::Array<Ty> array = {_array, _count};
+    return array;
+}
+template <typename Ty>
+VOX_INLINE internal::Array<const Ty> MakeArray(const Ty* _array, size_t _count) {
+    const internal::Array<const Ty> array = {_array, _count};
+    return array;
+}
+template <typename Ty>
+VOX_INLINE internal::Array<Ty> MakeArray(span<Ty> _array) {
+    const internal::Array<Ty> array = {_array.data(), _array.size()};
+    return array;
+}
+template <typename Ty>
+VOX_INLINE internal::Array<const Ty> MakeArray(span<const Ty> _array) {
+    const internal::Array<const Ty> array = {_array.data(), _array.size()};
+    return array;
+}
+template <typename Ty, size_t _count>
+VOX_INLINE internal::Array<Ty> MakeArray(Ty (&_array)[_count]) {
+    const internal::Array<Ty> array = {_array, _count};
+    return array;
+}
+template <typename Ty, size_t _count>
+VOX_INLINE internal::Array<const Ty> MakeArray(const Ty (&_array)[_count]) {
+    const internal::Array<const Ty> array = {_array, _count};
+    return array;
+}
+
+namespace internal {
+// Specialization of the Tagger helper for tagged types.
+template <typename Ty>
+struct Tagger<Ty, true> {
+    static void Write(OArchive& _archive) {
+        typedef internal::Tag<const Ty> Tag;
+        VOX_IF_DEBUG(size_t size =)
+        _archive.SaveBinary(Tag::Get(), Tag::kTagLength);
+        assert(size == Tag::kTagLength);
+    }
+    static bool Validate(IArchive& _archive) {
+        typedef internal::Tag<const Ty> Tag;
+        char buf[Tag::kTagLength];
+        if (Tag::kTagLength != _archive.LoadBinary(buf, Tag::kTagLength)) {
+            return false;
+        }
+        const char* tag = Tag::Get();
+        size_t i = 0;
+        for (; i < Tag::kTagLength && buf[i] == tag[i]; ++i) {
+        }
+        return i == Tag::kTagLength;
+    }
+};
+
+// Specialization of the Tagger helper for types with no tag.
+template <typename Ty>
+struct Tagger<Ty, false> {
+    static void Write(OArchive& /*_archive*/) {}
+    static bool Validate(IArchive& /*_archive*/) { return true; }
+};
+}  // namespace internal
+}  // namespace vox::io
