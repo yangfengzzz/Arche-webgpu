@@ -40,8 +40,8 @@ TEST_F(BoundingFrustumTest, calculateFromMatrix) {
     a.calculateFromMatrix(vpMatrix);
 
     for (int i = 0; i < 6; ++i) {
-        const auto aPlane = a.getPlane(i);
-        const auto bPlane = frustum.getPlane(i);
+        const auto aPlane = a.getPlane(FrustumFace(i));
+        const auto bPlane = frustum.getPlane(FrustumFace(i));
 
         EXPECT_EQ(aPlane.distance, bPlane.distance);
         EXPECT_EQ(aPlane.normal, bPlane.normal);

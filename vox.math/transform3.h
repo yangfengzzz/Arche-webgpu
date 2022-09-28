@@ -19,9 +19,6 @@ namespace vox {
 template <typename T>
 class Transform3 {
 public:
-    // Scale affine transformation component.
-    Vector3<T> scale;
-
     //! Constructs identity transform.
     Transform3();
 

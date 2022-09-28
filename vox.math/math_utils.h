@@ -25,7 +25,7 @@ namespace vox {
 //! \return     True if similar.
 //!
 template <typename T>
-inline bool similar(T x, T y, T eps = std::numeric_limits<T>::epsilon());
+VOX_INLINE bool similar(T x, T y, T eps = std::numeric_limits<T>::epsilon());
 
 //!
 //! \brief      Returns the sign of the value.
@@ -37,7 +37,7 @@ inline bool similar(T x, T y, T eps = std::numeric_limits<T>::epsilon());
 //! \return     The sign.
 //!
 template <typename T>
-inline T sign(T x);
+VOX_INLINE T sign(T x);
 
 //!
 //! \brief      Returns the minimum value among three inputs.
@@ -51,7 +51,7 @@ inline T sign(T x);
 //! \return     The minimum value.
 //!
 template <typename T>
-inline T min3(T x, T y, T z);
+VOX_INLINE T min3(T x, T y, T z);
 
 //!
 //! \brief      Returns the maximum value among three inputs.
@@ -65,15 +65,15 @@ inline T min3(T x, T y, T z);
 //! \return     The maximum value.
 //!
 template <typename T>
-inline T max3(T x, T y, T z);
+VOX_INLINE T max3(T x, T y, T z);
 
 //! Returns minimum among n-elements.
 template <typename T>
-inline T minn(const T *x, size_t n);
+VOX_INLINE T minn(const T *x, size_t n);
 
 //! Returns maximum among n-elements.
 template <typename T>
-inline T maxn(const T *x, size_t n);
+VOX_INLINE T maxn(const T *x, size_t n);
 
 //!
 //! \brief      Returns the absolute minimum value among the two inputs.
@@ -86,7 +86,7 @@ inline T maxn(const T *x, size_t n);
 //! \return     The absolute minimum.
 //!
 template <typename T>
-inline T absmin(T x, T y);
+VOX_INLINE T absmin(T x, T y);
 
 //!
 //! \brief      Returns the absolute maximum value among the two inputs.
@@ -99,27 +99,27 @@ inline T absmin(T x, T y);
 //! \return     The absolute maximum.
 //!
 template <typename T>
-inline T absmax(T x, T y);
+VOX_INLINE T absmax(T x, T y);
 
 //! Returns absolute minimum among n-elements.
 template <typename T>
-inline T absminn(const T *x, size_t n);
+VOX_INLINE T absminn(const T *x, size_t n);
 
 //! Returns absolute maximum among n-elements.
 template <typename T>
-inline T absmaxn(const T *x, size_t n);
+VOX_INLINE T absmaxn(const T *x, size_t n);
 
 template <typename T>
-inline size_t argmin2(T x, T y);
+VOX_INLINE size_t argmin2(T x, T y);
 
 template <typename T>
-inline size_t argmax2(T x, T y);
+VOX_INLINE size_t argmax2(T x, T y);
 
 template <typename T>
-inline size_t argmin3(T x, T y, T z);
+VOX_INLINE size_t argmin3(T x, T y, T z);
 
 template <typename T>
-inline size_t argmax3(T x, T y, T z);
+VOX_INLINE size_t argmax3(T x, T y, T z);
 
 //!
 //! \brief      Returns the square of \p x.
@@ -131,7 +131,7 @@ inline size_t argmax3(T x, T y, T z);
 //! \return     The squared value.
 //!
 template <typename T>
-inline T square(T x);
+VOX_INLINE T square(T x);
 
 //!
 //! \brief      Returns the cubic of \p x.
@@ -143,7 +143,7 @@ inline T square(T x);
 //! \return     The cubic of \p x.
 //!
 template <typename T>
-inline T cubic(T x);
+VOX_INLINE T cubic(T x);
 
 //!
 //! \brief      Returns the clamped value.
@@ -157,7 +157,7 @@ inline T cubic(T x);
 //! \return     The clamped value.
 //!
 template <typename T>
-inline T clamp(T val, T low, T high);
+VOX_INLINE T clamp(T val, T low, T high);
 
 //!
 //! \brief      Converts degrees to radians.
@@ -169,7 +169,7 @@ inline T clamp(T val, T low, T high);
 //! \return     Angle in radians.
 //!
 template <typename T>
-inline T degreesToRadians(T angle_in_degrees);
+VOX_INLINE T degreesToRadians(T angle_in_degrees);
 
 //!
 //! \brief      Converts radians to degrees.
@@ -181,7 +181,7 @@ inline T degreesToRadians(T angle_in_degrees);
 //! \return     Angle in degrees.
 //!
 template <typename T>
-inline T radiansToDegrees(T angle_in_radians);
+VOX_INLINE T radiansToDegrees(T angle_in_radians);
 
 //!
 //! \brief      Gets the barycentric coordinate.
@@ -195,7 +195,7 @@ inline T radiansToDegrees(T angle_in_radians);
 //! \tparam     T     Value type.
 //!
 template <class T>
-inline void getBarycentric(T x, ssize_t i_low, ssize_t i_high, ssize_t *i, T *f);
+VOX_INLINE void getBarycentric(T x, ssize_t i_low, ssize_t i_high, ssize_t *i, T *f);
 
 //!
 //! \brief      Computes linear interpolation.
@@ -210,33 +210,89 @@ inline void getBarycentric(T x, ssize_t i_low, ssize_t i_high, ssize_t *i, T *f)
 //! \return     The interpolated value.
 //!
 template <typename S, typename T>
-inline S lerp(const S &value_0, const S &value_1, T f);
+VOX_INLINE S lerp(const S &value_0, const S &value_1, T f);
 
 //! \brief      Computes bilinear interpolation.
 template <typename S, typename T>
-inline S bilerp(const S &f_00, const S &f_10, const S &f_01, const S &f_11, T tx, T ty);
+VOX_INLINE S bilerp(const S &f_00, const S &f_10, const S &f_01, const S &f_11, T tx, T ty);
 
 //! \brief      Computes trilinear interpolation.
 template <typename S, typename T>
-inline S trilerp(const S &f_000,
-                 const S &f_100,
-                 const S &f010,
-                 const S &f110,
-                 const S &f001,
-                 const S &f101,
-                 const S &f011,
-                 const S &f111,
-                 T tx,
-                 T ty,
-                 T fz);
+VOX_INLINE S trilerp(const S &f_000,
+                     const S &f_100,
+                     const S &f010,
+                     const S &f110,
+                     const S &f001,
+                     const S &f101,
+                     const S &f011,
+                     const S &f111,
+                     T tx,
+                     T ty,
+                     T fz);
 
 //! \brief      Computes Catmull-Rom interpolation.
 template <typename S, typename T>
-inline S catmullRom(const S &f0, const S &f1, const S &f2, const S &f3, T f);
+VOX_INLINE S catmullRom(const S &f0, const S &f1, const S &f2, const S &f3, T f);
 
 //! \brief      Computes monotonic Catmull-Rom interpolation.
 template <typename T>
-inline T monotonicCatmullRom(const T &f0, const T &f1, const T &f2, const T &f3, T f);
+VOX_INLINE T monotonicCatmullRom(const T &f0, const T &f1, const T &f2, const T &f3, T f);
+
+// Implements int selection, avoiding branching.
+VOX_INLINE int select(bool _b, int _true, int _false) { return _false ^ (-static_cast<int>(_b) & (_true ^ _false)); }
+
+// Implements float selection, avoiding branching.
+VOX_INLINE float select(bool _b, float _true, float _false) {
+    union {
+        float f;
+        int32_t i;
+    } t = {_true};
+    union {
+        float f;
+        int32_t i;
+    } f = {_false};
+    union {
+        int32_t i;
+        float f;
+    } r = {f.i ^ (-static_cast<int32_t>(_b) & (t.i ^ f.i))};
+    return r.f;
+}
+
+// Implements pointer selection, avoiding branching.
+template <typename Ty>
+VOX_INLINE Ty *select(bool _b, Ty *_true, Ty *_false) {
+    union {
+        Ty *p;
+        intptr_t i;
+    } t = {_true};
+    union {
+        Ty *p;
+        intptr_t i;
+    } f = {_false};
+    union {
+        intptr_t i;
+        Ty *p;
+    } r = {f.i ^ (-static_cast<intptr_t>(_b) & (t.i ^ f.i))};
+    return r.p;
+}
+
+// Implements const pointer selection, avoiding branching.
+template <typename Ty>
+VOX_INLINE const Ty *select(bool _b, const Ty *_true, const Ty *_false) {
+    union {
+        const Ty *p;
+        intptr_t i;
+    } t = {_true};
+    union {
+        const Ty *p;
+        intptr_t i;
+    } f = {_false};
+    union {
+        intptr_t i;
+        const Ty *p;
+    } r = {f.i ^ (-static_cast<intptr_t>(_b) & (t.i ^ f.i))};
+    return r.p;
+}
 
 }  // namespace vox
 
