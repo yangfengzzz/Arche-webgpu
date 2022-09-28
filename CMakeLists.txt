@@ -64,7 +64,7 @@ add_subdirectory(test.geometry)
 
 # Add animation library
 add_subdirectory(vox.animation)
-#add_subdirectory(test.force)
+add_subdirectory(test.animation)
 #add_subdirectory(apps.force)
 
 # Add render framework
