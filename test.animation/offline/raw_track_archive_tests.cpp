@@ -15,7 +15,7 @@ using vox::animation::offline::RawFloatTrack;
 using vox::animation::offline::RawQuaternionTrack;
 using vox::animation::offline::RawTrackInterpolation;
 
-TEST(Empty, RawTrackSerialize) {
+TEST(TrackEmpty, RawTrackSerialize) {
     vox::io::MemoryStream stream;
 
     // Streams out.
@@ -35,7 +35,7 @@ TEST(Empty, RawTrackSerialize) {
     EXPECT_STREQ(o_track.name.c_str(), i_track.name.c_str());
 }
 
-TEST(Filled, RawAnimationSerialize) {
+TEST(TrackFilled, RawAnimationSerialize) {
     RawFloatTrack o_track;
     o_track.name = "test track";
 
@@ -77,7 +77,7 @@ TEST(Filled, RawAnimationSerialize) {
     }
 }
 
-TEST(AlreadyInitialized, RawAnimationSerialize) {
+TEST(TrackAlreadyInitialized, RawAnimationSerialize) {
     RawFloatTrack o_track;
 
     vox::io::MemoryStream stream;
@@ -106,7 +106,7 @@ TEST(AlreadyInitialized, RawAnimationSerialize) {
     EXPECT_STREQ(o_track.name.c_str(), i_track.name.c_str());
 }
 
-TEST(Float2, RawAnimationSerialize) {
+TEST(TrackFloat2, RawAnimationSerialize) {
     RawFloat2Track o_track;
     o_track.name = "test track";
 
@@ -148,7 +148,7 @@ TEST(Float2, RawAnimationSerialize) {
     }
 }
 
-TEST(Float3, RawAnimationSerialize) {
+TEST(TrackFloat3, RawAnimationSerialize) {
     RawFloat3Track o_track;
 
     const RawFloat3Track::Keyframe first_key = {RawTrackInterpolation::kLinear, .5f, vox::Vector3F(46.f, 99.f, 25.f)};
@@ -188,7 +188,7 @@ TEST(Float3, RawAnimationSerialize) {
     }
 }
 
-TEST(Float4, RawAnimationSerialize) {
+TEST(TrackFloat4, RawAnimationSerialize) {
     RawFloat4Track o_track;
 
     const RawFloat4Track::Keyframe first_key = {RawTrackInterpolation::kLinear, .5f,
@@ -230,7 +230,7 @@ TEST(Float4, RawAnimationSerialize) {
     }
 }
 
-TEST(Quaternion, RawAnimationSerialize) {
+TEST(TrackQuaternion, RawAnimationSerialize) {
     RawQuaternionTrack o_track;
 
     const RawQuaternionTrack::Keyframe first_key = {RawTrackInterpolation::kLinear, .5f,

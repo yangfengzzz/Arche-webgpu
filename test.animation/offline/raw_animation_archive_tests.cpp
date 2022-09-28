@@ -7,11 +7,10 @@
 #include "gtest/gtest.h"
 #include "vox.animation/offline/raw_animation.h"
 #include "vox.base/io/archive.h"
-#include "vox.base/io/stream.h"
 
 using vox::animation::offline::RawAnimation;
 
-TEST(Empty, RawAnimationSerialize) {
+TEST(AnimationEmpty, RawAnimationSerialize) {
     vox::io::MemoryStream stream;
 
     // Streams out.
@@ -31,7 +30,7 @@ TEST(Empty, RawAnimationSerialize) {
     EXPECT_EQ(o_animation.num_tracks(), i_animation.num_tracks());
 }
 
-TEST(Filled, RawAnimationSerialize) {
+TEST(AnimationFilled, RawAnimationSerialize) {
     RawAnimation o_animation;
     o_animation.duration = 46.f;
     o_animation.tracks.resize(3);
@@ -89,7 +88,7 @@ TEST(Filled, RawAnimationSerialize) {
     }
 }
 
-TEST(AlreadyInitialized, RawAnimationSerialize) {
+TEST(AnimationAlreadyInitialized, RawAnimationSerialize) {
     RawAnimation o_animation;
     o_animation.duration = 46.f;
     o_animation.tracks.resize(1);
