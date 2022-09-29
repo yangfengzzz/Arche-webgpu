@@ -4,15 +4,14 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.render/animation/animator_state.h"
-
 #include "vox.base/io/archive.h"
 #include "vox.base/logging.h"
 #include "vox.math/math_utils.h"
+#include "vox.render/animation/animator_clip.h"
 #include "vox.simd_math/soa_transform.h"
 
 namespace vox {
-AnimatorState::AnimatorState(const char* _filename) {
+AnimatorClip::AnimatorClip(const char* _filename) {
     bool flag = loadAnimation(_filename);
     if (flag) {
         _sampling_job.animation = &_animation;
@@ -20,15 +19,15 @@ AnimatorState::AnimatorState(const char* _filename) {
     }
 }
 
-AnimatorState::AnimatorState(AnimatorState&& state) noexcept
+AnimatorClip::AnimatorClip(AnimatorClip&& state) noexcept
     : _time_ratio(state._time_ratio),
       _animation(std::move(state._animation)) {
     _sampling_job.animation = &_animation;
 }
 
-AnimatorState& AnimatorState::operator=(AnimatorState&&) noexcept {}
+AnimatorClip& AnimatorClip::operator=(AnimatorClip&&) noexcept {}
 
-bool AnimatorState::loadAnimation(const char* _filename) {
+bool AnimatorClip::loadAnimation(const char* _filename) {
     assert(_filename);
     LOGI("Loading animation archive: {}", _filename)
     vox::io::File file(_filename, "rb");
@@ -48,16 +47,20 @@ bool AnimatorState::loadAnimation(const char* _filename) {
     return true;
 }
 
-void AnimatorState::_setNumSoaJoints(int value) {
+const vox::vector<simd_math::SoaTransform>& AnimatorClip::locals() const {
+    return _locals;
+}
+
+void AnimatorClip::_setNumSoaJoints(int value) {
     _locals.resize(value);
     _sampling_job.output = make_span(_locals);
 }
 
-void AnimatorState::_setNumJoints(int value) {
+void AnimatorClip::_setNumJoints(int value) {
     _context.Resize(value);
 }
 
-void AnimatorState::_update(float dt) {
+void AnimatorClip::update(float dt) {
     float new_time = _time_ratio;
 
     if (play) {
@@ -75,7 +78,7 @@ void AnimatorState::_update(float dt) {
     }
 }
 
-void AnimatorState::setTimeRatio(float _ratio) {
+void AnimatorClip::setTimeRatio(float _ratio) {
     _previous_time_ratio = _time_ratio;
     if (loop) {
         // Wraps in the unit interval [0:1], even for negative values (the reason
@@ -87,11 +90,11 @@ void AnimatorState::setTimeRatio(float _ratio) {
     }
 }
 
-float AnimatorState::timeRatio() const { return _time_ratio; }
+float AnimatorClip::timeRatio() const { return _time_ratio; }
 
-float AnimatorState::previousTimeRatio() const { return _previous_time_ratio; }
+float AnimatorClip::previousTimeRatio() const { return _previous_time_ratio; }
 
-void AnimatorState::reset() {
+void AnimatorClip::reset() {
     _previous_time_ratio = _time_ratio = 0.f;
     playback_speed = 1.f;
     play = true;

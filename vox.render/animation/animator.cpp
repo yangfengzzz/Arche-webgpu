@@ -6,4 +6,10 @@
 
 #include "vox.render/animation/animator.h"
 
-namespace vox {}
+namespace vox {
+void Animator::update(float dt) {
+    if (blending) {
+        blending->update(dt);
+    }
+}
+}  // namespace vox

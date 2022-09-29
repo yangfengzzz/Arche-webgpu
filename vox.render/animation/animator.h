@@ -6,14 +6,14 @@
 
 #pragma once
 
+#include "vox.render/animation/animator_blending.h"
 #include "vox.render/component.h"
-#include "vox.render/animation/animator_controller.h"
 
 namespace vox {
 class Animator : public Component {
 public:
-    AnimatorController controller;
+    std::unique_ptr<AnimatorBlending> blending;
 
-    void update();
+    void update(float dt);
 };
 }

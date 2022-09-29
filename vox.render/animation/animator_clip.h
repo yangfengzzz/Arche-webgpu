@@ -11,7 +11,7 @@
 #include "vox.base/containers/vector.h"
 
 namespace vox {
-class AnimatorState {
+class AnimatorClip {
 public:
     // Playback speed, can be negative in order to play the animation backward.
     float playback_speed{1.f};
@@ -22,13 +22,17 @@ public:
     // Animation loop mode.
     bool loop{true};
 
-    explicit AnimatorState(const char* _filename);
+    explicit AnimatorClip(const char* _filename);
 
     // Allow moves.
-    AnimatorState(AnimatorState&&) noexcept;
-    AnimatorState& operator=(AnimatorState&&) noexcept;
+    AnimatorClip(AnimatorClip&&) noexcept;
+    AnimatorClip& operator=(AnimatorClip&&) noexcept;
 
     bool loadAnimation(const char* _filename);
+
+    void update(float dt);
+
+    [[nodiscard]] const vox::vector<simd_math::SoaTransform>& locals() const;
 
 public:
     // Sets animation current time.
@@ -45,9 +49,7 @@ public:
     void reset();
 
 private:
-    friend class AnimatorController;
-
-    void _update(float dt);
+    friend class AnimatorBlending;
 
     void _setNumSoaJoints(int value);
 
