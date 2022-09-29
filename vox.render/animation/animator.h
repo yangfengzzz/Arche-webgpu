@@ -6,14 +6,14 @@
 
 #pragma once
 
-#include "vox.render/animation/animator_blending.h"
+#include "vox.render/animation/animation_state.h"
 #include "vox.render/component.h"
 #include "vox.animation/runtime/local_to_model_job.h"
 
 namespace vox {
 class Animator : public Component {
 public:
-    AnimatorBlending blending;
+    std::shared_ptr<AnimationState> rootState{nullptr};
 
     bool loadSkeleton(const char* _filename);
 

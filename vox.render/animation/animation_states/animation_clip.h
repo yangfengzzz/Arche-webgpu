@@ -9,10 +9,11 @@
 #include "vox.animation/runtime/animation.h"
 #include "vox.animation/runtime/sampling_job.h"
 #include "vox.base/containers/vector.h"
+#include "vox.render/animation/animation_state.h"
 
 namespace vox {
 
-class AnimatorClip {
+class AnimationClip : public AnimationState {
 public:
     enum BlendMode {
         Normal,
@@ -29,17 +30,17 @@ public:
     // Animation loop mode.
     bool loop{true};
 
-    explicit AnimatorClip(const char* _filename);
+    explicit AnimationClip(const char* _filename);
 
     // Allow moves.
-    AnimatorClip(AnimatorClip&&) noexcept;
-    AnimatorClip& operator=(AnimatorClip&&) noexcept;
+    AnimationClip(AnimationClip&&) noexcept;
+    AnimationClip& operator=(AnimationClip&&) noexcept;
 
     bool loadAnimation(const char* _filename);
 
-    void update(float dt);
+    void update(float dt) override;
 
-    [[nodiscard]] const vox::vector<simd_math::SoaTransform>& locals() const;
+    [[nodiscard]] const vox::vector<simd_math::SoaTransform>& locals() const override;
 
 public:
     // Sets animation current time.
@@ -56,7 +57,7 @@ public:
     void reset();
 
 private:
-    friend class AnimatorBlending;
+    friend class Animator1DBlending;
 
     void _setNumSoaJoints(int value);
 

@@ -36,8 +36,8 @@ bool Animator::loadSkeleton(const char* _filename) {
 }
 
 void Animator::update(float dt) {
-    blending.update(dt);
-    _ltm_job.input = make_span(blending.locals());
+    rootState->update(dt);
+    _ltm_job.input = make_span(rootState->locals());
     _ltm_job.Run();
 }
 

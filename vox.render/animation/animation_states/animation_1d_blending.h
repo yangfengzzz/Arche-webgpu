@@ -6,29 +6,30 @@
 
 #pragma once
 
-#include "vox.render/animation/animator_clip.h"
 #include "vox.animation/runtime/blending_job.h"
 #include "vox.animation/runtime/skeleton.h"
+#include "vox.render/animation/animation_state.h"
+#include "vox.render/animation/animation_states/animation_clip.h"
 
 namespace vox {
-class AnimatorBlending {
+class Animator1DBlending : public AnimationState {
 public:
     void loadSkeleton(const animation::Skeleton& skeleton);
 
-    AnimatorClip& addAnimatorClip(const char* _filename);
+    AnimationClip& addAnimatorClip(const char* _filename);
 
-    void update(float dt);
+    void update(float dt) override;
+
+    [[nodiscard]] const vox::vector<simd_math::SoaTransform>& locals() const override;
 
     [[nodiscard]] float threshold() const;
 
     void setThreshold(float value);
 
-    [[nodiscard]] const vox::vector<simd_math::SoaTransform>& locals() const;
-
 private:
     int num_soa_joints{};
     int num_joints{};
-    vox::vector<AnimatorClip> _clips;
+    vox::vector<AnimationClip> _clips;
 
     animation::BlendingJob _blend_job;
 

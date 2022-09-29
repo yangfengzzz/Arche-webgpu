@@ -4,12 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.render/animation/animator_blending.h"
-
-#include "vox.simd_math/soa_transform.h"
+#include "vox.render/animation/animation_states/animation_1d_blending.h"
 
 namespace vox {
-void AnimatorBlending::loadSkeleton(const animation::Skeleton& skeleton) {
+void Animator1DBlending::loadSkeleton(const animation::Skeleton& skeleton) {
     num_soa_joints = skeleton.num_soa_joints();
     num_joints = skeleton.num_joints();
     for (auto& clip : _clips) {
@@ -22,15 +20,15 @@ void AnimatorBlending::loadSkeleton(const animation::Skeleton& skeleton) {
     _blend_job.rest_pose = skeleton.joint_rest_poses();
 }
 
-AnimatorClip& AnimatorBlending::addAnimatorClip(const char* _filename) {
+AnimationClip& Animator1DBlending::addAnimatorClip(const char* _filename) {
     _clips.emplace_back(_filename);
-    AnimatorClip& clip = _clips.back();
+    AnimationClip& clip = _clips.back();
     clip._setNumSoaJoints(num_soa_joints);
     clip._setNumJoints(num_joints);
     return clip;
 }
 
-void AnimatorBlending::update(float dt) {
+void Animator1DBlending::update(float dt) {
     _layers.clear();
     _additive_layers.clear();
 
@@ -39,7 +37,7 @@ void AnimatorBlending::update(float dt) {
 
         animation::BlendingJob::Layer layer{};
         layer.transform = make_span(clip._locals);
-        if (clip.blendMode == AnimatorClip::BlendMode::Normal) {
+        if (clip.blendMode == AnimationClip::BlendMode::Normal) {
             _layers.push_back(layer);
         } else {
             _additive_layers.push_back(layer);
@@ -52,10 +50,10 @@ void AnimatorBlending::update(float dt) {
     }
 }
 
-const vox::vector<simd_math::SoaTransform>& AnimatorBlending::locals() const { return _blended_locals; }
+const vox::vector<simd_math::SoaTransform>& Animator1DBlending::locals() const { return _blended_locals; }
 
-float AnimatorBlending::threshold() const { return _blend_job.threshold; }
+float Animator1DBlending::threshold() const { return _blend_job.threshold; }
 
-void AnimatorBlending::setThreshold(float value) { _blend_job.threshold = value; }
+void Animator1DBlending::setThreshold(float value) { _blend_job.threshold = value; }
 
 }  // namespace vox

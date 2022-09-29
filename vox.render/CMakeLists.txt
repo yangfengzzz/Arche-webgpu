@@ -321,7 +321,8 @@ set(CONTROL_FILES controls/spherical.h
         controls/free_control.cpp)
 
 file(GLOB ANIMATION_FILES
-        ${CMAKE_CURRENT_SOURCE_DIR}/animation/*.cpp)
+        ${CMAKE_CURRENT_SOURCE_DIR}/animation/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/animation/animation_states/*.cpp)
 
 file(GLOB MESH_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/mesh/*.cpp)
