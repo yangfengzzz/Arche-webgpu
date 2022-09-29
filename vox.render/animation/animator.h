@@ -13,14 +13,30 @@
 namespace vox {
 class Animator : public Component {
 public:
-    std::unique_ptr<AnimatorBlending> blending{nullptr};
+    AnimatorBlending blending;
 
     bool loadSkeleton(const char* _filename);
 
     void update(float dt);
 
+    [[nodiscard]] bool localToModelFromExcluded() const;
+
+    void setLocalToModelFromExcluded(bool value);
+
+    [[nodiscard]] int localToModelFrom() const;
+
+    void setLocalToModelFrom(int value);
+
+    [[nodiscard]] int localToModelTo() const;
+
+    void setLocalToModelTo(int value);
+
+    [[nodiscard]] const vox::vector<simd_math::Float4x4>& models() const;
+
 private:
     animation::Skeleton _skeleton;
     animation::LocalToModelJob _ltm_job;
+    // Buffer of model space matrices.
+    vox::vector<simd_math::Float4x4> _models;
 };
 }  // namespace vox

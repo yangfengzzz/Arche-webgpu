@@ -13,7 +13,7 @@
 namespace vox {
 class AnimatorBlending {
 public:
-    explicit AnimatorBlending(const animation::Skeleton& skeleton);
+    void loadSkeleton(const animation::Skeleton& skeleton);
 
     AnimatorClip& addAnimatorClip(const char* _filename);
 
@@ -23,10 +23,11 @@ public:
 
     void setThreshold(float value);
 
-private:
-    // Runtime skeleton.
-    const animation::Skeleton& _skeleton;
+    [[nodiscard]] const vox::vector<simd_math::SoaTransform>& locals() const;
 
+private:
+    int num_soa_joints{};
+    int num_joints{};
     vox::vector<AnimatorClip> _clips;
 
     animation::BlendingJob _blend_job;
