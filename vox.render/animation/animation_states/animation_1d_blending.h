@@ -14,23 +14,25 @@
 namespace vox {
 class Animator1DBlending : public AnimationState {
 public:
+    float blendRatio{0.f};
+
+    [[nodiscard]] float threshold() const;
+
+    void setThreshold(float value);
+
+    std::shared_ptr<AnimationClip> addAnimatorClip(const char* _filename, float location);
+
     void loadSkeleton(const animation::Skeleton& skeleton) override;
 
     void update(float dt) override;
 
     [[nodiscard]] const vox::vector<simd_math::SoaTransform>& locals() const override;
 
-    [[nodiscard]] float threshold() const;
-
-    void setThreshold(float value);
-
-    AnimationClip& addAnimatorClip(const char* _filename);
-
 private:
     int num_soa_joints{};
     int num_joints{};
-    vox::vector<AnimationClip> _clips;
-
+    vox::vector<std::shared_ptr<AnimationClip>> _clips{};
+    vox::vector<float> _locations{};
     animation::BlendingJob _blend_job;
 
     vox::vector<animation::BlendingJob::Layer> _additive_layers;

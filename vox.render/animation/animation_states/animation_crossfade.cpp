@@ -20,7 +20,9 @@ void AnimationCrossFade::loadSkeleton(const animation::Skeleton& skeleton) {
     _blend_job.rest_pose = skeleton.joint_rest_poses();
 }
 
-void AnimationCrossFade::update(float dt) {}
+void AnimationCrossFade::update(float dt) {
+    // todo
+}
 
 const vox::vector<simd_math::SoaTransform>& AnimationCrossFade::locals() const { return _blended_locals; }
 }  // namespace vox

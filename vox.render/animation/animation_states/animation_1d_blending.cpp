@@ -11,8 +11,8 @@ void Animator1DBlending::loadSkeleton(const animation::Skeleton& skeleton) {
     num_soa_joints = skeleton.num_soa_joints();
     num_joints = skeleton.num_joints();
     for (auto& clip : _clips) {
-        clip._setNumSoaJoints(num_soa_joints);
-        clip._setNumJoints(num_joints);
+        clip->_setNumSoaJoints(num_soa_joints);
+        clip->_setNumJoints(num_joints);
     }
 
     _blended_locals.resize(num_soa_joints);
@@ -20,11 +20,12 @@ void Animator1DBlending::loadSkeleton(const animation::Skeleton& skeleton) {
     _blend_job.rest_pose = skeleton.joint_rest_poses();
 }
 
-AnimationClip& Animator1DBlending::addAnimatorClip(const char* _filename) {
-    _clips.emplace_back(_filename);
-    AnimationClip& clip = _clips.back();
-    clip._setNumSoaJoints(num_soa_joints);
-    clip._setNumJoints(num_joints);
+std::shared_ptr<AnimationClip> Animator1DBlending::addAnimatorClip(const char* _filename, float location) {
+    auto clip = std::make_shared<AnimationClip>(_filename);
+    clip->_setNumSoaJoints(num_soa_joints);
+    clip->_setNumJoints(num_joints);
+    _clips.push_back(clip);
+    _locations.emplace_back(location);
     return clip;
 }
 
@@ -32,12 +33,19 @@ void Animator1DBlending::update(float dt) {
     _layers.clear();
     _additive_layers.clear();
 
-    for (auto& clip : _clips) {
-        clip.update(dt);
+    const auto kNumIntervals = static_cast<float>(_clips.size() - 1);
+    const float kInterval = 1.f / kNumIntervals;
+    for (int i = 0; i < _clips.size(); ++i) {
+        auto& clip = _clips[i];
+        clip->update(dt);
+
+        const float x = blendRatio - _locations[i];
+        const float y = ((x < 0.f ? x : -x) + kInterval) * kNumIntervals;
 
         animation::BlendingJob::Layer layer{};
-        layer.transform = make_span(clip._locals);
-        if (clip.blendMode == AnimationClip::BlendMode::Normal) {
+        layer.transform = make_span(clip->locals());
+        layer.weight = std::max(0.f, y);
+        if (clip->blendMode == AnimationClip::BlendMode::Normal) {
             _layers.push_back(layer);
         } else {
             _additive_layers.push_back(layer);
