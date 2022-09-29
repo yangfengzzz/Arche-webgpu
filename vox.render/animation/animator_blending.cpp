@@ -23,9 +23,22 @@ AnimatorClip& AnimatorBlending::addAnimatorClip(const char* _filename) {
 }
 
 void AnimatorBlending::update(float dt) {
-    for (auto& clip : _clips) {
+    _layers.clear();
+    _additive_layers.clear();
+
+    for (auto & clip : _clips) {
         clip.update(dt);
+
+        animation::BlendingJob::Layer layer{};
+        layer.transform = make_span(clip._locals);
+        if (clip.blendMode == AnimatorClip::BlendMode::Normal) {
+            _layers.push_back(layer);
+        } else {
+            _additive_layers.push_back(layer);
+        }
     }
+    _blend_job.layers = make_span(_layers);
+    _blend_job.additive_layers = make_span(_additive_layers);
     _blend_job.Run();
 }
 

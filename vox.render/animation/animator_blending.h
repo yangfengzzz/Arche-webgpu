@@ -31,6 +31,8 @@ private:
 
     animation::BlendingJob _blend_job;
 
+    vox::vector<animation::BlendingJob::Layer> _additive_layers;
+    vox::vector<animation::BlendingJob::Layer> _layers;
     // Buffer of local transforms which stores the blending result.
     vox::vector<simd_math::SoaTransform> _blended_locals;
 };

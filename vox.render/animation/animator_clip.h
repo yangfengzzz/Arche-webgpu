@@ -11,8 +11,15 @@
 #include "vox.base/containers/vector.h"
 
 namespace vox {
+
 class AnimatorClip {
 public:
+    enum BlendMode {
+        Normal,
+        Additive,
+    };
+    BlendMode blendMode = BlendMode::Normal;
+
     // Playback speed, can be negative in order to play the animation backward.
     float playback_speed{1.f};
 
