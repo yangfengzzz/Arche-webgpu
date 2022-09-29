@@ -10,6 +10,8 @@
 #include "vox.render/mesh/mesh_renderer.h"
 
 namespace vox {
+class Animator;
+
 class SkinMeshRenderer : public MeshRenderer {
 public:
     // Loads n Skins from an ozz archive file named _filename.
@@ -19,7 +21,17 @@ public:
     // _filename and _mesh must be non-nullptr.
     bool loadSkins(const char* _filename);
 
+    void update(float deltaTime) override;
+
+private:
+    void _updateBounds(BoundingBox3F &worldBounds) override;
+
 private:
     vox::vector<Skin> _skins;
+    // Buffer of skinning matrices, result of the joint multiplication of the
+    // inverse bind pose with the model space matrix.
+    vox::vector<vox::simd_math::Float4x4> _skinning_matrices;
+
+    Animator* _animator{nullptr};
 };
 }  // namespace vox

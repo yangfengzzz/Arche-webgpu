@@ -35,16 +35,16 @@ public:
 
     [[nodiscard]] const vox::vector<simd_math::Float4x4>& models() const;
 
+    // Computes the bounding box of _skeleton. This is the box that encloses all
+    // skeleton's joints in model space.
+    // _bound must be a valid math::Box instance.
+    void computeSkeletonBounds(BoundingBox3F& bound);
+
 private:
     // Multiplies a single quaternion at a specific index in a SoA transform range.
     static void _multiplySoATransformQuaternion(int _index,
                                                 const simd_math::SimdQuaternion& _quat,
                                                 const span<simd_math::SoaTransform>& _transforms);
-
-    // Computes the bounding box of _skeleton. This is the box that encloses all
-    // skeleton's joints in model space.
-    // _bound must be a valid math::Box instance.
-    static void _computeSkeletonBounds(const animation::Skeleton& _skeleton, BoundingBox3F* _bound);
 
     // Computes the bounding box of posture defines be _matrices range.
     // _bound must be a valid math::Box instance.

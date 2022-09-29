@@ -24,7 +24,12 @@ AnimationClip::AnimationClip(AnimationClip&& state) noexcept
     _sampling_job.animation = &_animation;
 }
 
-AnimationClip& AnimationClip::operator=(AnimationClip&&) noexcept {}
+AnimationClip& AnimationClip::operator=(AnimationClip&& state) noexcept {
+    _time_ratio = state._time_ratio;
+    _animation = std::move(state._animation);
+    _sampling_job.animation = &_animation;
+    return *this;
+}
 
 bool AnimationClip::loadAnimation(const char* _filename) {
     assert(_filename);
@@ -69,7 +74,7 @@ void AnimationClip::update(float dt) {
     setTimeRatio(new_time);
     _sampling_job.ratio = timeRatio();
     if (_sampling_job.animation) {
-        _sampling_job.Run();
+        (void)_sampling_job.Run();
     }
 }
 

@@ -37,7 +37,7 @@ bool Animator::loadSkeleton(const char* _filename) {
 void Animator::update(float dt) {
     rootState->update(dt);
     _ltm_job.input = make_span(rootState->locals());
-    _ltm_job.Run();
+    (void)_ltm_job.Run();
 }
 
 bool Animator::localToModelFromExcluded() const { return _ltm_job.from_excluded; }
@@ -71,13 +71,11 @@ void Animator::_multiplySoATransformQuaternion(int _index,
     vox::simd_math::Transpose4x4(&aos_quats->xyzw, &soa_transform_ref.rotation.x);
 }
 
-void Animator::_computeSkeletonBounds(const animation::Skeleton& _skeleton, BoundingBox3F* _bound) {
+void Animator::computeSkeletonBounds(BoundingBox3F& bound) {
     using vox::simd_math::Float4x4;
 
-    assert(_bound);
-
     // Set a default box.
-    *_bound = BoundingBox3F();
+    bound = BoundingBox3F();
 
     const int num_joints = _skeleton.num_joints();
     if (!num_joints) {
@@ -94,7 +92,7 @@ void Animator::_computeSkeletonBounds(const animation::Skeleton& _skeleton, Boun
     job.skeleton = &_skeleton;
     if (job.Run()) {
         // Forwards to posture function.
-        _computePostureBounds(job.output, _bound);
+        _computePostureBounds(job.output, &bound);
     }
 }
 
