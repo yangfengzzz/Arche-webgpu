@@ -6,4 +6,26 @@
 
 #include "vox.render/animation/animator_controller.h"
 
-namespace vox {}
+#include "vox.simd_math/soa_transform.h"
+
+namespace vox {
+void AnimatorController::_setNumSoaJoints(int value) {
+    _num_soa_joints = value;
+    for (auto& state : _states) {
+        state._setNumSoaJoints(value);
+    }
+}
+
+void AnimatorController::_setNumJoints(int value) {
+    _num_joints = value;
+    for (auto& state : _states) {
+        state._setNumJoints(value);
+    }
+}
+
+AnimatorState& AnimatorController::addAnimatorState(const char* _filename) {
+    _states.emplace_back(_filename);
+    return _states.back();
+}
+
+}  // namespace vox

@@ -6,8 +6,14 @@
 
 #pragma once
 
+#include "vox.render/component.h"
+#include "vox.render/animation/animator_controller.h"
+
 namespace vox {
-class Animator {
+class Animator : public Component {
 public:
+    AnimatorController controller;
+
+    void update();
 };
 }

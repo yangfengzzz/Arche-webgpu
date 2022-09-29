@@ -6,8 +6,21 @@
 
 #pragma once
 
+#include "vox.render/animation/animator_state.h"
+
 namespace vox {
 class AnimatorController {
 public:
+    AnimatorState& addAnimatorState(const char* _filename);
+
+private:
+    friend class Animator;
+    void _setNumSoaJoints(int value);
+
+    void _setNumJoints(int value);
+
+    int _num_soa_joints;
+    int _num_joints;
+    vox::vector<AnimatorState> _states;
 };
 }  // namespace vox
