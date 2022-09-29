@@ -6,9 +6,11 @@
 
 #pragma once
 
+#include "vox.animation/runtime/local_to_model_job.h"
+#include "vox.math/bounding_box3.h"
 #include "vox.render/animation/animation_state.h"
 #include "vox.render/component.h"
-#include "vox.animation/runtime/local_to_model_job.h"
+#include "vox.simd_math/simd_quaternion.h"
 
 namespace vox {
 class Animator : public Component {
@@ -32,6 +34,21 @@ public:
     void setLocalToModelTo(int value);
 
     [[nodiscard]] const vox::vector<simd_math::Float4x4>& models() const;
+
+private:
+    // Multiplies a single quaternion at a specific index in a SoA transform range.
+    static void _multiplySoATransformQuaternion(int _index,
+                                                const simd_math::SimdQuaternion& _quat,
+                                                const span<simd_math::SoaTransform>& _transforms);
+
+    // Computes the bounding box of _skeleton. This is the box that encloses all
+    // skeleton's joints in model space.
+    // _bound must be a valid math::Box instance.
+    static void _computeSkeletonBounds(const animation::Skeleton& _skeleton, BoundingBox3F* _bound);
+
+    // Computes the bounding box of posture defines be _matrices range.
+    // _bound must be a valid math::Box instance.
+    static void _computePostureBounds(span<const simd_math::Float4x4> _matrices, BoundingBox3F* _bound);
 
 private:
     animation::Skeleton _skeleton;
