@@ -14,9 +14,7 @@
 namespace vox {
 class Animator1DBlending : public AnimationState {
 public:
-    void loadSkeleton(const animation::Skeleton& skeleton);
-
-    AnimationClip& addAnimatorClip(const char* _filename);
+    void loadSkeleton(const animation::Skeleton& skeleton) override;
 
     void update(float dt) override;
 
@@ -25,6 +23,8 @@ public:
     [[nodiscard]] float threshold() const;
 
     void setThreshold(float value);
+
+    AnimationClip& addAnimatorClip(const char* _filename);
 
 private:
     int num_soa_joints{};

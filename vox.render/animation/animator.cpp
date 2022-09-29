@@ -31,7 +31,7 @@ bool Animator::loadSkeleton(const char* _filename) {
     _models.resize(_skeleton.num_joints());
     _ltm_job.output = make_span(_models);
     _ltm_job.skeleton = &_skeleton;
-    blending.loadSkeleton(_skeleton);
+    rootState->loadSkeleton(_skeleton);
     return true;
 }
 

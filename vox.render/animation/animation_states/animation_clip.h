@@ -58,6 +58,7 @@ public:
 
 private:
     friend class Animator1DBlending;
+    friend class AnimationCrossFade;
 
     void _setNumSoaJoints(int value);
 

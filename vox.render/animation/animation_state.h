@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include "vox.animation/runtime/skeleton.h"
 #include "vox.base/containers/vector.h"
 #include "vox.simd_math/soa_transform.h"
 
@@ -15,5 +16,7 @@ public:
     virtual void update(float dt) = 0;
 
     [[nodiscard]] virtual const vox::vector<simd_math::SoaTransform>& locals() const = 0;
+
+    virtual void loadSkeleton(const animation::Skeleton& skeleton){};
 };
-}
+}  // namespace vox
