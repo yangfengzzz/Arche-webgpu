@@ -53,12 +53,11 @@ bool AnimationClip::loadAnimation(const std::string& filename) {
 
 const vox::vector<simd_math::SoaTransform>& AnimationClip::locals() const { return _locals; }
 
-void AnimationClip::_setNumSoaJoints(int value) {
-    _locals.resize(value);
+void AnimationClip::loadSkeleton(animation::Skeleton* skeleton) {
+    _context.Resize(skeleton->num_joints());
+    _locals.resize(skeleton->num_soa_joints());
     _sampling_job.output = make_span(_locals);
 }
-
-void AnimationClip::_setNumJoints(int value) { _context.Resize(value); }
 
 void AnimationClip::update(float dt) {
     float new_time = _time_ratio;

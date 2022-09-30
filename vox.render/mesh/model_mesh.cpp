@@ -539,8 +539,8 @@ void ModelMesh::_updateVertices(std::vector<float> &vertices) {
         if (_vertexChangeFlag & ValueChanged::BoneIndex) {
             for (size_t i = 0; i < _vertexCount; i++) {
                 auto start = _elementCount * i + offset;
-                vertices[start] = _boneIndices[i * 4];
-                vertices[start + 1] = _boneIndices[i * 4 + 1];
+                vertices[start] = _boneIndices[i * 2];
+                vertices[start + 1] = _boneIndices[i * 2 + 1];
             }
         }
         offset += 2;

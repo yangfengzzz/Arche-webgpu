@@ -20,7 +20,7 @@ std::shared_ptr<AnimationState> Animator::rootState() { return _rootState; }
 
 void Animator::setRootState(const std::shared_ptr<AnimationState>& state) {
     _rootState = state;
-    _rootState->loadSkeleton(_skeleton);
+    _rootState->loadSkeleton(&_skeleton);
 }
 
 bool Animator::loadSkeleton(const std::string& filename) {
@@ -43,7 +43,7 @@ bool Animator::loadSkeleton(const std::string& filename) {
     _ltm_job.output = make_span(_models);
     _ltm_job.skeleton = &_skeleton;
     if (_rootState) {
-        _rootState->loadSkeleton(_skeleton);
+        _rootState->loadSkeleton(&_skeleton);
     }
     return true;
 }

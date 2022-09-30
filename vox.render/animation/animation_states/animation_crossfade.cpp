@@ -7,17 +7,14 @@
 #include "vox.render/animation/animation_states/animation_crossfade.h"
 
 namespace vox {
-void AnimationCrossFade::loadSkeleton(const animation::Skeleton& skeleton) {
-    num_soa_joints = skeleton.num_soa_joints();
-    num_joints = skeleton.num_joints();
+void AnimationCrossFade::loadSkeleton( animation::Skeleton* skeleton) {
     for (auto& clip : _clips) {
-        clip._setNumSoaJoints(num_soa_joints);
-        clip._setNumJoints(num_joints);
+        clip.loadSkeleton(skeleton);
     }
 
-    _blended_locals.resize(num_soa_joints);
+    _blended_locals.resize(skeleton->num_soa_joints());
     _blend_job.output = make_span(_blended_locals);
-    _blend_job.rest_pose = skeleton.joint_rest_poses();
+    _blend_job.rest_pose = skeleton->joint_rest_poses();
 }
 
 void AnimationCrossFade::update(float dt) {

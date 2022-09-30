@@ -42,6 +42,8 @@ public:
 
     [[nodiscard]] const vox::vector<simd_math::SoaTransform>& locals() const override;
 
+    void loadSkeleton(animation::Skeleton* skeleton) override;
+
 public:
     // Sets animation current time.
     void setTimeRatio(float _time);
@@ -57,13 +59,6 @@ public:
     void reset();
 
 private:
-    friend class Animator1DBlending;
-    friend class AnimationCrossFade;
-
-    void _setNumSoaJoints(int value);
-
-    void _setNumJoints(int value);
-
     animation::SamplingJob _sampling_job{};
 
     // Runtime animation.

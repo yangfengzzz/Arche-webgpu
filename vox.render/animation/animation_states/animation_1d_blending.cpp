@@ -7,23 +7,19 @@
 #include "vox.render/animation/animation_states/animation_1d_blending.h"
 
 namespace vox {
-void Animator1DBlending::loadSkeleton(const animation::Skeleton& skeleton) {
-    num_soa_joints = skeleton.num_soa_joints();
-    num_joints = skeleton.num_joints();
+void Animator1DBlending::loadSkeleton(animation::Skeleton* skeleton) {
     for (auto& clip : _clips) {
-        clip->_setNumSoaJoints(num_soa_joints);
-        clip->_setNumJoints(num_joints);
+        clip->loadSkeleton(skeleton);
     }
 
-    _blended_locals.resize(num_soa_joints);
+    _blended_locals.resize(skeleton->num_soa_joints());
     _blend_job.output = make_span(_blended_locals);
-    _blend_job.rest_pose = skeleton.joint_rest_poses();
+    _blend_job.rest_pose = skeleton->joint_rest_poses();
 }
 
 std::shared_ptr<AnimationClip> Animator1DBlending::addAnimatorClip(const std::string& filename, float location) {
     auto clip = std::make_shared<AnimationClip>(filename);
-    clip->_setNumSoaJoints(num_soa_joints);
-    clip->_setNumJoints(num_joints);
+    clip->loadSkeleton(_skeleton);
     _clips.push_back(clip);
     _locations.emplace_back(location);
     return clip;

@@ -22,15 +22,14 @@ public:
 
     std::shared_ptr<AnimationClip> addAnimatorClip(const std::string& filename, float location);
 
-    void loadSkeleton(const animation::Skeleton& skeleton) override;
+    void loadSkeleton(animation::Skeleton* skeleton) override;
 
     void update(float dt) override;
 
     [[nodiscard]] const vox::vector<simd_math::SoaTransform>& locals() const override;
 
 private:
-    int num_soa_joints{};
-    int num_joints{};
+    animation::Skeleton* _skeleton{nullptr};
     vox::vector<std::shared_ptr<AnimationClip>> _clips{};
     vox::vector<float> _locations{};
     animation::BlendingJob _blend_job;

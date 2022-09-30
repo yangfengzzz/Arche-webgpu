@@ -17,6 +17,6 @@ public:
 
     [[nodiscard]] virtual const vox::vector<simd_math::SoaTransform>& locals() const = 0;
 
-    virtual void loadSkeleton(const animation::Skeleton& skeleton){};
+    virtual void loadSkeleton(animation::Skeleton* skeleton) = 0;
 };
 }  // namespace vox
