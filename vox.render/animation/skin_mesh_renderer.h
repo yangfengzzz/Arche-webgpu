@@ -26,7 +26,10 @@ public:
 private:
     void _updateBounds(BoundingBox3F &worldBounds) override;
 
+    void _createMeshes(const Skin& skin);
+
 private:
+    vox::vector<ModelMeshPtr> _meshes;
     vox::vector<Skin> _skins;
     // Buffer of skinning matrices, result of the joint multiplication of the
     // inverse bind pose with the model space matrix.

@@ -29,6 +29,20 @@ void ModelMesh::setPositions(const std::vector<Vector3F> &positions) {
     }
 }
 
+void ModelMesh::setPositions(const vox::vector<float> &positions) {
+    if (!_accessible) {
+        assert(false && "Not allowed to access data while accessible is false.");
+    }
+
+    auto count = positions.size() / 3;
+    _f32positions = positions;
+    _vertexChangeFlag |= ValueChanged::Position;
+
+    if (_vertexCount != count) {
+        _vertexCount = count;
+    }
+}
+
 const std::vector<Vector3F> &ModelMesh::positions() {
     if (!_accessible) {
         assert(false && "Not allowed to access data while accessible is false.");
@@ -48,6 +62,19 @@ void ModelMesh::setNormals(const std::vector<Vector3F> &normals) {
 
     _vertexChangeFlag |= ValueChanged::Normal;
     _normals = normals;
+}
+
+void ModelMesh::setNormals(const vox::vector<float> &normals) {
+    if (!_accessible) {
+        assert(false && "Not allowed to access data while accessible is false.");
+    }
+
+    if (normals.size() / 3 != _vertexCount) {
+        assert(false && "The array provided needs to be the same size as vertex count.");
+    }
+
+    _vertexChangeFlag |= ValueChanged::Normal;
+    _f32normals = normals;
 }
 
 const std::vector<Vector3F> &ModelMesh::normals() {
@@ -70,12 +97,53 @@ void ModelMesh::setColors(const std::vector<Color> &colors) {
     _colors = colors;
 }
 
+void ModelMesh::setColors(const vox::vector<float> &colors) {
+    if (!_accessible) {
+        assert(false && "Not allowed to access data while accessible is false.");
+    }
+
+    if (colors.size() / 4 != _vertexCount) {
+        assert(false && "The array provided needs to be the same size as vertex count.");
+    }
+
+    _vertexChangeFlag |= ValueChanged::Color;
+    _f32colors = colors;
+}
+
 const std::vector<Color> &ModelMesh::colors() {
     if (!_accessible) {
         assert(false && "Not allowed to access data while accessible is false.");
     }
     return _colors;
 }
+
+void ModelMesh::setJointWeights(const vox::vector<float> &value) {
+    _vertexChangeFlag |= ValueChanged::BoneWeight;
+    _boneWeights = value;
+}
+
+const vox::vector<float> &ModelMesh::jointWeights() const {
+    if (!_accessible) {
+        assert(false && "Not allowed to access data while accessible is false.");
+    }
+    return _boneWeights;
+}
+
+void ModelMesh::setJointIndices(const vox::vector<uint16_t> &value) {
+    _vertexChangeFlag |= ValueChanged::BoneIndex;
+    _boneIndices = value;
+}
+
+const vox::vector<uint16_t> &ModelMesh::jointIndices() const {
+    if (!_accessible) {
+        assert(false && "Not allowed to access data while accessible is false.");
+    }
+    return _boneIndices;
+}
+
+void ModelMesh::setJointInfluencesCount(int value) { _influenceCount = value; }
+
+int ModelMesh::jointInfluencesCount() const { return _influenceCount; }
 
 void ModelMesh::setTangents(const std::vector<Vector4F> &tangents) {
     if (!_accessible) {
@@ -88,6 +156,19 @@ void ModelMesh::setTangents(const std::vector<Vector4F> &tangents) {
 
     _vertexChangeFlag |= ValueChanged::Tangent;
     _tangents = tangents;
+}
+
+void ModelMesh::setTangents(const vox::vector<float> &tangents) {
+    if (!_accessible) {
+        assert(false && "Not allowed to access data while accessible is false.");
+    }
+
+    if (tangents.size() / 4 != _vertexCount) {
+        assert(false && "The array provided needs to be the same size as vertex count.");
+    }
+
+    _vertexChangeFlag |= ValueChanged::Tangent;
+    _f32tangents = tangents;
 }
 
 const std::vector<Vector4F> &ModelMesh::tangents() {
@@ -138,6 +219,53 @@ void ModelMesh::setUVs(const std::vector<Vector2F> &uv, int channelIndex) {
         case 7:
             _vertexChangeFlag |= ValueChanged::UV7;
             _uv7 = uv;
+            break;
+        default:
+            assert(false && "The index of channel needs to be in range [0 - 7].");
+    }
+}
+
+void ModelMesh::setUVs(const vox::vector<float> &uv, int channelIndex) {
+    if (!_accessible) {
+        assert(false && "Not allowed to access data while accessible is false.");
+    }
+
+    if (uv.size() / 2 != _vertexCount) {
+        assert(false && "The array provided needs to be the same size as vertex count.");
+    }
+
+    switch (channelIndex) {
+        case 0:
+            _vertexChangeFlag |= ValueChanged::UV;
+            _f32uv = uv;
+            break;
+        case 1:
+            _vertexChangeFlag |= ValueChanged::UV1;
+            _f32uv1 = uv;
+            break;
+        case 2:
+            _vertexChangeFlag |= ValueChanged::UV2;
+            _f32uv2 = uv;
+            break;
+        case 3:
+            _vertexChangeFlag |= ValueChanged::UV3;
+            _f32uv3 = uv;
+            break;
+        case 4:
+            _vertexChangeFlag |= ValueChanged::UV4;
+            _f32uv4 = uv;
+            break;
+        case 5:
+            _vertexChangeFlag |= ValueChanged::UV5;
+            _f32uv5 = uv;
+            break;
+        case 6:
+            _vertexChangeFlag |= ValueChanged::UV6;
+            _f32uv6 = uv;
+            break;
+        case 7:
+            _vertexChangeFlag |= ValueChanged::UV7;
+            _f32uv7 = uv;
             break;
         default:
             assert(false && "The index of channel needs to be in range [0 - 7].");
@@ -238,6 +366,18 @@ wgpu::VertexBufferLayout ModelMesh::_updateVertexLayouts() {
         offset += 16;
         elementCount += 4;
     }
+    if (!_boneWeights.empty()) {
+        _vertexAttribute.push_back(
+                wgpu::VertexAttribute{wgpu::VertexFormat::Float32x3, offset, (uint32_t)Attributes::WEIGHTS_0});
+        offset += 12;
+        elementCount += 3;
+    }
+    if (!_boneIndices.empty()) {
+        _vertexAttribute.push_back(
+                wgpu::VertexAttribute{wgpu::VertexFormat::Uint16x4, offset, (uint32_t)Attributes::JOINTS_0});
+        offset += 8;
+        elementCount += 2;
+    }
     if (!_tangents.empty()) {
         _vertexAttribute.push_back(
                 wgpu::VertexAttribute{wgpu::VertexFormat::Float32x4, offset, (uint32_t)Attributes::TANGENT});
@@ -305,19 +445,32 @@ wgpu::VertexBufferLayout ModelMesh::_updateVertexLayouts() {
 
 void ModelMesh::_updateVertices(std::vector<float> &vertices) {
     if ((_vertexChangeFlag & ValueChanged::Position) != 0) {
-        for (size_t i = 0; i < _vertexCount; i++) {
-            auto start = _elementCount * i;
-            const auto &position = _positions[i];
-            vertices[start] = position.x;
-            vertices[start + 1] = position.y;
-            vertices[start + 2] = position.z;
+        if (!_positions.empty()) {
+            for (size_t i = 0; i < _vertexCount; i++) {
+                auto start = _elementCount * i;
+                const auto &position = _positions[i];
+                vertices[start] = position.x;
+                vertices[start + 1] = position.y;
+                vertices[start + 2] = position.z;
+            }
+        }
+
+        if (!_f32positions.empty()) {
+            for (size_t i = 0; i < _vertexCount; i++) {
+                auto start = _elementCount * i;
+                vertices[start] = _f32positions[i * 3];
+                vertices[start + 1] = _f32positions[i * 3 + 1];
+                vertices[start + 2] = _f32positions[i * 3 + 2];
+            }
         }
     }
 
     size_t offset = 3;
+    bool updated;
 
-    if (!_normals.empty()) {
-        if ((_vertexChangeFlag & ValueChanged::Normal) != 0) {
+    if ((_vertexChangeFlag & ValueChanged::Normal) != 0) {
+        updated = false;
+        if (!_normals.empty()) {
             for (size_t i = 0; i < _vertexCount; i++) {
                 auto start = _elementCount * i + offset;
                 const auto &normal = _normals[i];
@@ -325,12 +478,27 @@ void ModelMesh::_updateVertices(std::vector<float> &vertices) {
                 vertices[start + 1] = normal.y;
                 vertices[start + 2] = normal.z;
             }
+            updated = true;
         }
-        offset += 3;
+
+        if (!_f32normals.empty()) {
+            for (size_t i = 0; i < _vertexCount; i++) {
+                auto start = _elementCount * i + offset;
+                vertices[start] = _f32normals[i * 3];
+                vertices[start + 1] = _f32normals[i * 3 + 1];
+                vertices[start + 2] = _f32normals[i * 3 + 2];
+            }
+            updated = true;
+        }
+
+        if (updated) {
+            offset += 3;
+        }
     }
 
-    if (!_colors.empty()) {
-        if ((_vertexChangeFlag & ValueChanged::Color) != 0) {
+    if ((_vertexChangeFlag & ValueChanged::Color) != 0) {
+        updated = false;
+        if (!_colors.empty()) {
             for (size_t i = 0; i < _vertexCount; i++) {
                 auto start = _elementCount * i + offset;
                 const auto &color = _colors[i];
@@ -339,12 +507,76 @@ void ModelMesh::_updateVertices(std::vector<float> &vertices) {
                 vertices[start + 2] = color.b;
                 vertices[start + 3] = color.a;
             }
+            updated = true;
         }
-        offset += 4;
+
+        if (!_f32colors.empty()) {
+            for (size_t i = 0; i < _vertexCount; i++) {
+                auto start = _elementCount * i + offset;
+                vertices[start] = _f32colors[i * 4];
+                vertices[start + 1] = _f32colors[i * 4 + 1];
+                vertices[start + 2] = _f32colors[i * 4 + 2];
+                vertices[start + 3] = _f32colors[i * 4 + 3];
+            }
+            updated = true;
+        }
+
+        if (updated) {
+            offset += 4;
+        }
     }
 
-    if (!_tangents.empty()) {
-        if ((_vertexChangeFlag & ValueChanged::Tangent) != 0) {
+    if (!_boneWeights.empty()) {
+        if (_vertexChangeFlag & ValueChanged::BoneWeight) {
+            for (size_t i = 0; i < _vertexCount; i++) {
+                auto start = _elementCount * i + offset;
+                for (int j = 0; j < 3; ++j) {
+                    if (j <= _influenceCount) {
+                        vertices[start + j] = _boneWeights[i * _influenceCount + j];
+                    } else {
+                        vertices[start + j] = 0.0;
+                    }
+                }
+            }
+        }
+        offset += 3;
+    }
+
+    if (!_boneIndices.empty()) {
+        union {
+            struct alignas(16) {
+                uint16_t index1;
+                uint16_t index2;
+            } index;
+            float f32index;
+        } union_index{};
+
+        if (_vertexChangeFlag & ValueChanged::BoneIndex) {
+            for (size_t i = 0; i < _vertexCount; i++) {
+                auto start = _elementCount * i + offset;
+                uint16_t index[4];
+                for (int j = 0; j < 4; ++j) {
+                    if (j <= _influenceCount) {
+                        index[j] = _boneIndices[i * _influenceCount + j];
+                    } else {
+                        index[j] = 0.0;
+                    }
+                }
+
+                union_index.index.index1 = index[0];
+                union_index.index.index2 = index[1];
+                vertices[start] = union_index.f32index;
+                union_index.index.index1 = index[2];
+                union_index.index.index2 = index[3];
+                vertices[start + 1] = union_index.f32index;
+            }
+        }
+        offset += 1;
+    }
+
+    if ((_vertexChangeFlag & ValueChanged::Tangent) != 0) {
+        updated = false;
+        if (!_tangents.empty()) {
             for (size_t i = 0; i < _vertexCount; i++) {
                 auto start = _elementCount * i + offset;
                 const auto &tangent = _tangents[i];
@@ -352,20 +584,50 @@ void ModelMesh::_updateVertices(std::vector<float> &vertices) {
                 vertices[start + 1] = tangent.y;
                 vertices[start + 2] = tangent.z;
             }
+            updated = true;
         }
-        offset += 4;
+
+        if (!_f32tangents.empty()) {
+            for (size_t i = 0; i < _vertexCount; i++) {
+                auto start = _elementCount * i + offset;
+                vertices[start] = _f32tangents[i * 3];
+                vertices[start + 1] = _f32tangents[i * 3 + 1];
+                vertices[start + 2] = _f32tangents[i * 3 + 2];
+            }
+            updated = true;
+        }
+
+        if (updated) {
+            offset += 4;
+        }
     }
-    if (!_uv.empty()) {
-        if ((_vertexChangeFlag & ValueChanged::UV) != 0) {
+
+    if ((_vertexChangeFlag & ValueChanged::UV) != 0) {
+        updated = false;
+        if (!_uv.empty()) {
             for (size_t i = 0; i < _vertexCount; i++) {
                 auto start = _elementCount * i + offset;
                 const auto &uv = _uv[i];
                 vertices[start] = uv.x;
                 vertices[start + 1] = uv.y;
             }
+            updated = true;
         }
-        offset += 2;
+
+        if (!_f32uv.empty()) {
+            for (size_t i = 0; i < _vertexCount; i++) {
+                auto start = _elementCount * i + offset;
+                vertices[start] = _f32uv[i * 2];
+                vertices[start + 1] = _f32uv[i * 2 + 1];
+            }
+            updated = true;
+        }
+
+        if (updated) {
+            offset += 2;
+        }
     }
+
     if (!_uv1.empty()) {
         if ((_vertexChangeFlag & ValueChanged::UV1) != 0) {
             for (size_t i = 0; i < _vertexCount; i++) {

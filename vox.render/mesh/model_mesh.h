@@ -7,8 +7,9 @@
 #pragma once
 
 #include "vox.math/color.h"
-#include "vox.render/mesh/mesh.h"
 #include "vox.render/image.h"
+#include "vox.render/mesh/mesh.h"
+#include "vox.base/containers/vector.h"
 
 namespace vox {
 struct ValueChanged {
@@ -27,7 +28,6 @@ struct ValueChanged {
         UV5 = 0x800,
         UV6 = 0x1000,
         UV7 = 0x2000,
-        BlendShape = 0x4000,
         All = 0xffff
     };
 };
@@ -55,16 +55,29 @@ public:
 
 public:
     /**
+     * Get positions for the mesh.
+     * @remarks Please call the setPositions() method after modification to ensure that the modification takes effect.
+     */
+    const std::vector<Vector3F> &positions();
+
+    /**
      * Set positions for the mesh.
      * @param positions - The positions for the mesh.
      */
     void setPositions(const std::vector<Vector3F> &positions);
 
     /**
-     * Get positions for the mesh.
-     * @remarks Please call the setPositions() method after modification to ensure that the modification takes effect.
+     * Set positions for the mesh.
+     * @param positions - The positions for the mesh.
      */
-    const std::vector<Vector3F> &positions();
+    void setPositions(const vox::vector<float> &positions);
+
+public:
+    /**
+     * Get normals for the mesh.
+     * @remarks Please call the setNormals() method after modification to ensure that the modification takes effect.
+     */
+    const std::vector<Vector3F> &normals();
 
     /**
      * Set per-vertex normals for the mesh.
@@ -73,10 +86,17 @@ public:
     void setNormals(const std::vector<Vector3F> &normals);
 
     /**
-     * Get normals for the mesh.
-     * @remarks Please call the setNormals() method after modification to ensure that the modification takes effect.
+     * Set per-vertex normals for the mesh.
+     * @param normals - The normals for the mesh.
      */
-    const std::vector<Vector3F> &normals();
+    void setNormals(const vox::vector<float> &normals);
+
+public:
+    /**
+     * Get colors for the mesh.
+     * @remarks Please call the setColors() method after modification to ensure that the modification takes effect.
+     */
+    const std::vector<Color> &colors();
 
     /**
      * Set per-vertex colors for the mesh.
@@ -85,10 +105,47 @@ public:
     void setColors(const std::vector<Color> &colors);
 
     /**
-     * Get colors for the mesh.
-     * @remarks Please call the setColors() method after modification to ensure that the modification takes effect.
+     * Set per-vertex colors for the mesh.
+     * @param colors - The colors for the mesh.
      */
-    const std::vector<Color> &colors();
+    void setColors(const vox::vector<float> &colors);
+
+public:
+    /**
+     * Set per-vertex bone weights for the mesh.
+     * @param boneWeights - The bone weights for the mesh.
+     */
+    void setJointWeights(const vox::vector<float> &value);
+
+    /**
+     * Get weights for the mesh.
+     * @remarks Please call the setWeights() method after modification to ensure that the modification takes effect.
+     */
+    [[nodiscard]] const vox::vector<float> &jointWeights() const;
+
+    /**
+     * Set per-vertex bone indices for the mesh.
+     * @param boneIndices - The bone indices for the mesh.
+     */
+    void setJointIndices(const vox::vector<uint16_t> &value);
+
+    /**
+     * Get joints for the mesh.
+     * @remarks Please call the setJointIndices() method after modification to ensure that the modification takes
+     * effect.
+     */
+    [[nodiscard]] const vox::vector<uint16_t> &jointIndices() const;
+
+    void setJointInfluencesCount(int value);
+
+    [[nodiscard]] int jointInfluencesCount() const;
+
+public:
+    /**
+     * Get tangents for the mesh.
+     * @remarks Please call the setTangents() method after modification to ensure that the modification takes effect.
+     */
+    const std::vector<Vector4F> &tangents();
 
     /**
      * Set per-vertex tangents for the mesh.
@@ -97,11 +154,12 @@ public:
     void setTangents(const std::vector<Vector4F> &tangents);
 
     /**
-     * Get tangents for the mesh.
-     * @remarks Please call the setTangents() method after modification to ensure that the modification takes effect.
+     * Set per-vertex tangents for the mesh.
+     * @param tangents - The tangents for the mesh.
      */
-    const std::vector<Vector4F> &tangents();
+    void setTangents(const vox::vector<float> &tangents);
 
+public:
     /**
      * Set per-vertex uv for the mesh by channelIndex.
      * @param uv - The uv for the mesh.
@@ -110,12 +168,20 @@ public:
     void setUVs(const std::vector<Vector2F> &uv, int channelIndex = 0);
 
     /**
+     * Set per-vertex uv for the mesh by channelIndex.
+     * @param uv - The uv for the mesh.
+     * @param channelIndex - The index of uv channels, in [0 ~ 7] range.
+     */
+    void setUVs(const vox::vector<float> &uv, int channelIndex = 0);
+
+    /**
      * Get uv for the mesh by channelIndex.
      * @param channelIndex - The index of uv channels, in [0 ~ 7] range.
      * @remarks Please call the setUV() method after modification to ensure that the modification takes effect.
      */
     const std::vector<Vector2F> &uvs(int channelIndex = 0);
 
+public:
     /**
      * Set indices for the mesh.
      * @param indices - The indices for the mesh.
@@ -160,19 +226,44 @@ private:
     std::vector<wgpu::VertexAttribute> _vertexAttribute{};
 
     std::vector<Vector3F> _positions;
+    vox::vector<float> _f32positions;
+
     std::vector<Vector3F> _normals;
+    vox::vector<float> _f32normals;
+
     std::vector<Color> _colors;
+    vox::vector<float> _f32colors;
+
     std::vector<Vector4F> _tangents;
+    vox::vector<float> _f32tangents;
+
     std::vector<Vector2F> _uv;
+    vox::vector<float> _f32uv;
+
     std::vector<Vector2F> _uv1;
+    vox::vector<float> _f32uv1;
+
     std::vector<Vector2F> _uv2;
+    vox::vector<float> _f32uv2;
+
     std::vector<Vector2F> _uv3;
+    vox::vector<float> _f32uv3;
+
     std::vector<Vector2F> _uv4;
+    vox::vector<float> _f32uv4;
+
     std::vector<Vector2F> _uv5;
+    vox::vector<float> _f32uv5;
+
     std::vector<Vector2F> _uv6;
+    vox::vector<float> _f32uv6;
+
     std::vector<Vector2F> _uv7;
-    std::vector<Vector4F> _boneWeights;
-    std::vector<Vector4F> _boneIndices;
+    vox::vector<float> _f32uv7;
+
+    vox::vector<float> _boneWeights;
+    vox::vector<uint16_t> _boneIndices;
+    int _influenceCount{};
 };
 using ModelMeshPtr = std::shared_ptr<ModelMesh>;
 

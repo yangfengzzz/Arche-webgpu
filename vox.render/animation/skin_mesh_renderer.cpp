@@ -10,6 +10,7 @@
 #include "vox.base/logging.h"
 #include "vox.render/animation/animator.h"
 #include "vox.render/entity.h"
+#include "vox.render/mesh/mesh_manager.h"
 
 namespace vox {
 bool SkinMeshRenderer::loadSkins(const char* _filename) {
@@ -35,6 +36,7 @@ bool SkinMeshRenderer::loadSkins(const char* _filename) {
     size_t num_skinning_matrices = 0;
     for (const Skin& skin : _skins) {
         num_skinning_matrices = std::max(num_skinning_matrices, skin.joint_remaps.size());
+        _createMeshes(skin);
     }
     // Allocates skinning matrices.
     _skinning_matrices.resize(num_skinning_matrices);
@@ -63,6 +65,24 @@ void SkinMeshRenderer::update(float deltaTime) {
 void SkinMeshRenderer::_updateBounds(BoundingBox3F& worldBounds) {
     if (_animator) {
         _animator->computeSkeletonBounds(worldBounds);
+    }
+}
+
+void SkinMeshRenderer::_createMeshes(const Skin& skin) {
+    vox::vector<float> colors{};
+
+    for (const auto& part : skin.parts) {
+        auto mesh = MeshManager::GetSingleton().LoadModelMesh();
+        mesh->setPositions(part.positions);
+        mesh->setNormals(part.normals);
+        mesh->setTangents(part.tangents);
+        mesh->setUVs(part.uvs, 0);
+        mesh->setJointIndices(part.joint_indices);
+        mesh->setJointWeights(part.joint_weights);
+        mesh->setJointInfluencesCount(part.influences_count());
+        std::copy(part.colors.begin(), part.colors.end(), colors.begin());
+        mesh->setColors(colors);
+        _meshes.emplace_back(mesh);
     }
 }
 
