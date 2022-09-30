@@ -8,10 +8,10 @@
 
     #else
         mat4 skinMatrix =
-            WEIGHTS_0.x * u_jointMatrix[ int( JOINTS_0.x ) ] +
-            WEIGHTS_0.y * u_jointMatrix[ int( JOINTS_0.y ) ] +
-            WEIGHTS_0.z * u_jointMatrix[ int( JOINTS_0.z ) ] +
-            WEIGHTS_0.w * u_jointMatrix[ int( JOINTS_0.w ) ];
+            WEIGHTS_0.x * joint_matrix[ JOINTS_0.x ] +
+            WEIGHTS_0.y * joint_matrix[ JOINTS_0.y ] +
+            WEIGHTS_0.z * joint_matrix[ JOINTS_0.z ] +
+            WEIGHTS_0.w * joint_matrix[ JOINTS_0.w ];
     #endif
 
     position = skinMatrix * position;

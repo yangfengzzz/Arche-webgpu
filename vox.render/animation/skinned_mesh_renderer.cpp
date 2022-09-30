@@ -16,6 +16,8 @@
 #include "vox.render/shader/shader_common.h"
 
 namespace vox {
+const std::string SkinnedMeshRenderer::_skinningMatrixProperty = "u_jointMatrix";
+
 std::string SkinnedMeshRenderer::name() { return "SkinnedMeshRenderer"; }
 
 SkinnedMeshRenderer::SkinnedMeshRenderer(Entity* entity) : MeshRenderer(entity) {}

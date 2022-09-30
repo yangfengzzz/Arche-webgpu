@@ -9,7 +9,7 @@ layout(location = Position) in vec3 POSITION;
 #endif
 
 #ifdef HAS_SKIN
-    layout(location = Joints_0) in vec4 JOINTS_0;
+    layout(location = Joints_0) in uvec4 JOINTS_0;
     layout(location = Weights_0) in vec4 WEIGHTS_0;
 
     #ifdef USE_JOINT_TEXTURE
@@ -31,7 +31,9 @@ layout(location = Position) in vec3 POSITION;
         }
 
     #else
-        layout(set = 0, binding = Joint_Matrix_Location) uniform mat4 u_jointMatrix[ JOINTS_NUM ];
+        layout(set = 0, binding = Joint_Matrix_Location) uniform u_jointMatrix {
+            mat4 joint_matrix[JOINTS_COUNT];
+        };
     #endif
 #endif
 
