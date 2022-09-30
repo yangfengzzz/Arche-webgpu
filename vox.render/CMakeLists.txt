@@ -309,13 +309,6 @@ set(LUA_SOURCE
         /opt/homebrew/include/lua
         )
 
-set(CONTROL_FILES controls/spherical.h
-        controls/spherical.cpp
-        controls/orbit_control.h
-        controls/orbit_control.cpp
-        controls/free_control.h
-        controls/free_control.cpp)
-
 file(GLOB ANIMATION_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/animation/*.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/animation/animation_states/*.cpp)
@@ -400,7 +393,6 @@ set(PROJECT_FILES
         ${UI_FILES}
         ${IMAGE_FILES}
         ${SCENE_FILES}
-        ${CONTROL_FILES}
         ${ANIMATION_FILES}
         ${MESH_FILES}
         ${SHADER_FILES}

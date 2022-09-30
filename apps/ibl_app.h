@@ -8,8 +8,8 @@
 
 #include <utility>
 
-#include "vox.render/controls/orbit_control.h"
 #include "vox.render/forward_application.h"
+#include "vox.toolkit/controls/orbit_control.h"
 
 namespace vox {
 class IBLApp : public ForwardApplication {

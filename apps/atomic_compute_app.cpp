@@ -7,11 +7,11 @@
 #include "apps/atomic_compute_app.h"
 
 #include "vox.render/camera.h"
-#include "vox.render/controls/orbit_control.h"
 #include "vox.render/entity.h"
 #include "vox.render/mesh/mesh_renderer.h"
 #include "vox.render/mesh/primitive_mesh.h"
 #include "vox.render/shader/shader_manager.h"
+#include "vox.toolkit/controls/orbit_control.h"
 
 namespace vox {
 namespace {

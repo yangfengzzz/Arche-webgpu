@@ -10,9 +10,8 @@
 
 #include "vox.render/assimp_parser.h"
 #include "vox.render/camera.h"
-#include "vox.render/controls/orbit_control.h"
 #include "vox.render/entity.h"
-#include "vox.render/mesh/mesh_renderer.h"
+#include "vox.toolkit/controls/orbit_control.h"
 
 namespace vox {
 void AssimpApp::loadScene() {

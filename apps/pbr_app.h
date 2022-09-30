@@ -8,8 +8,8 @@
 
 #include <utility>
 
-#include "vox.render/controls/orbit_control.h"
 #include "vox.render/forward_application.h"
+#include "vox.toolkit/controls/orbit_control.h"
 
 namespace vox {
 class PBRApp : public ForwardApplication {
@@ -23,7 +23,7 @@ private:
         float roughness{};
         float metallic{};
 
-        Material()= default;;
+        Material() = default;
 
         Material(std::string n, Color c, float r, float m) : name(std::move(n)) {
             roughness = r;

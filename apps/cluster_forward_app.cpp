@@ -9,12 +9,12 @@
 #include <random>
 
 #include "vox.render/camera.h"
-#include "vox.render/controls/orbit_control.h"
 #include "vox.render/entity.h"
 #include "vox.render/lighting/debug/cluster_debug_material.h"
 #include "vox.render/lighting/debug/sprite_debug.h"
 #include "vox.render/mesh/mesh_renderer.h"
 #include "vox.render/mesh/primitive_mesh.h"
+#include "vox.toolkit/controls/orbit_control.h"
 
 namespace vox {
 void ClusterForwardApp::loadScene() {

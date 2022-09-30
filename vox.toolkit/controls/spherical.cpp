@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.render/controls/spherical.h"
+#include "vox.toolkit/controls/spherical.h"
 
 namespace vox::control {
 Spherical::Spherical(float radius, float phi, float theta) : _radius(radius), _phi(phi), _theta(theta) {}

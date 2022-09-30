@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.render/controls/free_control.h"
+#include "vox.toolkit/controls/free_control.h"
 
 #include "vox.render/entity.h"
 
