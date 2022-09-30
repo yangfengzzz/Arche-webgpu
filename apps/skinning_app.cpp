@@ -37,14 +37,15 @@ void SkinningApp::loadScene() {
 
     auto characterEntity = rootEntity->createChild();
     auto renderer = characterEntity->addComponent<SkinnedMeshRenderer>();
+    auto animator = characterEntity->addComponent<Animator>();
     auto material = std::make_shared<BlinnPhongMaterial>(_device);
     material->setBaseColor(Color(0.4, 0.6, 0.6));
     renderer->setMaterial(material);
+    material->setRenderFace(RenderFace::Double);
 
     auto planeEntity = rootEntity->createChild();
-    planeEntity->transform->setPosition(0, 5, 0);
     auto planeRenderer = planeEntity->addComponent<MeshRenderer>();
-    planeRenderer->setMesh(PrimitiveMesh::createPlane(_device, 1));
+    planeRenderer->setMesh(PrimitiveMesh::createPlane(_device, 10, 10));
     auto texturedMaterial = std::make_shared<UnlitMaterial>(_device);
     planeRenderer->setMaterial(texturedMaterial);
 

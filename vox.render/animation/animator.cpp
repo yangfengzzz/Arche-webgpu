@@ -11,6 +11,10 @@
 #include "vox.render/components_manager.h"
 
 namespace vox {
+std::string Animator::name() { return "Animator"; }
+
+Animator::Animator(Entity* entity) : Component(entity) {}
+
 bool Animator::loadSkeleton(const char* _filename) {
     assert(_filename);
     LOGI("Loading skeleton archive {}", _filename)
@@ -36,9 +40,11 @@ bool Animator::loadSkeleton(const char* _filename) {
 }
 
 void Animator::update(float dt) {
-    rootState->update(dt);
-    _ltm_job.input = make_span(rootState->locals());
-    (void)_ltm_job.Run();
+    if (rootState) {
+        rootState->update(dt);
+        _ltm_job.input = make_span(rootState->locals());
+        (void)_ltm_job.Run();
+    }
 }
 
 bool Animator::localToModelFromExcluded() const { return _ltm_job.from_excluded; }
@@ -128,5 +134,12 @@ void Animator::_computePostureBounds(span<const simd_math::Float4x4> _matrices, 
 void Animator::_onEnable() { ComponentsManager::GetSingleton().addOnUpdateAnimators(this); }
 
 void Animator::_onDisable() { ComponentsManager::GetSingleton().removeOnUpdateAnimators(this); }
+
+// MARK: - Reflection
+void Animator::onSerialize(nlohmann::json& data) {}
+
+void Animator::onDeserialize(nlohmann::json& data) {}
+
+void Animator::onInspector(ui::WidgetContainer& p_root) {}
 
 }  // namespace vox

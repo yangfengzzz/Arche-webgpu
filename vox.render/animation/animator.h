@@ -15,6 +15,13 @@
 namespace vox {
 class Animator : public Component {
 public:
+    /**
+     * Returns the name of the component
+     */
+    std::string name() override;
+
+    explicit Animator(Entity *entity);
+
     std::shared_ptr<AnimationState> rootState{nullptr};
 
     bool loadSkeleton(const char* _filename);
@@ -39,6 +46,22 @@ public:
     // skeleton's joints in model space.
     // _bound must be a valid math::Box instance.
     void computeSkeletonBounds(BoundingBox3F& bound);
+
+public:
+    /**
+     * Serialize the component
+     */
+    void onSerialize(nlohmann::json &data) override;
+
+    /**
+     * Deserialize the component
+     */
+    void onDeserialize(nlohmann::json &data) override;
+
+    /**
+     * Defines how the component should be drawn in the inspector
+     */
+    void onInspector(ui::WidgetContainer &p_root) override;
 
 private:
     void _onEnable() override;
