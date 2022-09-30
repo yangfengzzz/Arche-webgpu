@@ -48,7 +48,7 @@ public:
      */
     void onInspector(ui::WidgetContainer &p_root) override;
 
-private:
+protected:
     MeshPtr _mesh;
     std::unique_ptr<UpdateFlag> _meshUpdateFlag;
 };

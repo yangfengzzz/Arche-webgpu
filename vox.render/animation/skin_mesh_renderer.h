@@ -23,6 +23,10 @@ public:
 
     void update(float deltaTime) override;
 
+    void render(std::vector<RenderElement> &opaqueQueue,
+                std::vector<RenderElement> &alphaTestQueue,
+                std::vector<RenderElement> &transparentQueue) override;
+
 private:
     void _updateBounds(BoundingBox3F &worldBounds) override;
 
