@@ -35,7 +35,10 @@ void ModelMesh::setPositions(const std::vector<float> &positions) {
     }
 
     auto count = positions.size() / 3;
-    _f32positions = positions;
+    _positions.resize(count);
+    for (int i = 0; i < count; ++i) {
+        _positions[i] = Vector3F(positions[i * 3], positions[i * 3 + 1], positions[i * 3 + 2]);
+    }
     _vertexChangeFlag |= ValueChanged::Position;
 
     if (_vertexCount != count) {
@@ -69,12 +72,16 @@ void ModelMesh::setNormals(const std::vector<float> &normals) {
         assert(false && "Not allowed to access data while accessible is false.");
     }
 
-    if (normals.size() / 3 != _vertexCount) {
+    auto count = normals.size() / 3;
+    if (count != _vertexCount) {
         assert(false && "The array provided needs to be the same size as vertex count.");
     }
 
     _vertexChangeFlag |= ValueChanged::Normal;
-    _f32normals = normals;
+    _normals.resize(count);
+    for (int i = 0; i < count; ++i) {
+        _normals[i] = Vector3F(normals[i * 3], normals[i * 3 + 1], normals[i * 3 + 2]);
+    }
 }
 
 const std::vector<Vector3F> &ModelMesh::normals() {
@@ -102,12 +109,16 @@ void ModelMesh::setColors(const std::vector<float> &colors) {
         assert(false && "Not allowed to access data while accessible is false.");
     }
 
-    if (colors.size() / 4 != _vertexCount) {
+    auto count = colors.size() / 4;
+    if (count != _vertexCount) {
         assert(false && "The array provided needs to be the same size as vertex count.");
     }
 
     _vertexChangeFlag |= ValueChanged::Color;
-    _f32colors = colors;
+    _colors.resize(count);
+    for (int i = 0; i < count; ++i) {
+        _colors[i] = Color(colors[i * 4], colors[i * 4 + 1], colors[i * 4 + 2], colors[i * 4 + 3]);
+    }
 }
 
 const std::vector<Color> &ModelMesh::colors() {
@@ -159,12 +170,16 @@ void ModelMesh::setTangents(const std::vector<float> &tangents) {
         assert(false && "Not allowed to access data while accessible is false.");
     }
 
-    if (tangents.size() / 4 != _vertexCount) {
+    auto count = tangents.size() / 4;
+    if (count != _vertexCount) {
         assert(false && "The array provided needs to be the same size as vertex count.");
     }
 
     _vertexChangeFlag |= ValueChanged::Tangent;
-    _f32tangents = tangents;
+    _tangents.resize(count);
+    for (int i = 0; i < count; ++i) {
+        _tangents[i] = Vector4F(tangents[i * 4], tangents[i * 4 + 1], tangents[i * 4 + 2], tangents[i * 4 + 3]);
+    }
 }
 
 const std::vector<Vector4F> &ModelMesh::tangents() {
@@ -226,42 +241,67 @@ void ModelMesh::setUVs(const std::vector<float> &uv, int channelIndex) {
         assert(false && "Not allowed to access data while accessible is false.");
     }
 
-    if (uv.size() / 2 != _vertexCount) {
+    auto count = uv.size() / 2;
+    if (count != _vertexCount) {
         assert(false && "The array provided needs to be the same size as vertex count.");
     }
 
     switch (channelIndex) {
         case 0:
             _vertexChangeFlag |= ValueChanged::UV;
-            _f32uv = uv;
+            _uv.resize(count);
+            for (int i = 0; i < count; ++i) {
+                _uv[i] = Vector2F(uv[i * 2], uv[i * 2 + 1]);
+            }
             break;
         case 1:
             _vertexChangeFlag |= ValueChanged::UV1;
-            _f32uv1 = uv;
+            _uv1.resize(count);
+            for (int i = 0; i < count; ++i) {
+                _uv1[i] = Vector2F(uv[i * 2], uv[i * 2 + 1]);
+            }
             break;
         case 2:
             _vertexChangeFlag |= ValueChanged::UV2;
-            _f32uv2 = uv;
+            _uv2.resize(count);
+            for (int i = 0; i < count; ++i) {
+                _uv2[i] = Vector2F(uv[i * 2], uv[i * 2 + 1]);
+            }
             break;
         case 3:
             _vertexChangeFlag |= ValueChanged::UV3;
-            _f32uv3 = uv;
+            _uv3.resize(count);
+            for (int i = 0; i < count; ++i) {
+                _uv3[i] = Vector2F(uv[i * 2], uv[i * 2 + 1]);
+            }
             break;
         case 4:
             _vertexChangeFlag |= ValueChanged::UV4;
-            _f32uv4 = uv;
+            _uv4.resize(count);
+            for (int i = 0; i < count; ++i) {
+                _uv4[i] = Vector2F(uv[i * 2], uv[i * 2 + 1]);
+            }
             break;
         case 5:
             _vertexChangeFlag |= ValueChanged::UV5;
-            _f32uv5 = uv;
+            _uv5.resize(count);
+            for (int i = 0; i < count; ++i) {
+                _uv5[i] = Vector2F(uv[i * 2], uv[i * 2 + 1]);
+            }
             break;
         case 6:
             _vertexChangeFlag |= ValueChanged::UV6;
-            _f32uv6 = uv;
+            _uv6.resize(count);
+            for (int i = 0; i < count; ++i) {
+                _uv6[i] = Vector2F(uv[i * 2], uv[i * 2 + 1]);
+            }
             break;
         case 7:
             _vertexChangeFlag |= ValueChanged::UV7;
-            _f32uv7 = uv;
+            _uv7.resize(count);
+            for (int i = 0; i < count; ++i) {
+                _uv7[i] = Vector2F(uv[i * 2], uv[i * 2 + 1]);
+            }
             break;
         default:
             assert(false && "The index of channel needs to be in range [0 - 7].");
@@ -450,22 +490,11 @@ void ModelMesh::_updateVertices(std::vector<float> &vertices) {
                 vertices[start + 2] = position.z;
             }
         }
-
-        if (!_f32positions.empty()) {
-            for (size_t i = 0; i < _vertexCount; i++) {
-                auto start = _elementCount * i;
-                vertices[start] = _f32positions[i * 3];
-                vertices[start + 1] = _f32positions[i * 3 + 1];
-                vertices[start + 2] = _f32positions[i * 3 + 2];
-            }
-        }
     }
 
     size_t offset = 3;
-    bool updated;
 
     if ((_vertexChangeFlag & ValueChanged::Normal) != 0) {
-        updated = false;
         if (!_normals.empty()) {
             for (size_t i = 0; i < _vertexCount; i++) {
                 auto start = _elementCount * i + offset;
@@ -474,26 +503,11 @@ void ModelMesh::_updateVertices(std::vector<float> &vertices) {
                 vertices[start + 1] = normal.y;
                 vertices[start + 2] = normal.z;
             }
-            updated = true;
-        }
-
-        if (!_f32normals.empty()) {
-            for (size_t i = 0; i < _vertexCount; i++) {
-                auto start = _elementCount * i + offset;
-                vertices[start] = _f32normals[i * 3];
-                vertices[start + 1] = _f32normals[i * 3 + 1];
-                vertices[start + 2] = _f32normals[i * 3 + 2];
-            }
-            updated = true;
-        }
-
-        if (updated) {
             offset += 3;
         }
     }
 
     if ((_vertexChangeFlag & ValueChanged::Color) != 0) {
-        updated = false;
         if (!_colors.empty()) {
             for (size_t i = 0; i < _vertexCount; i++) {
                 auto start = _elementCount * i + offset;
@@ -503,21 +517,6 @@ void ModelMesh::_updateVertices(std::vector<float> &vertices) {
                 vertices[start + 2] = color.b;
                 vertices[start + 3] = color.a;
             }
-            updated = true;
-        }
-
-        if (!_f32colors.empty()) {
-            for (size_t i = 0; i < _vertexCount; i++) {
-                auto start = _elementCount * i + offset;
-                vertices[start] = _f32colors[i * 4];
-                vertices[start + 1] = _f32colors[i * 4 + 1];
-                vertices[start + 2] = _f32colors[i * 4 + 2];
-                vertices[start + 3] = _f32colors[i * 4 + 3];
-            }
-            updated = true;
-        }
-
-        if (updated) {
             offset += 4;
         }
     }
@@ -547,7 +546,6 @@ void ModelMesh::_updateVertices(std::vector<float> &vertices) {
     }
 
     if ((_vertexChangeFlag & ValueChanged::Tangent) != 0) {
-        updated = false;
         if (!_tangents.empty()) {
             for (size_t i = 0; i < _vertexCount; i++) {
                 auto start = _elementCount * i + offset;
@@ -556,26 +554,11 @@ void ModelMesh::_updateVertices(std::vector<float> &vertices) {
                 vertices[start + 1] = tangent.y;
                 vertices[start + 2] = tangent.z;
             }
-            updated = true;
-        }
-
-        if (!_f32tangents.empty()) {
-            for (size_t i = 0; i < _vertexCount; i++) {
-                auto start = _elementCount * i + offset;
-                vertices[start] = _f32tangents[i * 3];
-                vertices[start + 1] = _f32tangents[i * 3 + 1];
-                vertices[start + 2] = _f32tangents[i * 3 + 2];
-            }
-            updated = true;
-        }
-
-        if (updated) {
             offset += 4;
         }
     }
 
     if ((_vertexChangeFlag & ValueChanged::UV) != 0) {
-        updated = false;
         if (!_uv.empty()) {
             for (size_t i = 0; i < _vertexCount; i++) {
                 auto start = _elementCount * i + offset;
@@ -583,19 +566,6 @@ void ModelMesh::_updateVertices(std::vector<float> &vertices) {
                 vertices[start] = uv.x;
                 vertices[start + 1] = uv.y;
             }
-            updated = true;
-        }
-
-        if (!_f32uv.empty()) {
-            for (size_t i = 0; i < _vertexCount; i++) {
-                auto start = _elementCount * i + offset;
-                vertices[start] = _f32uv[i * 2];
-                vertices[start + 1] = _f32uv[i * 2 + 1];
-            }
-            updated = true;
-        }
-
-        if (updated) {
             offset += 2;
         }
     }

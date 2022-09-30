@@ -38,7 +38,7 @@ layout(location = Position) in vec3 POSITION;
 #endif
 
 #ifdef HAS_VERTEXCOLOR
-    layout(location = Color_0) vec4 COLOR_0;
+    layout(location = Color_0) in vec4 COLOR_0;
 #endif
 
 layout(set = 0, binding = Camera_Location) uniform u_cameraData {

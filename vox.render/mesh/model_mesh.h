@@ -222,41 +222,17 @@ private:
     std::vector<wgpu::VertexAttribute> _vertexAttribute{};
 
     std::vector<Vector3F> _positions;
-    std::vector<float> _f32positions;
-
     std::vector<Vector3F> _normals;
-    std::vector<float> _f32normals;
-
     std::vector<Color> _colors;
-    std::vector<float> _f32colors;
-
     std::vector<Vector4F> _tangents;
-    std::vector<float> _f32tangents;
-
     std::vector<Vector2F> _uv;
-    std::vector<float> _f32uv;
-
     std::vector<Vector2F> _uv1;
-    std::vector<float> _f32uv1;
-
     std::vector<Vector2F> _uv2;
-    std::vector<float> _f32uv2;
-
     std::vector<Vector2F> _uv3;
-    std::vector<float> _f32uv3;
-
     std::vector<Vector2F> _uv4;
-    std::vector<float> _f32uv4;
-
     std::vector<Vector2F> _uv5;
-    std::vector<float> _f32uv5;
-
     std::vector<Vector2F> _uv6;
-    std::vector<float> _f32uv6;
-
     std::vector<Vector2F> _uv7;
-    std::vector<float> _f32uv7;
-
     std::vector<float> _boneWeights;
     std::vector<float> _boneIndices;
 };

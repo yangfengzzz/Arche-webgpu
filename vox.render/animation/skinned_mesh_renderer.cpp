@@ -213,7 +213,7 @@ void SkinnedMeshRenderer::_createMesh(const Skin& skin) {
 
     std::copy(skin.triangle_indices.begin(), skin.triangle_indices.end(), indices.begin());
     mesh->setIndices(indices);
-    mesh->addSubMesh(0, indices.size());
+    mesh->addSubMesh(0, static_cast<uint32_t>(indices.size()));
     mesh->uploadData(true);
     _meshes.emplace_back(mesh);
 }
