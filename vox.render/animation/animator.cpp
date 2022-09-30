@@ -9,23 +9,30 @@
 #include "vox.base/io/archive.h"
 #include "vox.base/logging.h"
 #include "vox.render/components_manager.h"
+#include "vox.render/platform/filesystem.h"
 
 namespace vox {
 std::string Animator::name() { return "Animator"; }
 
 Animator::Animator(Entity* entity) : Component(entity) {}
 
-bool Animator::loadSkeleton(const char* _filename) {
-    assert(_filename);
-    LOGI("Loading skeleton archive {}", _filename)
-    vox::io::File file(_filename, "rb");
+std::shared_ptr<AnimationState> Animator::rootState() { return _rootState; }
+
+void Animator::setRootState(const std::shared_ptr<AnimationState>& state) {
+    _rootState = state;
+    _rootState->loadSkeleton(_skeleton);
+}
+
+bool Animator::loadSkeleton(const std::string& filename) {
+    LOGI("Loading skeleton archive {}", filename)
+    vox::io::File file((fs::path::Get(fs::path::Type::ASSETS) + filename).c_str(), "rb");
     if (!file.opened()) {
-        LOGE("Failed to open skeleton file {}", _filename)
+        LOGE("Failed to open skeleton file {}", filename)
         return false;
     }
     vox::io::IArchive archive(&file);
     if (!archive.TestTag<vox::animation::Skeleton>()) {
-        LOGE("Failed to load skeleton instance from file {}.", _filename)
+        LOGE("Failed to load skeleton instance from file {}.", filename)
         return false;
     }
 
@@ -35,14 +42,16 @@ bool Animator::loadSkeleton(const char* _filename) {
     _models.resize(_skeleton.num_joints());
     _ltm_job.output = make_span(_models);
     _ltm_job.skeleton = &_skeleton;
-    rootState->loadSkeleton(_skeleton);
+    if (_rootState) {
+        _rootState->loadSkeleton(_skeleton);
+    }
     return true;
 }
 
 void Animator::update(float dt) {
-    if (rootState) {
-        rootState->update(dt);
-        _ltm_job.input = make_span(rootState->locals());
+    if (_rootState) {
+        _rootState->update(dt);
+        _ltm_job.input = make_span(_rootState->locals());
         (void)_ltm_job.Run();
     }
 }

@@ -20,11 +20,13 @@ public:
      */
     std::string name() override;
 
-    explicit Animator(Entity *entity);
+    explicit Animator(Entity* entity);
 
-    std::shared_ptr<AnimationState> rootState{nullptr};
+    std::shared_ptr<AnimationState> rootState();
 
-    bool loadSkeleton(const char* _filename);
+    void setRootState(const std::shared_ptr<AnimationState>& state);
+
+    bool loadSkeleton(const std::string& filename);
 
     void update(float dt);
 
@@ -51,17 +53,17 @@ public:
     /**
      * Serialize the component
      */
-    void onSerialize(nlohmann::json &data) override;
+    void onSerialize(nlohmann::json& data) override;
 
     /**
      * Deserialize the component
      */
-    void onDeserialize(nlohmann::json &data) override;
+    void onDeserialize(nlohmann::json& data) override;
 
     /**
      * Defines how the component should be drawn in the inspector
      */
-    void onInspector(ui::WidgetContainer &p_root) override;
+    void onInspector(ui::WidgetContainer& p_root) override;
 
 private:
     void _onEnable() override;
@@ -82,5 +84,6 @@ private:
     animation::LocalToModelJob _ltm_job;
     // Buffer of model space matrices.
     vox::vector<simd_math::Float4x4> _models;
+    std::shared_ptr<AnimationState> _rootState{nullptr};
 };
 }  // namespace vox

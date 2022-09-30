@@ -9,10 +9,11 @@
 #include "vox.base/io/archive.h"
 #include "vox.base/logging.h"
 #include "vox.math/math_utils.h"
+#include "vox.render/platform/filesystem.h"
 
 namespace vox {
-AnimationClip::AnimationClip(const char* _filename) {
-    bool flag = loadAnimation(_filename);
+AnimationClip::AnimationClip(const std::string& filename) {
+    bool flag = loadAnimation(filename);
     if (flag) {
         _sampling_job.animation = &_animation;
         _sampling_job.context = &_context;
@@ -31,17 +32,16 @@ AnimationClip& AnimationClip::operator=(AnimationClip&& state) noexcept {
     return *this;
 }
 
-bool AnimationClip::loadAnimation(const char* _filename) {
-    assert(_filename);
-    LOGI("Loading animation archive: {}", _filename)
-    vox::io::File file(_filename, "rb");
+bool AnimationClip::loadAnimation(const std::string& filename) {
+    LOGI("Loading animation archive: {}", filename)
+    vox::io::File file((fs::path::Get(fs::path::Type::ASSETS) + filename).c_str(), "rb");
     if (!file.opened()) {
-        LOGE("Failed to open animation file {}", _filename)
+        LOGE("Failed to open animation file {}", filename)
         return false;
     }
     vox::io::IArchive archive(&file);
     if (!archive.TestTag<vox::animation::Animation>()) {
-        LOGE("Failed to load animation instance from file {}.", _filename)
+        LOGE("Failed to load animation instance from file {}.", filename)
         return false;
     }
 

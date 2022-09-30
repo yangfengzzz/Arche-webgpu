@@ -11,6 +11,7 @@
 #include "vox.render/animation/animator.h"
 #include "vox.render/entity.h"
 #include "vox.render/mesh/mesh_manager.h"
+#include "vox.render/platform/filesystem.h"
 #include "vox.render/shader/internal_variant_name.h"
 #include "vox.render/shader/shader_common.h"
 
@@ -19,12 +20,11 @@ std::string SkinnedMeshRenderer::name() { return "SkinnedMeshRenderer"; }
 
 SkinnedMeshRenderer::SkinnedMeshRenderer(Entity* entity) : MeshRenderer(entity) {}
 
-bool SkinnedMeshRenderer::loadSkins(const char* _filename) {
-    assert(_filename);
-    LOGI("Loading meshes archive: {}", _filename)
-    vox::io::File file(_filename, "rb");
+bool SkinnedMeshRenderer::loadSkins(const std::string& filename) {
+    LOGI("Loading meshes archive: {}", filename)
+    vox::io::File file((fs::path::Get(fs::path::Type::ASSETS) + filename).c_str(), "rb");
     if (!file.opened()) {
-        LOGE("Failed to open mesh file {}.", _filename)
+        LOGE("Failed to open mesh file {}.", filename)
         return false;
     }
     vox::io::IArchive archive(&file);

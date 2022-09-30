@@ -110,7 +110,7 @@ struct Skin {
 
 namespace io {
 
-VOX_IO_TYPE_TAG("vox-sample-Mesh-Part", Skin::Part)
+VOX_IO_TYPE_TAG("ozz-sample-Mesh-Part", Skin::Part)
 VOX_IO_TYPE_VERSION(1, Skin::Part)
 
 template <>
@@ -119,7 +119,7 @@ struct Extern<Skin::Part> {
     static void Load(IArchive& _archive, Skin::Part* _parts, size_t _count, uint32_t _version);
 };
 
-VOX_IO_TYPE_TAG("vox-sample-Mesh", Skin)
+VOX_IO_TYPE_TAG("ozz-sample-Mesh", Skin)
 VOX_IO_TYPE_VERSION(1, Skin)
 
 template <>

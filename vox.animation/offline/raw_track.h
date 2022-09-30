@@ -93,14 +93,14 @@ struct VOX_ANIMOFFLINE_DLL RawQuaternionTrack : public internal::RawTrack<Quater
 
 namespace io {
 VOX_IO_TYPE_VERSION(1, animation::offline::RawFloatTrack)
-VOX_IO_TYPE_TAG("vox-raw_float_track", animation::offline::RawFloatTrack)
+VOX_IO_TYPE_TAG("ozz-raw_float_track", animation::offline::RawFloatTrack)
 VOX_IO_TYPE_VERSION(1, animation::offline::RawFloat2Track)
-VOX_IO_TYPE_TAG("vox-raw_float2_track", animation::offline::RawFloat2Track)
+VOX_IO_TYPE_TAG("ozz-raw_float2_track", animation::offline::RawFloat2Track)
 VOX_IO_TYPE_VERSION(1, animation::offline::RawFloat3Track)
-VOX_IO_TYPE_TAG("vox-raw_float3_track", animation::offline::RawFloat3Track)
+VOX_IO_TYPE_TAG("ozz-raw_float3_track", animation::offline::RawFloat3Track)
 VOX_IO_TYPE_VERSION(1, animation::offline::RawFloat4Track)
-VOX_IO_TYPE_TAG("vox-raw_float4_track", animation::offline::RawFloat4Track)
+VOX_IO_TYPE_TAG("ozz-raw_float4_track", animation::offline::RawFloat4Track)
 VOX_IO_TYPE_VERSION(1, animation::offline::RawQuaternionTrack)
-VOX_IO_TYPE_TAG("vox-raw_quat_track", animation::offline::RawQuaternionTrack)
+VOX_IO_TYPE_TAG("ozz-raw_quat_track", animation::offline::RawQuaternionTrack)
 }  // namespace io
 }  // namespace vox

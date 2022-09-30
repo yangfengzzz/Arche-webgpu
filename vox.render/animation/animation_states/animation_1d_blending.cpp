@@ -20,8 +20,8 @@ void Animator1DBlending::loadSkeleton(const animation::Skeleton& skeleton) {
     _blend_job.rest_pose = skeleton.joint_rest_poses();
 }
 
-std::shared_ptr<AnimationClip> Animator1DBlending::addAnimatorClip(const char* _filename, float location) {
-    auto clip = std::make_shared<AnimationClip>(_filename);
+std::shared_ptr<AnimationClip> Animator1DBlending::addAnimatorClip(const std::string& filename, float location) {
+    auto clip = std::make_shared<AnimationClip>(filename);
     clip->_setNumSoaJoints(num_soa_joints);
     clip->_setNumJoints(num_joints);
     _clips.push_back(clip);

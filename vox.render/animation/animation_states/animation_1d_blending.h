@@ -20,7 +20,7 @@ public:
 
     void setThreshold(float value);
 
-    std::shared_ptr<AnimationClip> addAnimatorClip(const char* _filename, float location);
+    std::shared_ptr<AnimationClip> addAnimatorClip(const std::string& filename, float location);
 
     void loadSkeleton(const animation::Skeleton& skeleton) override;
 

@@ -30,13 +30,13 @@ public:
     // Animation loop mode.
     bool loop{true};
 
-    explicit AnimationClip(const char* _filename);
+    explicit AnimationClip(const std::string& filename);
 
     // Allow moves.
     AnimationClip(AnimationClip&&) noexcept;
     AnimationClip& operator=(AnimationClip&&) noexcept;
 
-    bool loadAnimation(const char* _filename);
+    bool loadAnimation(const std::string& filename);
 
     void update(float dt) override;
 

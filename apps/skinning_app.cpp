@@ -16,6 +16,7 @@
 #include "vox.render/mesh/mesh_renderer.h"
 #include "vox.render/mesh/primitive_mesh.h"
 #include "vox.render/animation/skinned_mesh_renderer.h"
+#include "vox.render/animation/animation_states/animation_clip.h"
 
 namespace vox {
 void SkinningApp::loadScene() {
@@ -36,17 +37,22 @@ void SkinningApp::loadScene() {
     pointLight->intensity = 0.3;
 
     auto characterEntity = rootEntity->createChild();
-    auto renderer = characterEntity->addComponent<SkinnedMeshRenderer>();
     auto animator = characterEntity->addComponent<Animator>();
+    animator->loadSkeleton("Skinning/skeleton.ozz");
+    auto animationClip = std::make_shared<AnimationClip>("Skinning/animation.ozz");
+    animator->setRootState(animationClip);
+
+    auto renderer = characterEntity->addComponent<SkinnedMeshRenderer>();
+//    renderer->loadSkins("Skinning/mesh.ozz");
     auto material = std::make_shared<BlinnPhongMaterial>(_device);
     material->setBaseColor(Color(0.4, 0.6, 0.6));
     renderer->setMaterial(material);
-    material->setRenderFace(RenderFace::Double);
 
     auto planeEntity = rootEntity->createChild();
     auto planeRenderer = planeEntity->addComponent<MeshRenderer>();
     planeRenderer->setMesh(PrimitiveMesh::createPlane(_device, 10, 10));
     auto texturedMaterial = std::make_shared<UnlitMaterial>(_device);
+    texturedMaterial->setRenderFace(RenderFace::Double);
     planeRenderer->setMaterial(texturedMaterial);
 
     texturedMaterial->setBaseTexture(ImageManager::GetSingleton().loadTexture("Textures/wood.png"));

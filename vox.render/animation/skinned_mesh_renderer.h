@@ -26,7 +26,7 @@ public:
     // it is not a valid ozz mesh archive. A valid mesh archive can be
     // produced with ozz tools (fbx2skin) or using ozz animation serialization API.
     // _filename and _mesh must be non-nullptr.
-    bool loadSkins(const char *_filename);
+    bool loadSkins(const std::string &filename);
 
     void update(float deltaTime) override;
 
