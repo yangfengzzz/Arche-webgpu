@@ -156,6 +156,7 @@ void SkinnedMeshRenderer::_createMesh(const Skin& skin) {
     for (const auto& part : skin.parts) {
         int part_vertex_count = part.vertex_count();
         int part_influences_count = part.influences_count();
+        int weight_influences_count = part_influences_count - 1;
         std::copy(part.positions.begin(), part.positions.end(),
                   positions.begin() + vertex_count * Skin::Part::kPositionsCpnts);
         std::copy(part.normals.begin(), part.normals.end(), normals.begin() + vertex_count * Skin::Part::kNormalsCpnts);
@@ -182,15 +183,26 @@ void SkinnedMeshRenderer::_createMesh(const Skin& skin) {
         }
 
         for (int i = 0; i < part_vertex_count; ++i) {
-            for (int j = 0; j < 4; ++j) {
-                if (j < part_influences_count) {
-                    if (part_influences_count == 1) {
-                        joint_weights[vertex_count * 4 + i * 4 + j] = 1.f;
-                    } else {
-                        joint_weights[vertex_count * 4 + i * 4 + j] = part.joint_weights[i * part_influences_count + j];
-                    }
-                } else {
-                    joint_weights[vertex_count * 4 + i * 4 + j] = 0.f;
+            if (weight_influences_count == 0) {
+                joint_weights[vertex_count * 4 + i * 4] = 1.f;
+            } else if (weight_influences_count == 1) {
+                joint_weights[vertex_count * 4 + i * 4] = part.joint_weights[i * weight_influences_count];
+                joint_weights[vertex_count * 4 + i * 4 + 1] = 1.f - part.joint_weights[i * weight_influences_count];
+            } else if (weight_influences_count == 2) {
+                joint_weights[vertex_count * 4 + i * 4] = part.joint_weights[i * weight_influences_count];
+                joint_weights[vertex_count * 4 + i * 4 + 1] = part.joint_weights[i * weight_influences_count + 1];
+                joint_weights[vertex_count * 4 + i * 4 + 2] =
+                        1.f - joint_weights[vertex_count * 4 + i * 4] - joint_weights[vertex_count * 4 + i * 4 + 1];
+            } else if (weight_influences_count == 3) {
+                joint_weights[vertex_count * 4 + i * 4] = part.joint_weights[i * weight_influences_count];
+                joint_weights[vertex_count * 4 + i * 4 + 1] = part.joint_weights[i * weight_influences_count + 1];
+                joint_weights[vertex_count * 4 + i * 4 + 2] = part.joint_weights[i * weight_influences_count + 2];
+                joint_weights[vertex_count * 4 + i * 4 + 3] = 1.f - joint_weights[vertex_count * 4 + i * 4] -
+                                                              joint_weights[vertex_count * 4 + i * 4 + 1] -
+                                                              joint_weights[vertex_count * 4 + i * 4 + 2];
+            } else {
+                for (int j = 0; j < 4; ++j) {
+                    joint_weights[vertex_count * 4 + i * 4 + j] = part.joint_weights[i * weight_influences_count + j];
                 }
             }
         }
