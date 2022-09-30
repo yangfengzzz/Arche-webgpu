@@ -7,6 +7,7 @@
 #pragma once
 
 #include "vox.base/macros.h"
+#include <cassert>
 
 namespace vox {
 

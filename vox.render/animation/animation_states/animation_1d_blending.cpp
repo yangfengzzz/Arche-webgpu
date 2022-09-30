@@ -54,7 +54,7 @@ void Animator1DBlending::update(float dt) {
     if (!_layers.empty() || !_additive_layers.empty()) {
         _blend_job.layers = make_span(_layers);
         _blend_job.additive_layers = make_span(_additive_layers);
-        bool result = _blend_job.Run();
+        (void)_blend_job.Run();
     }
 }
 

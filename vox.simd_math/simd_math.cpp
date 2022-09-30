@@ -32,7 +32,7 @@ namespace simd_math {
 // Not defined
 #endif
 
-#pragma message("Arche-cp libraries were built with " _VOX_SIMD_IMPLEMENTATION " SIMD math implementation")
+#pragma message("Arche-cpp libraries were built with " _VOX_SIMD_IMPLEMENTATION " SIMD math implementation")
 
 const char* SimdImplementationName() { return _VOX_SIMD_IMPLEMENTATION; }
 }  // namespace simd_math

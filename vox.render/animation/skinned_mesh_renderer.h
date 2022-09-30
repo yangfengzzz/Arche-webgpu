@@ -44,7 +44,7 @@ private:
     vox::vector<Skin> _skins;
     // Buffer of skinning matrices, result of the joint multiplication of the
     // inverse bind pose with the model space matrix.
-    vox::vector<vox::simd_math::Float4x4> _skinning_matrices;
+    std::vector<vox::simd_math::Float4x4> _skinning_matrices;
     static const std::string _skinningMatrixProperty;
 
     Animator *_animator{nullptr};

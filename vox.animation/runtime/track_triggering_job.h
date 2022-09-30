@@ -8,6 +8,7 @@
 
 #include "vox.animation/runtime/export.h"
 #include "vox.base/macros.h"
+#include <cassert>
 
 namespace vox::animation {
 

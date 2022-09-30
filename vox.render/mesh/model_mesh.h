@@ -113,7 +113,7 @@ public:
 public:
     /**
      * Set per-vertex bone weights for the mesh.
-     * @param boneWeights - The bone weights for the mesh.
+     * @param value - The bone weights for the mesh.
      */
     void setJointWeights(const std::vector<float> &value);
 
@@ -125,7 +125,7 @@ public:
 
     /**
      * Set per-vertex bone indices for the mesh.
-     * @param boneIndices - The bone indices for the mesh.
+     * @param value - The bone indices for the mesh.
      */
     void setJointIndices(const std::vector<float> &value);
 
