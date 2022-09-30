@@ -11,11 +11,12 @@
 #include "vox.render/animation/animator.h"
 #include "vox.render/entity.h"
 #include "vox.render/mesh/mesh_manager.h"
+#include "vox.render/shader/internal_variant_name.h"
 
 namespace vox {
 bool SkinMeshRenderer::loadSkins(const char* _filename) {
     assert(_filename);
-    LOGI("Loading meshes archive: {}", _filename);
+    LOGI("Loading meshes archive: {}", _filename)
     vox::io::File file(_filename, "rb");
     if (!file.opened()) {
         LOGE("Failed to open mesh file {}.", _filename)
@@ -36,7 +37,7 @@ bool SkinMeshRenderer::loadSkins(const char* _filename) {
     size_t num_skinning_matrices = 0;
     for (const Skin& skin : _skins) {
         num_skinning_matrices = std::max(num_skinning_matrices, skin.joint_remaps.size());
-        _createMeshes(skin);
+        _createMesh(skin);
     }
     // Allocates skinning matrices.
     _skinning_matrices.resize(num_skinning_matrices);
@@ -59,6 +60,11 @@ void SkinMeshRenderer::update(float deltaTime) {
                 _skinning_matrices[i] = _animator->models()[skin.joint_remaps[i]] * skin.inverse_bind_poses[i];
             }
         }
+        shaderData.setData(_skinningMatrixProperty, _skinning_matrices);
+        shaderData.addDefine(JOINTS_COUNT + std::to_string(_skinning_matrices.size()));
+        shaderData.addDefine(HAS_SKIN);
+    } else {
+        shaderData.removeDefine(HAS_SKIN);
     }
 }
 
@@ -68,22 +74,87 @@ void SkinMeshRenderer::_updateBounds(BoundingBox3F& worldBounds) {
     }
 }
 
-void SkinMeshRenderer::_createMeshes(const Skin& skin) {
-    vox::vector<float> colors{};
+void SkinMeshRenderer::_createMesh(const Skin& skin) {
+    std::vector<float> positions{};
+    std::vector<float> normals{};
+    std::vector<float> tangents{};
+    std::vector<float> uvs{};
+    std::vector<float> joint_indices{};
+    std::vector<float> joint_weights{};
+    std::vector<float> colors{};
+    std::vector<uint16_t> indices{};
 
+    union {
+        struct {
+            uint16_t index1;
+            uint16_t index2;
+        } index;
+        float f32index;
+    } union_index{};
+
+    int vertex_count = 0;
     for (const auto& part : skin.parts) {
-        auto mesh = MeshManager::GetSingleton().LoadModelMesh();
-        mesh->setPositions(part.positions);
-        mesh->setNormals(part.normals);
-        mesh->setTangents(part.tangents);
-        mesh->setUVs(part.uvs, 0);
-        mesh->setJointIndices(part.joint_indices);
-        mesh->setJointWeights(part.joint_weights);
-        mesh->setJointInfluencesCount(part.influences_count());
-        std::copy(part.colors.begin(), part.colors.end(), colors.begin());
-        mesh->setColors(colors);
-        _meshes.emplace_back(mesh);
+        int part_vertex_count = part.vertex_count();
+        int part_influences_count = part.influences_count();
+        std::copy(part.positions.begin(), part.positions.end(),
+                  positions.begin() + vertex_count * Skin::Part::kPositionsCpnts);
+        std::copy(part.normals.begin(), part.normals.end(), normals.begin() + vertex_count * Skin::Part::kNormalsCpnts);
+        std::copy(part.tangents.begin(), part.tangents.end(),
+                  tangents.begin() + vertex_count * Skin::Part::kTangentsCpnts);
+        std::copy(part.uvs.begin(), part.uvs.end(), uvs.begin() + vertex_count * Skin::Part::kUVsCpnts);
+
+        joint_indices.resize(joint_indices.size() + part_vertex_count * 2);
+        for (int i = 0; i < part_vertex_count; ++i) {
+            uint16_t index[4];
+            for (int j = 0; j < 4; ++j) {
+                if (j < part_influences_count) {
+                    index[j] = part.joint_indices[i * part_influences_count + j];
+                } else {
+                    index[j] = 0;
+                }
+            }
+
+            union_index.index.index1 = index[0];
+            union_index.index.index2 = index[1];
+            joint_indices[vertex_count * 2 + i * 2] = union_index.f32index;
+            union_index.index.index1 = index[1];
+            union_index.index.index2 = index[2];
+            joint_indices[vertex_count * 2 + i * 2 + 1] = union_index.f32index;
+        }
+
+        joint_weights.resize(joint_weights.size() + part_vertex_count * 4);
+        for (int i = 0; i < part_vertex_count; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                if (j < part_influences_count) {
+                    joint_weights[vertex_count * 4 + i * 4 + j] = part.joint_weights[i * part_influences_count + j];
+                } else {
+                    joint_weights[vertex_count * 4 + i * 4 + j] = 0;
+                }
+            }
+        }
+
+        colors.resize(colors.size() + part_vertex_count * 4);
+        for (int i = 0; i < part_vertex_count * Skin::Part::kColorsCpnts; ++i) {
+            colors[vertex_count * Skin::Part::kColorsCpnts + i] = static_cast<float>(part.colors[i]) / 255.f;
+        }
+
+        vertex_count += part_vertex_count;
     }
+
+    auto mesh = MeshManager::GetSingleton().LoadModelMesh();
+    mesh->setPositions(positions);
+    mesh->setNormals(normals);
+    mesh->setTangents(tangents);
+    mesh->setUVs(uvs, 0);
+    mesh->setJointIndices(joint_indices);
+    mesh->setJointWeights(joint_weights);
+    mesh->setColors(colors);
+
+    std::copy(skin.triangle_indices.begin(), skin.triangle_indices.end(), indices.begin());
+    mesh->setIndices(indices);
+    mesh->addSubMesh(0, indices.size());
+    mesh->uploadData(true);
+    _meshes.emplace_back(mesh);
 }
 
 }  // namespace vox

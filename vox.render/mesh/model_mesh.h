@@ -70,7 +70,7 @@ public:
      * Set positions for the mesh.
      * @param positions - The positions for the mesh.
      */
-    void setPositions(const vox::vector<float> &positions);
+    void setPositions(const std::vector<float> &positions);
 
 public:
     /**
@@ -89,7 +89,7 @@ public:
      * Set per-vertex normals for the mesh.
      * @param normals - The normals for the mesh.
      */
-    void setNormals(const vox::vector<float> &normals);
+    void setNormals(const std::vector<float> &normals);
 
 public:
     /**
@@ -108,37 +108,33 @@ public:
      * Set per-vertex colors for the mesh.
      * @param colors - The colors for the mesh.
      */
-    void setColors(const vox::vector<float> &colors);
+    void setColors(const std::vector<float> &colors);
 
 public:
     /**
      * Set per-vertex bone weights for the mesh.
      * @param boneWeights - The bone weights for the mesh.
      */
-    void setJointWeights(const vox::vector<float> &value);
+    void setJointWeights(const std::vector<float> &value);
 
     /**
      * Get weights for the mesh.
      * @remarks Please call the setWeights() method after modification to ensure that the modification takes effect.
      */
-    [[nodiscard]] const vox::vector<float> &jointWeights() const;
+    [[nodiscard]] const std::vector<float> &jointWeights() const;
 
     /**
      * Set per-vertex bone indices for the mesh.
      * @param boneIndices - The bone indices for the mesh.
      */
-    void setJointIndices(const vox::vector<uint16_t> &value);
+    void setJointIndices(const std::vector<float> &value);
 
     /**
      * Get joints for the mesh.
      * @remarks Please call the setJointIndices() method after modification to ensure that the modification takes
      * effect.
      */
-    [[nodiscard]] const vox::vector<uint16_t> &jointIndices() const;
-
-    void setJointInfluencesCount(int value);
-
-    [[nodiscard]] int jointInfluencesCount() const;
+    [[nodiscard]] const std::vector<float> &jointIndices() const;
 
 public:
     /**
@@ -157,7 +153,7 @@ public:
      * Set per-vertex tangents for the mesh.
      * @param tangents - The tangents for the mesh.
      */
-    void setTangents(const vox::vector<float> &tangents);
+    void setTangents(const std::vector<float> &tangents);
 
 public:
     /**
@@ -172,7 +168,7 @@ public:
      * @param uv - The uv for the mesh.
      * @param channelIndex - The index of uv channels, in [0 ~ 7] range.
      */
-    void setUVs(const vox::vector<float> &uv, int channelIndex = 0);
+    void setUVs(const std::vector<float> &uv, int channelIndex = 0);
 
     /**
      * Get uv for the mesh by channelIndex.
@@ -226,44 +222,43 @@ private:
     std::vector<wgpu::VertexAttribute> _vertexAttribute{};
 
     std::vector<Vector3F> _positions;
-    vox::vector<float> _f32positions;
+    std::vector<float> _f32positions;
 
     std::vector<Vector3F> _normals;
-    vox::vector<float> _f32normals;
+    std::vector<float> _f32normals;
 
     std::vector<Color> _colors;
-    vox::vector<float> _f32colors;
+    std::vector<float> _f32colors;
 
     std::vector<Vector4F> _tangents;
-    vox::vector<float> _f32tangents;
+    std::vector<float> _f32tangents;
 
     std::vector<Vector2F> _uv;
-    vox::vector<float> _f32uv;
+    std::vector<float> _f32uv;
 
     std::vector<Vector2F> _uv1;
-    vox::vector<float> _f32uv1;
+    std::vector<float> _f32uv1;
 
     std::vector<Vector2F> _uv2;
-    vox::vector<float> _f32uv2;
+    std::vector<float> _f32uv2;
 
     std::vector<Vector2F> _uv3;
-    vox::vector<float> _f32uv3;
+    std::vector<float> _f32uv3;
 
     std::vector<Vector2F> _uv4;
-    vox::vector<float> _f32uv4;
+    std::vector<float> _f32uv4;
 
     std::vector<Vector2F> _uv5;
-    vox::vector<float> _f32uv5;
+    std::vector<float> _f32uv5;
 
     std::vector<Vector2F> _uv6;
-    vox::vector<float> _f32uv6;
+    std::vector<float> _f32uv6;
 
     std::vector<Vector2F> _uv7;
-    vox::vector<float> _f32uv7;
+    std::vector<float> _f32uv7;
 
-    vox::vector<float> _boneWeights;
-    vox::vector<uint16_t> _boneIndices;
-    int _influenceCount{};
+    std::vector<float> _boneWeights;
+    std::vector<float> _boneIndices;
 };
 using ModelMeshPtr = std::shared_ptr<ModelMesh>;
 

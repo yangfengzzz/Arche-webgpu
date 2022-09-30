@@ -29,7 +29,7 @@ void ModelMesh::setPositions(const std::vector<Vector3F> &positions) {
     }
 }
 
-void ModelMesh::setPositions(const vox::vector<float> &positions) {
+void ModelMesh::setPositions(const std::vector<float> &positions) {
     if (!_accessible) {
         assert(false && "Not allowed to access data while accessible is false.");
     }
@@ -64,7 +64,7 @@ void ModelMesh::setNormals(const std::vector<Vector3F> &normals) {
     _normals = normals;
 }
 
-void ModelMesh::setNormals(const vox::vector<float> &normals) {
+void ModelMesh::setNormals(const std::vector<float> &normals) {
     if (!_accessible) {
         assert(false && "Not allowed to access data while accessible is false.");
     }
@@ -97,7 +97,7 @@ void ModelMesh::setColors(const std::vector<Color> &colors) {
     _colors = colors;
 }
 
-void ModelMesh::setColors(const vox::vector<float> &colors) {
+void ModelMesh::setColors(const std::vector<float> &colors) {
     if (!_accessible) {
         assert(false && "Not allowed to access data while accessible is false.");
     }
@@ -117,33 +117,29 @@ const std::vector<Color> &ModelMesh::colors() {
     return _colors;
 }
 
-void ModelMesh::setJointWeights(const vox::vector<float> &value) {
+void ModelMesh::setJointWeights(const std::vector<float> &value) {
     _vertexChangeFlag |= ValueChanged::BoneWeight;
     _boneWeights = value;
 }
 
-const vox::vector<float> &ModelMesh::jointWeights() const {
+const std::vector<float> &ModelMesh::jointWeights() const {
     if (!_accessible) {
         assert(false && "Not allowed to access data while accessible is false.");
     }
     return _boneWeights;
 }
 
-void ModelMesh::setJointIndices(const vox::vector<uint16_t> &value) {
+void ModelMesh::setJointIndices(const std::vector<float> &value) {
     _vertexChangeFlag |= ValueChanged::BoneIndex;
     _boneIndices = value;
 }
 
-const vox::vector<uint16_t> &ModelMesh::jointIndices() const {
+const std::vector<float> &ModelMesh::jointIndices() const {
     if (!_accessible) {
         assert(false && "Not allowed to access data while accessible is false.");
     }
     return _boneIndices;
 }
-
-void ModelMesh::setJointInfluencesCount(int value) { _influenceCount = value; }
-
-int ModelMesh::jointInfluencesCount() const { return _influenceCount; }
 
 void ModelMesh::setTangents(const std::vector<Vector4F> &tangents) {
     if (!_accessible) {
@@ -158,7 +154,7 @@ void ModelMesh::setTangents(const std::vector<Vector4F> &tangents) {
     _tangents = tangents;
 }
 
-void ModelMesh::setTangents(const vox::vector<float> &tangents) {
+void ModelMesh::setTangents(const std::vector<float> &tangents) {
     if (!_accessible) {
         assert(false && "Not allowed to access data while accessible is false.");
     }
@@ -225,7 +221,7 @@ void ModelMesh::setUVs(const std::vector<Vector2F> &uv, int channelIndex) {
     }
 }
 
-void ModelMesh::setUVs(const vox::vector<float> &uv, int channelIndex) {
+void ModelMesh::setUVs(const std::vector<float> &uv, int channelIndex) {
     if (!_accessible) {
         assert(false && "Not allowed to access data while accessible is false.");
     }
@@ -368,9 +364,9 @@ wgpu::VertexBufferLayout ModelMesh::_updateVertexLayouts() {
     }
     if (!_boneWeights.empty()) {
         _vertexAttribute.push_back(
-                wgpu::VertexAttribute{wgpu::VertexFormat::Float32x3, offset, (uint32_t)Attributes::WEIGHTS_0});
-        offset += 12;
-        elementCount += 3;
+                wgpu::VertexAttribute{wgpu::VertexFormat::Float32x4, offset, (uint32_t)Attributes::WEIGHTS_0});
+        offset += 16;
+        elementCount += 4;
     }
     if (!_boneIndices.empty()) {
         _vertexAttribute.push_back(
@@ -530,48 +526,24 @@ void ModelMesh::_updateVertices(std::vector<float> &vertices) {
         if (_vertexChangeFlag & ValueChanged::BoneWeight) {
             for (size_t i = 0; i < _vertexCount; i++) {
                 auto start = _elementCount * i + offset;
-                for (int j = 0; j < 3; ++j) {
-                    if (j <= _influenceCount) {
-                        vertices[start + j] = _boneWeights[i * _influenceCount + j];
-                    } else {
-                        vertices[start + j] = 0.0;
-                    }
-                }
+                vertices[start] = _boneWeights[i * 4];
+                vertices[start + 1] = _boneWeights[i * 4 + 1];
+                vertices[start + 2] = _boneWeights[i * 4 + 2];
+                vertices[start + 3] = _boneWeights[i * 4 + 3];
             }
         }
-        offset += 3;
+        offset += 4;
     }
 
     if (!_boneIndices.empty()) {
-        union {
-            struct alignas(16) {
-                uint16_t index1;
-                uint16_t index2;
-            } index;
-            float f32index;
-        } union_index{};
-
         if (_vertexChangeFlag & ValueChanged::BoneIndex) {
             for (size_t i = 0; i < _vertexCount; i++) {
                 auto start = _elementCount * i + offset;
-                uint16_t index[4];
-                for (int j = 0; j < 4; ++j) {
-                    if (j <= _influenceCount) {
-                        index[j] = _boneIndices[i * _influenceCount + j];
-                    } else {
-                        index[j] = 0.0;
-                    }
-                }
-
-                union_index.index.index1 = index[0];
-                union_index.index.index2 = index[1];
-                vertices[start] = union_index.f32index;
-                union_index.index.index1 = index[2];
-                union_index.index.index2 = index[3];
-                vertices[start + 1] = union_index.f32index;
+                vertices[start] = _boneIndices[i * 4];
+                vertices[start + 1] = _boneIndices[i * 4 + 1];
             }
         }
-        offset += 1;
+        offset += 2;
     }
 
     if ((_vertexChangeFlag & ValueChanged::Tangent) != 0) {
