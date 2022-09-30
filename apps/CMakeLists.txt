@@ -27,6 +27,7 @@ set(SRC
         primitive_app.cpp
         skybox_app.cpp
         assimp_app.cpp
+        skinning_app.cpp
         )
 
 source_group("\\" FILES ${SRC})
@@ -58,7 +59,7 @@ find_library(IOKit_LIBRARY IOKit)
 find_library(IOSurface_LIBRARY IOSurface)
 find_library(QuartzCore_LIBRARY QuartzCore)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE vox.render vox.math vox.base plugins spdlog
+target_link_libraries(${PROJECT_NAME} PRIVATE vox.render vox.math vox.base vox.simd_math vox.animation plugins spdlog
         absl_str_format_internal
         absl_strings_internal
         absl_strings -labsl_base

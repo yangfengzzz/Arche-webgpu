@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.render/animation/skin_mesh_renderer.h"
+#include "vox.render/animation/skinned_mesh_renderer.h"
 
 #include "vox.base/io/archive.h"
 #include "vox.base/logging.h"
@@ -15,7 +15,11 @@
 #include "vox.render/shader/shader_common.h"
 
 namespace vox {
-bool SkinMeshRenderer::loadSkins(const char* _filename) {
+std::string SkinnedMeshRenderer::name() { return "SkinnedMeshRenderer"; }
+
+SkinnedMeshRenderer::SkinnedMeshRenderer(Entity* entity) : MeshRenderer(entity) {}
+
+bool SkinnedMeshRenderer::loadSkins(const char* _filename) {
     assert(_filename);
     LOGI("Loading meshes archive: {}", _filename)
     vox::io::File file(_filename, "rb");
@@ -46,9 +50,9 @@ bool SkinMeshRenderer::loadSkins(const char* _filename) {
     return true;
 }
 
-void SkinMeshRenderer::render(std::vector<RenderElement>& opaqueQueue,
-                              std::vector<RenderElement>& alphaTestQueue,
-                              std::vector<RenderElement>& transparentQueue) {
+void SkinnedMeshRenderer::render(std::vector<RenderElement>& opaqueQueue,
+                                 std::vector<RenderElement>& alphaTestQueue,
+                                 std::vector<RenderElement>& transparentQueue) {
     if (!_meshes.empty()) {
         if (_meshUpdateFlag->flag) {
             const auto& vertexLayouts = _meshes[0]->vertexBufferLayouts();
@@ -92,7 +96,7 @@ void SkinMeshRenderer::render(std::vector<RenderElement>& opaqueQueue,
     }
 }
 
-void SkinMeshRenderer::update(float deltaTime) {
+void SkinnedMeshRenderer::update(float deltaTime) {
     if (!_animator) {
         _animator = entity()->getComponent<Animator>();
     }
@@ -115,13 +119,13 @@ void SkinMeshRenderer::update(float deltaTime) {
     }
 }
 
-void SkinMeshRenderer::_updateBounds(BoundingBox3F& worldBounds) {
+void SkinnedMeshRenderer::_updateBounds(BoundingBox3F& worldBounds) {
     if (_animator) {
         _animator->computeSkeletonBounds(worldBounds);
     }
 }
 
-void SkinMeshRenderer::_createMesh(const Skin& skin) {
+void SkinnedMeshRenderer::_createMesh(const Skin& skin) {
     std::vector<float> positions{};
     std::vector<float> normals{};
     std::vector<float> tangents{};

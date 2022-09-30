@@ -5,6 +5,7 @@
 //  property of any third parties.
 
 #include "apps/assimp_app.h"
+#include "apps/skinning_app.h"
 #include "apps/atomic_compute_app.h"
 #include "apps/cascade_shadowmap_app.h"
 #include "apps/cluster_forward_app.h"
@@ -48,7 +49,7 @@ int main(int argc, char* argv[]) {
 
     auto code = platform.Initialize(plugins::GetAll());
     if (code == vox::ExitCode::SUCCESS) {
-        platform.SetApp(std::make_unique<vox::ShadowMapApp>());
+        platform.SetApp(std::make_unique<vox::SkinningApp>());
         code = platform.MainLoop();
     }
     platform.Terminate(code);
