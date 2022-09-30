@@ -61,11 +61,11 @@ public:
                     std::vector<RenderElement> &transparentQueue);
 
 public:
-    void addOnUpdateSceneAnimators(SceneAnimator *animator);
+    void addOnUpdateAnimators(Animator *animator);
 
-    void removeOnUpdateSceneAnimators(SceneAnimator *animator);
+    void removeOnUpdateAnimators(Animator *animator);
 
-    void callSceneAnimatorUpdate(float deltaTime);
+    void callAnimatorUpdate(float deltaTime);
 
 public:
     void callCameraOnBeginRender(Camera *camera);
@@ -89,8 +89,8 @@ private:
     // Delay dispose active/inActive Pool
     std::vector<std::vector<Component *>> _componentsContainerPool;
 
-    // Animatior
-    std::vector<SceneAnimator *> _onUpdateSceneAnimators;
+    // Animator
+    std::vector<Animator *> _onUpdateAnimators;
 };
 
 template <>

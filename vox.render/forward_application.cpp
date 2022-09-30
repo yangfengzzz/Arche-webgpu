@@ -88,7 +88,7 @@ void ForwardApplication::update(float deltaTime) {
         _componentsManager->callScriptOnStart();
 
         _componentsManager->callScriptOnUpdate(deltaTime);
-        _componentsManager->callSceneAnimatorUpdate(deltaTime);
+        _componentsManager->callAnimatorUpdate(deltaTime);
         _componentsManager->callScriptOnLateUpdate(deltaTime);
 
         _componentsManager->callRendererOnUpdate(deltaTime);

@@ -8,6 +8,7 @@
 
 #include "vox.base/io/archive.h"
 #include "vox.base/logging.h"
+#include "vox.render/components_manager.h"
 
 namespace vox {
 bool Animator::loadSkeleton(const char* _filename) {
@@ -123,5 +124,9 @@ void Animator::_computePostureBounds(span<const simd_math::Float4x4> _matrices, 
     simd_math::Store3PtrU(min, &_bound->lower_corner.x);
     simd_math::Store3PtrU(max, &_bound->upper_corner.x);
 }
+
+void Animator::_onEnable() { ComponentsManager::GetSingleton().addOnUpdateAnimators(this); }
+
+void Animator::_onDisable() { ComponentsManager::GetSingleton().removeOnUpdateAnimators(this); }
 
 }  // namespace vox

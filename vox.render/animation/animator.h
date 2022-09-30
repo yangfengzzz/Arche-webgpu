@@ -41,6 +41,10 @@ public:
     void computeSkeletonBounds(BoundingBox3F& bound);
 
 private:
+    void _onEnable() override;
+
+    void _onDisable() override;
+
     // Multiplies a single quaternion at a specific index in a SoA transform range.
     static void _multiplySoATransformQuaternion(int _index,
                                                 const simd_math::SimdQuaternion& _quat,

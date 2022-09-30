@@ -7,10 +7,10 @@
 #include "vox.render/components_manager.h"
 
 #include "vox.base/logging.h"
+#include "vox.render/animation/animator.h"
 #include "vox.render/camera.h"
 #include "vox.render/entity.h"
 #include "vox.render/renderer.h"
-#include "vox.render/scene_animator.h"
 #include "vox.render/script.h"
 
 namespace vox {
@@ -170,25 +170,25 @@ void ComponentsManager::putActiveChangedTempList(std::vector<Component *> &compo
 }
 
 // MARK: - Animation
-void ComponentsManager::addOnUpdateSceneAnimators(SceneAnimator *animator) {
-    auto iter = std::find(_onUpdateSceneAnimators.begin(), _onUpdateSceneAnimators.end(), animator);
-    if (iter == _onUpdateSceneAnimators.end()) {
-        _onUpdateSceneAnimators.push_back(animator);
+void ComponentsManager::addOnUpdateAnimators(Animator *animator) {
+    auto iter = std::find(_onUpdateAnimators.begin(), _onUpdateAnimators.end(), animator);
+    if (iter == _onUpdateAnimators.end()) {
+        _onUpdateAnimators.push_back(animator);
     } else {
-        LOGE("SceneAnimator already attached.")
+        LOGE("Animator already attached.")
     }
 }
 
-void ComponentsManager::removeOnUpdateSceneAnimators(SceneAnimator *animator) {
-    auto iter = std::find(_onUpdateSceneAnimators.begin(), _onUpdateSceneAnimators.end(), animator);
-    if (iter != _onUpdateSceneAnimators.end()) {
-        _onUpdateSceneAnimators.erase(iter);
+void ComponentsManager::removeOnUpdateAnimators(Animator *animator) {
+    auto iter = std::find(_onUpdateAnimators.begin(), _onUpdateAnimators.end(), animator);
+    if (iter != _onUpdateAnimators.end()) {
+        _onUpdateAnimators.erase(iter);
     }
 }
 
-void ComponentsManager::callSceneAnimatorUpdate(float deltaTime) {
-    const auto &elements = _onUpdateSceneAnimators;
-    for (size_t i = 0; i < _onUpdateSceneAnimators.size(); i++) {
+void ComponentsManager::callAnimatorUpdate(float deltaTime) {
+    const auto &elements = _onUpdateAnimators;
+    for (size_t i = 0; i < _onUpdateAnimators.size(); i++) {
         elements[i]->update(deltaTime);
     }
 }

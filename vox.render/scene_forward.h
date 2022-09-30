@@ -61,8 +61,6 @@ class Behaviour;
 
 class Animator;
 
-class SceneAnimator;
-
 class Light;
 
 class PointLight;
