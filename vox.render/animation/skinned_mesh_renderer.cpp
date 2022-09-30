@@ -46,6 +46,9 @@ bool SkinnedMeshRenderer::loadSkins(const std::string& filename) {
     }
     // Allocates skinning matrices.
     _skinning_matrices.resize(num_skinning_matrices);
+    if (!_meshes.empty()) {
+        _meshUpdateFlag = _meshes[0]->registerUpdateFlag();
+    }
 
     return true;
 }
@@ -126,14 +129,18 @@ void SkinnedMeshRenderer::_updateBounds(BoundingBox3F& worldBounds) {
 }
 
 void SkinnedMeshRenderer::_createMesh(const Skin& skin) {
-    std::vector<float> positions{};
-    std::vector<float> normals{};
-    std::vector<float> tangents{};
-    std::vector<float> uvs{};
-    std::vector<float> joint_indices{};
-    std::vector<float> joint_weights{};
-    std::vector<float> colors{};
-    std::vector<uint16_t> indices{};
+    int vertex_count = 0;
+    for (const auto& part : skin.parts) {
+        vertex_count += part.vertex_count();
+    }
+    std::vector<float> positions(vertex_count * Skin::Part::kPositionsCpnts);
+    std::vector<float> normals(vertex_count * Skin::Part::kNormalsCpnts);
+    std::vector<float> tangents(vertex_count * Skin::Part::kTangentsCpnts);
+    std::vector<float> uvs(vertex_count * Skin::Part::kUVsCpnts);
+    std::vector<float> joint_indices(vertex_count * 2);
+    std::vector<float> joint_weights(vertex_count * 4);
+    std::vector<float> colors(vertex_count * Skin::Part::kColorsCpnts);
+    std::vector<uint16_t> indices(skin.triangle_indices.size());
 
     union {
         struct {
@@ -143,7 +150,7 @@ void SkinnedMeshRenderer::_createMesh(const Skin& skin) {
         float f32index;
     } union_index{};
 
-    int vertex_count = 0;
+    vertex_count = 0;
     for (const auto& part : skin.parts) {
         int part_vertex_count = part.vertex_count();
         int part_influences_count = part.influences_count();
@@ -154,7 +161,6 @@ void SkinnedMeshRenderer::_createMesh(const Skin& skin) {
                   tangents.begin() + vertex_count * Skin::Part::kTangentsCpnts);
         std::copy(part.uvs.begin(), part.uvs.end(), uvs.begin() + vertex_count * Skin::Part::kUVsCpnts);
 
-        joint_indices.resize(joint_indices.size() + part_vertex_count * 2);
         for (int i = 0; i < part_vertex_count; ++i) {
             uint16_t index[4];
             for (int j = 0; j < 4; ++j) {
@@ -173,18 +179,20 @@ void SkinnedMeshRenderer::_createMesh(const Skin& skin) {
             joint_indices[vertex_count * 2 + i * 2 + 1] = union_index.f32index;
         }
 
-        joint_weights.resize(joint_weights.size() + part_vertex_count * 4);
         for (int i = 0; i < part_vertex_count; ++i) {
             for (int j = 0; j < 4; ++j) {
                 if (j < part_influences_count) {
-                    joint_weights[vertex_count * 4 + i * 4 + j] = part.joint_weights[i * part_influences_count + j];
+                    if (part_influences_count == 1) {
+                        joint_weights[vertex_count * 4 + i * 4 + j] = 1.f;
+                    } else {
+                        joint_weights[vertex_count * 4 + i * 4 + j] = part.joint_weights[i * part_influences_count + j];
+                    }
                 } else {
-                    joint_weights[vertex_count * 4 + i * 4 + j] = 0;
+                    joint_weights[vertex_count * 4 + i * 4 + j] = 0.f;
                 }
             }
         }
 
-        colors.resize(colors.size() + part_vertex_count * 4);
         for (int i = 0; i < part_vertex_count * Skin::Part::kColorsCpnts; ++i) {
             colors[vertex_count * Skin::Part::kColorsCpnts + i] = static_cast<float>(part.colors[i]) / 255.f;
         }

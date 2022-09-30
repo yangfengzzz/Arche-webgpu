@@ -43,7 +43,7 @@ void SkinningApp::loadScene() {
     animator->setRootState(animationClip);
 
     auto renderer = characterEntity->addComponent<SkinnedMeshRenderer>();
-//    renderer->loadSkins("Skinning/mesh.ozz");
+    renderer->loadSkins("Skinning/mesh.ozz");
     auto material = std::make_shared<BlinnPhongMaterial>(_device);
     material->setBaseColor(Color(0.4, 0.6, 0.6));
     renderer->setMaterial(material);
