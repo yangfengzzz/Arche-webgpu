@@ -75,6 +75,8 @@ int fillPostureUniforms(const animation::Skeleton& _skeleton,
 }
 }  // namespace
 
+SkeletonView::SkeletonView(Entity* entity) : Script(entity) {}
+
 void SkeletonView::onAwake() {
     _createBoneMesh();
     _createJointMesh();

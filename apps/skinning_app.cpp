@@ -16,6 +16,7 @@
 #include "vox.render/mesh/mesh_renderer.h"
 #include "vox.render/mesh/primitive_mesh.h"
 #include "vox.toolkit/controls/orbit_control.h"
+#include "vox.toolkit/skeleton_view/skeleton_view.h"
 
 namespace vox {
 void SkinningApp::loadScene() {
@@ -46,6 +47,8 @@ void SkinningApp::loadScene() {
     auto material = std::make_shared<BlinnPhongMaterial>(_device);
     material->setBaseColor(Color(0.4, 0.6, 0.6));
     renderer->setMaterial(material);
+
+    characterEntity->addComponent<SkeletonView>();
 
     auto planeEntity = rootEntity->createChild();
     auto planeRenderer = planeEntity->addComponent<MeshRenderer>();

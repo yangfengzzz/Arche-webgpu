@@ -13,6 +13,8 @@ namespace vox {
 class Animator;
 class SkeletonView : public Script {
 public:
+    explicit SkeletonView(Entity *entity);
+
     void onAwake() override;
 
     void onUpdate(float deltaTime) override;

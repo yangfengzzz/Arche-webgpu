@@ -1,3 +1,9 @@
+#version 450
+#define Vert_Shader
+
+#include "common.h"
+#include "snippet/common_vert_define.h"
+
 mat4 GetWorldMatrix(mat4 joint) {
     // Rebuilds joint matrix.
     mat4 joint_matrix;
@@ -17,9 +23,7 @@ mat4 GetWorldMatrix(mat4 joint) {
     world_matrix[2] = joint_matrix[2] * bone_len;
     world_matrix[3] = joint_matrix[3];
     return world_matrix;
-};
-
-#include <snippet/common_vert_define.h>
+}
 
 layout(set = 0, binding = Joint_Matrix_Location) uniform u_jointMatrix {
     mat4 joint_matrix[4096];
@@ -29,7 +33,7 @@ layout (location = 0) out vec3 v_world_normal;
 layout (location = 1) out vec4 v_vertex_color;
 
 void main() {
-    mat4 world_matrix = GetWorldMatrix(u_jointMatrix[instance_id]);
+    mat4 world_matrix = GetWorldMatrix(joint_matrix[gl_InstanceIndex]);
     vec4 vertex = vec4(POSITION, 1.);
     gl_Position = vp_mat * u_modelMat * world_matrix * vertex;
     mat3 cross_matrix = mat3(
@@ -40,4 +44,4 @@ void main() {
     mat3 normal_matrix = cross_matrix * invdet;
     v_world_normal = normal_matrix * NORMAL;
     v_vertex_color = COLOR_0;
-};
+}
