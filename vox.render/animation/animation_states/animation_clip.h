@@ -44,6 +44,8 @@ public:
 
     void loadSkeleton(animation::Skeleton* skeleton) override;
 
+    animation::Animation& animation();
+
 public:
     // Sets animation current time.
     void setTimeRatio(float _time);

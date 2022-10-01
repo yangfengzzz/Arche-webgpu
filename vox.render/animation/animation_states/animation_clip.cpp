@@ -13,11 +13,11 @@
 
 namespace vox {
 AnimationClip::AnimationClip(const std::string& filename) {
-    bool flag = loadAnimation(filename);
-    if (flag) {
-        _sampling_job.animation = &_animation;
-        _sampling_job.context = &_context;
+    if (!filename.empty()) {
+        loadAnimation(filename);
     }
+    _sampling_job.animation = &_animation;
+    _sampling_job.context = &_context;
 }
 
 AnimationClip::AnimationClip(AnimationClip&& state) noexcept
@@ -31,6 +31,8 @@ AnimationClip& AnimationClip::operator=(AnimationClip&& state) noexcept {
     _sampling_job.animation = &_animation;
     return *this;
 }
+
+animation::Animation& AnimationClip::animation() { return _animation; }
 
 bool AnimationClip::loadAnimation(const std::string& filename) {
     LOGI("Loading animation archive: {}", filename)

@@ -4,8 +4,8 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
+#include "apps/animation_create_app.h"
 #include "apps/assimp_app.h"
-#include "apps/skinning_app.h"
 #include "apps/atomic_compute_app.h"
 #include "apps/cascade_shadowmap_app.h"
 #include "apps/cluster_forward_app.h"
@@ -19,6 +19,7 @@
 #include "apps/primitive_app.h"
 #include "apps/scoped_autorelease_pool.h"
 #include "apps/shadowmap_app.h"
+#include "apps/skinning_app.h"
 #include "apps/skybox_app.h"
 #include "vox.render/platform/platform.h"
 
@@ -49,7 +50,7 @@ int main(int argc, char* argv[]) {
 
     auto code = platform.Initialize(plugins::GetAll());
     if (code == vox::ExitCode::SUCCESS) {
-        platform.SetApp(std::make_unique<vox::SkinningApp>());
+        platform.SetApp(std::make_unique<vox::AnimationCreateApp>());
         code = platform.MainLoop();
     }
     platform.Terminate(code);

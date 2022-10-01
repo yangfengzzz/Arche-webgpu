@@ -28,6 +28,7 @@ set(SRC
         skybox_app.cpp
         assimp_app.cpp
         skinning_app.cpp
+        animation_create_app.cpp
         )
 
 source_group("\\" FILES ${SRC})
