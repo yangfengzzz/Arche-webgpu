@@ -23,7 +23,7 @@ void AnimationAttachApp::loadScene() {
     auto rootEntity = scene->createRootEntity();
 
     auto cameraEntity = rootEntity->createChild();
-    cameraEntity->transform->setPosition(0, 1, 3);
+    cameraEntity->transform->setPosition(3, 2, 3);
     _mainCamera = cameraEntity->addComponent<Camera>();
     auto control = cameraEntity->addComponent<control::OrbitControl>();
     control->target.set(0, 1, 0);
@@ -43,12 +43,12 @@ void AnimationAttachApp::loadScene() {
     characterEntity->addComponent<skeleton_view::SkeletonView>();
 
     auto attachEntity = rootEntity->createChild();
-    animator->bindEntity("LeftHandMiddle1", attachEntity);
     auto attachRenderer = attachEntity->addComponent<MeshRenderer>();
     attachRenderer->setMesh(PrimitiveMesh::createCuboid(_device, 0.01, 0.01, 1));
     auto attachMtl = std::make_shared<UnlitMaterial>(_device);
     attachMtl->setBaseColor(Color(1, 0, 0, 1));
     attachRenderer->setMaterial(attachMtl);
+    animator->bindEntity("LeftHandMiddle1", attachEntity);
 
     auto planeEntity = rootEntity->createChild();
     auto planeRenderer = planeEntity->addComponent<MeshRenderer>();

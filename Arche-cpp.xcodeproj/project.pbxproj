@@ -790,6 +790,8 @@
 		0473207128E8314500D04171 /* spherical.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0473206B28E8314500D04171 /* spherical.cpp */; };
 		0473207228E8314500D04171 /* free_control.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0473206C28E8314500D04171 /* free_control.cpp */; };
 		0473207528E831C200D04171 /* libvox.toolkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0473205628E8310300D04171 /* libvox.toolkit.a */; };
+		0473207A28E8675900D04171 /* animation_attach_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0473207728E8675800D04171 /* animation_attach_app.cpp */; };
+		0473207B28E8675900D04171 /* animation_create_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0473207828E8675800D04171 /* animation_create_app.cpp */; };
 		047BB59B2800148600CD5749 /* libvox.math.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 041282EC279ECF3D0071BD86 /* libvox.math.a */; };
 		047BF0BC27AC086B003F3599 /* light.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF0BA27AC086B003F3599 /* light.cpp */; };
 		047BF0BD27AC086B003F3599 /* light.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF0BB27AC086B003F3599 /* light.h */; };
@@ -2125,6 +2127,10 @@
 		0473206A28E8314500D04171 /* free_control.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = free_control.h; sourceTree = "<group>"; };
 		0473206B28E8314500D04171 /* spherical.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = spherical.cpp; sourceTree = "<group>"; };
 		0473206C28E8314500D04171 /* free_control.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = free_control.cpp; sourceTree = "<group>"; };
+		0473207628E8675800D04171 /* animation_create_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animation_create_app.h; sourceTree = "<group>"; };
+		0473207728E8675800D04171 /* animation_attach_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animation_attach_app.cpp; sourceTree = "<group>"; };
+		0473207828E8675800D04171 /* animation_create_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animation_create_app.cpp; sourceTree = "<group>"; };
+		0473207928E8675800D04171 /* animation_attach_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animation_attach_app.h; sourceTree = "<group>"; };
 		047BB58A2800140A00CD5749 /* libvox.geometry.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libvox.geometry.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		047BF0BA27AC086B003F3599 /* light.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = light.cpp; sourceTree = "<group>"; };
 		047BF0BB27AC086B003F3599 /* light.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = light.h; sourceTree = "<group>"; };
@@ -3092,6 +3098,10 @@
 		043B7B5C278C4C5A00D5648F /* apps */ = {
 			isa = PBXGroup;
 			children = (
+				0473207928E8675800D04171 /* animation_attach_app.h */,
+				0473207728E8675800D04171 /* animation_attach_app.cpp */,
+				0473207628E8675800D04171 /* animation_create_app.h */,
+				0473207828E8675800D04171 /* animation_create_app.cpp */,
 				045A394A28C44ECA003FEE10 /* plugins */,
 				0495476927A2968E00783C84 /* example */,
 				049546B9279F948800783C84 /* scoped_autorelease_pool.h */,
@@ -5855,10 +5865,12 @@
 				045A396128C44F3C003FEE10 /* stop_after.cpp in Sources */,
 				045A395B28C44F32003FEE10 /* file_logger.cpp in Sources */,
 				045A395528C44F29003FEE10 /* window_options.cpp in Sources */,
+				0473207A28E8675900D04171 /* animation_attach_app.cpp in Sources */,
 				04F9E90627D3684E00BD291B /* atomic_compute_app.cpp in Sources */,
 				0473204B28E6B51900D04171 /* skinning_app.cpp in Sources */,
 				045B393328D8980600DA1D32 /* cascade_shadowmap_app.cpp in Sources */,
 				045B391C28D6F45A00DA1D32 /* assimp_app.cpp in Sources */,
+				0473207B28E8675900D04171 /* animation_create_app.cpp in Sources */,
 				04311AE727D7302B00B918E3 /* multi_light_app.cpp in Sources */,
 				045A395228C44F1F003FEE10 /* plugins.cpp in Sources */,
 				047BF18427AE1DF7003F3599 /* skybox_app.cpp in Sources */,
