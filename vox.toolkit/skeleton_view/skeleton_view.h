@@ -6,14 +6,16 @@
 
 #pragma once
 
-#include "vox.render/script.h"
 #include "vox.render/material/material.h"
+#include "vox.render/script.h"
 
 namespace vox {
 class Animator;
+
+namespace skeleton_view {
 class SkeletonView : public Script {
 public:
-    explicit SkeletonView(Entity *entity);
+    explicit SkeletonView(Entity* entity);
 
     void onAwake() override;
 
@@ -43,4 +45,6 @@ private:
     std::shared_ptr<BufferMesh> _jointMesh{nullptr};
     std::shared_ptr<Material> _jointMaterial{nullptr};
 };
+
+}  // namespace skeleton_view
 }  // namespace vox

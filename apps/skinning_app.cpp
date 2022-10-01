@@ -13,7 +13,6 @@
 #include "vox.render/entity.h"
 #include "vox.render/material/blinn_phong_material.h"
 #include "vox.render/material/unlit_material.h"
-#include "vox.render/mesh/mesh_renderer.h"
 #include "vox.render/mesh/primitive_mesh.h"
 #include "vox.toolkit/controls/orbit_control.h"
 #include "vox.toolkit/skeleton_view/skeleton_view.h"
@@ -25,10 +24,10 @@ void SkinningApp::loadScene() {
     auto rootEntity = scene->createRootEntity();
 
     auto cameraEntity = rootEntity->createChild();
-    cameraEntity->transform->setPosition(10, 10, 10);
-    cameraEntity->transform->lookAt(Point3F(0, 0, 0));
+    cameraEntity->transform->setPosition(0, 1, 3);
     _mainCamera = cameraEntity->addComponent<Camera>();
-    cameraEntity->addComponent<control::OrbitControl>();
+    auto control = cameraEntity->addComponent<control::OrbitControl>();
+    control->target.set(0, 1, 0);
 
     // init point light
     auto light = rootEntity->createChild("light");
@@ -45,10 +44,11 @@ void SkinningApp::loadScene() {
     auto renderer = characterEntity->addComponent<SkinnedMeshRenderer>();
     renderer->loadSkins("Skinning/mesh.ozz");
     auto material = std::make_shared<BlinnPhongMaterial>(_device);
-    material->setBaseColor(Color(0.4, 0.6, 0.6));
+    material->setBaseColor(Color(0.4, 0.6, 0.6, 0.6));
+    material->setIsTransparent(true);
     renderer->setMaterial(material);
 
-    characterEntity->addComponent<SkeletonView>();
+    characterEntity->addComponent<skeleton_view::SkeletonView>();
 
     auto planeEntity = rootEntity->createChild();
     auto planeRenderer = planeEntity->addComponent<MeshRenderer>();

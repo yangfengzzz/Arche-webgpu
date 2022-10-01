@@ -781,6 +781,15 @@
 		0473204B28E6B51900D04171 /* skinning_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0473204928E6B51900D04171 /* skinning_app.cpp */; };
 		0473205028E6B53400D04171 /* libvox.animation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04731F6728E6B25600D04171 /* libvox.animation.a */; };
 		0473205128E6B53400D04171 /* libvox.simd_math.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04731EAD28E6B02300D04171 /* libvox.simd_math.a */; };
+		0473206528E8313D00D04171 /* skeleton_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0473206328E8313D00D04171 /* skeleton_view.cpp */; };
+		0473206628E8313D00D04171 /* skeleton_view.h in Headers */ = {isa = PBXBuildFile; fileRef = 0473206428E8313D00D04171 /* skeleton_view.h */; };
+		0473206D28E8314500D04171 /* spherical.h in Headers */ = {isa = PBXBuildFile; fileRef = 0473206728E8314400D04171 /* spherical.h */; };
+		0473206E28E8314500D04171 /* orbit_control.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0473206828E8314400D04171 /* orbit_control.cpp */; };
+		0473206F28E8314500D04171 /* orbit_control.h in Headers */ = {isa = PBXBuildFile; fileRef = 0473206928E8314400D04171 /* orbit_control.h */; };
+		0473207028E8314500D04171 /* free_control.h in Headers */ = {isa = PBXBuildFile; fileRef = 0473206A28E8314500D04171 /* free_control.h */; };
+		0473207128E8314500D04171 /* spherical.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0473206B28E8314500D04171 /* spherical.cpp */; };
+		0473207228E8314500D04171 /* free_control.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0473206C28E8314500D04171 /* free_control.cpp */; };
+		0473207528E831C200D04171 /* libvox.toolkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0473205628E8310300D04171 /* libvox.toolkit.a */; };
 		047BB59B2800148600CD5749 /* libvox.math.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 041282EC279ECF3D0071BD86 /* libvox.math.a */; };
 		047BF0BC27AC086B003F3599 /* light.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF0BA27AC086B003F3599 /* light.cpp */; };
 		047BF0BD27AC086B003F3599 /* light.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF0BB27AC086B003F3599 /* light.h */; };
@@ -858,12 +867,6 @@
 		049546FB279FC9B400783C84 /* graphics_application.h in Headers */ = {isa = PBXBuildFile; fileRef = 049546F9279FC9B400783C84 /* graphics_application.h */; };
 		049546FF279FCD1100783C84 /* forward_application.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049546FD279FCD1100783C84 /* forward_application.cpp */; };
 		04954700279FCD1100783C84 /* forward_application.h in Headers */ = {isa = PBXBuildFile; fileRef = 049546FE279FCD1100783C84 /* forward_application.h */; };
-		04954707279FCD3C00783C84 /* free_control.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954701279FCD3C00783C84 /* free_control.cpp */; };
-		04954708279FCD3C00783C84 /* orbit_control.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954702279FCD3C00783C84 /* orbit_control.h */; };
-		04954709279FCD3C00783C84 /* orbit_control.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954703279FCD3C00783C84 /* orbit_control.cpp */; };
-		0495470A279FCD3C00783C84 /* spherical.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954704279FCD3C00783C84 /* spherical.h */; };
-		0495470B279FCD3C00783C84 /* spherical.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04954705279FCD3C00783C84 /* spherical.cpp */; };
-		0495470C279FCD3C00783C84 /* free_control.h in Headers */ = {isa = PBXBuildFile; fileRef = 04954706279FCD3C00783C84 /* free_control.h */; };
 		0495472A27A2453200783C84 /* unlit_material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495464F279F8AE900783C84 /* unlit_material.cpp */; };
 		0495472D27A2480000783C84 /* blinn_phong_material.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495472B27A2480000783C84 /* blinn_phong_material.h */; };
 		0495472E27A2480000783C84 /* blinn_phong_material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0495472C27A2480000783C84 /* blinn_phong_material.cpp */; };
@@ -1153,6 +1156,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 04731EAC28E6B02300D04171;
 			remoteInfo = vox.simd_math;
+		};
+		0473207328E831BD00D04171 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 043B7B52278C4C5A00D5648F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0473205528E8310300D04171;
+			remoteInfo = vox.toolkit;
 		};
 		047BB5992800148200CD5749 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -2106,6 +2116,15 @@
 		0473204228E6B43D00D04171 /* animation_1d_blending.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animation_1d_blending.h; sourceTree = "<group>"; };
 		0473204928E6B51900D04171 /* skinning_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = skinning_app.cpp; sourceTree = "<group>"; };
 		0473204A28E6B51900D04171 /* skinning_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = skinning_app.h; sourceTree = "<group>"; };
+		0473205628E8310300D04171 /* libvox.toolkit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libvox.toolkit.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		0473206328E8313D00D04171 /* skeleton_view.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = skeleton_view.cpp; sourceTree = "<group>"; };
+		0473206428E8313D00D04171 /* skeleton_view.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = skeleton_view.h; sourceTree = "<group>"; };
+		0473206728E8314400D04171 /* spherical.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = spherical.h; sourceTree = "<group>"; };
+		0473206828E8314400D04171 /* orbit_control.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = orbit_control.cpp; sourceTree = "<group>"; };
+		0473206928E8314400D04171 /* orbit_control.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = orbit_control.h; sourceTree = "<group>"; };
+		0473206A28E8314500D04171 /* free_control.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = free_control.h; sourceTree = "<group>"; };
+		0473206B28E8314500D04171 /* spherical.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = spherical.cpp; sourceTree = "<group>"; };
+		0473206C28E8314500D04171 /* free_control.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = free_control.cpp; sourceTree = "<group>"; };
 		047BB58A2800140A00CD5749 /* libvox.geometry.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libvox.geometry.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		047BF0BA27AC086B003F3599 /* light.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = light.cpp; sourceTree = "<group>"; };
 		047BF0BB27AC086B003F3599 /* light.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = light.h; sourceTree = "<group>"; };
@@ -2243,12 +2262,6 @@
 		049546F9279FC9B400783C84 /* graphics_application.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = graphics_application.h; sourceTree = "<group>"; };
 		049546FD279FCD1100783C84 /* forward_application.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = forward_application.cpp; sourceTree = "<group>"; };
 		049546FE279FCD1100783C84 /* forward_application.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = forward_application.h; sourceTree = "<group>"; };
-		04954701279FCD3C00783C84 /* free_control.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = free_control.cpp; sourceTree = "<group>"; };
-		04954702279FCD3C00783C84 /* orbit_control.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = orbit_control.h; sourceTree = "<group>"; };
-		04954703279FCD3C00783C84 /* orbit_control.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = orbit_control.cpp; sourceTree = "<group>"; };
-		04954704279FCD3C00783C84 /* spherical.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = spherical.h; sourceTree = "<group>"; };
-		04954705279FCD3C00783C84 /* spherical.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = spherical.cpp; sourceTree = "<group>"; };
-		04954706279FCD3C00783C84 /* free_control.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = free_control.h; sourceTree = "<group>"; };
 		0495472B27A2480000783C84 /* blinn_phong_material.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = blinn_phong_material.h; sourceTree = "<group>"; };
 		0495472C27A2480000783C84 /* blinn_phong_material.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = blinn_phong_material.cpp; sourceTree = "<group>"; };
 		0495472F27A24A1300783C84 /* pbr_base_material.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pbr_base_material.h; sourceTree = "<group>"; };
@@ -2573,6 +2586,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0473207528E831C200D04171 /* libvox.toolkit.a in Frameworks */,
 				045A396628C45030003FEE10 /* libvox.base.a in Frameworks */,
 				0495476727A295A600783C84 /* libvox.math.a in Frameworks */,
 				0473205128E6B53400D04171 /* libvox.simd_math.a in Frameworks */,
@@ -2651,6 +2665,13 @@
 				04731FB928E6B32E00D04171 /* libvox.base.a in Frameworks */,
 				04731FBA28E6B32E00D04171 /* libvox.math.a in Frameworks */,
 				04731FBB28E6B32E00D04171 /* libvox.simd_math.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0473205428E8310300D04171 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2839,7 +2860,6 @@
 				0495466C279F8CD500783C84 /* renderer.cpp */,
 				04954674279F8CD600783C84 /* script.h */,
 				0495466B279F8CD500783C84 /* script.cpp */,
-				049546FC279FCD0600783C84 /* controls */,
 				04FE6BC827EB04B300D7DB2D /* behaviour.h */,
 				04FE6BDF27EC99BE00D7DB2D /* behaviour-inl.h */,
 				04FE6BC727EB04B300D7DB2D /* behaviour.cpp */,
@@ -3040,6 +3060,7 @@
 				04731F6828E6B25600D04171 /* vox.animation */,
 				04731F7928E6B28E00D04171 /* test.animation */,
 				04128425279ED3510071BD86 /* vox.render */,
+				0473205728E8310300D04171 /* vox.toolkit */,
 				043B7B5C278C4C5A00D5648F /* apps */,
 				047BF1BF27AFAE81003F3599 /* editor */,
 				043B7B5B278C4C5A00D5648F /* Products */,
@@ -3063,6 +3084,7 @@
 				04731F0228E6B0CF00D04171 /* test.simd_math */,
 				04731F6728E6B25600D04171 /* libvox.animation.a */,
 				04731F7828E6B28E00D04171 /* test.animation */,
+				0473205628E8310300D04171 /* libvox.toolkit.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4033,6 +4055,37 @@
 			path = animation_states;
 			sourceTree = "<group>";
 		};
+		0473205728E8310300D04171 /* vox.toolkit */ = {
+			isa = PBXGroup;
+			children = (
+				0473206228E8312A00D04171 /* skeleton_view */,
+				0473206128E8312300D04171 /* controls */,
+			);
+			path = vox.toolkit;
+			sourceTree = "<group>";
+		};
+		0473206128E8312300D04171 /* controls */ = {
+			isa = PBXGroup;
+			children = (
+				0473206A28E8314500D04171 /* free_control.h */,
+				0473206C28E8314500D04171 /* free_control.cpp */,
+				0473206928E8314400D04171 /* orbit_control.h */,
+				0473206828E8314400D04171 /* orbit_control.cpp */,
+				0473206B28E8314500D04171 /* spherical.cpp */,
+				0473206728E8314400D04171 /* spherical.h */,
+			);
+			path = controls;
+			sourceTree = "<group>";
+		};
+		0473206228E8312A00D04171 /* skeleton_view */ = {
+			isa = PBXGroup;
+			children = (
+				0473206428E8313D00D04171 /* skeleton_view.h */,
+				0473206328E8313D00D04171 /* skeleton_view.cpp */,
+			);
+			path = skeleton_view;
+			sourceTree = "<group>";
+		};
 		047BB58B2800140A00CD5749 /* vox.geometry */ = {
 			isa = PBXGroup;
 			children = (
@@ -4291,19 +4344,6 @@
 				047BF1B227AFA079003F3599 /* color_picker_subpass.cpp */,
 			);
 			path = subpasses;
-			sourceTree = "<group>";
-		};
-		049546FC279FCD0600783C84 /* controls */ = {
-			isa = PBXGroup;
-			children = (
-				04954704279FCD3C00783C84 /* spherical.h */,
-				04954705279FCD3C00783C84 /* spherical.cpp */,
-				04954706279FCD3C00783C84 /* free_control.h */,
-				04954701279FCD3C00783C84 /* free_control.cpp */,
-				04954702279FCD3C00783C84 /* orbit_control.h */,
-				04954703279FCD3C00783C84 /* orbit_control.cpp */,
-			);
-			path = controls;
 			sourceTree = "<group>";
 		};
 		0495474C27A2712F00783C84 /* mesh */ = {
@@ -4807,7 +4847,6 @@
 				04FDF09427E80B0A00BBE8E4 /* separator.h in Headers */,
 				04FDF06B27E8050A00BBE8E4 /* text.h in Headers */,
 				045B392C28D897C100DA1D32 /* shadow_utils.h in Headers */,
-				0495470C279FCD3C00783C84 /* free_control.h in Headers */,
 				045A38ED28C44B25003FEE10 /* configuration.h in Headers */,
 				045A393A28C44C40003FEE10 /* glsl_compiler.h in Headers */,
 				045A397628C45118003FEE10 /* buffer.h in Headers */,
@@ -4922,7 +4961,6 @@
 				045A392528C44BCF003FEE10 /* stats_provider.h in Headers */,
 				045A393B28C44C40003FEE10 /* shader_source.h in Headers */,
 				045A397928C45118003FEE10 /* sub_mesh.h in Headers */,
-				04954708279FCD3C00783C84 /* orbit_control.h in Headers */,
 				0473204828E6B43D00D04171 /* animation_1d_blending.h in Headers */,
 				04FDEFCA27E7477500BBE8E4 /* canvas.h in Headers */,
 				04FDF01027E7670E00BBE8E4 /* dummy.h in Headers */,
@@ -4943,7 +4981,6 @@
 				045A38E128C44B25003FEE10 /* input_events.h in Headers */,
 				04FDEFD627E7536A00BBE8E4 /* button_colored.h in Headers */,
 				0473203928E6B42500D04171 /* animation_state.h in Headers */,
-				0495470A279FCD3C00783C84 /* spherical.h in Headers */,
 				0412847A279EEEEC0071BD86 /* render_state.h in Headers */,
 				04954692279F8D5E00783C84 /* render_element.h in Headers */,
 				0473204628E6B43D00D04171 /* animation_clip.h in Headers */,
@@ -5070,6 +5107,17 @@
 				0473200D28E6B39900D04171 /* raw_animation.h in Headers */,
 				04731FE328E6B38E00D04171 /* ik_two_bone_job.h in Headers */,
 				0473201328E6B39900D04171 /* skeleton_builder.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0473205228E8310300D04171 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0473206F28E8314500D04171 /* orbit_control.h in Headers */,
+				0473206D28E8314500D04171 /* spherical.h in Headers */,
+				0473207028E8314500D04171 /* free_control.h in Headers */,
+				0473206628E8313D00D04171 /* skeleton_view.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5301,6 +5349,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				0473207428E831BD00D04171 /* PBXTargetDependency */,
 				045A396328C4502A003FEE10 /* PBXTargetDependency */,
 				0495476427A295A100783C84 /* PBXTargetDependency */,
 				0473204F28E6B52A00D04171 /* PBXTargetDependency */,
@@ -5459,6 +5508,23 @@
 			productReference = 04731F7828E6B28E00D04171 /* test.animation */;
 			productType = "com.apple.product-type.tool";
 		};
+		0473205528E8310300D04171 /* vox.toolkit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0473205E28E8310300D04171 /* Build configuration list for PBXNativeTarget "vox.toolkit" */;
+			buildPhases = (
+				0473205228E8310300D04171 /* Headers */,
+				0473205328E8310300D04171 /* Sources */,
+				0473205428E8310300D04171 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = vox.toolkit;
+			productName = vox.toolkit;
+			productReference = 0473205628E8310300D04171 /* libvox.toolkit.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		047BB5892800140A00CD5749 /* vox.geometry */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 047BB5922800140A00CD5749 /* Build configuration list for PBXNativeTarget "vox.geometry" */;
@@ -5538,6 +5604,9 @@
 					04731F7728E6B28E00D04171 = {
 						CreatedOnToolsVersion = 14.0.1;
 					};
+					0473205528E8310300D04171 = {
+						CreatedOnToolsVersion = 14.0.1;
+					};
 					047BB5892800140A00CD5749 = {
 						CreatedOnToolsVersion = 13.3;
 					};
@@ -5570,6 +5639,7 @@
 				04731F6628E6B25600D04171 /* vox.animation */,
 				04731F7728E6B28E00D04171 /* test.animation */,
 				04128423279ED3510071BD86 /* vox.render */,
+				0473205528E8310300D04171 /* vox.toolkit */,
 				043B7B59278C4C5A00D5648F /* apps */,
 				047BF1BD27AFAE81003F3599 /* editor */,
 			);
@@ -5602,7 +5672,6 @@
 				04FE6BE827ECA2B000D7DB2D /* lua_component_binder.cpp in Sources */,
 				045A38B728C4479A003FEE10 /* debug_info.cpp in Sources */,
 				0495474F27A2714200783C84 /* buffer_mesh.cpp in Sources */,
-				04954707279FCD3C00783C84 /* free_control.cpp in Sources */,
 				04954691279F8D5E00783C84 /* render_element.cpp in Sources */,
 				04FDEFD127E74E8000BBE8E4 /* button_arrow.cpp in Sources */,
 				04FDEFC527E7459900BBE8E4 /* panel_window.cpp in Sources */,
@@ -5714,7 +5783,6 @@
 				045B393128D897FE00DA1D32 /* shadow_debug_material.cpp in Sources */,
 				045B393028D897FE00DA1D32 /* shadow_manager.cpp in Sources */,
 				04954681279F8CD600783C84 /* script.cpp in Sources */,
-				0495470B279FCD3C00783C84 /* spherical.cpp in Sources */,
 				049546DA279FA0F200783C84 /* render_context.cpp in Sources */,
 				0495463D279F89E500783C84 /* shader_data.cpp in Sources */,
 				04FDEFD527E7536A00BBE8E4 /* button_colored.cpp in Sources */,
@@ -5753,7 +5821,6 @@
 				04FDF00F27E7670E00BBE8E4 /* dummy.cpp in Sources */,
 				04FDF02427E771F100BBE8E4 /* tree_node.cpp in Sources */,
 				045B390528D4B68500DA1D32 /* stb_img.cpp in Sources */,
-				04954709279FCD3C00783C84 /* orbit_control.cpp in Sources */,
 				040C551D28CF57E9001BF0FF /* linear_fog.cpp in Sources */,
 				0495473927A2564500783C84 /* pbr_specular_material.cpp in Sources */,
 				0495467D279F8CD600783C84 /* update_flag_manager.cpp in Sources */,
@@ -6034,6 +6101,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		0473205328E8310300D04171 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0473206E28E8314500D04171 /* orbit_control.cpp in Sources */,
+				0473207128E8314500D04171 /* spherical.cpp in Sources */,
+				0473206528E8313D00D04171 /* skeleton_view.cpp in Sources */,
+				0473207228E8314500D04171 /* free_control.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		047BB5872800140A00CD5749 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -6255,6 +6333,11 @@
 			isa = PBXTargetDependency;
 			target = 04731EAC28E6B02300D04171 /* vox.simd_math */;
 			targetProxy = 0473204E28E6B52A00D04171 /* PBXContainerItemProxy */;
+		};
+		0473207428E831BD00D04171 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0473205528E8310300D04171 /* vox.toolkit */;
+			targetProxy = 0473207328E831BD00D04171 /* PBXContainerItemProxy */;
 		};
 		047BB59A2800148200CD5749 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -7176,6 +7259,124 @@
 			};
 			name = Release;
 		};
+		0473205F28E8310300D04171 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4SL5L673UU;
+				EXECUTABLE_PREFIX = lib;
+				GCC_ENABLE_CPP_EXCEPTIONS = YES;
+				GCC_ENABLE_CPP_RTTI = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'ROOT_PATH_SIZE=39'",
+					VKB_VULKAN_DEBUG,
+					VK_NO_PROTOTYPES,
+					VK_USE_PLATFORM_METAL_EXT,
+					LIBKTX,
+					"'KTX_FEATURE_WRITE=0'",
+					"'BASISD_SUPPORT_KTX2_ZSTD=0'",
+					BASISU_NO_ITERATOR_DEBUG_LEVEL,
+					"'VULKAN_HPP_DISPATCH_LOADER_DYNAMIC=1'",
+					"$(inherited)",
+					DAWN_ENABLE_BACKEND_METAL,
+					DAWN_ENABLE_BACKEND_NULL,
+					"$(inherited)",
+					TINT_BUILD_SPV_READER,
+				);
+				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					./third_party/vulkan/include,
+					./third_party/spdlog/include,
+					./third_party/glm,
+					./third_party/glslang,
+					./third_party/tinygltf,
+					./third_party/cli11/include,
+					./third_party/glfw/include,
+					"./third_party/spirv-cross",
+					./third_party/hwcpipe,
+					./third_party/imgui,
+					./third_party/astc/Source,
+					./third_party/stb,
+					./third_party/ktx/include,
+					./third_party/CTPL,
+					./third_party/assimp/include,
+					./third_party/assimp/build_debug/include,
+					./third_party/nlohmann/include,
+					./third_party/sol2/include,
+					/opt/homebrew/include/lua,
+					/usr/local/include/lua,
+					./third_party/dawn,
+					./third_party/dawn/include,
+					"./third_party/dawn/cmake-debug/gen/include",
+					./third_party/dawn/third_party/glfw/include,
+					./third_party/tinyobj,
+				);
+			};
+			name = Debug;
+		};
+		0473206028E8310300D04171 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4SL5L673UU;
+				EXECUTABLE_PREFIX = lib;
+				GCC_ENABLE_CPP_EXCEPTIONS = YES;
+				GCC_ENABLE_CPP_RTTI = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'ROOT_PATH_SIZE=39'",
+					VKB_VULKAN_DEBUG,
+					VK_NO_PROTOTYPES,
+					VK_USE_PLATFORM_METAL_EXT,
+					LIBKTX,
+					"'KTX_FEATURE_WRITE=0'",
+					"'BASISD_SUPPORT_KTX2_ZSTD=0'",
+					BASISU_NO_ITERATOR_DEBUG_LEVEL,
+					"'VULKAN_HPP_DISPATCH_LOADER_DYNAMIC=1'",
+					"$(inherited)",
+					DAWN_ENABLE_BACKEND_METAL,
+					DAWN_ENABLE_BACKEND_NULL,
+					"$(inherited)",
+					TINT_BUILD_SPV_READER,
+				);
+				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					./third_party/vulkan/include,
+					./third_party/spdlog/include,
+					./third_party/glm,
+					./third_party/glslang,
+					./third_party/tinygltf,
+					./third_party/cli11/include,
+					./third_party/glfw/include,
+					"./third_party/spirv-cross",
+					./third_party/hwcpipe,
+					./third_party/imgui,
+					./third_party/astc/Source,
+					./third_party/stb,
+					./third_party/ktx/include,
+					./third_party/CTPL,
+					./third_party/assimp/include,
+					./third_party/assimp/build_release/include,
+					./third_party/nlohmann/include,
+					./third_party/sol2/include,
+					/opt/homebrew/include/lua,
+					/usr/local/include/lua,
+					./third_party/dawn,
+					./third_party/dawn/include,
+					"./third_party/dawn/cmake-release/gen/include",
+					./third_party/dawn/third_party/glfw/include,
+					./third_party/tinyobj,
+				);
+			};
+			name = Release;
+		};
 		047BB5932800140A00CD5749 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -7635,6 +7836,15 @@
 			buildConfigurations = (
 				04731F7D28E6B28E00D04171 /* Debug */,
 				04731F7E28E6B28E00D04171 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0473205E28E8310300D04171 /* Build configuration list for PBXNativeTarget "vox.toolkit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0473205F28E8310300D04171 /* Debug */,
+				0473206028E8310300D04171 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

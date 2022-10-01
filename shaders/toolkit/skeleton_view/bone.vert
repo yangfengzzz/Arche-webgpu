@@ -24,10 +24,10 @@ mat4 GetWorldMatrix(vec4 joint0, vec4 joint1, vec4 joint2, vec4 joint3) {
     return world_matrix;
 }
 
-layout(location = 3) in vec4 joint0;
-layout(location = 4) in vec4 joint1;
-layout(location = 5) in vec4 joint2;
-layout(location = 6) in vec4 joint3;
+layout(location = 7) in vec4 joint0;
+layout(location = 8) in vec4 joint1;
+layout(location = 9) in vec4 joint2;
+layout(location = 10) in vec4 joint3;
 
 layout (location = 0) out vec3 v_world_normal;
 layout (location = 1) out vec4 v_vertex_color;

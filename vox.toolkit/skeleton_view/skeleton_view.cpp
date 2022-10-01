@@ -15,7 +15,7 @@
 #include "vox.render/shader/shader_common.h"
 #include "vox.render/shader/shader_manager.h"
 
-namespace vox {
+namespace vox::skeleton_view {
 namespace {
 // A vertex made of positions and normals.
 struct VertexPNC {
@@ -27,7 +27,7 @@ struct VertexPNC {
 int fillPostureUniforms(const animation::Skeleton& _skeleton,
                         const span<const simd_math::Float4x4>& _matrices,
                         float* _uniforms) {
-    assert(IsAligned(_uniforms, alignof(math::SimdFloat4)));
+    assert(isAligned(_uniforms, alignof(simd_math::SimdFloat4)));
 
     // Prepares computation constants.
     const int num_joints = _skeleton.num_joints();
@@ -121,7 +121,10 @@ void SkeletonView::onUpdate(float deltaTime) {
     }
 
     if (_animator) {
-        fillPostureUniforms(_animator->skeleton(), make_span(_animator->models()), _skeletonData.data());
+        int instanceCount =
+                fillPostureUniforms(_animator->skeleton(), make_span(_animator->models()), _skeletonData.data());
+        _boneMesh->setInstanceCount(instanceCount);
+        _jointMesh->setInstanceCount(instanceCount);
         _skeletonBuffer.uploadData(scene()->device(), _skeletonData.data(), _skeletonData.size() * sizeof(float));
     }
 }
@@ -141,16 +144,16 @@ void SkeletonView::_createMeshLayout() {
     _instance_attributes.resize(4);
     _instance_attributes[0].format = wgpu::VertexFormat::Float32x4;
     _instance_attributes[0].offset = 0;
-    _instance_attributes[0].shaderLocation = 3;
+    _instance_attributes[0].shaderLocation = 7;
     _instance_attributes[1].format = wgpu::VertexFormat::Float32x4;
     _instance_attributes[1].offset = 16;
-    _instance_attributes[1].shaderLocation = 4;
+    _instance_attributes[1].shaderLocation = 8;
     _instance_attributes[2].format = wgpu::VertexFormat::Float32x4;
     _instance_attributes[2].offset = 32;
-    _instance_attributes[2].shaderLocation = 5;
+    _instance_attributes[2].shaderLocation = 9;
     _instance_attributes[3].format = wgpu::VertexFormat::Float32x4;
     _instance_attributes[3].offset = 48;
-    _instance_attributes[3].shaderLocation = 6;
+    _instance_attributes[3].shaderLocation = 10;
 
     _layouts.resize(2);
     _layouts[0].arrayStride = 40;
@@ -196,6 +199,7 @@ void SkeletonView::_createBoneMesh() {
     _boneMesh = MeshManager::GetSingleton().LoadBufferMesh();
     _boneMesh->setVertexLayouts(_layouts);
     _boneMesh->setVertexBufferBindings(_boneBufferBindings, 0);
+    _boneMesh->addSubMesh(0, 24);
 }
 
 void SkeletonView::_createJointMesh() {
@@ -245,5 +249,6 @@ void SkeletonView::_createJointMesh() {
     _jointMesh = MeshManager::GetSingleton().LoadBufferMesh();
     _jointMesh->setVertexLayouts(_layouts);
     _jointMesh->setVertexBufferBindings(_jointBufferBindings, 0);
+    _jointMesh->addSubMesh(0, kNumPoints);
 }
-}  // namespace vox
+}  // namespace vox::skeleton_view
