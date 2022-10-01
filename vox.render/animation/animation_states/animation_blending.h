@@ -12,7 +12,7 @@
 #include "vox.render/animation/animation_states/animation_clip.h"
 
 namespace vox {
-class Animator1DBlending : public AnimationState {
+class AnimatorBlending : public AnimationState {
 public:
     float blendRatio{0.f};
 

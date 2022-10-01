@@ -4,10 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.render/animation/animation_states/animation_1d_blending.h"
+#include "vox.render/animation/animation_states/animation_blending.h"
 
 namespace vox {
-void Animator1DBlending::loadSkeleton(animation::Skeleton* skeleton) {
+void AnimatorBlending::loadSkeleton(animation::Skeleton* skeleton) {
     for (auto& clip : _clips) {
         clip->loadSkeleton(skeleton);
     }
@@ -17,7 +17,7 @@ void Animator1DBlending::loadSkeleton(animation::Skeleton* skeleton) {
     _blend_job.rest_pose = skeleton->joint_rest_poses();
 }
 
-std::shared_ptr<AnimationClip> Animator1DBlending::addAnimatorClip(const std::string& filename, float location) {
+std::shared_ptr<AnimationClip> AnimatorBlending::addAnimatorClip(const std::string& filename, float location) {
     auto clip = std::make_shared<AnimationClip>(filename);
     clip->loadSkeleton(_skeleton);
     _clips.push_back(clip);
@@ -25,7 +25,7 @@ std::shared_ptr<AnimationClip> Animator1DBlending::addAnimatorClip(const std::st
     return clip;
 }
 
-void Animator1DBlending::update(float dt) {
+void AnimatorBlending::update(float dt) {
     _layers.clear();
     _additive_layers.clear();
 
@@ -54,10 +54,10 @@ void Animator1DBlending::update(float dt) {
     }
 }
 
-const vox::vector<simd_math::SoaTransform>& Animator1DBlending::locals() const { return _blended_locals; }
+const vox::vector<simd_math::SoaTransform>& AnimatorBlending::locals() const { return _blended_locals; }
 
-float Animator1DBlending::threshold() const { return _blend_job.threshold; }
+float AnimatorBlending::threshold() const { return _blend_job.threshold; }
 
-void Animator1DBlending::setThreshold(float value) { _blend_job.threshold = value; }
+void AnimatorBlending::setThreshold(float value) { _blend_job.threshold = value; }
 
 }  // namespace vox

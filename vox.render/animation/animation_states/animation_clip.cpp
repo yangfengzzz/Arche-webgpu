@@ -6,9 +6,9 @@
 
 #include "vox.render/animation/animation_states/animation_clip.h"
 
+#include "vox.animation/runtime/skeleton_utils.h"
 #include "vox.base/io/archive.h"
 #include "vox.base/logging.h"
-#include "vox.math/math_utils.h"
 #include "vox.render/platform/filesystem.h"
 
 namespace vox {
@@ -30,6 +30,27 @@ AnimationClip& AnimationClip::operator=(AnimationClip&& state) noexcept {
     _animation = std::move(state._animation);
     _sampling_job.animation = &_animation;
     return *this;
+}
+
+vox::vector<vox::simd_math::SimdFloat4>& AnimationClip::jointMasks() { return _joint_masks; }
+
+void AnimationClip::setJointMasks(float mask, const std::string& root) {
+    simd_math::SimdFloat4 simdMask = simd_math::simd_float4::Load1(mask);
+    if (root.empty()) {
+        for (int i = 0; i < _skeleton->num_soa_joints(); ++i) {
+            _joint_masks[i] = simdMask;
+        }
+    } else {
+        const auto set_joint = [this, simdMask](int _joint, int) {
+            simd_math::SimdFloat4& soa_weight = _joint_masks[_joint / 4];
+            soa_weight = simd_math::SetI(soa_weight, simdMask, _joint % 4);
+        };
+
+        const int joint = FindJoint(*_skeleton, root.c_str());
+        if (joint >= 0) {
+            animation::IterateJointsDF(*_skeleton, set_joint, joint);
+        }
+    }
 }
 
 animation::Animation& AnimationClip::animation() { return _animation; }
@@ -56,6 +77,7 @@ bool AnimationClip::loadAnimation(const std::string& filename) {
 const vox::vector<simd_math::SoaTransform>& AnimationClip::locals() const { return _locals; }
 
 void AnimationClip::loadSkeleton(animation::Skeleton* skeleton) {
+    _skeleton = skeleton;
     _context.Resize(skeleton->num_joints());
     _locals.resize(skeleton->num_soa_joints());
     _sampling_job.output = make_span(_locals);

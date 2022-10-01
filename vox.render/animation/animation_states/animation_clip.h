@@ -21,6 +21,13 @@ public:
     };
     BlendMode blendMode = BlendMode::Normal;
 
+    float weight{0.f};
+
+    vox::vector<vox::simd_math::SimdFloat4>& jointMasks();
+
+    void setJointMasks(float mask, const std::string& root = "");
+
+public:
     // Playback speed, can be negative in order to play the animation backward.
     float playback_speed{1.f};
 
@@ -61,6 +68,8 @@ public:
     void reset();
 
 private:
+    animation::Skeleton* _skeleton{nullptr};
+
     animation::SamplingJob _sampling_job{};
 
     // Runtime animation.
@@ -71,6 +80,11 @@ private:
 
     // Buffer of local transforms as sampled from main animation_.
     vox::vector<simd_math::SoaTransform> _locals;
+
+    // Per-joint weights used to define the partial animation mask. Allows to
+    // select which joints are considered during blending, and their individual
+    // weight_setting.
+    vox::vector<vox::simd_math::SimdFloat4> _joint_masks;
 
     // Current animation time ratio, in the unit interval [0,1], where 0 is the
     // beginning of the animation, 1 is the end.
