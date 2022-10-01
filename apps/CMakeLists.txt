@@ -30,6 +30,7 @@ set(SRC
         skinning_app.cpp
         animation_create_app.cpp
         animation_attach_app.cpp
+        gui_app.cpp
         )
 
 source_group("\\" FILES ${SRC})
