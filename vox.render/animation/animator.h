@@ -12,6 +12,7 @@
 #include "vox.render/animation/animation_state.h"
 #include "vox.render/component.h"
 #include "vox.simd_math/simd_quaternion.h"
+#include <unordered_set>
 
 namespace vox {
 class Animator : public Component {
@@ -31,6 +32,9 @@ public:
 
     void loadSkeleton(const vox::unique_ptr<animation::Skeleton>& skeleton);
 
+    [[nodiscard]] const animation::Skeleton& skeleton() const;
+
+public:
     void update(float dt);
 
     [[nodiscard]] bool localToModelFromExcluded() const;
@@ -47,12 +51,13 @@ public:
 
     [[nodiscard]] const vox::vector<simd_math::Float4x4>& models() const;
 
-    animation::Skeleton& skeleton();
-
     // Computes the bounding box of _skeleton. This is the box that encloses all
     // skeleton's joints in model space.
     // _bound must be a valid math::Box instance.
     void computeSkeletonBounds(BoundingBox3F& bound);
+
+public:
+    void bindEntity(const std::string& name, Entity* entity);
 
 public:
     /**
@@ -90,5 +95,7 @@ private:
     // Buffer of model space matrices.
     vox::vector<simd_math::Float4x4> _models;
     std::shared_ptr<AnimationState> _rootState{nullptr};
+
+    std::unordered_map<size_t, std::unordered_set<Entity*>> _entityBindingMap{};
 };
 }  // namespace vox

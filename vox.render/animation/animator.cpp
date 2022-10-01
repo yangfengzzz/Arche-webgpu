@@ -10,6 +10,7 @@
 #include "vox.base/logging.h"
 #include "vox.render/components_manager.h"
 #include "vox.render/platform/filesystem.h"
+#include "vox.render/entity.h"
 
 namespace vox {
 std::string Animator::name() { return "Animator"; }
@@ -63,6 +64,15 @@ void Animator::update(float dt) {
         _rootState->update(dt);
         _ltm_job.input = make_span(_rootState->locals());
         (void)_ltm_job.Run();
+
+        Matrix4x4F localMatrix;
+        for (const auto& entities : _entityBindingMap) {
+            size_t index = entities.first;
+            memcpy(localMatrix.data(), &_models[index].cols[0], sizeof(Matrix4x4F));
+            for (auto& entity : entities.second) {
+                entity->transform->setLocalMatrix(localMatrix);
+            }
+        }
     }
 }
 
@@ -80,7 +90,7 @@ void Animator::setLocalToModelTo(int value) { _ltm_job.to = value; }
 
 const vox::vector<simd_math::Float4x4>& Animator::models() const { return _models; }
 
-animation::Skeleton& Animator::skeleton() { return _skeleton; }
+const animation::Skeleton& Animator::skeleton() const { return _skeleton; }
 
 void Animator::_multiplySoATransformQuaternion(int _index,
                                                const simd_math::SimdQuaternion& _quat,
@@ -162,5 +172,12 @@ void Animator::onSerialize(nlohmann::json& data) {}
 void Animator::onDeserialize(nlohmann::json& data) {}
 
 void Animator::onInspector(ui::WidgetContainer& p_root) {}
+
+void Animator::bindEntity(const std::string& name, Entity* entity) {
+    auto iter = std::find(_skeleton.joint_names().begin(), _skeleton.joint_names().end(), name);
+    if (iter != _skeleton.joint_names().end()) {
+        _entityBindingMap[iter - _skeleton.joint_names().begin()].emplace(entity);
+    }
+}
 
 }  // namespace vox
