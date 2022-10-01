@@ -23,10 +23,13 @@ private:
     void _createJointMesh();
 
     float kInter = .2f;
-    ModelMeshPtr _boneMesh{nullptr};
-    ModelMeshPtr _jointMesh{nullptr};
-    std::shared_ptr<SkeletonMaterial> _material{nullptr};
     Animator* _animator{nullptr};
     std::vector<float> _skeletonBuffer;
+
+    ModelMeshPtr _boneMesh{nullptr};
+    std::shared_ptr<BoneMaterial> _boneMaterial{nullptr};
+
+    ModelMeshPtr _jointMesh{nullptr};
+    std::shared_ptr<JointMaterial> _jointMaterial{nullptr};
 };
 }  // namespace vox

@@ -78,18 +78,19 @@ int fillPostureUniforms(const animation::Skeleton& _skeleton,
 void SkeletonView::onAwake() {
     _createBoneMesh();
     _createJointMesh();
-    _material = std::make_shared<SkeletonMaterial>(scene()->device());
+    _boneMaterial = std::make_shared<BoneMaterial>(scene()->device());
+    _jointMaterial = std::make_shared<JointMaterial>(scene()->device());
     _skeletonBuffer.resize(animation::Skeleton::kMaxJoints * 64);
 
     auto boneEntity = entity()->createChild("boneEntity");
     auto boneRenderer = boneEntity->addComponent<MeshRenderer>();
     boneRenderer->setMesh(_boneMesh);
-    boneRenderer->setMaterial(_material);
+    boneRenderer->setMaterial(_boneMaterial);
 
     auto jointEntity = entity()->createChild("jointEntity");
     auto jointRenderer = jointEntity->addComponent<MeshRenderer>();
     jointRenderer->setMesh(_jointMesh);
-    jointRenderer->setMaterial(_material);
+    jointRenderer->setMaterial(_jointMaterial);
 }
 
 void SkeletonView::onUpdate(float deltaTime) {
@@ -99,6 +100,8 @@ void SkeletonView::onUpdate(float deltaTime) {
 
     if (_animator) {
         fillPostureUniforms(_animator->skeleton(), make_span(_animator->models()), _skeletonBuffer.data());
+        _boneMaterial->setSkeletonBuffer(_skeletonBuffer);
+        _jointMaterial->setSkeletonBuffer(_skeletonBuffer);
     }
 }
 
