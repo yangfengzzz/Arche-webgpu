@@ -8,6 +8,7 @@
 
 #include <dawn/dawn_proc.h>
 
+#include "vox.render/platform/glfw_window.h"
 #include "vox.render/platform/platform.h"
 
 namespace vox {
@@ -29,7 +30,10 @@ static wgpu::BackendType backendType = wgpu::BackendType::OpenGL;
 
 GraphicsApplication::GraphicsApplication() = default;
 
-GraphicsApplication::~GraphicsApplication() { _renderContext.reset(); }
+GraphicsApplication::~GraphicsApplication() {
+    _gui.reset();
+    _renderContext.reset();
+}
 
 bool GraphicsApplication::prepare(Platform& platform) {
     if (!Application::prepare(platform)) {
@@ -40,6 +44,8 @@ bool GraphicsApplication::prepare(Platform& platform) {
 
     _createCppDawnDevice();
     _renderContext = platform.CreateRenderContext(_device);
+    _gui = std::make_unique<ui::UiManager>(static_cast<GlfwWindow*>(&platform.GetWindow())->Handle(),
+                                           _renderContext.get());
     return true;
 }
 

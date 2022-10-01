@@ -186,10 +186,10 @@ void UiManager::ApplyStyle(Style p_style) {
     }
 }
 
-bool UiManager::LoadFont(const std::string &p_id, const std::string &p_path, float p_fontSize) {
+bool UiManager::LoadFont(const std::string &p_id, const std::string &path, float fontSize) {
     if (fonts_.find(p_id) == fonts_.end()) {
         auto &io = ImGui::GetIO();
-        ImFont *fontInstance = io.Fonts->AddFontFromFileTTF(p_path.c_str(), p_fontSize);
+        ImFont *fontInstance = io.Fonts->AddFontFromFileTTF((fs::path::Get(fs::path::Type::ASSETS) + path).c_str(), fontSize);
 
         if (fontInstance) {
             fonts_[p_id] = fontInstance;

@@ -47,6 +47,7 @@ public:
 protected:
     Camera* _mainCamera{nullptr};
 
+    wgpu::RenderPassDescriptor _guiPassDescriptor;
     wgpu::RenderPassDescriptor _renderPassDescriptor;
     wgpu::RenderPassColorAttachment _colorAttachments;
     wgpu::RenderPassDepthStencilAttachment _depthStencilAttachment;

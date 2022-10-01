@@ -66,6 +66,9 @@ bool ForwardApplication::prepare(Platform& platform) {
     _renderPassDescriptor.colorAttachments = &_colorAttachments;
     _renderPassDescriptor.depthStencilAttachment = &_depthStencilAttachment;
 
+    _guiPassDescriptor.colorAttachmentCount = 1;
+    _guiPassDescriptor.colorAttachments = &_colorAttachments;
+
     _colorAttachments.storeOp = wgpu::StoreOp::Store;
     _colorAttachments.loadOp = wgpu::LoadOp::Clear;
     auto& color = scene->background.solidColor;
@@ -103,6 +106,13 @@ void ForwardApplication::update(float deltaTime) {
     _depthStencilAttachment.view = _depthStencilTexture;
 
     _renderPass->draw(commandEncoder, "Lighting & Composition Pass");
+
+    wgpu::RenderPassEncoder encoder = commandEncoder.BeginRenderPass(&_guiPassDescriptor);
+    if (_gui) {
+        _gui->Render(encoder);
+    }
+    encoder.End();
+
     // Finalize rendering here & push the command buffer to the GPU
     wgpu::CommandBuffer commands = commandEncoder.Finish();
     _device.GetQueue().Submit(1, &commands);

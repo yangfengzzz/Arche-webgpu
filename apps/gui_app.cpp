@@ -10,6 +10,7 @@
 #include "vox.toolkit/controls/orbit_control.h"
 #include "vox.render/entity.h"
 #include "vox.render/ui/widgets/texts/text_labelled.h"
+#include "vox.render/ui/widgets/sliders/slider_float.h"
 
 namespace vox {
 class CustomGUI : public ui::Widget {
@@ -31,7 +32,9 @@ void GuiApp::loadScene() {
     _gui->SetCanvas(canvas_);
     canvas_.AddPanel(panel_);
     panel_.CreateWidget<CustomGUI>();
-
+    panel_.CreateWidget<ui::TextLabelled>("hello", "world");
+    panel_.CreateWidget<ui::SliderFloat>();
+    
     auto scene = _sceneManager->currentScene();
     auto root_entity = scene->createRootEntity();
 

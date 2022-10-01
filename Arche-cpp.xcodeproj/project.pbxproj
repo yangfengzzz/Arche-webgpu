@@ -792,6 +792,7 @@
 		0473207528E831C200D04171 /* libvox.toolkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0473205628E8310300D04171 /* libvox.toolkit.a */; };
 		0473207A28E8675900D04171 /* animation_attach_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0473207728E8675800D04171 /* animation_attach_app.cpp */; };
 		0473207B28E8675900D04171 /* animation_create_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0473207828E8675800D04171 /* animation_create_app.cpp */; };
+		0473207E28E8868C00D04171 /* gui_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0473207D28E8868C00D04171 /* gui_app.cpp */; };
 		047BB59B2800148600CD5749 /* libvox.math.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 041282EC279ECF3D0071BD86 /* libvox.math.a */; };
 		047BF0BC27AC086B003F3599 /* light.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF0BA27AC086B003F3599 /* light.cpp */; };
 		047BF0BD27AC086B003F3599 /* light.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF0BB27AC086B003F3599 /* light.h */; };
@@ -2131,6 +2132,8 @@
 		0473207728E8675800D04171 /* animation_attach_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animation_attach_app.cpp; sourceTree = "<group>"; };
 		0473207828E8675800D04171 /* animation_create_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animation_create_app.cpp; sourceTree = "<group>"; };
 		0473207928E8675800D04171 /* animation_attach_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animation_attach_app.h; sourceTree = "<group>"; };
+		0473207C28E8868C00D04171 /* gui_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gui_app.h; sourceTree = "<group>"; };
+		0473207D28E8868C00D04171 /* gui_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gui_app.cpp; sourceTree = "<group>"; };
 		047BB58A2800140A00CD5749 /* libvox.geometry.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libvox.geometry.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		047BF0BA27AC086B003F3599 /* light.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = light.cpp; sourceTree = "<group>"; };
 		047BF0BB27AC086B003F3599 /* light.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = light.h; sourceTree = "<group>"; };
@@ -3109,6 +3112,8 @@
 				047BF13027ACF034003F3599 /* scoped_autorelease_pool.cpp */,
 				043B7B74278C841400D5648F /* apps.entitlements */,
 				0495475E27A294E600783C84 /* main.cpp */,
+				0473207C28E8868C00D04171 /* gui_app.h */,
+				0473207D28E8868C00D04171 /* gui_app.cpp */,
 				0495476127A2954200783C84 /* primitive_app.h */,
 				0495476027A2954200783C84 /* primitive_app.cpp */,
 				045B391A28D6F45A00DA1D32 /* assimp_app.h */,
@@ -5872,6 +5877,7 @@
 				045B391C28D6F45A00DA1D32 /* assimp_app.cpp in Sources */,
 				0473207B28E8675900D04171 /* animation_create_app.cpp in Sources */,
 				04311AE727D7302B00B918E3 /* multi_light_app.cpp in Sources */,
+				0473207E28E8868C00D04171 /* gui_app.cpp in Sources */,
 				045A395228C44F1F003FEE10 /* plugins.cpp in Sources */,
 				047BF18427AE1DF7003F3599 /* skybox_app.cpp in Sources */,
 			);
