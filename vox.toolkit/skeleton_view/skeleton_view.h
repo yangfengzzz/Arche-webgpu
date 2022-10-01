@@ -7,7 +7,7 @@
 #pragma once
 
 #include "vox.render/script.h"
-#include "vox.toolkit/skeleton_view/skeleton_material.h"
+#include "vox.render/material/material.h"
 
 namespace vox {
 class Animator;
@@ -24,14 +24,23 @@ private:
 
     void _createJointMesh();
 
+    void _createMeshLayout();
+
     float kInter = .2f;
     Animator* _animator{nullptr};
-    std::vector<float> _skeletonBuffer;
+    std::vector<float> _skeletonData;
+    Buffer _skeletonBuffer;
+    std::vector<Buffer> _boneBufferBindings;
+    std::vector<Buffer> _jointBufferBindings;
 
-    ModelMeshPtr _boneMesh{nullptr};
-    std::shared_ptr<BoneMaterial> _boneMaterial{nullptr};
+    std::vector<wgpu::VertexAttribute> _vertex_attributes;
+    std::vector<wgpu::VertexAttribute> _instance_attributes;
+    std::vector<wgpu::VertexBufferLayout> _layouts;
 
-    ModelMeshPtr _jointMesh{nullptr};
-    std::shared_ptr<JointMaterial> _jointMaterial{nullptr};
+    std::shared_ptr<BufferMesh> _boneMesh{nullptr};
+    std::shared_ptr<Material> _boneMaterial{nullptr};
+
+    std::shared_ptr<BufferMesh> _jointMesh{nullptr};
+    std::shared_ptr<Material> _jointMaterial{nullptr};
 };
 }  // namespace vox

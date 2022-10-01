@@ -12,9 +12,18 @@
 #include "vox.render/mesh/mesh_manager.h"
 #include "vox.render/mesh/mesh_renderer.h"
 #include "vox.render/scene.h"
+#include "vox.render/shader/shader_common.h"
+#include "vox.render/shader/shader_manager.h"
 
 namespace vox {
 namespace {
+// A vertex made of positions and normals.
+struct VertexPNC {
+    Vector3F pos;
+    Vector3F normal;
+    Color color;
+};
+
 int fillPostureUniforms(const animation::Skeleton& _skeleton,
                         const span<const simd_math::Float4x4>& _matrices,
                         float* _uniforms) {
@@ -75,14 +84,25 @@ int fillPostureUniforms(const animation::Skeleton& _skeleton,
 }
 }  // namespace
 
-SkeletonView::SkeletonView(Entity* entity) : Script(entity) {}
+SkeletonView::SkeletonView(Entity* entity)
+    : Script(entity),
+      _skeletonData(animation::Skeleton::kMaxJoints * 64),
+      _skeletonBuffer(scene()->device(),
+                      _skeletonData.size() * sizeof(float),
+                      wgpu::BufferUsage::Vertex | wgpu::BufferUsage::CopyDst) {}
 
 void SkeletonView::onAwake() {
+    _boneMaterial = std::make_shared<Material>(scene()->device());
+    _boneMaterial->vertex_source_ = ShaderManager::GetSingleton().LoadShader("toolkit/skeleton_view/bone.vert");
+    _boneMaterial->fragment_source_ = ShaderManager::GetSingleton().LoadShader("toolkit/skeleton_view/skeleton.frag");
+
+    _jointMaterial = std::make_shared<Material>(scene()->device());
+    _jointMaterial->vertex_source_ = ShaderManager::GetSingleton().LoadShader("toolkit/skeleton_view/joint.vert");
+    _jointMaterial->fragment_source_ = ShaderManager::GetSingleton().LoadShader("toolkit/skeleton_view/skeleton.frag");
+
+    _createMeshLayout();
     _createBoneMesh();
     _createJointMesh();
-    _boneMaterial = std::make_shared<BoneMaterial>(scene()->device());
-    _jointMaterial = std::make_shared<JointMaterial>(scene()->device());
-    _skeletonBuffer.resize(animation::Skeleton::kMaxJoints * 64);
 
     auto boneEntity = entity()->createChild("boneEntity");
     auto boneRenderer = boneEntity->addComponent<MeshRenderer>();
@@ -101,10 +121,47 @@ void SkeletonView::onUpdate(float deltaTime) {
     }
 
     if (_animator) {
-        fillPostureUniforms(_animator->skeleton(), make_span(_animator->models()), _skeletonBuffer.data());
-        _boneMaterial->setSkeletonBuffer(_skeletonBuffer);
-        _jointMaterial->setSkeletonBuffer(_skeletonBuffer);
+        fillPostureUniforms(_animator->skeleton(), make_span(_animator->models()), _skeletonData.data());
+        _skeletonBuffer.uploadData(scene()->device(), _skeletonData.data(), _skeletonData.size() * sizeof(float));
     }
+}
+
+void SkeletonView::_createMeshLayout() {
+    _vertex_attributes.resize(3);
+    _vertex_attributes[0].format = wgpu::VertexFormat::Float32x3;
+    _vertex_attributes[0].offset = 0;
+    _vertex_attributes[0].shaderLocation = (uint32_t)Attributes::POSITION;
+    _vertex_attributes[1].format = wgpu::VertexFormat::Float32x3;
+    _vertex_attributes[1].offset = 12;
+    _vertex_attributes[1].shaderLocation = (uint32_t)Attributes::NORMAL;
+    _vertex_attributes[2].format = wgpu::VertexFormat::Float32x4;
+    _vertex_attributes[2].offset = 24;
+    _vertex_attributes[2].shaderLocation = (uint32_t)Attributes::COLOR_0;
+
+    _instance_attributes.resize(4);
+    _instance_attributes[0].format = wgpu::VertexFormat::Float32x4;
+    _instance_attributes[0].offset = 0;
+    _instance_attributes[0].shaderLocation = 3;
+    _instance_attributes[1].format = wgpu::VertexFormat::Float32x4;
+    _instance_attributes[1].offset = 16;
+    _instance_attributes[1].shaderLocation = 4;
+    _instance_attributes[2].format = wgpu::VertexFormat::Float32x4;
+    _instance_attributes[2].offset = 32;
+    _instance_attributes[2].shaderLocation = 5;
+    _instance_attributes[3].format = wgpu::VertexFormat::Float32x4;
+    _instance_attributes[3].offset = 48;
+    _instance_attributes[3].shaderLocation = 6;
+
+    _layouts.resize(2);
+    _layouts[0].arrayStride = 40;
+    _layouts[0].attributeCount = 3;
+    _layouts[0].attributes = _vertex_attributes.data();
+    _layouts[0].stepMode = wgpu::VertexStepMode::Vertex;
+
+    _layouts[1].arrayStride = 64;
+    _layouts[1].attributeCount = 4;
+    _layouts[1].attributes = _instance_attributes.data();
+    _layouts[1].stepMode = wgpu::VertexStepMode::Instance;
 }
 
 void SkeletonView::_createBoneMesh() {
@@ -121,19 +178,24 @@ void SkeletonView::_createBoneMesh() {
             (pos[4] - pos[1]).cross(pos[4] - pos[5]).normalized(),
     };
 
-    std::vector<Vector3F> position = {pos[0], pos[2], pos[1], pos[5], pos[1], pos[2], pos[0], pos[3],
-                                      pos[2], pos[5], pos[2], pos[3], pos[0], pos[4], pos[3], pos[5],
-                                      pos[3], pos[4], pos[0], pos[1], pos[4], pos[5], pos[4], pos[1]};
-    std::vector<Vector3F> normal = {normals[0], normals[0], normals[0], normals[1], normals[1], normals[1],
-                                    normals[2], normals[2], normals[2], normals[3], normals[3], normals[3],
-                                    normals[4], normals[4], normals[4], normals[5], normals[5], normals[5],
-                                    normals[6], normals[6], normals[6], normals[7], normals[7], normals[7]};
+    const Color white = {1, 1, 1, 1};
 
-    _boneMesh = MeshManager::GetSingleton().LoadModelMesh();
-    _boneMesh->setPositions(position);
-    _boneMesh->setNormals(normal);
-    _boneMesh->addSubMesh(0, 24);
-    _boneMesh->uploadData(true);
+    const VertexPNC bones[24] = {{pos[0], normals[0], white}, {pos[2], normals[0], white}, {pos[1], normals[0], white},
+                                 {pos[5], normals[1], white}, {pos[1], normals[1], white}, {pos[2], normals[1], white},
+                                 {pos[0], normals[2], white}, {pos[3], normals[2], white}, {pos[2], normals[2], white},
+                                 {pos[5], normals[3], white}, {pos[2], normals[3], white}, {pos[3], normals[3], white},
+                                 {pos[0], normals[4], white}, {pos[4], normals[4], white}, {pos[3], normals[4], white},
+                                 {pos[5], normals[5], white}, {pos[3], normals[5], white}, {pos[4], normals[5], white},
+                                 {pos[0], normals[6], white}, {pos[1], normals[6], white}, {pos[4], normals[6], white},
+                                 {pos[5], normals[7], white}, {pos[4], normals[7], white}, {pos[1], normals[7], white}};
+
+    Buffer buffer(scene()->device(), 24 * 40, wgpu::BufferUsage::Vertex | wgpu::BufferUsage::CopyDst);
+    buffer.uploadData(scene()->device(), &bones[0], 24 * 40);
+    _boneBufferBindings.push_back(buffer);
+    _boneBufferBindings.push_back(_skeletonBuffer);
+    _boneMesh = MeshManager::GetSingleton().LoadBufferMesh();
+    _boneMesh->setVertexLayouts(_layouts);
+    _boneMesh->setVertexBufferBindings(_boneBufferBindings, 0);
 }
 
 void SkeletonView::_createJointMesh() {
@@ -144,41 +206,44 @@ void SkeletonView::_createJointMesh() {
     const int kNumPointsXZ = kNumPointsPerCircle;
     const int kNumPoints = kNumPointsXY + kNumPointsXZ + kNumPointsYZ;
     const float kRadius = kInter;  // Radius multiplier.
-
-    std::vector<Vector3F> position(kNumPoints);
-    std::vector<Vector3F> normal(kNumPoints);
-    std::vector<Color> color(kNumPoints);
+    const Color red = {1, 0, 0, 1};
+    const Color green = {0, 1, 0, 1};
+    const Color blue = {0, 0, 1, 1};
+    VertexPNC joints[kNumPoints];
 
     // Fills vertices.
     int index = 0;
     for (int j = 0; j < kNumPointsYZ; ++j) {  // YZ plan.
-        float angle = j * kTwoPiF / kNumSlices;
+        float angle = float(j) * kTwoPiF / kNumSlices;
         float s = sinf(angle), c = cosf(angle);
-        position[index] = Vector3F(0.f, c * kRadius, s * kRadius);
-        normal[index] = Vector3F(0.f, c, s);
-        color[index] = Color(1, 0, 0, 1);
-        index++;
+        VertexPNC& vertex = joints[index++];
+        vertex.pos = Vector3F(0.f, c * kRadius, s * kRadius);
+        vertex.normal = Vector3F(0.f, c, s);
+        vertex.color = red;
     }
     for (int j = 0; j < kNumPointsXY; ++j) {  // XY plan.
-        float angle = j * kTwoPiF / kNumSlices;
+        float angle = float(j) * kTwoPiF / kNumSlices;
         float s = sinf(angle), c = cosf(angle);
-        position[index] = Vector3F(s * kRadius, c * kRadius, 0.f);
-        normal[index] = Vector3F(s, c, 0.f);
-        color[index] = Color(0, 1, 0, 1);
+        VertexPNC& vertex = joints[index++];
+        vertex.pos = Vector3F(s * kRadius, c * kRadius, 0.f);
+        vertex.normal = Vector3F(s, c, 0.f);
+        vertex.color = blue;
     }
     for (int j = 0; j < kNumPointsXZ; ++j) {  // XZ plan.
-        float angle = j * kTwoPiF / kNumSlices;
+        float angle = float(j) * kTwoPiF / kNumSlices;
         float s = sinf(angle), c = cosf(angle);
-        position[index] = Vector3F(c * kRadius, 0.f, -s * kRadius);
-        normal[index] = Vector3F(c, 0.f, -s);
-        color[index] = Color(0, 0, 1, 1);
+        VertexPNC& vertex = joints[index++];
+        vertex.pos = Vector3F(c * kRadius, 0.f, -s * kRadius);
+        vertex.normal = Vector3F(c, 0.f, -s);
+        vertex.color = green;
     }
 
-    _jointMesh = MeshManager::GetSingleton().LoadModelMesh();
-    _jointMesh->setPositions(position);
-    _jointMesh->setNormals(normal);
-    _jointMesh->setColors(color);
-    _jointMesh->addSubMesh(0, kNumPoints, wgpu::PrimitiveTopology::LineStrip);
-    _jointMesh->uploadData(true);
+    Buffer buffer(scene()->device(), kNumPoints * 40, wgpu::BufferUsage::Vertex | wgpu::BufferUsage::CopyDst);
+    buffer.uploadData(scene()->device(), &joints[0], kNumPoints * 40);
+    _jointBufferBindings.push_back(buffer);
+    _jointBufferBindings.push_back(_skeletonBuffer);
+    _jointMesh = MeshManager::GetSingleton().LoadBufferMesh();
+    _jointMesh->setVertexLayouts(_layouts);
+    _jointMesh->setVertexBufferBindings(_jointBufferBindings, 0);
 }
 }  // namespace vox

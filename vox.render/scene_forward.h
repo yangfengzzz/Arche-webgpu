@@ -31,6 +31,10 @@ class ModelMesh;
 
 using ModelMeshPtr = std::shared_ptr<ModelMesh>;
 
+class BufferMesh;
+
+using BufferMeshPtr = std::shared_ptr<BufferMesh>;
+
 class Material;
 
 using MaterialPtr = std::shared_ptr<Material>;
