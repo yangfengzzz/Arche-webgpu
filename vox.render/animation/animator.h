@@ -7,6 +7,7 @@
 #pragma once
 
 #include "vox.animation/runtime/local_to_model_job.h"
+#include "vox.base/memory/unique_ptr.h"
 #include "vox.math/bounding_box3.h"
 #include "vox.render/animation/animation_state.h"
 #include "vox.render/component.h"
@@ -27,6 +28,8 @@ public:
     void setRootState(const std::shared_ptr<AnimationState>& state);
 
     bool loadSkeleton(const std::string& filename);
+
+    void loadSkeleton(const vox::unique_ptr<animation::Skeleton>& skeleton);
 
     void update(float dt);
 

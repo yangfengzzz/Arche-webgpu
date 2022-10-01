@@ -13,6 +13,8 @@
 #include "vox.animation/runtime/skeleton.h"
 
 namespace vox {
+class AnimationClip;
+
 class AnimationCreateApp : public ForwardApplication {
 public:
     void loadScene() override;
@@ -22,7 +24,7 @@ private:
     int slice_count_ = 26;
 
     // Procedurally builds millipede skeleton and walk animation
-    void _build(animation::Skeleton& skeleton, animation::Animation& animation);
+    void _build(Animator* animator, AnimationClip* animationClip);
 
     void _createSkeleton(animation::offline::RawSkeleton* _skeleton) const;
 

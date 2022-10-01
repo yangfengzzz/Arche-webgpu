@@ -95,7 +95,7 @@ void AnimationCreateApp::loadScene() {
     animator->setRootState(animationClip);
     characterEntity->addComponent<skeleton_view::SkeletonView>();
 
-    _build(animator->skeleton(), animationClip->animation());
+    _build(animator, animationClip.get());
 
     auto planeEntity = rootEntity->createChild();
     auto planeRenderer = planeEntity->addComponent<MeshRenderer>();
@@ -109,7 +109,7 @@ void AnimationCreateApp::loadScene() {
     scene->play();
 }
 
-void AnimationCreateApp::_build(animation::Skeleton& skeleton, animation::Animation& animation) {
+void AnimationCreateApp::_build(Animator* animator, AnimationClip* animationClip) {
     // Initializes the root. The root pointer will change from a spine to the
     // next for each slice.
     animation::offline::RawSkeleton raw_skeleton;
@@ -117,15 +117,17 @@ void AnimationCreateApp::_build(animation::Skeleton& skeleton, animation::Animat
 
     // Build the run time skeleton.
     animation::offline::SkeletonBuilder skeleton_builder;
-    skeleton = std::move(*skeleton_builder(raw_skeleton));
+    auto skeleton = skeleton_builder(raw_skeleton);
 
     // Build a walk animation.
     animation::offline::RawAnimation raw_animation;
-    _createAnimation(skeleton, &raw_animation);
+    _createAnimation(*skeleton, &raw_animation);
 
     // Build the run time animation from the raw animation.
     animation::offline::AnimationBuilder animation_builder;
-    animation = std::move(*animation_builder(raw_animation));
+    animationClip->animation() = std::move(*animation_builder(raw_animation));
+    animator->loadSkeleton(skeleton);
+
 }
 
 void AnimationCreateApp::_createSkeleton(animation::offline::RawSkeleton* _skeleton) const {

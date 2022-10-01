@@ -48,6 +48,16 @@ bool Animator::loadSkeleton(const std::string& filename) {
     return true;
 }
 
+void Animator::loadSkeleton(const vox::unique_ptr<animation::Skeleton>& skeleton) {
+    _skeleton = std::move(*skeleton);
+    _models.resize(_skeleton.num_joints());
+    _ltm_job.output = make_span(_models);
+    _ltm_job.skeleton = &_skeleton;
+    if (_rootState) {
+        _rootState->loadSkeleton(&_skeleton);
+    }
+}
+
 void Animator::update(float dt) {
     if (_rootState) {
         _rootState->update(dt);
