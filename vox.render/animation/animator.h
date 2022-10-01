@@ -44,6 +44,8 @@ public:
 
     [[nodiscard]] const vox::vector<simd_math::Float4x4>& models() const;
 
+    animation::Skeleton& skeleton();
+
     // Computes the bounding box of _skeleton. This is the box that encloses all
     // skeleton's joints in model space.
     // _bound must be a valid math::Box instance.

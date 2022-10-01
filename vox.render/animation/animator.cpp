@@ -70,6 +70,8 @@ void Animator::setLocalToModelTo(int value) { _ltm_job.to = value; }
 
 const vox::vector<simd_math::Float4x4>& Animator::models() const { return _models; }
 
+animation::Skeleton& Animator::skeleton() { return _skeleton; }
+
 void Animator::_multiplySoATransformQuaternion(int _index,
                                                const simd_math::SimdQuaternion& _quat,
                                                const span<simd_math::SoaTransform>& _transforms) {

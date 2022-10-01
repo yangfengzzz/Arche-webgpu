@@ -11,8 +11,12 @@ project(vox.toolkit LANGUAGES C CXX)
 file(GLOB CONTROLS_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/controls/*.cpp)
 
+file(GLOB SKELETON_VIEW_FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/skeleton_view/*.cpp)
+
 set(PROJECT_FILES
         ${CONTROLS_FILES}
+        ${SKELETON_VIEW_FILES}
         )
 
 # No need for explict casts from vk::HandleType to VkHandleType on ANDROID
