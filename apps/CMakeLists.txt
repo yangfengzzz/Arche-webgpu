@@ -33,6 +33,7 @@ set(SRC
         animation_blend_app.cpp
         animation_partial_blend_app.cpp
         animation_additive_app.cpp
+        animation_lookat_app.cpp
         gui_app.cpp
         )
 
