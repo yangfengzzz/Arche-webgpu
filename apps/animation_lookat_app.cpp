@@ -6,106 +6,96 @@
 
 #include "apps/animation_lookat_app.h"
 
-#include <spdlog/fmt/chrono.h>
-
+#include "vox.base/logging.h"
 #include "vox.render/animation/animation_states/animation_blending.h"
 #include "vox.render/animation/animator.h"
 #include "vox.render/animation/skinned_mesh_renderer.h"
 #include "vox.render/camera.h"
 #include "vox.render/entity.h"
-#include "vox.render/material/unlit_material.h"
+#include "vox.render/material/blinn_phong_material.h"
 #include "vox.render/mesh/primitive_mesh.h"
 #include "vox.toolkit/controls/orbit_control.h"
 #include "vox.toolkit/skeleton_view/skeleton_view.h"
 
 namespace vox {
 namespace {
-class CustomGUI : public ui::Widget {
+class MoveScript : public Script {
 public:
-    std::shared_ptr<AnimationClip> samplers[3];
+    int chain_length = 4;
+    float joint_weight = 0.5;
+    Animator* animator{nullptr};
+    Point3F target_offset = Point3F(.2f, 1.5f, -.3f);
+    float target_extent = 1.f;
+    float totalTime = 0.f;
 
-    void DrawImpl() override {
-        ImGui::Text("Weight UI");
-        ImGui::Checkbox("manual", &manual_);
-        if (manual_) {
-            ImGui::SliderFloat("Clip Jog Weight", &samplers[0]->weight, 0.f, 1.f);
-            ImGui::SliderFloat("Clip Walk Weight", &samplers[1]->weight, 0.f, 1.f);
-            ImGui::SliderFloat("Clip Run Weight", &samplers[2]->weight, 0.f, 1.f);
-        } else {
-            ImGui::SliderFloat("Blend Weight", &blend_ratio_, 0.f, 1.f);
-            updateRuntimeParameters();
+    // Indices of the joints that are IKed for look-at purpose.
+    // Joints must be from the same hierarchy (all ancestors of the first joint
+    // listed) and ordered from child to parent.
+    int joints_chain_[4]{};
 
-            ImGui::Text("%s", fmt::format("Clip Jog Weight {}", samplers[0]->weight).c_str());
-            ImGui::Text("%s", fmt::format("Clip Walk Weight {}", samplers[1]->weight).c_str());
-            ImGui::Text("%s", fmt::format("Clip Run Weight {}", samplers[2]->weight).c_str());
+    explicit MoveScript(Entity* entity) : Script(entity) {}
+
+    void onUpdate(float deltaTime) override {
+        totalTime += deltaTime;
+        const Vector3F animated_target(std::sin(totalTime * .5f), std::cos(totalTime * .25f),
+                                       std::cos(totalTime) * .5f + .5f);
+        auto target = target_offset + animated_target * target_extent;
+        entity()->transform->setPosition(target);
+
+        // The algorithm iteratively updates from the first joint (closer to the
+        // head) to the last (the further ancestor, closer to the pelvis). Joints
+        // order is already validated. For the first joint, aim IK is applied with
+        // the global forward and offset, so the forward vector aligns in direction
+        // of the target. If a weight lower that 1 is provided to the first joint,
+        // then it will not fully align to the target. In this case further joint
+        // will need to be updated. For the remaining joints, forward vector and
+        // offset position are computed in each joint local-space, before IK is
+        // applied:
+        // 1. Rotates forward and offset position based on the result of the
+        // previous joint IK.
+        // 2. Brings forward and offset back in joint local-space.
+        // Aim is iteratively applied up to the last selected joint of the
+        // hierarchy. A weight of 1 is given to the last joint so we can guarantee
+        // target is reached. Note that model-space transform of each joint doesn't
+        // need to be updated between each pass, as joints are ordered from child to
+        // parent.
+        int previous_joint = animation::Skeleton::kNoParent;
+        for (int i = 0, joint = joints_chain_[0]; i < chain_length;
+             ++i, previous_joint = joint, joint = joints_chain_[i]) {
+            // Setups weights of IK job.
+            // the last joint being processed needs a full weight (1.f) to ensure
+            // target is reached.
+            const bool last = i == chain_length - 1;
+            float weight = float(chain_length) * (last ? 1.f : joint_weight);
+
+            animator->scheduleAimIK(joint, target, weight);
         }
     }
-
-    // Computes blending weight and synchronizes playback speed when the "manual"
-    // option is off.
-    void updateRuntimeParameters() {
-        // Computes weight parameters for all samplers.
-        const float kNumIntervals = kNumLayers - 1;
-        const float kInterval = 1.f / kNumIntervals;
-        for (int i = 0; i < kNumLayers; ++i) {
-            const float med = i * kInterval;
-            const float x = blend_ratio_ - med;
-            const float y = ((x < 0.f ? x : -x) + kInterval) * kNumIntervals;
-            samplers[i]->weight = std::max(0.f, y);
-        }
-
-        // Synchronizes animations.
-        // First computes loop cycle duration. Selects the 2 samplers that define
-        // interval that contains blend_ratio_.
-        // Uses a maximum value smaller that 1.f (-epsilon) to ensure that
-        // (relevant_sampler + 1) is always valid.
-        const int relevant_sampler = static_cast<int>((blend_ratio_ - 1e-3f) * (kNumLayers - 1));
-        assert(relevant_sampler + 1 < kNumLayers);
-        auto sampler_l = samplers[relevant_sampler];
-        auto sampler_r = samplers[relevant_sampler + 1];
-
-        // Interpolates animation durations using their respective weights, to
-        // find the loop cycle duration that matches blend_ratio_.
-        const float loop_duration = sampler_l->animation().duration() * sampler_l->weight +
-                                    sampler_r->animation().duration() * sampler_r->weight;
-
-        // Finally finds the speed coefficient for all samplers.
-        const float inv_loop_duration = 1.f / loop_duration;
-        for (auto sampler : samplers) {
-            const float speed = sampler->animation().duration() * inv_loop_duration;
-            sampler->playback_speed = speed;
-        }
-    }
-
-private:
-    // The number of layers to blend.
-    enum {
-        kNumLayers = 3,
-    };
-
-    // Global blend ratio in range [0,1] that controls all blend parameters and
-    // synchronizes playback speeds. A value of 0 gives full weight to the first
-    // animation, and 1 to the last.
-    float blend_ratio_ = 0.3f;
-
-    // Switch to manual control of animations and blending parameters.
-    bool manual_ = false;
 };
+
+// Traverses the hierarchy from the first joint to the root, to check if
+// joints are all ancestors (same branch), and ordered.
+bool validateJointsOrder(const animation::Skeleton& _skeleton, span<const int> _joints) {
+    const size_t count = _joints.size();
+    if (count == 0) {
+        return true;
+    }
+
+    size_t i = 1;
+    for (int joint = _joints[0], parent = _skeleton.joint_parents()[joint];
+         i != count && joint != animation::Skeleton::kNoParent;
+         joint = parent, parent = _skeleton.joint_parents()[joint]) {
+        if (parent == _joints[i]) {
+            ++i;
+        }
+    }
+
+    return count == i;
+}
+
 }  // namespace
 
 void AnimationLookAtApp::loadScene() {
-    _gui->LoadFont("Ruda_Big", "Fonts/Ruda-Bold.ttf", 16);
-    _gui->LoadFont("Ruda_Medium", "Fonts/Ruda-Bold.ttf", 14);
-    _gui->LoadFont("Ruda_Small", "Fonts/Ruda-Bold.ttf", 12);
-    _gui->UseFont("Ruda_Medium");
-    _gui->SetEditorLayoutAutosaveFrequency(60.0f);
-    _gui->EnableEditorLayoutSave(true);
-    _gui->EnableDocking(true);
-
-    _gui->SetCanvas(canvas_);
-    canvas_.AddPanel(panel_);
-    auto& widget = panel_.CreateWidget<CustomGUI>();
-
     auto scene = _sceneManager->currentScene();
     scene->ambientLight()->setDiffuseSolidColor(Color(1, 1, 1));
     auto rootEntity = scene->createRootEntity();
@@ -122,24 +112,64 @@ void AnimationLookAtApp::loadScene() {
     auto pointLight = light->addComponent<PointLight>();
     pointLight->intensity = 0.3;
 
+    auto target = rootEntity->createChild("target");
+    auto targetScript = target->addComponent<MoveScript>();
+    auto targetRenderer = target->addComponent<MeshRenderer>();
+    targetRenderer->setMesh(PrimitiveMesh::createSphere(_device, 0.05));
+    targetRenderer->setMaterial(std::make_shared<BlinnPhongMaterial>(_device));
+
     auto characterEntity = rootEntity->createChild();
     auto animator = characterEntity->addComponent<Animator>();
     animator->loadSkeleton("Animation/pab_skeleton.ozz");
-    auto animationBlending = std::make_shared<AnimatorBlending>();
-    widget.samplers[0] = std::make_shared<AnimationClip>("Animation/pab_walk.ozz");
-    widget.samplers[1] = std::make_shared<AnimationClip>("Animation/pab_jog.ozz");
-    widget.samplers[2] = std::make_shared<AnimationClip>("Animation/pab_run.ozz");
-    animationBlending->addChild(widget.samplers[0]);
-    animationBlending->addChild(widget.samplers[1]);
-    animationBlending->addChild(widget.samplers[2]);
-    animator->setRootState(animationBlending);
+    auto animationClip = std::make_shared<AnimationClip>("Animation/pab_crossarms.ozz");
+    animator->setRootState(animationClip);
+    targetScript->animator = animator;
+
+    // Defines IK chain joint names.
+    // Joints must be from the same hierarchy (all ancestors of the first joint
+    // listed) and ordered from child to parent.
+    const char* kJointNames[4] = {"Head", "Spine3", "Spine2", "Spine1"};
+    auto& skeleton = animator->skeleton();
+    // Look for each joint in the chain.
+    int found = 0;
+    for (int i = 0; i < skeleton.num_joints() && found != 4; ++i) {
+        const char* joint_name = skeleton.joint_names()[i];
+        if (std::strcmp(joint_name, kJointNames[found]) == 0) {
+            targetScript->joints_chain_[found] = i;
+
+            // Restart search
+            ++found;
+            i = 0;
+        }
+    }
+    // Exit if all joints weren't found.
+    if (found != 4) {
+        LOGE("At least a joint wasn't found in the skeleton hierarchy.")
+    }
+
+    // Validates joints are order from child to parent of the same hierarchy.
+    if (!validateJointsOrder(skeleton, targetScript->joints_chain_)) {
+        LOGE("Joints aren't properly ordered, they must be from "
+             "the same hierarchy (all ancestors of the first joint "
+             "listed) and ordered from child to parent.");
+    }
+
+    auto skins = MeshManager::GetSingleton().LoadSkinnedMesh("Animation/arnaud_mesh.ozz");
+    for (auto& skin : skins) {
+        auto renderer = characterEntity->addComponent<SkinnedMeshRenderer>();
+        renderer->setSkinnedMesh(skin);
+        auto material = std::make_shared<BlinnPhongMaterial>(_device);
+        material->setBaseColor(Color(0.4, 0.6, 0.6, 0.6));
+        material->setIsTransparent(true);
+        renderer->setMaterial(material);
+    }
 
     characterEntity->addComponent<skeleton_view::SkeletonView>();
 
     auto attachEntity = rootEntity->createChild();
     auto attachRenderer = attachEntity->addComponent<MeshRenderer>();
     attachRenderer->setMesh(PrimitiveMesh::createCuboid(_device, 0.01, 0.01, 1));
-    auto attachMtl = std::make_shared<UnlitMaterial>(_device);
+    auto attachMtl = std::make_shared<BlinnPhongMaterial>(_device);
     attachMtl->setBaseColor(Color(1, 0, 0, 1));
     attachRenderer->setMaterial(attachMtl);
     animator->bindEntity("LeftHandMiddle1", attachEntity);
@@ -147,7 +177,7 @@ void AnimationLookAtApp::loadScene() {
     auto planeEntity = rootEntity->createChild();
     auto planeRenderer = planeEntity->addComponent<MeshRenderer>();
     planeRenderer->setMesh(PrimitiveMesh::createPlane(_device, 10, 10));
-    auto texturedMaterial = std::make_shared<UnlitMaterial>(_device);
+    auto texturedMaterial = std::make_shared<BlinnPhongMaterial>(_device);
     texturedMaterial->setRenderFace(RenderFace::Double);
     planeRenderer->setMaterial(texturedMaterial);
 

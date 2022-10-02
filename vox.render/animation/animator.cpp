@@ -229,14 +229,16 @@ void Animator::scheduleTwoBoneIK(int start_joint,
 }
 
 void Animator::scheduleAimIK(const int& target_joint,
-                             const Vector3F& target_ws,
+                             const Point3F& target_ws,
                              float weight,
+                             std::optional<Vector3F> pole_vector,
                              const Vector3F& pelvis_offset) {
     AimIKData data;
     data.target_joint = target_joint;
     data.target_ws = target_ws;
     data.weight = weight;
     data.pelvis_offset = pelvis_offset;
+    data.pole_vector = std::move(pole_vector);
     _targetIKData.push_back(data);
 
     ScheduleData scheduleData{};
@@ -312,6 +314,12 @@ void Animator::_applyAimIK(const AimIKData& data) {
     // Target position and pole vectors must be in model space.
     const simd_math::SimdFloat4 target_ms =
             TransformPoint(inv_root, simd_math::simd_float4::Load3PtrU(&data.target_ws.x));
+    simd_math::SimdFloat4 pole_vector_ms;
+    if (data.pole_vector.has_value()) {
+        pole_vector_ms = TransformVector(inv_root, simd_math::simd_float4::Load3PtrU(&data.pole_vector.value().x));
+    } else {
+        pole_vector_ms = _models[data.target_joint].cols[1];
+    }
 
     animation::IKAimJob ik_job;
     // Forward and up vectors are constant (usually), and arbitrary defined by
@@ -324,7 +332,7 @@ void Animator::_applyAimIK(const AimIKData& data) {
 
     // Uses constant ankle Y (skeleton/rig setup dependent) as pole vector. That
     // allows to maintain foot direction.
-    ik_job.pole_vector = _models[data.target_joint].cols[1];
+    ik_job.pole_vector = pole_vector_ms;
 
     ik_job.joint = &_models[data.target_joint];
     ik_job.weight = data.weight;

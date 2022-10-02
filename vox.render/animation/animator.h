@@ -74,8 +74,9 @@ public:
                            const Vector3F& pelvis_offset = Vector3F());
 
     void scheduleAimIK(const int& target_joint,
-                       const Vector3F& target_ws,
+                       const Point3F& target_ws,
                        float weight = 1.f,
+                       std::optional<Vector3F> pole_vector = std::nullopt,
                        const Vector3F& pelvis_offset = Vector3F());
 
     void scheduleLocalToModel(int from, int to = animation::Skeleton::kMaxJoints);
@@ -138,9 +139,10 @@ private:
 
     struct AimIKData {
         int target_joint;
-        Vector3F target_ws;
+        Point3F target_ws;
         float weight;
         Vector3F pelvis_offset;
+        std::optional<Vector3F> pole_vector;
     };
     std::vector<AimIKData> _targetIKData{};
 
