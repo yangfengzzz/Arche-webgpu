@@ -6,6 +6,8 @@
 
 #include "vox.render/animation/animator.h"
 
+#include <utility>
+
 #include "vox.animation/runtime/ik_aim_job.h"
 #include "vox.animation/runtime/ik_two_bone_job.h"
 #include "vox.base/io/archive.h"
@@ -58,31 +60,39 @@ void Animator::update(float dt) {
         _rootState->update(dt);
         _ltm_job.input = make_span(_rootState->locals());
         (void)_ltm_job.Run();
-
         _locals = _rootState->locals();
-        _ltm_job.input = make_span(_locals);
-        for (const auto& data : _scheduleData) {
-            switch (data.type) {
-                case ScheduleType::LocalToModel:
-                    _applyLocalToModel(*static_cast<LocalToModelData*>(data.ptr));
-                    break;
-                case ScheduleType::TargetIK:
-                    _applyAimIK(*static_cast<AimIKData*>(data.ptr));
-                    break;
-                case ScheduleType::TwoBoneIK:
-                    _applyTwoBoneIK(*static_cast<TwoBoneIKData*>(data.ptr));
-                    break;
-            }
+    } else {
+        _locals.resize(_skeleton.num_soa_joints());
+        // Initialize locals from skeleton rest pose
+        for (size_t i = 0; i < _locals.size(); ++i) {
+            _locals[i] = _skeleton.joint_rest_poses()[i];
         }
-        clearAllSchedule();
+    }
 
-        Matrix4x4F localMatrix;
-        for (const auto& entities : _entityBindingMap) {
-            size_t index = entities.first;
-            memcpy(localMatrix.data(), &_models[index].cols[0], sizeof(Matrix4x4F));
-            for (auto& entity : entities.second) {
-                entity->transform->setLocalMatrix(localMatrix);
-            }
+    // post-sample schedule work
+    _ltm_job.input = make_span(_locals);
+    for (const auto& data : _scheduleData) {
+        switch (data.type) {
+            case ScheduleType::LocalToModel:
+                _applyLocalToModel(*static_cast<LocalToModelData*>(data.ptr));
+                break;
+            case ScheduleType::TargetIK:
+                _applyAimIK(*static_cast<AimIKData*>(data.ptr));
+                break;
+            case ScheduleType::TwoBoneIK:
+                _applyTwoBoneIK(*static_cast<TwoBoneIKData*>(data.ptr));
+                break;
+        }
+    }
+    clearAllSchedule();
+
+    // sync to attach entity
+    Matrix4x4F localMatrix;
+    for (const auto& entities : _entityBindingMap) {
+        size_t index = entities.first;
+        memcpy(localMatrix.data(), &_models[index].cols[0], sizeof(Matrix4x4F));
+        for (auto& entity : entities.second) {
+            entity->transform->setLocalMatrix(localMatrix);
         }
     }
 }
@@ -197,6 +207,8 @@ void Animator::scheduleTwoBoneIK(int start_joint,
                                  const Vector3F& target_ws,
                                  float soften,
                                  float weight,
+                                 float twist_angle,
+                                 std::optional<Vector3F> pole_vector,
                                  const Vector3F& pelvis_offset) {
     TwoBoneIKData data;
     data.start_joint = start_joint;
@@ -205,7 +217,9 @@ void Animator::scheduleTwoBoneIK(int start_joint,
     data.target_ws = target_ws;
     data.soften = soften;
     data.weight = weight;
+    data.twist_angle = twist_angle;
     data.pelvis_offset = pelvis_offset;
+    data.pole_vector = std::move(pole_vector);
     _twoBoneIKData.push_back(data);
 
     ScheduleData scheduleData{};
@@ -246,21 +260,24 @@ void Animator::scheduleLocalToModel(int from, int to) {
 void Animator::clearAllSchedule() {
     _scheduleData.clear();
     _targetIKData.clear();
+    _twoBoneIKData.clear();
     _ltmData.clear();
 }
 
 // This function will compute two bone IK on the leg, updating hip and knee
 // rotations so that ankle can reach its targeted position.
 void Animator::_applyTwoBoneIK(const TwoBoneIKData& data) {
-    const Vector3F offsetTranslation = data.pelvis_offset + avatar.root_translation;
-    auto root = simd_math::Float4x4::Translation(simd_math::simd_float4::Load3PtrU(&offsetTranslation.x)) *
-                simd_math::Float4x4::FromEuler(simd_math::simd_float4::LoadX(avatar.root_yaw));
-    const auto inv_root = Invert(root);
+    const auto inv_root = Invert(_getRootTransform(data.pelvis_offset));
 
     // Target position and pole vectors must be in model space.
     const simd_math::SimdFloat4 target_ms =
             TransformPoint(inv_root, simd_math::simd_float4::Load3PtrU(&data.target_ws.x));
-    const simd_math::SimdFloat4 pole_vector_ms = _models[data.mid_joint].cols[1];
+    simd_math::SimdFloat4 pole_vector_ms;
+    if (data.pole_vector.has_value()) {
+        pole_vector_ms = TransformVector(inv_root, simd_math::simd_float4::Load3PtrU(&data.pole_vector.value().x));
+    } else {
+        pole_vector_ms = _models[data.mid_joint].cols[1];
+    }
 
     // Builds two bone IK job.
     animation::IKTwoBoneJob ik_job;
@@ -268,9 +285,10 @@ void Animator::_applyTwoBoneIK(const TwoBoneIKData& data) {
     ik_job.pole_vector = pole_vector_ms;
     // Mid-axis (knee) is constant (usually), and arbitrary defined by
     // skeleton/rig setup.
-    ik_job.mid_axis = avatar.kKneeAxis;
+    ik_job.mid_axis = avatar.kMidAxis;
     ik_job.weight = data.weight;
     ik_job.soften = data.soften;
+    ik_job.twist_angle = data.twist_angle;
     ik_job.start_joint = &_models[data.start_joint];
     ik_job.mid_joint = &_models[data.mid_joint];
     ik_job.end_joint = &_models[data.end_joint];
@@ -289,10 +307,7 @@ void Animator::_applyTwoBoneIK(const TwoBoneIKData& data) {
 }
 
 void Animator::_applyAimIK(const AimIKData& data) {
-    const Vector3F offsetTranslation = data.pelvis_offset + avatar.root_translation;
-    auto root = simd_math::Float4x4::Translation(simd_math::simd_float4::Load3PtrU(&offsetTranslation.x)) *
-                simd_math::Float4x4::FromEuler(simd_math::simd_float4::LoadX(avatar.root_yaw));
-    const auto inv_root = Invert(root);
+    const auto inv_root = Invert(_getRootTransform(data.pelvis_offset));
 
     // Target position and pole vectors must be in model space.
     const simd_math::SimdFloat4 target_ms =
@@ -334,6 +349,13 @@ void Animator::_applyLocalToModel(const LocalToModelData& data) {
     if (!_ltm_job.Run()) {
         return;
     }
+}
+
+simd_math::Float4x4 Animator::_getRootTransform(const Vector3F& pelvis_offset) const {
+    const Vector3F offsetTranslation = pelvis_offset + avatar.root_translation;
+    return simd_math::Float4x4::Translation(simd_math::simd_float4::Load3PtrU(&offsetTranslation.x)) *
+           simd_math::Float4x4::FromEuler(simd_math::simd_float4::Load3PtrU(&avatar.root_euler.x)) *
+           simd_math::Float4x4::Scaling(simd_math::simd_float4::Load1(avatar.root_scale));
 }
 
 }  // namespace vox

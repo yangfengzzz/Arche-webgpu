@@ -69,6 +69,8 @@ public:
                            const Vector3F& target_ws,
                            float soften = 1.f,
                            float weight = 1.f,
+                           float twist_angle = 0.f,
+                           std::optional<Vector3F> pole_vector = std::nullopt,
                            const Vector3F& pelvis_offset = Vector3F());
 
     void scheduleAimIK(const int& target_joint,
@@ -101,6 +103,8 @@ private:
 
     void _onDisable() override;
 
+    [[nodiscard]] simd_math::Float4x4 _getRootTransform(const Vector3F& pelvis_offset) const;
+
     // Multiplies a single quaternion at a specific index in a SoA transform range.
     static void _multiplySoATransformQuaternion(int _index,
                                                 const simd_math::SimdQuaternion& _quat,
@@ -123,9 +127,11 @@ private:
         int mid_joint;
         int end_joint;
         float soften;
+        float twist_angle;
         Vector3F target_ws;
         float weight;
         Vector3F pelvis_offset;
+        std::optional<Vector3F> pole_vector;
     };
     std::vector<TwoBoneIKData> _twoBoneIKData{};
     void _applyTwoBoneIK(const TwoBoneIKData& data);

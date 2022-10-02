@@ -14,10 +14,11 @@ class Avatar {
 public:
     // Root transformation.
     Vector3F root_translation;
-    float root_yaw;
+    Vector3F root_euler;
+    float root_scale = 1.0;
 
     simd_math::SimdFloat4 kAnkleForward = -simd_math::simd_float4::x_axis();
     simd_math::SimdFloat4 kAnkleUp = simd_math::simd_float4::y_axis();
-    simd_math::SimdFloat4 kKneeAxis = simd_math::simd_float4::z_axis();
+    simd_math::SimdFloat4 kMidAxis = simd_math::simd_float4::z_axis();
 };
 }  // namespace vox
