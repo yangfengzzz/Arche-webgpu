@@ -60,9 +60,13 @@ void AnimationClip::loadSkeleton(animation::Skeleton* skeleton) {
 
     _context.Resize(skeleton->num_joints());
     _locals.resize(skeleton->num_soa_joints());
-    _joint_masks.resize(skeleton->num_soa_joints());
-    setJointMasks(*skeleton, 1.0);
     _sampling_job.output = make_span(_locals);
+
+    auto jointMaskCount = _joint_masks.size();
+    _joint_masks.resize(skeleton->num_soa_joints());
+    if (skeleton->num_soa_joints() != jointMaskCount) {
+        setJointMasks(*skeleton, 1.0);
+    }
 }
 
 void AnimationClip::update(float dt) {

@@ -13,7 +13,6 @@ namespace vox {
 void AnimationState::addChild(const std::shared_ptr<AnimationState>& state) {
     auto iter = std::find(_states.begin(), _states.end(), state);
     if (iter == _states.end()) {
-        state->loadSkeleton(_skeleton);
         _states.push_back(state);
     } else {
         LOGE("State already attached.")

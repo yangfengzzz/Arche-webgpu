@@ -7,10 +7,16 @@
 #pragma once
 
 #include "vox.render/forward_application.h"
+#include "vox.render/ui/canvas.h"
+#include "vox.render/ui/widgets/panel_transformables/panel_window.h"
 
 namespace vox {
 class AnimationBlendApp : public ForwardApplication {
 public:
     void loadScene() override;
+
+private:
+    ui::Canvas canvas_;
+    ui::PanelWindow panel_;
 };
 }  // namespace vox

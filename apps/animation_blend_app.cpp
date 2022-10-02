@@ -6,7 +6,7 @@
 
 #include "apps/animation_blend_app.h"
 
-#include "vox.render/animation/animation_states/animation_clip.h"
+#include "vox.render/animation/animation_states/animation_blending.h"
 #include "vox.render/animation/animator.h"
 #include "vox.render/animation/skinned_mesh_renderer.h"
 #include "vox.render/camera.h"
@@ -17,7 +17,35 @@
 #include "vox.toolkit/skeleton_view/skeleton_view.h"
 
 namespace vox {
+namespace {
+class CustomGUI : public ui::Widget {
+public:
+    std::shared_ptr<AnimationClip> clip1{nullptr};
+    std::shared_ptr<AnimationClip> clip2{nullptr};
+    std::shared_ptr<AnimationClip> clip3{nullptr};
+
+    void DrawImpl() override {
+        ImGui::Text("Custom UI");
+        ImGui::SliderFloat("Clip1 Wight", &clip1->weight, 0.f, 1.f);
+        ImGui::SliderFloat("Clip2 Wight", &clip2->weight, 0.f, 1.f);
+        ImGui::SliderFloat("Clip3 Wight", &clip3->weight, 0.f, 1.f);
+    }
+};
+}  // namespace
+
 void AnimationBlendApp::loadScene() {
+    _gui->LoadFont("Ruda_Big", "Fonts/Ruda-Bold.ttf", 16);
+    _gui->LoadFont("Ruda_Medium", "Fonts/Ruda-Bold.ttf", 14);
+    _gui->LoadFont("Ruda_Small", "Fonts/Ruda-Bold.ttf", 12);
+    _gui->UseFont("Ruda_Medium");
+    _gui->SetEditorLayoutAutosaveFrequency(60.0f);
+    _gui->EnableEditorLayoutSave(true);
+    _gui->EnableDocking(true);
+
+    _gui->SetCanvas(canvas_);
+    canvas_.AddPanel(panel_);
+    auto& widget = panel_.CreateWidget<CustomGUI>();
+
     auto scene = _sceneManager->currentScene();
     scene->ambientLight()->setDiffuseSolidColor(Color(1, 1, 1));
     auto rootEntity = scene->createRootEntity();
@@ -37,11 +65,14 @@ void AnimationBlendApp::loadScene() {
     auto characterEntity = rootEntity->createChild();
     auto animator = characterEntity->addComponent<Animator>();
     animator->loadSkeleton("Animation/pab_skeleton.ozz");
-    auto animationClip1 = std::make_shared<AnimationClip>("Animation/pab_walk.ozz");
-    auto animationClip2 = std::make_shared<AnimationClip>("Animation/pab_jog.ozz");
-    auto animationClip3 = std::make_shared<AnimationClip>("Animation/pab_run.ozz");
-
-    animator->setRootState(animationClip1);
+    auto animationBlending = std::make_shared<AnimatorBlending>();
+    widget.clip1 = std::make_shared<AnimationClip>("Animation/pab_walk.ozz");
+    widget.clip2 = std::make_shared<AnimationClip>("Animation/pab_jog.ozz");
+    widget.clip3 = std::make_shared<AnimationClip>("Animation/pab_run.ozz");
+    animationBlending->addChild(widget.clip1);
+    animationBlending->addChild(widget.clip2);
+    animationBlending->addChild(widget.clip3);
+    animator->setRootState(animationBlending);
 
     characterEntity->addComponent<skeleton_view::SkeletonView>();
 
