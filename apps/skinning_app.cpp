@@ -42,13 +42,13 @@ void SkinningApp::loadScene() {
     animator->setRootState(animationClip);
 
     auto skins = MeshManager::GetSingleton().LoadSkinnedMesh("Animation/ruby_mesh.ozz");
-    for (int i = 0; i < skins.size(); ++i) {
+    for (auto& skin : skins) {
         auto renderer = characterEntity->addComponent<SkinnedMeshRenderer>();
-        renderer->setSkinnedMesh(skins[i]);
+        renderer->setSkinnedMesh(skin);
         auto material = std::make_shared<BlinnPhongMaterial>(_device);
         material->setBaseColor(Color(0.4, 0.6, 0.6, 0.6));
         material->setIsTransparent(true);
-        renderer->setMaterial(i, material);
+        renderer->setMaterial(material);
     }
 
     characterEntity->addComponent<skeleton_view::SkeletonView>();
