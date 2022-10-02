@@ -28,10 +28,10 @@ void AnimationState::removeChild(const std::shared_ptr<AnimationState>& state) {
 
 vox::vector<vox::simd_math::SimdFloat4>& AnimationState::jointMasks() { return _joint_masks; }
 
-void AnimationState::setJointMasks(const animation::Skeleton& skeleton, float mask, const char* root) {
+void AnimationState::setJointMasks(float mask, const char* root) {
     simd_math::SimdFloat4 simdMask = simd_math::simd_float4::Load1(mask);
     if (root == nullptr) {
-        for (int i = 0; i < skeleton.num_soa_joints(); ++i) {
+        for (int i = 0; i < _skeleton->num_soa_joints(); ++i) {
             _joint_masks[i] = simdMask;
         }
     } else {
@@ -40,9 +40,9 @@ void AnimationState::setJointMasks(const animation::Skeleton& skeleton, float ma
             soa_weight = simd_math::SetI(soa_weight, simdMask, _joint % 4);
         };
 
-        const int joint = FindJoint(skeleton, root);
+        const int joint = FindJoint(*_skeleton, root);
         if (joint >= 0) {
-            animation::IterateJointsDF(skeleton, set_joint, joint);
+            animation::IterateJointsDF(*_skeleton, set_joint, joint);
         }
     }
 }

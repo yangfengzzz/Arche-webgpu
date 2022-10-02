@@ -20,7 +20,7 @@ public:
 
     vox::vector<vox::simd_math::SimdFloat4>& jointMasks();
 
-    void setJointMasks(const animation::Skeleton& skeleton, float mask, const char* root = nullptr);
+    void setJointMasks(float mask, const char* root = nullptr);
 
     void addChild(const std::shared_ptr<AnimationState>& state);
 

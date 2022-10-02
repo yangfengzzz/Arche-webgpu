@@ -65,7 +65,7 @@ void AnimationClip::loadSkeleton(animation::Skeleton* skeleton) {
     auto jointMaskCount = _joint_masks.size();
     _joint_masks.resize(skeleton->num_soa_joints());
     if (skeleton->num_soa_joints() != jointMaskCount) {
-        setJointMasks(*skeleton, 1.0);
+        setJointMasks(1.0);
     }
 }
 

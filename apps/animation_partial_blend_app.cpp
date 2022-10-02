@@ -22,59 +22,48 @@ namespace vox {
 namespace {
 class CustomGUI : public ui::Widget {
 public:
-    std::shared_ptr<AnimationClip> samplers[3];
+    // Index of the joint at the base of the upper body hierarchy.
+    int upper_body_root{0};
+
+    std::shared_ptr<AnimationClip> samplers[2];
 
     void DrawImpl() override {
         ImGui::Text("Weight UI");
         ImGui::Checkbox("manual", &manual_);
         if (manual_) {
-            ImGui::SliderFloat("Clip Jog Weight", &samplers[0]->weight, 0.f, 1.f);
-            ImGui::SliderFloat("Clip Walk Weight", &samplers[1]->weight, 0.f, 1.f);
-            ImGui::SliderFloat("Clip Run Weight", &samplers[2]->weight, 0.f, 1.f);
+            ImGui::SliderFloat("Clip Lower Weight", &samplers[0]->weight, 0.f, 1.f);
+            ImGui::SliderFloat("Clip Lower Joint Mask", &lowerMask, 0.f, 1.f);
+            ImGui::SliderFloat("Clip Upper Weight", &samplers[1]->weight, 0.f, 1.f);
+            ImGui::SliderFloat("Clip Upper Joint Mask", &upperMask, 0.f, 1.f);
         } else {
-            ImGui::SliderFloat("Blend Weight", &blend_ratio_, 0.f, 1.f);
-            updateRuntimeParameters();
+            ImGui::SliderFloat("Global Weight", &coefficient, 0.f, 1.f);
+            samplers[0]->weight = 1.f;
+            lowerMask = 1.f - coefficient;
+            samplers[1]->weight = 1.f;
+            upperMask = coefficient;
 
-            ImGui::Text("%s", fmt::format("Clip Jog Weight {}", samplers[0]->weight).c_str());
-            ImGui::Text("%s", fmt::format("Clip Walk Weight {}", samplers[1]->weight).c_str());
-            ImGui::Text("%s", fmt::format("Clip Run Weight {}", samplers[2]->weight).c_str());
+            ImGui::Text("%s", fmt::format("Clip Lower Weight {}", samplers[0]->weight).c_str());
+            ImGui::Text("%s", fmt::format("Clip Lower Joint Mask {}", lowerMask).c_str());
+            ImGui::Text("%s", fmt::format("Clip Upper Weight {}", samplers[1]->weight).c_str());
+            ImGui::Text("%s", fmt::format("Clip Upper Joint Mask {}", upperMask).c_str());
         }
+        setupPerJointWeights();
     }
 
-    // Computes blending weight and synchronizes playback speed when the "manual"
-    // option is off.
-    void updateRuntimeParameters() {
-        // Computes weight parameters for all samplers.
-        const float kNumIntervals = kNumLayers - 1;
-        const float kInterval = 1.f / kNumIntervals;
-        for (int i = 0; i < kNumLayers; ++i) {
-            const float med = i * kInterval;
-            const float x = blend_ratio_ - med;
-            const float y = ((x < 0.f ? x : -x) + kInterval) * kNumIntervals;
-            samplers[i]->weight = std::max(0.f, y);
-        }
+    void setupPerJointWeights() {
+        // Setup partial animation mask. This mask is defined by a weight_setting
+        // assigned to each joint of the hierarchy. Joint to disable are set to a
+        // weight_setting of 0.f, and enabled joints are set to 1.f.
+        // Per-joint weights of lower and upper body layers have opposed values
+        // (weight_setting and 1 - weight_setting) in order for a layer to select
+        // joints that are rejected by the other layer.
+        auto& lower_body_sampler = samplers[kLowerBody];
+        auto& upper_body_sampler = samplers[kUpperBody];
 
-        // Synchronizes animations.
-        // First computes loop cycle duration. Selects the 2 samplers that define
-        // interval that contains blend_ratio_.
-        // Uses a maximum value smaller that 1.f (-epsilon) to ensure that
-        // (relevant_sampler + 1) is always valid.
-        const int relevant_sampler = static_cast<int>((blend_ratio_ - 1e-3f) * (kNumLayers - 1));
-        assert(relevant_sampler + 1 < kNumLayers);
-        auto sampler_l = samplers[relevant_sampler];
-        auto sampler_r = samplers[relevant_sampler + 1];
-
-        // Interpolates animation durations using their respective weights, to
-        // find the loop cycle duration that matches blend_ratio_.
-        const float loop_duration = sampler_l->animation().duration() * sampler_l->weight +
-                                    sampler_r->animation().duration() * sampler_r->weight;
-
-        // Finally finds the speed coefficient for all samplers.
-        const float inv_loop_duration = 1.f / loop_duration;
-        for (auto sampler : samplers) {
-            const float speed = sampler->animation().duration() * inv_loop_duration;
-            sampler->playback_speed = speed;
-        }
+        lower_body_sampler->setJointMasks(1.f);
+        lower_body_sampler->setJointMasks(lowerMask, "Spine1");
+        upper_body_sampler->setJointMasks(0.f);
+        upper_body_sampler->setJointMasks(upperMask, "Spine1");
     }
 
 private:
@@ -84,6 +73,10 @@ private:
         kUpperBody = 1,
         kNumLayers = 2,
     };
+
+    float lowerMask{0.f};
+    float upperMask{1.f};
+    float coefficient = 1.f;
 
     // Global blend ratio in range [0,1] that controls all blend parameters and
     // synchronizes playback speeds. A value of 0 gives full weight to the first
@@ -129,11 +122,11 @@ void AnimationPartialBlendApp::loadScene() {
     animator->loadSkeleton("Animation/pab_skeleton.ozz");
     auto animationBlending = std::make_shared<AnimatorBlending>();
     widget.samplers[0] = std::make_shared<AnimationClip>("Animation/pab_walk.ozz");
-    widget.samplers[1] = std::make_shared<AnimationClip>("Animation/pab_jog.ozz");
-    widget.samplers[2] = std::make_shared<AnimationClip>("Animation/pab_run.ozz");
+    widget.samplers[0]->weight = 1.f;
+    widget.samplers[1] = std::make_shared<AnimationClip>("Animation/pab_crossarms.ozz");
+    widget.samplers[1]->weight = 1.f;
     animationBlending->addChild(widget.samplers[0]);
     animationBlending->addChild(widget.samplers[1]);
-    animationBlending->addChild(widget.samplers[2]);
     animator->setRootState(animationBlending);
 
     characterEntity->addComponent<skeleton_view::SkeletonView>();
