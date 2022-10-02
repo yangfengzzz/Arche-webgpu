@@ -21,6 +21,8 @@ namespace vox {
 namespace {
 class MoveScript : public Script {
 public:
+    // Offset of the look at position in (head) joint local-space.
+    Vector3F eyes_offset;
     int chain_length = 4;
     float joint_weight = 0.5;
     Animator* animator{nullptr};
@@ -42,34 +44,9 @@ public:
         auto target = target_offset + animated_target * target_extent;
         entity()->transform->setPosition(target);
 
-        // The algorithm iteratively updates from the first joint (closer to the
-        // head) to the last (the further ancestor, closer to the pelvis). Joints
-        // order is already validated. For the first joint, aim IK is applied with
-        // the global forward and offset, so the forward vector aligns in direction
-        // of the target. If a weight lower that 1 is provided to the first joint,
-        // then it will not fully align to the target. In this case further joint
-        // will need to be updated. For the remaining joints, forward vector and
-        // offset position are computed in each joint local-space, before IK is
-        // applied:
-        // 1. Rotates forward and offset position based on the result of the
-        // previous joint IK.
-        // 2. Brings forward and offset back in joint local-space.
-        // Aim is iteratively applied up to the last selected joint of the
-        // hierarchy. A weight of 1 is given to the last joint so we can guarantee
-        // target is reached. Note that model-space transform of each joint doesn't
-        // need to be updated between each pass, as joints are ordered from child to
-        // parent.
-        int previous_joint = animation::Skeleton::kNoParent;
-        for (int i = 0, joint = joints_chain_[0]; i < chain_length;
-             ++i, previous_joint = joint, joint = joints_chain_[i]) {
-            // Setups weights of IK job.
-            // the last joint being processed needs a full weight (1.f) to ensure
-            // target is reached.
-            const bool last = i == chain_length - 1;
-            float weight = float(chain_length) * (last ? 1.f : joint_weight);
-
-            animator->scheduleAimIK(joint, target, weight);
-        }
+        Animator::LookAtIKData data;
+        data.target = target;
+        animator->scheduleLookAtIK(data);
     }
 };
 
@@ -151,7 +128,7 @@ void AnimationLookAtApp::loadScene() {
     if (!validateJointsOrder(skeleton, targetScript->joints_chain_)) {
         LOGE("Joints aren't properly ordered, they must be from "
              "the same hierarchy (all ancestors of the first joint "
-             "listed) and ordered from child to parent.");
+             "listed) and ordered from child to parent.")
     }
 
     auto skins = MeshManager::GetSingleton().LoadSkinnedMesh("Animation/arnaud_mesh.ozz");

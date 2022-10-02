@@ -12,14 +12,16 @@
 #include "vox.base/memory/unique_ptr.h"
 #include "vox.math/bounding_box3.h"
 #include "vox.render/animation/animation_state.h"
-#include "vox.render/animation/avatar.h"
 #include "vox.render/component.h"
 #include "vox.simd_math/simd_quaternion.h"
 
 namespace vox {
 class Animator : public Component {
 public:
-    Avatar avatar;
+    // Root transformation.
+    Vector3F root_translation;
+    Vector3F root_euler;
+    float root_scale = 1.0;
 
     /**
      * Returns the name of the component
@@ -63,25 +65,56 @@ public:
 public:
     void bindEntity(const std::string& name, Entity* entity);
 
-    void scheduleTwoBoneIK(int start_joint,
-                           int mid_joint,
-                           int end_joint,
-                           const Vector3F& target_ws,
-                           float soften = 1.f,
-                           float weight = 1.f,
-                           float twist_angle = 0.f,
-                           std::optional<Vector3F> pole_vector = std::nullopt,
-                           const Vector3F& pelvis_offset = Vector3F());
+    struct TwoBoneIKData {
+        int start_joint;
+        int mid_joint;
+        int end_joint;
+        Vector3F target_ws;
 
-    void scheduleAimIK(const int& target_joint,
-                       const Point3F& target_ws,
-                       float weight = 1.f,
-                       std::optional<Vector3F> pole_vector = std::nullopt,
-                       const Vector3F& pelvis_offset = Vector3F());
+        float soften = 1.f;
+        float twist_angle = 0.f;
+        float weight = 1.f;
+        Vector3F pelvis_offset = Vector3F();
+        std::optional<Vector3F> pole_vector = std::nullopt;
+        simd_math::SimdFloat4 mid_axis = simd_math::simd_float4::z_axis();
+    };
+
+    void scheduleTwoBoneIK(const TwoBoneIKData& data);
+
+    struct AimIKData {
+        int target_joint;
+        Point3F target_ws;
+        float weight = 1.f;
+        Vector3F pelvis_offset = Vector3F();
+        std::optional<Vector3F> pole_vector = std::nullopt;
+        simd_math::SimdFloat4 forward = -simd_math::simd_float4::x_axis();
+        simd_math::SimdFloat4 up = simd_math::simd_float4::y_axis();
+        simd_math::SimdFloat4 offset = simd_math::simd_float4::zero();
+    };
+
+    void scheduleAimIK(const AimIKData& data);
+
+    struct LookAtIKData {
+        // Indices of the joints that are IKed for look-at purpose.
+        // Joints must be from the same hierarchy (all ancestors of the first joint
+        // listed) and ordered from child to parent.
+        std::vector<int> joints_chain;
+
+        Point3F target;
+
+        // Offset of the look at position in (head) joint local-space.
+        Vector3F eyes_offset = Vector3F();
+        // Overall weight given to the IK on the full chain. This allows blending in
+        // and out of IK.
+        float chain_weight = 1.0;
+        // Weight given to every joint of the chain. If any joint has a weight of 1,
+        // no other following joint will contribute (as the target will be reached).
+        float joint_weight = 0.5;
+    };
+
+    void scheduleLookAtIK(const LookAtIKData& data);
 
     void scheduleLocalToModel(int from, int to = animation::Skeleton::kMaxJoints);
-
-    void clearAllSchedule();
 
 public:
     /**
@@ -116,47 +149,6 @@ private:
     static void _computePostureBounds(span<const simd_math::Float4x4> _matrices, BoundingBox3F* _bound);
 
 private:
-    enum ScheduleType { TargetIK, TwoBoneIK, LocalToModel };
-    struct ScheduleData {
-        void* ptr{nullptr};
-        ScheduleType type{};
-    };
-    std::vector<ScheduleData> _scheduleData{};
-
-    struct TwoBoneIKData {
-        int start_joint;
-        int mid_joint;
-        int end_joint;
-        float soften;
-        float twist_angle;
-        Vector3F target_ws;
-        float weight;
-        Vector3F pelvis_offset;
-        std::optional<Vector3F> pole_vector;
-    };
-    std::vector<TwoBoneIKData> _twoBoneIKData{};
-    void _applyTwoBoneIK(const TwoBoneIKData& data);
-
-    struct AimIKData {
-        int target_joint;
-        Point3F target_ws;
-        float weight;
-        Vector3F pelvis_offset;
-        std::optional<Vector3F> pole_vector;
-    };
-    std::vector<AimIKData> _targetIKData{};
-
-    void _applyAimIK(const AimIKData& data);
-
-    struct LocalToModelData {
-        int from;
-        int to;
-    };
-    std::vector<LocalToModelData> _ltmData{};
-
-    void _applyLocalToModel(const LocalToModelData& data);
-
-private:
     animation::Skeleton _skeleton;
     animation::LocalToModelJob _ltm_job;
     // Buffer of local transforms as sampled from animation_.
@@ -164,7 +156,7 @@ private:
     // Buffer of model space matrices.
     vox::vector<simd_math::Float4x4> _models;
     std::shared_ptr<AnimationState> _rootState{nullptr};
-
+    std::vector<std::function<void()>> _scheduleFunctor{};
     std::unordered_map<size_t, std::unordered_set<Entity*>> _entityBindingMap{};
 };
 }  // namespace vox
