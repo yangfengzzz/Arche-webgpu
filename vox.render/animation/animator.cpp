@@ -6,11 +6,13 @@
 
 #include "vox.render/animation/animator.h"
 
+#include "vox.animation/runtime/ik_aim_job.h"
+#include "vox.animation/runtime/ik_two_bone_job.h"
 #include "vox.base/io/archive.h"
 #include "vox.base/logging.h"
 #include "vox.render/components_manager.h"
-#include "vox.render/platform/filesystem.h"
 #include "vox.render/entity.h"
+#include "vox.render/platform/filesystem.h"
 
 namespace vox {
 std::string Animator::name() { return "Animator"; }
@@ -19,9 +21,7 @@ Animator::Animator(Entity* entity) : Component(entity) {}
 
 std::shared_ptr<AnimationState> Animator::rootState() { return _rootState; }
 
-void Animator::setRootState(const std::shared_ptr<AnimationState>& state) {
-    _rootState = state;
-}
+void Animator::setRootState(const std::shared_ptr<AnimationState>& state) { _rootState = state; }
 
 bool Animator::loadSkeleton(const std::string& filename) {
     LOGI("Loading skeleton archive {}", filename)
@@ -58,6 +58,22 @@ void Animator::update(float dt) {
         _rootState->update(dt);
         _ltm_job.input = make_span(_rootState->locals());
         (void)_ltm_job.Run();
+
+        _locals = _rootState->locals();
+        _ltm_job.input = make_span(_locals);
+        for (const auto& data : _scheduleData) {
+            switch (data.type) {
+                case ScheduleType::LocalToModel:
+                    _applyLocalToModel(*static_cast<LocalToModelData*>(data.ptr));
+                    break;
+                case ScheduleType::TargetIK:
+                    _applyAimIK(*static_cast<AimIKData*>(data.ptr));
+                    break;
+                case ScheduleType::TwoBoneIK:
+                    break;
+            }
+        }
+        clearAllSchedule();
 
         Matrix4x4F localMatrix;
         for (const auto& entities : _entityBindingMap) {
@@ -171,6 +187,87 @@ void Animator::bindEntity(const std::string& name, Entity* entity) {
     auto iter = std::find(_skeleton.joint_names().begin(), _skeleton.joint_names().end(), name);
     if (iter != _skeleton.joint_names().end()) {
         _entityBindingMap[iter - _skeleton.joint_names().begin()].emplace(entity);
+    }
+}
+
+void Animator::scheduleAimIK(const int& target_joint,
+                             const Vector3F& target_ws,
+                             float weight,
+                             const Vector3F& pelvis_offset) {
+    AimIKData data;
+    data.target_joint = target_joint;
+    data.target_ws = target_ws;
+    data.weight = weight;
+    data.pelvis_offset = pelvis_offset;
+    _targetIKData.push_back(data);
+
+    ScheduleData scheduleData{};
+    scheduleData.ptr = &_targetIKData.back();
+    scheduleData.type = ScheduleType::TargetIK;
+    _scheduleData.push_back(scheduleData);
+}
+
+void Animator::scheduleLocalToModel(int from, int to) {
+    LocalToModelData data{};
+    data.from = from;
+    data.to = to;
+    _ltmData.push_back(data);
+
+    ScheduleData scheduleData{};
+    scheduleData.ptr = &_targetIKData.back();
+    scheduleData.type = ScheduleType::LocalToModel;
+    _scheduleData.push_back(scheduleData);
+}
+
+void Animator::clearAllSchedule() {
+    _scheduleData.clear();
+    _targetIKData.clear();
+    _ltmData.clear();
+}
+
+void Animator::_applyAimIK(const AimIKData& data) {
+    const Vector3F offsetTranslation = data.pelvis_offset + avatar.root_translation;
+    auto _inv_root = simd_math::Float4x4::Translation(simd_math::simd_float4::Load3PtrU(&offsetTranslation.x)) *
+                     simd_math::Float4x4::FromEuler(simd_math::simd_float4::LoadX(avatar.root_yaw));
+    // Target position and pole vectors must be in model space.
+    const simd_math::SimdFloat4 target_ms =
+            TransformPoint(_inv_root, simd_math::simd_float4::Load3PtrU(&data.target_ws.x));
+
+    animation::IKAimJob ik_job;
+    // Forward and up vectors are constant (usually), and arbitrary defined by
+    // skeleton/rig setup.
+    ik_job.forward = avatar.kAnkleForward;
+    ik_job.up = avatar.kAnkleUp;
+
+    // Model space targeted direction (floor normal in this case).
+    ik_job.target = target_ms;
+
+    // Uses constant ankle Y (skeleton/rig setup dependent) as pole vector. That
+    // allows to maintain foot direction.
+    ik_job.pole_vector = _models[data.target_joint].cols[1];
+
+    ik_job.joint = &_models[data.target_joint];
+    ik_job.weight = data.weight;
+    simd_math::SimdQuaternion correction{};
+    ik_job.joint_correction = &correction;
+    if (!ik_job.Run()) {
+        return;
+    }
+    // Apply IK quaternions to their respective local-space transforms.
+    // Model-space transformations needs to be updated after a call to this
+    // function.
+    _multiplySoATransformQuaternion(data.target_joint, correction, make_span(_locals));
+}
+
+void Animator::_applyLocalToModel(const LocalToModelData& data) {
+    // Updates model-space transformation now ankle local changes is done.
+    // Ankle rotation has already been updated, but its siblings (or it's
+    // parent siblings) might are not. So we local-to-model update must
+    // be complete starting from hip.
+    _ltm_job.from = data.from;
+    _ltm_job.to = data.to;
+    if (!_ltm_job.Run()) {
+        return;
     }
 }
 

@@ -6,17 +6,21 @@
 
 #pragma once
 
+#include <unordered_set>
+
 #include "vox.animation/runtime/local_to_model_job.h"
 #include "vox.base/memory/unique_ptr.h"
 #include "vox.math/bounding_box3.h"
 #include "vox.render/animation/animation_state.h"
+#include "vox.render/animation/avatar.h"
 #include "vox.render/component.h"
 #include "vox.simd_math/simd_quaternion.h"
-#include <unordered_set>
 
 namespace vox {
 class Animator : public Component {
 public:
+    Avatar avatar;
+
     /**
      * Returns the name of the component
      */
@@ -59,6 +63,15 @@ public:
 public:
     void bindEntity(const std::string& name, Entity* entity);
 
+    void scheduleAimIK(const int& target_joint,
+                       const Vector3F& target_ws,
+                       float weight,
+                       const Vector3F& pelvis_offset = Vector3F());
+
+    void scheduleLocalToModel(int from, int to = animation::Skeleton::kMaxJoints);
+
+    void clearAllSchedule();
+
 public:
     /**
      * Serialize the component
@@ -90,8 +103,36 @@ private:
     static void _computePostureBounds(span<const simd_math::Float4x4> _matrices, BoundingBox3F* _bound);
 
 private:
+    enum ScheduleType { TargetIK, TwoBoneIK, LocalToModel };
+    struct ScheduleData {
+        void* ptr{nullptr};
+        ScheduleType type{};
+    };
+    std::vector<ScheduleData> _scheduleData{};
+
+    struct AimIKData {
+        int target_joint;
+        Vector3F target_ws;
+        float weight;
+        Vector3F pelvis_offset;
+    };
+    std::vector<AimIKData> _targetIKData{};
+
+    void _applyAimIK(const AimIKData& data);
+
+    struct LocalToModelData {
+        int from;
+        int to;
+    };
+    std::vector<LocalToModelData> _ltmData{};
+
+    void _applyLocalToModel(const LocalToModelData& data);
+
+private:
     animation::Skeleton _skeleton;
     animation::LocalToModelJob _ltm_job;
+    // Buffer of local transforms as sampled from animation_.
+    vox::vector<simd_math::SoaTransform> _locals;
     // Buffer of model space matrices.
     vox::vector<simd_math::Float4x4> _models;
     std::shared_ptr<AnimationState> _rootState{nullptr};
