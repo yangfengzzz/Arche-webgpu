@@ -50,6 +50,8 @@ protected:
     wgpu::RenderPassDescriptor _guiPassDescriptor;
     wgpu::RenderPassDescriptor _renderPassDescriptor;
     wgpu::RenderPassColorAttachment _colorAttachments;
+
+    wgpu::RenderPassColorAttachment _guiColorAttachments;
     wgpu::RenderPassDepthStencilAttachment _depthStencilAttachment;
 
     /**

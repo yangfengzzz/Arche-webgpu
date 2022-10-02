@@ -66,8 +66,10 @@ bool ForwardApplication::prepare(Platform& platform) {
     _renderPassDescriptor.colorAttachments = &_colorAttachments;
     _renderPassDescriptor.depthStencilAttachment = &_depthStencilAttachment;
 
+    _guiColorAttachments.storeOp = wgpu::StoreOp::Store;
+    _guiColorAttachments.loadOp = wgpu::LoadOp::Load;
     _guiPassDescriptor.colorAttachmentCount = 1;
-    _guiPassDescriptor.colorAttachments = &_colorAttachments;
+    _guiPassDescriptor.colorAttachments = &_guiColorAttachments;
 
     _colorAttachments.storeOp = wgpu::StoreOp::Store;
     _colorAttachments.loadOp = wgpu::LoadOp::Clear;
@@ -103,6 +105,7 @@ void ForwardApplication::update(float deltaTime) {
 
     // Render the lighting and composition pass
     _colorAttachments.view = _renderContext->currentDrawableTexture();
+    _guiColorAttachments.view = _renderContext->currentDrawableTexture();
     _depthStencilAttachment.view = _depthStencilTexture;
 
     _renderPass->draw(commandEncoder, "Lighting & Composition Pass");

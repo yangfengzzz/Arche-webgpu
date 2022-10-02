@@ -5,6 +5,7 @@
 //  property of any third parties.
 
 #include "apps/animation_attach_app.h"
+#include "apps/animation_blend_app.h"
 #include "apps/animation_create_app.h"
 #include "apps/assimp_app.h"
 #include "apps/atomic_compute_app.h"
@@ -52,7 +53,7 @@ int main(int argc, char* argv[]) {
 
     auto code = platform.Initialize(plugins::GetAll());
     if (code == vox::ExitCode::SUCCESS) {
-        platform.SetApp(std::make_unique<vox::GuiApp>());
+        platform.SetApp(std::make_unique<vox::AnimationBlendApp>());
         code = platform.MainLoop();
     }
     platform.Terminate(code);

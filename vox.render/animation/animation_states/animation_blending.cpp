@@ -29,18 +29,13 @@ void AnimatorBlending::update(float dt) {
     _layers.clear();
     _additive_layers.clear();
 
-    const auto kNumIntervals = static_cast<float>(_clips.size() - 1);
-    const float kInterval = 1.f / kNumIntervals;
-    for (int i = 0; i < _clips.size(); ++i) {
-        auto& clip = _clips[i];
+    for (auto & clip : _clips) {
         clip->update(dt);
-
-        const float x = blendRatio - _locations[i];
-        const float y = ((x < 0.f ? x : -x) + kInterval) * kNumIntervals;
 
         animation::BlendingJob::Layer layer{};
         layer.transform = make_span(clip->locals());
-        layer.weight = std::max(0.f, y);
+        layer.joint_weights = make_span(clip->jointMasks());
+        layer.weight = clip->weight;
         if (clip->blendMode == AnimationClip::BlendMode::Normal) {
             _layers.push_back(layer);
         } else {

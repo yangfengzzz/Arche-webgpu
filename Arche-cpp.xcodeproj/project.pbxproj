@@ -793,6 +793,7 @@
 		0473207A28E8675900D04171 /* animation_attach_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0473207728E8675800D04171 /* animation_attach_app.cpp */; };
 		0473207B28E8675900D04171 /* animation_create_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0473207828E8675800D04171 /* animation_create_app.cpp */; };
 		0473207E28E8868C00D04171 /* gui_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0473207D28E8868C00D04171 /* gui_app.cpp */; };
+		0473208128E90B7F00D04171 /* animation_blend_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0473207F28E90B7E00D04171 /* animation_blend_app.cpp */; };
 		047BB59B2800148600CD5749 /* libvox.math.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 041282EC279ECF3D0071BD86 /* libvox.math.a */; };
 		047BF0BC27AC086B003F3599 /* light.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF0BA27AC086B003F3599 /* light.cpp */; };
 		047BF0BD27AC086B003F3599 /* light.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF0BB27AC086B003F3599 /* light.h */; };
@@ -2134,6 +2135,8 @@
 		0473207928E8675800D04171 /* animation_attach_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animation_attach_app.h; sourceTree = "<group>"; };
 		0473207C28E8868C00D04171 /* gui_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gui_app.h; sourceTree = "<group>"; };
 		0473207D28E8868C00D04171 /* gui_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gui_app.cpp; sourceTree = "<group>"; };
+		0473207F28E90B7E00D04171 /* animation_blend_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animation_blend_app.cpp; sourceTree = "<group>"; };
+		0473208028E90B7E00D04171 /* animation_blend_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animation_blend_app.h; sourceTree = "<group>"; };
 		047BB58A2800140A00CD5749 /* libvox.geometry.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libvox.geometry.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		047BF0BA27AC086B003F3599 /* light.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = light.cpp; sourceTree = "<group>"; };
 		047BF0BB27AC086B003F3599 /* light.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = light.h; sourceTree = "<group>"; };
@@ -3101,6 +3104,8 @@
 		043B7B5C278C4C5A00D5648F /* apps */ = {
 			isa = PBXGroup;
 			children = (
+				0473208028E90B7E00D04171 /* animation_blend_app.h */,
+				0473207F28E90B7E00D04171 /* animation_blend_app.cpp */,
 				0473207928E8675800D04171 /* animation_attach_app.h */,
 				0473207728E8675800D04171 /* animation_attach_app.cpp */,
 				0473207628E8675800D04171 /* animation_create_app.h */,
@@ -5861,6 +5866,7 @@
 				045A395E28C44F37003FEE10 /* benchmark_mode.cpp in Sources */,
 				0495475F27A294E600783C84 /* main.cpp in Sources */,
 				045A395828C44F2E003FEE10 /* fps_logger.cpp in Sources */,
+				0473208128E90B7F00D04171 /* animation_blend_app.cpp in Sources */,
 				047BF17127AD51B2003F3599 /* pbr_app.cpp in Sources */,
 				047BF18E27AE6AF0003F3599 /* ibl_app.cpp in Sources */,
 				045B393228D8980600DA1D32 /* omni_shadowmap_app.cpp in Sources */,

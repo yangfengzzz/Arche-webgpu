@@ -18,6 +18,7 @@ public:
     enum BlendMode {
         Normal,
         Additive,
+        NoBlend
     };
     BlendMode blendMode = BlendMode::Normal;
 
@@ -25,18 +26,9 @@ public:
 
     vox::vector<vox::simd_math::SimdFloat4>& jointMasks();
 
-    void setJointMasks(float mask, const std::string& root = "");
+    void setJointMasks(float mask, const char* root = nullptr);
 
 public:
-    // Playback speed, can be negative in order to play the animation backward.
-    float playback_speed{1.f};
-
-    // Animation play mode state: play/pause.
-    bool play{true};
-
-    // Animation loop mode.
-    bool loop{true};
-
     explicit AnimationClip(const std::string& filename);
 
     // Allow moves.
@@ -54,6 +46,15 @@ public:
     animation::Animation& animation();
 
 public:
+    // Playback speed, can be negative in order to play the animation backward.
+    float playback_speed{1.f};
+
+    // Animation play mode state: play/pause.
+    bool play{true};
+
+    // Animation loop mode.
+    bool loop{true};
+
     // Sets animation current time.
     void setTimeRatio(float _time);
 

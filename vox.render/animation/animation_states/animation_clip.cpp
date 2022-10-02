@@ -34,9 +34,9 @@ AnimationClip& AnimationClip::operator=(AnimationClip&& state) noexcept {
 
 vox::vector<vox::simd_math::SimdFloat4>& AnimationClip::jointMasks() { return _joint_masks; }
 
-void AnimationClip::setJointMasks(float mask, const std::string& root) {
+void AnimationClip::setJointMasks(float mask, const char* root) {
     simd_math::SimdFloat4 simdMask = simd_math::simd_float4::Load1(mask);
-    if (root.empty()) {
+    if (root == nullptr) {
         for (int i = 0; i < _skeleton->num_soa_joints(); ++i) {
             _joint_masks[i] = simdMask;
         }
@@ -46,7 +46,7 @@ void AnimationClip::setJointMasks(float mask, const std::string& root) {
             soa_weight = simd_math::SetI(soa_weight, simdMask, _joint % 4);
         };
 
-        const int joint = FindJoint(*_skeleton, root.c_str());
+        const int joint = FindJoint(*_skeleton, root);
         if (joint >= 0) {
             animation::IterateJointsDF(*_skeleton, set_joint, joint);
         }
@@ -80,6 +80,8 @@ void AnimationClip::loadSkeleton(animation::Skeleton* skeleton) {
     _skeleton = skeleton;
     _context.Resize(skeleton->num_joints());
     _locals.resize(skeleton->num_soa_joints());
+    _joint_masks.resize(skeleton->num_soa_joints());
+    setJointMasks(1.0);
     _sampling_job.output = make_span(_locals);
 }
 
