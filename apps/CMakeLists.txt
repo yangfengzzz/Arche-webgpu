@@ -31,6 +31,7 @@ set(SRC
         animation_create_app.cpp
         animation_attach_app.cpp
         animation_blend_app.cpp
+        animation_partial_blend_app.cpp
         gui_app.cpp
         )
 
