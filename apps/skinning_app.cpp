@@ -41,9 +41,10 @@ void SkinningApp::loadScene() {
     auto animationClip = std::make_shared<AnimationClip>("Animation/ruby_animation.ozz");
     animator->setRootState(animationClip);
 
-    auto renderer = characterEntity->addComponent<SkinnedMeshRenderer>();
-    renderer->loadSkins("Animation/ruby_mesh.ozz");
-    for (int i = 0; i < renderer->skinCount(); ++i) {
+    auto skins = MeshManager::GetSingleton().LoadSkinnedMesh("Animation/ruby_mesh.ozz");
+    for (int i = 0; i < skins.size(); ++i) {
+        auto renderer = characterEntity->addComponent<SkinnedMeshRenderer>();
+        renderer->setSkinnedMesh(skins[i]);
         auto material = std::make_shared<BlinnPhongMaterial>(_device);
         material->setBaseColor(Color(0.4, 0.6, 0.6, 0.6));
         material->setIsTransparent(true);

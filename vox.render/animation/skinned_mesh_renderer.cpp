@@ -6,14 +6,10 @@
 
 #include "vox.render/animation/skinned_mesh_renderer.h"
 
-#include "vox.base/io/archive.h"
-#include "vox.base/logging.h"
 #include "vox.render/animation/animator.h"
 #include "vox.render/entity.h"
 #include "vox.render/mesh/mesh_manager.h"
-#include "vox.render/platform/filesystem.h"
 #include "vox.render/shader/internal_variant_name.h"
-#include "vox.render/shader/shader_common.h"
 
 namespace vox {
 const std::string SkinnedMeshRenderer::_skinningMatrixProperty = "u_jointMatrix";
@@ -22,87 +18,18 @@ std::string SkinnedMeshRenderer::name() { return "SkinnedMeshRenderer"; }
 
 SkinnedMeshRenderer::SkinnedMeshRenderer(Entity* entity) : MeshRenderer(entity) {}
 
-size_t SkinnedMeshRenderer::skinCount() const {
-    return _skins.size();
-}
-
-bool SkinnedMeshRenderer::loadSkins(const std::string& filename) {
-    LOGI("Loading meshes archive: {}", filename)
-    vox::io::File file((fs::path::Get(fs::path::Type::ASSETS) + filename).c_str(), "rb");
-    if (!file.opened()) {
-        LOGE("Failed to open mesh file {}.", filename)
-        return false;
-    }
-    vox::io::IArchive archive(&file);
-
-    while (archive.TestTag<Skin>()) {
-        _skins.resize(_skins.size() + 1);
-        archive >> _skins.back();
-    }
-
+void SkinnedMeshRenderer::setSkinnedMesh(const std::shared_ptr<Skin>& skin) {
+    _skin = skin;
     // Computes the number of skinning matrices required to skin all meshes.
     // A mesh is skinned by only a subset of joints, so the number of skinning
     // matrices might be less that the number of skeleton joints.
     // Mesh::joint_remaps is used to know how to order skinning matrices. So
     // the number of matrices required is the size of joint_remaps.
-    size_t num_skinning_matrices = 0;
-    for (const Skin& skin : _skins) {
-        num_skinning_matrices = std::max(num_skinning_matrices, skin.joint_remaps.size());
-        _createMesh(skin);
-    }
+    size_t num_skinning_matrices = skin->joint_remaps.size();
     // Allocates skinning matrices.
     _skinning_matrices.resize(num_skinning_matrices);
-    if (!_meshes.empty()) {
-        _meshUpdateFlag = _meshes[0]->registerUpdateFlag();
-    }
-
-    return true;
-}
-
-void SkinnedMeshRenderer::render(std::vector<RenderElement>& opaqueQueue,
-                                 std::vector<RenderElement>& alphaTestQueue,
-                                 std::vector<RenderElement>& transparentQueue) {
-    if (!_meshes.empty()) {
-        if (_meshUpdateFlag->flag) {
-            const auto& vertexLayouts = _meshes[0]->vertexBufferLayouts();
-
-            shaderData.removeDefine(HAS_UV);
-            shaderData.removeDefine(HAS_NORMAL);
-            shaderData.removeDefine(HAS_TANGENT);
-            shaderData.removeDefine(HAS_VERTEXCOLOR);
-
-            for (const auto& vertexLayout : vertexLayouts) {
-                for (uint32_t j = 0, m = vertexLayout.attributeCount; j < m; j++) {
-                    if (vertexLayout.attributes[j].shaderLocation == (uint32_t)Attributes::UV_0) {
-                        shaderData.addDefine(HAS_UV);
-                    }
-                    if (vertexLayout.attributes[j].shaderLocation == (uint32_t)Attributes::NORMAL) {
-                        shaderData.addDefine(HAS_NORMAL);
-                    }
-                    if (vertexLayout.attributes[j].shaderLocation == (uint32_t)Attributes::TANGENT) {
-                        shaderData.addDefine(HAS_TANGENT);
-                    }
-                    if (vertexLayout.attributes[j].shaderLocation == (uint32_t)Attributes::COLOR_0) {
-                        shaderData.addDefine(HAS_VERTEXCOLOR);
-                    }
-                }
-            }
-            _meshUpdateFlag->flag = false;
-        }
-
-        for (size_t i = 0; i < _meshes.size(); i++) {
-            MaterialPtr material;
-            if (i < _materials.size()) {
-                material = _materials[i];
-            } else {
-                material = nullptr;
-            }
-            if (material != nullptr) {
-                RenderElement element(this, _meshes[i], _meshes[i]->subMesh(), material);
-                pushPrimitive(element, opaqueQueue, alphaTestQueue, transparentQueue);
-            }
-        }
-    }
+    _createMesh();
+    _meshUpdateFlag = _mesh->registerUpdateFlag();
 }
 
 void SkinnedMeshRenderer::update(float deltaTime) {
@@ -110,15 +37,13 @@ void SkinnedMeshRenderer::update(float deltaTime) {
         _animator = entity()->getComponent<Animator>();
     }
 
-    if (_animator && !_skins.empty()) {
+    if (_animator && _skin) {
         // Builds skinning matrices, based on the output of the animation stage.
         // The mesh might not use (aka be skinned by) all skeleton joints. We
         // use the joint remapping table (available from the mesh object) to
         // reorder model-space matrices and build skinning ones.
-        for (const Skin& skin : _skins) {
-            for (size_t i = 0; i < skin.joint_remaps.size(); ++i) {
-                _skinning_matrices[i] = _animator->models()[skin.joint_remaps[i]] * skin.inverse_bind_poses[i];
-            }
+        for (size_t i = 0; i < _skin->joint_remaps.size(); ++i) {
+            _skinning_matrices[i] = _animator->models()[_skin->joint_remaps[i]] * _skin->inverse_bind_poses[i];
         }
         shaderData.setData(_skinningMatrixProperty, _skinning_matrices);
         shaderData.addDefine(JOINTS_COUNT + std::to_string(_skinning_matrices.size()));
@@ -134,9 +59,9 @@ void SkinnedMeshRenderer::_updateBounds(BoundingBox3F& worldBounds) {
     }
 }
 
-void SkinnedMeshRenderer::_createMesh(const Skin& skin) {
+void SkinnedMeshRenderer::_createMesh() {
     int vertex_count = 0;
-    for (const auto& part : skin.parts) {
+    for (const auto& part : _skin->parts) {
         vertex_count += part.vertex_count();
     }
     std::vector<float> positions(vertex_count * Skin::Part::kPositionsCpnts);
@@ -146,7 +71,7 @@ void SkinnedMeshRenderer::_createMesh(const Skin& skin) {
     std::vector<float> joint_indices(vertex_count * 2);
     std::vector<float> joint_weights(vertex_count * 4);
     std::vector<float> colors(vertex_count * Skin::Part::kColorsCpnts);
-    std::vector<uint16_t> indices(size_t(std::ceil(float(skin.triangle_indices.size()) / 4.0)) * 4);
+    std::vector<uint16_t> indices(size_t(std::ceil(float(_skin->triangle_indices.size()) / 4.0)) * 4);
 
     union {
         struct {
@@ -157,7 +82,7 @@ void SkinnedMeshRenderer::_createMesh(const Skin& skin) {
     } union_index{};
 
     vertex_count = 0;
-    for (const auto& part : skin.parts) {
+    for (const auto& part : _skin->parts) {
         int part_vertex_count = part.vertex_count();
         int part_influences_count = part.influences_count();
         int weight_influences_count = part_influences_count - 1;
@@ -231,11 +156,11 @@ void SkinnedMeshRenderer::_createMesh(const Skin& skin) {
     mesh->setJointWeights(joint_weights);
     mesh->setColors(colors);
 
-    std::copy(skin.triangle_indices.begin(), skin.triangle_indices.end(), indices.begin());
+    std::copy(_skin->triangle_indices.begin(), _skin->triangle_indices.end(), indices.begin());
     mesh->setIndices(indices);
-    mesh->addSubMesh(0, static_cast<uint32_t>(skin.triangle_indices.size()));
+    mesh->addSubMesh(0, static_cast<uint32_t>(_skin->triangle_indices.size()));
     mesh->uploadData(true);
-    _meshes.emplace_back(mesh);
+    _mesh = mesh;
 }
 
 }  // namespace vox

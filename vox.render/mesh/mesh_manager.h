@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include "vox.render/animation/skin.h"
 #include "vox.render/mesh/buffer_mesh.h"
 #include "vox.render/mesh/model_mesh.h"
 #include "vox.render/singleton.h"
@@ -28,11 +29,14 @@ public:
 
     std::shared_ptr<ModelMesh> LoadModelMesh();
 
+    std::vector<std::shared_ptr<Skin>> LoadSkinnedMesh(const std::string &filename);
+
     void CollectGarbage();
 
 private:
     wgpu::Device &device_;
     std::vector<std::shared_ptr<Mesh>> mesh_pool_;
+    vox::vector<std::shared_ptr<Skin>> skins_pool_;
 };
 
 template <>
