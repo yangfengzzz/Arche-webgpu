@@ -36,8 +36,8 @@ void AnimationAttachApp::loadScene() {
 
     auto characterEntity = rootEntity->createChild();
     auto animator = characterEntity->addComponent<Animator>();
-    animator->loadSkeleton("Animation/skeleton.ozz");
-    auto animationClip = std::make_shared<AnimationClip>("Animation/animation.ozz");
+    animator->loadSkeleton("Animation/pab_skeleton.ozz");
+    auto animationClip = std::make_shared<AnimationClip>("Animation/pab_walk.ozz");
     animator->setRootState(animationClip);
 
     characterEntity->addComponent<skeleton_view::SkeletonView>();

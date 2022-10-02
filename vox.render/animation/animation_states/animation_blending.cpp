@@ -8,8 +8,10 @@
 
 namespace vox {
 void AnimatorBlending::loadSkeleton(animation::Skeleton* skeleton) {
-    for (auto& clip : _clips) {
-        clip->loadSkeleton(skeleton);
+    AnimationState::loadSkeleton(skeleton);
+
+    for (auto& state : _states) {
+        state->loadSkeleton(skeleton);
     }
 
     _blended_locals.resize(skeleton->num_soa_joints());
@@ -17,26 +19,18 @@ void AnimatorBlending::loadSkeleton(animation::Skeleton* skeleton) {
     _blend_job.rest_pose = skeleton->joint_rest_poses();
 }
 
-std::shared_ptr<AnimationClip> AnimatorBlending::addAnimatorClip(const std::string& filename, float location) {
-    auto clip = std::make_shared<AnimationClip>(filename);
-    clip->loadSkeleton(_skeleton);
-    _clips.push_back(clip);
-    _locations.emplace_back(location);
-    return clip;
-}
-
 void AnimatorBlending::update(float dt) {
     _layers.clear();
     _additive_layers.clear();
 
-    for (auto & clip : _clips) {
-        clip->update(dt);
+    for (auto & state : _states) {
+        state->update(dt);
 
         animation::BlendingJob::Layer layer{};
-        layer.transform = make_span(clip->locals());
-        layer.joint_weights = make_span(clip->jointMasks());
-        layer.weight = clip->weight;
-        if (clip->blendMode == AnimationClip::BlendMode::Normal) {
+        layer.transform = make_span(state->locals());
+        layer.joint_weights = make_span(state->jointMasks());
+        layer.weight = state->weight;
+        if (state->blendMode == AnimationClip::BlendMode::Normal) {
             _layers.push_back(layer);
         } else {
             _additive_layers.push_back(layer);

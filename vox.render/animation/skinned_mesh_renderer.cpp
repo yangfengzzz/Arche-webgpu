@@ -22,6 +22,10 @@ std::string SkinnedMeshRenderer::name() { return "SkinnedMeshRenderer"; }
 
 SkinnedMeshRenderer::SkinnedMeshRenderer(Entity* entity) : MeshRenderer(entity) {}
 
+size_t SkinnedMeshRenderer::skinCount() const {
+    return _skins.size();
+}
+
 bool SkinnedMeshRenderer::loadSkins(const std::string& filename) {
     LOGI("Loading meshes archive: {}", filename)
     vox::io::File file((fs::path::Get(fs::path::Type::ASSETS) + filename).c_str(), "rb");
@@ -142,7 +146,7 @@ void SkinnedMeshRenderer::_createMesh(const Skin& skin) {
     std::vector<float> joint_indices(vertex_count * 2);
     std::vector<float> joint_weights(vertex_count * 4);
     std::vector<float> colors(vertex_count * Skin::Part::kColorsCpnts);
-    std::vector<uint16_t> indices(skin.triangle_indices.size());
+    std::vector<uint16_t> indices(size_t(std::ceil(float(skin.triangle_indices.size()) / 4.0)) * 4);
 
     union {
         struct {
@@ -208,7 +212,11 @@ void SkinnedMeshRenderer::_createMesh(const Skin& skin) {
         }
 
         for (int i = 0; i < part_vertex_count * Skin::Part::kColorsCpnts; ++i) {
-            colors[vertex_count * Skin::Part::kColorsCpnts + i] = static_cast<float>(part.colors[i]) / 255.f;
+            if (i >= part.colors.size()) {
+                colors[vertex_count * Skin::Part::kColorsCpnts + i] = 1.0;
+            } else {
+                colors[vertex_count * Skin::Part::kColorsCpnts + i] = static_cast<float>(part.colors[i]) / 255.f;
+            }
         }
 
         vertex_count += part_vertex_count;
@@ -225,7 +233,7 @@ void SkinnedMeshRenderer::_createMesh(const Skin& skin) {
 
     std::copy(skin.triangle_indices.begin(), skin.triangle_indices.end(), indices.begin());
     mesh->setIndices(indices);
-    mesh->addSubMesh(0, static_cast<uint32_t>(indices.size()));
+    mesh->addSubMesh(0, static_cast<uint32_t>(skin.triangle_indices.size()));
     mesh->uploadData(true);
     _meshes.emplace_back(mesh);
 }

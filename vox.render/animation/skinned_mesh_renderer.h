@@ -28,6 +28,8 @@ public:
     // _filename and _mesh must be non-nullptr.
     bool loadSkins(const std::string &filename);
 
+    [[nodiscard]] size_t skinCount() const;
+
     void update(float deltaTime) override;
 
     void render(std::vector<RenderElement> &opaqueQueue,

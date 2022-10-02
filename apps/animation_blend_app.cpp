@@ -36,9 +36,12 @@ void AnimationBlendApp::loadScene() {
 
     auto characterEntity = rootEntity->createChild();
     auto animator = characterEntity->addComponent<Animator>();
-    animator->loadSkeleton("Animation/skeleton.ozz");
-    auto animationClip = std::make_shared<AnimationClip>("Animation/animation.ozz");
-    animator->setRootState(animationClip);
+    animator->loadSkeleton("Animation/pab_skeleton.ozz");
+    auto animationClip1 = std::make_shared<AnimationClip>("Animation/pab_walk.ozz");
+    auto animationClip2 = std::make_shared<AnimationClip>("Animation/pab_jog.ozz");
+    auto animationClip3 = std::make_shared<AnimationClip>("Animation/pab_run.ozz");
+
+    animator->setRootState(animationClip1);
 
     characterEntity->addComponent<skeleton_view::SkeletonView>();
 

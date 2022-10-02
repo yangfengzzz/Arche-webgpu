@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
 
     auto code = platform.Initialize(plugins::GetAll());
     if (code == vox::ExitCode::SUCCESS) {
-        platform.SetApp(std::make_unique<vox::AnimationBlendApp>());
+        platform.SetApp(std::make_unique<vox::SkinningApp>());
         code = platform.MainLoop();
     }
     platform.Terminate(code);
