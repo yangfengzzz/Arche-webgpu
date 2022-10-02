@@ -17,6 +17,7 @@ public:
     float root_yaw;
 
     simd_math::SimdFloat4 kAnkleForward = -simd_math::simd_float4::x_axis();
-    simd_math::SimdFloat4 kAnkleUp = simd_math::simd_float4::y_axis()
+    simd_math::SimdFloat4 kAnkleUp = simd_math::simd_float4::y_axis();
+    simd_math::SimdFloat4 kKneeAxis = simd_math::simd_float4::z_axis();
 };
 }  // namespace vox

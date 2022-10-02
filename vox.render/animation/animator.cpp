@@ -70,6 +70,7 @@ void Animator::update(float dt) {
                     _applyAimIK(*static_cast<AimIKData*>(data.ptr));
                     break;
                 case ScheduleType::TwoBoneIK:
+                    _applyTwoBoneIK(*static_cast<TwoBoneIKData*>(data.ptr));
                     break;
             }
         }
@@ -110,13 +111,13 @@ void Animator::_multiplySoATransformQuaternion(int _index,
     // Convert soa to aos in order to perform quaternion multiplication, and gets
     // back to soa.
     vox::simd_math::SoaTransform& soa_transform_ref = _transforms[_index / 4];
-    vox::simd_math::SimdQuaternion aos_quats[4];
-    vox::simd_math::Transpose4x4(&soa_transform_ref.rotation.x, &aos_quats->xyzw);
+    vox::simd_math::SimdQuaternion aos_quaternions[4];
+    vox::simd_math::Transpose4x4(&soa_transform_ref.rotation.x, &aos_quaternions->xyzw);
 
-    vox::simd_math::SimdQuaternion& aos_quat_ref = aos_quats[_index & 3];
+    vox::simd_math::SimdQuaternion& aos_quat_ref = aos_quaternions[_index & 3];
     aos_quat_ref = aos_quat_ref * _quat;
 
-    vox::simd_math::Transpose4x4(&aos_quats->xyzw, &soa_transform_ref.rotation.x);
+    vox::simd_math::Transpose4x4(&aos_quaternions->xyzw, &soa_transform_ref.rotation.x);
 }
 
 void Animator::computeSkeletonBounds(BoundingBox3F& bound) {
@@ -190,6 +191,29 @@ void Animator::bindEntity(const std::string& name, Entity* entity) {
     }
 }
 
+void Animator::scheduleTwoBoneIK(int start_joint,
+                                 int mid_joint,
+                                 int end_joint,
+                                 const Vector3F& target_ws,
+                                 float soften,
+                                 float weight,
+                                 const Vector3F& pelvis_offset) {
+    TwoBoneIKData data;
+    data.start_joint = start_joint;
+    data.mid_joint = mid_joint;
+    data.end_joint = end_joint;
+    data.target_ws = target_ws;
+    data.soften = soften;
+    data.weight = weight;
+    data.pelvis_offset = pelvis_offset;
+    _twoBoneIKData.push_back(data);
+
+    ScheduleData scheduleData{};
+    scheduleData.ptr = &_twoBoneIKData.back();
+    scheduleData.type = ScheduleType::TwoBoneIK;
+    _scheduleData.push_back(scheduleData);
+}
+
 void Animator::scheduleAimIK(const int& target_joint,
                              const Vector3F& target_ws,
                              float weight,
@@ -225,13 +249,54 @@ void Animator::clearAllSchedule() {
     _ltmData.clear();
 }
 
-void Animator::_applyAimIK(const AimIKData& data) {
+// This function will compute two bone IK on the leg, updating hip and knee
+// rotations so that ankle can reach its targeted position.
+void Animator::_applyTwoBoneIK(const TwoBoneIKData& data) {
     const Vector3F offsetTranslation = data.pelvis_offset + avatar.root_translation;
-    auto _inv_root = simd_math::Float4x4::Translation(simd_math::simd_float4::Load3PtrU(&offsetTranslation.x)) *
-                     simd_math::Float4x4::FromEuler(simd_math::simd_float4::LoadX(avatar.root_yaw));
+    auto root = simd_math::Float4x4::Translation(simd_math::simd_float4::Load3PtrU(&offsetTranslation.x)) *
+                simd_math::Float4x4::FromEuler(simd_math::simd_float4::LoadX(avatar.root_yaw));
+    const auto inv_root = Invert(root);
+
     // Target position and pole vectors must be in model space.
     const simd_math::SimdFloat4 target_ms =
-            TransformPoint(_inv_root, simd_math::simd_float4::Load3PtrU(&data.target_ws.x));
+            TransformPoint(inv_root, simd_math::simd_float4::Load3PtrU(&data.target_ws.x));
+    const simd_math::SimdFloat4 pole_vector_ms = _models[data.mid_joint].cols[1];
+
+    // Builds two bone IK job.
+    animation::IKTwoBoneJob ik_job;
+    ik_job.target = target_ms;
+    ik_job.pole_vector = pole_vector_ms;
+    // Mid-axis (knee) is constant (usually), and arbitrary defined by
+    // skeleton/rig setup.
+    ik_job.mid_axis = avatar.kKneeAxis;
+    ik_job.weight = data.weight;
+    ik_job.soften = data.soften;
+    ik_job.start_joint = &_models[data.start_joint];
+    ik_job.mid_joint = &_models[data.mid_joint];
+    ik_job.end_joint = &_models[data.end_joint];
+    simd_math::SimdQuaternion start_correction{};
+    ik_job.start_joint_correction = &start_correction;
+    simd_math::SimdQuaternion mid_correction{};
+    ik_job.mid_joint_correction = &mid_correction;
+    if (!ik_job.Run()) {
+        return;
+    }
+    // Apply IK quaternions to their respective local-space transforms.
+    // Model-space transformations needs to be updated after a call to this
+    // function.
+    _multiplySoATransformQuaternion(data.start_joint, start_correction, make_span(_locals));
+    _multiplySoATransformQuaternion(data.mid_joint, mid_correction, make_span(_locals));
+}
+
+void Animator::_applyAimIK(const AimIKData& data) {
+    const Vector3F offsetTranslation = data.pelvis_offset + avatar.root_translation;
+    auto root = simd_math::Float4x4::Translation(simd_math::simd_float4::Load3PtrU(&offsetTranslation.x)) *
+                simd_math::Float4x4::FromEuler(simd_math::simd_float4::LoadX(avatar.root_yaw));
+    const auto inv_root = Invert(root);
+
+    // Target position and pole vectors must be in model space.
+    const simd_math::SimdFloat4 target_ms =
+            TransformPoint(inv_root, simd_math::simd_float4::Load3PtrU(&data.target_ws.x));
 
     animation::IKAimJob ik_job;
     // Forward and up vectors are constant (usually), and arbitrary defined by

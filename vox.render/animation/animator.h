@@ -63,9 +63,17 @@ public:
 public:
     void bindEntity(const std::string& name, Entity* entity);
 
+    void scheduleTwoBoneIK(int start_joint,
+                           int mid_joint,
+                           int end_joint,
+                           const Vector3F& target_ws,
+                           float soften = 1.f,
+                           float weight = 1.f,
+                           const Vector3F& pelvis_offset = Vector3F());
+
     void scheduleAimIK(const int& target_joint,
                        const Vector3F& target_ws,
-                       float weight,
+                       float weight = 1.f,
                        const Vector3F& pelvis_offset = Vector3F());
 
     void scheduleLocalToModel(int from, int to = animation::Skeleton::kMaxJoints);
@@ -109,6 +117,18 @@ private:
         ScheduleType type{};
     };
     std::vector<ScheduleData> _scheduleData{};
+
+    struct TwoBoneIKData {
+        int start_joint;
+        int mid_joint;
+        int end_joint;
+        float soften;
+        Vector3F target_ws;
+        float weight;
+        Vector3F pelvis_offset;
+    };
+    std::vector<TwoBoneIKData> _twoBoneIKData{};
+    void _applyTwoBoneIK(const TwoBoneIKData& data);
 
     struct AimIKData {
         int target_joint;
