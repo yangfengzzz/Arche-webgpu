@@ -144,6 +144,9 @@ public:
     Animator* animator{nullptr};
     std::vector<std::shared_ptr<Skin>> floor;
     Animator::FloorIKData data;
+    const char* kLeftJointNames[3] = {"LeftUpLeg", "LeftLeg", "LeftFoot"};
+    const char* kRightJointNames[3] = {"RightUpLeg", "RightLeg", "RightFoot"};
+    enum { kLeft, kRight };
 
     void onAwake() override {
         animator = entity()->getComponent<Animator>();
@@ -151,13 +154,33 @@ public:
                            Vector3F* normal) -> bool {
             return rayIntersectsMeshes(ray_origin, ray_direction, make_span(floor), intersect, normal);
         };
+        data.legs.resize(2);
+        // Finds left and right joints.
+        setupLeg(animator->skeleton(), kLeftJointNames, &data.legs[kLeft]);
+        setupLeg(animator->skeleton(), kRightJointNames, &data.legs[kRight]);
+    }
+
+    static bool setupLeg(const animation::Skeleton& _skeleton,
+                         const char* _joint_names[3],
+                         Animator::FloorIKData::LegSetup* _leg) {
+        int found = 0;
+        int joints[3] = {0};
+        for (int i = 0; i < _skeleton.num_joints() && found != 3; i++) {
+            const char* joint_name = _skeleton.joint_names()[i];
+            if (std::strcmp(joint_name, _joint_names[found]) == 0) {
+                joints[found] = i;
+                ++found;
+            }
+        }
+        _leg->hip = joints[0];
+        _leg->knee = joints[1];
+        _leg->ankle = joints[2];
+        return found == 3;
     }
 
     explicit FloorTargetScript(Entity* entity) : Script(entity) {}
 
-    void onUpdate(float deltaTime) override {
-        animator->encodeFloorIK(data);
-    }
+    void onUpdate(float deltaTime) override { animator->encodeFloorIK(data); }
 };
 
 }  // namespace
