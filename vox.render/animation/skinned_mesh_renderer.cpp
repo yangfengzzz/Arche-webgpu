@@ -56,6 +56,11 @@ void SkinnedMeshRenderer::update(float deltaTime) {
 void SkinnedMeshRenderer::_updateBounds(BoundingBox3F& worldBounds) {
     if (_animator) {
         _animator->computeSkeletonBounds(worldBounds);
+        const auto worldMatrix = _entity->transform->worldMatrix();
+        worldBounds.transform(worldMatrix);
+    } else {
+        worldBounds.lower_corner.set(-std::numeric_limits<float>::max());
+        worldBounds.upper_corner.set(std::numeric_limits<float>::max());
     }
 }
 
@@ -129,6 +134,11 @@ void SkinnedMeshRenderer::_createMesh() {
                 joint_weights[vertex_count * 4 + i * 4 + 3] = 1.f - joint_weights[vertex_count * 4 + i * 4] -
                                                               joint_weights[vertex_count * 4 + i * 4 + 1] -
                                                               joint_weights[vertex_count * 4 + i * 4 + 2];
+            } else if (weight_influences_count == -1) {
+                joint_weights[vertex_count * 4 + i * 4] = 0.f;
+                joint_weights[vertex_count * 4 + i * 4 + 1] = 0.f;
+                joint_weights[vertex_count * 4 + i * 4 + 2] = 0.f;
+                joint_weights[vertex_count * 4 + i * 4 + 3] = 0.f;
             } else {
                 for (int j = 0; j < 4; ++j) {
                     joint_weights[vertex_count * 4 + i * 4 + j] = part.joint_weights[i * weight_influences_count + j];

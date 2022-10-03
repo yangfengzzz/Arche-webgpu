@@ -126,7 +126,7 @@ SphericalHarmonics3 ImageManager::generateSH(const std::string &file) {
     float texel_size = 2.f / static_cast<float>(texture_size);  // convolution is in the space of [-1, 1]
 
     float solid_angle_sum = 0;
-    const uint32_t kChannelLength = _bytesPerPixel(source->format()) / 2;
+    const uint32_t kChannelLength = _bytesPerPixel(source->format());
     const uint32_t kChannelShift = kChannelLength / 4;
     const float kTotalColor = std::powf(256.f, static_cast<float>(kChannelShift)) - 1;
     SphericalHarmonics3 sh;
