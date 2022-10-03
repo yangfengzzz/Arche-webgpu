@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "apps/animation_lookat_app.h"
+#include "apps/animation_ik_lookat_app.h"
 
 #include "vox.base/logging.h"
 #include "vox.render/animation/animation_states/animation_clip.h"
@@ -69,7 +69,7 @@ bool validateJointsOrder(const animation::Skeleton& _skeleton, const std::vector
 
 }  // namespace
 
-void AnimationLookAtApp::loadScene() {
+void AnimationIKLookAtApp::loadScene() {
     auto scene = _sceneManager->currentScene();
     scene->ambientLight()->setDiffuseSolidColor(Color(1, 1, 1));
     auto rootEntity = scene->createRootEntity();

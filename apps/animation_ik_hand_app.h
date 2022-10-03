@@ -9,7 +9,7 @@
 #include "vox.render/forward_application.h"
 
 namespace vox {
-class AnimationLookAtApp : public ForwardApplication {
+class AnimationIKHandApp : public ForwardApplication {
 public:
     void loadScene() override;
 };

@@ -56,8 +56,6 @@ void Animator::update(float dt) {
     if (_rootState) {
         _rootState->loadSkeleton(&_skeleton);
         _rootState->update(dt);
-        _ltm_job.input = make_span(_rootState->locals());
-        (void)_ltm_job.Run();
         _locals = _rootState->locals();
     } else {
         _locals.resize(_skeleton.num_soa_joints());
@@ -66,9 +64,10 @@ void Animator::update(float dt) {
             _locals[i] = _skeleton.joint_rest_poses()[i];
         }
     }
+    _ltm_job.input = make_span(_locals);
+    (void)_ltm_job.Run();
 
     // post-sample schedule work
-    _ltm_job.input = make_span(_locals);
     for (const auto& functor : _scheduleFunctor) {
         functor();
     }

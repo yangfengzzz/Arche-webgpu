@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "apps/animation_ik_app.h"
+#include "apps/animation_ik_hand_app.h"
 
 #include "vox.render/animation/animator.h"
 #include "vox.render/camera.h"
@@ -76,21 +76,23 @@ public:
         ik_job.soften = soften;
         ik_job.twist_angle = twist_angle;
         animator->scheduleTwoBoneIK(ik_job, {start_joint, mid_joint, end_joint});
+
+        animator->scheduleLocalToModel(start_joint);
     }
 };
 
 }  // namespace
 
-void AnimationIKApp::loadScene() {
+void AnimationIKHandApp::loadScene() {
     auto scene = _sceneManager->currentScene();
     scene->ambientLight()->setDiffuseSolidColor(Color(1, 1, 1));
     auto rootEntity = scene->createRootEntity();
 
     auto cameraEntity = rootEntity->createChild();
-    cameraEntity->transform->setPosition(2, 2, 6);
+    cameraEntity->transform->setPosition(1, 1, 1);
     _mainCamera = cameraEntity->addComponent<Camera>();
     auto control = cameraEntity->addComponent<control::OrbitControl>();
-    control->target.set(0, 1, 0);
+    control->target.set(0, 0.5, 0);
 
     // init point light
     auto light = rootEntity->createChild("light");
@@ -101,7 +103,7 @@ void AnimationIKApp::loadScene() {
     auto target = rootEntity->createChild("target");
     auto targetScript = target->addComponent<TargetScript>();
     auto targetRenderer = target->addComponent<MeshRenderer>();
-    targetRenderer->setMesh(PrimitiveMesh::createSphere(_device, 0.05));
+    targetRenderer->setMesh(PrimitiveMesh::createSphere(_device, 0.01));
     targetRenderer->setMaterial(std::make_shared<BlinnPhongMaterial>(_device));
 
     auto characterEntity = rootEntity->createChild();
