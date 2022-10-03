@@ -7,6 +7,12 @@ rm -rf build_release
 rm -rf build_debug
 cd ..
 
+# Jolt  #####################################
+cd jolt/Build
+rm -rf build_release
+rm -rf build_debug
+cd ../..
+
 # GoogleTest ##############################
 cd googletest
 rm -rf build
