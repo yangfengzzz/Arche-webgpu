@@ -7,7 +7,7 @@
 #include "apps/animation_lookat_app.h"
 
 #include "vox.base/logging.h"
-#include "vox.render/animation/animation_states/animation_blending.h"
+#include "vox.render/animation/animation_states/animation_clip.h"
 #include "vox.render/animation/animator.h"
 #include "vox.render/animation/skinned_mesh_renderer.h"
 #include "vox.render/camera.h"
@@ -19,12 +19,8 @@
 
 namespace vox {
 namespace {
-class MoveScript : public Script {
+class TargetScript : public Script {
 public:
-    // Offset of the look at position in (head) joint local-space.
-    Vector3F eyes_offset;
-    int chain_length = 4;
-    float joint_weight = 0.5;
     Animator* animator{nullptr};
     Point3F target_offset = Point3F(.2f, 1.5f, -.3f);
     float target_extent = 1.f;
@@ -33,9 +29,9 @@ public:
     // Indices of the joints that are IKed for look-at purpose.
     // Joints must be from the same hierarchy (all ancestors of the first joint
     // listed) and ordered from child to parent.
-    int joints_chain_[4]{};
+    std::vector<int> joints_chain;
 
-    explicit MoveScript(Entity* entity) : Script(entity) {}
+    explicit TargetScript(Entity* entity) : Script(entity) {}
 
     void onUpdate(float deltaTime) override {
         totalTime += deltaTime;
@@ -46,23 +42,24 @@ public:
 
         Animator::LookAtIKData data;
         data.target = target;
+        data.joints_chain = joints_chain;
         animator->scheduleLookAtIK(data);
     }
 };
 
 // Traverses the hierarchy from the first joint to the root, to check if
 // joints are all ancestors (same branch), and ordered.
-bool validateJointsOrder(const animation::Skeleton& _skeleton, span<const int> _joints) {
-    const size_t count = _joints.size();
+bool validateJointsOrder(const animation::Skeleton& _skeleton, const std::vector<int>& joints) {
+    const size_t count = joints.size();
     if (count == 0) {
         return true;
     }
 
     size_t i = 1;
-    for (int joint = _joints[0], parent = _skeleton.joint_parents()[joint];
+    for (int joint = joints[0], parent = _skeleton.joint_parents()[joint];
          i != count && joint != animation::Skeleton::kNoParent;
          joint = parent, parent = _skeleton.joint_parents()[joint]) {
-        if (parent == _joints[i]) {
+        if (parent == joints[i]) {
             ++i;
         }
     }
@@ -90,7 +87,7 @@ void AnimationLookAtApp::loadScene() {
     pointLight->intensity = 0.3;
 
     auto target = rootEntity->createChild("target");
-    auto targetScript = target->addComponent<MoveScript>();
+    auto targetScript = target->addComponent<TargetScript>();
     auto targetRenderer = target->addComponent<MeshRenderer>();
     targetRenderer->setMesh(PrimitiveMesh::createSphere(_device, 0.05));
     targetRenderer->setMaterial(std::make_shared<BlinnPhongMaterial>(_device));
@@ -112,7 +109,7 @@ void AnimationLookAtApp::loadScene() {
     for (int i = 0; i < skeleton.num_joints() && found != 4; ++i) {
         const char* joint_name = skeleton.joint_names()[i];
         if (std::strcmp(joint_name, kJointNames[found]) == 0) {
-            targetScript->joints_chain_[found] = i;
+            targetScript->joints_chain.push_back(i);
 
             // Restart search
             ++found;
@@ -125,7 +122,7 @@ void AnimationLookAtApp::loadScene() {
     }
 
     // Validates joints are order from child to parent of the same hierarchy.
-    if (!validateJointsOrder(skeleton, targetScript->joints_chain_)) {
+    if (!validateJointsOrder(skeleton, targetScript->joints_chain)) {
         LOGE("Joints aren't properly ordered, they must be from "
              "the same hierarchy (all ancestors of the first joint "
              "listed) and ordered from child to parent.")

@@ -192,7 +192,7 @@ void Animator::bindEntity(const std::string& name, Entity* entity) {
 }
 
 void Animator::scheduleTwoBoneIK(const TwoBoneIKData& data) {
-    _scheduleFunctor.emplace_back([&]() {
+    _scheduleFunctor.emplace_back([this, data]() {
         const auto inv_root = Invert(_getRootTransform(data.pelvis_offset));
 
         // Target position and pole vectors must be in model space.
@@ -234,7 +234,7 @@ void Animator::scheduleTwoBoneIK(const TwoBoneIKData& data) {
 }
 
 void Animator::scheduleAimIK(const AimIKData& data) {
-    _scheduleFunctor.emplace_back([&]() {
+    _scheduleFunctor.emplace_back([this, data]() {
         const auto inv_root = Invert(_getRootTransform(data.pelvis_offset));
 
         // Target position and pole vectors must be in model space.
@@ -289,7 +289,7 @@ void Animator::scheduleLocalToModel(int from, int to) {
 }
 
 void Animator::scheduleLookAtIK(const LookAtIKData& data) {
-    _scheduleFunctor.emplace_back([&]() {
+    _scheduleFunctor.emplace_back([this, data]() {
         // IK aim job setup.
         animation::IKAimJob ik_job;
 
@@ -306,7 +306,7 @@ void Animator::scheduleLookAtIK(const LookAtIKData& data) {
         // head) to the last (the further ancestor, closer to the pelvis). Joints
         // order is already validated. For the first joint, aim IK is applied with
         // the global forward and offset, so the forward vector aligns in direction
-        // of the target. If a weight lower that 1 is provided to the first joint,
+        // of the target. If a weight lower than 1 is provided to the first joint,
         // then it will not fully align to the target. In this case further joint
         // will need to be updated. For the remaining joints, forward vector and
         // offset position are computed in each joint local-space, before IK is
@@ -315,7 +315,7 @@ void Animator::scheduleLookAtIK(const LookAtIKData& data) {
         // previous joint IK.
         // 2. Brings forward and offset back in joint local-space.
         // Aim is iteratively applied up to the last selected joint of the
-        // hierarchy. A weight of 1 is given to the last joint so we can guarantee
+        // hierarchy. A weight of 1 is given to the last joint, so we can guarantee
         // target is reached. Note that model-space transform of each joint doesn't
         // need to be updated between each pass, as joints are ordered from child to
         // parent.
@@ -355,12 +355,18 @@ void Animator::scheduleLookAtIK(const LookAtIKData& data) {
 
             // Runs IK aim job.
             if (!ik_job.Run()) {
-                return false;
+                return;
             }
 
             // Apply IK quaternion to its respective local-space transforms.
             _multiplySoATransformQuaternion(joint, correction, make_span(_locals));
         }
+
+        // Skeleton model-space matrices need to be updated again. This re-uses the
+        // already setup job, but limits the update to childs of the last joint (the
+        // parent-iest of the chain).
+        _ltm_job.from = previous_joint;
+        (void)_ltm_job.Run();
     });
 }
 
