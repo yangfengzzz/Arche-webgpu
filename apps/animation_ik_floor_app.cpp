@@ -5,7 +5,7 @@
 //  property of any third parties.
 
 #include "apps/animation_ik_floor_app.h"
-#include "vox.base/logging.h"
+
 #include "vox.render/animation/animation_states/animation_clip.h"
 #include "vox.render/animation/animator.h"
 #include "vox.render/animation/skinned_mesh_renderer.h"
@@ -143,18 +143,20 @@ class FloorTargetScript : public Script {
 public:
     Animator* animator{nullptr};
     std::vector<std::shared_ptr<Skin>> floor;
+    Animator::FloorIKData data;
 
-    void onAwake() override { animator = entity()->getComponent<Animator>(); }
+    void onAwake() override {
+        animator = entity()->getComponent<Animator>();
+        data.raycast = [&](const Vector3F& ray_origin, const Vector3F& ray_direction, Vector3F* intersect,
+                           Vector3F* normal) -> bool {
+            return rayIntersectsMeshes(ray_origin, ray_direction, make_span(floor), intersect, normal);
+        };
+    }
 
     explicit FloorTargetScript(Entity* entity) : Script(entity) {}
 
     void onUpdate(float deltaTime) override {
-        Animator::FloorIKData data;
-        animator->encodeFloorIK(data,
-                                [&](const Vector3F& ray_origin, const Vector3F& ray_direction, Vector3F* intersect,
-                                    Vector3F* normal) -> bool {
-                                    return rayIntersectsMeshes(ray_origin, ray_direction, make_span(floor), intersect, normal);
-                                });
+        animator->encodeFloorIK(data);
     }
 };
 

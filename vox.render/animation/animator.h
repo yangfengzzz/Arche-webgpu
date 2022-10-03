@@ -68,6 +68,7 @@ public:
         int end_joint;
         Point3F target;
 
+    public:
         Vector3F pole_vector{0, 1, 0};
         float weight = 1.f;
         float soften = .97f;
@@ -80,9 +81,9 @@ public:
         // Joints must be from the same hierarchy (all ancestors of the first joint
         // listed) and ordered from child to parent.
         std::vector<int> joints_chain;
-
         Point3F target;
 
+    public:
         // Offset of the look at position in (head) joint local-space.
         Vector3F eyes_offset = Vector3F();
         // Overall weight given to the IK on the full chain. This allows blending in
@@ -102,7 +103,11 @@ public:
             int ankle;
         };
         std::vector<LegSetup> legs;
+        std::function<bool(
+                const Vector3F& ray_origin, const Vector3F& ray_direction, Vector3F* intersect, Vector3F* normal)>
+                raycast;
 
+    public:
         // Foot height setting
         float foot_height = 0.12;
         float weight = 1.f;
@@ -118,11 +123,7 @@ public:
         simd_math::SimdFloat4 kAnkleUp = simd_math::simd_float4::y_axis();
         simd_math::SimdFloat4 kKneeAxis = simd_math::simd_float4::z_axis();
     };
-    void encodeFloorIK(
-            const FloorIKData& data,
-            const std::function<bool(
-                    const Vector3F& ray_origin, const Vector3F& ray_direction, Vector3F* intersect, Vector3F* normal)>&
-                    raycast);
+    void encodeFloorIK(const FloorIKData& data);
 
 public:
     /**
@@ -156,19 +157,11 @@ private:
 
     // Raycast down from the current position to find character height on the
     // floor. It directly updates root translation as output.
-    void _updateCharacterHeight(
-            const FloorIKData& data,
-            const std::function<bool(
-                    const Vector3F& ray_origin, const Vector3F& ray_direction, Vector3F* intersect, Vector3F* normal)>&
-                    raycast);
+    void _updateCharacterHeight(const FloorIKData& data);
 
     // For each leg, raycasts a vector going down from the ankle position.
     // This allows to find the intersection point with the floor.
-    void _raycastLegs(
-            const FloorIKData& data,
-            const std::function<bool(
-                    const Vector3F& ray_origin, const Vector3F& ray_direction, Vector3F* intersect, Vector3F* normal)>&
-                    raycast);
+    void _raycastLegs(const FloorIKData& data);
 
     // Computes ankle target position (C), so that the foot is in contact with
     // the floor. Because of floor slope (defined by raycast intersection normal),

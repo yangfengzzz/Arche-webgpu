@@ -332,22 +332,18 @@ void Animator::encodeLookAtIK(const LookAtIKData& data) {
     });
 }
 
-void Animator::encodeFloorIK(
-        const FloorIKData& data,
-        const std::function<
-                bool(const Vector3F& ray_origin, const Vector3F& ray_direction, Vector3F* intersect, Vector3F* normal)>&
-                raycast) {
-    _scheduleFunctor.emplace_back([this, data, raycast]() {
+void Animator::encodeFloorIK(const FloorIKData& data) {
+    _scheduleFunctor.emplace_back([this, data]() {
         _rays_info.resize(data.legs.size());
         _ankles_initial_ws.resize(data.legs.size());
         _ankles_target_ws.resize(data.legs.size());
 
         // Finds character height on the floor, evaluated at its root position.
-        _updateCharacterHeight(data, raycast);
+        _updateCharacterHeight(data);
 
         // For each leg, raycasts a vector going down from the ankle position.
         // This allows to find the intersection point with the floor.
-        _raycastLegs(data, raycast);
+        _raycastLegs(data);
 
         // Computes targeted ankles positions, taking floor steepness and foot
         // height in consideration.
@@ -364,11 +360,7 @@ void Animator::encodeFloorIK(
     });
 }
 
-void Animator::_updateCharacterHeight(
-        const FloorIKData& data,
-        const std::function<
-                bool(const Vector3F& ray_origin, const Vector3F& ray_direction, Vector3F* intersect, Vector3F* normal)>&
-                raycast) {
+void Animator::_updateCharacterHeight(const FloorIKData& data) {
     if (!data.auto_character_height) {
         return;
     }
@@ -377,14 +369,10 @@ void Animator::_updateCharacterHeight(
     // position.
     auto worldPos = entity()->transform->worldPosition();
     auto root_translation = Vector3F(worldPos.x, worldPos.y, worldPos.z);
-    raycast(root_translation + data.kCharacterRayHeightOffset, data.kDown, &root_translation, nullptr);
+    data.raycast(root_translation + data.kCharacterRayHeightOffset, data.kDown, &root_translation, nullptr);
 }
 
-void Animator::_raycastLegs(
-        const FloorIKData& data,
-        const std::function<
-                bool(const Vector3F& ray_origin, const Vector3F& ray_direction, Vector3F* intersect, Vector3F* normal)>&
-                raycast) {
+void Animator::_raycastLegs(const FloorIKData& data) {
     // Pelvis offset isn't updated yet, it shouldn't be considered. So we're
     // using "unoffsetted" root transform.
     auto worldMat = entity()->transform->worldMatrix();
@@ -402,7 +390,7 @@ void Animator::_raycastLegs(
         // Builds ray, from above ankle (kFootRayHeightOffset) and going downward.
         ray.start = _ankles_initial_ws[l] + data.kFootRayHeightOffset;
         ray.dir = data.kDown;
-        ray.hit = raycast(ray.start, ray.dir, &ray.hit_point, &ray.hit_normal);
+        ray.hit = data.raycast(ray.start, ray.dir, &ray.hit_point, &ray.hit_normal);
     }
 }
 
