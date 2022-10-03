@@ -8,6 +8,8 @@
 
 #include <unordered_set>
 
+#include "vox.animation/runtime/ik_aim_job.h"
+#include "vox.animation/runtime/ik_two_bone_job.h"
 #include "vox.animation/runtime/local_to_model_job.h"
 #include "vox.base/memory/unique_ptr.h"
 #include "vox.math/bounding_box3.h"
@@ -65,34 +67,11 @@ public:
 public:
     void bindEntity(const std::string& name, Entity* entity);
 
-    struct TwoBoneIKData {
-        int start_joint;
-        int mid_joint;
-        int end_joint;
-        Vector3F target_ws;
+    void scheduleTwoBoneIK(const animation::IKTwoBoneJob& data, const std::array<int, 3>& chain);
 
-        float soften = 1.f;
-        float twist_angle = 0.f;
-        float weight = 1.f;
-        Vector3F pelvis_offset = Vector3F();
-        std::optional<Vector3F> pole_vector = std::nullopt;
-        simd_math::SimdFloat4 mid_axis = simd_math::simd_float4::z_axis();
-    };
+    void scheduleAimIK(const animation::IKAimJob& data, int aim);
 
-    void scheduleTwoBoneIK(const TwoBoneIKData& data);
-
-    struct AimIKData {
-        int target_joint;
-        Point3F target_ws;
-        float weight = 1.f;
-        Vector3F pelvis_offset = Vector3F();
-        std::optional<Vector3F> pole_vector = std::nullopt;
-        simd_math::SimdFloat4 forward = -simd_math::simd_float4::x_axis();
-        simd_math::SimdFloat4 up = simd_math::simd_float4::y_axis();
-        simd_math::SimdFloat4 offset = simd_math::simd_float4::zero();
-    };
-
-    void scheduleAimIK(const AimIKData& data);
+    void scheduleLocalToModel(int from, int to = animation::Skeleton::kMaxJoints);
 
     struct LookAtIKData {
         // Indices of the joints that are IKed for look-at purpose.
@@ -111,10 +90,7 @@ public:
         // no other following joint will contribute (as the target will be reached).
         float joint_weight = 0.5;
     };
-
     void scheduleLookAtIK(const LookAtIKData& data);
-
-    void scheduleLocalToModel(int from, int to = animation::Skeleton::kMaxJoints);
 
 public:
     /**

@@ -8,6 +8,7 @@
 #include "apps/animation_attach_app.h"
 #include "apps/animation_blend_app.h"
 #include "apps/animation_create_app.h"
+#include "apps/animation_ik_app.h"
 #include "apps/animation_lookat_app.h"
 #include "apps/animation_partial_blend_app.h"
 #include "apps/assimp_app.h"
@@ -56,7 +57,7 @@ int main(int argc, char* argv[]) {
 
     auto code = platform.Initialize(plugins::GetAll());
     if (code == vox::ExitCode::SUCCESS) {
-        platform.SetApp(std::make_unique<vox::AnimationLookAtApp>());
+        platform.SetApp(std::make_unique<vox::AnimationIKApp>());
         code = platform.MainLoop();
     }
     platform.Terminate(code);
