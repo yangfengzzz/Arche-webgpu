@@ -6,6 +6,7 @@
 
 #include "apps/animation_ik_floor_app.h"
 
+#include "vox.geometry/matrix_utils.h"
 #include "vox.render/animation/animation_states/animation_clip.h"
 #include "vox.render/animation/animator.h"
 #include "vox.render/animation/skinned_mesh_renderer.h"
@@ -185,17 +186,17 @@ public:
 
 class ControllerScript : public Script {
 private:
-    Entity *camera_{nullptr};
+    Entity* camera_{nullptr};
     Vector3F displacement_ = Vector3F();
 
 public:
-    explicit ControllerScript(Entity *entity) : Script(entity) {}
+    explicit ControllerScript(Entity* entity) : Script(entity) {}
 
-    void targetCamera(Entity *camera) { camera_ = camera; }
+    void targetCamera(Entity* camera) { camera_ = camera; }
 
-    void inputEvent(const vox::InputEvent &input_event) override {
+    void inputEvent(const vox::InputEvent& input_event) override {
         if (input_event.GetSource() == EventSource::KEYBOARD) {
-            const auto &key_event = static_cast<const KeyInputEvent &>(input_event);
+            const auto& key_event = static_cast<const KeyInputEvent&>(input_event);
 
             Vector3F forward = camera_->transform->worldForward();
             forward.y = 0;
@@ -203,18 +204,19 @@ public:
             forward *= -1;
             Vector3F cross = Vector3F(forward.z, 0, -forward.x);
 
+            float animationSpeed = 0.05;
             switch (key_event.GetCode()) {
                 case KeyCode::W:
-                    displacement_ = forward * 0.1f;
+                    displacement_ = forward * animationSpeed;
                     break;
                 case KeyCode::S:
-                    displacement_ = -forward * 0.1f;
+                    displacement_ = -forward * animationSpeed;
                     break;
                 case KeyCode::A:
-                    displacement_ = cross * 0.1f;
+                    displacement_ = cross * animationSpeed;
                     break;
                 case KeyCode::D:
-                    displacement_ = -cross * 0.1f;
+                    displacement_ = -cross * animationSpeed;
                     break;
                 default:
                     break;
@@ -226,6 +228,15 @@ public:
         auto position = entity()->transform->worldPosition();
         position -= displacement_;
         entity()->transform->setWorldPosition(position);
+
+        if (displacement_.x != 0 || displacement_.z != 0) {
+            auto currentPosition = entity()->transform->worldPosition();
+            auto predictPosition = currentPosition - displacement_;
+            auto rotMat = makeLookAtMatrix(predictPosition, currentPosition, Vector3F(0, 1, 0));
+            auto rotation = getRotation(rotMat).inverse();
+            auto newRotation = slerp(entity()->transform->worldRotationQuaternion(), rotation, 0.3f);
+            entity()->transform->setWorldRotationQuaternion(newRotation);
+        }
         displacement_.set(0);
     }
 };
@@ -245,10 +256,10 @@ void AnimationIKFloorApp::loadScene() {
     scene->ambientLight()->setDiffuseSphericalHarmonics(sh);
 
     auto cameraEntity = rootEntity->createChild();
-    cameraEntity->transform->setPosition(0, 4, -6);
+    cameraEntity->transform->setPosition(-1, 2, -10);
     _mainCamera = cameraEntity->addComponent<Camera>();
     auto control = cameraEntity->addComponent<control::OrbitControl>();
-    control->target.set(2.17f, 3.f, -2.06f);
+    control->target.set(-1.17f, 2.f, -2.06f);
 
     // init point light
     auto light = rootEntity->createChild("light");
@@ -257,7 +268,7 @@ void AnimationIKFloorApp::loadScene() {
     pointLight->intensity = 0.3;
 
     auto characterEntity = rootEntity->createChild();
-    characterEntity->transform->setPosition(2.17f, 2.f, -2.06f);
+    characterEntity->transform->setPosition(-1.17f, 2.f, -2.5f);
     auto animator = characterEntity->addComponent<Animator>();
     animator->loadSkeleton("Animation/pab_skeleton.ozz");
     auto animationClip = std::make_shared<AnimationClip>("Animation/pab_crossarms.ozz");
