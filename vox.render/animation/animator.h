@@ -98,11 +98,18 @@ public:
 
         // Foot height setting
         float foot_height = 0.12;
+        float weight = 1.f;
+        float soften = 1.f;
 
         Vector3F kDown{0.f, -1.f, 0.f};
         Vector3F kCharacterRayHeightOffset{0.f, 10.f, 0.f};
         Vector3F kFootRayHeightOffset{0.f, .5f, 0.f};
         bool auto_character_height = true;
+        bool pelvis_correction = true;
+
+        simd_math::SimdFloat4 kAnkleForward = -simd_math::simd_float4::x_axis();
+        simd_math::SimdFloat4 kAnkleUp = simd_math::simd_float4::y_axis();
+        simd_math::SimdFloat4 kKneeAxis = simd_math::simd_float4::z_axis();
     };
     void scheduleFloorIK(
             const FloorIKData& data,
@@ -168,6 +175,27 @@ private:
     // target. The other foot will be ik-ed.
     void _updatePelvisOffset(const FloorIKData& data);
 
+    // Applies two bone IK to the leg, and aim IK to the ankle
+    bool _updateFootIK(const FloorIKData& data);
+
+    // This function will compute two bone IK on the leg, updating hip and knee
+    // rotations so that ankle can reach its targetted position.
+    bool _applyLegTwoBoneIK(const FloorIKData& data,
+                            const FloorIKData::LegSetup& _leg,
+                            const Vector3F& _target_ws,
+                            const simd_math::Float4x4& _inv_root);
+
+    // This function will compute aim IK on the ankle, updating its rotations so
+    // it can be aligned with the floor.
+    // The strategy is to align ankle up vector in the direction of the floor
+    // normal. The forward direction of the foot is then driven by the pole
+    // vector, which polls the foot (ankle forward vector) toward it's original
+    // (animated) direction.
+    bool _applyAnkleAimIK(const FloorIKData& data,
+                          const FloorIKData::LegSetup& _leg,
+                          const Vector3F& _target_ws,
+                          const simd_math::Float4x4& _inv_root);
+
 private:
     animation::Skeleton _skeleton;
     animation::LocalToModelJob _ltm_job;
@@ -190,7 +218,6 @@ private:
     std::vector<LegRayInfo> _rays_info;
     std::vector<Vector3F> _ankles_initial_ws;
     std::vector<Vector3F> _ankles_target_ws;
-    Vector3F pelvis_offset;
-    bool pelvis_correction;
+    Vector3F pelvis_offset{};
 };
 }  // namespace vox

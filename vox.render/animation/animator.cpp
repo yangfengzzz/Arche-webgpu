@@ -338,14 +338,18 @@ void Animator::scheduleFloorIK(
         // This allows to find the intersection point with the floor.
         _raycastLegs(data, raycast);
 
-        // Computes targetted ankles positions, taking floor steepness and foot
+        // Computes targeted ankles positions, taking floor steepness and foot
         // height in consideration.
         _updateAnklesTarget(data);
 
         // Offsets the character down, so that the lowest ankle (lowest from its
-        // original position) reaches its targetted position. The other leg(s) will
+        // original position) reaches its targeted position. The other leg(s) will
         // be ik-ed.
         _updatePelvisOffset(data);
+
+        // Updates legs and ankles transforms, so they reach their targeted
+        // position and orientation.
+        _updateFootIK(data);
     });
 }
 
@@ -439,7 +443,7 @@ void Animator::_updatePelvisOffset(const FloorIKData& data) {
     pelvis_offset = Vector3F(0.f, 0.f, 0.f);
 
     float max_dot = -std::numeric_limits<float>::max();
-    if (pelvis_correction) {
+    if (data.pelvis_correction) {
         for (size_t l = 0; l < data.legs.size(); ++l) {
             const LegRayInfo& ray = _rays_info[l];
             if (!ray.hit) {
@@ -459,6 +463,131 @@ void Animator::_updatePelvisOffset(const FloorIKData& data) {
             }
         }
     }
+}
+
+bool Animator::_updateFootIK(const FloorIKData& data) {
+    // Pelvis offset needs to be considered when converting to model space. So
+    // we're using "offset" root transform.
+    auto worldMat = entity()->transform->worldMatrix();
+    if (data.pelvis_correction) {
+        worldMat(3, 0) += pelvis_offset.x;
+        worldMat(3, 1) += pelvis_offset.y;
+        worldMat(3, 2) += pelvis_offset.z;
+    }
+    simd_math::Float4x4 root{};
+    memcpy(&root.cols[0], worldMat.data(), 64);
+    const simd_math::Float4x4 inv_root = Invert(root);
+
+    // Perform IK
+    for (size_t l = 0; l < data.legs.size(); ++l) {
+        const LegRayInfo& ray = _rays_info[l];
+        if (!ray.hit) {
+            continue;
+        }
+        const FloorIKData::LegSetup& leg = data.legs[l];
+
+        // Updates leg joint chain so ankle reaches its targeted position.
+        if (!_applyLegTwoBoneIK(data, leg, _ankles_target_ws[l], inv_root)) {
+            return false;
+        }
+
+        // Updates leg joints model-space transforms.
+        // Update will go from hip to ankle. Ankle's siblings might not be updated
+        // as local-to-model will stop as soon as ankle joint is reached.
+        _ltm_job.from = leg.hip;
+        _ltm_job.to = leg.ankle;
+        if (!_ltm_job.Run()) {
+            return false;
+        }
+
+        // Computes ankle orientation, so it's aligned to the floor normal.
+        const Vector3F aim_ik_target(_ankles_target_ws[l] + ray.hit_normal);
+        if (!_applyAnkleAimIK(data, leg, aim_ik_target, inv_root)) {
+            return false;
+        }
+
+        // Updates model-space transformation now ankle local changes is done.
+        // Ankle rotation has already been updated, but its siblings (or it's
+        // parent siblings) might are not. So we local-to-model update must
+        // be complete starting from hip.
+        _ltm_job.from = leg.hip;
+        _ltm_job.to = animation::Skeleton::kMaxJoints;
+        if (!_ltm_job.Run()) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool Animator::_applyLegTwoBoneIK(const FloorIKData& data,
+                                  const FloorIKData::LegSetup& _leg,
+                                  const Vector3F& _target_ws,
+                                  const simd_math::Float4x4& _inv_root) {
+    // Target position and pole vectors must be in model space.
+    const simd_math::SimdFloat4 target_ms = TransformPoint(_inv_root, simd_math::simd_float4::Load3PtrU(&_target_ws.x));
+    const simd_math::SimdFloat4 pole_vector_ms = _models[_leg.knee].cols[1];
+
+    // Builds two bone IK job.
+    animation::IKTwoBoneJob ik_job;
+    ik_job.target = target_ms;
+    ik_job.pole_vector = pole_vector_ms;
+    // Mid-axis (knee) is constant (usually), and arbitrary defined by
+    // skeleton/rig setup.
+    ik_job.mid_axis = data.kKneeAxis;
+    ik_job.weight = data.weight;
+    ik_job.soften = data.soften;
+    ik_job.start_joint = &_models[_leg.hip];
+    ik_job.mid_joint = &_models[_leg.knee];
+    ik_job.end_joint = &_models[_leg.ankle];
+    simd_math::SimdQuaternion start_correction{};
+    ik_job.start_joint_correction = &start_correction;
+    simd_math::SimdQuaternion mid_correction{};
+    ik_job.mid_joint_correction = &mid_correction;
+    if (!ik_job.Run()) {
+        return false;
+    }
+    // Apply IK quaternions to their respective local-space transforms.
+    // Model-space transformations needs to be updated after a call to this
+    // function.
+    _multiplySoATransformQuaternion(_leg.hip, start_correction, make_span(_locals));
+    _multiplySoATransformQuaternion(_leg.knee, mid_correction, make_span(_locals));
+
+    return true;
+}
+
+bool Animator::_applyAnkleAimIK(const FloorIKData& data,
+                                const FloorIKData::LegSetup& _leg,
+                                const Vector3F& _target_ws,
+                                const simd_math::Float4x4& _inv_root) {
+    // Target position and pole vectors must be in model space.
+    const simd_math::SimdFloat4 target_ms = TransformPoint(_inv_root, simd_math::simd_float4::Load3PtrU(&_target_ws.x));
+
+    animation::IKAimJob ik_job;
+    // Forward and up vectors are constant (usually), and arbitrary defined by
+    // skeleton/rig setup.
+    ik_job.forward = data.kAnkleForward;
+    ik_job.up = data.kAnkleUp;
+
+    // Model space targeted direction (floor normal in this case).
+    ik_job.target = target_ms;
+
+    // Uses constant ankle Y (skeleton/rig setup dependent) as pole vector. That
+    // allows to maintain foot direction.
+    ik_job.pole_vector = _models[_leg.ankle].cols[1];
+
+    ik_job.joint = &_models[_leg.ankle];
+    ik_job.weight = data.weight;
+    simd_math::SimdQuaternion correction{};
+    ik_job.joint_correction = &correction;
+    if (!ik_job.Run()) {
+        return false;
+    }
+    // Apply IK quaternions to their respective local-space transforms.
+    // Model-space transformations needs to be updated after a call to this
+    // function.
+    _multiplySoATransformQuaternion(_leg.ankle, correction, make_span(_locals));
+
+    return true;
 }
 
 }  // namespace vox
