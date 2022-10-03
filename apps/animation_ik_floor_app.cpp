@@ -183,6 +183,53 @@ public:
     void onUpdate(float deltaTime) override { animator->encodeFloorIK(data); }
 };
 
+class ControllerScript : public Script {
+private:
+    Entity *camera_{nullptr};
+    Vector3F displacement_ = Vector3F();
+
+public:
+    explicit ControllerScript(Entity *entity) : Script(entity) {}
+
+    void targetCamera(Entity *camera) { camera_ = camera; }
+
+    void inputEvent(const vox::InputEvent &input_event) override {
+        if (input_event.GetSource() == EventSource::KEYBOARD) {
+            const auto &key_event = static_cast<const KeyInputEvent &>(input_event);
+
+            Vector3F forward = camera_->transform->worldForward();
+            forward.y = 0;
+            forward.normalize();
+            forward *= -1;
+            Vector3F cross = Vector3F(forward.z, 0, -forward.x);
+
+            switch (key_event.GetCode()) {
+                case KeyCode::W:
+                    displacement_ = forward * 0.1f;
+                    break;
+                case KeyCode::S:
+                    displacement_ = -forward * 0.1f;
+                    break;
+                case KeyCode::A:
+                    displacement_ = cross * 0.1f;
+                    break;
+                case KeyCode::D:
+                    displacement_ = -cross * 0.1f;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    void onUpdate(float deltaTime) override {
+        auto position = entity()->transform->worldPosition();
+        position -= displacement_;
+        entity()->transform->setWorldPosition(position);
+        displacement_.set(0);
+    }
+};
+
 }  // namespace
 
 void AnimationIKFloorApp::loadScene() {
@@ -216,6 +263,8 @@ void AnimationIKFloorApp::loadScene() {
     auto animationClip = std::make_shared<AnimationClip>("Animation/pab_crossarms.ozz");
     animator->setRootState(animationClip);
     auto targetScript = characterEntity->addComponent<FloorTargetScript>();
+    auto controlScript = characterEntity->addComponent<ControllerScript>();
+    controlScript->targetCamera(cameraEntity);
 
     auto skins = MeshManager::GetSingleton().LoadSkinnedMesh("Animation/arnaud_mesh.ozz");
     for (auto& skin : skins) {

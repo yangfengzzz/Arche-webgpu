@@ -208,12 +208,12 @@ private:
     std::unordered_map<size_t, std::unordered_set<Entity*>> _entityBindingMap{};
 
     struct LegRayInfo {
-        Vector3F start;
-        Vector3F dir;
+        Vector3F start{};
+        Vector3F dir{};
 
-        bool hit{};
-        Vector3F hit_point;
-        Vector3F hit_normal;
+        bool hit{false};
+        Vector3F hit_point{};
+        Vector3F hit_normal{};
     };
     std::vector<LegRayInfo> _rays_info;
     std::vector<Vector3F> _ankles_initial_ws;

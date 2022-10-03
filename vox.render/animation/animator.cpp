@@ -370,6 +370,7 @@ void Animator::_updateCharacterHeight(const FloorIKData& data) {
     auto worldPos = entity()->transform->worldPosition();
     auto root_translation = Vector3F(worldPos.x, worldPos.y, worldPos.z);
     data.raycast(root_translation + data.kCharacterRayHeightOffset, data.kDown, &root_translation, nullptr);
+    entity()->transform->setWorldPosition(root_translation.x, root_translation.y, root_translation.z);
 }
 
 void Animator::_raycastLegs(const FloorIKData& data) {
@@ -469,13 +470,18 @@ bool Animator::_updateFootIK(const FloorIKData& data) {
     // we're using "offset" root transform.
     auto worldMat = entity()->transform->worldMatrix();
     if (data.pelvis_correction) {
-        worldMat(3, 0) += pelvis_offset.x;
-        worldMat(3, 1) += pelvis_offset.y;
-        worldMat(3, 2) += pelvis_offset.z;
+        worldMat(0, 3) += pelvis_offset.x;
+        worldMat(1, 3) += pelvis_offset.y;
+        worldMat(2, 3) += pelvis_offset.z;
     }
     simd_math::Float4x4 root{};
     memcpy(&root.cols[0], worldMat.data(), 64);
     const simd_math::Float4x4 inv_root = Invert(root);
+
+    animation::LocalToModelJob ltm_job;
+    ltm_job.skeleton = &_skeleton;
+    ltm_job.input = make_span(_locals);
+    ltm_job.output = make_span(_models);
 
     // Perform IK
     for (size_t l = 0; l < data.legs.size(); ++l) {
@@ -493,9 +499,9 @@ bool Animator::_updateFootIK(const FloorIKData& data) {
         // Updates leg joints model-space transforms.
         // Update will go from hip to ankle. Ankle's siblings might not be updated
         // as local-to-model will stop as soon as ankle joint is reached.
-        _ltm_job.from = leg.hip;
-        _ltm_job.to = leg.ankle;
-        if (!_ltm_job.Run()) {
+        ltm_job.from = leg.hip;
+        ltm_job.to = leg.ankle;
+        if (!ltm_job.Run()) {
             return false;
         }
 
@@ -509,9 +515,9 @@ bool Animator::_updateFootIK(const FloorIKData& data) {
         // Ankle rotation has already been updated, but its siblings (or it's
         // parent siblings) might are not. So we local-to-model update must
         // be complete starting from hip.
-        _ltm_job.from = leg.hip;
-        _ltm_job.to = animation::Skeleton::kMaxJoints;
-        if (!_ltm_job.Run()) {
+        ltm_job.from = leg.hip;
+        ltm_job.to = animation::Skeleton::kMaxJoints;
+        if (!ltm_job.Run()) {
             return false;
         }
     }
