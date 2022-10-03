@@ -20,35 +20,145 @@
 
 namespace vox {
 namespace {
+// Moller–Trumbore intersection algorithm
+// https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
+bool rayIntersectsTriangle(const Vector3F& _ray_origin,
+                           const Vector3F& _ray_direction,
+                           const Vector3F& _p0,
+                           const Vector3F& _p1,
+                           const Vector3F& _p2,
+                           Vector3F* _intersect,
+                           Vector3F* _normal) {
+    const float kEpsilon = 0.0000001f;
+
+    const Vector3F edge1 = _p1 - _p0;
+    const Vector3F edge2 = _p2 - _p0;
+    const Vector3F h = _ray_direction.cross(edge2);
+
+    const float a = edge1.dot(h);
+    if (a > -kEpsilon && a < kEpsilon) {
+        return false;  // This ray is parallel to this triangle.
+    }
+
+    const float inv_a = 1.f / a;
+    const Vector3F s = _ray_origin - _p0;
+    const float u = s.dot(h) * inv_a;
+    if (u < 0.f || u > 1.f) {
+        return false;
+    }
+
+    const Vector3F q = s.cross(edge1);
+    const float v = _ray_direction.dot(q) * inv_a;
+    if (v < 0.f || u + v > 1.f) {
+        return false;
+    }
+
+    // At this stage we can compute t to find out where the intersection point is
+    // on the line.
+    const float t = edge2.dot(q) * inv_a;
+
+    if (t > kEpsilon) {  // Ray intersection
+        *_intersect = _ray_origin + _ray_direction * t;
+        *_normal = edge1.cross(edge2).normalized();
+        return true;
+    } else {  // This means that there is a line intersection but not a ray
+              // intersection.
+        return false;
+    }
+}
+
+bool rayIntersectsMesh(const Vector3F& _ray_origin,
+                       const Vector3F& _ray_direction,
+                       const std::shared_ptr<Skin>& _mesh,
+                       Vector3F* _intersect,
+                       Vector3F* _normal) {
+    assert(_mesh.parts.size() == 1 && !_mesh.skinned());
+
+    bool intersected = false;
+    Vector3F intersect, normal;
+    const float* vertices = array_begin(_mesh->parts[0].positions);
+    const uint16_t* indices = array_begin(_mesh->triangle_indices);
+    for (int i = 0; i < _mesh->triangle_index_count(); i += 3) {
+        const float* pf0 = vertices + indices[i + 0] * 3;
+        const float* pf1 = vertices + indices[i + 1] * 3;
+        const float* pf2 = vertices + indices[i + 2] * 3;
+        Vector3F lcl_intersect, lcl_normal;
+        if (rayIntersectsTriangle(_ray_origin, _ray_direction, Vector3F(pf0[0], pf0[1], pf0[2]),
+                                  Vector3F(pf1[0], pf1[1], pf1[2]), Vector3F(pf2[0], pf2[1], pf2[2]), &lcl_intersect,
+                                  &lcl_normal)) {
+            // Is it closer to start point than the previous intersection.
+            if (!intersected ||
+                lcl_intersect.distanceSquaredTo(_ray_origin) < intersect.distanceSquaredTo(_ray_origin)) {
+                intersect = lcl_intersect;
+                normal = lcl_normal;
+            }
+            intersected = true;
+        }
+    }
+
+    // Copy output
+    if (intersected) {
+        if (_intersect) {
+            *_intersect = intersect;
+        }
+        if (_normal) {
+            *_normal = normal;
+        }
+    }
+    return intersected;
+}
+
+bool rayIntersectsMeshes(const Vector3F& _ray_origin,
+                         const Vector3F& _ray_direction,
+                         const span<const std::shared_ptr<Skin>>& _meshes,
+                         Vector3F* _intersect,
+                         Vector3F* _normal) {
+    bool intersected = false;
+    Vector3F intersect, normal;
+    for (const auto& mesh : _meshes) {
+        Vector3F lcl_intersect, lcl_normal;
+        if (rayIntersectsMesh(_ray_origin, _ray_direction, mesh, &lcl_intersect, &lcl_normal)) {
+            // Is it closer to start point than the previous intersection.
+            if (!intersected ||
+                lcl_intersect.distanceSquaredTo(_ray_origin) < intersect.distanceSquaredTo(_ray_origin)) {
+                intersect = lcl_intersect;
+                normal = lcl_normal;
+            }
+            intersected = true;
+        }
+    }
+
+    // Copy output
+    if (intersected) {
+        if (_intersect) {
+            *_intersect = intersect;
+        }
+        if (_normal) {
+            *_normal = normal;
+        }
+    }
+    return intersected;
+}
+
 class FloorTargetScript : public Script {
 public:
     Animator* animator{nullptr};
     std::vector<std::shared_ptr<Skin>> floor;
 
+    void onAwake() override { animator = entity()->getComponent<Animator>(); }
+
     explicit FloorTargetScript(Entity* entity) : Script(entity) {}
 
-    void onUpdate(float deltaTime) override {}
+    void onUpdate(float deltaTime) override {
+        Animator::FloorIKData data;
+        animator->scheduleFloorIK(data,
+                                  [&](const Vector3F& ray_origin, const Vector3F& ray_direction, Vector3F* intersect,
+                                      Vector3F* normal) -> bool {
+                                      rayIntersectsMeshes(ray_origin, ray_direction, make_span(floor), intersect,
+                                                          normal);
+                                  });
+    }
 };
-
-// Traverses the hierarchy from the first joint to the root, to check if
-// joints are all ancestors (same branch), and ordered.
-bool validateJointsOrder(const animation::Skeleton& _skeleton, const std::vector<int>& joints) {
-    const size_t count = joints.size();
-    if (count == 0) {
-        return true;
-    }
-
-    size_t i = 1;
-    for (int joint = joints[0], parent = _skeleton.joint_parents()[joint];
-         i != count && joint != animation::Skeleton::kNoParent;
-         joint = parent, parent = _skeleton.joint_parents()[joint]) {
-        if (parent == joints[i]) {
-            ++i;
-        }
-    }
-
-    return count == i;
-}
 
 }  // namespace
 
@@ -76,19 +186,13 @@ void AnimationIKFootApp::loadScene() {
     auto pointLight = light->addComponent<PointLight>();
     pointLight->intensity = 0.3;
 
-    auto target = rootEntity->createChild("target");
-    auto targetScript = target->addComponent<FloorTargetScript>();
-    auto targetRenderer = target->addComponent<MeshRenderer>();
-    targetRenderer->setMesh(PrimitiveMesh::createSphere(_device, 0.05));
-    targetRenderer->setMaterial(std::make_shared<BlinnPhongMaterial>(_device));
-
     auto characterEntity = rootEntity->createChild();
     characterEntity->transform->setPosition(2.17f, 2.f, -2.06f);
     auto animator = characterEntity->addComponent<Animator>();
     animator->loadSkeleton("Animation/pab_skeleton.ozz");
     auto animationClip = std::make_shared<AnimationClip>("Animation/pab_crossarms.ozz");
     animator->setRootState(animationClip);
-    targetScript->animator = animator;
+    auto targetScript = characterEntity->addComponent<FloorTargetScript>();
 
     auto skins = MeshManager::GetSingleton().LoadSkinnedMesh("Animation/arnaud_mesh.ozz");
     for (auto& skin : skins) {

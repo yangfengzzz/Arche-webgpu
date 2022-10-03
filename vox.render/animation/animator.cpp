@@ -321,11 +321,144 @@ void Animator::scheduleLookAtIK(const LookAtIKData& data) {
     });
 }
 
-simd_math::Float4x4 Animator::_getRootTransform(const Vector3F& pelvis_offset) const {
-    const Vector3F offsetTranslation = pelvis_offset + root_translation;
-    return simd_math::Float4x4::Translation(simd_math::simd_float4::Load3PtrU(&offsetTranslation.x)) *
-           simd_math::Float4x4::FromEuler(simd_math::simd_float4::Load3PtrU(&root_euler.x)) *
-           simd_math::Float4x4::Scaling(simd_math::simd_float4::Load1(root_scale));
+void Animator::scheduleFloorIK(
+        const FloorIKData& data,
+        const std::function<
+                bool(const Vector3F& ray_origin, const Vector3F& ray_direction, Vector3F* intersect, Vector3F* normal)>&
+                raycast) {
+    _scheduleFunctor.emplace_back([this, data, raycast]() {
+        _rays_info.resize(data.legs.size());
+        _ankles_initial_ws.resize(data.legs.size());
+        _ankles_target_ws.resize(data.legs.size());
+
+        // Finds character height on the floor, evaluated at its root position.
+        _updateCharacterHeight(data, raycast);
+
+        // For each leg, raycasts a vector going down from the ankle position.
+        // This allows to find the intersection point with the floor.
+        _raycastLegs(data, raycast);
+
+        // Computes targetted ankles positions, taking floor steepness and foot
+        // height in consideration.
+        _updateAnklesTarget(data);
+
+        // Offsets the character down, so that the lowest ankle (lowest from its
+        // original position) reaches its targetted position. The other leg(s) will
+        // be ik-ed.
+        _updatePelvisOffset(data);
+    });
+}
+
+void Animator::_updateCharacterHeight(
+        const FloorIKData& data,
+        const std::function<
+                bool(const Vector3F& ray_origin, const Vector3F& ray_direction, Vector3F* intersect, Vector3F* normal)>&
+                raycast) {
+    if (!data.auto_character_height) {
+        return;
+    }
+
+    // Starts the ray from above (kCharacterRayHeightOffset) current character
+    // position.
+    auto worldPos = entity()->transform->worldPosition();
+    auto root_translation = Vector3F(worldPos.x, worldPos.y, worldPos.z);
+    raycast(root_translation + data.kCharacterRayHeightOffset, data.kDown, &root_translation, nullptr);
+}
+
+void Animator::_raycastLegs(
+        const FloorIKData& data,
+        const std::function<
+                bool(const Vector3F& ray_origin, const Vector3F& ray_direction, Vector3F* intersect, Vector3F* normal)>&
+                raycast) {
+    // Pelvis offset isn't updated yet, it shouldn't be considered. So we're
+    // using "unoffsetted" root transform.
+    auto worldMat = entity()->transform->worldMatrix();
+    simd_math::Float4x4 root{};
+    memcpy(&root.cols[0], worldMat.data(), 64);
+
+    // Raycast down for each leg to find the intersection point with the floor.
+    for (size_t l = 0; l < data.legs.size(); ++l) {
+        const FloorIKData::LegSetup& leg = data.legs[l];
+        LegRayInfo& ray = _rays_info[l];
+
+        // Finds ankle initial world space position
+        simd_math::Store3PtrU(TransformPoint(root, _models[leg.ankle].cols[3]), &_ankles_initial_ws[l].x);
+
+        // Builds ray, from above ankle (kFootRayHeightOffset) and going downward.
+        ray.start = _ankles_initial_ws[l] + data.kFootRayHeightOffset;
+        ray.dir = data.kDown;
+        ray.hit = raycast(ray.start, ray.dir, &ray.hit_point, &ray.hit_normal);
+    }
+}
+
+void Animator::_updateAnklesTarget(const FloorIKData& data) {
+    for (size_t l = 0; l < data.legs.size(); ++l) {
+        const LegRayInfo& ray = _rays_info[l];
+        if (!ray.hit) {
+            continue;
+        }
+
+        // Computes projection of the ray AI (from start to floor intersection
+        // point) onto floor normal. This gives the length of segment AB.
+        // Note that ray.hit_normal is normalized already.
+        const float ABl = (ray.start - ray.hit_point).dot(ray.hit_normal);
+        if (ABl == 0.f) {
+            // Early out if the two are perpendicular.
+            continue;
+        }
+
+        // Knowing A, AB length and direction, we can compute B position.
+        const Vector3F B = ray.start - ray.hit_normal * ABl;
+
+        // Computes segment IB and its length (IBl)
+        const Vector3F IB = B - ray.hit_point;
+        const float IBl = IB.length();
+
+        if (IBl <= 0.f) {
+            // If B is at raycast intersection (I), then we still need to update
+            // corrected ankle position (world-space) to take into account foot
+            // height.
+            _ankles_target_ws[l] = ray.hit_point + ray.hit_normal * data.foot_height;
+        } else {
+            // HC length is known (as foot height). So we're using Thales theorem to
+            // find H position.
+            const float IHl = IBl * data.foot_height / ABl;
+            const Vector3F IH = IB * (IHl / IBl);
+            const Vector3F H = ray.hit_point + IH;
+
+            // C (Corrected ankle) position can now be found.
+            const Vector3F C = H + ray.hit_normal * data.foot_height;
+
+            // Override ankle position with result.
+            _ankles_target_ws[l] = C;
+        }
+    }
+}
+
+void Animator::_updatePelvisOffset(const FloorIKData& data) {
+    pelvis_offset = Vector3F(0.f, 0.f, 0.f);
+
+    float max_dot = -std::numeric_limits<float>::max();
+    if (pelvis_correction) {
+        for (size_t l = 0; l < data.legs.size(); ++l) {
+            const LegRayInfo& ray = _rays_info[l];
+            if (!ray.hit) {
+                continue;
+            }
+
+            // Check if this ankle is lower (in down direction) compared to the
+            // previous one.
+            const Vector3F ankle_to_target = _ankles_target_ws[l] - _ankles_initial_ws[l];
+            const float dot = ankle_to_target.dot(data.kDown);
+            if (dot > max_dot) {
+                max_dot = dot;
+
+                // Compute offset using the maximum displacement that the legs should
+                // have to touch ground.
+                pelvis_offset = data.kDown * dot;
+            }
+        }
+    }
 }
 
 }  // namespace vox

@@ -20,11 +20,6 @@
 namespace vox {
 class Animator : public Component {
 public:
-    // Root transformation.
-    Vector3F root_translation;
-    Vector3F root_euler;
-    float root_scale = 1.0;
-
     /**
      * Returns the name of the component
      */
@@ -92,6 +87,29 @@ public:
     };
     void scheduleLookAtIK(const LookAtIKData& data);
 
+    struct FloorIKData {
+        // Structure used to store each leg setup data.
+        struct LegSetup {
+            int hip;
+            int knee;
+            int ankle;
+        };
+        std::vector<LegSetup> legs;
+
+        // Foot height setting
+        float foot_height = 0.12;
+
+        Vector3F kDown{0.f, -1.f, 0.f};
+        Vector3F kCharacterRayHeightOffset{0.f, 10.f, 0.f};
+        Vector3F kFootRayHeightOffset{0.f, .5f, 0.f};
+        bool auto_character_height = true;
+    };
+    void scheduleFloorIK(
+            const FloorIKData& data,
+            const std::function<bool(
+                    const Vector3F& ray_origin, const Vector3F& ray_direction, Vector3F* intersect, Vector3F* normal)>&
+                    raycast);
+
 public:
     /**
      * Serialize the component
@@ -113,8 +131,6 @@ private:
 
     void _onDisable() override;
 
-    [[nodiscard]] simd_math::Float4x4 _getRootTransform(const Vector3F& pelvis_offset) const;
-
     // Multiplies a single quaternion at a specific index in a SoA transform range.
     static void _multiplySoATransformQuaternion(int _index,
                                                 const simd_math::SimdQuaternion& _quat,
@@ -123,6 +139,34 @@ private:
     // Computes the bounding box of posture defines be _matrices range.
     // _bound must be a valid math::Box instance.
     static void _computePostureBounds(span<const simd_math::Float4x4> _matrices, BoundingBox3F* _bound);
+
+    // Raycast down from the current position to find character height on the
+    // floor. It directly updates root translation as output.
+    void _updateCharacterHeight(
+            const FloorIKData& data,
+            const std::function<bool(
+                    const Vector3F& ray_origin, const Vector3F& ray_direction, Vector3F* intersect, Vector3F* normal)>&
+                    raycast);
+
+    // For each leg, raycasts a vector going down from the ankle position.
+    // This allows to find the intersection point with the floor.
+    void _raycastLegs(
+            const FloorIKData& data,
+            const std::function<bool(
+                    const Vector3F& ray_origin, const Vector3F& ray_direction, Vector3F* intersect, Vector3F* normal)>&
+                    raycast);
+
+    // Computes ankle target position (C), so that the foot is in contact with
+    // the floor. Because of floor slope (defined by raycast intersection normal),
+    // ankle position cannot be simply be offseted by foot offset. See geogebra
+    // diagram for more details: media/doc/samples/foot_ik_ankle.ggb
+    void _updateAnklesTarget(const FloorIKData& data);
+
+    // Recomputes pelvis offset.
+    // Strategy is to move the pelvis along "down" axis (ray axis), enough for
+    // the lowest foot (lowest from its original position) to reaches ankle
+    // target. The other foot will be ik-ed.
+    void _updatePelvisOffset(const FloorIKData& data);
 
 private:
     animation::Skeleton _skeleton;
@@ -134,5 +178,19 @@ private:
     std::shared_ptr<AnimationState> _rootState{nullptr};
     std::vector<std::function<void()>> _scheduleFunctor{};
     std::unordered_map<size_t, std::unordered_set<Entity*>> _entityBindingMap{};
+
+    struct LegRayInfo {
+        Vector3F start;
+        Vector3F dir;
+
+        bool hit{};
+        Vector3F hit_point;
+        Vector3F hit_normal;
+    };
+    std::vector<LegRayInfo> _rays_info;
+    std::vector<Vector3F> _ankles_initial_ws;
+    std::vector<Vector3F> _ankles_target_ws;
+    Vector3F pelvis_offset;
+    bool pelvis_correction;
 };
 }  // namespace vox
