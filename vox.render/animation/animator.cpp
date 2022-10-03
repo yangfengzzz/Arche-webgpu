@@ -188,58 +188,69 @@ void Animator::bindEntity(const std::string& name, Entity* entity) {
     }
 }
 
-void Animator::scheduleTwoBoneIK(const animation::IKTwoBoneJob& data, const std::array<int, 3>& chain) {
-    _scheduleFunctor.emplace_back([this, data, chain]() {
-        animation::IKTwoBoneJob job = data;
-        job.start_joint = &_models[chain[0]];
-        job.mid_joint = &_models[chain[1]];
-        job.end_joint = &_models[chain[2]];
+void Animator::encodeHandIKData(const HandIKData& data) {
+    _scheduleFunctor.emplace_back([this, data]() {
+        // Target and pole should be in model-space, so they must be converted from
+        // world-space using character inverse root matrix.
+        // IK jobs must support non-invertible matrices (like 0 scale matrices).
+        auto worldMat = entity()->transform->worldMatrix();
+        simd_math::Float4x4 root{};
+        memcpy(&root.cols[0], worldMat.data(), 64);
+        simd_math::SimdInt4 invertible;
+        const simd_math::Float4x4 invert_root = Invert(root, &invertible);
+
+        const simd_math::SimdFloat4 target_ms =
+                TransformPoint(invert_root, simd_math::simd_float4::Load3PtrU(&data.target.x));
+        const simd_math::SimdFloat4 pole_vector_ms =
+                TransformVector(invert_root, simd_math::simd_float4::Load3PtrU(&data.pole_vector.x));
+
+        // Setup IK job.
+        animation::IKTwoBoneJob ik_job;
+        ik_job.target = target_ms;
+        ik_job.pole_vector = pole_vector_ms;
+        ik_job.mid_axis = simd_math::simd_float4::z_axis();  // Middle joint
+                                                             // rotation axis is
+                                                             // fixed, and depends
+                                                             // on skeleton rig.
+        ik_job.weight = data.weight;
+        ik_job.soften = data.soften;
+        ik_job.twist_angle = data.twist_angle;
+
+        // Provides start, middle and end joints model space matrices.
+        ik_job.start_joint = &_models[data.start_joint];
+        ik_job.mid_joint = &_models[data.mid_joint];
+        ik_job.end_joint = &_models[data.end_joint];
+
+        // Setup output pointers.
         simd_math::SimdQuaternion start_correction{};
-        job.start_joint_correction = &start_correction;
+        ik_job.start_joint_correction = &start_correction;
         simd_math::SimdQuaternion mid_correction{};
-        job.mid_joint_correction = &mid_correction;
-        if (!job.Run()) {
+        ik_job.mid_joint_correction = &mid_correction;
+
+        if (!ik_job.Run()) {
             return;
         }
+
         // Apply IK quaternions to their respective local-space transforms.
-        // Model-space transformations needs to be updated after a call to this
-        // function.
-        _multiplySoATransformQuaternion(chain[0], start_correction, make_span(_locals));
-        _multiplySoATransformQuaternion(chain[1], mid_correction, make_span(_locals));
-    });
-}
+        _multiplySoATransformQuaternion(data.start_joint, start_correction, make_span(_locals));
+        _multiplySoATransformQuaternion(data.mid_joint, mid_correction, make_span(_locals));
 
-void Animator::scheduleAimIK(const animation::IKAimJob& data, int aim) {
-    _scheduleFunctor.emplace_back([this, data, aim]() {
-        animation::IKAimJob job = data;
-        job.joint = &_models[aim];
-        simd_math::SimdQuaternion correction{};
-        job.joint_correction = &correction;
-        if (!job.Run()) {
-            return;
-        }
-        // Apply IK quaternions to their respective local-space transforms.
-        // Model-space transformations needs to be updated after a call to this
-        // function.
-        _multiplySoATransformQuaternion(aim, correction, make_span(_locals));
-    });
-}
+        // Updates model-space matrices now IK has been applied to local transforms.
+        // All the ancestors of the start of the IK chain must be computed.
+        animation::LocalToModelJob ltm_job;
+        ltm_job.skeleton = &_skeleton;
+        ltm_job.input = make_span(_locals);
+        ltm_job.output = make_span(_models);
+        ltm_job.from = data.start_joint;  // Local transforms haven't changed before start_joint_.
+        ltm_job.to = animation::Skeleton::kMaxJoints;
 
-void Animator::scheduleLocalToModel(int from, int to) {
-    _scheduleFunctor.emplace_back([this, from, to]() {
-        // Updates model-space transformation now ankle local changes is done.
-        // Ankle rotation has already been updated, but its siblings (or it's
-        // parent siblings) might are not. So we local-to-model update must
-        // be complete starting from hip.
-        _ltm_job.from = from;
-        _ltm_job.to = to;
-        if (!_ltm_job.Run()) {
+        if (!ltm_job.Run()) {
             return;
         }
     });
 }
 
-void Animator::scheduleLookAtIK(const LookAtIKData& data) {
+void Animator::encodeLookAtIK(const LookAtIKData& data) {
     _scheduleFunctor.emplace_back([this, data]() {
         // IK aim job setup.
         animation::IKAimJob ik_job;
@@ -321,7 +332,7 @@ void Animator::scheduleLookAtIK(const LookAtIKData& data) {
     });
 }
 
-void Animator::scheduleFloorIK(
+void Animator::encodeFloorIK(
         const FloorIKData& data,
         const std::function<
                 bool(const Vector3F& ray_origin, const Vector3F& ray_direction, Vector3F* intersect, Vector3F* normal)>&

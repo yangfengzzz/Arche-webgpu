@@ -4,8 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "apps/animation_ik_foot_app.h"
-
+#include "apps/animation_ik_floor_app.h"
 #include "vox.base/logging.h"
 #include "vox.render/animation/animation_states/animation_clip.h"
 #include "vox.render/animation/animator.h"
@@ -151,18 +150,17 @@ public:
 
     void onUpdate(float deltaTime) override {
         Animator::FloorIKData data;
-        animator->scheduleFloorIK(data,
-                                  [&](const Vector3F& ray_origin, const Vector3F& ray_direction, Vector3F* intersect,
-                                      Vector3F* normal) -> bool {
-                                      rayIntersectsMeshes(ray_origin, ray_direction, make_span(floor), intersect,
-                                                          normal);
-                                  });
+        animator->encodeFloorIK(data,
+                                [&](const Vector3F& ray_origin, const Vector3F& ray_direction, Vector3F* intersect,
+                                    Vector3F* normal) -> bool {
+                                    return rayIntersectsMeshes(ray_origin, ray_direction, make_span(floor), intersect, normal);
+                                });
     }
 };
 
 }  // namespace
 
-void AnimationIKFootApp::loadScene() {
+void AnimationIKFloorApp::loadScene() {
     auto scene = _sceneManager->currentScene();
     scene->ambientLight()->setDiffuseSolidColor(Color(1, 1, 1));
     auto rootEntity = scene->createRootEntity();

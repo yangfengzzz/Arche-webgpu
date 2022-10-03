@@ -8,9 +8,9 @@
 #include "apps/animation_attach_app.h"
 #include "apps/animation_blend_app.h"
 #include "apps/animation_create_app.h"
+#include "apps/animation_ik_floor_app.h"
 #include "apps/animation_ik_hand_app.h"
 #include "apps/animation_ik_lookat_app.h"
-#include "apps/animation_ik_foot_app.h"
 #include "apps/animation_partial_blend_app.h"
 #include "apps/assimp_app.h"
 #include "apps/atomic_compute_app.h"
@@ -58,7 +58,7 @@ int main(int argc, char* argv[]) {
 
     auto code = platform.Initialize(plugins::GetAll());
     if (code == vox::ExitCode::SUCCESS) {
-        platform.SetApp(std::make_unique<vox::AnimationIKFootApp>());
+        platform.SetApp(std::make_unique<vox::AnimationIKFloorApp>());
         code = platform.MainLoop();
     }
     platform.Terminate(code);

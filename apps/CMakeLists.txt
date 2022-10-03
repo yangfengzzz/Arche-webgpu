@@ -35,7 +35,7 @@ set(SRC
         animation_additive_app.cpp
         animation_ik_lookat_app.cpp
         animation_ik_hand_app.cpp
-        animation_ik_foot_app.cpp
+        animation_ik_floor_app.cpp
         gui_app.cpp
         )
 

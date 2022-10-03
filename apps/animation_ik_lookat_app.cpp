@@ -43,7 +43,7 @@ public:
         Animator::LookAtIKData data;
         data.target = target;
         data.joints_chain = joints_chain;
-        animator->scheduleLookAtIK(data);
+        animator->encodeLookAtIK(data);
     }
 };
 
