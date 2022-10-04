@@ -14,9 +14,13 @@ file(GLOB CONTROLS_FILES
 file(GLOB SKELETON_VIEW_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/skeleton_view/*.cpp)
 
+file(GLOB PHYSICS_DEBUGGER_FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/physics_debugger/*.cpp)
+
 set(PROJECT_FILES
         ${CONTROLS_FILES}
         ${SKELETON_VIEW_FILES}
+        ${PHYSICS_DEBUGGER_FILES}
         )
 
 # No need for explict casts from vk::HandleType to VkHandleType on ANDROID
@@ -89,7 +93,8 @@ target_include_directories(${PROJECT_NAME} PUBLIC ../
         ../third_party/nlohmann/include
         ../third_party/dawn/cmake-release/gen/include
         ../third_party/dawn/include
-        ../third_party/dawn)
+        ../third_party/dawn
+        ../third_party/jolt)
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC DAWN_ENABLE_BACKEND_METAL DAWN_ENABLE_BACKEND_NULL TINT_BUILD_SPV_READER)
 

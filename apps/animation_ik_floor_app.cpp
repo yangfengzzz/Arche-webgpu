@@ -72,7 +72,7 @@ bool rayIntersectsMesh(const Vector3F& _ray_origin,
                        const std::shared_ptr<Skin>& _mesh,
                        Vector3F* _intersect,
                        Vector3F* _normal) {
-    assert(_mesh.parts.size() == 1 && !_mesh.skinned());
+    assert(_mesh->parts.size() == 1 && !_mesh->skinned());
 
     bool intersected = false;
     Vector3F intersect, normal;
