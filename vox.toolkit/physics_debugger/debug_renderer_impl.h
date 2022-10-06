@@ -124,7 +124,7 @@ private:
     void EnsurePrimitiveSpace(int inVtxSize);
 
     /// Clear map of instances and make it ready for the next frame
-    void ClearMap(InstanceMap &ioInstances);
+    static void ClearMap(InstanceMap &ioInstances);
 
     /// Helper function to draw instances
     inline void DrawInstances(const Geometry *inGeometry, const Array<int> &inStartIdx);
