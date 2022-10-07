@@ -87,6 +87,11 @@ public:
     virtual void resize(uint32_t win_width, uint32_t win_height, uint32_t fb_width, uint32_t fb_height) {}
 
     /**
+     * Called before physics calculations, the number of times is related to the physical update frequency.
+     */
+    virtual void onPhysicsUpdate() {}
+
+    /**
      * Called when the collision enter.
      * @param other Collider
      */

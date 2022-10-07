@@ -7,7 +7,6 @@
 #include "vox.render/physics/physics_manager.h"
 
 #include <Jolt/Core/Factory.h>
-#include <Jolt/Core/JobSystemThreadPool.h>
 #include <Jolt/Physics/Body/BodyCreationSettings.h>
 #include <Jolt/RegisterTypes.h>
 
@@ -183,7 +182,9 @@ PhysicsManager &PhysicsManager::GetSingleton() {
     return (*ms_singleton);
 }
 
-PhysicsManager::PhysicsManager() {
+PhysicsManager::PhysicsManager()
+    : _temp_allocator(10 * 1024 * 1024),
+      _job_system(cMaxPhysicsJobs, cMaxPhysicsBarriers, thread::hardware_concurrency() - 1) {
     // Register allocation hook
     RegisterDefaultAllocator();
 
@@ -196,18 +197,6 @@ PhysicsManager::PhysicsManager() {
 
     // Register all Jolt physics types
     RegisterTypes();
-
-    // We need a temp allocator for temporary allocations during the physics update. We're
-    // pre-allocating 10 MB to avoid having to do allocations during the physics update.
-    // B.t.w. 10 MB is way too much for this example, but it is a typical value you can use.
-    // If you don't want to pre-allocate you can also use TempAllocatorMalloc to fall back to
-    // malloc / free.
-    TempAllocatorImpl temp_allocator(10 * 1024 * 1024);
-
-    // We need a job system that will execute physics jobs on multiple threads. Typically,
-    // you would implement the JobSystem interface yourself and let Jolt Physics run on top
-    // of your own job scheduler. JobSystemThreadPool is an example implementation.
-    JobSystemThreadPool job_system(cMaxPhysicsJobs, cMaxPhysicsBarriers, thread::hardware_concurrency() - 1);
 
     // This is the max amount of rigid bodies that you can add to the physics system. If you try to add more you'll get
     // an error. Note: This value is low because this is a simple test. For a real project use something in the order of
@@ -307,6 +296,50 @@ JPH::Body *PhysicsManager::createBody(const JPH::Shape *inShape) {
     auto body = _physics_system.GetBodyInterface().CreateBody(settings);
     _physics_system.GetBodyInterface().AddBody(body->GetID(), EActivation::DontActivate);
     return body;
+}
+
+void PhysicsManager::removeBody(const JPH::BodyID &id) {
+    // Remove the sphere from the physics system. Note that the sphere itself keeps all of its state and can be re-added
+    // at any time.
+    _physics_system.GetBodyInterface().RemoveBody(id);
+    // Destroy the sphere. After this the sphere ID is no longer valid.
+    _physics_system.GetBodyInterface().DestroyBody(id);
+}
+
+void PhysicsManager::update(float delta_time) {
+    auto simulate_time = delta_time + rest_time_;
+    auto step = static_cast<uint32_t>(std::floor(std::min(max_sum_time_step_, simulate_time) / fixed_time_step_));
+    rest_time_ = simulate_time - static_cast<float>(step) * fixed_time_step_;
+    for (uint32_t i = 0; i < step; i++) {
+        for (auto &script : _on_physics_update_scripts) {
+            script->onPhysicsUpdate();
+        }
+        callColliderOnUpdate();
+        _physics_system.Update(fixed_time_step_, collision_steps, integration_sub_steps, &_temp_allocator,
+                               &_job_system);
+        callColliderOnLateUpdate();
+    }
+}
+
+void PhysicsManager::callColliderOnUpdate() {
+    for (auto &collider : _physical_objects_map) {
+        collider.second->onUpdate();
+    }
+}
+
+void PhysicsManager::callColliderOnLateUpdate() {
+    for (auto &collider : _physical_objects_map) {
+        collider.second->onLateUpdate();
+    }
+}
+
+void PhysicsManager::addOnPhysicsUpdateScript(Script *script) { _on_physics_update_scripts.emplace_back(script); }
+
+void PhysicsManager::removeOnPhysicsUpdateScript(Script *script) {
+    auto iter = std::find(_on_physics_update_scripts.begin(), _on_physics_update_scripts.end(), script);
+    if (iter != _on_physics_update_scripts.end()) {
+        _on_physics_update_scripts.erase(iter);
+    }
 }
 
 }  // namespace vox

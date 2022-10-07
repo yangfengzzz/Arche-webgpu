@@ -11,6 +11,8 @@
 namespace vox {
 Collider::Collider(Entity *entity) : Component(entity) {}
 
+Collider::~Collider() { PhysicsManager::GetSingleton().removeBody(_body->GetID()); }
+
 uint32_t Collider::getIndex() const { return _body->GetID().GetIndex(); }
 
 void Collider::setShape(const JPH::Shape *inShape) { _body = PhysicsManager::GetSingleton().createBody(inShape); }

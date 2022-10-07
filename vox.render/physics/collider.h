@@ -17,9 +17,16 @@ class Collider : public Component {
 public:
     explicit Collider(Entity* entity);
 
+    ~Collider() override;
+
     [[nodiscard]] uint32_t getIndex() const;
 
     void setShape(const JPH::Shape* inShape);
+
+public:
+    void onUpdate() {};
+
+    virtual void onLateUpdate() {}
 
 private:
     void _onEnable() override;
