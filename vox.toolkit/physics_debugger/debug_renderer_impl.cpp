@@ -7,8 +7,90 @@
 #include "vox.toolkit/physics_debugger/debug_renderer_impl.h"
 
 #include "vox.base/logging.h"
+#include "vox.render/entity.h"
+#include "vox.render/material/unlit_material.h"
+#include "vox.render/mesh/mesh_manager.h"
+#include "vox.render/mesh/mesh_renderer.h"
+#include "vox.render/scene.h"
+#include "vox.render/shader/shader_common.h"
 
 namespace vox::physics_debugger {
+DebugRendererImpl::DebugRendererImpl(Entity *entity) : Script(entity) {}
+
+void DebugRendererImpl::onAwake() {
+    _line_attributes.resize(2);
+    _line_attributes[0].shaderLocation = (uint32_t)Attributes::POSITION;
+    _line_attributes[0].format = wgpu::VertexFormat::Float32x3;
+    _line_attributes[0].offset = 0;
+    _line_attributes[1].shaderLocation = (uint32_t)Attributes::COLOR_0;
+    _line_attributes[1].format = wgpu::VertexFormat::Float32x4;
+    _line_attributes[1].offset = 12;
+    _line_layouts.resize(1);
+    _line_layouts[0].attributeCount = 2;
+    _line_layouts[0].attributes = _line_attributes.data();
+    _line_layouts[0].stepMode = wgpu::VertexStepMode::Vertex;
+    _line_layouts[0].arrayStride = 28;
+    _line_material = std::make_shared<UnlitMaterial>(scene()->device());
+    _line_buffer_mesh = MeshManager::GetSingleton().LoadBufferMesh();
+    _line_buffer_mesh->setVertexLayouts(_line_layouts);
+    auto lineRenderer = entity()->addComponent<MeshRenderer>();
+    lineRenderer->setMesh(_line_buffer_mesh);
+    lineRenderer->setMaterial(_line_material);
+
+    _vertex_attributes.resize(4);
+    _vertex_attributes[0].shaderLocation = 0;
+    _vertex_attributes[0].format = wgpu::VertexFormat::Float32x3;
+    _vertex_attributes[0].offset = 0;
+    _vertex_attributes[1].shaderLocation = 1;
+    _vertex_attributes[1].format = wgpu::VertexFormat::Float32x3;
+    _vertex_attributes[1].offset = 12;
+    _vertex_attributes[2].shaderLocation = 2;
+    _vertex_attributes[2].format = wgpu::VertexFormat::Float32x2;
+    _vertex_attributes[2].offset = 24;
+    _vertex_attributes[3].shaderLocation = 3;
+    _vertex_attributes[3].format = wgpu::VertexFormat::Uint8x4;
+    _vertex_attributes[3].offset = 32;
+
+    _instance_attributes.resize(9);
+    _instance_attributes[0].shaderLocation = 0;
+    _instance_attributes[0].format = wgpu::VertexFormat::Float32x4;
+    _instance_attributes[0].offset = 0;
+    _instance_attributes[1].shaderLocation = 1;
+    _instance_attributes[1].format = wgpu::VertexFormat::Float32x4;
+    _instance_attributes[1].offset = 16;
+    _instance_attributes[2].shaderLocation = 2;
+    _instance_attributes[2].format = wgpu::VertexFormat::Float32x4;
+    _instance_attributes[2].offset = 32;
+    _instance_attributes[3].shaderLocation = 3;
+    _instance_attributes[3].format = wgpu::VertexFormat::Float32x4;
+    _instance_attributes[3].offset = 48;
+    _instance_attributes[4].shaderLocation = 4;
+    _instance_attributes[4].format = wgpu::VertexFormat::Float32x4;
+    _instance_attributes[4].offset = 64;
+    _instance_attributes[5].shaderLocation = 5;
+    _instance_attributes[5].format = wgpu::VertexFormat::Float32x4;
+    _instance_attributes[5].offset = 80;
+    _instance_attributes[6].shaderLocation = 6;
+    _instance_attributes[6].format = wgpu::VertexFormat::Float32x4;
+    _instance_attributes[6].offset = 96;
+    _instance_attributes[7].shaderLocation = 7;
+    _instance_attributes[7].format = wgpu::VertexFormat::Float32x4;
+    _instance_attributes[7].offset = 112;
+    _instance_attributes[8].shaderLocation = 8;
+    _instance_attributes[8].format = wgpu::VertexFormat::Uint8x4;
+    _instance_attributes[8].offset = 128;
+
+    _triangle_layouts.resize(2);
+    _triangle_layouts[0].attributes = _vertex_attributes.data();
+    _triangle_layouts[0].attributeCount = _vertex_attributes.size();
+    _triangle_layouts[0].stepMode = wgpu::VertexStepMode::Vertex;
+    _triangle_layouts[0].arrayStride = 36;
+    _triangle_layouts[1].attributes = _instance_attributes.data();
+    _triangle_layouts[1].attributeCount = _instance_attributes.size();
+    _triangle_layouts[1].stepMode = wgpu::VertexStepMode::Instance;
+    _triangle_layouts[1].arrayStride = 132;
+}
+
 void DebugRendererImpl::onUpdate(float deltaTime) {
     DrawLines();
     DrawTriangles();
@@ -29,7 +111,7 @@ void DebugRendererImpl::DrawTriangle(Vec3Arg inV1, Vec3Arg inV2, Vec3Arg inV3, C
     // Set alpha to zero to tell our pixel shader to not cast shadows for this triangle
     // this is because our algorithm only renders shadows for backfacing triangles and this
     // triangle doesn't have one
-    Color color(inColor, 0);
+    ColorArg color(inColor, 0);
 
     // Construct triangle
     new ((Triangle *)mLockedVertices) Triangle(inV1, inV2, inV3, color);
@@ -65,7 +147,7 @@ void DebugRendererImpl::DrawGeometry(Mat44Arg inModelMatrix,
     lock_guard lock(mPrimitivesLock);
 
     // Our pixel shader uses alpha only to turn on/off shadows
-    Color color = inCastShadow == ECastShadow::On ? Color(inModelColor, 255) : Color(inModelColor, 0);
+    ColorArg color = inCastShadow == ECastShadow::On ? ColorArg(inModelColor, 255) : ColorArg(inModelColor, 0);
 
     if (inDrawMode == EDrawMode::Wireframe) {
         mWireframePrimitives[inGeometry].mInstances.push_back(
@@ -113,10 +195,18 @@ void DebugRendererImpl::DrawInstances(const Geometry *inGeometry, const Array<in
 //----------------------------------------------------------------------------------------------------------------------
 void DebugRendererImpl::DrawLine(const Float3 &inFrom, const Float3 &inTo, ColorArg inColor) {
     lock_guard lock(mLinesLock);
-    mLines.push_back(Line(inFrom, inTo, inColor));
+    mLines.push_back(Line(inFrom, inTo,
+                          vox::Color(float(inColor.r) / 255.f, float(inColor.g) / 255.f, float(inColor.b) / 255.f,
+                                     float(inColor.a) / 255.f)));
 }
 
-void DebugRendererImpl::DrawLines() {}
+void DebugRendererImpl::DrawLines() {
+    _line_buffer = std::make_unique<Buffer>(scene()->device(), mLines.data(), mLines.size() * sizeof(Line),
+                                            wgpu::BufferUsage::Vertex | wgpu::BufferUsage::CopyDst);
+    _line_buffer_mesh->clearSubMesh();
+    _line_buffer_mesh->addSubMesh(0, mLines.size() * 2, wgpu::PrimitiveTopology::LineList);
+    _line_buffer_mesh->setVertexBufferBinding(*_line_buffer, 0);
+}
 
 void DebugRendererImpl::ClearLines() {
     lock_guard lock(mLinesLock);
@@ -132,7 +222,7 @@ void DebugRendererImpl::DrawText3D(Vec3Arg inPosition, const string_view &inStri
 void DebugRendererImpl::DrawTexts() {
     for (const auto &text : mTexts) {
         // todo: use ImGUI addText instead
-        LOGI(text.mText);
+        LOGI(text.mText)
     }
 }
 

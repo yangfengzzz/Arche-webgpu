@@ -18,6 +18,9 @@
 #include <Jolt/Core/Mutex.h>
 #include <Jolt/Core/UnorderedMap.h>
 
+#include <vector>
+
+#include "vox.render/material/base_material.h"
 #include "vox.render/script.h"
 #include "vox.toolkit/physics_debugger/render_instances.h"
 #include "vox.toolkit/physics_debugger/render_primitive.h"
@@ -28,6 +31,8 @@ namespace vox::physics_debugger {
 
 class DebugRendererImpl final : public DebugRenderer, public Script {
 public:
+    explicit DebugRendererImpl(Entity *entity);
+
     /// Implementation of DebugRenderer interface
     void DrawLine(const Float3 &inFrom, const Float3 &inTo, ColorArg inColor) override;
 
@@ -50,6 +55,8 @@ public:
                       ECullMode inCullMode,
                       ECastShadow inCastShadow,
                       EDrawMode inDrawMode) override;
+
+    void onAwake() override;
 
     /// Draw all primitives that were added
     void onUpdate(float deltaTime) override;
@@ -83,7 +90,7 @@ private:
 
         Mat44 mModelMatrix;
         Mat44 mModelMatrixInvTrans;
-        Color mModelColor;
+        ColorArg mModelColor;
     };
 
     /// Rendered instance with added information for lodding
@@ -157,7 +164,7 @@ private:
 
     /// A single line segment
     struct Line {
-        Line(const Float3 &inFrom, const Float3 &inTo, ColorArg inColor)
+        Line(const Float3 &inFrom, const Float3 &inTo, Color inColor)
             : mFrom(inFrom), mFromColor(inColor), mTo(inTo), mToColor(inColor) {}
 
         Float3 mFrom;
@@ -187,5 +194,20 @@ private:
     /// All text strings that are to be drawn on screen
     Array<Text> mTexts;
     Mutex mTextsLock;
+
+private:
+    std::vector<wgpu::VertexAttribute> _vertex_attributes;
+    std::vector<wgpu::VertexAttribute> _instance_attributes;
+    std::vector<wgpu::VertexBufferLayout> _triangle_layouts;
+    std::shared_ptr<BufferMesh> _triangle_buffer_mesh{nullptr};
+    std::shared_ptr<BaseMaterial> _triangle_material{nullptr};
+    std::unique_ptr<Buffer> _triangle_buffer;
+    std::unique_ptr<Buffer> _instance_buffer;
+
+    std::vector<wgpu::VertexAttribute> _line_attributes;
+    std::vector<wgpu::VertexBufferLayout> _line_layouts;
+    std::shared_ptr<BufferMesh> _line_buffer_mesh{nullptr};
+    std::shared_ptr<BaseMaterial> _line_material{nullptr};
+    std::unique_ptr<Buffer> _line_buffer;
 };
 }  // namespace vox::physics_debugger

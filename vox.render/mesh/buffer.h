@@ -39,6 +39,8 @@ public:
 
     Buffer& operator=(Buffer&& other) = default;
 
+    ~Buffer();
+
     [[nodiscard]] const wgpu::Buffer& handle() const;
 
     [[nodiscard]] uint64_t size() const;
