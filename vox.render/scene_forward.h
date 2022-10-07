@@ -73,4 +73,6 @@ class SpotLight;
 
 class DirectLight;
 
+class Collider;
+
 }  // namespace vox

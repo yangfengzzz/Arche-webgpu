@@ -6,6 +6,10 @@
 
 #pragma once
 
+#include <Jolt/Jolt.h>
+//
+#include <Jolt/Physics/Collision/ContactListener.h>
+
 #include "vox.render/component.h"
 #include "vox.render/platform/input_events.h"
 
@@ -81,6 +85,25 @@ public:
     virtual void inputEvent(const InputEvent &inputEvent) {}
 
     virtual void resize(uint32_t win_width, uint32_t win_height, uint32_t fb_width, uint32_t fb_height) {}
+
+    /**
+     * Called when the collision enter.
+     * @param other Collider
+     */
+    virtual void onContactEnter(const Collider &other, const JPH::ContactManifold &inManifold) {}
+
+    /**
+     * Called when the collision stay.
+     * @remarks OnTriggerStay is called every frame while the collision stay.
+     * @param other Collider
+     */
+    virtual void onContactStay(const Collider &other, const JPH::ContactManifold &inManifold) {}
+
+    /**
+     * Called when the collision exit.
+     * @param other Collider
+     */
+    virtual void onContactExit(const Collider &other, const JPH::SubShapeID &shapeID) {}
 
 public:
     /**

@@ -8,9 +8,14 @@
 
 #include <Jolt/Core/Factory.h>
 #include <Jolt/Core/JobSystemThreadPool.h>
+#include <Jolt/Physics/Body/BodyCreationSettings.h>
 #include <Jolt/RegisterTypes.h>
 
 #include <iostream>
+
+#include "vox.render/entity.h"
+#include "vox.render/physics/collider.h"
+#include "vox.render/script.h"
 
 using namespace JPH;
 namespace vox {
@@ -125,6 +130,51 @@ bool MyBroadPhaseCanCollide(ObjectLayer inLayer1, BroadPhaseLayer inLayer2) {
     }
 }
 
+// An example contact listener
+class ContactListenerWrapper : public ContactListener {
+public:
+    std::function<void(const JPH::Body &inBody1, const JPH::Body &inBody2, const JPH::ContactManifold &inManifold)>
+            _on_contact_enter;
+    std::function<void(const JPH::Body &inBody1, const JPH::Body &inBody2, const JPH::ContactManifold &inManifold)>
+            _on_contact_stay;
+    std::function<void(const JPH::SubShapeIDPair &inSubShapePair)> _on_contact_exit;
+
+    ContactListenerWrapper(std::function<void(const JPH::Body &inBody1,
+                                              const JPH::Body &inBody2,
+                                              const JPH::ContactManifold &inManifold)> on_contact_enter,
+                           std::function<void(const JPH::Body &inBody1,
+                                              const JPH::Body &inBody2,
+                                              const JPH::ContactManifold &inManifold)> on_contact_stay,
+                           std::function<void(const JPH::SubShapeIDPair &inSubShapePair)> on_contact_exit)
+        : _on_contact_enter(std::move(on_contact_enter)),
+          _on_contact_exit(std::move(on_contact_exit)),
+          _on_contact_stay(std::move(on_contact_stay)) {}
+
+    // See: ContactListener
+    ValidateResult OnContactValidate(const Body &inBody1,
+                                     const Body &inBody2,
+                                     const CollideShapeResult &inCollisionResult) override {
+        // Allows you to ignore a contact before it is created (using layers to not make objects collide is cheaper!)
+        return ValidateResult::AcceptAllContactsForThisBodyPair;
+    }
+
+    void OnContactAdded(const Body &inBody1,
+                        const Body &inBody2,
+                        const ContactManifold &inManifold,
+                        ContactSettings &ioSettings) override {
+        _on_contact_enter(inBody1, inBody2, inManifold);
+    }
+
+    void OnContactPersisted(const Body &inBody1,
+                            const Body &inBody2,
+                            const ContactManifold &inManifold,
+                            ContactSettings &ioSettings) override {
+        _on_contact_stay(inBody1, inBody2, inManifold);
+    }
+
+    void OnContactRemoved(const SubShapeIDPair &inSubShapePair) override { _on_contact_exit(inSubShapePair); }
+};
+
 }  // namespace
 PhysicsManager *PhysicsManager::GetSingletonPtr() { return ms_singleton; }
 
@@ -186,14 +236,77 @@ PhysicsManager::PhysicsManager() {
     BPLayerInterfaceImpl broad_phase_layer_interface;
 
     // Now we can create the actual physics system.
-    physics_system.Init(cMaxBodies, cNumBodyMutexes, cMaxBodyPairs, cMaxContactConstraints, broad_phase_layer_interface,
-                        MyBroadPhaseCanCollide, MyObjectCanCollide);
+    _physics_system.Init(cMaxBodies, cNumBodyMutexes, cMaxBodyPairs, cMaxContactConstraints,
+                         broad_phase_layer_interface, MyBroadPhaseCanCollide, MyObjectCanCollide);
+
+    _on_contact_enter = [&](const JPH::Body &inBody1, const JPH::Body &inBody2,
+                            const JPH::ContactManifold &inManifold) {
+        const auto kShape1 = _physical_objects_map[inBody1.GetID().GetIndex()];
+        const auto kShape2 = _physical_objects_map[inBody2.GetID().GetIndex()];
+
+        auto scripts = kShape1->entity()->scripts();
+        for (const auto &script : scripts) {
+            script->onContactEnter(*kShape2, inManifold);
+        }
+
+        scripts = kShape2->entity()->scripts();
+        for (const auto &script : scripts) {
+            script->onContactEnter(*kShape1, inManifold.SwapShapes());
+        }
+    };
+
+    _on_contact_stay = [&](const JPH::Body &inBody1, const JPH::Body &inBody2, const JPH::ContactManifold &inManifold) {
+        const auto kShape1 = _physical_objects_map[inBody1.GetID().GetIndex()];
+        const auto kShape2 = _physical_objects_map[inBody2.GetID().GetIndex()];
+
+        auto scripts = kShape1->entity()->scripts();
+        for (const auto &script : scripts) {
+            script->onContactStay(*kShape2, inManifold);
+        }
+
+        scripts = kShape2->entity()->scripts();
+        for (const auto &script : scripts) {
+            script->onContactStay(*kShape1, inManifold.SwapShapes());
+        }
+    };
+
+    _on_contact_exit = [&](const JPH::SubShapeIDPair &inSubShapePair) {
+        const auto kShape1 = _physical_objects_map[inSubShapePair.GetBody1ID().GetIndex()];
+        const auto kShape2 = _physical_objects_map[inSubShapePair.GetBody2ID().GetIndex()];
+
+        auto scripts = kShape1->entity()->scripts();
+        for (const auto &script : scripts) {
+            script->onContactExit(*kShape2, inSubShapePair.GetSubShapeID2());
+        }
+
+        scripts = kShape2->entity()->scripts();
+        for (const auto &script : scripts) {
+            script->onContactExit(*kShape1, inSubShapePair.GetSubShapeID1());
+        }
+    };
+
+    _contactListener = std::make_unique<ContactListenerWrapper>(_on_contact_enter, _on_contact_stay, _on_contact_exit);
+    _physics_system.SetContactListener(_contactListener.get());
 }
 
 PhysicsManager::~PhysicsManager() {
     // Destroy the factory
     delete Factory::sInstance;
     Factory::sInstance = nullptr;
+
+    _contactListener.reset();
+}
+
+void PhysicsManager::addCollider(Collider *collider) { _physical_objects_map[collider->getIndex()] = collider; }
+
+void PhysicsManager::removeCollider(Collider *collider) { _physical_objects_map.erase(collider->getIndex()); }
+
+JPH::Body *PhysicsManager::createBody(const JPH::Shape *inShape) {
+    JPH::BodyCreationSettings settings(inShape, JPH::Vec3(0.0f, -1.0f, 0.0f), JPH::Quat::sIdentity(),
+                                       JPH::EMotionType::Static, Layers::NON_MOVING);
+    auto body = _physics_system.GetBodyInterface().CreateBody(settings);
+    _physics_system.GetBodyInterface().AddBody(body->GetID(), EActivation::DontActivate);
+    return body;
 }
 
 }  // namespace vox
