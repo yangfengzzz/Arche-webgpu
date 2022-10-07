@@ -313,6 +313,9 @@ file(GLOB ANIMATION_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/animation/*.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/animation/animation_states/*.cpp)
 
+file(GLOB PHYSICS_FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/physics/*.cpp)
+
 file(GLOB MESH_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/mesh/*.cpp)
 
@@ -400,6 +403,7 @@ set(PROJECT_FILES
         ${LIGHT_FILE}
         ${SHADOW_FILE}
 #        ${PARTICLE_FILE}
+        ${PHYSICS_FILES}
         ${SKY_FILES}
         ${LOADER_FILES}
         ${PLUGINS_FILE}
@@ -476,7 +480,8 @@ target_include_directories(${PROJECT_NAME} PUBLIC ../
         ../third_party/nlohmann/include
         ../third_party/dawn/cmake-release/gen/include
         ../third_party/dawn/include
-        ../third_party/dawn)
+        ../third_party/dawn
+        ../third_party/jolt)
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC DAWN_ENABLE_BACKEND_METAL DAWN_ENABLE_BACKEND_NULL TINT_BUILD_SPV_READER)
 
