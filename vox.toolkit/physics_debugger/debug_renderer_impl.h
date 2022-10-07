@@ -18,6 +18,7 @@
 #include <Jolt/Core/Mutex.h>
 #include <Jolt/Core/UnorderedMap.h>
 
+#include "vox.render/script.h"
 #include "vox.toolkit/physics_debugger/render_instances.h"
 #include "vox.toolkit/physics_debugger/render_primitive.h"
 
@@ -25,12 +26,18 @@ using namespace JPH;
 
 namespace vox::physics_debugger {
 
-class DebugRendererImpl final : public DebugRenderer {
+class DebugRendererImpl final : public DebugRenderer, public Script {
 public:
     /// Implementation of DebugRenderer interface
     void DrawLine(const Float3 &inFrom, const Float3 &inTo, ColorArg inColor) override;
+
+    void DrawText3D(Vec3Arg inPosition, const string_view &inString, ColorArg inColor, float inHeight) override;
+
     void DrawTriangle(Vec3Arg inV1, Vec3Arg inV2, Vec3Arg inV3, ColorArg inColor) override;
+
+public:
     Batch CreateTriangleBatch(const Triangle *inTriangles, int inTriangleCount) override;
+
     Batch CreateTriangleBatch(const Vertex *inVertices,
                               int inVertexCount,
                               const uint32 *inIndices,
@@ -43,10 +50,9 @@ public:
                       ECullMode inCullMode,
                       ECastShadow inCastShadow,
                       EDrawMode inDrawMode) override;
-    void DrawText3D(Vec3Arg inPosition, const string_view &inString, ColorArg inColor, float inHeight) override;
 
     /// Draw all primitives that were added
-    void Draw();
+    void onUpdate(float deltaTime) override;
 
     /// Clear all primitives (to be called after drawing)
     void Clear();
@@ -118,7 +124,6 @@ private:
     InstanceMap mWireframePrimitives;
     InstanceMap mPrimitives;
     InstanceMap mTempPrimitives;
-    InstanceMap mPrimitivesBackFacing;
     int mNumInstances = 0;
 
     /// Lock that protects the triangle batches from being accessed from multiple threads

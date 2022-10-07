@@ -6,10 +6,19 @@
 
 #include "vox.toolkit/physics_debugger/debug_renderer_impl.h"
 
+#include "vox.base/logging.h"
+
 namespace vox::physics_debugger {
-void DebugRendererImpl::DrawLine(const Float3 &inFrom, const Float3 &inTo, ColorArg inColor) {
-    lock_guard lock(mLinesLock);
-    mLines.push_back(Line(inFrom, inTo, inColor));
+void DebugRendererImpl::onUpdate(float deltaTime) {
+    DrawLines();
+    DrawTriangles();
+    DrawTexts();
+}
+
+void DebugRendererImpl::Clear() {
+    ClearLines();
+    ClearTriangles();
+    ClearTexts();
 }
 
 void DebugRendererImpl::DrawTriangle(Vec3Arg inV1, Vec3Arg inV2, Vec3Arg inV3, ColorArg inColor) {
@@ -31,6 +40,12 @@ void DebugRendererImpl::DrawTriangle(Vec3Arg inV1, Vec3Arg inV2, Vec3Arg inV3, C
     mLockedPrimitiveBounds.Encapsulate(inV2);
     mLockedPrimitiveBounds.Encapsulate(inV3);
 }
+
+void DebugRendererImpl::FinalizePrimitive() {}
+
+void DebugRendererImpl::EnsurePrimitiveSpace(int inVtxSize) {}
+
+//----------------------------------------------------------------------------------------------------------------------
 
 DebugRendererImpl::Batch DebugRendererImpl::CreateTriangleBatch(const Triangle *inTriangles, int inTriangleCount) {}
 
@@ -62,53 +77,8 @@ void DebugRendererImpl::DrawGeometry(Mat44Arg inModelMatrix,
                                                           color, inWorldSpaceBounds, inLODScaleSq});
             ++mNumInstances;
         }
-
-        if (inCullMode != ECullMode::CullBackFace) {
-            mPrimitivesBackFacing[inGeometry].mInstances.push_back({inModelMatrix,
-                                                                    inModelMatrix.GetDirectionPreservingMatrix(), color,
-                                                                    inWorldSpaceBounds, inLODScaleSq});
-            ++mNumInstances;
-        }
     }
 }
-
-void DebugRendererImpl::DrawText3D(Vec3Arg inPosition, const string_view &inString, ColorArg inColor, float inHeight) {
-    lock_guard lock(mTextsLock);
-    mTexts.emplace_back(inPosition, inString, inColor, inHeight);
-}
-
-void DebugRendererImpl::Draw() {
-    DrawLines();
-    DrawTriangles();
-    DrawTexts();
-}
-
-void DebugRendererImpl::Clear() {
-    ClearLines();
-    ClearTriangles();
-    ClearTexts();
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-void DebugRendererImpl::DrawTriangles() {}
-
-void DebugRendererImpl::ClearTriangles() {
-    lock_guard lock(mPrimitivesLock);
-
-    // Close any primitive that's being built
-    FinalizePrimitive();
-
-    // Move primitives to draw back to the free list
-    ClearMap(mWireframePrimitives);
-    ClearMap(mPrimitives);
-    mTempPrimitives.clear();  // These are created by FinalizePrimitive() and need to be cleared every frame
-    ClearMap(mPrimitivesBackFacing);
-    mNumInstances = 0;
-}
-
-void DebugRendererImpl::FinalizePrimitive() {}
-
-void DebugRendererImpl::EnsurePrimitiveSpace(int inVtxSize) {}
 
 void DebugRendererImpl::ClearMap(InstanceMap &ioInstances) {
     Array<GeometryRef> to_delete;
@@ -123,9 +93,29 @@ void DebugRendererImpl::ClearMap(InstanceMap &ioInstances) {
     for (GeometryRef &b : to_delete) ioInstances.erase(b);
 }
 
+void DebugRendererImpl::ClearTriangles() {
+    lock_guard lock(mPrimitivesLock);
+
+    // Close any primitive that's being built
+    FinalizePrimitive();
+
+    // Move primitives to draw back to the free list
+    ClearMap(mWireframePrimitives);
+    ClearMap(mPrimitives);
+    mTempPrimitives.clear();  // These are created by FinalizePrimitive() and need to be cleared every frame
+    mNumInstances = 0;
+}
+
+void DebugRendererImpl::DrawTriangles() {}
+
 void DebugRendererImpl::DrawInstances(const Geometry *inGeometry, const Array<int> &inStartIdx) {}
 
 //----------------------------------------------------------------------------------------------------------------------
+void DebugRendererImpl::DrawLine(const Float3 &inFrom, const Float3 &inTo, ColorArg inColor) {
+    lock_guard lock(mLinesLock);
+    mLines.push_back(Line(inFrom, inTo, inColor));
+}
+
 void DebugRendererImpl::DrawLines() {}
 
 void DebugRendererImpl::ClearLines() {
@@ -134,7 +124,18 @@ void DebugRendererImpl::ClearLines() {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-void DebugRendererImpl::DrawTexts() {}
+void DebugRendererImpl::DrawText3D(Vec3Arg inPosition, const string_view &inString, ColorArg inColor, float inHeight) {
+    lock_guard lock(mTextsLock);
+    mTexts.emplace_back(inPosition, inString, inColor, inHeight);
+}
+
+void DebugRendererImpl::DrawTexts() {
+    for (const auto &text : mTexts) {
+        // todo: use ImGUI addText instead
+        LOGI(text.mText);
+    }
+}
+
 void DebugRendererImpl::ClearTexts() {
     lock_guard lock(mTextsLock);
     mTexts.clear();
