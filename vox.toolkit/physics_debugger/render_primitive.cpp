@@ -50,7 +50,7 @@ void RenderPrimitive::CreateIndexBuffer(int inNumIdx, const uint32_t* inData) {
 
     wgpu::BufferDescriptor desc;
     desc.size = uint64(inNumIdx) * sizeof(uint32);
-    desc.usage = wgpu::BufferUsage::Vertex | wgpu::BufferUsage::CopyDst;
+    desc.usage = wgpu::BufferUsage::Index | wgpu::BufferUsage::CopyDst;
     mIdxBuffer = device.CreateBuffer(&desc);
     device.GetQueue().WriteBuffer(mIdxBuffer, 0, inData, desc.size);
 

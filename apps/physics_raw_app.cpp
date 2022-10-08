@@ -25,7 +25,6 @@ public:
 
     explicit ShowScript(Entity* entity) : Script(entity) {
         inSettings.mDrawShape = true;
-        inSettings.mDrawShapeWireframe = true;
     }
 
     void onPhysicsUpdate() override {

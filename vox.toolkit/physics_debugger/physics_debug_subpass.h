@@ -32,9 +32,9 @@ namespace vox::physics_debugger {
 class PhysicsDebugSubpass final : public DebugRenderer, public Subpass {
 public:
     PhysicsDebugSubpass(RenderContext *renderContext,
-                         wgpu::TextureFormat depthStencilTextureFormat,
-                         Scene *scene,
-                         Camera *camera);
+                        wgpu::TextureFormat depthStencilTextureFormat,
+                        Scene *scene,
+                        Camera *camera);
 
     /// Implementation of DebugRenderer interface
     void DrawLine(const Float3 &inFrom, const Float3 &inTo, ColorArg inColor) override;
@@ -161,7 +161,9 @@ private:
     static void ClearMap(InstanceMap &ioInstances);
 
     /// Helper function to draw instances
-    inline void DrawInstances(const Geometry *inGeometry, const Array<int> &inStartIdx);
+    inline void DrawInstances(wgpu::RenderPassEncoder &commandEncoder,
+                              const Geometry *inGeometry,
+                              const Array<int> &inStartIdx);
 
 private:
     void DrawLines(wgpu::RenderPassEncoder &commandEncoder);
@@ -170,13 +172,13 @@ private:
 
     /// A single line segment
     struct Line {
-        Line(const Float3 &inFrom, const Float3 &inTo, Color inColor)
+        Line(const Float3 &inFrom, const Float3 &inTo, ColorArg inColor)
             : mFrom(inFrom), mFromColor(inColor), mTo(inTo), mToColor(inColor) {}
 
         Float3 mFrom;
-        Color mFromColor;
+        ColorArg mFromColor;
         Float3 mTo;
-        Color mToColor;
+        ColorArg mToColor;
     };
     /// The list of line segments
     Array<Line> mLines;
@@ -223,6 +225,7 @@ private:
 
     std::vector<wgpu::BindGroupEntry> _bindGroupEntries{};
     wgpu::BindGroupDescriptor _bindGroupDescriptor;
+    wgpu::BindGroup _bindGroup;
 
     wgpu::PipelineLayoutDescriptor _pipelineLayoutDescriptor;
     wgpu::PipelineLayout _pipelineLayout;
