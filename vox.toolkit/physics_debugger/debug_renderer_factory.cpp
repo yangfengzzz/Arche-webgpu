@@ -11,105 +11,184 @@
 #include "vox.render/material/unlit_material.h"
 #include "vox.render/mesh/mesh_manager.h"
 #include "vox.render/mesh/mesh_renderer.h"
+#include "vox.render/rendering/render_pass.h"
 #include "vox.render/scene.h"
 #include "vox.render/shader/shader_common.h"
 
 namespace vox::physics_debugger {
-DebugRendererFactory::DebugRendererFactory(Entity *entity) : _entity(entity) {
-    DebugRenderer::Initialize();
-    _line_attributes.resize(2);
-    _line_attributes[0].shaderLocation = (uint32_t)Attributes::POSITION;
-    _line_attributes[0].format = wgpu::VertexFormat::Float32x3;
-    _line_attributes[0].offset = 0;
-    _line_attributes[1].shaderLocation = (uint32_t)Attributes::COLOR_0;
-    _line_attributes[1].format = wgpu::VertexFormat::Float32x4;
-    _line_attributes[1].offset = 12;
-    _line_layouts.resize(1);
-    _line_layouts[0].attributeCount = 2;
-    _line_layouts[0].attributes = _line_attributes.data();
-    _line_layouts[0].stepMode = wgpu::VertexStepMode::Vertex;
-    _line_layouts[0].arrayStride = 28;
-    _line_material = std::make_shared<UnlitMaterial>(entity->scene()->device());
-    auto line_buffer_mesh = MeshManager::GetSingleton().LoadBufferMesh();
-    line_buffer_mesh->setVertexLayouts(_line_layouts);
-    auto lineRenderer = entity->addComponent<MeshRenderer>();
-    lineRenderer->setMesh(line_buffer_mesh);
-    lineRenderer->setMaterial(_line_material);
-    _line_primitive = new RenderPrimitive(line_buffer_mesh, wgpu::PrimitiveTopology::LineList);
+DebugRendererFactory::DebugRendererFactory(RenderContext *renderContext,
+                                           wgpu::TextureFormat depthStencilTextureFormat,
+                                           Scene *scene,
+                                           Camera *camera)
+    : Subpass(renderContext, scene, camera),
+      _depthStencilTextureFormat(depthStencilTextureFormat),
+      _vpMatrix(renderContext->device(), sizeof(Matrix4x4F), wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst) {}
 
-    _vertex_attributes.resize(4);
-    _vertex_attributes[0].shaderLocation = 0;
-    _vertex_attributes[0].format = wgpu::VertexFormat::Float32x3;
-    _vertex_attributes[0].offset = 0;
-    _vertex_attributes[1].shaderLocation = 1;
-    _vertex_attributes[1].format = wgpu::VertexFormat::Float32x3;
-    _vertex_attributes[1].offset = 12;
-    _vertex_attributes[2].shaderLocation = 2;
-    _vertex_attributes[2].format = wgpu::VertexFormat::Float32x2;
-    _vertex_attributes[2].offset = 24;
-    _vertex_attributes[3].shaderLocation = 3;
-    _vertex_attributes[3].format = wgpu::VertexFormat::Uint8x4;
-    _vertex_attributes[3].offset = 32;
+void DebugRendererFactory::prepare() {
+    {
+        _line_attributes.resize(2);
+        _line_attributes[0].shaderLocation = (uint32_t)Attributes::POSITION;
+        _line_attributes[0].format = wgpu::VertexFormat::Float32x3;
+        _line_attributes[0].offset = 0;
+        _line_attributes[1].shaderLocation = (uint32_t)Attributes::COLOR_0;
+        _line_attributes[1].format = wgpu::VertexFormat::Float32x4;
+        _line_attributes[1].offset = 12;
+        _line_layouts.resize(1);
+        _line_layouts[0].attributeCount = 2;
+        _line_layouts[0].attributes = _line_attributes.data();
+        _line_layouts[0].stepMode = wgpu::VertexStepMode::Vertex;
+        _line_layouts[0].arrayStride = 28;
 
-    _instance_attributes.resize(9);
-    _instance_attributes[0].shaderLocation = 0;
-    _instance_attributes[0].format = wgpu::VertexFormat::Float32x4;
-    _instance_attributes[0].offset = 0;
-    _instance_attributes[1].shaderLocation = 1;
-    _instance_attributes[1].format = wgpu::VertexFormat::Float32x4;
-    _instance_attributes[1].offset = 16;
-    _instance_attributes[2].shaderLocation = 2;
-    _instance_attributes[2].format = wgpu::VertexFormat::Float32x4;
-    _instance_attributes[2].offset = 32;
-    _instance_attributes[3].shaderLocation = 3;
-    _instance_attributes[3].format = wgpu::VertexFormat::Float32x4;
-    _instance_attributes[3].offset = 48;
-    _instance_attributes[4].shaderLocation = 4;
-    _instance_attributes[4].format = wgpu::VertexFormat::Float32x4;
-    _instance_attributes[4].offset = 64;
-    _instance_attributes[5].shaderLocation = 5;
-    _instance_attributes[5].format = wgpu::VertexFormat::Float32x4;
-    _instance_attributes[5].offset = 80;
-    _instance_attributes[6].shaderLocation = 6;
-    _instance_attributes[6].format = wgpu::VertexFormat::Float32x4;
-    _instance_attributes[6].offset = 96;
-    _instance_attributes[7].shaderLocation = 7;
-    _instance_attributes[7].format = wgpu::VertexFormat::Float32x4;
-    _instance_attributes[7].offset = 112;
-    _instance_attributes[8].shaderLocation = 8;
-    _instance_attributes[8].format = wgpu::VertexFormat::Uint8x4;
-    _instance_attributes[8].offset = 128;
+        _vertex_attributes.resize(4);
+        _vertex_attributes[0].shaderLocation = 0;
+        _vertex_attributes[0].format = wgpu::VertexFormat::Float32x3;
+        _vertex_attributes[0].offset = 0;
+        _vertex_attributes[1].shaderLocation = 1;
+        _vertex_attributes[1].format = wgpu::VertexFormat::Float32x3;
+        _vertex_attributes[1].offset = 12;
+        _vertex_attributes[2].shaderLocation = 2;
+        _vertex_attributes[2].format = wgpu::VertexFormat::Float32x2;
+        _vertex_attributes[2].offset = 24;
+        _vertex_attributes[3].shaderLocation = 3;
+        _vertex_attributes[3].format = wgpu::VertexFormat::Uint8x4;
+        _vertex_attributes[3].offset = 32;
 
-    _triangle_layouts.resize(2);
-    _triangle_layouts[0].attributes = _vertex_attributes.data();
-    _triangle_layouts[0].attributeCount = _vertex_attributes.size();
-    _triangle_layouts[0].stepMode = wgpu::VertexStepMode::Vertex;
-    _triangle_layouts[0].arrayStride = 36;
-    _triangle_layouts[1].attributes = _instance_attributes.data();
-    _triangle_layouts[1].attributeCount = _instance_attributes.size();
-    _triangle_layouts[1].stepMode = wgpu::VertexStepMode::Instance;
-    _triangle_layouts[1].arrayStride = 132;
+        _instance_attributes.resize(9);
+        _instance_attributes[0].shaderLocation = 0;
+        _instance_attributes[0].format = wgpu::VertexFormat::Float32x4;
+        _instance_attributes[0].offset = 0;
+        _instance_attributes[1].shaderLocation = 1;
+        _instance_attributes[1].format = wgpu::VertexFormat::Float32x4;
+        _instance_attributes[1].offset = 16;
+        _instance_attributes[2].shaderLocation = 2;
+        _instance_attributes[2].format = wgpu::VertexFormat::Float32x4;
+        _instance_attributes[2].offset = 32;
+        _instance_attributes[3].shaderLocation = 3;
+        _instance_attributes[3].format = wgpu::VertexFormat::Float32x4;
+        _instance_attributes[3].offset = 48;
+        _instance_attributes[4].shaderLocation = 4;
+        _instance_attributes[4].format = wgpu::VertexFormat::Float32x4;
+        _instance_attributes[4].offset = 64;
+        _instance_attributes[5].shaderLocation = 5;
+        _instance_attributes[5].format = wgpu::VertexFormat::Float32x4;
+        _instance_attributes[5].offset = 80;
+        _instance_attributes[6].shaderLocation = 6;
+        _instance_attributes[6].format = wgpu::VertexFormat::Float32x4;
+        _instance_attributes[6].offset = 96;
+        _instance_attributes[7].shaderLocation = 7;
+        _instance_attributes[7].format = wgpu::VertexFormat::Float32x4;
+        _instance_attributes[7].offset = 112;
+        _instance_attributes[8].shaderLocation = 8;
+        _instance_attributes[8].format = wgpu::VertexFormat::Uint8x4;
+        _instance_attributes[8].offset = 128;
+
+        _triangle_layouts.resize(2);
+        _triangle_layouts[0].attributes = _vertex_attributes.data();
+        _triangle_layouts[0].attributeCount = _vertex_attributes.size();
+        _triangle_layouts[0].stepMode = wgpu::VertexStepMode::Vertex;
+        _triangle_layouts[0].arrayStride = 36;
+        _triangle_layouts[1].attributes = _instance_attributes.data();
+        _triangle_layouts[1].attributeCount = _instance_attributes.size();
+        _triangle_layouts[1].stepMode = wgpu::VertexStepMode::Instance;
+        _triangle_layouts[1].arrayStride = 132;
+    }
+
+    _depthStencil.format = _depthStencilTextureFormat;
+    _depthStencil.depthWriteEnabled = true;
+    _depthStencil.depthCompare = wgpu::CompareFunction::LessEqual;
+    _forwardPipelineDescriptor.depthStencil = &_depthStencil;
+
+    _colorTargetState.format = _renderContext->drawableTextureFormat();
+    _fragment.targetCount = 1;
+    _fragment.targets = &_colorTargetState;
+    _forwardPipelineDescriptor.fragment = &_fragment;
+    _forwardPipelineDescriptor.label = "Physics Debugger Pipeline";
+    // BindGroupLayout
+    {
+        _bindGroupLayoutEntry.resize(1);
+        _bindGroupLayoutEntry[0].binding = 10;
+        _bindGroupLayoutEntry[0].visibility = wgpu::ShaderStage::Vertex;
+        _bindGroupLayoutEntry[0].buffer.type = wgpu::BufferBindingType::Uniform;
+        _bindGroupLayoutDescriptor.entryCount = static_cast<uint32_t>(_bindGroupLayoutEntry.size());
+        _bindGroupLayoutDescriptor.entries = _bindGroupLayoutEntry.data();
+        _bindGroupLayout = ResourceCache::GetSingleton().requestBindGroupLayout(_bindGroupLayoutDescriptor);
+    }
+    // BindGroup
+    {
+        _bindGroupEntries.resize(3);
+        _bindGroupEntries[0].binding = 10;
+        _bindGroupEntries[0].size = sizeof(Matrix4x4F);
+        _bindGroupEntries[0].buffer = _vpMatrix.handle();
+        _bindGroupDescriptor.entryCount = static_cast<uint32_t>(_bindGroupEntries.size());
+        _bindGroupDescriptor.entries = _bindGroupEntries.data();
+        _bindGroupDescriptor.layout = _bindGroupLayout;
+    }
+    // PipelineLayout
+    {
+        _pipelineLayoutDescriptor.bindGroupLayoutCount = 1;
+        _pipelineLayoutDescriptor.bindGroupLayouts = &_bindGroupLayout;
+        _pipelineLayout = ResourceCache::GetSingleton().requestPipelineLayout(_pipelineLayoutDescriptor);
+        _forwardPipelineDescriptor.layout = _pipelineLayout;
+    }
+    // Line
+    {
+        ShaderVariant variant;
+        _fragment.entryPoint = "main";
+        _fragment.module = ResourceCache::GetSingleton()
+                                   .requestShaderModule(wgpu::ShaderStage::Fragment, ShaderSource(""), variant)
+                                   .handle();
+        _forwardPipelineDescriptor.vertex.entryPoint = "main";
+        _forwardPipelineDescriptor.vertex.module =
+                ResourceCache::GetSingleton()
+                        .requestShaderModule(wgpu::ShaderStage::Vertex, ShaderSource(""), variant)
+                        .handle();
+
+        _forwardPipelineDescriptor.primitive.frontFace = wgpu::FrontFace::CW;
+        _forwardPipelineDescriptor.primitive.cullMode = wgpu::CullMode::Back;
+        _forwardPipelineDescriptor.primitive.topology = wgpu::PrimitiveTopology::LineList;
+        _forwardPipelineDescriptor.vertex.bufferCount = _line_layouts.size();
+        _forwardPipelineDescriptor.vertex.buffers = _line_layouts.data();
+        _linePipeline = ResourceCache::GetSingleton().requestPipeline(_forwardPipelineDescriptor);
+    }
+
+    // Triangle
+    {
+        ShaderVariant variant;
+        _fragment.entryPoint = "main";
+        _fragment.module = ResourceCache::GetSingleton()
+                                   .requestShaderModule(wgpu::ShaderStage::Fragment, ShaderSource(""), variant)
+                                   .handle();
+        _forwardPipelineDescriptor.vertex.entryPoint = "main";
+        _forwardPipelineDescriptor.vertex.module =
+                ResourceCache::GetSingleton()
+                        .requestShaderModule(wgpu::ShaderStage::Vertex, ShaderSource(""), variant)
+                        .handle();
+
+        _forwardPipelineDescriptor.primitive.frontFace = wgpu::FrontFace::CW;
+        _forwardPipelineDescriptor.primitive.cullMode = wgpu::CullMode::None;
+        _forwardPipelineDescriptor.primitive.topology = wgpu::PrimitiveTopology::TriangleList;
+        _forwardPipelineDescriptor.vertex.bufferCount = _triangle_layouts.size();
+        _forwardPipelineDescriptor.vertex.buffers = _triangle_layouts.data();
+        _trianglePipeline = ResourceCache::GetSingleton().requestPipeline(_forwardPipelineDescriptor);
+    }
 
     // Create instances buffer
     for (auto &n : mInstancesBuffer) {
-        auto buffer_mesh = MeshManager::GetSingleton().LoadBufferMesh();
-        buffer_mesh->setVertexLayouts(_triangle_layouts);
-        auto renderer = _entity->addComponent<MeshRenderer>();
-        renderer->setMesh(buffer_mesh);
-        renderer->setMaterial(_triangle_material);
-        n = new RenderInstances(buffer_mesh);
+        n = new RenderInstances(_scene->device());
     }
 
     // Create empty batch
     Vertex empty_vertex{Float3(0, 0, 0), Float3(1, 0, 0), Float2(0, 0), JPH::Color::sWhite};
     uint32 empty_indices[] = {0, 0, 0};
     mEmptyBatch = CreateTriangleBatch(&empty_vertex, 1, empty_indices, 3);
+
+    DebugRenderer::Initialize();
 }
 
-void DebugRendererFactory::Draw() {
-    DrawLines();
+void DebugRendererFactory::draw(wgpu::RenderPassEncoder &commandEncoder) {
+    DrawLines(commandEncoder);
     DrawTriangles();
-    DrawTexts();
+    DrawTexts(commandEncoder);
 }
 
 void DebugRendererFactory::Clear() {
@@ -168,12 +247,7 @@ void DebugRendererFactory::EnsurePrimitiveSpace(int inVtxSize) {
         FinalizePrimitive();
 
         // Create new
-        auto buffer_mesh = MeshManager::GetSingleton().LoadBufferMesh();
-        buffer_mesh->setVertexLayouts(_triangle_layouts);
-        auto renderer = _entity->addComponent<MeshRenderer>();
-        renderer->setMesh(buffer_mesh);
-        renderer->setMaterial(_triangle_material);
-        auto *primitive = new BatchImpl(buffer_mesh, wgpu::PrimitiveTopology::TriangleList);
+        auto *primitive = new BatchImpl(_scene->device(), wgpu::PrimitiveTopology::TriangleList);
         primitive->CreateVertexBuffer(cVertexBufferSize, sizeof(Vertex));
         mLockedPrimitive = primitive;
 
@@ -189,12 +263,7 @@ DebugRendererFactory::Batch DebugRendererFactory::CreateTriangleBatch(const Tria
                                                                       int inTriangleCount) {
     if (inTriangles == nullptr || inTriangleCount == 0) return mEmptyBatch;
 
-    auto buffer_mesh = MeshManager::GetSingleton().LoadBufferMesh();
-    buffer_mesh->setVertexLayouts(_triangle_layouts);
-    auto renderer = _entity->addComponent<MeshRenderer>();
-    renderer->setMesh(buffer_mesh);
-    renderer->setMaterial(_triangle_material);
-    auto *primitive = new BatchImpl(buffer_mesh, wgpu::PrimitiveTopology::TriangleList);
+    auto *primitive = new BatchImpl(_scene->device(), wgpu::PrimitiveTopology::TriangleList);
     primitive->CreateVertexBuffer(3 * inTriangleCount, sizeof(Vertex), inTriangles);
 
     return primitive;
@@ -206,12 +275,7 @@ DebugRendererFactory::Batch DebugRendererFactory::CreateTriangleBatch(const Vert
                                                                       int inIndexCount) {
     if (inVertices == nullptr || inVertexCount == 0 || inIndices == nullptr || inIndexCount == 0) return mEmptyBatch;
 
-    auto buffer_mesh = MeshManager::GetSingleton().LoadBufferMesh();
-    buffer_mesh->setVertexLayouts(_triangle_layouts);
-    auto renderer = _entity->addComponent<MeshRenderer>();
-    renderer->setMesh(buffer_mesh);
-    renderer->setMaterial(_triangle_material);
-    auto *primitive = new BatchImpl(buffer_mesh, wgpu::PrimitiveTopology::TriangleList);
+    auto *primitive = new BatchImpl(_scene->device(), wgpu::PrimitiveTopology::TriangleList);
     primitive->CreateVertexBuffer(inVertexCount, sizeof(Vertex), inVertices);
     primitive->CreateIndexBuffer(inIndexCount, inIndices);
 
@@ -281,13 +345,16 @@ void DebugRendererFactory::DrawLine(const Float3 &inFrom, const Float3 &inTo, Co
                                      float(inColor.a) / 255.f)));
 }
 
-void DebugRendererFactory::DrawLines() {
+void DebugRendererFactory::DrawLines(wgpu::RenderPassEncoder &commandEncoder) {
     JPH_PROFILE_FUNCTION()
 
     lock_guard lock(mLinesLock);
     // Draw the lines
     if (!mLines.empty()) {
-        _line_primitive->CreateVertexBuffer((int)mLines.size() * 2, sizeof(Line) / 2, mLines.data());
+        RenderPrimitive primitive(_scene->device(), wgpu::PrimitiveTopology::LineList);
+        primitive.CreateVertexBuffer((int)mLines.size() * 2, sizeof(Line) / 2);
+        commandEncoder.SetPipeline(_linePipeline);
+        primitive.Draw(commandEncoder);
     }
 }
 
@@ -305,7 +372,7 @@ void DebugRendererFactory::DrawText3D(Vec3Arg inPosition,
     mTexts.emplace_back(inPosition, inString, inColor, inHeight);
 }
 
-void DebugRendererFactory::DrawTexts() {
+void DebugRendererFactory::DrawTexts(wgpu::RenderPassEncoder &commandEncoder) {
     for (const auto &text : mTexts) {
         // todo: use ImGUI addText instead
         LOGI(text.mText)

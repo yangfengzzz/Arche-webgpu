@@ -16,7 +16,7 @@ namespace vox::physics_debugger {
 class RenderInstances : public RefTarget<RenderInstances> {
 public:
     /// Constructor
-    explicit RenderInstances(std::shared_ptr<BufferMesh> mesh) : mesh(std::move(mesh)) {}
+    explicit RenderInstances(wgpu::Device& device) : device(device) {}
     ~RenderInstances() { Clear(); }
 
     /// Erase all instance data
@@ -27,10 +27,13 @@ public:
     void UpdateBuffer();
 
     /// Draw the instances when context has been set by Renderer::BindShader
-    void Draw(RenderPrimitive *inPrimitive, int inStartInstance, int inNumInstances) const;
+    void Draw(wgpu::RenderPassEncoder& passEncoder,
+              RenderPrimitive* inPrimitive,
+              int inStartInstance,
+              int inNumInstances) const;
 
 private:
-    std::shared_ptr<BufferMesh> mesh;
+    wgpu::Device& device;
 
     std::unique_ptr<Buffer> mInstanceBuffer;
     int mInstanceBufferSize = 0;

@@ -17,4 +17,8 @@ void RenderPrimitive::CreateIndexBuffer(int inNumIdx, const uint32_t *inData) {}
 
 void RenderPrimitive::UpdateIndexBuffer() {}
 
+void RenderPrimitive::Draw(wgpu::RenderPassEncoder& passEncoder) const {
+
+}
+
 }  // namespace vox::physics_debugger

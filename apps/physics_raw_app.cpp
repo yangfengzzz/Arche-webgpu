@@ -22,11 +22,11 @@ namespace {
 class ShowScript : public Script {
 public:
     JPH::BodyID sphere_id;
-    std::unique_ptr<physics_debugger::DebugRendererFactory> _renderFactory{nullptr};
+    //std::unique_ptr<physics_debugger::DebugRendererFactory> _renderFactory{nullptr};
     JPH::BodyManager::DrawSettings inSettings;
 
     explicit ShowScript(Entity* entity) : Script(entity) {
-        _renderFactory = std::make_unique<physics_debugger::DebugRendererFactory>(entity);
+        //_renderFactory = std::make_unique<physics_debugger::DebugRendererFactory>(entity);
         inSettings.mDrawShape = true;
         inSettings.mDrawShapeWireframe = true;
     }
@@ -42,7 +42,7 @@ public:
                   << position.GetZ() << "), Velocity = (" << velocity.GetX() << ", " << velocity.GetY() << ", "
                   << velocity.GetZ() << ")" << std::endl;
 
-        PhysicsManager::GetSingleton().drawBodies(inSettings, _renderFactory.get());
+        //PhysicsManager::GetSingleton().drawBodies(inSettings, _renderFactory.get());
     }
 
 private:

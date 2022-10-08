@@ -12,6 +12,9 @@ void RenderInstances::Clear() {}
 void RenderInstances::CreateBuffer(int inNumInstances, int inInstanceSize) {}
 void RenderInstances::UpdateBuffer() {}
 
-void RenderInstances::Draw(RenderPrimitive *inPrimitive, int inStartInstance, int inNumInstances) const {}
+void RenderInstances::Draw(wgpu::RenderPassEncoder& passEncoder,
+                           RenderPrimitive* inPrimitive,
+                           int inStartInstance,
+                           int inNumInstances) const {}
 
 }  // namespace vox::physics_debugger

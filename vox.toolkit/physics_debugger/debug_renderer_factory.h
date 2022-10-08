@@ -22,16 +22,19 @@
 #include <vector>
 
 #include "vox.render/material/base_material.h"
-#include "vox.render/script.h"
+#include "vox.render/rendering/subpass.h"
 #include "vox.toolkit/physics_debugger/render_instances.h"
 
 using namespace JPH;
 
 namespace vox::physics_debugger {
 
-class DebugRendererFactory final : public DebugRenderer {
+class DebugRendererFactory final : public DebugRenderer, public Subpass {
 public:
-    explicit DebugRendererFactory(Entity *entity);
+    DebugRendererFactory(RenderContext *renderContext,
+                         wgpu::TextureFormat depthStencilTextureFormat,
+                         Scene *scene,
+                         Camera *camera);
 
     /// Implementation of DebugRenderer interface
     void DrawLine(const Float3 &inFrom, const Float3 &inTo, ColorArg inColor) override;
@@ -56,8 +59,12 @@ public:
                       ECastShadow inCastShadow,
                       EDrawMode inDrawMode) override;
 
-    /// Draw all primitives that were added
-    void Draw();
+    void draw(wgpu::RenderPassEncoder &commandEncoder) override;
+
+    /**
+     * @brief Prepares the shaders and shader variants for a subpass
+     */
+    void prepare() override;
 
     /// Clear all primitives (to be called after drawing)
     void Clear();
@@ -72,8 +79,7 @@ private:
     public:
         JPH_OVERRIDE_NEW_DELETE
 
-        BatchImpl(std::shared_ptr<BufferMesh> mesh, wgpu::PrimitiveTopology inType)
-            : RenderPrimitive(std::move(mesh), inType) {}
+        BatchImpl(wgpu::Device &device, wgpu::PrimitiveTopology inType) : RenderPrimitive(device, inType) {}
 
         void AddRef() override { RenderPrimitive::AddRef(); }
         void Release() override {
@@ -158,7 +164,7 @@ private:
     inline void DrawInstances(const Geometry *inGeometry, const Array<int> &inStartIdx);
 
 private:
-    void DrawLines();
+    void DrawLines(wgpu::RenderPassEncoder &commandEncoder);
 
     void ClearLines();
 
@@ -177,7 +183,7 @@ private:
     Mutex mLinesLock;
 
 private:
-    void DrawTexts();
+    void DrawTexts(wgpu::RenderPassEncoder &commandEncoder);
     void ClearTexts();
 
     /// A single text string
@@ -196,15 +202,32 @@ private:
     Mutex mTextsLock;
 
 private:
-    Entity *_entity{nullptr};
     std::vector<wgpu::VertexAttribute> _vertex_attributes;
     std::vector<wgpu::VertexAttribute> _instance_attributes;
     std::vector<wgpu::VertexBufferLayout> _triangle_layouts;
-    std::shared_ptr<BaseMaterial> _triangle_material{nullptr};
 
     std::vector<wgpu::VertexAttribute> _line_attributes;
     std::vector<wgpu::VertexBufferLayout> _line_layouts;
-    std::shared_ptr<BaseMaterial> _line_material{nullptr};
-    Ref<RenderPrimitive> _line_primitive;
+
+    Buffer _vpMatrix;
+    wgpu::TextureFormat _depthStencilTextureFormat;
+
+    wgpu::RenderPipelineDescriptor _forwardPipelineDescriptor;
+    wgpu::DepthStencilState _depthStencil;
+    wgpu::FragmentState _fragment;
+    wgpu::ColorTargetState _colorTargetState;
+
+    std::vector<wgpu::BindGroupLayoutEntry> _bindGroupLayoutEntry;
+    wgpu::BindGroupLayoutDescriptor _bindGroupLayoutDescriptor;
+    wgpu::BindGroupLayout _bindGroupLayout;
+
+    std::vector<wgpu::BindGroupEntry> _bindGroupEntries{};
+    wgpu::BindGroupDescriptor _bindGroupDescriptor;
+
+    wgpu::PipelineLayoutDescriptor _pipelineLayoutDescriptor;
+    wgpu::PipelineLayout _pipelineLayout;
+
+    wgpu::RenderPipeline _linePipeline;
+    wgpu::RenderPipeline _trianglePipeline;
 };
 }  // namespace vox::physics_debugger

@@ -21,8 +21,7 @@ namespace vox::physics_debugger {
 class RenderPrimitive : public RefTarget<RenderPrimitive> {
 public:
     /// Constructor
-    RenderPrimitive(std::shared_ptr<BufferMesh> mesh, wgpu::PrimitiveTopology inType)
-        : mesh(std::move(mesh)), mType(inType) {}
+    RenderPrimitive(wgpu::Device& device, wgpu::PrimitiveTopology inType) : device(device), mType(inType) {}
     ~RenderPrimitive() { Clear(); }
 
     /// Erase all primitive data
@@ -32,23 +31,26 @@ public:
     bool IsEmpty() const { return mNumVtx == 0 && mNumIdx == 0; }
 
     /// Vertex buffer management functions
-    void CreateVertexBuffer(int inNumVtx, int inVtxSize, const void *inData = nullptr);
+    void CreateVertexBuffer(int inNumVtx, int inVtxSize, const void* inData = nullptr);
     void UpdateVertexBuffer();
     int GetNumVtx() const { return mNumVtx; }
     int GetNumVtxToDraw() const { return mNumVtxToDraw; }
     void SetNumVtxToDraw(int inUsed) { mNumVtxToDraw = inUsed; }
 
     /// Index buffer management functions
-    void CreateIndexBuffer(int inNumIdx, const uint32_t *inData = nullptr);
+    void CreateIndexBuffer(int inNumIdx, const uint32_t* inData = nullptr);
     void UpdateIndexBuffer();
     int GetNumIdx() const { return mNumIdx; }
     int GetNumIdxToDraw() const { return mNumIdxToDraw; }
     void SetNumIdxToDraw(int inUsed) { mNumIdxToDraw = inUsed; }
 
+    /// Draw the primitive
+    void Draw(wgpu::RenderPassEncoder& passEncoder) const;
+
 private:
     friend class RenderInstances;
 
-    std::shared_ptr<BufferMesh> mesh;
+    wgpu::Device& device;
 
     wgpu::PrimitiveTopology mType;
 
