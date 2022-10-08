@@ -29,9 +29,9 @@ using namespace JPH;
 
 namespace vox::physics_debugger {
 
-class DebugRendererFactory final : public DebugRenderer, public Subpass {
+class PhysicsDebugSubpass final : public DebugRenderer, public Subpass {
 public:
-    DebugRendererFactory(RenderContext *renderContext,
+    PhysicsDebugSubpass(RenderContext *renderContext,
                          wgpu::TextureFormat depthStencilTextureFormat,
                          Scene *scene,
                          Camera *camera);

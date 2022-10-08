@@ -32,14 +32,18 @@ public:
 
     /// Vertex buffer management functions
     void CreateVertexBuffer(int inNumVtx, int inVtxSize, const void* inData = nullptr);
-    void UpdateVertexBuffer();
+    void ReleaseVertexBuffer();
+    void* LockVertexBuffer();
+    void UnlockVertexBuffer();
     int GetNumVtx() const { return mNumVtx; }
     int GetNumVtxToDraw() const { return mNumVtxToDraw; }
     void SetNumVtxToDraw(int inUsed) { mNumVtxToDraw = inUsed; }
 
     /// Index buffer management functions
     void CreateIndexBuffer(int inNumIdx, const uint32_t* inData = nullptr);
-    void UpdateIndexBuffer();
+    void ReleaseIndexBuffer();
+    uint32_t* LockIndexBuffer();
+    void UnlockIndexBuffer();
     int GetNumIdx() const { return mNumIdx; }
     int GetNumIdxToDraw() const { return mNumIdxToDraw; }
     void SetNumIdxToDraw(int inUsed) { mNumIdxToDraw = inUsed; }
@@ -54,15 +58,15 @@ private:
 
     wgpu::PrimitiveTopology mType;
 
-    std::unique_ptr<Buffer> mVtxBuffer;
+    wgpu::Buffer mVtxBuffer;
     int mNumVtx = 0;
     int mNumVtxToDraw = 0;
     int mVtxSize = 0;
-    bool mVtxBufferInUploadHeap = false;
+    void* vertex_mapped_resource{nullptr};
 
-    std::unique_ptr<Buffer> mIdxBuffer;
+    wgpu::Buffer mIdxBuffer;
     int mNumIdx = 0;
     int mNumIdxToDraw = 0;
-    bool mIdxBufferInUploadHeap = false;
+    uint32_t* index_mapped_resource{nullptr};
 };
 }  // namespace vox::physics_debugger

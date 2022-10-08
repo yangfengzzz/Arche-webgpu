@@ -6,8 +6,6 @@
 
 #include "apps/physics_raw_app.h"
 
-#include <Jolt/Jolt.h>
-//
 #include <Jolt/Physics/Body/BodyCreationSettings.h>
 #include <Jolt/Physics/Collision/Shape/BoxShape.h>
 #include <Jolt/Physics/Collision/Shape/SphereShape.h>
@@ -15,18 +13,17 @@
 #include "vox.render/camera.h"
 #include "vox.render/entity.h"
 #include "vox.toolkit/controls/orbit_control.h"
-#include "vox.toolkit/physics_debugger/debug_renderer_factory.h"
+#include "vox.toolkit/physics_debugger/physics_debug_subpass.h"
 
 namespace vox {
 namespace {
 class ShowScript : public Script {
 public:
     JPH::BodyID sphere_id;
-    //std::unique_ptr<physics_debugger::DebugRendererFactory> _renderFactory{nullptr};
+    physics_debugger::PhysicsDebugSubpass* _debugger{nullptr};
     JPH::BodyManager::DrawSettings inSettings;
 
     explicit ShowScript(Entity* entity) : Script(entity) {
-        //_renderFactory = std::make_unique<physics_debugger::DebugRendererFactory>(entity);
         inSettings.mDrawShape = true;
         inSettings.mDrawShapeWireframe = true;
     }
@@ -42,7 +39,7 @@ public:
                   << position.GetZ() << "), Velocity = (" << velocity.GetX() << ", " << velocity.GetY() << ", "
                   << velocity.GetZ() << ")" << std::endl;
 
-        //PhysicsManager::GetSingleton().drawBodies(inSettings, _renderFactory.get());
+        PhysicsManager::GetSingleton().drawBodies(inSettings, _debugger);
     }
 
 private:
@@ -56,6 +53,11 @@ void PhysicsRawApp::loadScene() {
     scene->ambientLight()->setDiffuseSolidColor(Color(1, 1, 1));
     auto rootEntity = scene->createRootEntity();
     auto showScript = rootEntity->addComponent<ShowScript>();
+
+    auto debugger = std::make_unique<physics_debugger::PhysicsDebugSubpass>(
+            _renderContext.get(), _depthStencilTextureFormat, scene, _mainCamera);
+    showScript->_debugger = debugger.get();
+    _renderPass->addSubpass(std::move(debugger));
 
     auto cameraEntity = rootEntity->createChild();
     cameraEntity->transform->setPosition(10, 10, 10);

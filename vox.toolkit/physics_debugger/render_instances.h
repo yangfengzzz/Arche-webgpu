@@ -24,7 +24,8 @@ public:
 
     /// Instance buffer management functions
     void CreateBuffer(int inNumInstances, int inInstanceSize);
-    void UpdateBuffer();
+    void* Lock();
+    void Unlock();
 
     /// Draw the instances when context has been set by Renderer::BindShader
     void Draw(wgpu::RenderPassEncoder& passEncoder,
@@ -35,7 +36,8 @@ public:
 private:
     wgpu::Device& device;
 
-    std::unique_ptr<Buffer> mInstanceBuffer;
+    void* mapped_ptr{nullptr};
+    wgpu::Buffer mInstanceBuffer;
     int mInstanceBufferSize = 0;
     int mInstanceSize = 0;
 };

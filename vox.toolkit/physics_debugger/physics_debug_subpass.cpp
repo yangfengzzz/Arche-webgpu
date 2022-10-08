@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.toolkit/physics_debugger/debug_renderer_factory.h"
+#include "vox.toolkit/physics_debugger/physics_debug_subpass.h"
 
 #include "vox.base/logging.h"
 #include "vox.render/camera.h"
@@ -13,7 +13,7 @@
 #include "vox.render/shader/shader_common.h"
 
 namespace vox::physics_debugger {
-DebugRendererFactory::DebugRendererFactory(RenderContext *renderContext,
+PhysicsDebugSubpass::PhysicsDebugSubpass(RenderContext *renderContext,
                                            wgpu::TextureFormat depthStencilTextureFormat,
                                            Scene *scene,
                                            Camera *camera)
@@ -21,7 +21,7 @@ DebugRendererFactory::DebugRendererFactory(RenderContext *renderContext,
       _depthStencilTextureFormat(depthStencilTextureFormat),
       _vpMatrix(renderContext->device(), sizeof(Matrix4x4F), wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst) {}
 
-void DebugRendererFactory::prepare() {
+void PhysicsDebugSubpass::prepare() {
     {
         _line_attributes.resize(2);
         _line_attributes[0].shaderLocation = (uint32_t)Attributes::POSITION;
@@ -182,19 +182,25 @@ void DebugRendererFactory::prepare() {
     DebugRenderer::Initialize();
 }
 
-void DebugRendererFactory::draw(wgpu::RenderPassEncoder &commandEncoder) {
+void PhysicsDebugSubpass::draw(wgpu::RenderPassEncoder &commandEncoder) {
+    const auto projectionMatrix = _camera->projectionMatrix();
+    auto viewMatrix = _camera->viewMatrix();
+    auto _matrix = projectionMatrix * viewMatrix;
+    std::vector<uint8_t> bytes = to_bytes(_matrix);
+    _renderContext->device().GetQueue().WriteBuffer(_vpMatrix.handle(), 0, bytes.data(), sizeof(Matrix4x4F));
+
     DrawLines(commandEncoder);
     DrawTriangles(commandEncoder);
     DrawTexts(commandEncoder);
 }
 
-void DebugRendererFactory::Clear() {
+void PhysicsDebugSubpass::Clear() {
     ClearLines();
     ClearTriangles();
     ClearTexts();
 }
 
-void DebugRendererFactory::DrawTriangle(Vec3Arg inV1, Vec3Arg inV2, Vec3Arg inV3, ColorArg inColor) {
+void PhysicsDebugSubpass::DrawTriangle(Vec3Arg inV1, Vec3Arg inV2, Vec3Arg inV3, ColorArg inColor) {
     lock_guard lock(mPrimitivesLock);
 
     EnsurePrimitiveSpace(3);
@@ -214,11 +220,14 @@ void DebugRendererFactory::DrawTriangle(Vec3Arg inV1, Vec3Arg inV2, Vec3Arg inV3
     mLockedPrimitiveBounds.Encapsulate(inV3);
 }
 
-void DebugRendererFactory::FinalizePrimitive() {
+void PhysicsDebugSubpass::FinalizePrimitive() {
     JPH_PROFILE_FUNCTION()
 
     if (mLockedPrimitive != nullptr) {
         auto *primitive = static_cast<BatchImpl *>(mLockedPrimitive.GetPtr());
+
+        // Unlock the primitive
+        primitive->UnlockVertexBuffer();
 
         // Set number of indices to draw
         primitive->SetNumVtxToDraw(int(mLockedVertices - mLockedVerticesStart));
@@ -237,7 +246,7 @@ void DebugRendererFactory::FinalizePrimitive() {
     }
 }
 
-void DebugRendererFactory::EnsurePrimitiveSpace(int inVtxSize) {
+void PhysicsDebugSubpass::EnsurePrimitiveSpace(int inVtxSize) {
     const int cVertexBufferSize = 10240;
 
     if (mLockedPrimitive == nullptr || mLockedVerticesEnd - mLockedVertices < inVtxSize) {
@@ -249,14 +258,14 @@ void DebugRendererFactory::EnsurePrimitiveSpace(int inVtxSize) {
         mLockedPrimitive = primitive;
 
         // Lock buffers
-        // mLockedVerticesStart = mLockedVertices = (Vertex *)primitive->LockVertexBuffer();
-        // mLockedVerticesEnd = mLockedVertices + cVertexBufferSize;
+        mLockedVerticesStart = mLockedVertices = (Vertex *)primitive->LockVertexBuffer();
+        mLockedVerticesEnd = mLockedVertices + cVertexBufferSize;
     }
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-DebugRendererFactory::Batch DebugRendererFactory::CreateTriangleBatch(const Triangle *inTriangles,
+PhysicsDebugSubpass::Batch PhysicsDebugSubpass::CreateTriangleBatch(const Triangle *inTriangles,
                                                                       int inTriangleCount) {
     if (inTriangles == nullptr || inTriangleCount == 0) return mEmptyBatch;
 
@@ -266,7 +275,7 @@ DebugRendererFactory::Batch DebugRendererFactory::CreateTriangleBatch(const Tria
     return primitive;
 }
 
-DebugRendererFactory::Batch DebugRendererFactory::CreateTriangleBatch(const Vertex *inVertices,
+PhysicsDebugSubpass::Batch PhysicsDebugSubpass::CreateTriangleBatch(const Vertex *inVertices,
                                                                       int inVertexCount,
                                                                       const uint32 *inIndices,
                                                                       int inIndexCount) {
@@ -279,7 +288,7 @@ DebugRendererFactory::Batch DebugRendererFactory::CreateTriangleBatch(const Vert
     return primitive;
 }
 
-void DebugRendererFactory::DrawGeometry(Mat44Arg inModelMatrix,
+void PhysicsDebugSubpass::DrawGeometry(Mat44Arg inModelMatrix,
                                         const AABox &inWorldSpaceBounds,
                                         float inLODScaleSq,
                                         ColorArg inModelColor,
@@ -304,7 +313,7 @@ void DebugRendererFactory::DrawGeometry(Mat44Arg inModelMatrix,
     }
 }
 
-void DebugRendererFactory::ClearMap(InstanceMap &ioInstances) {
+void PhysicsDebugSubpass::ClearMap(InstanceMap &ioInstances) {
     Array<GeometryRef> to_delete;
 
     for (InstanceMap::value_type &kv : ioInstances) {
@@ -317,7 +326,7 @@ void DebugRendererFactory::ClearMap(InstanceMap &ioInstances) {
     for (GeometryRef &b : to_delete) ioInstances.erase(b);
 }
 
-void DebugRendererFactory::ClearTriangles() {
+void PhysicsDebugSubpass::ClearTriangles() {
     lock_guard lock(mPrimitivesLock);
 
     // Close any primitive that's being built
@@ -330,7 +339,7 @@ void DebugRendererFactory::ClearTriangles() {
     mNumInstances = 0;
 }
 
-void DebugRendererFactory::DrawTriangles(wgpu::RenderPassEncoder &commandEncoder) {
+void PhysicsDebugSubpass::DrawTriangles(wgpu::RenderPassEncoder &commandEncoder) {
     JPH_PROFILE_FUNCTION()
 
     lock_guard lock(mPrimitivesLock);
@@ -346,7 +355,7 @@ void DebugRendererFactory::DrawTriangles(wgpu::RenderPassEncoder &commandEncoder
         // Create instances buffer
         RenderInstances *instances_buffer = mInstancesBuffer[_currentFrameIndex];
         instances_buffer->CreateBuffer(2 * mNumInstances, sizeof(Instance));
-        // auto *dst_instance = reinterpret_cast<Instance *>(instances_buffer->Lock());
+        auto *dst_instance = reinterpret_cast<Instance *>(instances_buffer->Lock());
 
         // Next write index
         int dst_index = 0;
@@ -398,7 +407,7 @@ void DebugRendererFactory::DrawTriangles(wgpu::RenderPassEncoder &commandEncoder
                         Array<int> &this_lod_indices = lod_indices[type][lod];
                         for (int i : this_lod_indices) {
                             const Instance &src_instance = instances[i];
-                            // dst_instance[dst_index++] = src_instance;
+                            dst_instance[dst_index++] = src_instance;
                         }
 
                         // Prepare for next iteration (will preserve memory)
@@ -410,7 +419,7 @@ void DebugRendererFactory::DrawTriangles(wgpu::RenderPassEncoder &commandEncoder
                 }
             }
 
-        // instances_buffer->Unlock();
+        instances_buffer->Unlock();
     }
 
     if (!mPrimitives.empty() || !mTempPrimitives.empty()) {
@@ -433,17 +442,17 @@ void DebugRendererFactory::DrawTriangles(wgpu::RenderPassEncoder &commandEncoder
     _currentFrameIndex = 1 - _currentFrameIndex;
 }
 
-void DebugRendererFactory::DrawInstances(const Geometry *inGeometry, const Array<int> &inStartIdx) {}
+void PhysicsDebugSubpass::DrawInstances(const Geometry *inGeometry, const Array<int> &inStartIdx) {}
 
 //----------------------------------------------------------------------------------------------------------------------
-void DebugRendererFactory::DrawLine(const Float3 &inFrom, const Float3 &inTo, ColorArg inColor) {
+void PhysicsDebugSubpass::DrawLine(const Float3 &inFrom, const Float3 &inTo, ColorArg inColor) {
     lock_guard lock(mLinesLock);
     mLines.push_back(Line(inFrom, inTo,
                           vox::Color(float(inColor.r) / 255.f, float(inColor.g) / 255.f, float(inColor.b) / 255.f,
                                      float(inColor.a) / 255.f)));
 }
 
-void DebugRendererFactory::DrawLines(wgpu::RenderPassEncoder &commandEncoder) {
+void PhysicsDebugSubpass::DrawLines(wgpu::RenderPassEncoder &commandEncoder) {
     JPH_PROFILE_FUNCTION()
 
     lock_guard lock(mLinesLock);
@@ -451,18 +460,21 @@ void DebugRendererFactory::DrawLines(wgpu::RenderPassEncoder &commandEncoder) {
     if (!mLines.empty()) {
         RenderPrimitive primitive(_scene->device(), wgpu::PrimitiveTopology::LineList);
         primitive.CreateVertexBuffer((int)mLines.size() * 2, sizeof(Line) / 2);
+        void *data = primitive.LockVertexBuffer();
+        memcpy(data, &mLines[0], mLines.size() * sizeof(Line));
+        primitive.UnlockVertexBuffer();
         commandEncoder.SetPipeline(_linePipeline);
         primitive.Draw(commandEncoder);
     }
 }
 
-void DebugRendererFactory::ClearLines() {
+void PhysicsDebugSubpass::ClearLines() {
     lock_guard lock(mLinesLock);
     mLines.clear();
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-void DebugRendererFactory::DrawText3D(Vec3Arg inPosition,
+void PhysicsDebugSubpass::DrawText3D(Vec3Arg inPosition,
                                       const string_view &inString,
                                       ColorArg inColor,
                                       float inHeight) {
@@ -470,14 +482,14 @@ void DebugRendererFactory::DrawText3D(Vec3Arg inPosition,
     mTexts.emplace_back(inPosition, inString, inColor, inHeight);
 }
 
-void DebugRendererFactory::DrawTexts(wgpu::RenderPassEncoder &commandEncoder) {
+void PhysicsDebugSubpass::DrawTexts(wgpu::RenderPassEncoder &commandEncoder) {
     for (const auto &text : mTexts) {
         // todo: use ImGUI addText instead
         LOGI(text.mText)
     }
 }
 
-void DebugRendererFactory::ClearTexts() {
+void PhysicsDebugSubpass::ClearTexts() {
     lock_guard lock(mTextsLock);
     mTexts.clear();
 }
