@@ -9,6 +9,7 @@
 #include <Jolt/Jolt.h>
 //
 #include <Jolt/Physics/Body/Body.h>
+#include <Jolt/Physics/Body/BodyInterface.h>
 
 #include "vox.render/component.h"
 
@@ -19,12 +20,12 @@ public:
 
     ~Collider() override;
 
-    [[nodiscard]] uint32_t getIndex() const;
+    void setShape(const std::shared_ptr<JPH::Shape>& shape);
 
-    void setShape(const JPH::Shape* inShape);
+    std::shared_ptr<JPH::Shape> getShape();
 
 public:
-    void onUpdate() {};
+    void onUpdate(){};
 
     virtual void onLateUpdate() {}
 
@@ -34,6 +35,8 @@ private:
     void _onDisable() override;
 
 private:
-    JPH::Body* _body{nullptr};
+    JPH::BodyInterface* _bodyInterface{nullptr};
+    std::shared_ptr<JPH::Shape> _shape{nullptr};
+    JPH::BodyID _bodyID;
 };
 }  // namespace vox

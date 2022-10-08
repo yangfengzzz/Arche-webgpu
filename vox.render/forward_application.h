@@ -8,13 +8,14 @@
 
 #include "vox.render/components_manager.h"
 #include "vox.render/graphics_application.h"
+#include "vox.render/image_manager.h"
 #include "vox.render/lighting/light_manager.h"
 #include "vox.render/mesh/mesh_manager.h"
 #include "vox.render/particle/particle_manager.h"
+#include "vox.render/physics/physics_manager.h"
+#include "vox.render/rendering/resource_cache.h"
 #include "vox.render/scene_manager.h"
 #include "vox.render/shader/shader_manager.h"
-#include "vox.render/rendering/resource_cache.h"
-#include "vox.render/image_manager.h"
 #include "vox.render/shadow/shadow_manager.h"
 
 namespace vox {
@@ -72,6 +73,7 @@ protected:
     std::unique_ptr<ShadowManager> _shadowManager{nullptr};
     std::unique_ptr<LightManager> _lightManager{nullptr};
     std::unique_ptr<ParticleManager> _particleManager{nullptr};
+    std::unique_ptr<PhysicsManager> _physicsManager{nullptr};
 
 protected:
     wgpu::TextureView _depthStencilTexture;

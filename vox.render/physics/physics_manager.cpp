@@ -7,7 +7,6 @@
 #include "vox.render/physics/physics_manager.h"
 
 #include <Jolt/Core/Factory.h>
-#include <Jolt/Physics/Body/BodyCreationSettings.h>
 #include <Jolt/RegisterTypes.h>
 
 #include <iostream>
@@ -34,35 +33,13 @@ void TraceImpl(const char *inFMT, ...) {
     std::cout << buffer << std::endl;
 }
 
-#ifdef JPH_ENABLE_ASSERTS
-
-// Callback for asserts, connect this to your own assert handler if you have one
-static bool AssertFailedImpl(const char *inExpression, const char *inMessage, const char *inFile, uint inLine) {
-    // Print to the TTY
-    cout << inFile << ":" << inLine << ": (" << inExpression << ") " << (inMessage != nullptr ? inMessage : "") << endl;
-
-    // Breakpoint
-    return true;
-};
-
-#endif  // JPH_ENABLE_ASSERTS
-
-// Layer that objects can be in, determines which other objects it can collide with
-// Typically you at least want to have 1 layer for moving bodies and 1 layer for static bodies, but you can have more
-// layers if you want. E.g. you could have a layer for high detail collision (which is not used by the physics
-// simulation but only if you do collision testing).
-namespace Layers {
-constexpr uint8 NON_MOVING = 0;
-constexpr uint8 MOVING = 1;
-constexpr uint8 NUM_LAYERS = 2;
-}  // namespace Layers
-
+//----------------------------------------------------------------------------------------------------------------------
 // Function that determines if two object layers can collide
 bool MyObjectCanCollide(ObjectLayer inObject1, ObjectLayer inObject2) {
     switch (inObject1) {
-        case Layers::NON_MOVING:
-            return inObject2 == Layers::MOVING;  // Non-moving only collides with moving
-        case Layers::MOVING:
+        case PhysicsManager::Layers::NON_MOVING:
+            return inObject2 == PhysicsManager::Layers::MOVING;  // Non-moving only collides with moving
+        case PhysicsManager::Layers::MOVING:
             return true;  // Moving collides with everything
         default:
             JPH_ASSERT(false);
@@ -70,6 +47,7 @@ bool MyObjectCanCollide(ObjectLayer inObject1, ObjectLayer inObject2) {
     }
 }
 
+//----------------------------------------------------------------------------------------------------------------------
 // Each broadphase layer results in a separate bounding volume tree in the broad phase. You at least want to have
 // a layer for non-moving and moving objects to avoid having to update a tree full of static objects every frame.
 // You can have a 1-on-1 mapping between object layers and broadphase layers (like in this case) but if you have
@@ -87,8 +65,8 @@ class BPLayerInterfaceImpl final : public BroadPhaseLayerInterface {
 public:
     BPLayerInterfaceImpl() {
         // Create a mapping table from object to broad phase layer
-        mObjectToBroadPhase[Layers::NON_MOVING] = BroadPhaseLayers::NON_MOVING;
-        mObjectToBroadPhase[Layers::MOVING] = BroadPhaseLayers::MOVING;
+        mObjectToBroadPhase[PhysicsManager::Layers::NON_MOVING] = BroadPhaseLayers::NON_MOVING;
+        mObjectToBroadPhase[PhysicsManager::Layers::MOVING] = BroadPhaseLayers::MOVING;
     }
 
     [[nodiscard]] uint GetNumBroadPhaseLayers() const override { return BroadPhaseLayers::NUM_LAYERS; }
@@ -98,30 +76,16 @@ public:
         return mObjectToBroadPhase[inLayer];
     }
 
-#if defined(JPH_EXTERNAL_PROFILE) || defined(JPH_PROFILE_ENABLED)
-    virtual const char *GetBroadPhaseLayerName(BroadPhaseLayer inLayer) const override {
-        switch ((BroadPhaseLayer::Type)inLayer) {
-            case (BroadPhaseLayer::Type)BroadPhaseLayers::NON_MOVING:
-                return "NON_MOVING";
-            case (BroadPhaseLayer::Type)BroadPhaseLayers::MOVING:
-                return "MOVING";
-            default:
-                JPH_ASSERT(false);
-                return "INVALID";
-        }
-    }
-#endif  // JPH_EXTERNAL_PROFILE || JPH_PROFILE_ENABLED
-
 private:
-    BroadPhaseLayer mObjectToBroadPhase[Layers::NUM_LAYERS]{};
+    BroadPhaseLayer mObjectToBroadPhase[PhysicsManager::Layers::NUM_LAYERS]{};
 };
 
 // Function that determines if two broadphase layers can collide
 bool MyBroadPhaseCanCollide(ObjectLayer inLayer1, BroadPhaseLayer inLayer2) {
     switch (inLayer1) {
-        case Layers::NON_MOVING:
+        case PhysicsManager::Layers::NON_MOVING:
             return inLayer2 == BroadPhaseLayers::MOVING;
-        case Layers::MOVING:
+        case PhysicsManager::Layers::MOVING:
             return true;
         default:
             JPH_ASSERT(false);
@@ -129,7 +93,7 @@ bool MyBroadPhaseCanCollide(ObjectLayer inLayer1, BroadPhaseLayer inLayer2) {
     }
 }
 
-// An example contact listener
+//----------------------------------------------------------------------------------------------------------------------
 class ContactListenerWrapper : public ContactListener {
 public:
     std::function<void(const JPH::Body &inBody1, const JPH::Body &inBody2, const JPH::ContactManifold &inManifold)>
@@ -175,6 +139,8 @@ public:
 };
 
 }  // namespace
+
+//----------------------------------------------------------------------------------------------------------------------
 PhysicsManager *PhysicsManager::GetSingletonPtr() { return ms_singleton; }
 
 PhysicsManager &PhysicsManager::GetSingleton() {
@@ -190,35 +156,12 @@ PhysicsManager::PhysicsManager()
 
     // Install callbacks
     Trace = TraceImpl;
-    JPH_IF_ENABLE_ASSERTS(AssertFailed = AssertFailedImpl;)
 
     // Create a factory
     Factory::sInstance = new Factory();
 
     // Register all Jolt physics types
     RegisterTypes();
-
-    // This is the max amount of rigid bodies that you can add to the physics system. If you try to add more you'll get
-    // an error. Note: This value is low because this is a simple test. For a real project use something in the order of
-    // 65536.
-    const uint cMaxBodies = 1024;
-
-    // This determines how many mutexes to allocate to protect rigid bodies from concurrent access. Set it to 0 for the
-    // default settings.
-    const uint cNumBodyMutexes = 0;
-
-    // This is the max amount of body pairs that can be queued at any time (the broad phase will detect overlapping
-    // body pairs based on their bounding boxes and will insert them into a queue for the narrowphase). If you make this
-    // buffer too small the queue will fill up and the broad phase jobs will start to do narrow phase work. This is
-    // slightly less efficient. Note: This value is low because this is a simple test. For a real project use something
-    // in the order of 65536.
-    const uint cMaxBodyPairs = 1024;
-
-    // This is the maximum size of the contact constraint buffer. If more contacts (collisions between bodies) are
-    // detected than this number then these contacts will be ignored and bodies will start interpenetrating / fall
-    // through the world. Note: This value is low because this is a simple test. For a real project use something in the
-    // order of 10240.
-    const uint cMaxContactConstraints = 1024;
 
     // Create mapping table from object layer to broadphase layer
     // Note: As this is an interface, PhysicsSystem will take a reference to this so this instance needs to stay alive!
@@ -230,8 +173,8 @@ PhysicsManager::PhysicsManager()
 
     _on_contact_enter = [&](const JPH::Body &inBody1, const JPH::Body &inBody2,
                             const JPH::ContactManifold &inManifold) {
-        const auto kShape1 = _physical_objects_map[inBody1.GetID().GetIndex()];
-        const auto kShape2 = _physical_objects_map[inBody2.GetID().GetIndex()];
+        const auto kShape1 = reinterpret_cast<Collider *>(inBody1.GetUserData());
+        const auto kShape2 = reinterpret_cast<Collider *>(inBody2.GetUserData());
 
         auto scripts = kShape1->entity()->scripts();
         for (const auto &script : scripts) {
@@ -245,8 +188,8 @@ PhysicsManager::PhysicsManager()
     };
 
     _on_contact_stay = [&](const JPH::Body &inBody1, const JPH::Body &inBody2, const JPH::ContactManifold &inManifold) {
-        const auto kShape1 = _physical_objects_map[inBody1.GetID().GetIndex()];
-        const auto kShape2 = _physical_objects_map[inBody2.GetID().GetIndex()];
+        const auto kShape1 = reinterpret_cast<Collider *>(inBody1.GetUserData());
+        const auto kShape2 = reinterpret_cast<Collider *>(inBody2.GetUserData());
 
         auto scripts = kShape1->entity()->scripts();
         for (const auto &script : scripts) {
@@ -260,8 +203,9 @@ PhysicsManager::PhysicsManager()
     };
 
     _on_contact_exit = [&](const JPH::SubShapeIDPair &inSubShapePair) {
-        const auto kShape1 = _physical_objects_map[inSubShapePair.GetBody1ID().GetIndex()];
-        const auto kShape2 = _physical_objects_map[inSubShapePair.GetBody2ID().GetIndex()];
+        const JPH::BodyInterface &interface = _physics_system.GetBodyInterface();
+        const auto kShape1 = reinterpret_cast<Collider *>(interface.GetUserData(inSubShapePair.GetBody1ID()));
+        const auto kShape2 = reinterpret_cast<Collider *>(interface.GetUserData(inSubShapePair.GetBody2ID()));
 
         auto scripts = kShape1->entity()->scripts();
         for (const auto &script : scripts) {
@@ -300,25 +244,18 @@ void PhysicsManager::setPhysicsSettings(const JPH::PhysicsSettings &inSettings) 
 
 const JPH::PhysicsSettings &PhysicsManager::getPhysicsSettings() const { return _physics_system.GetPhysicsSettings(); }
 
+JPH::BodyInterface &PhysicsManager::getBodyInterface() { return _physics_system.GetBodyInterface(); }
+
+const JPH::BodyInterface &PhysicsManager::GetBodyInterface() const { return _physics_system.GetBodyInterface(); }
+
 //----------------------------------------------------------------------------------------------------------------------
-void PhysicsManager::addCollider(Collider *collider) { _physical_objects_map[collider->getIndex()] = collider; }
+void PhysicsManager::addCollider(Collider *collider) { _colliders.push_back(collider); }
 
-void PhysicsManager::removeCollider(Collider *collider) { _physical_objects_map.erase(collider->getIndex()); }
-
-JPH::Body *PhysicsManager::createBody(const JPH::Shape *inShape) {
-    JPH::BodyCreationSettings settings(inShape, JPH::Vec3(0.0f, -1.0f, 0.0f), JPH::Quat::sIdentity(),
-                                       JPH::EMotionType::Static, Layers::NON_MOVING);
-    auto body = _physics_system.GetBodyInterface().CreateBody(settings);
-    _physics_system.GetBodyInterface().AddBody(body->GetID(), EActivation::DontActivate);
-    return body;
-}
-
-void PhysicsManager::removeBody(const JPH::BodyID &id) {
-    // Remove the sphere from the physics system. Note that the sphere itself keeps all of its state and can be re-added
-    // at any time.
-    _physics_system.GetBodyInterface().RemoveBody(id);
-    // Destroy the sphere. After this the sphere ID is no longer valid.
-    _physics_system.GetBodyInterface().DestroyBody(id);
+void PhysicsManager::removeCollider(Collider *collider) {
+    auto iter = std::find(_colliders.begin(), _colliders.end(), collider);
+    if (iter != _colliders.end()) {
+        _colliders.erase(iter);
+    }
 }
 
 void PhysicsManager::update(float delta_time) {
@@ -337,14 +274,14 @@ void PhysicsManager::update(float delta_time) {
 }
 
 void PhysicsManager::callColliderOnUpdate() {
-    for (auto &collider : _physical_objects_map) {
-        collider.second->onUpdate();
+    for (auto &collider : _colliders) {
+        collider->onUpdate();
     }
 }
 
 void PhysicsManager::callColliderOnLateUpdate() {
-    for (auto &collider : _physical_objects_map) {
-        collider.second->onLateUpdate();
+    for (auto &collider : _colliders) {
+        collider->onLateUpdate();
     }
 }
 

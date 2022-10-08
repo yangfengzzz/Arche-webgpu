@@ -26,6 +26,12 @@ public:
 
     static PhysicsManager *GetSingletonPtr();
 
+    // Layer that objects can be in, determines which other objects it can collide with
+    // Typically you at least want to have 1 layer for moving bodies and 1 layer for static bodies, but you can have
+    // more layers if you want. E.g. you could have a layer for high detail collision (which is not used by the physics
+    // simulation but only if you do collision testing).
+    enum Layers : uint8_t { NON_MOVING = 0, MOVING = 1, NUM_LAYERS = 2 };
+
     /** The fixed time step in seconds at which physics are performed. */
     static constexpr float fixed_time_step_ = 1.f / 60;
 
@@ -39,6 +45,28 @@ public:
     // If you want more accurate step results you can do multiple sub steps within a collision step. Usually you would
     // set this to 1.
     static constexpr int integration_sub_steps = 1;
+
+    // This is the max amount of rigid bodies that you can add to the physics system. If you try to add more you'll get
+    // an error. Note: This value is low because this is a simple test. For a real project use something in the order of
+    // 65536.
+    static constexpr uint cMaxBodies = 1024;
+
+    // This determines how many mutexes to allocate to protect rigid bodies from concurrent access. Set it to 0 for the
+    // default settings.
+    static constexpr uint cNumBodyMutexes = 0;
+
+    // This is the max amount of body pairs that can be queued at any time (the broad phase will detect overlapping
+    // body pairs based on their bounding boxes and will insert them into a queue for the narrowphase). If you make this
+    // buffer too small the queue will fill up and the broad phase jobs will start to do narrow phase work. This is
+    // slightly less efficient. Note: This value is low because this is a simple test. For a real project use something
+    // in the order of 65536.
+    static constexpr uint cMaxBodyPairs = 1024;
+
+    // This is the maximum size of the contact constraint buffer. If more contacts (collisions between bodies) are
+    // detected than this number then these contacts will be ignored and bodies will start interpenetrating / fall
+    // through the world. Note: This value is low because this is a simple test. For a real project use something in the
+    // order of 10240.
+    static constexpr uint cMaxContactConstraints = 1024;
 
     /// Set gravity value
     void setGravity(const Vector3F &inGravity);
@@ -54,11 +82,11 @@ public:
 
     ~PhysicsManager();
 
+    JPH::BodyInterface &getBodyInterface();
+
+    const JPH::BodyInterface &GetBodyInterface() const;
+
 public:
-    JPH::Body *createBody(const JPH::Shape *inShape);
-
-    void removeBody(const JPH::BodyID &id);
-
     /**
      * Add collider into the manager.
      * @param collider - StaticCollider or DynamicCollider.
@@ -88,6 +116,7 @@ public:
 private:
     float rest_time_ = 0;
     std::vector<Script *> _on_physics_update_scripts;
+    std::vector<Collider *> _colliders;
 
     std::function<void(const JPH::Body &inBody1, const JPH::Body &inBody2, const JPH::ContactManifold &inManifold)>
             _on_contact_enter;
@@ -95,8 +124,6 @@ private:
             _on_contact_stay;
     std::function<void(const JPH::SubShapeIDPair &inSubShapePair)> _on_contact_exit;
     std::unique_ptr<JPH::ContactListener> _contactListener{nullptr};
-
-    std::unordered_map<uint32_t, Collider *> _physical_objects_map;
 
     JPH::PhysicsSystem _physics_system;
     // We need a temp allocator for temporary allocations during the physics update. We're
