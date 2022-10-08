@@ -132,12 +132,12 @@ void PhysicsDebugSubpass::prepare() {
         ShaderVariant variant;
         _fragment.entryPoint = "main";
         _fragment.module = ResourceCache::GetSingleton()
-                                   .requestShaderModule(wgpu::ShaderStage::Fragment, ShaderSource(""), variant)
+                                   .requestShaderModule(wgpu::ShaderStage::Fragment, ShaderSource("toolkit/physics_debugger/line.vert"), variant)
                                    .handle();
         _forwardPipelineDescriptor.vertex.entryPoint = "main";
         _forwardPipelineDescriptor.vertex.module =
                 ResourceCache::GetSingleton()
-                        .requestShaderModule(wgpu::ShaderStage::Vertex, ShaderSource(""), variant)
+                        .requestShaderModule(wgpu::ShaderStage::Vertex, ShaderSource("toolkit/physics_debugger/line.frag"), variant)
                         .handle();
 
         _forwardPipelineDescriptor.primitive.frontFace = wgpu::FrontFace::CW;
@@ -153,12 +153,12 @@ void PhysicsDebugSubpass::prepare() {
         ShaderVariant variant;
         _fragment.entryPoint = "main";
         _fragment.module = ResourceCache::GetSingleton()
-                                   .requestShaderModule(wgpu::ShaderStage::Fragment, ShaderSource(""), variant)
+                                   .requestShaderModule(wgpu::ShaderStage::Fragment, ShaderSource("toolkit/physics_debugger/triangle.vert"), variant)
                                    .handle();
         _forwardPipelineDescriptor.vertex.entryPoint = "main";
         _forwardPipelineDescriptor.vertex.module =
                 ResourceCache::GetSingleton()
-                        .requestShaderModule(wgpu::ShaderStage::Vertex, ShaderSource(""), variant)
+                        .requestShaderModule(wgpu::ShaderStage::Vertex, ShaderSource("toolkit/physics_debugger/triangle.frag"), variant)
                         .handle();
 
         _forwardPipelineDescriptor.primitive.frontFace = wgpu::FrontFace::CW;
