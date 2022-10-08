@@ -13,6 +13,7 @@
 #include <Jolt/Core/JobSystemThreadPool.h>
 #include <Jolt/Physics/PhysicsSystem.h>
 
+#include "vox.math/vector3.h"
 #include "vox.render/singleton.h"
 
 namespace vox {
@@ -39,13 +40,24 @@ public:
     // set this to 1.
     static constexpr int integration_sub_steps = 1;
 
+    /// Set gravity value
+    void setGravity(const Vector3F &inGravity);
+
+    Vector3F getGravity() const;
+
+    /// Control the main constants of the physics simulation
+    void setPhysicsSettings(const JPH::PhysicsSettings &inSettings);
+
+    const JPH::PhysicsSettings &getPhysicsSettings() const;
+
     PhysicsManager();
 
     ~PhysicsManager();
 
+public:
     JPH::Body *createBody(const JPH::Shape *inShape);
 
-    void removeBody(const JPH::BodyID& id);
+    void removeBody(const JPH::BodyID &id);
 
     /**
      * Add collider into the manager.

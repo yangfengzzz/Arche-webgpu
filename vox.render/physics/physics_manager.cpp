@@ -286,6 +286,21 @@ PhysicsManager::~PhysicsManager() {
     _contactListener.reset();
 }
 
+void PhysicsManager::setGravity(const Vector3F &inGravity) {
+    _physics_system.SetGravity({inGravity.x, inGravity.y, inGravity.z});
+}
+Vector3F PhysicsManager::getGravity() const {
+    auto gravity = _physics_system.GetGravity();
+    return {gravity.GetX(), gravity.GetY(), gravity.GetZ()};
+}
+
+void PhysicsManager::setPhysicsSettings(const JPH::PhysicsSettings &inSettings) {
+    _physics_system.SetPhysicsSettings(inSettings);
+}
+
+const JPH::PhysicsSettings &PhysicsManager::getPhysicsSettings() const { return _physics_system.GetPhysicsSettings(); }
+
+//----------------------------------------------------------------------------------------------------------------------
 void PhysicsManager::addCollider(Collider *collider) { _physical_objects_map[collider->getIndex()] = collider; }
 
 void PhysicsManager::removeCollider(Collider *collider) { _physical_objects_map.erase(collider->getIndex()); }
