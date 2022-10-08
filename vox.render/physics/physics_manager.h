@@ -86,6 +86,22 @@ public:
 
     [[nodiscard]] const JPH::BodyInterface &GetBodyInterface() const;
 
+#ifdef JPH_DEBUG_RENDERER
+    /// Draw the state of the bodies (debugging purposes)
+    void drawBodies(const JPH::BodyManager::DrawSettings &inSettings,
+                    JPH::DebugRenderer *inRenderer,
+                    const JPH::BodyDrawFilter *inBodyFilter = nullptr);
+
+    /// Draw the constraints only (debugging purposes)
+    void drawConstraints(JPH::DebugRenderer *inRenderer);
+
+    /// Draw the constraint limits only (debugging purposes)
+    void drawConstraintLimits(JPH::DebugRenderer *inRenderer);
+
+    /// Draw the constraint reference frames only (debugging purposes)
+    void drawConstraintReferenceFrame(JPH::DebugRenderer *inRenderer);
+#endif  // JPH_DEBUG_RENDERER
+
 public:
     /**
      * Add collider into the manager.

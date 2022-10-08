@@ -15,14 +15,20 @@
 #include "vox.render/camera.h"
 #include "vox.render/entity.h"
 #include "vox.toolkit/controls/orbit_control.h"
+#include "vox.toolkit/physics_debugger/debug_renderer_factory.h"
 
 namespace vox {
 namespace {
 class ShowScript : public Script {
 public:
     JPH::BodyID sphere_id;
+    std::unique_ptr<physics_debugger::DebugRendererFactory> _renderFactory{nullptr};
+    JPH::BodyManager::DrawSettings inSettings;
 
-    explicit ShowScript(Entity* entity) : Script(entity) {}
+    explicit ShowScript(Entity* entity) : Script(entity) {
+        _renderFactory = std::make_unique<physics_debugger::DebugRendererFactory>(entity);
+        inSettings.mDrawShape = true;
+    }
 
     void onPhysicsUpdate() override {
         step++;
@@ -34,6 +40,8 @@ public:
         std::cout << "Step " << step << ": Position = (" << position.GetX() << ", " << position.GetY() << ", "
                   << position.GetZ() << "), Velocity = (" << velocity.GetX() << ", " << velocity.GetY() << ", "
                   << velocity.GetZ() << ")" << std::endl;
+
+        PhysicsManager::GetSingleton().drawBodies(inSettings, _renderFactory.get());
     }
 
 private:

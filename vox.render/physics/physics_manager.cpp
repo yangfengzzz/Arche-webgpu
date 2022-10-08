@@ -326,4 +326,22 @@ void PhysicsManager::removeOnPhysicsUpdateScript(Script *script) {
     }
 }
 
+#ifdef JPH_DEBUG_RENDERER
+void PhysicsManager::drawBodies(const JPH::BodyManager::DrawSettings &inSettings,
+                                JPH::DebugRenderer *inRenderer,
+                                const JPH::BodyDrawFilter *inBodyFilter) {
+    _physics_system->DrawBodies(inSettings, inRenderer, inBodyFilter);
+}
+
+void PhysicsManager::drawConstraints(JPH::DebugRenderer *inRenderer) { _physics_system->DrawConstraints(inRenderer); }
+
+void PhysicsManager::drawConstraintLimits(JPH::DebugRenderer *inRenderer) {
+    _physics_system->DrawConstraintLimits(inRenderer);
+}
+
+void PhysicsManager::drawConstraintReferenceFrame(JPH::DebugRenderer *inRenderer) {
+    _physics_system->DrawConstraintReferenceFrame(inRenderer);
+}
+#endif  // JPH_DEBUG_RENDERER
+
 }  // namespace vox

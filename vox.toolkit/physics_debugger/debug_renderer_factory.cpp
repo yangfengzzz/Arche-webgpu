@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.toolkit/physics_debugger/debug_renderer_impl.h"
+#include "vox.toolkit/physics_debugger/debug_renderer_factory.h"
 
 #include "vox.base/logging.h"
 #include "vox.render/entity.h"
@@ -15,9 +15,7 @@
 #include "vox.render/shader/shader_common.h"
 
 namespace vox::physics_debugger {
-DebugRendererImpl::DebugRendererImpl(Entity *entity) : Script(entity) {}
-
-void DebugRendererImpl::onAwake() {
+DebugRendererFactory::DebugRendererFactory(Entity *entity) : _entity(entity) {
     _line_attributes.resize(2);
     _line_attributes[0].shaderLocation = (uint32_t)Attributes::POSITION;
     _line_attributes[0].format = wgpu::VertexFormat::Float32x3;
@@ -30,10 +28,10 @@ void DebugRendererImpl::onAwake() {
     _line_layouts[0].attributes = _line_attributes.data();
     _line_layouts[0].stepMode = wgpu::VertexStepMode::Vertex;
     _line_layouts[0].arrayStride = 28;
-    _line_material = std::make_shared<UnlitMaterial>(scene()->device());
+    _line_material = std::make_shared<UnlitMaterial>(entity->scene()->device());
     _line_buffer_mesh = MeshManager::GetSingleton().LoadBufferMesh();
     _line_buffer_mesh->setVertexLayouts(_line_layouts);
-    auto lineRenderer = entity()->addComponent<MeshRenderer>();
+    auto lineRenderer = entity->addComponent<MeshRenderer>();
     lineRenderer->setMesh(_line_buffer_mesh);
     lineRenderer->setMaterial(_line_material);
 
@@ -91,19 +89,19 @@ void DebugRendererImpl::onAwake() {
     _triangle_layouts[1].arrayStride = 132;
 }
 
-void DebugRendererImpl::onUpdate(float deltaTime) {
+void DebugRendererFactory::Draw() {
     DrawLines();
     DrawTriangles();
     DrawTexts();
 }
 
-void DebugRendererImpl::Clear() {
+void DebugRendererFactory::Clear() {
     ClearLines();
     ClearTriangles();
     ClearTexts();
 }
 
-void DebugRendererImpl::DrawTriangle(Vec3Arg inV1, Vec3Arg inV2, Vec3Arg inV3, ColorArg inColor) {
+void DebugRendererFactory::DrawTriangle(Vec3Arg inV1, Vec3Arg inV2, Vec3Arg inV3, ColorArg inColor) {
     lock_guard lock(mPrimitivesLock);
 
     EnsurePrimitiveSpace(3);
@@ -123,27 +121,28 @@ void DebugRendererImpl::DrawTriangle(Vec3Arg inV1, Vec3Arg inV2, Vec3Arg inV3, C
     mLockedPrimitiveBounds.Encapsulate(inV3);
 }
 
-void DebugRendererImpl::FinalizePrimitive() {}
+void DebugRendererFactory::FinalizePrimitive() {}
 
-void DebugRendererImpl::EnsurePrimitiveSpace(int inVtxSize) {}
+void DebugRendererFactory::EnsurePrimitiveSpace(int inVtxSize) {}
 
 //----------------------------------------------------------------------------------------------------------------------
 
-DebugRendererImpl::Batch DebugRendererImpl::CreateTriangleBatch(const Triangle *inTriangles, int inTriangleCount) {}
+DebugRendererFactory::Batch DebugRendererFactory::CreateTriangleBatch(const Triangle *inTriangles,
+                                                                      int inTriangleCount) {}
 
-DebugRendererImpl::Batch DebugRendererImpl::CreateTriangleBatch(const Vertex *inVertices,
-                                                                int inVertexCount,
-                                                                const uint32 *inIndices,
-                                                                int inIndexCount) {}
+DebugRendererFactory::Batch DebugRendererFactory::CreateTriangleBatch(const Vertex *inVertices,
+                                                                      int inVertexCount,
+                                                                      const uint32 *inIndices,
+                                                                      int inIndexCount) {}
 
-void DebugRendererImpl::DrawGeometry(Mat44Arg inModelMatrix,
-                                     const AABox &inWorldSpaceBounds,
-                                     float inLODScaleSq,
-                                     ColorArg inModelColor,
-                                     const GeometryRef &inGeometry,
-                                     ECullMode inCullMode,
-                                     ECastShadow inCastShadow,
-                                     EDrawMode inDrawMode) {
+void DebugRendererFactory::DrawGeometry(Mat44Arg inModelMatrix,
+                                        const AABox &inWorldSpaceBounds,
+                                        float inLODScaleSq,
+                                        ColorArg inModelColor,
+                                        const GeometryRef &inGeometry,
+                                        ECullMode inCullMode,
+                                        ECastShadow inCastShadow,
+                                        EDrawMode inDrawMode) {
     lock_guard lock(mPrimitivesLock);
 
     // Our pixel shader uses alpha only to turn on/off shadows
@@ -162,7 +161,7 @@ void DebugRendererImpl::DrawGeometry(Mat44Arg inModelMatrix,
     }
 }
 
-void DebugRendererImpl::ClearMap(InstanceMap &ioInstances) {
+void DebugRendererFactory::ClearMap(InstanceMap &ioInstances) {
     Array<GeometryRef> to_delete;
 
     for (InstanceMap::value_type &kv : ioInstances) {
@@ -175,7 +174,7 @@ void DebugRendererImpl::ClearMap(InstanceMap &ioInstances) {
     for (GeometryRef &b : to_delete) ioInstances.erase(b);
 }
 
-void DebugRendererImpl::ClearTriangles() {
+void DebugRendererFactory::ClearTriangles() {
     lock_guard lock(mPrimitivesLock);
 
     // Close any primitive that's being built
@@ -188,45 +187,48 @@ void DebugRendererImpl::ClearTriangles() {
     mNumInstances = 0;
 }
 
-void DebugRendererImpl::DrawTriangles() {}
+void DebugRendererFactory::DrawTriangles() {}
 
-void DebugRendererImpl::DrawInstances(const Geometry *inGeometry, const Array<int> &inStartIdx) {}
+void DebugRendererFactory::DrawInstances(const Geometry *inGeometry, const Array<int> &inStartIdx) {}
 
 //----------------------------------------------------------------------------------------------------------------------
-void DebugRendererImpl::DrawLine(const Float3 &inFrom, const Float3 &inTo, ColorArg inColor) {
+void DebugRendererFactory::DrawLine(const Float3 &inFrom, const Float3 &inTo, ColorArg inColor) {
     lock_guard lock(mLinesLock);
     mLines.push_back(Line(inFrom, inTo,
                           vox::Color(float(inColor.r) / 255.f, float(inColor.g) / 255.f, float(inColor.b) / 255.f,
                                      float(inColor.a) / 255.f)));
 }
 
-void DebugRendererImpl::DrawLines() {
-    _line_buffer = std::make_unique<Buffer>(scene()->device(), mLines.data(), mLines.size() * sizeof(Line),
+void DebugRendererFactory::DrawLines() {
+    _line_buffer = std::make_unique<Buffer>(_entity->scene()->device(), mLines.data(), mLines.size() * sizeof(Line),
                                             wgpu::BufferUsage::Vertex | wgpu::BufferUsage::CopyDst);
     _line_buffer_mesh->clearSubMesh();
     _line_buffer_mesh->addSubMesh(0, mLines.size() * 2, wgpu::PrimitiveTopology::LineList);
     _line_buffer_mesh->setVertexBufferBinding(*_line_buffer, 0);
 }
 
-void DebugRendererImpl::ClearLines() {
+void DebugRendererFactory::ClearLines() {
     lock_guard lock(mLinesLock);
     mLines.clear();
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-void DebugRendererImpl::DrawText3D(Vec3Arg inPosition, const string_view &inString, ColorArg inColor, float inHeight) {
+void DebugRendererFactory::DrawText3D(Vec3Arg inPosition,
+                                      const string_view &inString,
+                                      ColorArg inColor,
+                                      float inHeight) {
     lock_guard lock(mTextsLock);
     mTexts.emplace_back(inPosition, inString, inColor, inHeight);
 }
 
-void DebugRendererImpl::DrawTexts() {
+void DebugRendererFactory::DrawTexts() {
     for (const auto &text : mTexts) {
         // todo: use ImGUI addText instead
         LOGI(text.mText)
     }
 }
 
-void DebugRendererImpl::ClearTexts() {
+void DebugRendererFactory::ClearTexts() {
     lock_guard lock(mTextsLock);
     mTexts.clear();
 }

@@ -27,9 +27,9 @@ using namespace JPH;
 
 namespace vox::physics_debugger {
 
-class DebugRendererImpl final : public DebugRenderer, public Script {
+class DebugRendererFactory final : public DebugRenderer {
 public:
-    explicit DebugRendererImpl(Entity *entity);
+    explicit DebugRendererFactory(Entity *entity);
 
     /// Implementation of DebugRenderer interface
     void DrawLine(const Float3 &inFrom, const Float3 &inTo, ColorArg inColor) override;
@@ -54,10 +54,8 @@ public:
                       ECastShadow inCastShadow,
                       EDrawMode inDrawMode) override;
 
-    void onAwake() override;
-
     /// Draw all primitives that were added
-    void onUpdate(float deltaTime) override;
+    void Draw();
 
     /// Clear all primitives (to be called after drawing)
     void Clear();
@@ -181,6 +179,7 @@ private:
     Mutex mTextsLock;
 
 private:
+    Entity* _entity{nullptr};
     std::vector<wgpu::VertexAttribute> _vertex_attributes;
     std::vector<wgpu::VertexAttribute> _instance_attributes;
     std::vector<wgpu::VertexBufferLayout> _triangle_layouts;
