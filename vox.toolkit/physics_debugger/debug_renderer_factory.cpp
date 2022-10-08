@@ -89,6 +89,21 @@ DebugRendererFactory::DebugRendererFactory(Entity *entity) : _entity(entity) {
     _triangle_layouts[1].attributeCount = _instance_attributes.size();
     _triangle_layouts[1].stepMode = wgpu::VertexStepMode::Instance;
     _triangle_layouts[1].arrayStride = 132;
+
+    // Create instances buffer
+    for (auto &n : mInstancesBuffer) {
+        auto buffer_mesh = MeshManager::GetSingleton().LoadBufferMesh();
+        buffer_mesh->setVertexLayouts(_triangle_layouts);
+        auto renderer = _entity->addComponent<MeshRenderer>();
+        renderer->setMesh(buffer_mesh);
+        renderer->setMaterial(_triangle_material);
+        n = new RenderInstances(buffer_mesh);
+    }
+
+    // Create empty batch
+    Vertex empty_vertex{Float3(0, 0, 0), Float3(1, 0, 0), Float2(0, 0), JPH::Color::sWhite};
+    uint32 empty_indices[] = {0, 0, 0};
+    mEmptyBatch = CreateTriangleBatch(&empty_vertex, 1, empty_indices, 3);
 }
 
 void DebugRendererFactory::Draw() {
@@ -123,19 +138,85 @@ void DebugRendererFactory::DrawTriangle(Vec3Arg inV1, Vec3Arg inV2, Vec3Arg inV3
     mLockedPrimitiveBounds.Encapsulate(inV3);
 }
 
-void DebugRendererFactory::FinalizePrimitive() {}
+void DebugRendererFactory::FinalizePrimitive() {
+    JPH_PROFILE_FUNCTION()
 
-void DebugRendererFactory::EnsurePrimitiveSpace(int inVtxSize) {}
+    if (mLockedPrimitive != nullptr) {
+        auto *primitive = static_cast<BatchImpl *>(mLockedPrimitive.GetPtr());
+
+        // Set number of indices to draw
+        primitive->SetNumVtxToDraw(int(mLockedVertices - mLockedVerticesStart));
+
+        // Add to draw list
+        mTempPrimitives[new Geometry(mLockedPrimitive, mLockedPrimitiveBounds)].mInstances.push_back(
+                {Mat44::sIdentity(), Mat44::sIdentity(), JPH::Color::sWhite, mLockedPrimitiveBounds, 1.0f});
+        ++mNumInstances;
+
+        // Clear pointers
+        mLockedPrimitive = nullptr;
+        mLockedVerticesStart = nullptr;
+        mLockedVertices = nullptr;
+        mLockedVerticesEnd = nullptr;
+        mLockedPrimitiveBounds = AABox();
+    }
+}
+
+void DebugRendererFactory::EnsurePrimitiveSpace(int inVtxSize) {
+    const int cVertexBufferSize = 10240;
+
+    if (mLockedPrimitive == nullptr || mLockedVerticesEnd - mLockedVertices < inVtxSize) {
+        FinalizePrimitive();
+
+        // Create new
+        auto buffer_mesh = MeshManager::GetSingleton().LoadBufferMesh();
+        buffer_mesh->setVertexLayouts(_triangle_layouts);
+        auto renderer = _entity->addComponent<MeshRenderer>();
+        renderer->setMesh(buffer_mesh);
+        renderer->setMaterial(_triangle_material);
+        auto *primitive = new BatchImpl(buffer_mesh, wgpu::PrimitiveTopology::TriangleList);
+        primitive->CreateVertexBuffer(cVertexBufferSize, sizeof(Vertex));
+        mLockedPrimitive = primitive;
+
+        // Lock buffers
+        // mLockedVerticesStart = mLockedVertices = (Vertex *)primitive->LockVertexBuffer();
+        // mLockedVerticesEnd = mLockedVertices + cVertexBufferSize;
+    }
+}
 
 //----------------------------------------------------------------------------------------------------------------------
 
 DebugRendererFactory::Batch DebugRendererFactory::CreateTriangleBatch(const Triangle *inTriangles,
-                                                                      int inTriangleCount) {}
+                                                                      int inTriangleCount) {
+    if (inTriangles == nullptr || inTriangleCount == 0) return mEmptyBatch;
+
+    auto buffer_mesh = MeshManager::GetSingleton().LoadBufferMesh();
+    buffer_mesh->setVertexLayouts(_triangle_layouts);
+    auto renderer = _entity->addComponent<MeshRenderer>();
+    renderer->setMesh(buffer_mesh);
+    renderer->setMaterial(_triangle_material);
+    auto *primitive = new BatchImpl(buffer_mesh, wgpu::PrimitiveTopology::TriangleList);
+    primitive->CreateVertexBuffer(3 * inTriangleCount, sizeof(Vertex), inTriangles);
+
+    return primitive;
+}
 
 DebugRendererFactory::Batch DebugRendererFactory::CreateTriangleBatch(const Vertex *inVertices,
                                                                       int inVertexCount,
                                                                       const uint32 *inIndices,
-                                                                      int inIndexCount) {}
+                                                                      int inIndexCount) {
+    if (inVertices == nullptr || inVertexCount == 0 || inIndices == nullptr || inIndexCount == 0) return mEmptyBatch;
+
+    auto buffer_mesh = MeshManager::GetSingleton().LoadBufferMesh();
+    buffer_mesh->setVertexLayouts(_triangle_layouts);
+    auto renderer = _entity->addComponent<MeshRenderer>();
+    renderer->setMesh(buffer_mesh);
+    renderer->setMaterial(_triangle_material);
+    auto *primitive = new BatchImpl(buffer_mesh, wgpu::PrimitiveTopology::TriangleList);
+    primitive->CreateVertexBuffer(inVertexCount, sizeof(Vertex), inVertices);
+    primitive->CreateIndexBuffer(inIndexCount, inIndices);
+
+    return primitive;
+}
 
 void DebugRendererFactory::DrawGeometry(Mat44Arg inModelMatrix,
                                         const AABox &inWorldSpaceBounds,
@@ -147,17 +228,16 @@ void DebugRendererFactory::DrawGeometry(Mat44Arg inModelMatrix,
                                         EDrawMode inDrawMode) {
     lock_guard lock(mPrimitivesLock);
 
-    // Our pixel shader uses alpha only to turn on/off shadows
-    ColorArg color = inCastShadow == ECastShadow::On ? ColorArg(inModelColor, 255) : ColorArg(inModelColor, 0);
-
     if (inDrawMode == EDrawMode::Wireframe) {
         mWireframePrimitives[inGeometry].mInstances.push_back(
-                {inModelMatrix, inModelMatrix.GetDirectionPreservingMatrix(), color, inWorldSpaceBounds, inLODScaleSq});
+                {inModelMatrix, inModelMatrix.GetDirectionPreservingMatrix(), ColorArg(inModelColor, 255),
+                 inWorldSpaceBounds, inLODScaleSq});
         ++mNumInstances;
     } else {
         if (inCullMode != ECullMode::CullFrontFace) {
             mPrimitives[inGeometry].mInstances.push_back({inModelMatrix, inModelMatrix.GetDirectionPreservingMatrix(),
-                                                          color, inWorldSpaceBounds, inLODScaleSq});
+                                                          ColorArg(inModelColor, 255), inWorldSpaceBounds,
+                                                          inLODScaleSq});
             ++mNumInstances;
         }
     }
@@ -202,7 +282,7 @@ void DebugRendererFactory::DrawLine(const Float3 &inFrom, const Float3 &inTo, Co
 }
 
 void DebugRendererFactory::DrawLines() {
-    JPH_PROFILE_FUNCTION();
+    JPH_PROFILE_FUNCTION()
 
     lock_guard lock(mLinesLock);
     // Draw the lines
