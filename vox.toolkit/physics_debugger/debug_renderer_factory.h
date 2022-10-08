@@ -18,10 +18,12 @@
 #include <Jolt/Core/Mutex.h>
 #include <Jolt/Core/UnorderedMap.h>
 
+#include <utility>
 #include <vector>
 
 #include "vox.render/material/base_material.h"
 #include "vox.render/script.h"
+#include "vox.toolkit/physics_debugger/render_instances.h"
 
 using namespace JPH;
 
@@ -64,6 +66,20 @@ private:
     void DrawTriangles();
 
     void ClearTriangles();
+
+    /// Implementation specific batch object
+    class BatchImpl : public RefTargetVirtual, public RenderPrimitive {
+    public:
+        JPH_OVERRIDE_NEW_DELETE
+
+        BatchImpl(std::shared_ptr<BufferMesh> mesh, wgpu::PrimitiveTopology inType)
+            : RenderPrimitive(std::move(mesh), inType) {}
+
+        void AddRef() override { RenderPrimitive::AddRef(); }
+        void Release() override {
+            if (--mRefCount == 0) delete this;
+        }
+    };
 
     /// Properties for a single rendered instance
     struct Instance {
@@ -115,6 +131,7 @@ private:
     InstanceMap mPrimitives;
     InstanceMap mTempPrimitives;
     int mNumInstances = 0;
+    Ref<RenderInstances> mInstancesBuffer[2];
 
     /// Lock that protects the triangle batches from being accessed from multiple threads
     Mutex mPrimitivesLock;
@@ -179,19 +196,15 @@ private:
     Mutex mTextsLock;
 
 private:
-    Entity* _entity{nullptr};
+    Entity *_entity{nullptr};
     std::vector<wgpu::VertexAttribute> _vertex_attributes;
     std::vector<wgpu::VertexAttribute> _instance_attributes;
     std::vector<wgpu::VertexBufferLayout> _triangle_layouts;
-    std::shared_ptr<BufferMesh> _triangle_buffer_mesh{nullptr};
     std::shared_ptr<BaseMaterial> _triangle_material{nullptr};
-    std::unique_ptr<Buffer> _triangle_buffer;
-    std::unique_ptr<Buffer> _instance_buffer;
 
     std::vector<wgpu::VertexAttribute> _line_attributes;
     std::vector<wgpu::VertexBufferLayout> _line_layouts;
-    std::shared_ptr<BufferMesh> _line_buffer_mesh{nullptr};
     std::shared_ptr<BaseMaterial> _line_material{nullptr};
-    std::unique_ptr<Buffer> _line_buffer;
+    Ref<RenderPrimitive> _line_primitive;
 };
 }  // namespace vox::physics_debugger

@@ -16,6 +16,7 @@
 
 namespace vox::physics_debugger {
 DebugRendererFactory::DebugRendererFactory(Entity *entity) : _entity(entity) {
+    DebugRenderer::Initialize();
     _line_attributes.resize(2);
     _line_attributes[0].shaderLocation = (uint32_t)Attributes::POSITION;
     _line_attributes[0].format = wgpu::VertexFormat::Float32x3;
@@ -29,11 +30,12 @@ DebugRendererFactory::DebugRendererFactory(Entity *entity) : _entity(entity) {
     _line_layouts[0].stepMode = wgpu::VertexStepMode::Vertex;
     _line_layouts[0].arrayStride = 28;
     _line_material = std::make_shared<UnlitMaterial>(entity->scene()->device());
-    _line_buffer_mesh = MeshManager::GetSingleton().LoadBufferMesh();
-    _line_buffer_mesh->setVertexLayouts(_line_layouts);
+    auto line_buffer_mesh = MeshManager::GetSingleton().LoadBufferMesh();
+    line_buffer_mesh->setVertexLayouts(_line_layouts);
     auto lineRenderer = entity->addComponent<MeshRenderer>();
-    lineRenderer->setMesh(_line_buffer_mesh);
+    lineRenderer->setMesh(line_buffer_mesh);
     lineRenderer->setMaterial(_line_material);
+    _line_primitive = new RenderPrimitive(line_buffer_mesh, wgpu::PrimitiveTopology::LineList);
 
     _vertex_attributes.resize(4);
     _vertex_attributes[0].shaderLocation = 0;
@@ -200,11 +202,13 @@ void DebugRendererFactory::DrawLine(const Float3 &inFrom, const Float3 &inTo, Co
 }
 
 void DebugRendererFactory::DrawLines() {
-    _line_buffer = std::make_unique<Buffer>(_entity->scene()->device(), mLines.data(), mLines.size() * sizeof(Line),
-                                            wgpu::BufferUsage::Vertex | wgpu::BufferUsage::CopyDst);
-    _line_buffer_mesh->clearSubMesh();
-    _line_buffer_mesh->addSubMesh(0, mLines.size() * 2, wgpu::PrimitiveTopology::LineList);
-    _line_buffer_mesh->setVertexBufferBinding(*_line_buffer, 0);
+    JPH_PROFILE_FUNCTION();
+
+    lock_guard lock(mLinesLock);
+    // Draw the lines
+    if (!mLines.empty()) {
+        _line_primitive->CreateVertexBuffer((int)mLines.size() * 2, sizeof(Line) / 2, mLines.data());
+    }
 }
 
 void DebugRendererFactory::ClearLines() {

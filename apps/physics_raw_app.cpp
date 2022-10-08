@@ -28,6 +28,7 @@ public:
     explicit ShowScript(Entity* entity) : Script(entity) {
         _renderFactory = std::make_unique<physics_debugger::DebugRendererFactory>(entity);
         inSettings.mDrawShape = true;
+        inSettings.mDrawShapeWireframe = true;
     }
 
     void onPhysicsUpdate() override {
