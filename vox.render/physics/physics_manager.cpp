@@ -193,14 +193,18 @@ PhysicsManager::PhysicsManager() {
         const auto kShape1 = reinterpret_cast<Collider *>(inBody1.GetUserData());
         const auto kShape2 = reinterpret_cast<Collider *>(inBody2.GetUserData());
 
-        auto scripts = kShape1->entity()->scripts();
-        for (const auto &script : scripts) {
-            script->onContactEnter(*kShape2, inManifold);
+        if (kShape1) {
+            const auto &scripts = kShape1->entity()->scripts();
+            for (const auto &script : scripts) {
+                script->onContactEnter(*kShape2, inManifold);
+            }
         }
 
-        scripts = kShape2->entity()->scripts();
-        for (const auto &script : scripts) {
-            script->onContactEnter(*kShape1, inManifold.SwapShapes());
+        if (kShape2) {
+            const auto &scripts = kShape2->entity()->scripts();
+            for (const auto &script : scripts) {
+                script->onContactEnter(*kShape1, inManifold.SwapShapes());
+            }
         }
     };
 
@@ -208,14 +212,18 @@ PhysicsManager::PhysicsManager() {
         const auto kShape1 = reinterpret_cast<Collider *>(inBody1.GetUserData());
         const auto kShape2 = reinterpret_cast<Collider *>(inBody2.GetUserData());
 
-        auto scripts = kShape1->entity()->scripts();
-        for (const auto &script : scripts) {
-            script->onContactStay(*kShape2, inManifold);
+        if (kShape1) {
+            const auto &scripts = kShape1->entity()->scripts();
+            for (const auto &script : scripts) {
+                script->onContactStay(*kShape2, inManifold);
+            }
         }
 
-        scripts = kShape2->entity()->scripts();
-        for (const auto &script : scripts) {
-            script->onContactStay(*kShape1, inManifold.SwapShapes());
+        if (kShape2) {
+            const auto &scripts = kShape2->entity()->scripts();
+            for (const auto &script : scripts) {
+                script->onContactStay(*kShape1, inManifold.SwapShapes());
+            }
         }
     };
 
@@ -224,14 +232,18 @@ PhysicsManager::PhysicsManager() {
         const auto kShape1 = reinterpret_cast<Collider *>(interface.GetUserData(inSubShapePair.GetBody1ID()));
         const auto kShape2 = reinterpret_cast<Collider *>(interface.GetUserData(inSubShapePair.GetBody2ID()));
 
-        auto scripts = kShape1->entity()->scripts();
-        for (const auto &script : scripts) {
-            script->onContactExit(*kShape2, inSubShapePair.GetSubShapeID2());
+        if (kShape1) {
+            const auto &scripts = kShape1->entity()->scripts();
+            for (const auto &script : scripts) {
+                script->onContactExit(*kShape2, inSubShapePair.GetSubShapeID2());
+            }
         }
 
-        scripts = kShape2->entity()->scripts();
-        for (const auto &script : scripts) {
-            script->onContactExit(*kShape1, inSubShapePair.GetSubShapeID1());
+        if (kShape2) {
+            const auto &scripts = kShape2->entity()->scripts();
+            for (const auto &script : scripts) {
+                script->onContactExit(*kShape1, inSubShapePair.GetSubShapeID1());
+            }
         }
     };
 

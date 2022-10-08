@@ -125,7 +125,7 @@ ELSEIF (CMAKE_BUILD_TYPE MATCHES "Debug")
             ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-debug/third_party/abseil/absl/base
             ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-debug/third_party/abseil/absl/numeric
             ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-debug/third_party/glfw/src
-            ${CMAKE_SOURCE_DIR}/third_party/jolt/Build/build_debug)
+            ${CMAKE_SOURCE_DIR}/third_party/jolt/Build/build_release)
 endif ()
 
 target_link_libraries(${PROJECT_NAME} PUBLIC

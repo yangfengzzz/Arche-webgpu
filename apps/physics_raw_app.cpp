@@ -24,7 +24,7 @@ public:
 
     explicit ShowScript(Entity* entity) : Script(entity) {}
 
-    void onUpdate(float deltaTime) override {
+    void onPhysicsUpdate() override {
         step++;
 
         JPH::BodyInterface& body_interface = PhysicsManager::GetSingleton().getBodyInterface();
