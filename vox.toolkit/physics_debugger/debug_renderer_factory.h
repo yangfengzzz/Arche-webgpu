@@ -70,7 +70,7 @@ public:
     void Clear();
 
 private:
-    void DrawTriangles();
+    void DrawTriangles(wgpu::RenderPassEncoder &commandEncoder);
 
     void ClearTriangles();
 
@@ -229,5 +229,6 @@ private:
 
     wgpu::RenderPipeline _linePipeline;
     wgpu::RenderPipeline _trianglePipeline;
+    int _currentFrameIndex = 0;
 };
 }  // namespace vox::physics_debugger

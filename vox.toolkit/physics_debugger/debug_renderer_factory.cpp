@@ -7,12 +7,9 @@
 #include "vox.toolkit/physics_debugger/debug_renderer_factory.h"
 
 #include "vox.base/logging.h"
+#include "vox.render/camera.h"
 #include "vox.render/entity.h"
-#include "vox.render/material/unlit_material.h"
-#include "vox.render/mesh/mesh_manager.h"
-#include "vox.render/mesh/mesh_renderer.h"
 #include "vox.render/rendering/render_pass.h"
-#include "vox.render/scene.h"
 #include "vox.render/shader/shader_common.h"
 
 namespace vox::physics_debugger {
@@ -187,7 +184,7 @@ void DebugRendererFactory::prepare() {
 
 void DebugRendererFactory::draw(wgpu::RenderPassEncoder &commandEncoder) {
     DrawLines(commandEncoder);
-    DrawTriangles();
+    DrawTriangles(commandEncoder);
     DrawTexts(commandEncoder);
 }
 
@@ -333,7 +330,108 @@ void DebugRendererFactory::ClearTriangles() {
     mNumInstances = 0;
 }
 
-void DebugRendererFactory::DrawTriangles() {}
+void DebugRendererFactory::DrawTriangles(wgpu::RenderPassEncoder &commandEncoder) {
+    JPH_PROFILE_FUNCTION()
+
+    lock_guard lock(mPrimitivesLock);
+
+    // Finish the last primitive
+    FinalizePrimitive();
+
+    auto cameraPos = _camera->entity()->transform->worldPosition();
+    Vec3 camera_pos = {cameraPos.x, cameraPos.y, cameraPos.z};
+
+    // Resize instances buffer and copy all visible instance data into it
+    if (mNumInstances > 0) {
+        // Create instances buffer
+        RenderInstances *instances_buffer = mInstancesBuffer[_currentFrameIndex];
+        instances_buffer->CreateBuffer(2 * mNumInstances, sizeof(Instance));
+        // auto *dst_instance = reinterpret_cast<Instance *>(instances_buffer->Lock());
+
+        // Next write index
+        int dst_index = 0;
+
+        // This keeps track of which instances use which lod, first array: 0 = light pass, 1 = geometry pass
+        Array<Array<int>> lod_indices[2];
+
+        for (InstanceMap *primitive_map : {&mPrimitives, &mTempPrimitives, &mWireframePrimitives})
+            for (InstanceMap::value_type &v : *primitive_map) {
+                // Get LODs
+                const Array<LOD> &geometry_lods = v.first->mLODs;
+                size_t num_lods = geometry_lods.size();
+                JPH_ASSERT(num_lods > 0);
+
+                // Ensure that our lod index array is big enough (to avoid reallocating memory too often)
+                if (lod_indices[0].size() < num_lods) lod_indices[0].resize(num_lods);
+                if (lod_indices[1].size() < num_lods) lod_indices[1].resize(num_lods);
+
+                // Iterate over all instances
+                const Array<InstanceWithLODInfo> &instances = v.second.mInstances;
+                for (size_t i = 0; i < instances.size(); ++i) {
+                    const InstanceWithLODInfo &src_instance = instances[i];
+
+                    // Check if it overlaps with the light or camera frustum
+                    // Figure out which LOD to use
+                    float dist_sq = src_instance.mWorldSpaceBounds.GetSqDistanceTo(camera_pos);
+                    for (size_t lod = 0; lod < num_lods; ++lod)
+                        if (dist_sq <= src_instance.mLODScaleSq * Square(geometry_lods[lod].mDistance)) {
+                            // Store which index goes in which LOD
+                            lod_indices[0][lod].push_back((int)i);
+                            lod_indices[1][lod].push_back((int)i);
+                            break;
+                        }
+                }
+
+                // Loop over both passes: 0 = light, 1 = geometry
+                Array<int> *start_idx[] = {&v.second.mLightStartIdx, &v.second.mGeometryStartIdx};
+                for (int type = 0; type < 2; ++type) {
+                    // Reserve space for instance indices
+                    Array<int> &type_start_idx = *start_idx[type];
+                    type_start_idx.resize(num_lods + 1);
+
+                    // Write out geometry pass instances
+                    for (size_t lod = 0; lod < num_lods; ++lod) {
+                        // Write start index for this LOD
+                        type_start_idx[lod] = dst_index;
+
+                        // Copy instances
+                        Array<int> &this_lod_indices = lod_indices[type][lod];
+                        for (int i : this_lod_indices) {
+                            const Instance &src_instance = instances[i];
+                            // dst_instance[dst_index++] = src_instance;
+                        }
+
+                        // Prepare for next iteration (will preserve memory)
+                        this_lod_indices.clear();
+                    }
+
+                    // Write out end of last LOD
+                    type_start_idx.back() = dst_index;
+                }
+            }
+
+        // instances_buffer->Unlock();
+    }
+
+    if (!mPrimitives.empty() || !mTempPrimitives.empty()) {
+        // Bind the normal shader, back face culling
+        commandEncoder.SetPipeline(_trianglePipeline);
+
+        // Draw all primitives
+        if (mNumInstances > 0)
+            for (InstanceMap::value_type &v : mPrimitives) DrawInstances(v.first, v.second.mGeometryStartIdx);
+        for (InstanceMap::value_type &v : mTempPrimitives) DrawInstances(v.first, v.second.mGeometryStartIdx);
+    }
+
+    if (!mWireframePrimitives.empty()) {
+        // Wire frame mode
+        commandEncoder.SetPipeline(_trianglePipeline);
+
+        // Draw all wireframe primitives
+        for (InstanceMap::value_type &v : mWireframePrimitives) DrawInstances(v.first, v.second.mGeometryStartIdx);
+    }
+    _currentFrameIndex = 1 - _currentFrameIndex;
+}
 
 void DebugRendererFactory::DrawInstances(const Geometry *inGeometry, const Array<int> &inStartIdx) {}
 
