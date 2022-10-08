@@ -800,6 +800,17 @@
 		0473209728EA8D6800D04171 /* animation_blending.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0473209528EA8D6800D04171 /* animation_blending.cpp */; };
 		0473209A28ECF65F00D04171 /* animation_ik_floor_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0473209828ECF65F00D04171 /* animation_ik_floor_app.cpp */; };
 		0473209C28ECF6BA00D04171 /* animation_state.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0473209B28ECF6BA00D04171 /* animation_state.cpp */; };
+		0473209F28F1C3C500D04171 /* physics_raw_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0473209D28F1C3C500D04171 /* physics_raw_app.cpp */; };
+		047320A528F1C3EB00D04171 /* collider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047320A128F1C3EB00D04171 /* collider.cpp */; };
+		047320A628F1C3EB00D04171 /* collider.h in Headers */ = {isa = PBXBuildFile; fileRef = 047320A228F1C3EB00D04171 /* collider.h */; };
+		047320A728F1C3EB00D04171 /* physics_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = 047320A328F1C3EB00D04171 /* physics_manager.h */; };
+		047320A828F1C3EB00D04171 /* physics_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047320A428F1C3EB00D04171 /* physics_manager.cpp */; };
+		047320B028F1C4A600D04171 /* render_instances.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047320AA28F1C4A500D04171 /* render_instances.cpp */; };
+		047320B128F1C4A600D04171 /* render_primitive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047320AB28F1C4A500D04171 /* render_primitive.cpp */; };
+		047320B228F1C4A600D04171 /* render_primitive.h in Headers */ = {isa = PBXBuildFile; fileRef = 047320AC28F1C4A500D04171 /* render_primitive.h */; };
+		047320B328F1C4A600D04171 /* physics_debug_subpass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047320AD28F1C4A500D04171 /* physics_debug_subpass.cpp */; };
+		047320B428F1C4A600D04171 /* physics_debug_subpass.h in Headers */ = {isa = PBXBuildFile; fileRef = 047320AE28F1C4A600D04171 /* physics_debug_subpass.h */; };
+		047320B528F1C4A600D04171 /* render_instances.h in Headers */ = {isa = PBXBuildFile; fileRef = 047320AF28F1C4A600D04171 /* render_instances.h */; };
 		047BB59B2800148600CD5749 /* libvox.math.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 041282EC279ECF3D0071BD86 /* libvox.math.a */; };
 		047BF0BC27AC086B003F3599 /* light.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF0BA27AC086B003F3599 /* light.cpp */; };
 		047BF0BD27AC086B003F3599 /* light.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF0BB27AC086B003F3599 /* light.h */; };
@@ -2154,6 +2165,18 @@
 		0473209828ECF65F00D04171 /* animation_ik_floor_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animation_ik_floor_app.cpp; sourceTree = "<group>"; };
 		0473209928ECF65F00D04171 /* animation_ik_floor_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animation_ik_floor_app.h; sourceTree = "<group>"; };
 		0473209B28ECF6BA00D04171 /* animation_state.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animation_state.cpp; sourceTree = "<group>"; };
+		0473209D28F1C3C500D04171 /* physics_raw_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = physics_raw_app.cpp; sourceTree = "<group>"; };
+		0473209E28F1C3C500D04171 /* physics_raw_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = physics_raw_app.h; sourceTree = "<group>"; };
+		047320A128F1C3EB00D04171 /* collider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = collider.cpp; sourceTree = "<group>"; };
+		047320A228F1C3EB00D04171 /* collider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = collider.h; sourceTree = "<group>"; };
+		047320A328F1C3EB00D04171 /* physics_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = physics_manager.h; sourceTree = "<group>"; };
+		047320A428F1C3EB00D04171 /* physics_manager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = physics_manager.cpp; sourceTree = "<group>"; };
+		047320AA28F1C4A500D04171 /* render_instances.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = render_instances.cpp; sourceTree = "<group>"; };
+		047320AB28F1C4A500D04171 /* render_primitive.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = render_primitive.cpp; sourceTree = "<group>"; };
+		047320AC28F1C4A500D04171 /* render_primitive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render_primitive.h; sourceTree = "<group>"; };
+		047320AD28F1C4A500D04171 /* physics_debug_subpass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = physics_debug_subpass.cpp; sourceTree = "<group>"; };
+		047320AE28F1C4A600D04171 /* physics_debug_subpass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = physics_debug_subpass.h; sourceTree = "<group>"; };
+		047320AF28F1C4A600D04171 /* render_instances.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render_instances.h; sourceTree = "<group>"; };
 		047BB58A2800140A00CD5749 /* libvox.geometry.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libvox.geometry.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		047BF0BA27AC086B003F3599 /* light.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = light.cpp; sourceTree = "<group>"; };
 		047BF0BB27AC086B003F3599 /* light.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = light.h; sourceTree = "<group>"; };
@@ -2825,6 +2848,7 @@
 		04128425279ED3510071BD86 /* vox.render */ = {
 			isa = PBXGroup;
 			children = (
+				047320A028F1C3DC00D04171 /* physics */,
 				0473202D28E6B3FD00D04171 /* animation */,
 				04F9E91827D481A000BD291B /* singleton.h */,
 				045A38AF28C4479A003FEE10 /* helper.h */,
@@ -3121,6 +3145,8 @@
 		043B7B5C278C4C5A00D5648F /* apps */ = {
 			isa = PBXGroup;
 			children = (
+				0473209E28F1C3C500D04171 /* physics_raw_app.h */,
+				0473209D28F1C3C500D04171 /* physics_raw_app.cpp */,
 				0473209928ECF65F00D04171 /* animation_ik_floor_app.h */,
 				0473209828ECF65F00D04171 /* animation_ik_floor_app.cpp */,
 				0473208E28EA8D3700D04171 /* animation_ik_hand_app.h */,
@@ -4106,6 +4132,7 @@
 		0473205728E8310300D04171 /* vox.toolkit */ = {
 			isa = PBXGroup;
 			children = (
+				047320A928F1C49300D04171 /* physics_debugger */,
 				0473206228E8312A00D04171 /* skeleton_view */,
 				0473206128E8312300D04171 /* controls */,
 			);
@@ -4132,6 +4159,30 @@
 				0473206328E8313D00D04171 /* skeleton_view.cpp */,
 			);
 			path = skeleton_view;
+			sourceTree = "<group>";
+		};
+		047320A028F1C3DC00D04171 /* physics */ = {
+			isa = PBXGroup;
+			children = (
+				047320A228F1C3EB00D04171 /* collider.h */,
+				047320A128F1C3EB00D04171 /* collider.cpp */,
+				047320A328F1C3EB00D04171 /* physics_manager.h */,
+				047320A428F1C3EB00D04171 /* physics_manager.cpp */,
+			);
+			path = physics;
+			sourceTree = "<group>";
+		};
+		047320A928F1C49300D04171 /* physics_debugger */ = {
+			isa = PBXGroup;
+			children = (
+				047320AE28F1C4A600D04171 /* physics_debug_subpass.h */,
+				047320AD28F1C4A500D04171 /* physics_debug_subpass.cpp */,
+				047320AF28F1C4A600D04171 /* render_instances.h */,
+				047320AA28F1C4A500D04171 /* render_instances.cpp */,
+				047320AC28F1C4A500D04171 /* render_primitive.h */,
+				047320AB28F1C4A500D04171 /* render_primitive.cpp */,
+			);
+			path = physics_debugger;
 			sourceTree = "<group>";
 		};
 		047BB58B2800140A00CD5749 /* vox.geometry */ = {
@@ -4888,6 +4939,7 @@
 				04FDEFDE27E755D700BBE8E4 /* button_small.h in Headers */,
 				04FDF07727E8069700BBE8E4 /* text_disabled.h in Headers */,
 				04FDF05027E7FB1500BBE8E4 /* radio_button.h in Headers */,
+				047320A728F1C3EB00D04171 /* physics_manager.h in Headers */,
 				04FE6BE927ECA2B000D7DB2D /* lua_component_binder.h in Headers */,
 				04954700279FCD1100783C84 /* forward_application.h in Headers */,
 				04FDEFE527E757D200BBE8E4 /* drag_double.h in Headers */,
@@ -4956,6 +5008,7 @@
 				04FE6BED27ECA32700D7DB2D /* lua_global_binder.h in Headers */,
 				047BF0CB27AC0D59003F3599 /* ambient_light.h in Headers */,
 				045A398128C4AE15003FEE10 /* cluster_debug_material.h in Headers */,
+				047320A628F1C3EB00D04171 /* collider.h in Headers */,
 				040C552228CF57E9001BF0FF /* exp2_fog.h in Headers */,
 				04FDF08827E808E600BBE8E4 /* bullet.h in Headers */,
 				04FDEFFB27E762C100BBE8E4 /* input_float.h in Headers */,
@@ -5163,7 +5216,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				0473206F28E8314500D04171 /* orbit_control.h in Headers */,
+				047320B228F1C4A600D04171 /* render_primitive.h in Headers */,
+				047320B428F1C4A600D04171 /* physics_debug_subpass.h in Headers */,
 				0473206D28E8314500D04171 /* spherical.h in Headers */,
+				047320B528F1C4A600D04171 /* render_instances.h in Headers */,
 				0473207028E8314500D04171 /* free_control.h in Headers */,
 				0473206628E8313D00D04171 /* skeleton_view.h in Headers */,
 			);
@@ -5765,6 +5821,7 @@
 				04FDEFBC27E7449500BBE8E4 /* panel_menu_bar.cpp in Sources */,
 				04128475279EEE760071BD86 /* depth_state.cpp in Sources */,
 				04954686279F8CD600783C84 /* scene.cpp in Sources */,
+				047320A528F1C3EB00D04171 /* collider.cpp in Sources */,
 				049546E6279FA7D800783C84 /* null_binding.cpp in Sources */,
 				04FDEFA927E71F8500BBE8E4 /* button_simple.cpp in Sources */,
 				045A391328C44BA6003FEE10 /* force_close.cpp in Sources */,
@@ -5790,6 +5847,7 @@
 				045A38E928C44B25003FEE10 /* platform.cpp in Sources */,
 				045A390F28C44B84003FEE10 /* plugin.cpp in Sources */,
 				04FDEFB127E72AD300BBE8E4 /* panel.cpp in Sources */,
+				047320A828F1C3EB00D04171 /* physics_manager.cpp in Sources */,
 				04FDEFDD27E755D700BBE8E4 /* button_small.cpp in Sources */,
 				047BF0C127AC0D19003F3599 /* point_light.cpp in Sources */,
 				04FDF02927E773A600BBE8E4 /* menu_item.cpp in Sources */,
@@ -5917,6 +5975,7 @@
 				045B391C28D6F45A00DA1D32 /* assimp_app.cpp in Sources */,
 				0473207B28E8675900D04171 /* animation_create_app.cpp in Sources */,
 				04311AE727D7302B00B918E3 /* multi_light_app.cpp in Sources */,
+				0473209F28F1C3C500D04171 /* physics_raw_app.cpp in Sources */,
 				0473207E28E8868C00D04171 /* gui_app.cpp in Sources */,
 				045A395228C44F1F003FEE10 /* plugins.cpp in Sources */,
 				047BF18427AE1DF7003F3599 /* skybox_app.cpp in Sources */,
@@ -6163,7 +6222,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				047320B028F1C4A600D04171 /* render_instances.cpp in Sources */,
+				047320B128F1C4A600D04171 /* render_primitive.cpp in Sources */,
 				0473206E28E8314500D04171 /* orbit_control.cpp in Sources */,
+				047320B328F1C4A600D04171 /* physics_debug_subpass.cpp in Sources */,
 				0473207128E8314500D04171 /* spherical.cpp in Sources */,
 				0473206528E8313D00D04171 /* skeleton_view.cpp in Sources */,
 				0473207228E8314500D04171 /* free_control.cpp in Sources */,
@@ -6483,6 +6545,8 @@
 					DAWN_ENABLE_BACKEND_NULL,
 					"$(inherited)",
 					TINT_BUILD_SPV_READER,
+					JPH_PROFILE_ENABLED,
+					JPH_DEBUG_RENDERER,
 				);
 				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6513,6 +6577,7 @@
 					"./third_party/dawn/cmake-debug/gen/include",
 					./third_party/dawn/third_party/glfw/include,
 					./third_party/tinyobj,
+					./third_party/jolt,
 				);
 				USE_HEADERMAP = NO;
 			};
@@ -6544,6 +6609,8 @@
 					DAWN_ENABLE_BACKEND_NULL,
 					"$(inherited)",
 					TINT_BUILD_SPV_READER,
+					JPH_PROFILE_ENABLED,
+					JPH_DEBUG_RENDERER,
 				);
 				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6574,6 +6641,7 @@
 					"./third_party/dawn/cmake-release/gen/include",
 					./third_party/dawn/third_party/glfw/include,
 					./third_party/tinyobj,
+					./third_party/jolt,
 				);
 				USE_HEADERMAP = NO;
 			};
@@ -6723,6 +6791,8 @@
 					DAWN_ENABLE_BACKEND_NULL,
 					"$(inherited)",
 					TINT_BUILD_SPV_READER,
+					JPH_PROFILE_ENABLED,
+					JPH_DEBUG_RENDERER,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
@@ -6753,6 +6823,7 @@
 					"./cmake-build-debug/third_party/hwcpipe/lib/Debug/x86_64",
 					"./cmake-build-debug/third_party/glslang/OGLCompilersDLL/lib/Debug/x86_64",
 					./third_party/assimp/build_debug/bin,
+					./third_party/jolt/Build/build_release,
 				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
@@ -6793,6 +6864,7 @@
 					"-ltint_diagnostic_utils",
 					"-lSPIRV-Tools",
 					"-lSPIRV-Tools-opt",
+					"-lJolt",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SYSTEM_HEADER_SEARCH_PATHS = (
@@ -6821,6 +6893,7 @@
 					"./third_party/dawn/cmake-debug/gen/include",
 					./third_party/dawn/third_party/glfw/include,
 					./third_party/tinyobj,
+					./third_party/jolt,
 				);
 				USE_HEADERMAP = NO;
 			};
@@ -6852,6 +6925,8 @@
 					DAWN_ENABLE_BACKEND_METAL,
 					DAWN_ENABLE_BACKEND_NULL,
 					TINT_BUILD_SPV_READER,
+					JPH_PROFILE_ENABLED,
+					JPH_DEBUG_RENDERER,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
@@ -6882,6 +6957,7 @@
 					"./cmake-build-release/third_party/hwcpipe/lib/Release/x86_64",
 					"./cmake-build-release/third_party/glslang/OGLCompilersDLL/lib/Release/x86_64",
 					./third_party/assimp/build_release/bin,
+					./third_party/jolt/Build/build_release,
 				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
@@ -6922,6 +6998,7 @@
 					"-ltint_diagnostic_utils",
 					"-lSPIRV-Tools",
 					"-lSPIRV-Tools-opt",
+					"-lJolt",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SYSTEM_HEADER_SEARCH_PATHS = (
@@ -6950,6 +7027,7 @@
 					"./third_party/dawn/cmake-release/gen/include",
 					./third_party/dawn/third_party/glfw/include,
 					./third_party/tinyobj,
+					./third_party/jolt,
 				);
 				USE_HEADERMAP = NO;
 			};
@@ -7342,6 +7420,8 @@
 					DAWN_ENABLE_BACKEND_NULL,
 					"$(inherited)",
 					TINT_BUILD_SPV_READER,
+					JPH_PROFILE_ENABLED,
+					JPH_DEBUG_RENDERER,
 				);
 				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7372,6 +7452,7 @@
 					"./third_party/dawn/cmake-debug/gen/include",
 					./third_party/dawn/third_party/glfw/include,
 					./third_party/tinyobj,
+					./third_party/jolt,
 				);
 			};
 			name = Debug;
@@ -7401,6 +7482,8 @@
 					DAWN_ENABLE_BACKEND_NULL,
 					"$(inherited)",
 					TINT_BUILD_SPV_READER,
+					JPH_PROFILE_ENABLED,
+					JPH_DEBUG_RENDERER,
 				);
 				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7431,6 +7514,7 @@
 					"./third_party/dawn/cmake-release/gen/include",
 					./third_party/dawn/third_party/glfw/include,
 					./third_party/tinyobj,
+					./third_party/jolt,
 				);
 			};
 			name = Release;

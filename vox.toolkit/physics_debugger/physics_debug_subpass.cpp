@@ -221,7 +221,7 @@ void PhysicsDebugSubpass::DrawTriangle(Vec3Arg inV1, Vec3Arg inV2, Vec3Arg inV3,
 }
 
 void PhysicsDebugSubpass::FinalizePrimitive() {
-    JPH_PROFILE_FUNCTION()
+    JPH_PROFILE_FUNCTION();
 
     if (mLockedPrimitive != nullptr) {
         auto *primitive = static_cast<BatchImpl *>(mLockedPrimitive.GetPtr());
@@ -340,7 +340,7 @@ void PhysicsDebugSubpass::ClearTriangles() {
 }
 
 void PhysicsDebugSubpass::DrawTriangles(wgpu::RenderPassEncoder &commandEncoder) {
-    JPH_PROFILE_FUNCTION()
+    JPH_PROFILE_FUNCTION();
 
     lock_guard lock(mPrimitivesLock);
 
@@ -453,7 +453,7 @@ void PhysicsDebugSubpass::DrawLine(const Float3 &inFrom, const Float3 &inTo, Col
 }
 
 void PhysicsDebugSubpass::DrawLines(wgpu::RenderPassEncoder &commandEncoder) {
-    JPH_PROFILE_FUNCTION()
+    JPH_PROFILE_FUNCTION();
 
     lock_guard lock(mLinesLock);
     // Draw the lines
