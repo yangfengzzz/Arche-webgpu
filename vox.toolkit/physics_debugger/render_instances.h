@@ -36,7 +36,7 @@ public:
 private:
     wgpu::Device& device;
 
-    void* mapped_ptr{nullptr};
+    std::vector<float> instance_mapped_resource{};
     wgpu::Buffer mInstanceBuffer;
     int mInstanceBufferSize = 0;
     int mInstanceSize = 0;

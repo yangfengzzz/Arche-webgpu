@@ -24,6 +24,7 @@ void RenderPrimitive::CreateVertexBuffer(int inNumVtx, int inVtxSize, const void
     mNumVtx = inNumVtx;
     mNumVtxToDraw = inNumVtx;
     mVtxSize = inVtxSize;
+    vertex_mapped_resource.resize(desc.size / sizeof(float));
 }
 
 void RenderPrimitive::ReleaseVertexBuffer() {
@@ -33,29 +34,15 @@ void RenderPrimitive::ReleaseVertexBuffer() {
     mNumVtx = 0;
     mNumVtxToDraw = 0;
     mVtxSize = 0;
+    vertex_mapped_resource.clear();
 }
 
-void* RenderPrimitive::LockVertexBuffer() {
-    mVtxBuffer.MapAsync(
-            wgpu::MapMode::Write, 0, 4,
-            [](WGPUBufferMapAsyncStatus status, void* userdata) {
-                auto* app = static_cast<RenderPrimitive*>(userdata);
-                if (status == WGPUBufferMapAsyncStatus_Success) {
-                    app->vertex_mapped_resource = app->mVtxBuffer.GetMappedRange();
-                } else {
-                    app->vertex_mapped_resource = nullptr;
-                }
-            },
-            this);
-
-    while (vertex_mapped_resource == nullptr) {
-    }
-    return vertex_mapped_resource;
-}
+void* RenderPrimitive::LockVertexBuffer() { return vertex_mapped_resource.data(); }
 
 void RenderPrimitive::UnlockVertexBuffer() {
-    mVtxBuffer.Unmap();
-    vertex_mapped_resource = nullptr;
+    device.GetQueue().WriteBuffer(mVtxBuffer, 0, vertex_mapped_resource.data(),
+                                  vertex_mapped_resource.size() * sizeof(float));
+    vertex_mapped_resource.clear();
 }
 
 void RenderPrimitive::CreateIndexBuffer(int inNumIdx, const uint32_t* inData) {
@@ -77,29 +64,6 @@ void RenderPrimitive::ReleaseIndexBuffer() {
     }
     mNumIdx = 0;
     mNumIdxToDraw = 0;
-}
-
-uint32* RenderPrimitive::LockIndexBuffer() {
-    mIdxBuffer.MapAsync(
-            wgpu::MapMode::Write, 0, 4,
-            [](WGPUBufferMapAsyncStatus status, void* userdata) {
-                auto* app = static_cast<RenderPrimitive*>(userdata);
-                if (status == WGPUBufferMapAsyncStatus_Success) {
-                    app->index_mapped_resource = static_cast<uint32_t*>(app->mVtxBuffer.GetMappedRange());
-                } else {
-                    app->index_mapped_resource = nullptr;
-                }
-            },
-            this);
-
-    while (index_mapped_resource == nullptr) {
-    }
-    return index_mapped_resource;
-}
-
-void RenderPrimitive::UnlockIndexBuffer() {
-    mIdxBuffer.Unmap();
-    index_mapped_resource = nullptr;
 }
 
 void RenderPrimitive::Draw(wgpu::RenderPassEncoder& passEncoder) const {

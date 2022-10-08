@@ -12,6 +12,7 @@ void RenderInstances::Clear() {
     mInstanceBuffer = nullptr;
     mInstanceBufferSize = 0;
     mInstanceSize = 0;
+    instance_mapped_resource.clear();
 }
 
 void RenderInstances::CreateBuffer(int inNumInstances, int inInstanceSize) {
@@ -26,32 +27,18 @@ void RenderInstances::CreateBuffer(int inNumInstances, int inInstanceSize) {
         desc.size = mInstanceBufferSize;
         desc.usage = wgpu::BufferUsage::Vertex | wgpu::BufferUsage::CopyDst;
         mInstanceBuffer = device.CreateBuffer(&desc);
+        instance_mapped_resource.resize(desc.size / sizeof(float));
     }
 
     // Update parameters
     mInstanceSize = inInstanceSize;
 }
 
-void* RenderInstances::Lock() {
-    mInstanceBuffer.MapAsync(
-            wgpu::MapMode::Write, 0, 4,
-            [](WGPUBufferMapAsyncStatus status, void* userdata) {
-                auto* app = static_cast<RenderInstances*>(userdata);
-                if (status == WGPUBufferMapAsyncStatus_Success) {
-                    app->mapped_ptr = app->mInstanceBuffer.GetMappedRange();
-                } else {
-                    app->mapped_ptr = nullptr;
-                }
-            },
-            this);
-
-    while (mapped_ptr == nullptr) {
-    }
-    return mapped_ptr;
-}
+void* RenderInstances::Lock() { return instance_mapped_resource.data(); }
 void RenderInstances::Unlock() {
-    mInstanceBuffer.Unmap();
-    mapped_ptr = nullptr;
+    device.GetQueue().WriteBuffer(mInstanceBuffer, 0, instance_mapped_resource.data(),
+                                  instance_mapped_resource.size() * sizeof(float));
+    instance_mapped_resource.clear();
 }
 
 void RenderInstances::Draw(wgpu::RenderPassEncoder& passEncoder,

@@ -10,7 +10,6 @@
 #include "vox.render/camera.h"
 #include "vox.render/entity.h"
 #include "vox.render/rendering/render_pass.h"
-#include "vox.render/shader/shader_common.h"
 
 namespace vox::physics_debugger {
 PhysicsDebugSubpass::PhysicsDebugSubpass(RenderContext *renderContext,
@@ -24,14 +23,14 @@ PhysicsDebugSubpass::PhysicsDebugSubpass(RenderContext *renderContext,
 void PhysicsDebugSubpass::prepare() {
     {
         _line_attributes.resize(2);
-        _line_attributes[0].shaderLocation = (uint32_t)Attributes::POSITION;
+        _line_attributes[0].shaderLocation = 0;
         _line_attributes[0].format = wgpu::VertexFormat::Float32x3;
         _line_attributes[0].offset = 0;
-        _line_attributes[1].shaderLocation = (uint32_t)Attributes::COLOR_0;
+        _line_attributes[1].shaderLocation = 1;
         _line_attributes[1].format = wgpu::VertexFormat::Uint8x4;
         _line_attributes[1].offset = 12;
         _line_layouts.resize(1);
-        _line_layouts[0].attributeCount = 2;
+        _line_layouts[0].attributeCount = _line_attributes.size();
         _line_layouts[0].attributes = _line_attributes.data();
         _line_layouts[0].stepMode = wgpu::VertexStepMode::Vertex;
         _line_layouts[0].arrayStride = 16;
@@ -192,6 +191,7 @@ void PhysicsDebugSubpass::draw(wgpu::RenderPassEncoder &commandEncoder) {
     DrawLines(commandEncoder);
     DrawTriangles(commandEncoder);
     DrawTexts(commandEncoder);
+    Clear();
 }
 
 void PhysicsDebugSubpass::Clear() {
