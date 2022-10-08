@@ -23,6 +23,7 @@
 #include "apps/omni_shadowmap_app.h"
 #include "apps/particle_app.h"
 #include "apps/pbr_app.h"
+#include "apps/physics_raw_app.h"
 #include "apps/plugins/plugins.h"
 #include "apps/primitive_app.h"
 #include "apps/scoped_autorelease_pool.h"

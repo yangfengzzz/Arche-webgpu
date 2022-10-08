@@ -18,12 +18,12 @@ set(SRC
         cascade_shadowmap_app.cpp
         omni_shadowmap_app.cpp
         cluster_forward_app.cpp
-        ibl_app.cpp
-        irradiance_app.cpp
         main.cpp
         multi_light_app.cpp
 #        particle_app.cpp
         pbr_app.cpp
+        ibl_app.cpp
+        irradiance_app.cpp
         primitive_app.cpp
         skybox_app.cpp
         assimp_app.cpp
@@ -36,6 +36,7 @@ set(SRC
         animation_ik_lookat_app.cpp
         animation_ik_hand_app.cpp
         animation_ik_floor_app.cpp
+        physics_raw_app.cpp
         gui_app.cpp
         )
 
@@ -108,7 +109,8 @@ if (CMAKE_BUILD_TYPE MATCHES "Release")
             ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-release/third_party/abseil/absl/strings
             ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-release/third_party/abseil/absl/base
             ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-release/third_party/abseil/absl/numeric
-            ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-release/third_party/glfw/src)
+            ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-release/third_party/glfw/src
+            ${CMAKE_SOURCE_DIR}/third_party/jolt/Build/build_release)
 ELSEIF (CMAKE_BUILD_TYPE MATCHES "Debug")
     target_link_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/third_party/assimp/build_release/bin
             ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-debug/src/dawn
@@ -122,12 +124,14 @@ ELSEIF (CMAKE_BUILD_TYPE MATCHES "Debug")
             ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-debug/third_party/abseil/absl/strings
             ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-debug/third_party/abseil/absl/base
             ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-debug/third_party/abseil/absl/numeric
-            ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-debug/third_party/glfw/src)
+            ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-debug/third_party/glfw/src
+            ${CMAKE_SOURCE_DIR}/third_party/jolt/Build/build_debug)
 endif ()
 
 target_link_libraries(${PROJECT_NAME} PUBLIC
         # Assimp
-        assimp)
+        assimp
+        Jolt)
 
 # Create android project
 if (ANDROID)

@@ -22,8 +22,6 @@
 
 #include "vox.render/material/base_material.h"
 #include "vox.render/script.h"
-#include "vox.toolkit/physics_debugger/render_instances.h"
-#include "vox.toolkit/physics_debugger/render_primitive.h"
 
 using namespace JPH;
 
@@ -68,19 +66,6 @@ private:
     void DrawTriangles();
 
     void ClearTriangles();
-
-    /// Implementation specific batch object
-    class BatchImpl : public RefTargetVirtual, public RenderPrimitive {
-    public:
-        JPH_OVERRIDE_NEW_DELETE
-
-        BatchImpl(wgpu::Device &device, wgpu::PrimitiveTopology inType) : RenderPrimitive(device, inType) {}
-
-        void AddRef() override { RenderPrimitive::AddRef(); }
-        void Release() override {
-            if (--mRefCount == 0) delete this;
-        }
-    };
 
     /// Properties for a single rendered instance
     struct Instance {
@@ -187,7 +172,7 @@ private:
 
         Vec3 mPosition;
         String mText;
-        Color mColor;
+        JPH::Color mColor;
         float mHeight;
     };
 
