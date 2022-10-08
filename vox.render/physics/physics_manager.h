@@ -71,12 +71,12 @@ public:
     /// Set gravity value
     void setGravity(const Vector3F &inGravity);
 
-    Vector3F getGravity() const;
+    [[nodiscard]] Vector3F getGravity() const;
 
     /// Control the main constants of the physics simulation
     void setPhysicsSettings(const JPH::PhysicsSettings &inSettings);
 
-    const JPH::PhysicsSettings &getPhysicsSettings() const;
+    [[nodiscard]] const JPH::PhysicsSettings &getPhysicsSettings() const;
 
     PhysicsManager();
 
@@ -84,7 +84,7 @@ public:
 
     JPH::BodyInterface &getBodyInterface();
 
-    const JPH::BodyInterface &GetBodyInterface() const;
+    [[nodiscard]] const JPH::BodyInterface &GetBodyInterface() const;
 
 public:
     /**
@@ -115,27 +115,28 @@ public:
 
 private:
     float rest_time_ = 0;
-    std::vector<Script *> _on_physics_update_scripts;
-    std::vector<Collider *> _colliders;
+    std::vector<Script *> _on_physics_update_scripts{};
+    std::vector<Collider *> _colliders{};
 
     std::function<void(const JPH::Body &inBody1, const JPH::Body &inBody2, const JPH::ContactManifold &inManifold)>
-            _on_contact_enter;
+            _on_contact_enter{};
     std::function<void(const JPH::Body &inBody1, const JPH::Body &inBody2, const JPH::ContactManifold &inManifold)>
-            _on_contact_stay;
-    std::function<void(const JPH::SubShapeIDPair &inSubShapePair)> _on_contact_exit;
+            _on_contact_stay{};
+    std::function<void(const JPH::SubShapeIDPair &inSubShapePair)> _on_contact_exit{};
     std::unique_ptr<JPH::ContactListener> _contactListener{nullptr};
+    std::unique_ptr<JPH::BroadPhaseLayerInterface> _broadPhaseLayerInterface{nullptr};
 
-    JPH::PhysicsSystem _physics_system;
+    std::unique_ptr<JPH::PhysicsSystem> _physics_system{nullptr};
     // We need a temp allocator for temporary allocations during the physics update. We're
     // pre-allocating 10 MB to avoid having to do allocations during the physics update.
     // B.t.w. 10 MB is way too much for this example, but it is a typical value you can use.
     // If you don't want to pre-allocate you can also use TempAllocatorMalloc to fall back to
     // malloc / free.
-    JPH::TempAllocatorImpl _temp_allocator;
+    std::unique_ptr<JPH::TempAllocatorImpl> _temp_allocator{nullptr};
     // We need a job system that will execute physics jobs on multiple threads. Typically,
     // you would implement the JobSystem interface yourself and let Jolt Physics run on top
     // of your own job scheduler. JobSystemThreadPool is an example implementation.
-    JPH::JobSystemThreadPool _job_system;
+    std::unique_ptr<JPH::JobSystemThreadPool> _job_system{nullptr};
 };
 template <>
 inline PhysicsManager *Singleton<PhysicsManager>::ms_singleton{nullptr};

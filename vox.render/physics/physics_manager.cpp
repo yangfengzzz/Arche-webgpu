@@ -76,6 +76,20 @@ public:
         return mObjectToBroadPhase[inLayer];
     }
 
+#if defined(JPH_EXTERNAL_PROFILE) || defined(JPH_PROFILE_ENABLED)
+    [[nodiscard]] const char *GetBroadPhaseLayerName(BroadPhaseLayer inLayer) const override {
+        switch ((BroadPhaseLayer::Type)inLayer) {
+            case (BroadPhaseLayer::Type)BroadPhaseLayers::NON_MOVING:
+                return "NON_MOVING";
+            case (BroadPhaseLayer::Type)BroadPhaseLayers::MOVING:
+                return "MOVING";
+            default:
+                JPH_ASSERT(false);
+                return "INVALID";
+        }
+    }
+#endif  // JPH_EXTERNAL_PROFILE || JPH_PROFILE_ENABLED
+
 private:
     BroadPhaseLayer mObjectToBroadPhase[PhysicsManager::Layers::NUM_LAYERS]{};
 };
@@ -148,9 +162,7 @@ PhysicsManager &PhysicsManager::GetSingleton() {
     return (*ms_singleton);
 }
 
-PhysicsManager::PhysicsManager()
-    : _temp_allocator(10 * 1024 * 1024),
-      _job_system(cMaxPhysicsJobs, cMaxPhysicsBarriers, thread::hardware_concurrency() - 1) {
+PhysicsManager::PhysicsManager() {
     // Register allocation hook
     RegisterDefaultAllocator();
 
@@ -163,13 +175,18 @@ PhysicsManager::PhysicsManager()
     // Register all Jolt physics types
     RegisterTypes();
 
+    _temp_allocator = std::make_unique<TempAllocatorImpl>(10 * 1024 * 1024);
+    _job_system = std::make_unique<JobSystemThreadPool>(cMaxPhysicsJobs, cMaxPhysicsBarriers,
+                                                        thread::hardware_concurrency() - 1);
+
     // Create mapping table from object layer to broadphase layer
     // Note: As this is an interface, PhysicsSystem will take a reference to this so this instance needs to stay alive!
-    BPLayerInterfaceImpl broad_phase_layer_interface;
+    _broadPhaseLayerInterface = std::make_unique<BPLayerInterfaceImpl>();
 
     // Now we can create the actual physics system.
-    _physics_system.Init(cMaxBodies, cNumBodyMutexes, cMaxBodyPairs, cMaxContactConstraints,
-                         broad_phase_layer_interface, MyBroadPhaseCanCollide, MyObjectCanCollide);
+    _physics_system = std::make_unique<JPH::PhysicsSystem>();
+    _physics_system->Init(cMaxBodies, cNumBodyMutexes, cMaxBodyPairs, cMaxContactConstraints,
+                          *_broadPhaseLayerInterface, MyBroadPhaseCanCollide, MyObjectCanCollide);
 
     _on_contact_enter = [&](const JPH::Body &inBody1, const JPH::Body &inBody2,
                             const JPH::ContactManifold &inManifold) {
@@ -203,7 +220,7 @@ PhysicsManager::PhysicsManager()
     };
 
     _on_contact_exit = [&](const JPH::SubShapeIDPair &inSubShapePair) {
-        const JPH::BodyInterface &interface = _physics_system.GetBodyInterface();
+        const JPH::BodyInterface &interface = _physics_system->GetBodyInterface();
         const auto kShape1 = reinterpret_cast<Collider *>(interface.GetUserData(inSubShapePair.GetBody1ID()));
         const auto kShape2 = reinterpret_cast<Collider *>(interface.GetUserData(inSubShapePair.GetBody2ID()));
 
@@ -219,7 +236,7 @@ PhysicsManager::PhysicsManager()
     };
 
     _contactListener = std::make_unique<ContactListenerWrapper>(_on_contact_enter, _on_contact_stay, _on_contact_exit);
-    _physics_system.SetContactListener(_contactListener.get());
+    _physics_system->SetContactListener(_contactListener.get());
 }
 
 PhysicsManager::~PhysicsManager() {
@@ -228,25 +245,28 @@ PhysicsManager::~PhysicsManager() {
     Factory::sInstance = nullptr;
 
     _contactListener.reset();
+    _temp_allocator.reset();
+    _job_system.reset();
+    _physics_system.reset();
 }
 
 void PhysicsManager::setGravity(const Vector3F &inGravity) {
-    _physics_system.SetGravity({inGravity.x, inGravity.y, inGravity.z});
+    _physics_system->SetGravity({inGravity.x, inGravity.y, inGravity.z});
 }
 Vector3F PhysicsManager::getGravity() const {
-    auto gravity = _physics_system.GetGravity();
+    auto gravity = _physics_system->GetGravity();
     return {gravity.GetX(), gravity.GetY(), gravity.GetZ()};
 }
 
 void PhysicsManager::setPhysicsSettings(const JPH::PhysicsSettings &inSettings) {
-    _physics_system.SetPhysicsSettings(inSettings);
+    _physics_system->SetPhysicsSettings(inSettings);
 }
 
-const JPH::PhysicsSettings &PhysicsManager::getPhysicsSettings() const { return _physics_system.GetPhysicsSettings(); }
+const JPH::PhysicsSettings &PhysicsManager::getPhysicsSettings() const { return _physics_system->GetPhysicsSettings(); }
 
-JPH::BodyInterface &PhysicsManager::getBodyInterface() { return _physics_system.GetBodyInterface(); }
+JPH::BodyInterface &PhysicsManager::getBodyInterface() { return _physics_system->GetBodyInterface(); }
 
-const JPH::BodyInterface &PhysicsManager::GetBodyInterface() const { return _physics_system.GetBodyInterface(); }
+const JPH::BodyInterface &PhysicsManager::GetBodyInterface() const { return _physics_system->GetBodyInterface(); }
 
 //----------------------------------------------------------------------------------------------------------------------
 void PhysicsManager::addCollider(Collider *collider) { _colliders.push_back(collider); }
@@ -267,8 +287,8 @@ void PhysicsManager::update(float delta_time) {
             script->onPhysicsUpdate();
         }
         callColliderOnUpdate();
-        _physics_system.Update(fixed_time_step_, collision_steps, integration_sub_steps, &_temp_allocator,
-                               &_job_system);
+        _physics_system->Update(fixed_time_step_, collision_steps, integration_sub_steps, _temp_allocator.get(),
+                                _job_system.get());
         callColliderOnLateUpdate();
     }
 }

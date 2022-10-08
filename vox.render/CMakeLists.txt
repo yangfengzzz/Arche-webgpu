@@ -483,7 +483,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC ../
         ../third_party/dawn
         ../third_party/jolt)
 
-target_compile_definitions(${PROJECT_NAME} PUBLIC DAWN_ENABLE_BACKEND_METAL DAWN_ENABLE_BACKEND_NULL TINT_BUILD_SPV_READER)
+target_compile_definitions(${PROJECT_NAME} PUBLIC DAWN_ENABLE_BACKEND_METAL DAWN_ENABLE_BACKEND_NULL TINT_BUILD_SPV_READER JPH_PROFILE_ENABLED JPH_DEBUG_RENDERER)
 
 # Link third party libraries
 target_link_libraries(${PROJECT_NAME} PUBLIC
