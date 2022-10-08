@@ -17,8 +17,9 @@ void RenderPrimitive::CreateVertexBuffer(int inNumVtx, int inVtxSize, const void
 
     wgpu::BufferDescriptor desc;
     desc.size = uint64(inNumVtx) * inVtxSize;
-    desc.usage = wgpu::BufferUsage::Vertex | wgpu::BufferUsage::MapWrite;
+    desc.usage = wgpu::BufferUsage::Vertex | wgpu::BufferUsage::CopyDst;
     mVtxBuffer = device.CreateBuffer(&desc);
+    device.GetQueue().WriteBuffer(mVtxBuffer, 0, inData, desc.size);
 
     mNumVtx = inNumVtx;
     mNumVtxToDraw = inNumVtx;
@@ -62,8 +63,9 @@ void RenderPrimitive::CreateIndexBuffer(int inNumIdx, const uint32_t* inData) {
 
     wgpu::BufferDescriptor desc;
     desc.size = uint64(inNumIdx) * sizeof(uint32);
-    desc.usage = wgpu::BufferUsage::Vertex | wgpu::BufferUsage::MapWrite;
-    mVtxBuffer = device.CreateBuffer(&desc);
+    desc.usage = wgpu::BufferUsage::Vertex | wgpu::BufferUsage::CopyDst;
+    mIdxBuffer = device.CreateBuffer(&desc);
+    device.GetQueue().WriteBuffer(mIdxBuffer, 0, inData, desc.size);
 
     mNumIdx = inNumIdx;
     mNumIdxToDraw = inNumIdx;

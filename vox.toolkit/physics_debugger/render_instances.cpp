@@ -24,7 +24,7 @@ void RenderInstances::CreateBuffer(int inNumInstances, int inInstanceSize) {
 
         wgpu::BufferDescriptor desc;
         desc.size = mInstanceBufferSize;
-        desc.usage = wgpu::BufferUsage::Vertex | wgpu::BufferUsage::MapWrite;
+        desc.usage = wgpu::BufferUsage::Vertex | wgpu::BufferUsage::CopyDst;
         mInstanceBuffer = device.CreateBuffer(&desc);
     }
 

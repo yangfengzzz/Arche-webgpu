@@ -11,6 +11,11 @@
 namespace vox {
 class PhysicsRawApp : public ForwardApplication {
 public:
+    bool prepare(Platform &platform) override;
+
     void loadScene() override;
+
+private:
+    JPH::BodyID sphere_id;
 };
 }  // namespace vox

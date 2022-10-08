@@ -28,13 +28,13 @@ void PhysicsDebugSubpass::prepare() {
         _line_attributes[0].format = wgpu::VertexFormat::Float32x3;
         _line_attributes[0].offset = 0;
         _line_attributes[1].shaderLocation = (uint32_t)Attributes::COLOR_0;
-        _line_attributes[1].format = wgpu::VertexFormat::Float32x4;
+        _line_attributes[1].format = wgpu::VertexFormat::Uint8x4;
         _line_attributes[1].offset = 12;
         _line_layouts.resize(1);
         _line_layouts[0].attributeCount = 2;
         _line_layouts[0].attributes = _line_attributes.data();
         _line_layouts[0].stepMode = wgpu::VertexStepMode::Vertex;
-        _line_layouts[0].arrayStride = 28;
+        _line_layouts[0].arrayStride = 16;
 
         _vertex_attributes.resize(4);
         _vertex_attributes[0].shaderLocation = 0;
@@ -51,31 +51,31 @@ void PhysicsDebugSubpass::prepare() {
         _vertex_attributes[3].offset = 32;
 
         _instance_attributes.resize(9);
-        _instance_attributes[0].shaderLocation = 0;
+        _instance_attributes[0].shaderLocation = 4;
         _instance_attributes[0].format = wgpu::VertexFormat::Float32x4;
         _instance_attributes[0].offset = 0;
-        _instance_attributes[1].shaderLocation = 1;
+        _instance_attributes[1].shaderLocation = 5;
         _instance_attributes[1].format = wgpu::VertexFormat::Float32x4;
         _instance_attributes[1].offset = 16;
-        _instance_attributes[2].shaderLocation = 2;
+        _instance_attributes[2].shaderLocation = 6;
         _instance_attributes[2].format = wgpu::VertexFormat::Float32x4;
         _instance_attributes[2].offset = 32;
-        _instance_attributes[3].shaderLocation = 3;
+        _instance_attributes[3].shaderLocation = 7;
         _instance_attributes[3].format = wgpu::VertexFormat::Float32x4;
         _instance_attributes[3].offset = 48;
-        _instance_attributes[4].shaderLocation = 4;
+        _instance_attributes[4].shaderLocation = 8;
         _instance_attributes[4].format = wgpu::VertexFormat::Float32x4;
         _instance_attributes[4].offset = 64;
-        _instance_attributes[5].shaderLocation = 5;
+        _instance_attributes[5].shaderLocation = 9;
         _instance_attributes[5].format = wgpu::VertexFormat::Float32x4;
         _instance_attributes[5].offset = 80;
-        _instance_attributes[6].shaderLocation = 6;
+        _instance_attributes[6].shaderLocation = 10;
         _instance_attributes[6].format = wgpu::VertexFormat::Float32x4;
         _instance_attributes[6].offset = 96;
-        _instance_attributes[7].shaderLocation = 7;
+        _instance_attributes[7].shaderLocation = 11;
         _instance_attributes[7].format = wgpu::VertexFormat::Float32x4;
         _instance_attributes[7].offset = 112;
-        _instance_attributes[8].shaderLocation = 8;
+        _instance_attributes[8].shaderLocation = 12;
         _instance_attributes[8].format = wgpu::VertexFormat::Uint8x4;
         _instance_attributes[8].offset = 128;
 
@@ -132,12 +132,12 @@ void PhysicsDebugSubpass::prepare() {
         ShaderVariant variant;
         _fragment.entryPoint = "main";
         _fragment.module = ResourceCache::GetSingleton()
-                                   .requestShaderModule(wgpu::ShaderStage::Fragment, ShaderSource("toolkit/physics_debugger/line.vert"), variant)
+                                   .requestShaderModule(wgpu::ShaderStage::Fragment, ShaderSource("toolkit/physics_debugger/line.frag"), variant)
                                    .handle();
         _forwardPipelineDescriptor.vertex.entryPoint = "main";
         _forwardPipelineDescriptor.vertex.module =
                 ResourceCache::GetSingleton()
-                        .requestShaderModule(wgpu::ShaderStage::Vertex, ShaderSource("toolkit/physics_debugger/line.frag"), variant)
+                        .requestShaderModule(wgpu::ShaderStage::Vertex, ShaderSource("toolkit/physics_debugger/line.vert"), variant)
                         .handle();
 
         _forwardPipelineDescriptor.primitive.frontFace = wgpu::FrontFace::CW;
@@ -153,12 +153,12 @@ void PhysicsDebugSubpass::prepare() {
         ShaderVariant variant;
         _fragment.entryPoint = "main";
         _fragment.module = ResourceCache::GetSingleton()
-                                   .requestShaderModule(wgpu::ShaderStage::Fragment, ShaderSource("toolkit/physics_debugger/triangle.vert"), variant)
+                                   .requestShaderModule(wgpu::ShaderStage::Fragment, ShaderSource("toolkit/physics_debugger/triangle.frag"), variant)
                                    .handle();
         _forwardPipelineDescriptor.vertex.entryPoint = "main";
         _forwardPipelineDescriptor.vertex.module =
                 ResourceCache::GetSingleton()
-                        .requestShaderModule(wgpu::ShaderStage::Vertex, ShaderSource("toolkit/physics_debugger/triangle.frag"), variant)
+                        .requestShaderModule(wgpu::ShaderStage::Vertex, ShaderSource("toolkit/physics_debugger/triangle.vert"), variant)
                         .handle();
 
         _forwardPipelineDescriptor.primitive.frontFace = wgpu::FrontFace::CW;

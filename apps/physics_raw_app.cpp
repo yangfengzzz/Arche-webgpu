@@ -48,16 +48,26 @@ private:
 
 }  // namespace
 
-void PhysicsRawApp::loadScene() {
+bool PhysicsRawApp::prepare(Platform& platform) {
+    ForwardApplication::prepare(platform);
+
     auto scene = _sceneManager->currentScene();
-    scene->ambientLight()->setDiffuseSolidColor(Color(1, 1, 1));
-    auto rootEntity = scene->createRootEntity();
+    auto rootEntity = scene->getRootEntity();
     auto showScript = rootEntity->addComponent<ShowScript>();
+    showScript->sphere_id = sphere_id;
 
     auto debugger = std::make_unique<physics_debugger::PhysicsDebugSubpass>(
             _renderContext.get(), _depthStencilTextureFormat, scene, _mainCamera);
     showScript->_debugger = debugger.get();
     _renderPass->addSubpass(std::move(debugger));
+
+    return true;
+}
+
+void PhysicsRawApp::loadScene() {
+    auto scene = _sceneManager->currentScene();
+    scene->ambientLight()->setDiffuseSolidColor(Color(1, 1, 1));
+    auto rootEntity = scene->createRootEntity();
 
     auto cameraEntity = rootEntity->createChild();
     cameraEntity->transform->setPosition(10, 10, 10);
@@ -95,8 +105,7 @@ void PhysicsRawApp::loadScene() {
         JPH::BodyCreationSettings sphere_settings(new JPH::SphereShape(0.5f), JPH::Vec3(0.0f, 2.0f, 0.0f),
                                                   JPH::Quat::sIdentity(), JPH::EMotionType::Dynamic,
                                                   PhysicsManager::Layers::MOVING);
-        JPH::BodyID sphere_id = body_interface.CreateAndAddBody(sphere_settings, JPH::EActivation::Activate);
-        showScript->sphere_id = sphere_id;
+        sphere_id = body_interface.CreateAndAddBody(sphere_settings, JPH::EActivation::Activate);
 
         // Now you can interact with the dynamic body, in this case we're going to give it a velocity.
         // (note that if we had used CreateBody then we could have set the velocity straight on the body before adding

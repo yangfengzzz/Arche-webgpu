@@ -13,14 +13,14 @@ void main() {
 	vec3 SpecularColor = vec3(1, 1, 1);
 
 	// Apply procedural pattern based on the uv coordinates
-	bool2 less_half = Tex - floor(Tex) < vec2(0.5, 0.5);
-	float darken_factor = less_half.r ^ less_half.g? 0.5 : 1.0;
+	bvec2 less_half = bvec2((Tex.x - floor(Tex.x)) < 0.5, (Tex.y - floor(Tex.y)) < 0.5);
+	float darken_factor = (((less_half.r? 0 : 1) ^ (less_half.g ? 0 : 1)) != 0) ? 0.5 : 1.0;
 
 	// Fade out checkerboard pattern when it tiles too often
-	vec2 dx = dfdx(Tex), dy = dfdy(Tex);
+	vec2 dx = dFdx(Tex), dy = dFdy(Tex);
 	float texel_distance = sqrt(dot(dx, dx) + dot(dy, dy));
-	darken_factor = lerp(darken_factor, 0.75, clamp(5.0 * texel_distance - 1.5, 0.0, 1.0));
+	darken_factor = mix(darken_factor, 0.75, clamp(5.0 * texel_distance - 1.5, 0.0, 1.0));
 
 	// Calculate color
-	o_color = vec4(saturate(AmbientFactor * darken_factor * DiffuseColor + SpecularColor), 1);
+	o_color = vec4(clamp(AmbientFactor * darken_factor * DiffuseColor + SpecularColor, 0.0, 1.0), 1);
 }
