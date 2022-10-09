@@ -11,7 +11,9 @@
 #include <Jolt/Physics/Body/Body.h>
 #include <Jolt/Physics/Body/BodyInterface.h>
 
+#include "vox.math/matrix4x4.h"
 #include "vox.render/component.h"
+#include "vox.render/update_flag.h"
 
 namespace vox {
 class Collider : public Component {
@@ -25,16 +27,83 @@ public:
     std::shared_ptr<JPH::Shape> getShape();
 
 public:
-    void onUpdate(){};
+    [[nodiscard]] Vector3F getCenterOfMassPosition() const;
 
-    virtual void onLateUpdate() {}
+    [[nodiscard]] Matrix4x4F getCenterOfMassTransform() const;
 
-private:
+    /// Linear or angular velocity (functions will activate body if needed).
+    /// Note that the linear velocity is the velocity of the center of mass, which may not coincide with the position of
+    /// your object, to correct for this: \f$VelocityCOM = Velocity - AngularVelocity \times ShapeCOM\f$
+    void setLinearAndAngularVelocity(const Vector3F& inLinearVelocity, const Vector3F& inAngularVelocity);
+
+    void getLinearAndAngularVelocity(Vector3F& outLinearVelocity, Vector3F& outAngularVelocity) const;
+
+    void setLinearVelocity(const Vector3F& inLinearVelocity);
+
+    [[nodiscard]] Vector3F getLinearVelocity() const;
+
+    ///< Add velocity to current velocity
+    void addLinearVelocity(const Vector3F& inLinearVelocity);
+
+    ///< Add linear and angular to current velocities
+    void addLinearAndAngularVelocity(const Vector3F& inLinearVelocity, const Vector3F& inAngularVelocity);
+
+    void setAngularVelocity(const Vector3F& inAngularVelocity);
+
+    [[nodiscard]] Vector3F getAngularVelocity() const;
+
+    ///< Velocity of point inPoint (in world space, e.g. on the surface of the body) of the body
+    [[nodiscard]] Vector3F getPointVelocity(const Vector3F& inPoint) const;
+
+public:
+    /// Add forces to the body
+    void addForce(const Vector3F& inForce);
+
+    void addForce(const Vector3F& inForce, const Vector3F& inPoint);
+
+    void addTorque(const Vector3F& inTorque);
+
+    void addForceAndTorque(const Vector3F& inForce, const Vector3F& inTorque);
+
+    /// Add an impulse to the body
+    void addImpulse(const Vector3F& inImpulse);
+
+    void addImpulse(const Vector3F& inImpulse, const Vector3F& inPoint);
+
+    void addAngularImpulse(const Vector3F& inAngularImpulse);
+
+public:
+    void setMotionType(JPH::EMotionType inMotionType, JPH::EActivation inActivationMode);
+
+    [[nodiscard]] JPH::EMotionType getMotionType() const;
+
+    /// Get inverse inertia tensor in world space
+    [[nodiscard]] Matrix4x4F getInverseInertia() const;
+
+    void setRestitution(float inRestitution);
+
+    [[nodiscard]] float getRestitution() const;
+
+    void setFriction(float inFriction);
+
+    [[nodiscard]] float getFriction() const;
+
+    void setGravityFactor(float inGravityFactor);
+
+    [[nodiscard]] float getGravityFactor() const;
+
+public:
+    void onUpdate();
+
+    void onLateUpdate();
+
     void _onEnable() override;
 
     void _onDisable() override;
 
 private:
+    std::unique_ptr<UpdateFlag> update_flag_;
+
     JPH::BodyInterface* _bodyInterface{nullptr};
     std::shared_ptr<JPH::Shape> _shape{nullptr};
     JPH::BodyID _bodyID;
