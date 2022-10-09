@@ -3,7 +3,7 @@
 layout(location = 0) in vec3 vPos;
 layout(location = 1) in vec3 vNorm;
 layout(location = 2) in vec2 vTex;
-layout(location = 3) in uvec4 vCol;
+layout(location = 3) in vec4 vCol;
 
 layout(location = 4) in vec4 iModel1;
 layout(location = 5) in vec4 iModel2;
@@ -15,7 +15,7 @@ layout(location = 9) in vec4 iModelInvTrans2;
 layout(location = 10) in vec4 iModelInvTrans3;
 layout(location = 11) in vec4 iModelInvTrans4;
 
-layout(location = 12) in uvec4 iCol;
+layout(location = 12) in vec4 iCol;
 
 layout(set = 0, binding = 10) uniform u_mvpNoscale {
     mat4 mvp_no_scale;
@@ -33,7 +33,6 @@ void main() {
 	mat4 iModelInvTrans = mat4(iModelInvTrans1, iModelInvTrans2, iModelInvTrans3, iModelInvTrans4);
 
 	vec4 world_pos = iModel * pos;
-    world_pos /= world_pos.w;
 
     // Transform the position from world space to homogeneous projection space
     gl_Position = mvp_no_scale * world_pos;
@@ -43,11 +42,11 @@ void main() {
 	Normal = normalize((iModelInvTrans * norm).xyz);
 
 	// output world position of the vertex
-	WorldPos = world_pos.xyz;
+	WorldPos = world_pos.xyz/world_pos.w;
 
 	// output texture coordinates
 	Tex = vTex;
 
 	// output color
-	Color = vec4(float(vCol.x), float(vCol.y), float(vCol.z), float(vCol.w)) * vec4(float(iCol.x), float(iCol.y), float(iCol.z), float(iCol.w));
+	Color = vCol * iCol;
 }

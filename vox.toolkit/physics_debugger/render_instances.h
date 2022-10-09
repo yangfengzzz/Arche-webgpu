@@ -6,15 +6,34 @@
 
 #pragma once
 
-#include <utility>
+#include <Jolt/Jolt.h>
+//
+#include <Jolt/Core/Color.h>
+
+#include <vector>
 
 #include "vox.toolkit/physics_debugger/render_primitive.h"
 
 namespace vox::physics_debugger {
 
+using namespace JPH;
+
 /// Buffer that holds a list of instances (usually model transform etc.) for instance based rendering
 class RenderInstances : public RefTarget<RenderInstances> {
 public:
+    /// Properties for a single rendered instance
+    struct Instance {
+        /// Constructor
+        explicit Instance(Mat44Arg inModelMatrix = Mat44(),
+                          Mat44Arg inModelMatrixInvTrans = Mat44(),
+                          ColorArg inModelColor = JPH::Color())
+            : mModelMatrix(inModelMatrix), mModelMatrixInvTrans(inModelMatrixInvTrans), mModelColor(inModelColor) {}
+
+        Mat44 mModelMatrix;
+        Mat44 mModelMatrixInvTrans;
+        ColorArg mModelColor;
+    };
+
     /// Constructor
     explicit RenderInstances(wgpu::Device& device) : device(device) {}
     ~RenderInstances() { Clear(); }
@@ -36,7 +55,7 @@ public:
 private:
     wgpu::Device& device;
 
-    std::vector<float> instance_mapped_resource{};
+    std::vector<Instance> instance_mapped_resource{};
     wgpu::Buffer mInstanceBuffer;
     int mInstanceBufferSize = 0;
     int mInstanceSize = 0;

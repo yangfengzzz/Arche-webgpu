@@ -22,5 +22,5 @@ void main() {
 	darken_factor = mix(darken_factor, 0.75, clamp(5.0 * texel_distance - 1.5, 0.0, 1.0));
 
 	// Calculate color
-	o_color = vec4(clamp(AmbientFactor * darken_factor * DiffuseColor + SpecularColor, 0.0, 1.0), 1);
+	o_color = vec4(clamp(DiffuseColor, 0.0, 1.0), 1);
 }

@@ -27,7 +27,7 @@ void PhysicsDebugSubpass::prepare() {
         _line_attributes[0].format = wgpu::VertexFormat::Float32x3;
         _line_attributes[0].offset = 0;
         _line_attributes[1].shaderLocation = 1;
-        _line_attributes[1].format = wgpu::VertexFormat::Uint8x4;
+        _line_attributes[1].format = wgpu::VertexFormat::Unorm8x4;
         _line_attributes[1].offset = 12;
         _line_layouts.resize(1);
         _line_layouts[0].attributeCount = _line_attributes.size();
@@ -46,7 +46,7 @@ void PhysicsDebugSubpass::prepare() {
         _vertex_attributes[2].format = wgpu::VertexFormat::Float32x2;
         _vertex_attributes[2].offset = 24;
         _vertex_attributes[3].shaderLocation = 3;
-        _vertex_attributes[3].format = wgpu::VertexFormat::Uint8x4;
+        _vertex_attributes[3].format = wgpu::VertexFormat::Unorm8x4;
         _vertex_attributes[3].offset = 32;
 
         _instance_attributes.resize(9);
@@ -75,7 +75,7 @@ void PhysicsDebugSubpass::prepare() {
         _instance_attributes[7].format = wgpu::VertexFormat::Float32x4;
         _instance_attributes[7].offset = 112;
         _instance_attributes[8].shaderLocation = 12;
-        _instance_attributes[8].format = wgpu::VertexFormat::Uint8x4;
+        _instance_attributes[8].format = wgpu::VertexFormat::Unorm8x4;
         _instance_attributes[8].offset = 128;
 
         _triangle_layouts.resize(2);
@@ -86,7 +86,7 @@ void PhysicsDebugSubpass::prepare() {
         _triangle_layouts[1].attributes = _instance_attributes.data();
         _triangle_layouts[1].attributeCount = _instance_attributes.size();
         _triangle_layouts[1].stepMode = wgpu::VertexStepMode::Instance;
-        _triangle_layouts[1].arrayStride = 132;
+        _triangle_layouts[1].arrayStride = 144; // alignas(16)
     }
 
     _depthStencil.format = _depthStencilTextureFormat;
@@ -348,8 +348,8 @@ void PhysicsDebugSubpass::DrawTriangles(wgpu::RenderPassEncoder &commandEncoder)
     if (mNumInstances > 0) {
         // Create instances buffer
         RenderInstances *instances_buffer = mInstancesBuffer[_currentFrameIndex];
-        instances_buffer->CreateBuffer(2 * mNumInstances, sizeof(Instance));
-        auto *dst_instance = reinterpret_cast<Instance *>(instances_buffer->Lock());
+        instances_buffer->CreateBuffer(2 * mNumInstances, sizeof(RenderInstances::Instance));
+        auto *dst_instance = reinterpret_cast<RenderInstances::Instance *>(instances_buffer->Lock());
 
         // Next write index
         int dst_index = 0;
@@ -398,7 +398,7 @@ void PhysicsDebugSubpass::DrawTriangles(wgpu::RenderPassEncoder &commandEncoder)
                         // Copy instances
                         Array<int> &this_lod_indices = lod_indices[type][lod];
                         for (int i : this_lod_indices) {
-                            const Instance &src_instance = instances[i];
+                            const RenderInstances::Instance &src_instance = instances[i];
                             dst_instance[dst_index++] = src_instance;
                         }
 

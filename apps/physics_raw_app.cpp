@@ -80,7 +80,7 @@ void PhysicsRawApp::loadScene() {
         // Next we can create a rigid body to serve as the floor, we make a large box
         // Create the settings for the collision volume (the shape).
         // Note that for simple shapes (like boxes) you can also directly construct a BoxShape.
-        JPH::BoxShapeSettings floor_shape_settings(JPH::Vec3(100.0f, 1.0f, 100.0f));
+        JPH::BoxShapeSettings floor_shape_settings(JPH::Vec3(10.0f, 0.1f, 10.0f));
 
         // Create the shape
         // We don't expect an error here, but you can check
@@ -102,7 +102,7 @@ void PhysicsRawApp::loadScene() {
 
         // Now create a dynamic body to bounce on the floor
         // Note that this uses the shorthand version of creating and adding a body to the world
-        JPH::BodyCreationSettings sphere_settings(new JPH::SphereShape(0.5f), JPH::Vec3(0.0f, 2.0f, 0.0f),
+        JPH::BodyCreationSettings sphere_settings(new JPH::SphereShape(0.5f), JPH::Vec3(0.0f, 10.0f, 0.0f),
                                                   JPH::Quat::sIdentity(), JPH::EMotionType::Dynamic,
                                                   PhysicsManager::Layers::MOVING);
         sphere_id = body_interface.CreateAndAddBody(sphere_settings, JPH::EActivation::Activate);

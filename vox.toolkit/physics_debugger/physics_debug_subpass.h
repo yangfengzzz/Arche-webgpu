@@ -87,19 +87,8 @@ private:
         }
     };
 
-    /// Properties for a single rendered instance
-    struct Instance {
-        /// Constructor
-        Instance(Mat44Arg inModelMatrix, Mat44Arg inModelMatrixInvTrans, ColorArg inModelColor)
-            : mModelMatrix(inModelMatrix), mModelMatrixInvTrans(inModelMatrixInvTrans), mModelColor(inModelColor) {}
-
-        Mat44 mModelMatrix;
-        Mat44 mModelMatrixInvTrans;
-        ColorArg mModelColor;
-    };
-
-    /// Rendered instance with added information for lodding
-    struct InstanceWithLODInfo : public Instance {
+    /// Rendered instance with added information for lod.
+    struct InstanceWithLODInfo : public RenderInstances::Instance {
         /// Constructor
         InstanceWithLODInfo(Mat44Arg inModelMatrix,
                             Mat44Arg inModelMatrixInvTrans,

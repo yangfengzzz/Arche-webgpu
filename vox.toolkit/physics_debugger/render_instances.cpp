@@ -27,7 +27,7 @@ void RenderInstances::CreateBuffer(int inNumInstances, int inInstanceSize) {
         desc.size = mInstanceBufferSize;
         desc.usage = wgpu::BufferUsage::Vertex | wgpu::BufferUsage::CopyDst;
         mInstanceBuffer = device.CreateBuffer(&desc);
-        instance_mapped_resource.resize(desc.size / sizeof(float));
+        instance_mapped_resource.resize(inNumInstances);
     }
 
     // Update parameters
@@ -37,22 +37,24 @@ void RenderInstances::CreateBuffer(int inNumInstances, int inInstanceSize) {
 void* RenderInstances::Lock() { return instance_mapped_resource.data(); }
 void RenderInstances::Unlock() {
     device.GetQueue().WriteBuffer(mInstanceBuffer, 0, instance_mapped_resource.data(),
-                                  instance_mapped_resource.size() * sizeof(float));
+                                  instance_mapped_resource.size() * sizeof(Instance));
 }
 
 void RenderInstances::Draw(wgpu::RenderPassEncoder& passEncoder,
                            RenderPrimitive* inPrimitive,
                            int inStartInstance,
                            int inNumInstances) const {
-    // Draw Call
-    passEncoder.SetVertexBuffer(0, inPrimitive->mVtxBuffer);
-    passEncoder.SetVertexBuffer(1, mInstanceBuffer);
+    if (inNumInstances > 0) {
+        // Draw Call
+        passEncoder.SetVertexBuffer(0, inPrimitive->mVtxBuffer);
+        passEncoder.SetVertexBuffer(1, mInstanceBuffer);
 
-    if (inPrimitive->mIdxBuffer != nullptr) {
-        passEncoder.SetIndexBuffer(inPrimitive->mIdxBuffer, wgpu::IndexFormat::Uint32);
-        passEncoder.DrawIndexed(inPrimitive->mNumIdxToDraw, inNumInstances, 0, 0, inStartInstance);
-    } else {
-        passEncoder.Draw(inPrimitive->mNumIdxToDraw, inNumInstances, 0, inStartInstance);
+        if (inPrimitive->mIdxBuffer != nullptr) {
+            passEncoder.SetIndexBuffer(inPrimitive->mIdxBuffer, wgpu::IndexFormat::Uint32);
+            passEncoder.DrawIndexed(inPrimitive->mNumIdxToDraw, inNumInstances, 0, 0, inStartInstance);
+        } else {
+            passEncoder.Draw(inPrimitive->mNumVtxToDraw, inNumInstances, 0, inStartInstance);
+        }
     }
 }
 
