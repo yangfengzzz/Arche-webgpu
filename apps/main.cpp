@@ -60,7 +60,7 @@ int main(int argc, char* argv[]) {
 
     auto code = platform.Initialize(plugins::GetAll());
     if (code == vox::ExitCode::SUCCESS) {
-        platform.SetApp(std::make_unique<vox::PhysicsBoxShapeApp>());
+        platform.SetApp(std::make_unique<vox::PhysicsCapsuleShapeApp>());
         code = platform.MainLoop();
     }
     platform.Terminate(code);
