@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "apps/physics_raw_app.h"
+#include "apps/physics_debug_app.h"
 
 #include <Jolt/Physics/Body/BodyCreationSettings.h>
 #include <Jolt/Physics/Collision/Shape/BoxShape.h>
@@ -46,7 +46,7 @@ private:
 
 }  // namespace
 
-bool PhysicsRawApp::prepare(Platform& platform) {
+bool PhysicsDebugApp::prepare(Platform& platform) {
     ForwardApplication::prepare(platform);
 
     auto scene = _sceneManager->currentScene();
@@ -62,7 +62,7 @@ bool PhysicsRawApp::prepare(Platform& platform) {
     return true;
 }
 
-void PhysicsRawApp::loadScene() {
+void PhysicsDebugApp::loadScene() {
     auto scene = _sceneManager->currentScene();
     scene->ambientLight()->setDiffuseSolidColor(Color(1, 1, 1));
     auto rootEntity = scene->createRootEntity();

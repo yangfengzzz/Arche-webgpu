@@ -9,7 +9,7 @@
 #include "vox.render/forward_application.h"
 
 namespace vox {
-class PhysicsRawApp : public ForwardApplication {
+class PhysicsDebugApp : public ForwardApplication {
 public:
     bool prepare(Platform &platform) override;
 

@@ -11,6 +11,8 @@
 namespace vox {
 class PhysicsCollisionApp : public ForwardApplication {
 public:
+    bool prepare(Platform &platform) override;
+
     void loadScene() override;
 };
 

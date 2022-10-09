@@ -24,26 +24,30 @@ Collider::~Collider() {
     }
 }
 
-void Collider::setShape(std::unique_ptr<JPH::Shape>&& shape, JPH::EMotionType type) {
+void Collider::setShape(const JPH::Shape* shape, JPH::EMotionType type) {
     auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
     if (!_bodyID.IsInvalid()) {
-        _bodyInterface->SetShape(_bodyID, shape.get(), true, JPH::EActivation::Activate);
+        _bodyInterface->SetShape(_bodyID, shape, true, JPH::EActivation::Activate);
         _bodyInterface->SetMotionType(_bodyID, type, JPH::EActivation::Activate);
-        _shape.reset();
     } else {
         JPH::BodyCreationSettings settings(
-                shape.get(), JPH::Vec3(), JPH::Quat::sIdentity(), type,
+                shape, JPH::Vec3(), JPH::Quat::sIdentity(), type,
                 type == JPH::EMotionType::Static ? PhysicsManager::Layers::NON_MOVING : PhysicsManager::Layers::MOVING);
         _body = _bodyInterface->CreateBody(settings);
         _body->SetUserData(reinterpret_cast<uint64_t>(this));
         _bodyID = _body->GetID();
         _bodyInterface->AddBody(_bodyID, JPH::EActivation::DontActivate);
     }
+
+    if (type == JPH::EMotionType::Static) {
+        _body->SetIsSensor(true);
+    } else {
+        _body->SetIsSensor(false);
+    }
     update_flag_->flag = true;
-    _shape = std::move(shape);
 }
 
-const JPH::Shape& Collider::getShape() { return *_shape; }
+const JPH::Shape& Collider::getShape() { return *_body->GetShape(); }
 
 Vector3F Collider::getCenterOfMassPosition() const {
     auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
@@ -219,9 +223,9 @@ void Collider::onUpdate() {
         auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
         _bodyInterface->SetPositionAndRotation(_bodyID, {p.x, p.y, p.z}, {q.x, q.y, q.z, q.w},
                                                JPH::EActivation::Activate);
-        _shape->ScaleShape({kWorldScale.x, kWorldScale.y, kWorldScale.z});
+        _body->GetShape()->ScaleShape({kWorldScale.x, kWorldScale.y, kWorldScale.z});
     }
-};
+}
 
 void Collider::onLateUpdate() {
     if (!_body->IsStatic()) {

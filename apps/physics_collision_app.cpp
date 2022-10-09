@@ -18,6 +18,7 @@
 #include "vox.render/mesh/primitive_mesh.h"
 #include "vox.render/physics/collider.h"
 #include "vox.toolkit/controls/orbit_control.h"
+#include "vox.toolkit/physics_debugger/physics_debug_subpass.h"
 
 namespace vox {
 namespace {
@@ -64,7 +65,35 @@ public:
                 ->setBaseColor(Color(u_(e_), u_(e_), u_(e_), 1));
     }
 };
+
+class ShowScript : public Script {
+public:
+    physics_debugger::PhysicsDebugSubpass *_debugger{nullptr};
+    JPH::BodyManager::DrawSettings inSettings;
+
+    explicit ShowScript(Entity *entity) : Script(entity) { inSettings.mDrawShape = true; }
+
+    void onPhysicsUpdate() override {
+        _debugger->Clear();
+        PhysicsManager::GetSingleton().drawBodies(inSettings, _debugger);
+    }
+};
 }  // namespace
+
+bool PhysicsCollisionApp::prepare(Platform &platform) {
+    ForwardApplication::prepare(platform);
+
+    auto scene = _sceneManager->currentScene();
+    auto rootEntity = scene->getRootEntity();
+
+    auto debugger = std::make_unique<physics_debugger::PhysicsDebugSubpass>(
+            _renderContext.get(), _depthStencilTextureFormat, scene, _mainCamera);
+    //    auto showScript = rootEntity->addComponent<ShowScript>();
+    //    showScript->_debugger = debugger.get();
+    _renderPass->addSubpass(std::move(debugger));
+
+    return true;
+}
 
 void PhysicsCollisionApp::loadScene() {
     auto scene = _sceneManager->currentScene();
@@ -93,9 +122,8 @@ void PhysicsCollisionApp::loadScene() {
     box_renderer->setMaterial(box_mtl);
 
     auto box_collider = box_entity->addComponent<Collider>();
-    // boxCollider->debugEntity = boxEntity;
-    auto box_collider_shape = std::make_unique<JPH::BoxShape>(JPH::Vec3{cube_size, cube_size, cube_size});
-    box_collider->setShape(std::move(box_collider_shape), JPH::EMotionType::Static);
+    auto box_collider_shape = new JPH::BoxShape(JPH::Vec3{cube_size / 2, cube_size / 2, cube_size / 2});
+    box_collider->setShape(box_collider_shape, JPH::EMotionType::Static);
 
     // create sphere test entity
     float radius = 1.25;
@@ -110,9 +138,8 @@ void PhysicsCollisionApp::loadScene() {
     sphere_renderer->setMaterial(sphere_mtl);
 
     auto sphere_collider = sphere_entity->addComponent<Collider>();
-    // sphereCollider->debugEntity = sphereEntity;
-    auto sphere_collider_shape = std::make_unique<JPH::SphereShape>(radius);
-    sphere_collider->setShape(std::move(sphere_collider_shape), JPH::EMotionType::Kinematic);
+    auto sphere_collider_shape = new JPH::SphereShape(radius);
+    sphere_collider->setShape(sphere_collider_shape, JPH::EMotionType::Kinematic);
 
     sphere_entity->addComponent<CollisionScript>();
     sphere_entity->addComponent<MoveScript>();

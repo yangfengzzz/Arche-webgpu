@@ -24,7 +24,7 @@
 #include "apps/particle_app.h"
 #include "apps/pbr_app.h"
 #include "apps/physics_collision_app.h"
-#include "apps/physics_raw_app.h"
+#include "apps/physics_debug_app.h"
 #include "apps/plugins/plugins.h"
 #include "apps/primitive_app.h"
 #include "apps/scoped_autorelease_pool.h"

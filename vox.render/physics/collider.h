@@ -27,7 +27,7 @@ public:
 
     ~Collider() override;
 
-    void setShape(std::unique_ptr<JPH::Shape>&& shape, JPH::EMotionType type);
+    void setShape(const JPH::Shape* shape, JPH::EMotionType type);
 
     const JPH::Shape& getShape();
 
@@ -124,7 +124,6 @@ public:
 private:
     std::unique_ptr<UpdateFlag> update_flag_;
 
-    std::unique_ptr<JPH::Shape> _shape{nullptr};
     JPH::BodyID _bodyID;
     JPH::Body* _body{nullptr};
 };
