@@ -18,12 +18,14 @@ Collider::Collider(Entity* entity) : Component(entity) { update_flag_ = entity->
 
 Collider::~Collider() {
     if (!_bodyID.IsInvalid()) {
+        auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
         _bodyInterface->RemoveBody(_bodyID);
         _bodyInterface->DestroyBody(_bodyID);
     }
 }
 
 void Collider::setShape(std::unique_ptr<JPH::Shape>&& shape, JPH::EMotionType type) {
+    auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
     if (!_bodyID.IsInvalid()) {
         _bodyInterface->SetShape(_bodyID, shape.get(), true, JPH::EActivation::Activate);
         _bodyInterface->SetMotionType(_bodyID, type, JPH::EActivation::Activate);
@@ -44,11 +46,13 @@ void Collider::setShape(std::unique_ptr<JPH::Shape>&& shape, JPH::EMotionType ty
 const JPH::Shape& Collider::getShape() { return *_shape; }
 
 Vector3F Collider::getCenterOfMassPosition() const {
+    auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
     auto com = _bodyInterface->GetCenterOfMassPosition(_bodyID);
     return {com.GetX(), com.GetY(), com.GetZ()};
 }
 
 Matrix4x4F Collider::getCenterOfMassTransform() const {
+    auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
     auto com = _bodyInterface->GetCenterOfMassTransform(_bodyID);
     return {com(0, 0), com(1, 0), com(2, 0), com(3, 0),  //
             com(0, 1), com(1, 1), com(2, 1), com(3, 1),  //
@@ -57,11 +61,13 @@ Matrix4x4F Collider::getCenterOfMassTransform() const {
 }
 
 void Collider::setLinearAndAngularVelocity(const Vector3F& inLinearVelocity, const Vector3F& inAngularVelocity) {
+    auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
     _bodyInterface->SetLinearAndAngularVelocity(_bodyID, {inLinearVelocity.x, inLinearVelocity.y, inLinearVelocity.z},
                                                 {inAngularVelocity.x, inAngularVelocity.y, inAngularVelocity.z});
 }
 
 void Collider::getLinearAndAngularVelocity(Vector3F& outLinearVelocity, Vector3F& outAngularVelocity) const {
+    auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
     JPH::Vec3 oVel{}, oAngVel{};
     _bodyInterface->GetLinearAndAngularVelocity(_bodyID, oVel, oAngVel);
     outLinearVelocity = {oVel.GetX(), oVel.GetY(), oVel.GetZ()};
@@ -69,72 +75,91 @@ void Collider::getLinearAndAngularVelocity(Vector3F& outLinearVelocity, Vector3F
 }
 
 void Collider::setLinearVelocity(const Vector3F& inLinearVelocity) {
+    auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
     _bodyInterface->SetLinearVelocity(_bodyID, {inLinearVelocity.x, inLinearVelocity.y, inLinearVelocity.z});
 }
 
 Vector3F Collider::getLinearVelocity() const {
+    auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
     auto vel = _bodyInterface->GetLinearVelocity(_bodyID);
     return {vel.GetX(), vel.GetY(), vel.GetZ()};
 }
 
 void Collider::addLinearVelocity(const Vector3F& inLinearVelocity) {
+    auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
     _bodyInterface->AddLinearVelocity(_bodyID, {inLinearVelocity.x, inLinearVelocity.y, inLinearVelocity.z});
 }
 
 void Collider::addLinearAndAngularVelocity(const Vector3F& inLinearVelocity, const Vector3F& inAngularVelocity) {
+    auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
     _bodyInterface->AddLinearAndAngularVelocity(_bodyID, {inLinearVelocity.x, inLinearVelocity.y, inLinearVelocity.z},
                                                 {inAngularVelocity.x, inAngularVelocity.y, inAngularVelocity.z});
 }
 
 void Collider::setAngularVelocity(const Vector3F& inAngularVelocity) {
+    auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
     _bodyInterface->SetAngularVelocity(_bodyID, {inAngularVelocity.x, inAngularVelocity.y, inAngularVelocity.z});
 }
 
 Vector3F Collider::getAngularVelocity() const {
+    auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
     auto vel = _bodyInterface->GetAngularVelocity(_bodyID);
     return {vel.GetX(), vel.GetY(), vel.GetZ()};
 }
 
 Vector3F Collider::getPointVelocity(const Vector3F& inPoint) const {
+    auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
     auto vel = _bodyInterface->GetPointVelocity(_bodyID, {inPoint.x, inPoint.y, inPoint.z});
     return {vel.GetX(), vel.GetY(), vel.GetZ()};
 }
 
 void Collider::addForce(const Vector3F& inForce) {
+    auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
     _bodyInterface->AddForce(_bodyID, {inForce.x, inForce.y, inForce.z});
 }
 
 void Collider::addForce(const Vector3F& inForce, const Vector3F& inPoint) {
+    auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
     _bodyInterface->AddForce(_bodyID, {inForce.x, inForce.y, inForce.z}, {inPoint.x, inPoint.y, inPoint.z});
 }
 
 void Collider::addTorque(const Vector3F& inTorque) {
+    auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
     _bodyInterface->AddTorque(_bodyID, {inTorque.x, inTorque.y, inTorque.z});
 }
 
 void Collider::addForceAndTorque(const Vector3F& inForce, const Vector3F& inTorque) {
+    auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
     _bodyInterface->AddForceAndTorque(_bodyID, {inForce.x, inForce.y, inForce.z}, {inTorque.x, inTorque.y, inTorque.z});
 }
 
 void Collider::addImpulse(const Vector3F& inImpulse) {
+    auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
     _bodyInterface->AddImpulse(_bodyID, {inImpulse.x, inImpulse.y, inImpulse.z});
 }
 
 void Collider::addImpulse(const Vector3F& inImpulse, const Vector3F& inPoint) {
+    auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
     _bodyInterface->AddImpulse(_bodyID, {inImpulse.x, inImpulse.y, inImpulse.z}, {inPoint.x, inPoint.y, inPoint.z});
 }
 
 void Collider::addAngularImpulse(const Vector3F& inAngularImpulse) {
+    auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
     _bodyInterface->AddAngularImpulse(_bodyID, {inAngularImpulse.x, inAngularImpulse.y, inAngularImpulse.z});
 }
 
 void Collider::setMotionType(JPH::EMotionType inMotionType, JPH::EActivation inActivationMode) {
+    auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
     _bodyInterface->SetMotionType(_bodyID, inMotionType, inActivationMode);
 }
 
-JPH::EMotionType Collider::getMotionType() const { return _bodyInterface->GetMotionType(_bodyID); }
+JPH::EMotionType Collider::getMotionType() const {
+    auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
+    return _bodyInterface->GetMotionType(_bodyID);
+}
 
 Matrix4x4F Collider::getInverseInertia() const {
+    auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
     auto inertia = _bodyInterface->GetInverseInertia(_bodyID);
     return {inertia(0, 0), inertia(1, 0), inertia(2, 0), inertia(3, 0),  //
             inertia(0, 1), inertia(1, 1), inertia(2, 1), inertia(3, 1),  //
@@ -142,30 +167,45 @@ Matrix4x4F Collider::getInverseInertia() const {
             inertia(0, 3), inertia(1, 3), inertia(2, 3), inertia(3, 3)};
 }
 
-void Collider::setRestitution(float inRestitution) { _bodyInterface->SetRestitution(_bodyID, inRestitution); }
-
-float Collider::getRestitution() const { return _bodyInterface->GetRestitution(_bodyID); }
-
-void Collider::setFriction(float inFriction) { _bodyInterface->SetFriction(_bodyID, inFriction); }
-
-float Collider::getFriction() const { return _bodyInterface->GetFriction(_bodyID); }
-
-void Collider::setGravityFactor(float inGravityFactor) { _bodyInterface->SetGravityFactor(_bodyID, inGravityFactor); }
-
-float Collider::getGravityFactor() const { return _bodyInterface->GetGravityFactor(_bodyID); }
-
-void Collider::_onEnable() {
-    PhysicsManager::GetSingleton().addCollider(this);
-    _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
+void Collider::setRestitution(float inRestitution) {
+    auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
+    _bodyInterface->SetRestitution(_bodyID, inRestitution);
 }
+
+float Collider::getRestitution() const {
+    auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
+    return _bodyInterface->GetRestitution(_bodyID);
+}
+
+void Collider::setFriction(float inFriction) {
+    auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
+    _bodyInterface->SetFriction(_bodyID, inFriction);
+}
+
+float Collider::getFriction() const {
+    auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
+    return _bodyInterface->GetFriction(_bodyID);
+}
+
+void Collider::setGravityFactor(float inGravityFactor) {
+    auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
+    _bodyInterface->SetGravityFactor(_bodyID, inGravityFactor);
+}
+
+float Collider::getGravityFactor() const {
+    auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
+    return _bodyInterface->GetGravityFactor(_bodyID);
+}
+
+void Collider::_onEnable() { PhysicsManager::GetSingleton().addCollider(this); }
 
 void Collider::_onDisable() { PhysicsManager::GetSingleton().removeCollider(this); }
 
-void Collider::onSerialize(nlohmann::json &data) {}
+void Collider::onSerialize(nlohmann::json& data) {}
 
-void Collider::onDeserialize(nlohmann::json &data) {}
+void Collider::onDeserialize(nlohmann::json& data) {}
 
-void Collider::onInspector(ui::WidgetContainer &p_root) {}
+void Collider::onInspector(ui::WidgetContainer& p_root) {}
 
 void Collider::onUpdate() {
     if (update_flag_->flag) {
@@ -176,6 +216,7 @@ void Collider::onUpdate() {
         const auto kWorldScale = transform->lossyWorldScale();
         update_flag_->flag = false;
 
+        auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
         _bodyInterface->SetPositionAndRotation(_bodyID, {p.x, p.y, p.z}, {q.x, q.y, q.z, q.w},
                                                JPH::EActivation::Activate);
         _shape->ScaleShape({kWorldScale.x, kWorldScale.y, kWorldScale.z});
@@ -184,6 +225,8 @@ void Collider::onUpdate() {
 
 void Collider::onLateUpdate() {
     if (!_body->IsStatic()) {
+        auto _bodyInterface = &PhysicsManager::GetSingleton().getBodyInterface();
+
         const auto& transform = entity()->transform;
         auto pose = _bodyInterface->GetWorldTransform(_bodyID);
         transform->setWorldMatrix({pose(0, 0), pose(1, 0), pose(2, 0), pose(3, 0),  //

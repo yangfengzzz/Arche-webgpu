@@ -124,7 +124,6 @@ public:
 private:
     std::unique_ptr<UpdateFlag> update_flag_;
 
-    JPH::BodyInterface* _bodyInterface{nullptr};
     std::unique_ptr<JPH::Shape> _shape{nullptr};
     JPH::BodyID _bodyID;
     JPH::Body* _body{nullptr};
