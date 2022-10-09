@@ -13,6 +13,7 @@
 #include "apps/physics_samples/shapes/convex_hull_shape_app.h"
 #include "apps/physics_samples/shapes/cylinder_shape_app.h"
 #include "apps/physics_samples/shapes/mesh_shape_app.h"
+#include "apps/physics_samples/shapes/mutable_compound_shape_app.h"
 #include "apps/physics_samples/shapes/offset_center_of_mass_shape_app.h"
 #include "apps/physics_samples/shapes/rotated_translated_shape_app.h"
 #include "apps/physics_samples/shapes/sphere_shape_app.h"

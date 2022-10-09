@@ -82,9 +82,17 @@ public:
 
     ~PhysicsManager();
 
-    JPH::BodyInterface &getBodyInterface();
+    [[nodiscard]] const JPH::BodyInterface &getBodyInterface() const;
 
-    [[nodiscard]] const JPH::BodyInterface &GetBodyInterface() const;
+    [[nodiscard]] JPH::BodyInterface &getBodyInterface();
+
+    [[nodiscard]] const JPH::BodyInterface &getBodyInterfaceNoLock() const;
+
+    [[nodiscard]] JPH::BodyInterface &getBodyInterfaceNoLock();
+
+    [[nodiscard]] const JPH::BodyLockInterfaceNoLock &getBodyLockInterfaceNoLock() const;
+
+    [[nodiscard]] const JPH::BodyLockInterfaceLocking &getBodyLockInterface() const;
 
 #ifdef JPH_DEBUG_RENDERER
     /// Draw the state of the bodies (debugging purposes)

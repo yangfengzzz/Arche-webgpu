@@ -276,9 +276,29 @@ void PhysicsManager::setPhysicsSettings(const JPH::PhysicsSettings &inSettings) 
 
 const JPH::PhysicsSettings &PhysicsManager::getPhysicsSettings() const { return _physics_system->GetPhysicsSettings(); }
 
-JPH::BodyInterface &PhysicsManager::getBodyInterface() { return _physics_system->GetBodyInterface(); }
+const JPH::BodyInterface &PhysicsManager::getBodyInterface() const {
+    return _physics_system->GetBodyInterface();
+}
 
-const JPH::BodyInterface &PhysicsManager::GetBodyInterface() const { return _physics_system->GetBodyInterface(); }
+JPH::BodyInterface &PhysicsManager::getBodyInterface() {
+    return _physics_system->GetBodyInterface();
+}
+
+const JPH::BodyInterface &PhysicsManager::getBodyInterfaceNoLock() const {
+    return _physics_system->GetBodyInterfaceNoLock();
+}
+
+JPH::BodyInterface &PhysicsManager::getBodyInterfaceNoLock() {
+    return _physics_system->GetBodyInterfaceNoLock();
+}
+
+const JPH::BodyLockInterfaceNoLock &PhysicsManager::getBodyLockInterfaceNoLock() const {
+    return _physics_system->GetBodyLockInterfaceNoLock();
+}
+
+const JPH::BodyLockInterfaceLocking &PhysicsManager::getBodyLockInterface() const {
+    return _physics_system->GetBodyLockInterface();
+}
 
 //----------------------------------------------------------------------------------------------------------------------
 void PhysicsManager::addCollider(Collider *collider) { _colliders.push_back(collider); }
