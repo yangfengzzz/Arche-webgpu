@@ -19,7 +19,9 @@ void RenderPrimitive::CreateVertexBuffer(int inNumVtx, int inVtxSize, const void
     desc.size = uint64(inNumVtx) * inVtxSize;
     desc.usage = wgpu::BufferUsage::Vertex | wgpu::BufferUsage::CopyDst;
     mVtxBuffer = device.CreateBuffer(&desc);
-    device.GetQueue().WriteBuffer(mVtxBuffer, 0, inData, desc.size);
+    if (inData) {
+        device.GetQueue().WriteBuffer(mVtxBuffer, 0, inData, desc.size);
+    }
 
     mNumVtx = inNumVtx;
     mNumVtxToDraw = inNumVtx;
