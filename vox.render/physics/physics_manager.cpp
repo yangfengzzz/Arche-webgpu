@@ -228,23 +228,23 @@ PhysicsManager::PhysicsManager() {
     };
 
     _on_contact_exit = [&](const JPH::SubShapeIDPair &inSubShapePair) {
-//        const JPH::BodyInterface &interface = _physics_system->GetBodyInterface();
-//        const auto kShape1 = reinterpret_cast<Collider *>(interface.GetUserData(inSubShapePair.GetBody1ID()));
-//        const auto kShape2 = reinterpret_cast<Collider *>(interface.GetUserData(inSubShapePair.GetBody2ID()));
-//
-//        if (kShape1) {
-//            const auto &scripts = kShape1->entity()->scripts();
-//            for (const auto &script : scripts) {
-//                script->onContactExit(*kShape2, inSubShapePair.GetSubShapeID2());
-//            }
-//        }
-//
-//        if (kShape2) {
-//            const auto &scripts = kShape2->entity()->scripts();
-//            for (const auto &script : scripts) {
-//                script->onContactExit(*kShape1, inSubShapePair.GetSubShapeID1());
-//            }
-//        }
+        const JPH::BodyInterface &interface = _physics_system->GetBodyInterfaceNoLock();
+        const auto kShape1 = reinterpret_cast<Collider *>(interface.GetUserData(inSubShapePair.GetBody1ID()));
+        const auto kShape2 = reinterpret_cast<Collider *>(interface.GetUserData(inSubShapePair.GetBody2ID()));
+
+        if (kShape1) {
+            const auto &scripts = kShape1->entity()->scripts();
+            for (const auto &script : scripts) {
+                script->onContactExit(*kShape2, inSubShapePair.GetSubShapeID2());
+            }
+        }
+
+        if (kShape2) {
+            const auto &scripts = kShape2->entity()->scripts();
+            for (const auto &script : scripts) {
+                script->onContactExit(*kShape1, inSubShapePair.GetSubShapeID1());
+            }
+        }
     };
 
     _contactListener = std::make_unique<ContactListenerWrapper>(_on_contact_enter, _on_contact_stay, _on_contact_exit);

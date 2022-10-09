@@ -23,9 +23,7 @@ public:
     physics_debugger::PhysicsDebugSubpass* _debugger{nullptr};
     JPH::BodyManager::DrawSettings inSettings;
 
-    explicit ShowScript(Entity* entity) : Script(entity) {
-        inSettings.mDrawShape = true;
-    }
+    explicit ShowScript(Entity* entity) : Script(entity) { inSettings.mDrawShape = true; }
 
     void onPhysicsUpdate() override {
         step++;
@@ -90,7 +88,8 @@ void PhysicsRawApp::loadScene() {
 
         // Create the settings for the body itself. Note that here you can also set other properties like the
         // restitution / friction.
-        JPH::BodyCreationSettings floor_settings(floor_shape, JPH::Vec3(0.0f, -1.0f, 0.0f), JPH::Quat::sIdentity(),
+        JPH::BodyCreationSettings floor_settings(floor_shape, JPH::Vec3(0.0f, -1.0f, 0.0f),
+                                                 JPH::Quat::sRotation(JPH::Vec3(1, 0, 0), 0.1),
                                                  JPH::EMotionType::Static, PhysicsManager::Layers::NON_MOVING);
 
         // Create the actual rigid body
