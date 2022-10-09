@@ -12,6 +12,10 @@ project(app LANGUAGES C CXX)
 
 add_subdirectory(plugins)
 
+file(GLOB PHYSICS_DEBUGGER_FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/physics_samples/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/physics_samples/shapes/*.cpp)
+
 set(SRC
         atomic_compute_app.cpp
         shadowmap_app.cpp
@@ -36,7 +40,7 @@ set(SRC
         animation_ik_lookat_app.cpp
         animation_ik_hand_app.cpp
         animation_ik_floor_app.cpp
-        physics_debug_app.cpp
+        ${PHYSICS_DEBUGGER_FILES}
         physics_collision_app.cpp
         gui_app.cpp
         )
