@@ -9,3 +9,4 @@
 #include "apps/physics_samples/physics_debug_app.h"
 #include "apps/physics_samples/shapes/box_shape_app.h"
 #include "apps/physics_samples/shapes/capsule_shape_app.h"
+#include "apps/physics_samples/shapes/convex_hull_shape_app.h"
