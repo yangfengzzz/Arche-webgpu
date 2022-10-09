@@ -21,22 +21,25 @@ Collider::~Collider() {
     }
 }
 
-void Collider::setShape(const std::shared_ptr<JPH::Shape>& shape) {
-    _shape = shape;
+void Collider::setShape(std::unique_ptr<JPH::Shape>& shape, JPH::EMotionType type) {
     if (!_bodyID.IsInvalid()) {
-        _bodyInterface->RemoveBody(_bodyID);
-        _bodyInterface->DestroyBody(_bodyID);
+        _bodyInterface->SetShape(_bodyID, shape.get(), true, JPH::EActivation::Activate);
+        _bodyInterface->SetMotionType(_bodyID, type, JPH::EActivation::Activate);
+        _shape.reset();
+    } else {
+        JPH::BodyCreationSettings settings(
+                shape.get(), JPH::Vec3(), JPH::Quat::sIdentity(), type,
+                type == JPH::EMotionType::Static ? PhysicsManager::Layers::NON_MOVING : PhysicsManager::Layers::MOVING);
+        _body = _bodyInterface->CreateBody(settings);
+        _body->SetUserData(reinterpret_cast<uint64_t>(this));
+        _bodyID = _body->GetID();
+        _bodyInterface->AddBody(_bodyID, JPH::EActivation::DontActivate);
     }
-
-    JPH::BodyCreationSettings settings(shape.get(), JPH::Vec3(0.0f, -1.0f, 0.0f), JPH::Quat::sIdentity(),
-                                       JPH::EMotionType::Static, PhysicsManager::Layers::NON_MOVING);
-    auto body = _bodyInterface->CreateBody(settings);
-    body->SetUserData(reinterpret_cast<uint64_t>(this));
-    _bodyID = body->GetID();
-    _bodyInterface->AddBody(_bodyID, JPH::EActivation::DontActivate);
+    update_flag_->flag = true;
+    _shape = std::move(shape);
 }
 
-std::shared_ptr<JPH::Shape> Collider::getShape() { return _shape; }
+const JPH::Shape& Collider::getShape() { return *_shape; }
 
 Vector3F Collider::getCenterOfMassPosition() const {
     auto com = _bodyInterface->GetCenterOfMassPosition(_bodyID);
@@ -167,18 +170,20 @@ void Collider::onUpdate() {
 
         _bodyInterface->SetPositionAndRotation(_bodyID, {p.x, p.y, p.z}, {q.x, q.y, q.z, q.w},
                                                JPH::EActivation::Activate);
+        _shape->ScaleShape({kWorldScale.x, kWorldScale.y, kWorldScale.z});
     }
 };
 
 void Collider::onLateUpdate() {
-    const auto& transform = entity()->transform;
-
-    auto pose = _bodyInterface->GetWorldTransform(_bodyID);
-    transform->setWorldMatrix({pose(0, 0), pose(1, 0), pose(2, 0), pose(3, 0),  //
-                               pose(0, 1), pose(1, 1), pose(2, 1), pose(3, 1),  //
-                               pose(0, 2), pose(1, 2), pose(2, 2), pose(3, 2),  //
-                               pose(0, 3), pose(1, 3), pose(2, 3), pose(3, 3)});
-    update_flag_->flag = false;
+    if (!_body->IsStatic()) {
+        const auto& transform = entity()->transform;
+        auto pose = _bodyInterface->GetWorldTransform(_bodyID);
+        transform->setWorldMatrix({pose(0, 0), pose(1, 0), pose(2, 0), pose(3, 0),  //
+                                   pose(0, 1), pose(1, 1), pose(2, 1), pose(3, 1),  //
+                                   pose(0, 2), pose(1, 2), pose(2, 2), pose(3, 2),  //
+                                   pose(0, 3), pose(1, 3), pose(2, 3), pose(3, 3)});
+        update_flag_->flag = false;
+    }
 }
 
 }  // namespace vox

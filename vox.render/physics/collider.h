@@ -22,9 +22,9 @@ public:
 
     ~Collider() override;
 
-    void setShape(const std::shared_ptr<JPH::Shape>& shape);
+    void setShape(std::unique_ptr<JPH::Shape>& shape, JPH::EMotionType type);
 
-    std::shared_ptr<JPH::Shape> getShape();
+    const JPH::Shape& getShape();
 
 public:
     [[nodiscard]] Vector3F getCenterOfMassPosition() const;
@@ -105,7 +105,8 @@ private:
     std::unique_ptr<UpdateFlag> update_flag_;
 
     JPH::BodyInterface* _bodyInterface{nullptr};
-    std::shared_ptr<JPH::Shape> _shape{nullptr};
+    std::unique_ptr<JPH::Shape> _shape{nullptr};
     JPH::BodyID _bodyID;
+    JPH::Body* _body{nullptr};
 };
 }  // namespace vox
