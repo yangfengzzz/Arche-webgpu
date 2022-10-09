@@ -10,7 +10,6 @@ void main() {
 	// Constants
 	float AmbientFactor = 0.3;
 	vec3 DiffuseColor = vec3(Color.r, Color.g, Color.b);
-	vec3 SpecularColor = vec3(1, 1, 1);
 
 	// Apply procedural pattern based on the uv coordinates
 	bvec2 less_half = bvec2((Tex.x - floor(Tex.x)) < 0.5, (Tex.y - floor(Tex.y)) < 0.5);
@@ -22,5 +21,5 @@ void main() {
 	darken_factor = mix(darken_factor, 0.75, clamp(5.0 * texel_distance - 1.5, 0.0, 1.0));
 
 	// Calculate color
-	o_color = vec4(clamp(DiffuseColor, 0.0, 1.0), 1);
+	o_color = vec4(clamp((1.0 + AmbientFactor) * DiffuseColor * darken_factor, 0.0, 1.0), 1);
 }
