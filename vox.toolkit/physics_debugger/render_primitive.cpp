@@ -42,7 +42,6 @@ void* RenderPrimitive::LockVertexBuffer() { return vertex_mapped_resource.data()
 void RenderPrimitive::UnlockVertexBuffer() {
     device.GetQueue().WriteBuffer(mVtxBuffer, 0, vertex_mapped_resource.data(),
                                   vertex_mapped_resource.size() * sizeof(float));
-    vertex_mapped_resource.clear();
 }
 
 void RenderPrimitive::CreateIndexBuffer(int inNumIdx, const uint32_t* inData) {

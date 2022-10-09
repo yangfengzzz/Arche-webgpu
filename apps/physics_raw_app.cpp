@@ -38,6 +38,7 @@ public:
                   << position.GetZ() << "), Velocity = (" << velocity.GetX() << ", " << velocity.GetY() << ", "
                   << velocity.GetZ() << ")" << std::endl;
 
+        _debugger->Clear();
         PhysicsManager::GetSingleton().drawBodies(inSettings, _debugger);
     }
 

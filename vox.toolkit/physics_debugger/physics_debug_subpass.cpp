@@ -197,7 +197,6 @@ void PhysicsDebugSubpass::draw(wgpu::RenderPassEncoder &commandEncoder) {
     DrawLines(commandEncoder);
     DrawTriangles(commandEncoder);
     DrawTexts(commandEncoder);
-    Clear();
 }
 
 void PhysicsDebugSubpass::Clear() {
@@ -303,19 +302,9 @@ void PhysicsDebugSubpass::DrawGeometry(Mat44Arg inModelMatrix,
                                        EDrawMode inDrawMode) {
     lock_guard lock(mPrimitivesLock);
 
-    if (inDrawMode == EDrawMode::Wireframe) {
-        mWireframePrimitives[inGeometry].mInstances.push_back(
-                {inModelMatrix, inModelMatrix.GetDirectionPreservingMatrix(), ColorArg(inModelColor, 255),
-                 inWorldSpaceBounds, inLODScaleSq});
-        ++mNumInstances;
-    } else {
-        if (inCullMode != ECullMode::CullFrontFace) {
-            mPrimitives[inGeometry].mInstances.push_back({inModelMatrix, inModelMatrix.GetDirectionPreservingMatrix(),
-                                                          ColorArg(inModelColor, 255), inWorldSpaceBounds,
-                                                          inLODScaleSq});
-            ++mNumInstances;
-        }
-    }
+    mPrimitives[inGeometry].mInstances.push_back({inModelMatrix, inModelMatrix.GetDirectionPreservingMatrix(),
+                                                  ColorArg(inModelColor, 255), inWorldSpaceBounds, inLODScaleSq});
+    ++mNumInstances;
 }
 
 void PhysicsDebugSubpass::ClearMap(InstanceMap &ioInstances) {
@@ -365,8 +354,8 @@ void PhysicsDebugSubpass::DrawTriangles(wgpu::RenderPassEncoder &commandEncoder)
         // Next write index
         int dst_index = 0;
 
-        // This keeps track of which instances use which lod, first array: 0 = light pass, 1 = geometry pass
-        Array<Array<int>> lod_indices[2];
+        // This keeps track of which instances use which lod, first array: 0 = geometry pass
+        Array<Array<int>> lod_indices[1];
 
         for (InstanceMap *primitive_map : {&mPrimitives, &mTempPrimitives, &mWireframePrimitives})
             for (InstanceMap::value_type &v : *primitive_map) {
@@ -377,28 +366,26 @@ void PhysicsDebugSubpass::DrawTriangles(wgpu::RenderPassEncoder &commandEncoder)
 
                 // Ensure that our lod index array is big enough (to avoid reallocating memory too often)
                 if (lod_indices[0].size() < num_lods) lod_indices[0].resize(num_lods);
-                if (lod_indices[1].size() < num_lods) lod_indices[1].resize(num_lods);
 
                 // Iterate over all instances
                 const Array<InstanceWithLODInfo> &instances = v.second.mInstances;
                 for (size_t i = 0; i < instances.size(); ++i) {
                     const InstanceWithLODInfo &src_instance = instances[i];
 
-                    // Check if it overlaps with the light or camera frustum
+                    // Check if it overlaps with the camera frustum
                     // Figure out which LOD to use
                     float dist_sq = src_instance.mWorldSpaceBounds.GetSqDistanceTo(camera_pos);
                     for (size_t lod = 0; lod < num_lods; ++lod)
                         if (dist_sq <= src_instance.mLODScaleSq * Square(geometry_lods[lod].mDistance)) {
                             // Store which index goes in which LOD
                             lod_indices[0][lod].push_back((int)i);
-                            lod_indices[1][lod].push_back((int)i);
                             break;
                         }
                 }
 
-                // Loop over both passes: 0 = light, 1 = geometry
-                Array<int> *start_idx[] = {&v.second.mLightStartIdx, &v.second.mGeometryStartIdx};
-                for (int type = 0; type < 2; ++type) {
+                // Loop over both passes: 0 = geometry
+                Array<int> *start_idx[] = {&v.second.mGeometryStartIdx};
+                for (int type = 0; type < 1; ++type) {
                     // Reserve space for instance indices
                     Array<int> &type_start_idx = *start_idx[type];
                     type_start_idx.resize(num_lods + 1);

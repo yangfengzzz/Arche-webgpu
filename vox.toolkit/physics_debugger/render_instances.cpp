@@ -38,7 +38,6 @@ void* RenderInstances::Lock() { return instance_mapped_resource.data(); }
 void RenderInstances::Unlock() {
     device.GetQueue().WriteBuffer(mInstanceBuffer, 0, instance_mapped_resource.data(),
                                   instance_mapped_resource.size() * sizeof(float));
-    instance_mapped_resource.clear();
 }
 
 void RenderInstances::Draw(wgpu::RenderPassEncoder& passEncoder,

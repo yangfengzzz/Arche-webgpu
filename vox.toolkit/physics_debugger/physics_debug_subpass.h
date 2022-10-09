@@ -124,10 +124,6 @@ private:
         /// Start index in mInstancesBuffer for each of the LOD in the geometry pass. Length is one longer than the
         /// number of LODs to indicate how many instances the last lod has.
         Array<int> mGeometryStartIdx;
-
-        /// Start index in mInstancesBuffer for each of the LOD in the light pass. Length is one longer than the number
-        /// of LODs to indicate how many instances the last lod has.
-        Array<int> mLightStartIdx;
     };
 
     using InstanceMap = UnorderedMap<GeometryRef, Instances>;

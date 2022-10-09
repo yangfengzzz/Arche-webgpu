@@ -33,6 +33,7 @@ void main() {
 	mat4 iModelInvTrans = mat4(iModelInvTrans1, iModelInvTrans2, iModelInvTrans3, iModelInvTrans4);
 
 	vec4 world_pos = iModel * pos;
+    world_pos /= world_pos.w;
 
     // Transform the position from world space to homogeneous projection space
     gl_Position = mvp_no_scale * world_pos;
