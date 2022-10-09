@@ -12,6 +12,8 @@
 #include "vox.render/physics/physics_manager.h"
 
 namespace vox {
+std::string Collider::name() { return "Collider"; }
+
 Collider::Collider(Entity* entity) : Component(entity) { update_flag_ = entity->transform->registerWorldChangeFlag(); }
 
 Collider::~Collider() {
@@ -21,7 +23,7 @@ Collider::~Collider() {
     }
 }
 
-void Collider::setShape(std::unique_ptr<JPH::Shape>& shape, JPH::EMotionType type) {
+void Collider::setShape(std::unique_ptr<JPH::Shape>&& shape, JPH::EMotionType type) {
     if (!_bodyID.IsInvalid()) {
         _bodyInterface->SetShape(_bodyID, shape.get(), true, JPH::EActivation::Activate);
         _bodyInterface->SetMotionType(_bodyID, type, JPH::EActivation::Activate);
@@ -158,6 +160,12 @@ void Collider::_onEnable() {
 }
 
 void Collider::_onDisable() { PhysicsManager::GetSingleton().removeCollider(this); }
+
+void Collider::onSerialize(nlohmann::json &data) {}
+
+void Collider::onDeserialize(nlohmann::json &data) {}
+
+void Collider::onInspector(ui::WidgetContainer &p_root) {}
 
 void Collider::onUpdate() {
     if (update_flag_->flag) {

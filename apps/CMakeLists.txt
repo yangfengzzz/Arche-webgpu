@@ -37,6 +37,7 @@ set(SRC
         animation_ik_hand_app.cpp
         animation_ik_floor_app.cpp
         physics_raw_app.cpp
+        physics_collision_app.cpp
         gui_app.cpp
         )
 

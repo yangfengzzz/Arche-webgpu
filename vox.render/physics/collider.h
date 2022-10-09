@@ -18,11 +18,16 @@
 namespace vox {
 class Collider : public Component {
 public:
+    /**
+     * Returns the name of the component
+     */
+    std::string name() override;
+
     explicit Collider(Entity* entity);
 
     ~Collider() override;
 
-    void setShape(std::unique_ptr<JPH::Shape>& shape, JPH::EMotionType type);
+    void setShape(std::unique_ptr<JPH::Shape>&& shape, JPH::EMotionType type);
 
     const JPH::Shape& getShape();
 
@@ -100,6 +105,21 @@ public:
     void _onEnable() override;
 
     void _onDisable() override;
+
+    /**
+     * Serialize the component
+     */
+    void onSerialize(nlohmann::json &data) override;
+
+    /**
+     * Deserialize the component
+     */
+    void onDeserialize(nlohmann::json &data) override;
+
+    /**
+     * Defines how the component should be drawn in the inspector
+     */
+    void onInspector(ui::WidgetContainer &p_root) override;
 
 private:
     std::unique_ptr<UpdateFlag> update_flag_;
