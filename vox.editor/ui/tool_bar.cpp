@@ -10,9 +10,7 @@
 #include "vox.editor/editor_resources.h"
 #include "vox.render/ui/widgets/layout/spacing.h"
 
-namespace vox {
-namespace editor {
-namespace ui {
+namespace vox::editor::ui {
 
 Toolbar::Toolbar(const std::string &p_title,
                  bool p_opened,
@@ -21,34 +19,34 @@ Toolbar::Toolbar(const std::string &p_title,
     : PanelWindow(p_title, p_opened, p_windowSettings), _resource(resource) {
     std::string iconFolder = ":Textures/Icons/";
 
-    _playButton = &createWidget<ButtonImage>(_resource->getTexture("Button_Play"), Vector2F{20, 20});
-    _pauseButton = &createWidget<ButtonImage>(_resource->getTexture("Button_Pause"), Vector2F{20, 20});
-    _stopButton = &createWidget<ButtonImage>(_resource->getTexture("Button_Stop"), Vector2F{20, 20});
-    _nextButton = &createWidget<ButtonImage>(_resource->getTexture("Button_Next"), Vector2F{20, 20});
+    _playButton = &CreateWidget<ButtonImage>(_resource->getTexture("Button_Play"), Vector2F{20, 20});
+    _pauseButton = &CreateWidget<ButtonImage>(_resource->getTexture("Button_Pause"), Vector2F{20, 20});
+    _stopButton = &CreateWidget<ButtonImage>(_resource->getTexture("Button_Stop"), Vector2F{20, 20});
+    _nextButton = &CreateWidget<ButtonImage>(_resource->getTexture("Button_Next"), Vector2F{20, 20});
 
-    createWidget<Spacing>(0).lineBreak = false;
-    auto &refreshButton = createWidget<ButtonImage>(_resource->getTexture("Button_Refresh"), Vector2F{20, 20});
+    CreateWidget<Spacing>(0).line_break_ = false;
+    auto &refreshButton = CreateWidget<ButtonImage>(_resource->getTexture("Button_Refresh"), Vector2F{20, 20});
 
-    _playButton->lineBreak = false;
-    _pauseButton->lineBreak = false;
-    _stopButton->lineBreak = false;
-    _nextButton->lineBreak = false;
-    refreshButton.lineBreak = false;
+    _playButton->line_break_ = false;
+    _pauseButton->line_break_ = false;
+    _stopButton->line_break_ = false;
+    _nextButton->line_break_ = false;
+    refreshButton.line_break_ = false;
 
-    _playButton->clickedEvent += std::bind(&EditorActions::startPlaying, EditorActions::getSingletonPtr());
+    _playButton->clicked_event_ += std::bind(&EditorActions::startPlaying, EditorActions::getSingletonPtr());
 
-    _pauseButton->clickedEvent += std::bind(&EditorActions::pauseGame, EditorActions::getSingletonPtr());
+    _pauseButton->clicked_event_ += std::bind(&EditorActions::pauseGame, EditorActions::getSingletonPtr());
 
-    _stopButton->clickedEvent += std::bind(&EditorActions::stopPlaying, EditorActions::getSingletonPtr());
+    _stopButton->clicked_event_ += std::bind(&EditorActions::stopPlaying, EditorActions::getSingletonPtr());
 
-    _nextButton->clickedEvent += std::bind(&EditorActions::nextFrame, EditorActions::getSingletonPtr());
+    _nextButton->clicked_event_ += std::bind(&EditorActions::nextFrame, EditorActions::getSingletonPtr());
 
-    refreshButton.clickedEvent += std::bind(&EditorActions::refreshScripts, EditorActions::getSingletonPtr());
+    refreshButton.clicked_event_ += std::bind(&EditorActions::refreshScripts, EditorActions::getSingletonPtr());
 
     EditorActions::getSingleton().editorModeChangedEvent += [this](EditorActions::EditorMode p_newMode) {
         auto enable = [](ButtonImage *p_button, bool p_enable) {
-            p_button->disabled = !p_enable;
-            p_button->tint = p_enable ? Color{1.0f, 1.0f, 1.0f, 1.0f} : Color{1.0f, 1.0f, 1.0f, 0.15f};
+            p_button->disabled_ = !p_enable;
+            p_button->tint_ = p_enable ? Color{1.0f, 1.0f, 1.0f, 1.0f} : Color{1.0f, 1.0f, 1.0f, 0.15f};
         };
 
         switch (p_newMode) {
@@ -82,14 +80,12 @@ Toolbar::Toolbar(const std::string &p_title,
     EditorActions::getSingleton().setEditorMode(EditorActions::EditorMode::EDIT);
 }
 
-void Toolbar::_draw_Impl() {
+void Toolbar::DrawImpl() {
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(10, 10));
 
-    PanelWindow::_draw_Impl();
+    PanelWindow::DrawImpl();
 
     ImGui::PopStyleVar();
 }
 
-}  // namespace ui
-}  // namespace editor
-}  // namespace vox
+}  // namespace vox::editor::ui

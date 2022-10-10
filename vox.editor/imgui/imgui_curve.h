@@ -7,7 +7,7 @@
 #ifndef imgui_curve_hpp
 #define imgui_curve_hpp
 
-#include "gui/imgui.h"
+#include <imgui.h>
 
 namespace ImGui {
 

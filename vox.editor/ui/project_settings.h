@@ -13,8 +13,7 @@
 namespace vox {
 using namespace ui;
 
-namespace editor {
-namespace ui {
+namespace editor::ui {
 class ProjectSettings : public PanelWindow {
 public:
     /**
@@ -35,7 +34,7 @@ public:
      */
     template <typename T>
     std::function<T()> generateGatherer(const std::string &p_keyName) {
-        return std::bind(&fs::IniFile::get<T>, &_projectSettings, p_keyName);
+        return std::bind(&fs::IniFile::Get<T>, &_projectSettings, p_keyName);
     }
 
     /**
@@ -44,7 +43,7 @@ public:
      */
     template <typename T>
     std::function<void(T)> generateProvider(const std::string &p_keyName) {
-        return std::bind(&fs::IniFile::set<T>, &_projectSettings, p_keyName, std::placeholders::_1);
+        return std::bind(&fs::IniFile::Set<T>, &_projectSettings, p_keyName, std::placeholders::_1);
     }
 
 public:
@@ -70,6 +69,5 @@ private:
     fs::IniFile _projectSettings;
 };
 
-}  // namespace ui
-}  // namespace editor
+}  // namespace editor::ui
 }  // namespace vox

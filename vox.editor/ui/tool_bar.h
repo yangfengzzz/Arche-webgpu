@@ -32,7 +32,7 @@ public:
     /**
      * Custom implementation of the draw method
      */
-    void _draw_Impl() override;
+    void DrawImpl() override;
 
 private:
     EditorResources *_resource{nullptr};

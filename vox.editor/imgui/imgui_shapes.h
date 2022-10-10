@@ -7,7 +7,7 @@
 #ifndef imgui_shapes_hpp
 #define imgui_shapes_hpp
 
-#include "gui/imgui.h"
+#include <imgui.h>
 
 namespace ImGui {
 

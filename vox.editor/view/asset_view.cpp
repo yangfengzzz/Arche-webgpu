@@ -11,10 +11,9 @@
 #include "vox.render/material/blinn_phong_material.h"
 #include "vox.render/mesh/mesh_renderer.h"
 #include "vox.render/mesh/primitive_mesh.h"
+#include "vox.render/shader/internal_variant_name.h"
 
-namespace vox {
-namespace editor {
-namespace ui {
+namespace vox::editor::ui {
 AssetView::AssetView(const std::string& p_title,
                      bool p_opened,
                      const PanelWindowSettings& p_windowSettings,
@@ -31,7 +30,7 @@ AssetView::AssetView(const std::string& p_title,
     // scene render target
     {
         // Create a render pass descriptor for thelighting and composition pass
-        // Whatever rendered in the final pass needs to be stored so it can be displayed
+        // Whatever rendered in the final pass needs to be stored, so it can be displayed
         _renderPassDescriptor.colorAttachmentCount = 1;
         _renderPassDescriptor.colorAttachments = &_renderPassColorAttachments;
         _renderPassDescriptor.depthStencilAttachment = &_renderPassDepthStencilAttachment;
@@ -46,14 +45,15 @@ AssetView::AssetView(const std::string& p_title,
         _renderPassDepthStencilAttachment.stencilLoadOp = wgpu::LoadOp::Clear;
         _renderPassDepthStencilAttachment.stencilStoreOp = wgpu::StoreOp::Discard;
         _renderPass = std::make_unique<RenderPass>(renderContext->device(), _renderPassDescriptor);
-        auto subpass = std::make_unique<ForwardSubpass>(_renderContext, _depthStencilTextureFormat, scene, _mainCamera);
+        auto subpass =
+                std::make_unique<GeometrySubpass>(_renderContext, _depthStencilTextureFormat, scene, _mainCamera);
         _subpass = subpass.get();
-        _subpass->setRenderMode(ForwardSubpass::RenderMode::MANUAL);
+        //        _subpass->setRenderMode(ForwardSubpass::RenderMode::MANUAL);
         _renderPass->addSubpass(std::move(subpass));
     }
 
-    _subpass->addRenderElement(_elements[0]);
-    _subpass->addRenderElement(_elements[1]);
+    //    _subpass->addRenderElement(_elements[0]);
+    //    _subpass->addRenderElement(_elements[1]);
 }
 
 void AssetView::loadScene(Entity* rootEntity) {
@@ -67,7 +67,7 @@ void AssetView::loadScene(Entity* rootEntity) {
     grid->setMesh(createPlane(_renderContext->device()));
     grid->setMaterial(std::make_shared<GridMaterial>(_renderContext->device()));
     grid->setEnabled(false);
-    _elements.push_back(RenderElement(grid, grid->mesh(), grid->mesh()->subMesh(), grid->getMaterial()));
+    _elements.emplace_back(grid, grid->mesh(), grid->mesh()->subMesh(), grid->getMaterial());
 
     // create box test entity
     float radius = 2.0;
@@ -77,11 +77,10 @@ void AssetView::loadScene(Entity* rootEntity) {
     auto _renderer = sphereEntity->addComponent<MeshRenderer>();
     _renderer->setMesh(PrimitiveMesh::createSphere(_renderContext->device(), radius));
     _renderer->setMaterial(sphereMtl);
-    _renderer->shaderData.enableMacro(HAS_UV);
-    _renderer->shaderData.enableMacro(HAS_NORMAL);
+    _renderer->shaderData.addDefine(HAS_UV);
+    _renderer->shaderData.addDefine(HAS_NORMAL);
     _renderer->setEnabled(false);
-    _elements.push_back(
-            RenderElement(_renderer, _renderer->mesh(), _renderer->mesh()->subMesh(), _renderer->getMaterial()));
+    _elements.emplace_back(_renderer, _renderer->mesh(), _renderer->mesh()->subMesh(), _renderer->getMaterial());
 }
 
 void AssetView::update(float deltaTime) {
@@ -95,7 +94,7 @@ void AssetView::update(float deltaTime) {
 }
 
 void AssetView::render(wgpu::CommandEncoder& commandEncoder) {
-    if (isFocused()) {
+    if (IsFocused()) {
         _cameraControl->onEnable();
     } else {
         _cameraControl->onDisable();
@@ -108,6 +107,4 @@ void AssetView::render(wgpu::CommandEncoder& commandEncoder) {
     }
 }
 
-}  // namespace ui
-}  // namespace editor
 }  // namespace vox

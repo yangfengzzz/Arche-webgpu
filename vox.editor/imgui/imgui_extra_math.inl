@@ -7,12 +7,11 @@
 // CREDITS
 //   Written by Michal Cichon
 //------------------------------------------------------------------------------
-#ifndef __IMGUI_EXTRA_MATH_INL__
-#define __IMGUI_EXTRA_MATH_INL__
+
 #pragma once
 
 //------------------------------------------------------------------------------
-#include "imgui_extra_math.h"
+#include "vox.editor/imgui/imgui_extra_math.h"
 
 //------------------------------------------------------------------------------
 inline bool operator==(const ImVec2 &lhs, const ImVec2 &rhs) { return lhs.x == rhs.x && lhs.y == rhs.y; }
@@ -128,6 +127,3 @@ inline ImLine ImRect_ClosestLine(const ImRect &rect_a, const ImRect &rect_b, flo
 
     return line;
 }
-
-//------------------------------------------------------------------------------
-#endif  // __IMGUI_EXTRA_MATH_INL__

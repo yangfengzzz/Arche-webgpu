@@ -24,13 +24,14 @@
 // SOFTWARE.
 //
 
-#include "../vox.render/gui/imgui.h"
+#include <imgui.h>
 
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_MATH_OPERATORS
 #endif
 
-#include "../vox.render/gui/imgui_internal.h"
+#include <imgui_internal.h>
+
 #include "imgui_zmo.h"
 
 #if defined(_MSC_VER) || defined(__MINGW32__)
@@ -253,9 +254,9 @@ public:
 
     const vec_t &operator+() const { return (*this); }
 
-    float Length() const { return sqrtf(x * x + y * y + z * z); };
+    [[nodiscard]] float Length() const { return sqrtf(x * x + y * y + z * z); };
 
-    float LengthSq() const { return (x * x + y * y + z * z); };
+    [[nodiscard]] float LengthSq() const { return (x * x + y * y + z * z); };
 
     vec_t Normalize() {
         (*this) *= (1.f / (Length() > FLT_EPSILON ? Length() : FLT_EPSILON));
@@ -268,7 +269,7 @@ public:
         return (*this);
     }
 
-    vec_t Abs() const;
+    [[nodiscard]] vec_t Abs() const;
 
     void Cross(const vec_t &v) {
         vec_t res;
@@ -289,9 +290,9 @@ public:
         w = 0.f;
     }
 
-    float Dot(const vec_t &v) const { return (x * v.x) + (y * v.y) + (z * v.z) + (w * v.w); }
+    [[nodiscard]] float Dot(const vec_t &v) const { return (x * v.x) + (y * v.y) + (z * v.z) + (w * v.w); }
 
-    float Dot3(const vec_t &v) const { return (x * v.x) + (y * v.y) + (z * v.z); }
+    [[nodiscard]] float Dot3(const vec_t &v) const { return (x * v.x) + (y * v.y) + (z * v.z); }
 
     void Transform(const matrix_t &matrix);
 

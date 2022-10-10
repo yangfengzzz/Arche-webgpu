@@ -8,8 +8,7 @@
 
 #include "vox.render/event.h"
 
-namespace vox {
-namespace editor {
+namespace vox::editor {
 /**
  * Accessible from anywhere editor settings
  */
@@ -37,11 +36,11 @@ public:
         }
 
         /**
-         * Assign a new valeu to the property
+         * Assign a new value to the property
          */
         inline void set(T p_value) {
             _value = p_value;
-            onValueChanged.invoke(_value);
+            onValueChanged.Invoke(_value);
         }
 
         inline operator T() { return _value; }
@@ -49,7 +48,7 @@ public:
         /**
          * Returns the value of the property
          */
-        inline T Get() const { return _value; }
+        [[nodiscard]] inline T Get() const { return _value; }
 
     private:
         T _value;
@@ -70,5 +69,4 @@ public:
     inline static Property<float> ScalingSnapUnit = {1.0f};
 };
 
-}  // namespace editor
 }  // namespace vox

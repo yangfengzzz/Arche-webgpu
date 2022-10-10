@@ -14,19 +14,20 @@
 
 namespace vox {
 namespace editor {
+class EditorApplication;
 /**
  * A set of editor actions
  */
 class EditorActions : public Singleton<EditorActions> {
 public:
-    static EditorActions& getSingleton(void);
+    static EditorActions& getSingleton();
 
-    static EditorActions* getSingletonPtr(void);
+    static EditorActions* getSingletonPtr();
 
     /**
      * Constructor
      */
-    EditorActions(ui::PanelsManager& p_panelsManager);
+    explicit EditorActions(EditorApplication &app);
 
     // MARK: - TOOLS
 public:
@@ -97,7 +98,7 @@ public:
     /**
      * Returns the current editor state/mode
      */
-    EditorMode currentEditorMode() const;
+    [[nodiscard]] EditorMode currentEditorMode() const;
 
     /**
      * Defines the editor state/mode
@@ -178,13 +179,13 @@ public:
     /**
      * Returns true if any entity is selected
      */
-    bool isAnyEntitySelected() const;
+    [[nodiscard]] bool isAnyEntitySelected() const;
 
     /**
      * Returns the selected entity. Make sur you verified that an entity is selected
      * with IsAnyEntitySelected() before calling this method
      */
-    Entity* getSelectedEntity() const;
+    [[nodiscard]] Entity* getSelectedEntity() const;
 
     /**
      * Moves the camera to the target entity
@@ -231,7 +232,7 @@ public:
     /**
      * Propagate the folder rename everywhere (Resource manager, scenes, materials...)
      */
-    void propagateFolderRename(std::string p_previousName, const std::string p_newName);
+    void propagateFolderRename(std::string p_previousName, std::string p_newName);
 
     /**
      * Propagate the folder destruction everywhere (Resource manager, scenes, materials...)
@@ -275,7 +276,7 @@ public:
     /**
      * Returns true if the current scene has been loaded from disk
      */
-    bool isCurrentSceneLoadedFromDisk() const;
+    [[nodiscard]] bool isCurrentSceneLoadedFromDisk() const;
 
     /**
      * Save the current scene to its disk location
@@ -309,7 +310,7 @@ public:
     /**
      * Build the current project at the given location
      */
-    void buildAtLocation(const std::string& p_configuration, const std::string p_buildPath, bool p_autoRun = false);
+    void buildAtLocation(const std::string& p_configuration, std::string p_buildPath, bool p_autoRun = false);
 
     // MARK: - ACTION_SYSTEM
     /**
@@ -329,18 +330,18 @@ public:
     Event<> playEvent;
 
 private:
-    ui::PanelsManager& _panelsManager;
+    EditorApplication &app_;
 
     EntitySpawnMode _entitySpawnMode = EntitySpawnMode::ORIGIN;
     EditorMode _editorMode = EditorMode::EDIT;
 
     std::vector<std::pair<uint32_t, std::function<void()>>> _delayedActions;
 
-    tinyxml2::XMLDocument _sceneBackup;
+    nlohmann::json scene_backup_;
 };
 
 }  // namespace editor
 template <>
-inline editor::EditorActions* Singleton<editor::EditorActions>::msSingleton{nullptr};
+inline editor::EditorActions* Singleton<editor::EditorActions>::ms_singleton{nullptr};
 }  // namespace vox
 #include "editor_actions-inl.h"

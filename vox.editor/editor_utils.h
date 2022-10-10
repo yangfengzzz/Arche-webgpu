@@ -8,12 +8,11 @@
 
 #include <string>
 
-namespace vox {
-namespace editor {
+namespace vox::editor {
 std::string uChar2Hex(unsigned char c);
 
 struct Hash {
-    Hash() {}
+    Hash() = default;
 
     Hash(unsigned char *d, int l) {
         length = l;
@@ -21,11 +20,9 @@ struct Hash {
         std::memcpy(data, d, length);
     }
 
-    ~Hash() {
-        // delete[] data;
-    }
+    ~Hash() = default;
 
-    std::string toString() {
+    std::string toString() const {
         std::string hash;
 
         for (int i = 0; i < length; i++) {
@@ -45,7 +42,7 @@ struct Hash {
 std::wstring s2ws(const std::string &s);
 #endif
 
-void openURL(std::string url);
+void openURL(const std::string &url);
 
 std::string showSaveFileDialog(std::string ext = ".terr3d");
 
@@ -106,6 +103,4 @@ void showMessageBox(std::string message, std::string title = "Info");
 
 void toggleSystemConsole();
 
-}  // namespace editor
-}  // namespace vox
-#endif /* editor_utils_hpp */
+}  // namespace vox::editor

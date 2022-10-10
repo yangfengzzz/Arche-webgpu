@@ -11,8 +11,7 @@
 #include <string>
 #include <unordered_map>
 
-namespace vox {
-namespace editor {
+namespace vox::editor {
 /**
  * Handle the creation and storage of editor specific resources
  */
@@ -57,5 +56,4 @@ private:
                                                      uint32_t rowsPerImage = wgpu::kCopyStrideUndefined);
 };
 
-}  // namespace editor
-}  // namespace vox
+}  // namespace vox::editor

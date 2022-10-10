@@ -71,7 +71,7 @@ void FramebufferPickerApp::pickFunctor(Renderer *renderer, MeshPtr mesh) {
 
 void FramebufferPickerApp::editorUpdate(const wgpu::TextureView& view) {
     _panel.removeAllWidgets();
-    _panel.createWidget<ui::Image>(view, _panel.size());
+    _panel.CreateWidget<ui::Image>(view, _panel.size());
 }
 
 void FramebufferPickerApp::inputEvent(const InputEvent &inputEvent) {

@@ -46,8 +46,8 @@
 #define __IMGUI_EX_CANVAS_H__
 #pragma once
 
-#include "../vox.render/gui/imgui.h"
-#include "../vox.render/gui/imgui_internal.h"  // ImRect, ImFloor
+#include <imgui.h>
+#include <imgui_internal.h>  // ImRect, ImFloor
 
 namespace ImGuiEx {
 

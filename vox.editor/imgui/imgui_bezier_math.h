@@ -7,12 +7,11 @@
 // CREDITS
 //   Written by Michal Cichon
 //------------------------------------------------------------------------------
-#ifndef __IMGUI_BEZIER_MATH_H__
-#define __IMGUI_BEZIER_MATH_H__
+
 #pragma once
 
 //------------------------------------------------------------------------------
-#include "imgui_extra_math.h"
+#include "vox.editor/imgui/imgui_extra_math.h"
 
 //------------------------------------------------------------------------------
 template <typename T>
@@ -204,6 +203,3 @@ inline void ImCubicBezierFixedStep(F &callback,
 
 //------------------------------------------------------------------------------
 #include "imgui_bezier_math.inl"
-
-//------------------------------------------------------------------------------
-#endif  // __IMGUI_BEZIER_MATH_H__

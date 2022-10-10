@@ -17,8 +17,7 @@
 namespace vox {
 using namespace ui;
 
-namespace editor {
-namespace ui {
+namespace editor::ui {
 class ProfilerWindow : public PanelWindow {
 public:
     /**
@@ -40,7 +39,7 @@ public:
     void enable(bool p_value, bool p_disableLog = false);
 
 private:
-    Color calculateActionColor(double p_percentage) const;
+    [[nodiscard]] Color calculateActionColor(double p_percentage) const;
 
     std::string generateActionString(ProfilerReport::Action &p_action);
 
@@ -62,6 +61,5 @@ private:
     Columns<5> *_actionList;
 };
 
-}  // namespace ui
-}  // namespace editor
+}  // namespace editor::ui
 }  // namespace vox

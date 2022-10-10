@@ -10,8 +10,7 @@
 #include <string>
 #include <tuple>
 
-namespace vox {
-namespace editor {
+namespace vox::editor {
 /*
  * Handles size conversions
  */
@@ -40,5 +39,4 @@ public:
     static std::string unitToString(SizeUnit p_unit);
 };
 
-}  // namespace editor
-}  // namespace vox
+}  // namespace vox::editor

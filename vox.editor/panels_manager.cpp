@@ -6,11 +6,7 @@
 
 #include "vox.editor/panels_manager.h"
 
-namespace vox {
-namespace editor {
-namespace ui {
+namespace vox::editor::ui {
 PanelsManager::PanelsManager(Canvas& p_canvas) : _canvas(p_canvas) {}
 
-}  // namespace ui
-}  // namespace editor
-}  // namespace vox
+}  // namespace vox::editor::ui

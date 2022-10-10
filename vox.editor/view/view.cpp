@@ -9,15 +9,13 @@
 #include "vox.render/mesh/mesh_renderer.h"
 #include "vox.render/mesh/model_mesh.h"
 
-namespace vox {
-namespace editor {
-namespace ui {
+namespace vox::editor::ui {
 View::View(const std::string& p_title,
            bool p_opened,
            const PanelWindowSettings& p_windowSettings,
            RenderContext* renderContext)
     : PanelWindow(p_title, p_opened, p_windowSettings), _renderContext(renderContext) {
-    scrollable = false;
+    scrollable_ = false;
 }
 
 void View::update(float p_deltaTime) {
@@ -25,24 +23,24 @@ void View::update(float p_deltaTime) {
 
     if (winWidth > 0) {
         if (!_image) {
-            _image = &createWidget<::vox::ui::Image>(nullptr, Vector2F{0.f, 0.f});
+            _image = &CreateWidget<::vox::ui::Image>(nullptr, Vector2F{0.f, 0.f});
         }
 
         _image->size = Vector2F(static_cast<float>(winWidth), static_cast<float>(winHeight));
         if (_createRenderTexture(winWidth * 2, winHeight * 2)) {
-            _image->setTextureView(_texture.CreateView());
+            _image->SetTextureView(_texture.CreateView());
         }
     }
 }
 
-void View::_draw_Impl() {
+void View::DrawImpl() {
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-    PanelWindow::_draw_Impl();
+    PanelWindow::DrawImpl();
     ImGui::PopStyleVar();
 }
 
 std::pair<uint16_t, uint16_t> View::safeSize() const {
-    auto result = size() - Vector2F{0.f, 25.f};  // 25 == title bar height
+    auto result = Size() - Vector2F{0.f, 25.f};  // 25 == title bar height
     return {static_cast<uint16_t>(result.x), static_cast<uint16_t>(result.y)};
 }
 
@@ -96,6 +94,4 @@ ModelMeshPtr View::createPlane(wgpu::Device& device) {
     return mesh;
 }
 
-}  // namespace ui
-}  // namespace editor
-}  // namespace vox
+}  // namespace vox::editor::ui

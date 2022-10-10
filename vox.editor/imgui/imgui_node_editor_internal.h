@@ -12,21 +12,22 @@
 #pragma once
 
 //------------------------------------------------------------------------------
-#include "imgui_node_editor.h"
+#include "vox.editor/imgui/imgui_node_editor.h"
 
 //------------------------------------------------------------------------------
-#include "../vox.render/gui/imgui.h"
+#include <imgui.h>
 
 #define IMGUI_DEFINE_MATH_OPERATORS
+
+#include <imgui_internal.h>
 
 #include <string>
 #include <vector>
 
-#include "../vox.render/gui/imgui_internal.h"
-#include "crude_json.h"
-#include "imgui_bezier_math.h"
-#include "imgui_canvas.h"
-#include "imgui_extra_math.h"
+#include "vox.editor/imgui/crude_json.h"
+#include "vox.editor/imgui/imgui_bezier_math.h"
+#include "vox.editor/imgui/imgui_canvas.h"
+#include "vox.editor/imgui/imgui_extra_math.h"
 
 //------------------------------------------------------------------------------
 namespace vox {

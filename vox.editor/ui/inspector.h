@@ -19,8 +19,7 @@
 namespace vox {
 using namespace ui;
 
-namespace editor {
-namespace ui {
+namespace editor::ui {
 class Inspector : public PanelWindow {
 public:
     /**
@@ -34,7 +33,7 @@ public:
     /**
      * Destructor
      */
-    ~Inspector();
+    ~Inspector() override;
 
     /**
      * Focus the given entity
@@ -55,7 +54,7 @@ public:
     /**
      * Returns the currently selected entity
      */
-    Entity *targetEntity() const;
+    [[nodiscard]] Entity *targetEntity() const;
 
     /**
      * Create the entity inspector for the given entity
@@ -91,6 +90,5 @@ private:
     uint64_t _destroyedListener = 0;
 };
 
-}  // namespace ui
-}  // namespace editor
+}  // namespace editor::ui
 }  // namespace vox

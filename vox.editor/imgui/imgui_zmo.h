@@ -106,7 +106,7 @@ void EditTransform(const Camera& camera, matrix_t& matrix)
 #pragma once
 
 #ifdef USE_IMGUI_API
-#include "imconfig.h"
+#include "vox.editor/imgui/imconfig.h"
 #endif
 #ifndef IMGUI_API
 #define IMGUI_API
@@ -167,7 +167,7 @@ IMGUI_API void SetOrthographic(bool isOrthographic);
 // Render a cube with face color corresponding to face normal. Usefull for debug/tests
 IMGUI_API void DrawCubes(const float *view, const float *projection, const float *matrices, int matrixCount);
 
-IMGUI_API void DrawGrid(const float *view, const float *projection, const float *matrix, const float gridSize);
+IMGUI_API void DrawGrid(const float *view, const float *projection, const float *matrix, float gridSize);
 
 // call it when you want a gizmo
 // Needs view and projection matrices.
@@ -208,10 +208,10 @@ IMGUI_API bool Manipulate(const float *view,
                           OPERATION operation,
                           MODE mode,
                           float *matrix,
-                          float *deltaMatrix = NULL,
-                          const float *snap = NULL,
-                          const float *localBounds = NULL,
-                          const float *boundsSnap = NULL);
+                          float *deltaMatrix = nullptr,
+                          const float *snap = nullptr,
+                          const float *localBounds = nullptr,
+                          const float *boundsSnap = nullptr);
 //
 // Please note that this cubeview is patented by Autodesk : https://patents.google.com/patent/US7782319B2/en
 // It seems to be a defensive patent in the US. I don't think it will bring troubles using it as

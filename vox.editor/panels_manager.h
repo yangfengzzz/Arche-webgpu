@@ -16,8 +16,7 @@
 namespace vox {
 using namespace ui;
 
-namespace editor {
-namespace ui {
+namespace editor::ui {
 /**
  * Handle the creation and storage of UI panels
  */
@@ -27,7 +26,7 @@ public:
      * Constructor
      * @param p_canvas p_canvas
      */
-    PanelsManager(Canvas& p_canvas);
+    explicit PanelsManager(Canvas& p_canvas);
 
     /**
      * Create a panel
@@ -43,7 +42,7 @@ public:
         } else {
             _panels.emplace(p_id, std::make_unique<T>(std::forward<Args>(p_args)...));
         }
-        _canvas.addPanel(*_panels.at(p_id));
+        _canvas.AddPanel(*_panels.at(p_id));
     }
 
     /**
@@ -60,6 +59,5 @@ private:
     Canvas& _canvas;
 };
 
-}  // namespace ui
-}  // namespace editor
+}  // namespace editor::ui
 }  // namespace vox

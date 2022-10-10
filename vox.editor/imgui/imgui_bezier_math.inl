@@ -14,7 +14,7 @@
 //------------------------------------------------------------------------------
 #include <map>  // used in ImCubicBezierFixedStep
 
-#include "imgui_bezier_math.h"
+#include "vox.editor/imgui/imgui_bezier_math.h"
 
 //------------------------------------------------------------------------------
 template <typename T>

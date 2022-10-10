@@ -9,8 +9,7 @@
 #include "vox.editor/editor_actions.h"
 #include "vox.render/entity.h"
 
-namespace vox {
-namespace editor {
+namespace vox::editor {
 template <typename T>
 inline Entity* EditorActions::createMonoComponentEntity(bool p_focusOnCreation, Entity* p_parent) {
     auto instance = createEmptyEntity(false, p_parent);
@@ -24,5 +23,4 @@ inline Entity* EditorActions::createMonoComponentEntity(bool p_focusOnCreation, 
     return instance;
 }
 
-}  // namespace editor
-}  // namespace vox
+}  // namespace vox::editor

@@ -14,11 +14,9 @@
 #include "vox.render/mesh/mesh_renderer.h"
 #include "vox.render/mesh/primitive_mesh.h"
 #include "vox.render/rendering/subpasses/color_picker_subpass.h"
-#include "vox.render/rendering/subpasses/forward_subpass.h"
+#include "vox.render/rendering/subpasses/geometry_subpass.h"
 
-namespace vox {
-namespace editor {
-namespace ui {
+namespace vox::editor::ui {
 SceneView::SceneView(const std::string& p_title,
                      bool p_opened,
                      const PanelWindowSettings& p_windowSettings,
@@ -51,7 +49,7 @@ SceneView::SceneView(const std::string& p_title,
         _renderPassDepthStencilAttachment.stencilStoreOp = wgpu::StoreOp::Discard;
         _renderPass = std::make_unique<RenderPass>(renderContext->device(), _renderPassDescriptor);
         _renderPass->addSubpass(
-                std::make_unique<ForwardSubpass>(_renderContext, _depthStencilTextureFormat, scene, _mainCamera));
+                std::make_unique<GeometrySubpass>(_renderContext, _depthStencilTextureFormat, scene, _mainCamera));
     }
 
     // color picker render target
@@ -137,7 +135,7 @@ void SceneView::update(float deltaTime) {
 }
 
 void SceneView::render(wgpu::CommandEncoder& commandEncoder) {
-    if (isFocused()) {
+    if (IsFocused()) {
         _cameraControl->onEnable();
     } else {
         _cameraControl->onDisable();
@@ -145,10 +143,10 @@ void SceneView::render(wgpu::CommandEncoder& commandEncoder) {
 
     // Let the first frame happen and then make the scene view the first seen view
     if (_elapsedFrames) {
-        focus();
+        Focus();
     }
 
-    if (_texture && isFocused()) {
+    if (_texture && IsFocused()) {
         _elapsedFrames = false;
 
         _renderPassColorAttachments.view = _texture.CreateView();
@@ -166,7 +164,7 @@ void SceneView::render(wgpu::CommandEncoder& commandEncoder) {
                 0,
                 [](WGPUQueueWorkDoneStatus status, void* userdata) {
                     if (status == WGPUQueueWorkDoneStatus_Success) {
-                        SceneView* app = static_cast<SceneView*>(userdata);
+                        auto* app = static_cast<SceneView*>(userdata);
                         if (app->_needPick) {
                             app->_readColorFromRenderTarget();
                             app->_needPick = false;
@@ -177,24 +175,24 @@ void SceneView::render(wgpu::CommandEncoder& commandEncoder) {
     }
 }
 
-void SceneView::_draw_Impl() {
+void SceneView::DrawImpl() {
     View::_draw_Impl();
     int windowFlags = ImGuiWindowFlags_None;
 
-    if (!resizable) windowFlags |= ImGuiWindowFlags_NoResize;
-    if (!movable) windowFlags |= ImGuiWindowFlags_NoMove;
-    if (!dockable) windowFlags |= ImGuiWindowFlags_NoDocking;
-    if (hideBackground) windowFlags |= ImGuiWindowFlags_NoBackground;
-    if (forceHorizontalScrollbar) windowFlags |= ImGuiWindowFlags_AlwaysHorizontalScrollbar;
-    if (forceVerticalScrollbar) windowFlags |= ImGuiWindowFlags_AlwaysVerticalScrollbar;
-    if (allowHorizontalScrollbar) windowFlags |= ImGuiWindowFlags_HorizontalScrollbar;
-    if (!bringToFrontOnFocus) windowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
-    if (!collapsable) windowFlags |= ImGuiWindowFlags_NoCollapse;
-    if (!allowInputs) windowFlags |= ImGuiWindowFlags_NoInputs;
-    if (!scrollable) windowFlags |= ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar;
-    if (!titleBar) windowFlags |= ImGuiWindowFlags_NoTitleBar;
+    if (!resizable_) windowFlags |= ImGuiWindowFlags_NoResize;
+    if (!movable_) windowFlags |= ImGuiWindowFlags_NoMove;
+    if (!dockable_) windowFlags |= ImGuiWindowFlags_NoDocking;
+    if (hide_background_) windowFlags |= ImGuiWindowFlags_NoBackground;
+    if (force_horizontal_scrollbar_) windowFlags |= ImGuiWindowFlags_AlwaysHorizontalScrollbar;
+    if (force_vertical_scrollbar_) windowFlags |= ImGuiWindowFlags_AlwaysVerticalScrollbar;
+    if (allow_horizontal_scrollbar_) windowFlags |= ImGuiWindowFlags_HorizontalScrollbar;
+    if (!bring_to_front_on_focus_) windowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
+    if (!collapsable_) windowFlags |= ImGuiWindowFlags_NoCollapse;
+    if (!allow_inputs_) windowFlags |= ImGuiWindowFlags_NoInputs;
+    if (!scrollable_) windowFlags |= ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar;
+    if (!title_bar_) windowFlags |= ImGuiWindowFlags_NoTitleBar;
 
-    if (ImGui::Begin((name + _panelID).c_str(), nullptr, windowFlags)) {
+    if (ImGui::Begin((name_ + panel_id_).c_str(), nullptr, windowFlags)) {
         if (_pickResult.first != nullptr) {
             if (ImGuizmo::IsOver()) {
                 _cameraControl->setEnabled(false);
@@ -221,8 +219,8 @@ void SceneView::pick(float offsetX, float offsetY) {
 void SceneView::_copyRenderTargetToBuffer(wgpu::CommandEncoder& commandEncoder) {
     uint32_t clientWidth = _mainCamera->width();
     uint32_t clientHeight = _mainCamera->height();
-    uint32_t canvasWidth = static_cast<uint32_t>(_colorPickerTextureDesc.size.width);
-    uint32_t canvasHeight = static_cast<uint32_t>(_colorPickerTextureDesc.size.height);
+    auto canvasWidth = static_cast<uint32_t>(_colorPickerTextureDesc.size.width);
+    auto canvasHeight = static_cast<uint32_t>(_colorPickerTextureDesc.size.height);
 
     const float px = (_pickPos.x / clientWidth) * canvasWidth;
     const float py = (_pickPos.y / clientHeight) * canvasHeight;
@@ -259,14 +257,14 @@ void SceneView::_readColorFromRenderTarget() {
 }
 
 void SceneView::inputEvent(const InputEvent& inputEvent) {
-    if (inputEvent.source() == EventSource::Mouse) {
+    if (inputEvent.GetSource() == EventSource::MOUSE) {
         const auto& mouse_button = static_cast<const MouseButtonInputEvent&>(inputEvent);
-        if (mouse_button.action() == MouseAction::Down) {
+        if (mouse_button.GetAction() == MouseAction::DOWN) {
             auto width = _mainCamera->width();
             auto height = _mainCamera->height();
 
-            auto pickerPosX = mouse_button.pos_x() - position().x;
-            auto pickerPosY = mouse_button.pos_y() - position().y;
+            auto pickerPosX = mouse_button.GetPosX() - Position().x;
+            auto pickerPosY = mouse_button.GetPosY() - Position().y;
 
             if (pickerPosX <= width && pickerPosX > 0 && pickerPosY <= height && pickerPosY > 0) {
                 pick(pickerPosX, pickerPosY);
@@ -285,19 +283,18 @@ void SceneView::editTransform(float* cameraView, float* cameraProjection, float*
     static bool boundSizingSnap = false;
 
     auto [winWidth, winHeight] = safeSize();
-    auto viewportPos = position();
+    auto viewportPos = Position();
     float viewManipulateRight = winWidth + viewportPos.x;
     float viewManipulateTop = viewportPos.y + 25;
     ImGuizmo::SetRect(viewportPos.x, viewportPos.y, winWidth, winHeight);
     ImGuizmo::SetDrawlist(ImGui::GetWindowDrawList());
 
-    ImGuizmo::Manipulate(cameraView, cameraProjection, _currentGizmoOperation, mCurrentGizmoMode, matrix, NULL,
-                         useSnap ? &snap[0] : NULL, boundSizing ? bounds : NULL, boundSizingSnap ? boundsSnap : NULL);
+    ImGuizmo::Manipulate(cameraView, cameraProjection, _currentGizmoOperation, mCurrentGizmoMode, matrix, nullptr,
+                         useSnap ? &snap[0] : nullptr, boundSizing ? bounds : nullptr,
+                         boundSizingSnap ? boundsSnap : nullptr);
 
     ImGuizmo::ViewManipulate(cameraView, _camDistance, ImVec2(viewManipulateRight - 128, viewManipulateTop),
                              ImVec2(128, 128), 0x10101010);
 }
 
-}  // namespace ui
-}  // namespace editor
-}  // namespace vox
+}  // namespace vox::editor::ui

@@ -14,9 +14,7 @@
 #include "vox.render/ui/widgets/layout/tree_node.h"
 #include "vox.render/ui/widgets/panel_transformables/panel_window.h"
 
-namespace vox {
-namespace editor {
-namespace ui {
+namespace vox::editor::ui {
 /**
  * A panel that handle asset management
  */
@@ -76,7 +74,4 @@ private:
     std::unordered_map<::vox::ui::TreeNode *, std::string> _pathUpdate;
 };
 
-}  // namespace ui
-}  // namespace editor
-}  // namespace vox
-#endif /* asset_browser_hpp */
+}  // namespace vox::editor::ui

@@ -10,13 +10,16 @@
 #include "vox.editor/editor_resources.h"
 #include "vox.editor/panels_manager.h"
 #include "vox.render/graphics_application.h"
+#include "vox.render/image_manager.h"
 #include "vox.render/lighting/light_manager.h"
+#include "vox.render/lua/script_interpreter.h"
+#include "vox.render/mesh/mesh_manager.h"
 #include "vox.render/particle/particle_manager.h"
 #include "vox.render/scene_manager.h"
+#include "vox.render/shader/shader_manager.h"
 #include "vox.render/shadow/shadow_manager.h"
 
-namespace vox {
-namespace editor {
+namespace vox::editor {
 class EditorApplication : public GraphicsApplication {
 public:
     EditorApplication(const std::string& projectPath, const std::string& projectName);
@@ -54,6 +57,7 @@ public:
     void updateEditorPanels(float deltaTime);
 
 private:
+    friend class EditorActions;
     const std::string projectPath;
     const std::string projectName;
     const std::string projectFilePath;
@@ -67,6 +71,7 @@ private:
     std::unique_ptr<EditorResources> _editorResources{nullptr};
     std::unique_ptr<EditorActions> _editorActions{nullptr};
 
+    float delta_time_{};
     Camera* _mainCamera{nullptr};
 
     wgpu::RenderPassDescriptor _renderPassDescriptor;
@@ -75,11 +80,15 @@ private:
     /**
      * @brief Holds all scene information
      */
+    std::unique_ptr<ImageManager> image_manager_{nullptr};
+    std::unique_ptr<ShaderManager> shader_manager_{nullptr};
+    std::unique_ptr<MeshManager> mesh_manager_{nullptr};
+    std::unique_ptr<ScriptInterpreter> script_interpreter_{nullptr};
+
     std::unique_ptr<SceneManager> _sceneManager{nullptr};
     std::unique_ptr<ShadowManager> _shadowManager{nullptr};
     std::unique_ptr<LightManager> _lightManager{nullptr};
     std::unique_ptr<ParticleManager> _particleManager{nullptr};
 };
 
-}  // namespace editor
-}  // namespace vox
+}  // namespace vox::editor

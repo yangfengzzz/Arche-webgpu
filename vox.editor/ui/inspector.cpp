@@ -21,30 +21,28 @@
 #include "vox.render/ui/widgets/texts/text.h"
 #include "vox.render/ui/widgets/visual/image.h"
 
-namespace vox {
-namespace editor {
-namespace ui {
+namespace vox::editor::ui {
 Inspector::Inspector(const std::string &p_title, bool p_opened, const PanelWindowSettings &p_windowSettings)
     : PanelWindow(p_title, p_opened, p_windowSettings) {
-    _inspectorHeader = &createWidget<Group>();
-    _inspectorHeader->enabled = false;
-    _entityInfo = &createWidget<Group>();
+    _inspectorHeader = &CreateWidget<Group>();
+    _inspectorHeader->enabled_ = false;
+    _entityInfo = &CreateWidget<Group>();
 
-    auto &headerColumns = _inspectorHeader->createWidget<Columns<2>>();
+    auto &headerColumns = _inspectorHeader->CreateWidget<Columns<2>>();
 
     /* Name field */
     auto nameGatherer = [this] { return _targetEntity ? _targetEntity->name : "%undef%"; };
     auto nameProvider = [this](const std::string &p_newName) {
         if (_targetEntity) _targetEntity->name = p_newName;
     };
-    GUIDrawer::drawString(headerColumns, "Name", nameGatherer, nameProvider);
+    GuiDrawer::DrawString(headerColumns, "Name", nameGatherer, nameProvider);
 
     /* Active field */
     auto activeGatherer = [this] { return _targetEntity ? _targetEntity->isActive() : false; };
     auto activeProvider = [this](bool p_active) {
         if (_targetEntity) _targetEntity->setIsActive(p_active);
     };
-    GUIDrawer::drawBoolean(headerColumns, "Active", activeGatherer, activeProvider);
+    GuiDrawer::DrawBoolean(headerColumns, "Active", activeGatherer, activeProvider);
 }
 
 Inspector::~Inspector() {
@@ -55,7 +53,7 @@ Inspector::~Inspector() {
 void Inspector::focusEntity(Entity *p_target) {
     if (_targetEntity) unFocus();
 
-    _entityInfo->removeAllWidgets();
+    _entityInfo->RemoveAllWidgets();
 
     _targetEntity = p_target;
 
@@ -68,15 +66,15 @@ void Inspector::focusEntity(Entity *p_target) {
     _behaviourRemovedListener = _targetEntity->behaviourRemovedEvent +=
             [this](auto useless) { EditorActions::getSingleton().delayAction([this] { refresh(); }); };
 
-    _inspectorHeader->enabled = true;
+    _inspectorHeader->enabled_ = true;
 
     createEntityInspector(p_target);
 
     // Force component and script selectors to trigger their ChangedEvent to update button states
-    _componentSelectorWidget->valueChangedEvent.invoke(_componentSelectorWidget->currentChoice);
-    _scriptSelectorWidget->contentChangedEvent.invoke(_scriptSelectorWidget->content);
+    _componentSelectorWidget->value_changed_event_.Invoke(_componentSelectorWidget->current_choice_);
+    _scriptSelectorWidget->content_changed_event_.Invoke(_scriptSelectorWidget->content_);
 
-    EditorActions::getSingleton().entitySelectedEvent.invoke(_targetEntity);
+    EditorActions::getSingleton().entitySelectedEvent.Invoke(_targetEntity);
 }
 
 void Inspector::unFocus() {
@@ -92,10 +90,10 @@ void Inspector::unFocus() {
 
 void Inspector::softUnFocus() {
     if (_targetEntity) {
-        EditorActions::getSingleton().entityUnselectedEvent.invoke(_targetEntity);
-        _inspectorHeader->enabled = false;
+        EditorActions::getSingleton().entityUnselectedEvent.Invoke(_targetEntity);
+        _inspectorHeader->enabled_ = false;
         _targetEntity = nullptr;
-        _entityInfo->removeAllWidgets();
+        _entityInfo->RemoveAllWidgets();
     }
 }
 
@@ -121,39 +119,37 @@ void Inspector::createEntityInspector(Entity *&p_target) {
 
 void Inspector::drawComponent(Component *p_component) {
     if (auto inspectorItem = dynamic_cast<InspectorItem *>(p_component); inspectorItem) {
-        auto &header = _entityInfo->createWidget<GroupCollapsable>(p_component->name());
-        header.closable = !dynamic_cast<Transform *>(p_component);
-        header.closeEvent += [this, &header, &p_component] {
+        auto &header = _entityInfo->CreateWidget<GroupCollapsable>(p_component->name());
+        header.closable_ = !dynamic_cast<Transform *>(p_component);
+        header.close_event_ += [this, &header, &p_component] {
             //            if (p_component->entity()->_removeComponent(p_component))
-            //                _componentSelectorWidget->valueChangedEvent.invoke(_componentSelectorWidget->currentChoice);
+            //                _componentSelectorWidget->value_changed_event_.invoke(_componentSelectorWidget->currentChoice);
         };
-        auto &columns = header.createWidget<Columns<2>>();
-        columns.widths[0] = 200;
+        auto &columns = header.CreateWidget<Columns<2>>();
+        columns.widths_[0] = 200;
         inspectorItem->onInspector(columns);
     }
 }
 
 void Inspector::drawBehaviour(Behaviour *p_behaviour) {
     if (auto inspectorItem = dynamic_cast<InspectorItem *>(p_behaviour); inspectorItem) {
-        auto &header = _entityInfo->createWidget<GroupCollapsable>(p_behaviour->name());
-        header.closable = true;
-        header.closeEvent += [this, &header, &p_behaviour] {
+        auto &header = _entityInfo->CreateWidget<GroupCollapsable>(p_behaviour->name());
+        header.closable_ = true;
+        header.close_event_ += [this, &header, &p_behaviour] {
             //            p_behaviour->entity()->removeBehaviour(p_behaviour);
         };
 
-        auto &columns = header.createWidget<Columns<2>>();
-        columns.widths[0] = 200;
+        auto &columns = header.CreateWidget<Columns<2>>();
+        columns.widths_[0] = 200;
         inspectorItem->onInspector(columns);
     }
 }
 
 void Inspector::refresh() {
     if (_targetEntity) {
-        _entityInfo->removeAllWidgets();
+        _entityInfo->RemoveAllWidgets();
         createEntityInspector(_targetEntity);
     }
 }
 
-}  // namespace ui
-}  // namespace editor
 }  // namespace vox

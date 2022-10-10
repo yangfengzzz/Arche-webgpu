@@ -16,8 +16,7 @@
 namespace vox {
 using namespace ui;
 
-namespace editor {
-namespace ui {
+namespace editor::ui {
 /**
  * Base class for any view
  */
@@ -43,7 +42,7 @@ public:
     /**
      * Custom implementation of the draw method
      */
-    void _draw_Impl() override;
+    void DrawImpl() override;
 
     /**
      * Render the view
@@ -53,7 +52,7 @@ public:
     /**
      * Returns the size of the panel ignoring its titlebar height
      */
-    std::pair<uint16_t, uint16_t> safeSize() const;
+    [[nodiscard]] std::pair<uint16_t, uint16_t> safeSize() const;
 
 public:
     ModelMeshPtr createPlane(wgpu::Device& device);
@@ -61,7 +60,7 @@ public:
     /**
      * Returns the grid color of the view
      */
-    const Vector3F& gridColor() const;
+    [[nodiscard]] const Vector3F& gridColor() const;
 
     /**
      * Defines the grid color of the view
@@ -75,7 +74,7 @@ protected:
 
     std::unique_ptr<RenderPass> _renderPass{nullptr};
 
-    Image* _image{nullptr};
+    vox::ui::Image* _image{nullptr};
     wgpu::Texture _texture;
     wgpu::TextureDescriptor _textureDesc;
     wgpu::TextureView _depthStencilTexture;
@@ -90,9 +89,8 @@ protected:
 // MARK: - Grid
 class GridMaterial : public BaseMaterial {
 public:
-    GridMaterial(wgpu::Device& device) : BaseMaterial(device, Shader::find("editor-grid")) { setIsTransparent(true); }
+    explicit GridMaterial(wgpu::Device& device) : BaseMaterial(device) { setIsTransparent(true); }
 };
 
-}  // namespace ui
-}  // namespace editor
+}  // namespace editor::ui
 }  // namespace vox

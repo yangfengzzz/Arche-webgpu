@@ -11,8 +11,7 @@
 namespace vox {
 using namespace ui;
 
-namespace editor {
-namespace ui {
+namespace editor::ui {
 class GameView : public View {
 public:
     /**
@@ -44,6 +43,5 @@ private:
     Scene* _scene{nullptr};
 };
 
-}  // namespace ui
 }  // namespace editor
 }  // namespace vox

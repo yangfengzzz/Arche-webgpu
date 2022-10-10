@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 #include <algorithm>
 
-#include "imgui_node_editor_internal.h"
+#include "vox.editor/imgui/imgui_node_editor_internal.h"
 
 using namespace vox;
 //------------------------------------------------------------------------------

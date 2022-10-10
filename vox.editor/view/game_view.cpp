@@ -8,7 +8,7 @@
 
 #include "vox.render/camera.h"
 #include "vox.render/entity.h"
-#include "vox.render/rendering/subpasses/forward_subpass.h"
+#include "vox.render/rendering/subpasses/geometry_subpass.h"
 
 namespace vox {
 namespace editor {
@@ -43,11 +43,11 @@ GameView::GameView(const std::string& p_title,
     _renderPassDepthStencilAttachment.stencilStoreOp = wgpu::StoreOp::Discard;
     _renderPass = std::make_unique<RenderPass>(renderContext->device(), _renderPassDescriptor);
     _renderPass->addSubpass(
-            std::make_unique<ForwardSubpass>(_renderContext, _depthStencilTextureFormat, scene, _mainCamera));
+            std::make_unique<GeometrySubpass>(_renderContext, _depthStencilTextureFormat, scene, _mainCamera));
 }
 
 void GameView::render(wgpu::CommandEncoder& commandEncoder) {
-    if (_texture && isFocused()) {
+    if (_texture && IsFocused()) {
         _renderPassColorAttachments.view = _texture.CreateView();
         _renderPassDepthStencilAttachment.view = _depthStencilTexture;
         _renderPass->draw(commandEncoder);

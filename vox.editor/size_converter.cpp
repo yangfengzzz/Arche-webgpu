@@ -8,13 +8,12 @@
 
 #include <cmath>
 
-namespace vox {
-namespace editor {
+namespace vox::editor {
 std::pair<float, SizeConverter::SizeUnit> SizeConverter::convertToOptimalUnit(float p_value, SizeUnit p_unit) {
     if (p_value == 0.0f) return {0.0f, SizeUnit::BYTE};
     const float bytes = convert(p_value, p_unit, SizeUnit::BYTE);
     const int digits = static_cast<int>(trunc(log10(bytes)));
-    const SizeUnit targetUnit =
+    const auto targetUnit =
             static_cast<SizeUnit>(fmin(3.0f * floor(digits / 3.0f), static_cast<float>(SizeUnit::TERA_BYTE)));
 
     return {convert(bytes, SizeUnit::BYTE, targetUnit), targetUnit};
@@ -44,5 +43,4 @@ std::string SizeConverter::unitToString(SizeUnit p_unit) {
     return "?";
 }
 
-}  // namespace editor
-}  // namespace vox
+}  // namespace vox::editor

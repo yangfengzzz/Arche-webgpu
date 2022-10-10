@@ -15,79 +15,77 @@
 #include "vox.render/ui/widgets/texts/text_colored.h"
 #include "vox.render/ui/widgets/visual/separator.h"
 
-namespace vox {
-namespace editor {
-namespace ui {
+namespace vox::editor::ui {
 namespace {
 void drawHybridVec3(
         WidgetContainer &p_root, const std::string &p_name, Vector3F &p_data, float p_step, float p_min, float p_max) {
-    GUIDrawer::createTitle(p_root, p_name);
+    GuiDrawer::CreateTitle(p_root, p_name);
 
-    auto &rightSide = p_root.createWidget<Group>();
+    auto &rightSide = p_root.CreateWidget<Group>();
 
-    auto &xyzWidget = rightSide.createWidget<DragMultipleScalars<float, 3>>(
-            GUIDrawer::getDataType<float>(), p_min, p_max, 0.f, p_step, "", GUIDrawer::getFormat<float>());
-    auto &xyzDispatcher = xyzWidget.addPlugin<DataDispatcher<std::array<float, 3>>>();
-    xyzDispatcher.registerReference(reinterpret_cast<std::array<float, 3> &>(p_data));
-    xyzWidget.lineBreak = false;
+    auto &xyzWidget = rightSide.CreateWidget<DragMultipleScalars<float, 3>>(
+            GuiDrawer::GetDataType<float>(), p_min, p_max, 0.f, p_step, "", GuiDrawer::GetFormat<float>());
+    auto &xyzDispatcher = xyzWidget.AddPlugin<DataDispatcher<std::array<float, 3>>>();
+    xyzDispatcher.RegisterReference(reinterpret_cast<std::array<float, 3> &>(p_data));
+    xyzWidget.line_break_ = false;
 
-    auto &rgbWidget = rightSide.createWidget<ColorEdit>(false, Color{p_data.x, p_data.y, p_data.z});
-    auto &rgbDispatcher = rgbWidget.addPlugin<DataDispatcher<Color>>();
-    rgbDispatcher.registerReference(reinterpret_cast<Color &>(p_data));
-    rgbWidget.enabled = false;
-    rgbWidget.lineBreak = false;
+    auto &rgbWidget = rightSide.CreateWidget<ColorEdit>(false, Color{p_data.x, p_data.y, p_data.z});
+    auto &rgbDispatcher = rgbWidget.AddPlugin<DataDispatcher<Color>>();
+    rgbDispatcher.RegisterReference(reinterpret_cast<Color &>(p_data));
+    rgbWidget.enabled_ = false;
+    rgbWidget.line_break_ = false;
 
-    auto &xyzButton = rightSide.createWidget<ButtonSimple>("XYZ");
-    xyzButton.idleBackgroundColor = {0.7f, 0.5f, 0.0f};
-    xyzButton.lineBreak = false;
+    auto &xyzButton = rightSide.CreateWidget<ButtonSimple>("XYZ");
+    xyzButton.idle_background_color_ = {0.7f, 0.5f, 0.0f};
+    xyzButton.line_break_ = false;
 
-    auto &rgbButton = rightSide.createWidget<ButtonSimple>("RGB");
-    rgbButton.idleBackgroundColor = {0.7f, 0.5f, 0.0f};
+    auto &rgbButton = rightSide.CreateWidget<ButtonSimple>("RGB");
+    rgbButton.idle_background_color_ = {0.7f, 0.5f, 0.0f};
 
-    xyzButton.clickedEvent += [&] {
-        xyzWidget.enabled = true;
-        rgbWidget.enabled = false;
+    xyzButton.clicked_event_ += [&] {
+        xyzWidget.enabled_ = true;
+        rgbWidget.enabled_ = false;
     };
 
-    rgbButton.clickedEvent += [&] {
-        xyzWidget.enabled = false;
-        rgbWidget.enabled = true;
+    rgbButton.clicked_event_ += [&] {
+        xyzWidget.enabled_ = false;
+        rgbWidget.enabled_ = true;
     };
 }
 
 void drawHybridVec4(
         WidgetContainer &p_root, const std::string &p_name, Vector4F &p_data, float p_step, float p_min, float p_max) {
-    GUIDrawer::createTitle(p_root, p_name);
+    GuiDrawer::CreateTitle(p_root, p_name);
 
-    auto &rightSide = p_root.createWidget<Group>();
+    auto &rightSide = p_root.CreateWidget<Group>();
 
-    auto &xyzWidget = rightSide.createWidget<DragMultipleScalars<float, 4>>(
-            GUIDrawer::getDataType<float>(), p_min, p_max, 0.f, p_step, "", GUIDrawer::getFormat<float>());
-    auto &xyzDispatcher = xyzWidget.addPlugin<DataDispatcher<std::array<float, 4>>>();
-    xyzDispatcher.registerReference(reinterpret_cast<std::array<float, 4> &>(p_data));
-    xyzWidget.lineBreak = false;
+    auto &xyzWidget = rightSide.CreateWidget<DragMultipleScalars<float, 4>>(
+            GuiDrawer::GetDataType<float>(), p_min, p_max, 0.f, p_step, "", GuiDrawer::GetFormat<float>());
+    auto &xyzDispatcher = xyzWidget.AddPlugin<DataDispatcher<std::array<float, 4>>>();
+    xyzDispatcher.RegisterReference(reinterpret_cast<std::array<float, 4> &>(p_data));
+    xyzWidget.line_break_ = false;
 
-    auto &rgbaWidget = rightSide.createWidget<ColorEdit>(true, Color{p_data.x, p_data.y, p_data.z, p_data.w});
-    auto &rgbaDispatcher = rgbaWidget.addPlugin<DataDispatcher<Color>>();
-    rgbaDispatcher.registerReference(reinterpret_cast<Color &>(p_data));
-    rgbaWidget.enabled = false;
-    rgbaWidget.lineBreak = false;
+    auto &rgbaWidget = rightSide.CreateWidget<ColorEdit>(true, Color{p_data.x, p_data.y, p_data.z, p_data.w});
+    auto &rgbaDispatcher = rgbaWidget.AddPlugin<DataDispatcher<Color>>();
+    rgbaDispatcher.RegisterReference(reinterpret_cast<Color &>(p_data));
+    rgbaWidget.enabled_ = false;
+    rgbaWidget.line_break_ = false;
 
-    auto &xyzwButton = rightSide.createWidget<ButtonSimple>("XYZW");
-    xyzwButton.idleBackgroundColor = {0.7f, 0.5f, 0.0f};
-    xyzwButton.lineBreak = false;
+    auto &xyzwButton = rightSide.CreateWidget<ButtonSimple>("XYZW");
+    xyzwButton.idle_background_color_ = {0.7f, 0.5f, 0.0f};
+    xyzwButton.line_break_ = false;
 
-    auto &rgbaButton = rightSide.createWidget<ButtonSimple>("RGBA");
-    rgbaButton.idleBackgroundColor = {0.7f, 0.5f, 0.0f};
+    auto &rgbaButton = rightSide.CreateWidget<ButtonSimple>("RGBA");
+    rgbaButton.idle_background_color_ = {0.7f, 0.5f, 0.0f};
 
-    xyzwButton.clickedEvent += [&] {
-        xyzWidget.enabled = true;
-        rgbaWidget.enabled = false;
+    xyzwButton.clicked_event_ += [&] {
+        xyzWidget.enabled_ = true;
+        rgbaWidget.enabled_ = false;
     };
 
-    rgbaButton.clickedEvent += [&] {
-        xyzWidget.enabled = false;
-        rgbaWidget.enabled = true;
+    rgbaButton.clicked_event_ += [&] {
+        xyzWidget.enabled_ = false;
+        rgbaWidget.enabled_ = true;
     };
 }
 }  // namespace
@@ -95,20 +93,18 @@ void drawHybridVec4(
 MaterialEditor::MaterialEditor(const std::string &p_title, bool p_opened, const PanelWindowSettings &p_windowSettings)
     : PanelWindow(p_title, p_opened, p_windowSettings) {
     createHeaderButtons();
-    createWidget<Separator>();
+    CreateWidget<Separator>();
     createMaterialSelector();
-    _settings = &createWidget<Group>();
+    _settings = &CreateWidget<Group>();
     createShaderSelector();
     createMaterialSettings();
     createShaderSettings();
 
-    _settings->enabled = false;
-    _shaderSettings->enabled = false;
+    _settings->enabled_ = false;
+    _shaderSettings->enabled_ = false;
 
     _materialDroppedEvent += std::bind(&MaterialEditor::onMaterialDropped, this);
     _shaderDroppedEvent += std::bind(&MaterialEditor::onShaderDropped, this);
 }
 
-}  // namespace ui
-}  // namespace editor
-}  // namespace vox
+}  // namespace vox::editor::ui

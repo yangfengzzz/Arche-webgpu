@@ -15,7 +15,7 @@
 #include <cstdint>  // std::uintXX_t
 #include <utility>  // std::move
 
-#include "../vox.render/gui/imgui.h"
+#include <imgui.h>
 
 //------------------------------------------------------------------------------
 namespace vox {

@@ -5,63 +5,77 @@
 //  property of any third parties.
 
 #include "entity_creation_menu.h"
+
+#include <utility>
+
 #include "editor_actions.h"
 
-namespace vox {
-namespace editor {
-std::function<void()> combine(std::function<void()> p_a, std::optional<std::function<void()>> p_b) {
+namespace vox::editor {
+std::function<void()> combine(std::function<void()> p_a, const std::optional<std::function<void()>>& p_b) {
     if (p_b.has_value()) {
         return [=]() {
             p_a();
             p_b.value()();
         };
     }
-    
+
     return p_a;
 }
 
-template<class T>
+template <class T>
 std::function<void()> entityWithComponentCreationHandler(Entity* parent,
-                                                        std::optional<std::function<void()>> onItemClicked) {
-    return combine(std::bind(&EditorActions::createMonoComponentEntity<T>, EditorActions::getSingletonPtr(),
-                             true, parent), onItemClicked);
+                                                         std::optional<std::function<void()>> onItemClicked) {
+    return combine(
+            std::bind(&EditorActions::createMonoComponentEntity<T>, EditorActions::getSingletonPtr(), true, parent),
+            onItemClicked);
 }
 
-std::function<void()> entityWithModelComponentCreationHandler(Entity* parent, const std::string& modelName,
-                                                             std::optional<std::function<void()>> onItemClicked) {
+std::function<void()> entityWithModelComponentCreationHandler(
+        Entity* parent, const std::string& modelName, const std::optional<std::function<void()>>& onItemClicked) {
     return combine(std::bind(&EditorActions::createEntityWithModel, EditorActions::getSingletonPtr(),
-                             ":Models/" + modelName + ".fbx", true, parent, modelName), onItemClicked);
+                             ":Models/" + modelName + ".fbx", true, parent, modelName),
+                   onItemClicked);
 }
 
+void EntityCreationMenu::generateEntityCreationMenu(::vox::ui::MenuList& menuList,
+                                                    Entity* parent,
+                                                    const std::optional<std::function<void()>>& onItemClicked) {
+    menuList.CreateWidget<MenuItem>("Create Empty").clicked_event_ +=
+            combine(std::bind(&::vox::editor::EditorActions::createEmptyEntity, EditorActions::getSingletonPtr(), true,
+                              parent, ""),
+                    onItemClicked);
 
-void EntityCreationMenu::generateEntityCreationMenu(::vox::ui::MenuList& menuList, Entity* parent,
-                                                    std::optional<std::function<void()>> onItemClicked) {
-    menuList.createWidget<MenuItem>("Create Empty").clickedEvent
-    += combine(std::bind(&::vox::editor::EditorActions::createEmptyEntity,
-                         EditorActions::getSingletonPtr(), true, parent, ""), onItemClicked);
-    
-    auto& primitives = menuList.createWidget<MenuList>("Primitives");
-    auto& physicals = menuList.createWidget<MenuList>("Physicals");
-    auto& lights = menuList.createWidget<MenuList>("Lights");
-    auto& audio = menuList.createWidget<MenuList>("Audio");
-    auto& others = menuList.createWidget<MenuList>("Others");
-    
-    primitives.createWidget<MenuItem>("Cube").clickedEvent     += entityWithModelComponentCreationHandler(parent, "Cube", onItemClicked);
-    primitives.createWidget<MenuItem>("Sphere").clickedEvent   += entityWithModelComponentCreationHandler(parent, "Sphere", onItemClicked);
-    primitives.createWidget<MenuItem>("Cone").clickedEvent     += entityWithModelComponentCreationHandler(parent, "Cone", onItemClicked);
-    primitives.createWidget<MenuItem>("Cylinder").clickedEvent += entityWithModelComponentCreationHandler(parent, "Cylinder", onItemClicked);
-    primitives.createWidget<MenuItem>("Plane").clickedEvent    += entityWithModelComponentCreationHandler(parent, "Plane", onItemClicked);
-    primitives.createWidget<MenuItem>("Gear").clickedEvent     += entityWithModelComponentCreationHandler(parent, "Gear", onItemClicked);
-    primitives.createWidget<MenuItem>("Helix").clickedEvent    += entityWithModelComponentCreationHandler(parent, "Helix", onItemClicked);
-    primitives.createWidget<MenuItem>("Pipe").clickedEvent     += entityWithModelComponentCreationHandler(parent, "Pipe", onItemClicked);
-    primitives.createWidget<MenuItem>("Pyramid").clickedEvent  += entityWithModelComponentCreationHandler(parent, "Pyramid", onItemClicked);
-    primitives.createWidget<MenuItem>("Torus").clickedEvent    += entityWithModelComponentCreationHandler(parent, "Torus", onItemClicked);
-    
+    auto& primitives = menuList.CreateWidget<MenuList>("Primitives");
+    auto& physicals = menuList.CreateWidget<MenuList>("Physicals");
+    auto& lights = menuList.CreateWidget<MenuList>("Lights");
+    auto& audio = menuList.CreateWidget<MenuList>("Audio");
+    auto& others = menuList.CreateWidget<MenuList>("Others");
+
+    primitives.CreateWidget<MenuItem>("Cube").clicked_event_ +=
+            entityWithModelComponentCreationHandler(parent, "Cube", onItemClicked);
+    primitives.CreateWidget<MenuItem>("Sphere").clicked_event_ +=
+            entityWithModelComponentCreationHandler(parent, "Sphere", onItemClicked);
+    primitives.CreateWidget<MenuItem>("Cone").clicked_event_ +=
+            entityWithModelComponentCreationHandler(parent, "Cone", onItemClicked);
+    primitives.CreateWidget<MenuItem>("Cylinder").clicked_event_ +=
+            entityWithModelComponentCreationHandler(parent, "Cylinder", onItemClicked);
+    primitives.CreateWidget<MenuItem>("Plane").clicked_event_ +=
+            entityWithModelComponentCreationHandler(parent, "Plane", onItemClicked);
+    primitives.CreateWidget<MenuItem>("Gear").clicked_event_ +=
+            entityWithModelComponentCreationHandler(parent, "Gear", onItemClicked);
+    primitives.CreateWidget<MenuItem>("Helix").clicked_event_ +=
+            entityWithModelComponentCreationHandler(parent, "Helix", onItemClicked);
+    primitives.CreateWidget<MenuItem>("Pipe").clicked_event_ +=
+            entityWithModelComponentCreationHandler(parent, "Pipe", onItemClicked);
+    primitives.CreateWidget<MenuItem>("Pyramid").clicked_event_ +=
+            entityWithModelComponentCreationHandler(parent, "Pyramid", onItemClicked);
+    primitives.CreateWidget<MenuItem>("Torus").clicked_event_ +=
+            entityWithModelComponentCreationHandler(parent, "Torus", onItemClicked);
+
     (void)physicals;
     (void)lights;
     (void)audio;
     (void)others;
 }
 
-}
-}
+}  // namespace vox::editor

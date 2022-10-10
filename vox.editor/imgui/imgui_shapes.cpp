@@ -4,12 +4,10 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "imgui_shapes.h"
+#include "vox.editor/imgui/imgui_shapes.h"
+
 #define IMGUI_DEFINE_MATH_OPERATORS
-
-#include <iostream>
-
-#include "gui/imgui_internal.h"
+#include <imgui_internal.h>
 
 void ImGui::DrawCircle(float radius, ImU32 color, float segments, float thickness) {
     ImDrawList *list = ImGui::GetWindowDrawList();

@@ -12,119 +12,117 @@
 #include "vox.render/ui/widgets/layout/group_collapsable.h"
 #include "vox.render/ui/widgets/visual/separator.h"
 
-namespace vox {
-namespace editor {
-namespace ui {
+namespace vox::editor::ui {
 ProjectSettings::ProjectSettings(const std::string &p_title,
                                  bool p_opened,
                                  const PanelWindowSettings &p_windowSettings,
                                  const std::string &p_projectPath,
                                  const std::string &p_projectName)
     : PanelWindow(p_title, p_opened, p_windowSettings), _projectSettings(p_projectPath + p_projectName + ".project") {
-    auto &saveButton = createWidget<ButtonSimple>("Apply");
-    saveButton.idleBackgroundColor = {0.0f, 0.5f, 0.0f};
-    saveButton.clickedEvent += [this] {
+    auto &saveButton = CreateWidget<ButtonSimple>("Apply");
+    saveButton.idle_background_color_ = {0.0f, 0.5f, 0.0f};
+    saveButton.clicked_event_ += [this] {
         applyProjectSettings();
-        _projectSettings.rewrite();
+        _projectSettings.Rewrite();
     };
 
-    saveButton.lineBreak = false;
+    saveButton.line_break_ = false;
 
-    auto &resetButton = createWidget<ButtonSimple>("Reset");
-    resetButton.idleBackgroundColor = {0.5f, 0.0f, 0.0f};
-    resetButton.clickedEvent += [this] { resetProjectSettings(); };
+    auto &resetButton = CreateWidget<ButtonSimple>("Reset");
+    resetButton.idle_background_color_ = {0.5f, 0.0f, 0.0f};
+    resetButton.clicked_event_ += [this] { resetProjectSettings(); };
 
-    createWidget<Separator>();
+    CreateWidget<Separator>();
 
     {
         /* Physics settings */
-        auto &root = createWidget<GroupCollapsable>("Physics");
-        auto &columns = root.createWidget<Columns<2>>();
-        columns.widths[0] = 125;
+        auto &root = CreateWidget<GroupCollapsable>("Physics");
+        auto &columns = root.CreateWidget<Columns<2>>();
+        columns.widths_[0] = 125;
 
-        GUIDrawer::drawScalar<float>(columns, "Gravity", generateGatherer<float>("gravity"),
-                                     generateProvider<float>("gravity"), 0.1f, GUIDrawer::_MIN_FLOAT,
-                                     GUIDrawer::_MAX_FLOAT);
+        GuiDrawer::DrawScalar<float>(columns, "Gravity", generateGatherer<float>("gravity"),
+                                     generateProvider<float>("gravity"), 0.1f, GuiDrawer::min_float_,
+                                     GuiDrawer::max_float_);
     }
 
     {
         /* Build settings */
-        auto &generationRoot = createWidget<GroupCollapsable>("Build");
-        auto &columns = generationRoot.createWidget<Columns<2>>();
-        columns.widths[0] = 125;
+        auto &generationRoot = CreateWidget<GroupCollapsable>("Build");
+        auto &columns = generationRoot.CreateWidget<Columns<2>>();
+        columns.widths_[0] = 125;
 
-        GUIDrawer::drawBoolean(columns, "Development build", generateGatherer<bool>("dev_build"),
+        GuiDrawer::DrawBoolean(columns, "Development build", generateGatherer<bool>("dev_build"),
                                generateProvider<bool>("dev_build"));
     }
 
     {
         /* Windowing settings */
-        auto &windowingRoot = createWidget<GroupCollapsable>("Windowing");
-        auto &columns = windowingRoot.createWidget<Columns<2>>();
-        columns.widths[0] = 125;
+        auto &windowingRoot = CreateWidget<GroupCollapsable>("Windowing");
+        auto &columns = windowingRoot.CreateWidget<Columns<2>>();
+        columns.widths_[0] = 125;
 
-        GUIDrawer::drawScalar<int>(columns, "Resolution X", generateGatherer<int>("x_resolution"),
+        GuiDrawer::DrawScalar<int>(columns, "Resolution X", generateGatherer<int>("x_resolution"),
                                    generateProvider<int>("x_resolution"), 1, 0, 10000);
-        GUIDrawer::drawScalar<int>(columns, "Resolution Y", generateGatherer<int>("y_resolution"),
+        GuiDrawer::DrawScalar<int>(columns, "Resolution Y", generateGatherer<int>("y_resolution"),
                                    generateProvider<int>("y_resolution"), 1, 0, 10000);
-        GUIDrawer::drawBoolean(columns, "Fullscreen", generateGatherer<bool>("fullscreen"),
+        GuiDrawer::DrawBoolean(columns, "Fullscreen", generateGatherer<bool>("fullscreen"),
                                generateProvider<bool>("fullscreen"));
-        GUIDrawer::drawString(columns, "Executable name", generateGatherer<std::string>("executable_name"),
+        GuiDrawer::DrawString(columns, "Executable name", generateGatherer<std::string>("executable_name"),
                               generateProvider<std::string>("executable_name"));
     }
 
     {
         /* Rendering settings */
-        auto &renderingRoot = createWidget<GroupCollapsable>("Rendering");
-        auto &columns = renderingRoot.createWidget<Columns<2>>();
-        columns.widths[0] = 125;
+        auto &renderingRoot = CreateWidget<GroupCollapsable>("Rendering");
+        auto &columns = renderingRoot.CreateWidget<Columns<2>>();
+        columns.widths_[0] = 125;
 
-        GUIDrawer::drawBoolean(columns, "Vertical Sync.", generateGatherer<bool>("vsync"),
+        GuiDrawer::DrawBoolean(columns, "Vertical Sync.", generateGatherer<bool>("vsync"),
                                generateProvider<bool>("vsync"));
-        GUIDrawer::drawBoolean(columns, "Multi-sampling", generateGatherer<bool>("multisampling"),
+        GuiDrawer::DrawBoolean(columns, "Multi-sampling", generateGatherer<bool>("multisampling"),
                                generateProvider<bool>("multisampling"));
-        GUIDrawer::drawScalar<int>(columns, "Samples", generateGatherer<int>("samples"),
+        GuiDrawer::DrawScalar<int>(columns, "Samples", generateGatherer<int>("samples"),
                                    generateProvider<int>("samples"), 1, 2, 16);
-        GUIDrawer::drawScalar<int>(columns, "OpenGL Major", generateGatherer<int>("opengl_major"),
+        GuiDrawer::DrawScalar<int>(columns, "OpenGL Major", generateGatherer<int>("opengl_major"),
                                    generateProvider<int>("opengl_major"), 1, 3, 4);
-        GUIDrawer::drawScalar<int>(columns, "OpenGL Minor", generateGatherer<int>("opengl_minor"),
+        GuiDrawer::DrawScalar<int>(columns, "OpenGL Minor", generateGatherer<int>("opengl_minor"),
                                    generateProvider<int>("opengl_minor"), 1, 0, 6);
     }
 
     {
         /* Scene Management settings */
-        auto &gameRoot = createWidget<GroupCollapsable>("Scene Management");
-        auto &columns = gameRoot.createWidget<Columns<2>>();
-        columns.widths[0] = 125;
+        auto &gameRoot = CreateWidget<GroupCollapsable>("Scene Management");
+        auto &columns = gameRoot.CreateWidget<Columns<2>>();
+        columns.widths_[0] = 125;
 
-        GUIDrawer::drawDDString(columns, "Start scene", generateGatherer<std::string>("start_scene"),
+        GuiDrawer::DrawDdstring(columns, "Start scene", generateGatherer<std::string>("start_scene"),
                                 generateProvider<std::string>("start_scene"), "File");
     }
 }
 
 void ProjectSettings::resetProjectSettings() {
-    _projectSettings.removeAll();
-    _projectSettings.add<float>("gravity", -9.81f);
-    _projectSettings.add<int>("x_resolution", 1280);
-    _projectSettings.add<int>("y_resolution", 720);
-    _projectSettings.add<bool>("fullscreen", false);
-    _projectSettings.add<std::string>("executable_name", "Game");
-    _projectSettings.add<std::string>("start_scene", "Scene.ovscene");
-    _projectSettings.add<bool>("vsync", true);
-    _projectSettings.add<bool>("multisampling", false);
-    _projectSettings.add<int>("samples", 1);
-    _projectSettings.add<int>("webgpu_major", 0);
-    _projectSettings.add<int>("webgpu_minor", 1);
-    _projectSettings.add<bool>("dev_build", true);
+    _projectSettings.RemoveAll();
+    _projectSettings.Add<float>("gravity", -9.81f);
+    _projectSettings.Add<int>("x_resolution", 1280);
+    _projectSettings.Add<int>("y_resolution", 720);
+    _projectSettings.Add<bool>("fullscreen", false);
+    _projectSettings.Add<std::string>("executable_name", "Game");
+    _projectSettings.Add<std::string>("start_scene", "Scene.ovscene");
+    _projectSettings.Add<bool>("vsync", true);
+    _projectSettings.Add<bool>("multisampling", false);
+    _projectSettings.Add<int>("samples", 1);
+    _projectSettings.Add<int>("webgpu_major", 0);
+    _projectSettings.Add<int>("webgpu_minor", 1);
+    _projectSettings.Add<bool>("dev_build", true);
 }
 
 bool ProjectSettings::isProjectSettingsIntegrityVerified() {
-    return _projectSettings.isKeyExisting("gravity") && _projectSettings.isKeyExisting("x_resolution") &&
-           _projectSettings.isKeyExisting("y_resolution") && _projectSettings.isKeyExisting("fullscreen") &&
-           _projectSettings.isKeyExisting("executable_name") && _projectSettings.isKeyExisting("start_scene") &&
-           _projectSettings.isKeyExisting("vsync") && _projectSettings.isKeyExisting("multisampling") &&
-           _projectSettings.isKeyExisting("samples") && _projectSettings.isKeyExisting("webgpu_major") &&
-           _projectSettings.isKeyExisting("webgpu_minor") && _projectSettings.isKeyExisting("dev_build");
+    return _projectSettings.IsKeyExisting("gravity") && _projectSettings.IsKeyExisting("x_resolution") &&
+           _projectSettings.IsKeyExisting("y_resolution") && _projectSettings.IsKeyExisting("fullscreen") &&
+           _projectSettings.IsKeyExisting("executable_name") && _projectSettings.IsKeyExisting("start_scene") &&
+           _projectSettings.IsKeyExisting("vsync") && _projectSettings.IsKeyExisting("multisampling") &&
+           _projectSettings.IsKeyExisting("samples") && _projectSettings.IsKeyExisting("webgpu_major") &&
+           _projectSettings.IsKeyExisting("webgpu_minor") && _projectSettings.IsKeyExisting("dev_build");
 }
 
 fs::IniFile &ProjectSettings::projectSettings() { return _projectSettings; }
@@ -133,6 +131,4 @@ void ProjectSettings::applyProjectSettings() {
     // todo
 }
 
-}  // namespace ui
-}  // namespace editor
 }  // namespace vox

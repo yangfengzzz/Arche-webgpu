@@ -31,21 +31,20 @@ EditorApplication::EditorApplication(const std::string& projectPath, const std::
       projectScriptsPath(projectPath + "/Scripts/"),
       editorAssetsPath("/Data/Editor/"),
       _panelsManager(_canvas) {
-    Shader::create("editor-grid", std::make_unique<WGSLGridVertex>(), std::make_unique<WGSLGridFragment>());
 }
 
 bool EditorApplication::prepare(Platform& platform) {
-    GraphicsApplication::prepare(engine);
+    GraphicsApplication::prepare(platform);
 
     _gui = std::make_unique<::vox::ui::UIManager>(static_cast<GlfwWindow*>(&engine.window())->handle(),
                                                   _renderContext.get());
-    _gui->loadFont("Ruda_Big", "../assets/Fonts/Ruda-Bold.ttf", 16);
-    _gui->loadFont("Ruda_Small", "../assets/Fonts/Ruda-Bold.ttf", 12);
-    _gui->loadFont("Ruda_Medium", "../assets/Fonts/Ruda-Bold.ttf", 14);
-    _gui->useFont("Ruda_Medium");
-    _gui->setEditorLayoutAutosaveFrequency(60.0f);
-    _gui->enableEditorLayoutSave(true);
-    _gui->enableDocking(true);
+    _gui->LoadFont("Ruda_Big", "../assets/Fonts/Ruda-Bold.ttf", 16);
+    _gui->LoadFont("Ruda_Small", "../assets/Fonts/Ruda-Bold.ttf", 12);
+    _gui->LoadFont("Ruda_Medium", "../assets/Fonts/Ruda-Bold.ttf", 14);
+    _gui->UseFont("Ruda_Medium");
+    _gui->SetEditorLayoutAutosaveFrequency(60.0f);
+    _gui->EnableEditorLayoutSave(true);
+    _gui->EnableDocking(true);
 
     _sceneManager = std::make_unique<SceneManager>(_device);
     auto scene = _sceneManager->currentScene();

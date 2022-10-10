@@ -14,8 +14,7 @@
 namespace vox {
 using namespace ui;
 
-namespace editor {
-namespace ui {
+namespace editor::ui {
 class Hierarchy : public PanelWindow {
 public:
     /**
@@ -82,6 +81,5 @@ private:
     std::unordered_map<Entity*, TreeNode*> _widgetEntityLink;
 };
 
-}  // namespace ui
-}  // namespace editor
+}  // namespace editor::ui
 }  // namespace vox

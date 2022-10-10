@@ -9,14 +9,13 @@
 #include <variant>
 
 #include "vox.editor/view/view.h"
-#include "vox.render/rendering/subpasses/forward_subpass.h"
+#include "vox.render/rendering/subpasses/geometry_subpass.h"
 #include "vox.toolkit/controls/orbit_control.h"
 
 namespace vox {
 using namespace ui;
 
-namespace editor {
-namespace ui {
+namespace editor::ui {
 /**
  * Provide a view for assets
  */
@@ -55,6 +54,5 @@ private:
     control::OrbitControl* _cameraControl{nullptr};
 };
 
-}  // namespace ui
-}  // namespace editor
+}  // namespace editor::ui
 }  // namespace vox

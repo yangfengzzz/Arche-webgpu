@@ -12,7 +12,7 @@
 #pragma once
 
 //------------------------------------------------------------------------------
-#include "imgui_node_editor_internal.h"
+#include "vox.editor/imgui/imgui_node_editor_internal.h"
 
 //------------------------------------------------------------------------------
 namespace vox {

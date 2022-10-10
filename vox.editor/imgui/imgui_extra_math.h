@@ -7,18 +7,17 @@
 // CREDITS
 //   Written by Michal Cichon
 //------------------------------------------------------------------------------
-#ifndef __IMGUI_EXTRA_MATH_H__
-#define __IMGUI_EXTRA_MATH_H__
+
 #pragma once
 
 //------------------------------------------------------------------------------
-#include "../vox.render/gui/imgui.h"
+#include <imgui.h>
 
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_MATH_OPERATORS
 #endif
 
-#include "../vox.render/gui/imgui_internal.h"
+#include <imgui_internal.h>
 
 //------------------------------------------------------------------------------
 struct ImLine {
@@ -68,6 +67,3 @@ inline V EaseOutQuad(V b, V c, T t) {
 
 //------------------------------------------------------------------------------
 #include "imgui_extra_math.inl"
-
-//------------------------------------------------------------------------------
-#endif  // __IMGUI_EXTRA_MATH_H__

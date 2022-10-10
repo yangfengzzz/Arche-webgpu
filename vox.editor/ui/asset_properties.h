@@ -18,8 +18,7 @@
 namespace vox {
 using namespace ui;
 
-namespace editor {
-namespace ui {
+namespace editor::ui {
 class AssetProperties : public PanelWindow {
 public:
     /**
@@ -83,6 +82,5 @@ private:
     std::unique_ptr<fs::IniFile> _metadata{nullptr};
 };
 
-}  // namespace ui
-}  // namespace editor
+}  // namespace editor::ui
 }  // namespace vox

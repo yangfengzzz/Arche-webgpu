@@ -16,9 +16,9 @@
 // v1.00 - jari komppa's original
 #define IMGUI_DEFINE_MATH_OPERATORS
 
-#include <cmath>
+#include <imgui_internal.h>
 
-#include "gui/imgui_internal.h"
+#include <cmath>
 
 /* To use, add this prototype somewhere..
 

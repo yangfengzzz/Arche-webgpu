@@ -11,8 +11,7 @@
 #include "vox.render/entity.h"
 #include "vox.render/ui/widgets/menu/menu_list.h"
 
-namespace vox {
-namespace editor {
+namespace vox::editor {
 /**
  * Class exposing tools to generate an entity creation menu
  */
@@ -29,8 +28,7 @@ public:
      */
     static void generateEntityCreationMenu(::vox::ui::MenuList& menuList,
                                            Entity* p_parent = nullptr,
-                                           std::optional<std::function<void()>> onItemClicked = {});
+                                           const std::optional<std::function<void()>>& onItemClicked = {});
 };
 
-}  // namespace editor
-}  // namespace vox
+}  // namespace vox::editor

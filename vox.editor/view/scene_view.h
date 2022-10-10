@@ -14,8 +14,7 @@ namespace vox {
 using namespace ui;
 class ColorPickerSubpass;
 
-namespace editor {
-namespace ui {
+namespace editor::ui {
 class SceneView : public View {
 public:
     /**
@@ -33,7 +32,7 @@ public:
     /**
      * Custom implementation of the draw method
      */
-    void _draw_Impl() override;
+    void DrawImpl() override;
 
     /**
      * Update the scene view
@@ -91,6 +90,5 @@ private:
     wgpu::Extent3D _extent;
 };
 
-}  // namespace ui
 }  // namespace editor
 }  // namespace vox

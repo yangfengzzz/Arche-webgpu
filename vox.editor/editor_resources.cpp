@@ -6,13 +6,13 @@
 
 #include "vox.editor/editor_resources.h"
 
+#include <utility>
 #include <vector>
 
 #include "vox.editor/raw_icon.h"
 #include "vox.render/platform/filesystem.h"
 
-namespace vox {
-namespace editor {
+namespace vox::editor {
 EditorResources::EditorResources(wgpu::Device& device, const std::string& p_editorAssetsPath) : _device(device) {
     /* Buttons */
     {
@@ -44,10 +44,10 @@ EditorResources::EditorResources(wgpu::Device& device, const std::string& p_edit
     }
 }
 
-EditorResources::~EditorResources() {}
+EditorResources::~EditorResources() = default;
 
 wgpu::TextureView EditorResources::getFileIcon(const std::string& p_filename) {
-    return getTexture("Icon_" + fs::fileTypeToString(fs::extraFileType(p_filename)));
+    return getTexture("Icon_" + fs::FileTypeToString(fs::ExtraFileType(p_filename)));
 }
 
 wgpu::TextureView EditorResources::getTexture(const std::string& p_id) {
@@ -81,7 +81,7 @@ wgpu::ImageCopyTexture EditorResources::_createImageCopyTexture(wgpu::Texture te
                                                                 wgpu::Origin3D origin,
                                                                 wgpu::TextureAspect aspect) {
     wgpu::ImageCopyTexture imageCopyTexture;
-    imageCopyTexture.texture = texture;
+    imageCopyTexture.texture = std::move(texture);
     imageCopyTexture.mipLevel = mipLevel;
     imageCopyTexture.origin = origin;
     imageCopyTexture.aspect = aspect;
@@ -100,5 +100,4 @@ wgpu::TextureDataLayout EditorResources::_createTextureDataLayout(uint64_t offse
     return textureDataLayout;
 }
 
-}  // namespace editor
-}  // namespace vox
+}  // namespace vox::editor
