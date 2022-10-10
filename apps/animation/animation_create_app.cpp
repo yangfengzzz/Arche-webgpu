@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "apps/animation_create_app.h"
+#include "apps/animation/animation_create_app.h"
 
 #include "vox.animation/offline/animation_builder.h"
 #include "vox.animation/offline/skeleton_builder.h"

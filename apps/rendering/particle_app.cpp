@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "apps/particle_app.h"
+#include "apps/rendering/particle_app.h"
 
 #include "vox.render/camera.h"
 #include "vox.render/entity.h"
@@ -13,6 +13,7 @@
 #include "vox.render/mesh/primitive_mesh.h"
 #include "vox.toolkit/controls/orbit_control.h"
 
+/**
 namespace vox {
 void ParticleApp::loadScene() {
     auto scene = _sceneManager->currentScene();
@@ -69,3 +70,4 @@ void ParticleApp::loadScene() {
 }
 
 }  // namespace vox
+**/

@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "apps/multi_light_app.h"
+#include "apps/rendering/multi_light_app.h"
 
 #include <random>
 

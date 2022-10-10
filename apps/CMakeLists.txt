@@ -20,32 +20,21 @@ file(GLOB PHYSICS_DEBUGGER_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/physics_samples/constraints/*.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/physics_samples/general/*.cpp)
 
+file(GLOB ANIMATION_FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/animation/*.cpp)
+
+file(GLOB RENDERING_FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/rendering/*.cpp)
+
 set(SRC
-        atomic_compute_app.cpp
-        shadowmap_app.cpp
-        cascade_shadowmap_app.cpp
-        omni_shadowmap_app.cpp
-        cluster_forward_app.cpp
         main.cpp
-        multi_light_app.cpp
-#        particle_app.cpp
-        pbr_app.cpp
-        ibl_app.cpp
-        irradiance_app.cpp
+        atomic_compute_app.cpp
         primitive_app.cpp
-        skybox_app.cpp
         assimp_app.cpp
-        skinning_app.cpp
-        animation_create_app.cpp
-        animation_attach_app.cpp
-        animation_blend_app.cpp
-        animation_partial_blend_app.cpp
-        animation_additive_app.cpp
-        animation_ik_lookat_app.cpp
-        animation_ik_hand_app.cpp
-        animation_ik_floor_app.cpp
-        ${PHYSICS_DEBUGGER_FILES}
+        ${ANIMATION_FILES}
         physics_collision_app.cpp
+        ${PHYSICS_DEBUGGER_FILES}
+        ${RENDERING_FILES}
         gui_app.cpp
         )
 

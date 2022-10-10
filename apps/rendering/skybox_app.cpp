@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "apps/skybox_app.h"
+#include "apps/rendering/skybox_app.h"
 
 #include "vox.render/camera.h"
 #include "vox.render/entity.h"

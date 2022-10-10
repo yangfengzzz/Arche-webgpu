@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "apps/animation_ik_lookat_app.h"
+#include "apps/animation/animation_ik_lookat_app.h"
 
 #include "vox.base/logging.h"
 #include "vox.render/animation/animation_states/animation_clip.h"

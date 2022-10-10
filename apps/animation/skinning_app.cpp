@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "apps/skinning_app.h"
+#include "apps/animation/skinning_app.h"
 
 #include "vox.render/animation/animation_states/animation_clip.h"
 #include "vox.render/animation/animator.h"
