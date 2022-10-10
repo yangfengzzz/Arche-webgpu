@@ -130,14 +130,12 @@ target_compile_definitions(${PROJECT_NAME} PUBLIC DAWN_ENABLE_BACKEND_METAL DAWN
 
 # Link third party libraries
 target_link_libraries(${PROJECT_NAME} PUBLIC
-        volk
         ktx
         stb
         astc
         imgui
         glslang
         SPIRV
-        vma
         hwcpipe
         spirv-cross-glsl
         glslang-default-resource-limits

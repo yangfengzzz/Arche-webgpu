@@ -10,6 +10,9 @@
 #include "vox.render/ui/widgets/texts/text_colored.h"
 
 namespace vox {
+Event<Behaviour *> Behaviour::createdEvent;
+Event<Behaviour *> Behaviour::destroyedEvent;
+
 std::string Behaviour::name() { return "Behaviour"; }
 
 Behaviour::Behaviour(Entity *entity) : Script(entity) { createdEvent.Invoke(this); }

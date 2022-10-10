@@ -92,7 +92,7 @@ private:
     std::unique_ptr<SceneManager> _sceneManager{nullptr};
     std::unique_ptr<ShadowManager> _shadowManager{nullptr};
     std::unique_ptr<LightManager> _lightManager{nullptr};
-    std::unique_ptr<ParticleManager> _particleManager{nullptr};
+//    std::unique_ptr<ParticleManager> _particleManager{nullptr};
     std::unique_ptr<PhysicsManager> _physicsManager{nullptr};
 };
 

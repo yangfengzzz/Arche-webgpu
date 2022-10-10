@@ -54,7 +54,7 @@ bool EditorApplication::prepare(Platform& platform) {
     _sceneManager = std::make_unique<SceneManager>(_device);
     auto scene = _sceneManager->currentScene();
 
-    _particleManager = std::make_unique<ParticleManager>(_device);
+//    _particleManager = std::make_unique<ParticleManager>(_device);
     _lightManager = std::make_unique<LightManager>(scene);
     {
         auto extent = platform.GetWindow().GetExtent();
@@ -178,7 +178,7 @@ void EditorApplication::update(float deltaTime) {
 void EditorApplication::updateGPUTask(wgpu::CommandEncoder& commandEncoder) {
     _shadowManager->draw(commandEncoder);
     _lightManager->draw(commandEncoder);
-    _particleManager->draw(commandEncoder);
+//    _particleManager->draw(commandEncoder);
 }
 
 bool EditorApplication::resize(uint32_t win_width, uint32_t win_height, uint32_t fb_width, uint32_t fb_height) {
