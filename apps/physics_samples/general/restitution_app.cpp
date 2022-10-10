@@ -4,10 +4,12 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "apps/physics_samples/general/gravity_factor_app.h"
+#include "apps/physics_samples/general/restitution_app.h"
 
 #include <Jolt/Physics/Body/BodyCreationSettings.h>
 #include <Jolt/Physics/Collision/Shape/BoxShape.h>
+#include <Jolt/Physics/Collision/Shape/ConvexHullShape.h>
+#include <Jolt/Physics/Collision/Shape/SphereShape.h>
 
 #include "apps/physics_samples/physics_utils.h"
 #include "vox.render/camera.h"
@@ -32,7 +34,7 @@ public:
 
 }  // namespace
 
-bool PhysicsGravityFactorApp::prepare(Platform& platform) {
+bool PhysicsRestitutionApp::prepare(Platform& platform) {
     ForwardApplication::prepare(platform);
 
     auto scene = _sceneManager->currentScene();
@@ -47,7 +49,7 @@ bool PhysicsGravityFactorApp::prepare(Platform& platform) {
     return true;
 }
 
-void PhysicsGravityFactorApp::loadScene() {
+void PhysicsRestitutionApp::loadScene() {
     auto scene = _sceneManager->currentScene();
     scene->ambientLight()->setDiffuseSolidColor(Color(1, 1, 1));
     auto rootEntity = scene->createRootEntity();
@@ -62,14 +64,25 @@ void PhysicsGravityFactorApp::loadScene() {
     {
         PhysicsUtils::createFloor(body_interface);
 
+        RefConst<Shape> sphere = new SphereShape(2.0f);
         RefConst<Shape> box = new BoxShape(Vec3(2.0f, 2.0f, 2.0f));
 
-        // Bodies with increasing gravity fraction
+        // Bodies with increasing friction
         for (int i = 0; i <= 10; ++i) {
-            Body& body = *body_interface.CreateBody(BodyCreationSettings(box, Vec3(-50.0f + i * 10.0f, 25.0f, 0),
-                                                                         Quat::sIdentity(), EMotionType::Dynamic,
-                                                                         PhysicsManager::Layers::MOVING));
-            body.GetMotionProperties()->SetGravityFactor(0.1f * i);
+            BodyCreationSettings settings(sphere, Vec3(-50.0f + i * 10.0f, 20.0f, -20.0f), Quat::sIdentity(),
+                                          EMotionType::Dynamic, PhysicsManager::Layers::MOVING);
+            settings.mRestitution = 0.1f * i;
+            settings.mLinearDamping = 0.0f;
+            Body& body = *body_interface.CreateBody(settings);
+            body_interface.AddBody(body.GetID(), EActivation::Activate);
+        }
+
+        for (int i = 0; i <= 10; ++i) {
+            BodyCreationSettings settings(box, Vec3(-50.0f + i * 10.0f, 20.0f, 20.0f), Quat::sIdentity(),
+                                          EMotionType::Dynamic, PhysicsManager::Layers::MOVING);
+            settings.mRestitution = 0.1f * i;
+            settings.mLinearDamping = 0.0f;
+            Body& body = *body_interface.CreateBody(settings);
             body_interface.AddBody(body.GetID(), EActivation::Activate);
         }
     }

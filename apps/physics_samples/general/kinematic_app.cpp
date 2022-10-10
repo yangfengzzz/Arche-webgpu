@@ -4,10 +4,11 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "apps/physics_samples/general/gravity_factor_app.h"
+#include "apps/physics_samples/general/kinematic_app.h"
 
 #include <Jolt/Physics/Body/BodyCreationSettings.h>
 #include <Jolt/Physics/Collision/Shape/BoxShape.h>
+#include <Jolt/Physics/Collision/Shape/SphereShape.h>
 
 #include "apps/physics_samples/physics_utils.h"
 #include "vox.render/camera.h"
@@ -32,7 +33,7 @@ public:
 
 }  // namespace
 
-bool PhysicsGravityFactorApp::prepare(Platform& platform) {
+bool PhysicsKinematicApp::prepare(Platform& platform) {
     ForwardApplication::prepare(platform);
 
     auto scene = _sceneManager->currentScene();
@@ -47,7 +48,7 @@ bool PhysicsGravityFactorApp::prepare(Platform& platform) {
     return true;
 }
 
-void PhysicsGravityFactorApp::loadScene() {
+void PhysicsKinematicApp::loadScene() {
     auto scene = _sceneManager->currentScene();
     scene->ambientLight()->setDiffuseSolidColor(Color(1, 1, 1));
     auto rootEntity = scene->createRootEntity();
@@ -62,15 +63,22 @@ void PhysicsGravityFactorApp::loadScene() {
     {
         PhysicsUtils::createFloor(body_interface);
 
-        RefConst<Shape> box = new BoxShape(Vec3(2.0f, 2.0f, 2.0f));
+        // Wall
+        RefConst<Shape> box_shape = new BoxShape(Vec3(1.0f, 1.0f, 1.0f));
+        for (int i = 0; i < 3; ++i)
+            for (int j = i / 2; j < 10 - (i + 1) / 2; ++j) {
+                Vec3 position(-10.0f + j * 2.0f + (i & 1 ? 1.0f : 0.0f), 1.0f + i * 2.0f, 0);
+                Body& wall = *body_interface.CreateBody(BodyCreationSettings(
+                        box_shape, position, Quat::sIdentity(), EMotionType::Dynamic, PhysicsManager::Layers::MOVING));
+                body_interface.AddBody(wall.GetID(), EActivation::DontActivate);
+            }
 
-        // Bodies with increasing gravity fraction
-        for (int i = 0; i <= 10; ++i) {
-            Body& body = *body_interface.CreateBody(BodyCreationSettings(box, Vec3(-50.0f + i * 10.0f, 25.0f, 0),
-                                                                         Quat::sIdentity(), EMotionType::Dynamic,
-                                                                         PhysicsManager::Layers::MOVING));
-            body.GetMotionProperties()->SetGravityFactor(0.1f * i);
-            body_interface.AddBody(body.GetID(), EActivation::Activate);
+        // Kinematic object
+        for (int i = 0; i < 2; ++i) {
+            mKinematic[i] = body_interface.CreateBody(
+                    BodyCreationSettings(new SphereShape(1.0f), Vec3(-10.0f, 2.0f, i == 0 ? 5.0f : -5.0f),
+                                         Quat::sIdentity(), EMotionType::Kinematic, PhysicsManager::Layers::MOVING));
+            body_interface.AddBody(mKinematic[i]->GetID(), EActivation::Activate);
         }
     }
     scene->play();

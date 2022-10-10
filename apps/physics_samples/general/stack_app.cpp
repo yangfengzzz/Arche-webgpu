@@ -4,10 +4,11 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "apps/physics_samples/general/gravity_factor_app.h"
+#include "apps/physics_samples/general/stack_app.h"
 
 #include <Jolt/Physics/Body/BodyCreationSettings.h>
 #include <Jolt/Physics/Collision/Shape/BoxShape.h>
+#include <Jolt/Physics/Collision/Shape/ConvexHullShape.h>
 
 #include "apps/physics_samples/physics_utils.h"
 #include "vox.render/camera.h"
@@ -32,7 +33,7 @@ public:
 
 }  // namespace
 
-bool PhysicsGravityFactorApp::prepare(Platform& platform) {
+bool PhysicsStackApp::prepare(Platform& platform) {
     ForwardApplication::prepare(platform);
 
     auto scene = _sceneManager->currentScene();
@@ -47,7 +48,7 @@ bool PhysicsGravityFactorApp::prepare(Platform& platform) {
     return true;
 }
 
-void PhysicsGravityFactorApp::loadScene() {
+void PhysicsStackApp::loadScene() {
     auto scene = _sceneManager->currentScene();
     scene->ambientLight()->setDiffuseSolidColor(Color(1, 1, 1));
     auto rootEntity = scene->createRootEntity();
@@ -62,15 +63,19 @@ void PhysicsGravityFactorApp::loadScene() {
     {
         PhysicsUtils::createFloor(body_interface);
 
-        RefConst<Shape> box = new BoxShape(Vec3(2.0f, 2.0f, 2.0f));
+        RefConst<Shape> box_shape = new BoxShape(Vec3(0.5f, 1.0f, 2.0f));
 
-        // Bodies with increasing gravity fraction
-        for (int i = 0; i <= 10; ++i) {
-            Body& body = *body_interface.CreateBody(BodyCreationSettings(box, Vec3(-50.0f + i * 10.0f, 25.0f, 0),
-                                                                         Quat::sIdentity(), EMotionType::Dynamic,
-                                                                         PhysicsManager::Layers::MOVING));
-            body.GetMotionProperties()->SetGravityFactor(0.1f * i);
-            body_interface.AddBody(body.GetID(), EActivation::Activate);
+        // Dynamic body stack
+        for (int i = 0; i < 10; ++i) {
+            Quat rotation;
+            if ((i & 1) != 0)
+                rotation = Quat::sRotation(Vec3::sAxisY(), 0.5f * JPH_PI);
+            else
+                rotation = Quat::sIdentity();
+            Body& stack = *body_interface.CreateBody(BodyCreationSettings(box_shape, Vec3(10, 1.0f + i * 2.1f, 0),
+                                                                          rotation, EMotionType::Dynamic,
+                                                                          PhysicsManager::Layers::MOVING));
+            body_interface.AddBody(stack.GetID(), EActivation::Activate);
         }
     }
     scene->play();
