@@ -31,6 +31,7 @@ public:
     explicit ShowScript(Entity* entity) : Script(entity) { inSettings.mDrawShape = true; }
 
     void onPhysicsUpdate() override {
+        _debugger->Clear();
         // Draw the water surface 5mm below actual surface to avoid z fighting with intersection shapes
         Vec3 surface_point = Vec3(0, 10, 0);
         for (int i = -20; i <= 20; ++i) {
@@ -74,7 +75,6 @@ public:
                                                     SpecifiedBroadPhaseLayerFilter(BroadPhaseLayers::MOVING),
                                                     SpecifiedObjectLayerFilter(PhysicsManager::Layers::MOVING));
 
-        _debugger->Clear();
         PhysicsManager::GetSingleton().drawBodies(inSettings, _debugger);
     }
 };
