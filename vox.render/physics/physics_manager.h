@@ -13,7 +13,7 @@
 #include <Jolt/Core/JobSystemThreadPool.h>
 #include <Jolt/Physics/PhysicsSystem.h>
 
-#include "vox.math/vector3.h"
+#include "vox.math/matrix4x4.h"
 #include "vox.render/singleton.h"
 
 namespace vox {
@@ -158,6 +158,69 @@ public:
                    JPH::CastShapeBodyCollector &ioCollector,
                    const JPH::BroadPhaseLayerFilter &inBroadPhaseLayerFilter = {},
                    const JPH::ObjectLayerFilter &inObjectLayerFilter = {}) const;
+
+public:
+    /// Cast a ray and find the closest hit. Returns true if it finds a hit. Hits further than ioHit.mFraction will not
+    /// be considered and in this case ioHit will remain unmodified (and the function will return false). Convex objects
+    /// will be treated as solid (meaning if the ray starts inside, you'll get a hit fraction of 0) and back face hits
+    /// against triangles are returned. If you want the surface normal of the hit use
+    /// Body::GetWorldSpaceSurfaceNormal(ioHit.mSubShapeID2, inRay.GetPointOnRay(ioHit.mFraction)) on body with ID
+    /// ioHit.mBodyID.
+    bool castRay(const JPH::RayCast &inRay,
+                 JPH::RayCastResult &ioHit,
+                 const JPH::BroadPhaseLayerFilter &inBroadPhaseLayerFilter = {},
+                 const JPH::ObjectLayerFilter &inObjectLayerFilter = {},
+                 const JPH::BodyFilter &inBodyFilter = {}) const;
+
+    /// Cast a ray, allows collecting multiple hits. Note that this version is more flexible but also slightly slower
+    /// than the CastRay function that returns only a single hit. If you want the surface normal of the hit use
+    /// Body::GetWorldSpaceSurfaceNormal(collected sub shape ID, inRay.GetPointOnRay(collected fraction)) on body with
+    /// collected body ID.
+    void castRay(const JPH::RayCast &inRay,
+                 const JPH::RayCastSettings &inRayCastSettings,
+                 JPH::CastRayCollector &ioCollector,
+                 const JPH::BroadPhaseLayerFilter &inBroadPhaseLayerFilter = {},
+                 const JPH::ObjectLayerFilter &inObjectLayerFilter = {},
+                 const JPH::BodyFilter &inBodyFilter = {},
+                 const JPH::ShapeFilter &inShapeFilter = {}) const;
+
+    /// Check if inPoint is inside any shapes. For this tests all shapes are treated as if they were solid.
+    /// For a mesh shape, this test will only provide sensible information if the mesh is a closed manifold.
+    /// For each shape that collides, ioCollector will receive a hit
+    void collidePoint(const Vector3F &inPoint,
+                      JPH::CollidePointCollector &ioCollector,
+                      const JPH::BroadPhaseLayerFilter &inBroadPhaseLayerFilter = {},
+                      const JPH::ObjectLayerFilter &inObjectLayerFilter = {},
+                      const JPH::BodyFilter &inBodyFilter = {},
+                      const JPH::ShapeFilter &inShapeFilter = {}) const;
+
+    /// Collide a shape with the system
+    void collideShape(const JPH::Shape *inShape,
+                      const Vector3F &inShapeScale,
+                      const Matrix4x4F &inCenterOfMassTransform,
+                      const JPH::CollideShapeSettings &inCollideShapeSettings,
+                      JPH::CollideShapeCollector &ioCollector,
+                      const JPH::BroadPhaseLayerFilter &inBroadPhaseLayerFilter = {},
+                      const JPH::ObjectLayerFilter &inObjectLayerFilter = {},
+                      const JPH::BodyFilter &inBodyFilter = {},
+                      const JPH::ShapeFilter &inShapeFilter = {}) const;
+
+    /// Cast a shape and report any hits to ioCollector
+    void castShape(const JPH::ShapeCast &inShapeCast,
+                   const JPH::ShapeCastSettings &inShapeCastSettings,
+                   JPH::CastShapeCollector &ioCollector,
+                   const JPH::BroadPhaseLayerFilter &inBroadPhaseLayerFilter = {},
+                   const JPH::ObjectLayerFilter &inObjectLayerFilter = {},
+                   const JPH::BodyFilter &inBodyFilter = {},
+                   const JPH::ShapeFilter &inShapeFilter = {}) const;
+
+    /// Collect all leaf transformed shapes that fall inside world space box inBox
+    void collectTransformedShapes(const JPH::AABox &inBox,
+                                  JPH::TransformedShapeCollector &ioCollector,
+                                  const JPH::BroadPhaseLayerFilter &inBroadPhaseLayerFilter = {},
+                                  const JPH::ObjectLayerFilter &inObjectLayerFilter = {},
+                                  const JPH::BodyFilter &inBodyFilter = {},
+                                  const JPH::ShapeFilter &inShapeFilter = {}) const;
 
 public:
     /// Add constraint to the world

@@ -398,6 +398,86 @@ void PhysicsManager::castAABox(const JPH::AABoxCast &inBox,
 
 void PhysicsManager::addConstraint(JPH::Constraint *inConstraint) { _physics_system->AddConstraint(inConstraint); }
 
-void PhysicsManager::removeConstraint(JPH::Constraint *inConstraint) { _physics_system->RemoveConstraint(inConstraint); }
+void PhysicsManager::removeConstraint(JPH::Constraint *inConstraint) {
+    _physics_system->RemoveConstraint(inConstraint);
+}
+
+bool PhysicsManager::castRay(const JPH::RayCast &inRay,
+                             JPH::RayCastResult &ioHit,
+                             const JPH::BroadPhaseLayerFilter &inBroadPhaseLayerFilter,
+                             const JPH::ObjectLayerFilter &inObjectLayerFilter,
+                             const JPH::BodyFilter &inBodyFilter) const {
+    return _physics_system->GetNarrowPhaseQuery().CastRay(inRay, ioHit, inBroadPhaseLayerFilter, inObjectLayerFilter,
+                                                          inBodyFilter);
+}
+
+void PhysicsManager::castRay(const JPH::RayCast &inRay,
+                             const JPH::RayCastSettings &inRayCastSettings,
+                             JPH::CastRayCollector &ioCollector,
+                             const JPH::BroadPhaseLayerFilter &inBroadPhaseLayerFilter,
+                             const JPH::ObjectLayerFilter &inObjectLayerFilter,
+                             const JPH::BodyFilter &inBodyFilter,
+                             const JPH::ShapeFilter &inShapeFilter) const {
+    _physics_system->GetNarrowPhaseQuery().CastRay(inRay, inRayCastSettings, ioCollector, inBroadPhaseLayerFilter,
+                                                   inObjectLayerFilter, inBodyFilter, inShapeFilter);
+}
+
+void PhysicsManager::collidePoint(const Vector3F &inPoint,
+                                  JPH::CollidePointCollector &ioCollector,
+                                  const JPH::BroadPhaseLayerFilter &inBroadPhaseLayerFilter,
+                                  const JPH::ObjectLayerFilter &inObjectLayerFilter,
+                                  const JPH::BodyFilter &inBodyFilter,
+                                  const JPH::ShapeFilter &inShapeFilter) const {
+    _physics_system->GetNarrowPhaseQuery().CollidePoint({inPoint.x, inPoint.y, inPoint.z}, ioCollector,
+                                                        inBroadPhaseLayerFilter, inObjectLayerFilter, inBodyFilter,
+                                                        inShapeFilter);
+}
+
+void PhysicsManager::collideShape(const JPH::Shape *inShape,
+                                  const Vector3F &inShapeScale,
+                                  const Matrix4x4F &inCenterOfMassTransform,
+                                  const JPH::CollideShapeSettings &inCollideShapeSettings,
+                                  JPH::CollideShapeCollector &ioCollector,
+                                  const JPH::BroadPhaseLayerFilter &inBroadPhaseLayerFilter,
+                                  const JPH::ObjectLayerFilter &inObjectLayerFilter,
+                                  const JPH::BodyFilter &inBodyFilter,
+                                  const JPH::ShapeFilter &inShapeFilter) const {
+    _physics_system->GetNarrowPhaseQuery().CollideShape(
+            inShape, {inShapeScale.x, inShapeScale.y, inShapeScale.z},
+            {{inCenterOfMassTransform(0, 0), inCenterOfMassTransform(1, 0), inCenterOfMassTransform(2, 0),
+              inCenterOfMassTransform(3, 0)},
+             {inCenterOfMassTransform(0, 1), inCenterOfMassTransform(1, 1), inCenterOfMassTransform(2, 1),
+              inCenterOfMassTransform(3, 1)},
+             {inCenterOfMassTransform(0, 2), inCenterOfMassTransform(1, 2), inCenterOfMassTransform(2, 2),
+              inCenterOfMassTransform(3, 2)},
+             {inCenterOfMassTransform(0, 3), inCenterOfMassTransform(1, 3), inCenterOfMassTransform(2, 3),
+              inCenterOfMassTransform(3, 3)}},
+            inCollideShapeSettings, ioCollector, inBroadPhaseLayerFilter, inObjectLayerFilter, inBodyFilter,
+            inShapeFilter);
+}
+
+/// Cast a shape and report any hits to ioCollector
+void PhysicsManager::castShape(const JPH::ShapeCast &inShapeCast,
+                               const JPH::ShapeCastSettings &inShapeCastSettings,
+                               JPH::CastShapeCollector &ioCollector,
+                               const JPH::BroadPhaseLayerFilter &inBroadPhaseLayerFilter,
+                               const JPH::ObjectLayerFilter &inObjectLayerFilter,
+                               const JPH::BodyFilter &inBodyFilter,
+                               const JPH::ShapeFilter &inShapeFilter) const {
+    _physics_system->GetNarrowPhaseQuery().CastShape(inShapeCast, inShapeCastSettings, ioCollector,
+                                                     inBroadPhaseLayerFilter, inObjectLayerFilter, inBodyFilter,
+                                                     inShapeFilter);
+}
+
+/// Collect all leaf transformed shapes that fall inside world space box inBox
+void PhysicsManager::collectTransformedShapes(const JPH::AABox &inBox,
+                                              JPH::TransformedShapeCollector &ioCollector,
+                                              const JPH::BroadPhaseLayerFilter &inBroadPhaseLayerFilter,
+                                              const JPH::ObjectLayerFilter &inObjectLayerFilter,
+                                              const JPH::BodyFilter &inBodyFilter,
+                                              const JPH::ShapeFilter &inShapeFilter) const {
+    _physics_system->GetNarrowPhaseQuery().CollectTransformedShapes(inBox, ioCollector, inBroadPhaseLayerFilter,
+                                                                    inObjectLayerFilter, inBodyFilter, inShapeFilter);
+}
 
 }  // namespace vox

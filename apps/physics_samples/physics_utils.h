@@ -29,5 +29,17 @@ public:
     static void createBalancedDistribution(JPH::BodyManager* inBodyManager,
                                            int inNumBodies,
                                            float inEnvironmentSize = 512.0f);
+
+public:
+    /// Create a mesh shape in the shape of a torus
+    /// @param inTorusRadius Radius of the torus ring
+    /// @param inTubeRadius Radius of the torus tube
+    /// @param inTorusSegments Number of segments around the torus
+    /// @param inTubeSegments Number of segments around the tube of the torus
+    /// @return The mesh shape
+    static JPH::ShapeRefC createTorusMesh(float inTorusRadius,
+                                          float inTubeRadius,
+                                          uint inTorusSegments = 16,
+                                          uint inTubeSegments = 16);
 };
 }  // namespace vox
