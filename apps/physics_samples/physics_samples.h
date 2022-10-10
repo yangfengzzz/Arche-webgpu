@@ -59,3 +59,6 @@
 #include "apps/physics_samples/constraints/spring_app.h"
 //#include "apps/physics_samples/constraints/swing_twist_constraint_app.h"
 //#include "apps/physics_samples/constraints/swing_twist_constraint_friction_app.h"
+
+// general
+#include "apps/physics_samples/general/activate_during_update_app.h"

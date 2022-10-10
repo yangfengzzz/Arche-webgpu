@@ -40,7 +40,7 @@ public:
 
 }  // namespace
 
-bool RackAndPinionConstraintApp::prepare(Platform &platform) {
+bool PhysicsRackAndPinionConstraintApp::prepare(Platform &platform) {
     ForwardApplication::prepare(platform);
 
     auto scene = _sceneManager->currentScene();
@@ -55,7 +55,7 @@ bool RackAndPinionConstraintApp::prepare(Platform &platform) {
     return true;
 }
 
-void RackAndPinionConstraintApp::loadScene() {
+void PhysicsRackAndPinionConstraintApp::loadScene() {
     auto scene = _sceneManager->currentScene();
     scene->ambientLight()->setDiffuseSolidColor(Color(1, 1, 1));
     auto rootEntity = scene->createRootEntity();

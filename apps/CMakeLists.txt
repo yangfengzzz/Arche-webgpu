@@ -17,7 +17,8 @@ file(GLOB PHYSICS_DEBUGGER_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/physics_samples/shapes/*.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/physics_samples/scaled_shapes/*.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/physics_samples/water/*.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/physics_samples/constraints/*.cpp)
+        ${CMAKE_CURRENT_SOURCE_DIR}/physics_samples/constraints/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/physics_samples/general/*.cpp)
 
 set(SRC
         atomic_compute_app.cpp
