@@ -59,7 +59,7 @@ void PhysicsFunnelApp::loadScene() {
     auto rootEntity = scene->createRootEntity();
 
     auto cameraEntity = rootEntity->createChild();
-    cameraEntity->transform->setPosition(30, 30, 30);
+    cameraEntity->transform->setPosition(50, 70, 50);
     cameraEntity->transform->lookAt(Point3F(0, 0, 0));
     _mainCamera = cameraEntity->addComponent<Camera>();
     cameraEntity->addComponent<control::OrbitControl>();
