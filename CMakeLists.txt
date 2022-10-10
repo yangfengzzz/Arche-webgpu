@@ -70,6 +70,7 @@ add_subdirectory(test.animation)
 add_subdirectory(vox.render)
 add_subdirectory(vox.toolkit)
 add_subdirectory(apps)
+add_subdirectory(navigation)
 
 # Add editor
 #add_subdirectory(vox.editor)
