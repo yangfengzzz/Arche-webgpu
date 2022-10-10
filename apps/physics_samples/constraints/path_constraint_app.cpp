@@ -1,0 +1,146 @@
+//  Copyright (c) 2022 Feng Yang
+//
+//  I am making my contributions/submissions to this project solely in my
+//  personal capacity and am not conveying any rights to any intellectual
+//  property of any third parties.
+
+#include "apps/physics_samples/constraints/path_constraint_app.h"
+
+#include <Jolt/Physics/Body/BodyCreationSettings.h>
+#include <Jolt/Physics/Collision/Shape/BoxShape.h>
+#include <Jolt/Physics/Constraints/PathConstraintPathHermite.h>
+
+#include "apps/physics_samples/physics_utils.h"
+#include "vox.render/camera.h"
+#include "vox.render/entity.h"
+#include "vox.toolkit/controls/orbit_control.h"
+#include "vox.toolkit/physics_debugger/physics_debug_subpass.h"
+
+namespace vox {
+namespace {
+class ShowScript : public Script {
+public:
+    physics_debugger::PhysicsDebugSubpass *_debugger{nullptr};
+    JPH::BodyManager::DrawSettings inSettings;
+
+    explicit ShowScript(Entity *entity) : Script(entity) { inSettings.mDrawShape = true; }
+
+    void onPhysicsUpdate() override {
+        _debugger->Clear();
+        PhysicsManager::GetSingleton().drawBodies(inSettings, _debugger);
+        PhysicsManager::GetSingleton().drawConstraints(_debugger);
+    }
+};
+
+}  // namespace
+
+EPathRotationConstraintType PhysicsPathConstraintApp::sOrientationType = EPathRotationConstraintType::Free;
+
+bool PhysicsPathConstraintApp::prepare(Platform &platform) {
+    ForwardApplication::prepare(platform);
+
+    auto scene = _sceneManager->currentScene();
+    auto rootEntity = scene->getRootEntity();
+    auto showScript = rootEntity->addComponent<ShowScript>();
+
+    auto debugger = std::make_unique<physics_debugger::PhysicsDebugSubpass>(
+            _renderContext.get(), _depthStencilTextureFormat, scene, _mainCamera);
+    showScript->_debugger = debugger.get();
+    _renderPass->addSubpass(std::move(debugger));
+
+    return true;
+}
+
+void PhysicsPathConstraintApp::loadScene() {
+    auto scene = _sceneManager->currentScene();
+    scene->ambientLight()->setDiffuseSolidColor(Color(1, 1, 1));
+    auto rootEntity = scene->createRootEntity();
+
+    auto cameraEntity = rootEntity->createChild();
+    cameraEntity->transform->setPosition(30, 30, 30);
+    cameraEntity->transform->lookAt(Point3F(0, 0, 0));
+    _mainCamera = cameraEntity->addComponent<Camera>();
+    cameraEntity->addComponent<control::OrbitControl>();
+
+    JPH::BodyInterface &body_interface = PhysicsManager::GetSingleton().getBodyInterface();
+    {
+        PhysicsUtils::createFloor(body_interface);
+
+        {
+            // Create spiral path
+            Ref<PathConstraintPathHermite> path = new PathConstraintPathHermite;
+            Vec3 normal(0, 1, 0);
+            Array<Vec3> positions;
+            for (float a = -0.1f * JPH_PI; a < 4.0f * JPH_PI; a += 0.1f * JPH_PI)
+                positions.push_back(Vec3(5.0f * Cos(a), -a, 5.0f * Sin(a)));
+            for (int i = 1; i < int(positions.size() - 1); ++i) {
+                Vec3 tangent = 0.5f * (positions[i + 1] - positions[i - 1]);
+                path->AddPoint(positions[i], tangent, normal);
+            }
+            mPaths[0] = path;
+
+            // Dynamic base plate to which the path attaches
+            Body &body1 = *body_interface.CreateBody(
+                    BodyCreationSettings(new BoxShape(Vec3(5, 0.5f, 5)), Vec3(-10, 1, 0), Quat::sIdentity(),
+                                         EMotionType::Dynamic, PhysicsManager::Layers::MOVING));
+            body_interface.AddBody(body1.GetID(), EActivation::Activate);
+
+            // Dynamic body attached to the path
+            Body &body2 = *body_interface.CreateBody(
+                    BodyCreationSettings(new BoxShape(Vec3(0.5f, 1.0f, 2.0f)), Vec3(-5, 15, 0), Quat::sIdentity(),
+                                         EMotionType::Dynamic, PhysicsManager::Layers::MOVING));
+            body2.SetAllowSleeping(false);
+            body_interface.AddBody(body2.GetID(), EActivation::Activate);
+
+            // Create path constraint
+            PathConstraintSettings settings;
+            settings.mPath = path;
+            settings.mPathPosition = Vec3(0, 15, 0);
+            settings.mRotationConstraintType = sOrientationType;
+            mConstraints[0] = static_cast<PathConstraint *>(settings.Create(body1, body2));
+            PhysicsManager::GetSingleton().addConstraint(mConstraints[0]);
+        }
+
+        {
+            // Create circular path
+            Ref<PathConstraintPathHermite> path = new PathConstraintPathHermite;
+            path->SetIsLooping(true);
+            Vec3 normal(0, 1, 0);
+            Array<Vec3> positions;
+            for (int i = -1; i < 11; ++i) {
+                float a = 2.0f * JPH_PI * i / 10.0f;
+                positions.push_back(Vec3(5.0f * Cos(a), 0.0f, 5.0f * Sin(a)));
+            }
+            for (int i = 1; i < int(positions.size() - 1); ++i) {
+                Vec3 tangent = 0.5f * (positions[i + 1] - positions[i - 1]);
+                path->AddPoint(positions[i], tangent, normal);
+            }
+            mPaths[1] = path;
+
+            // Dynamic base plate to which the path attaches
+            Body &body1 = *body_interface.CreateBody(
+                    BodyCreationSettings(new BoxShape(Vec3(5, 0.5f, 5)), Vec3(10, 1, 0), Quat::sIdentity(),
+                                         EMotionType::Dynamic, PhysicsManager::Layers::MOVING));
+            body_interface.AddBody(body1.GetID(), EActivation::Activate);
+
+            // Dynamic body attached to the path
+            Body &body2 = *body_interface.CreateBody(
+                    BodyCreationSettings(new BoxShape(Vec3(0.5f, 1.0f, 2.0f)), Vec3(15, 5, 0), Quat::sIdentity(),
+                                         EMotionType::Dynamic, PhysicsManager::Layers::MOVING));
+            body2.SetAllowSleeping(false);
+            body_interface.AddBody(body2.GetID(), EActivation::Activate);
+
+            // Create path constraint
+            PathConstraintSettings settings;
+            settings.mPath = path;
+            settings.mPathPosition = Vec3(0, 5, 0);
+            settings.mPathRotation = Quat::sRotation(Vec3::sAxisX(), -0.1f * JPH_PI);
+            settings.mRotationConstraintType = sOrientationType;
+            mConstraints[1] = static_cast<PathConstraint *>(settings.Create(body1, body2));
+            PhysicsManager::GetSingleton().addConstraint(mConstraints[1]);
+        }
+    }
+    scene->play();
+}
+
+}  // namespace vox

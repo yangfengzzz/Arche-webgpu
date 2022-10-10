@@ -13,7 +13,7 @@
 #include "apps/physics_samples/shapes/capsule_shape_app.h"
 #include "apps/physics_samples/shapes/convex_hull_shape_app.h"
 #include "apps/physics_samples/shapes/cylinder_shape_app.h"
-//#include "apps/physics_samples/shapes/height_field_shape_app.h"
+// #include "apps/physics_samples/shapes/height_field_shape_app.h"
 #include "apps/physics_samples/shapes/mesh_shape_app.h"
 #include "apps/physics_samples/shapes/mutable_compound_shape_app.h"
 #include "apps/physics_samples/shapes/offset_center_of_mass_shape_app.h"
@@ -42,3 +42,10 @@
 
 // constraints
 #include "apps/physics_samples/constraints/cone_constraint_app.h"
+#include "apps/physics_samples/constraints/constraint_singularity_app.h"
+#include "apps/physics_samples/constraints/distance_constraint_app.h"
+#include "apps/physics_samples/constraints/fixed_constraint_app.h"
+#include "apps/physics_samples/constraints/gear_constraint_app.h"
+#include "apps/physics_samples/constraints/hinge_constraint_app.h"
+// #include "apps/physics_samples/constraints/path_constraint_app.h"
+#include "apps/physics_samples/constraints/point_constraint_app.h"
