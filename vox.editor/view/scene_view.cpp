@@ -176,7 +176,7 @@ void SceneView::render(wgpu::CommandEncoder& commandEncoder) {
 }
 
 void SceneView::DrawImpl() {
-    View::_draw_Impl();
+    View::DrawImpl();
     int windowFlags = ImGuiWindowFlags_None;
 
     if (!resizable_) windowFlags |= ImGuiWindowFlags_NoResize;

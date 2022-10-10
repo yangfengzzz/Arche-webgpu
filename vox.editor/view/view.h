@@ -74,7 +74,7 @@ protected:
 
     std::unique_ptr<RenderPass> _renderPass{nullptr};
 
-    vox::ui::Image* _image{nullptr};
+    vox::ui::ImageUI* _image{nullptr};
     wgpu::Texture _texture;
     wgpu::TextureDescriptor _textureDesc;
     wgpu::TextureView _depthStencilTexture;

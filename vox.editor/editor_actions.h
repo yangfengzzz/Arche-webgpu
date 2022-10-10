@@ -7,7 +7,7 @@
 #pragma once
 
 #include "vox.editor/panels_manager.h"
-#include "vox.math/vector3.h"
+#include "vox.math/point3.h"
 #include "vox.render/platform/filesystem.h"
 #include "vox.render/scene_forward.h"
 #include "vox.render/singleton.h"
@@ -136,7 +136,7 @@ public:
     /**
      * Calculate the position where to spawn the entity using the current camera position and forward
      */
-    Vector3F calculateEntitySpawnPoint(float p_distanceToCamera);
+    Point3F calculateEntitySpawnPoint(float p_distanceToCamera);
 
     /**
      * Create an empty entity

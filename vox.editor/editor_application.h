@@ -9,12 +9,14 @@
 #include "vox.editor/editor_actions.h"
 #include "vox.editor/editor_resources.h"
 #include "vox.editor/panels_manager.h"
+#include "vox.render/components_manager.h"
 #include "vox.render/graphics_application.h"
 #include "vox.render/image_manager.h"
 #include "vox.render/lighting/light_manager.h"
 #include "vox.render/lua/script_interpreter.h"
 #include "vox.render/mesh/mesh_manager.h"
 #include "vox.render/particle/particle_manager.h"
+#include "vox.render/physics/physics_manager.h"
 #include "vox.render/scene_manager.h"
 #include "vox.render/shader/shader_manager.h"
 #include "vox.render/shadow/shadow_manager.h"
@@ -84,11 +86,14 @@ private:
     std::unique_ptr<ShaderManager> shader_manager_{nullptr};
     std::unique_ptr<MeshManager> mesh_manager_{nullptr};
     std::unique_ptr<ScriptInterpreter> script_interpreter_{nullptr};
+    std::unique_ptr<ResourceCache> resource_cache_{nullptr};
 
+    std::unique_ptr<ComponentsManager> _componentsManager{nullptr};
     std::unique_ptr<SceneManager> _sceneManager{nullptr};
     std::unique_ptr<ShadowManager> _shadowManager{nullptr};
     std::unique_ptr<LightManager> _lightManager{nullptr};
     std::unique_ptr<ParticleManager> _particleManager{nullptr};
+    std::unique_ptr<PhysicsManager> _physicsManager{nullptr};
 };
 
 }  // namespace vox::editor

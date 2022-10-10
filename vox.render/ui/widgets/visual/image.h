@@ -15,14 +15,14 @@ namespace vox::ui {
 /**
  * Simple widget that display an image
  */
-class Image : public Widget {
+class ImageUI : public Widget {
 public:
     /**
      * Constructor
      * @param p_textureID p_textureID
      * @parma p_size p_size
      */
-    Image(wgpu::TextureView p_textureID, const Vector2F &p_size);
+    ImageUI(wgpu::TextureView p_textureID, const Vector2F &p_size);
 
     void SetTextureView(wgpu::TextureView p_textureID);
 

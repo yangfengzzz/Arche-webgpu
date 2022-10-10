@@ -6,9 +6,10 @@
 
 #pragma once
 
-#include "vox.editor/imgui/imgui_zmo.h"
 #include "vox.editor/view/view.h"
 #include "vox.toolkit/controls/orbit_control.h"
+//
+#include "vox.editor/imgui/imgui_zmo.h"
 
 namespace vox {
 using namespace ui;
@@ -55,6 +56,9 @@ public:
 
     void loadScene(Entity* rootEntity);
 
+public:
+    inline control::OrbitControl* cameraControl() { return _cameraControl; }
+
 private:
     float _camDistance = 8.f;
     ImGuizmo::OPERATION _currentGizmoOperation = ImGuizmo::TRANSLATE;
@@ -90,5 +94,5 @@ private:
     wgpu::Extent3D _extent;
 };
 
-}  // namespace editor
+}  // namespace editor::ui
 }  // namespace vox

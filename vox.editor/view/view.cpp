@@ -23,7 +23,7 @@ void View::update(float p_deltaTime) {
 
     if (winWidth > 0) {
         if (!_image) {
-            _image = &CreateWidget<::vox::ui::Image>(nullptr, Vector2F{0.f, 0.f});
+            _image = &CreateWidget<::vox::ui::ImageUI>(nullptr, Vector2F{0.f, 0.f});
         }
 
         _image->size = Vector2F(static_cast<float>(winWidth), static_cast<float>(winHeight));

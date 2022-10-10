@@ -14,8 +14,12 @@ namespace vox {
 /**
  * The scene manager of the current scene
  */
-class SceneManager {
+class SceneManager : public Singleton<SceneManager> {
 public:
+    static SceneManager &GetSingleton();
+
+    static SceneManager *GetSingletonPtr();
+
     /**
      * Default constructor
      * @param p_sceneRootFolder (Optional)
@@ -43,6 +47,11 @@ public:
      * Load an empty scene in memory
      */
     void loadEmptyScene();
+
+    /**
+     * Load an empty lighted scene in memory
+     */
+    void loadEmptyLightedScene();
 
     /**
      * Load specific scene in memory
@@ -108,4 +117,8 @@ private:
 
     std::function<void()> _delayedLoadCall;
 };
+
+template <>
+inline SceneManager *Singleton<SceneManager>::ms_singleton{nullptr};
+
 }  // namespace vox

@@ -14,8 +14,7 @@
 namespace vox {
 using namespace ui;
 
-namespace editor {
-namespace ui {
+namespace editor::ui {
 class MenuBar : public PanelMenuBar {
     using PanelMap =
             std::unordered_map<std::string,
@@ -65,7 +64,5 @@ private:
     MenuList *_windowMenu{nullptr};
 };
 
-}  // namespace ui
-}  // namespace editor
+}  // namespace editor::ui
 }  // namespace vox
-#endif /* menu_bar_hpp */

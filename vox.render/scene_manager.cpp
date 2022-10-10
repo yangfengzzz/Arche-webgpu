@@ -8,7 +8,18 @@
 
 #include <utility>
 
+#include "vox.render/camera.h"
+#include "vox.render/entity.h"
+#include "vox.render/lighting/direct_light.h"
+
 namespace vox {
+SceneManager *SceneManager::GetSingletonPtr() { return ms_singleton; }
+
+SceneManager &SceneManager::GetSingleton() {
+    assert(ms_singleton);
+    return (*ms_singleton);
+}
+
 SceneManager::SceneManager(wgpu::Device &device, std::string p_sceneRootFolder)
     : _device(device), _sceneRootFolder(std::move(p_sceneRootFolder)) {
     loadEmptyScene();
@@ -39,6 +50,21 @@ void SceneManager::loadEmptyScene() {
     _currentScene->_processActive(false);
 
     sceneLoadEvent.Invoke();
+}
+
+void SceneManager::loadEmptyLightedScene() {
+    loadEmptyScene();
+
+    auto root_entity = currentScene()->createRootEntity();
+    auto camera_entity = root_entity->createChild("MainCamera");
+    camera_entity->transform->setPosition(10, 10, 10);
+    camera_entity->transform->lookAt(Point3F(0, 0, 0));
+    camera_entity->addComponent<Camera>();
+
+    // init directional light
+    auto light = root_entity->createChild("light");
+    light->transform->setPosition(0, 3, 0);
+    light->addComponent<DirectLight>();
 }
 
 bool SceneManager::loadScene(const std::string &p_path, bool p_absolute) { return false; }

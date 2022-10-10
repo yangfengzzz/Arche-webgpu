@@ -4,8 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
+#include "vox.render/platform/platform.h"
+//
 #include "vox.editor/editor_application.h"
-
 #include "vox.editor/ui/console.h"
 #include "vox.editor/ui/hierarchy.h"
 #include "vox.editor/ui/inspector.h"
@@ -17,10 +18,8 @@
 #include "vox.editor/view/game_view.h"
 #include "vox.editor/view/scene_view.h"
 #include "vox.render/camera.h"
-#include "vox.render/platform/platform.h"
 
-namespace vox {
-namespace editor {
+namespace vox::editor {
 EditorApplication::EditorApplication(const std::string& projectPath, const std::string& projectName)
     : GraphicsApplication(),
       projectPath(projectPath),
@@ -30,14 +29,11 @@ EditorApplication::EditorApplication(const std::string& projectPath, const std::
       projectAssetsPath(projectPath + "/Assets/"),
       projectScriptsPath(projectPath + "/Scripts/"),
       editorAssetsPath("/Data/Editor/"),
-      _panelsManager(_canvas) {
-}
+      _panelsManager(_canvas) {}
 
 bool EditorApplication::prepare(Platform& platform) {
     GraphicsApplication::prepare(platform);
 
-    _gui = std::make_unique<::vox::ui::UIManager>(static_cast<GlfwWindow*>(&engine.window())->handle(),
-                                                  _renderContext.get());
     _gui->LoadFont("Ruda_Big", "../assets/Fonts/Ruda-Bold.ttf", 16);
     _gui->LoadFont("Ruda_Small", "../assets/Fonts/Ruda-Bold.ttf", 12);
     _gui->LoadFont("Ruda_Medium", "../assets/Fonts/Ruda-Bold.ttf", 14);
@@ -46,15 +42,26 @@ bool EditorApplication::prepare(Platform& platform) {
     _gui->EnableEditorLayoutSave(true);
     _gui->EnableDocking(true);
 
+    // resource loader
+    shader_manager_ = std::make_unique<ShaderManager>();
+    mesh_manager_ = std::make_unique<MeshManager>(_device);
+    image_manager_ = std::make_unique<ImageManager>(_device);
+    resource_cache_ = std::make_unique<ResourceCache>(_device);
+
+    // logic system
+    _componentsManager = std::make_unique<ComponentsManager>();
+    _physicsManager = std::make_unique<PhysicsManager>();
     _sceneManager = std::make_unique<SceneManager>(_device);
     auto scene = _sceneManager->currentScene();
 
     _particleManager = std::make_unique<ParticleManager>(_device);
     _lightManager = std::make_unique<LightManager>(scene);
     {
-        auto extent = engine.window().extent();
-        auto factor = engine.window().contentScaleFactor();
-        scene->updateSize(extent.width, extent.height, factor * extent.width, factor * extent.height);
+        auto extent = platform.GetWindow().GetExtent();
+        auto factor = platform.GetWindow().GetContentScaleFactor();
+        _componentsManager->callScriptResize(extent.width, extent.height, factor * extent.width,
+                                             factor * extent.height);
+        _mainCamera->resize(extent.width, extent.height, factor * extent.width, factor * extent.height);
     }
     _lightManager->setCamera(_mainCamera);
     _shadowManager = std::make_unique<ShadowManager>(scene, _mainCamera);
@@ -69,7 +76,7 @@ bool EditorApplication::prepare(Platform& platform) {
     auto& color = scene->background.solidColor;
     _colorAttachments.clearValue = wgpu::Color{color.r, color.g, color.b, color.a};
 
-    _editorActions = std::make_unique<EditorActions>(_panelsManager);
+    _editorActions = std::make_unique<EditorActions>(*this);
     _editorResources = std::make_unique<EditorResources>(_device, editorAssetsPath);
     setupUI();
 
@@ -97,8 +104,8 @@ void EditorApplication::setupUI() {
     _panelsManager.createPanel<ui::Toolbar>("Toolbar", true, settings, _editorResources.get());
     _panelsManager.createPanel<ui::ProjectSettings>("Project Settings", false, settings, projectPath, projectName);
 
-    _canvas.makeDockspace(true);
-    _gui->setCanvas(_canvas);
+    _canvas.MakeDockSpace(true);
+    _gui->SetCanvas(_canvas);
 }
 
 void EditorApplication::renderViews(float deltaTime, wgpu::CommandEncoder& commandEncoder) {
@@ -113,17 +120,17 @@ void EditorApplication::renderViews(float deltaTime, wgpu::CommandEncoder& comma
         sceneView.update(deltaTime);
     }
 
-    if (assetView.isOpened()) {
+    if (assetView.IsOpened()) {
         // PROFILER_SPY("Game View Rendering");
         assetView.render(commandEncoder);
     }
 
-    if (gameView.isOpened()) {
+    if (gameView.IsOpened()) {
         // PROFILER_SPY("Game View Rendering");
         gameView.render(commandEncoder);
     }
 
-    if (sceneView.isOpened()) {
+    if (sceneView.IsOpened()) {
         // PROFILER_SPY("Scene View Rendering");
         sceneView.render(commandEncoder);
     }
@@ -136,7 +143,18 @@ void EditorApplication::updateEditorPanels(float deltaTime) {
 
 void EditorApplication::update(float deltaTime) {
     GraphicsApplication::update(deltaTime);
-    _sceneManager->currentScene()->update(deltaTime);
+    {
+        _componentsManager->callScriptOnStart();
+
+        _physicsManager->update(deltaTime);
+
+        _componentsManager->callScriptOnUpdate(deltaTime);
+        _componentsManager->callAnimatorUpdate(deltaTime);
+        _componentsManager->callScriptOnLateUpdate(deltaTime);
+
+        _componentsManager->callRendererOnUpdate(deltaTime);
+        _sceneManager->currentScene()->updateShaderData();
+    }
 
     wgpu::CommandEncoder commandEncoder = _device.CreateCommandEncoder();
     updateGPUTask(commandEncoder);
@@ -147,7 +165,7 @@ void EditorApplication::update(float deltaTime) {
     _colorAttachments.view = _renderContext->currentDrawableTexture();
     wgpu::RenderPassEncoder encoder = commandEncoder.BeginRenderPass(&_renderPassDescriptor);
     encoder.PushDebugGroup("GUI Rendering");
-    _gui->render(encoder);
+    _gui->Render(encoder);
     encoder.PopDebugGroup();
     encoder.End();
 
@@ -166,17 +184,17 @@ void EditorApplication::updateGPUTask(wgpu::CommandEncoder& commandEncoder) {
 bool EditorApplication::resize(uint32_t win_width, uint32_t win_height, uint32_t fb_width, uint32_t fb_height) {
     GraphicsApplication::resize(win_width, win_height, fb_width, fb_height);
 
-    _sceneManager->currentScene()->updateSize(win_width, win_height, fb_width, fb_height);
+    _componentsManager->callScriptResize(win_width, win_height, fb_width, fb_height);
+    _mainCamera->resize(win_width, win_height, fb_width, fb_height);
     return true;
 }
 
 void EditorApplication::inputEvent(const InputEvent& inputEvent) {
     GraphicsApplication::inputEvent(inputEvent);
-    _sceneManager->currentScene()->updateInputEvent(inputEvent);
+    _componentsManager->callScriptInputEvent(inputEvent);
 
     auto& sceneView = _panelsManager.getPanelAs<ui::SceneView>("Scene View");
     sceneView.inputEvent(inputEvent);
 }
 
-}  // namespace editor
 }  // namespace vox

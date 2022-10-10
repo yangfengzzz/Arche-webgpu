@@ -45,6 +45,9 @@ public:
 
     void loadScene(Entity* rootEntity);
 
+public:
+    inline control::OrbitControl* cameraControl() { return _cameraControl; }
+
 private:
     Camera* _mainCamera{nullptr};
     Scene* _scene{nullptr};

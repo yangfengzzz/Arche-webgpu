@@ -11,6 +11,13 @@
 #include "vox.render/lua/lua_binder.h"
 
 namespace vox {
+ScriptInterpreter *ScriptInterpreter::GetSingletonPtr() { return ms_singleton; }
+
+ScriptInterpreter &ScriptInterpreter::GetSingleton() {
+    assert(ms_singleton);
+    return (*ms_singleton);
+}
+
 ScriptInterpreter::ScriptInterpreter(std::string scriptRootFolder) : _scriptRootFolder(std::move(scriptRootFolder)) {
     createLuaContextAndBindGlobals();
 

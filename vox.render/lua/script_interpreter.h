@@ -10,13 +10,18 @@
 #include <vector>
 
 #include "vox.render/behaviour.h"
+#include "vox.render/singleton.h"
 
 namespace vox {
 /**
  * Handles script interpretation
  */
-class ScriptInterpreter {
+class ScriptInterpreter : public Singleton<ScriptInterpreter> {
 public:
+    static ScriptInterpreter &GetSingleton();
+
+    static ScriptInterpreter *GetSingletonPtr();
+
     /**
      * Constructor
      */
@@ -63,5 +68,8 @@ private:
     std::vector<Behaviour *> _behaviours;
     bool _isOk{};
 };
+
+template <>
+inline ScriptInterpreter *Singleton<ScriptInterpreter>::ms_singleton{nullptr};
 
 }  // namespace vox
