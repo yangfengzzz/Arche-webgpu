@@ -17,7 +17,7 @@ namespace vox {
 editor::EditorActions* editor::EditorActions::getSingletonPtr() { return ms_singleton; }
 
 editor::EditorActions& editor::EditorActions::getSingleton() {
-    assert(msSingleton);
+    assert(ms_singleton);
     return (*ms_singleton);
 }
 

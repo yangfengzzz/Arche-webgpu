@@ -6,7 +6,7 @@
 
 #include "vox.editor/ui/asset_properties.h"
 
-#include "size_converter.h"
+#include "vox.editor/size_converter.h"
 #include "vox.editor/editor_actions.h"
 #include "vox.render/ui/gui_drawer.h"
 #include "vox.render/ui/widgets/layout/group_collapsable.h"
