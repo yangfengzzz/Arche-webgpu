@@ -9,13 +9,18 @@
 #include "vox.render/forward_application.h"
 
 namespace vox {
-// This app tests a body that activates during the simulation step to check if it does collision detection with any
-// other bodies during that step. To do so it uses 3 boxes that all initially collide. The left most box is the only one
-// awake and has a high velocity. The second box should not pass through the third box.
-class PhysicsActivateDuringUpdateApp : public ForwardApplication {
+// This test will make a dynamic body cyle through various shapes
+class PhysicChangeShapeApp : public ForwardApplication {
 public:
     bool prepare(Platform &platform) override;
 
     void loadScene() override;
+
+private:
+    bool mActivateAfterSwitch = true;
+    JPH::BodyID mBodyID;
+    JPH::Array<JPH::RefConst<JPH::Shape>> mShapes;
+    float mTime = 0.0f;
+    int mShapeIdx = 0;
 };
 }  // namespace vox

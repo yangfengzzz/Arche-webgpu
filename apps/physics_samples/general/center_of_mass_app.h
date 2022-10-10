@@ -9,10 +9,8 @@
 #include "vox.render/forward_application.h"
 
 namespace vox {
-// This app tests a body that activates during the simulation step to check if it does collision detection with any
-// other bodies during that step. To do so it uses 3 boxes that all initially collide. The left most box is the only one
-// awake and has a high velocity. The second box should not pass through the third box.
-class PhysicsActivateDuringUpdateApp : public ForwardApplication {
+// Tests that spawns various shapes with the center of mass not in the center of the object
+class PhysicsCenterOfMassApp : public ForwardApplication {
 public:
     bool prepare(Platform &platform) override;
 

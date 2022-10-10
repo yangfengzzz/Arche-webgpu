@@ -62,3 +62,10 @@
 
 // general
 #include "apps/physics_samples/general/activate_during_update_app.h"
+#include "apps/physics_samples/general/active_edges_app.h"
+#include "apps/physics_samples/general/big_vs_small_app.h"
+#include "apps/physics_samples/general/center_of_mass_app.h"
+//#include "apps/physics_samples/general/change_motion_type_app.h"
+//#include "apps/physics_samples/general/change_object_layer_app.h"
+//#include "apps/physics_samples/general/change_shape_app.h"
+#include "apps/physics_samples/general/contact_manifold_app.h"
