@@ -73,5 +73,5 @@ add_subdirectory(apps)
 add_subdirectory(navigation)
 
 # Add editor
-#add_subdirectory(vox.editor)
+add_subdirectory(vox.editor)
 #add_subdirectory(editor)
