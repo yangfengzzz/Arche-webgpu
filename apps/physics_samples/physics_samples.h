@@ -39,3 +39,6 @@
 
 // water
 #include "apps/physics_samples/water/water_shape_app.h"
+
+// constraints
+#include "apps/physics_samples/constraints/cone_constraint_app.h"

@@ -22,5 +22,12 @@ public:
     // Create an uneven terrain floor body
     static JPH::Body& createMeshTerrain(JPH::BodyInterface& mBodyInterface);
     static JPH::Body& createHeightFieldTerrain(JPH::BodyInterface& mBodyInterface);
+
+public:
+    // Create bodies according to method outlined in "FAST SOFTWARE FOR BOX INTERSECTIONS by AFRA ZOMORODIAN" section
+    // "The balanced distribution" http://pub.ist.ac.at/~edels/Papers/2002-J-01-FastBoxIntersection.pdf
+    static void createBalancedDistribution(JPH::BodyManager* inBodyManager,
+                                           int inNumBodies,
+                                           float inEnvironmentSize = 512.0f);
 };
 }  // namespace vox

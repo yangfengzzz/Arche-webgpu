@@ -396,4 +396,8 @@ void PhysicsManager::castAABox(const JPH::AABoxCast &inBox,
     _physics_system->GetBroadPhaseQuery().CastAABox(inBox, ioCollector, inBroadPhaseLayerFilter, inObjectLayerFilter);
 }
 
+void PhysicsManager::addConstraint(JPH::Constraint *inConstraint) { _physics_system->AddConstraint(inConstraint); }
+
+void PhysicsManager::removeConstraint(JPH::Constraint *inConstraint) { _physics_system->RemoveConstraint(inConstraint); }
+
 }  // namespace vox

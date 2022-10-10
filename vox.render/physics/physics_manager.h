@@ -160,6 +160,13 @@ public:
                    const JPH::ObjectLayerFilter &inObjectLayerFilter = {}) const;
 
 public:
+    /// Add constraint to the world
+    void addConstraint(JPH::Constraint *inConstraint);
+
+    /// Remove constraint from the world
+    void removeConstraint(JPH::Constraint *inConstraint);
+
+public:
     /**
      * Add collider into the manager.
      * @param collider - StaticCollider or DynamicCollider.

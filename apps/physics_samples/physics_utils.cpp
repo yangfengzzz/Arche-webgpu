@@ -225,4 +225,30 @@ JPH::Body& PhysicsUtils::createHeightFieldTerrain(JPH::BodyInterface& mBodyInter
     mBodyInterface.AddBody(floor.GetID(), EActivation::DontActivate);
     return floor;
 }
+
+void PhysicsUtils::createBalancedDistribution(JPH::BodyManager* inBodyManager,
+                                              int inNumBodies,
+                                              float inEnvironmentSize) {
+    default_random_engine random(0x1ee7c0de);
+    uniform_real_distribution<float> zero_to_one(0.0f, 1.0f);
+    auto n = float(inNumBodies);
+    Vec3 max_box_start = Vec3::sReplicate(inEnvironmentSize * (1.0f - pow(n, -1.0f / 3.0f)));
+    Vec3 min_box_size = Vec3::sReplicate(1.0f / inEnvironmentSize);
+    Vec3 max_box_size = Vec3::sReplicate(inEnvironmentSize * pow(n, -1.0f / 3.0f)) - min_box_size;
+    for (int b = 0; b < inNumBodies; ++b) {
+        AABox box;
+        box.mMin = max_box_start * Vec3(zero_to_one(random), zero_to_one(random), zero_to_one(random)) -
+                   Vec3::sReplicate(0.5f * inEnvironmentSize);
+        box.mMax = box.mMin + min_box_size +
+                   max_box_size * Vec3(zero_to_one(random), zero_to_one(random), zero_to_one(random));
+
+        BodyCreationSettings s;
+        s.SetShape(new BoxShape(box.GetExtent(), 0.0f));
+        s.mPosition = box.GetCenter();
+        s.mRotation = Quat::sIdentity();
+        s.mObjectLayer = (random() % 10) == 0 ? PhysicsManager::Layers::MOVING : PhysicsManager::Layers::NON_MOVING;
+        inBodyManager->CreateBody(s);
+    }
+}
+
 }  // namespace vox
