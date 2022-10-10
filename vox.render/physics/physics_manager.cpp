@@ -48,17 +48,6 @@ bool MyObjectCanCollide(ObjectLayer inObject1, ObjectLayer inObject2) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-// Each broadphase layer results in a separate bounding volume tree in the broad phase. You at least want to have
-// a layer for non-moving and moving objects to avoid having to update a tree full of static objects every frame.
-// You can have a 1-on-1 mapping between object layers and broadphase layers (like in this case) but if you have
-// many object layers you'll be creating many broad phase trees, which is not efficient. If you want to fine tune
-// your broadphase layers define JPH_TRACK_BROADPHASE_STATS and look at the stats reported on the TTY.
-namespace BroadPhaseLayers {
-constexpr BroadPhaseLayer NON_MOVING(0);
-constexpr BroadPhaseLayer MOVING(1);
-constexpr uint NUM_LAYERS(2);
-}  // namespace BroadPhaseLayers
-
 // BroadPhaseLayerInterface implementation
 // This defines a mapping between object and broadphase layers.
 class BPLayerInterfaceImpl final : public BroadPhaseLayerInterface {
@@ -276,21 +265,15 @@ void PhysicsManager::setPhysicsSettings(const JPH::PhysicsSettings &inSettings) 
 
 const JPH::PhysicsSettings &PhysicsManager::getPhysicsSettings() const { return _physics_system->GetPhysicsSettings(); }
 
-const JPH::BodyInterface &PhysicsManager::getBodyInterface() const {
-    return _physics_system->GetBodyInterface();
-}
+const JPH::BodyInterface &PhysicsManager::getBodyInterface() const { return _physics_system->GetBodyInterface(); }
 
-JPH::BodyInterface &PhysicsManager::getBodyInterface() {
-    return _physics_system->GetBodyInterface();
-}
+JPH::BodyInterface &PhysicsManager::getBodyInterface() { return _physics_system->GetBodyInterface(); }
 
 const JPH::BodyInterface &PhysicsManager::getBodyInterfaceNoLock() const {
     return _physics_system->GetBodyInterfaceNoLock();
 }
 
-JPH::BodyInterface &PhysicsManager::getBodyInterfaceNoLock() {
-    return _physics_system->GetBodyInterfaceNoLock();
-}
+JPH::BodyInterface &PhysicsManager::getBodyInterfaceNoLock() { return _physics_system->GetBodyInterfaceNoLock(); }
 
 const JPH::BodyLockInterfaceNoLock &PhysicsManager::getBodyLockInterfaceNoLock() const {
     return _physics_system->GetBodyLockInterfaceNoLock();
@@ -346,6 +329,7 @@ void PhysicsManager::removeOnPhysicsUpdateScript(Script *script) {
     }
 }
 
+//----------------------------------------------------------------------------------------------------------------------
 #ifdef JPH_DEBUG_RENDERER
 void PhysicsManager::drawBodies(const JPH::BodyManager::DrawSettings &inSettings,
                                 JPH::DebugRenderer *inRenderer,
@@ -363,5 +347,53 @@ void PhysicsManager::drawConstraintReferenceFrame(JPH::DebugRenderer *inRenderer
     _physics_system->DrawConstraintReferenceFrame(inRenderer);
 }
 #endif  // JPH_DEBUG_RENDERER
+
+//----------------------------------------------------------------------------------------------------------------------
+void PhysicsManager::castRay(const JPH::RayCast &inRay,
+                             JPH::RayCastBodyCollector &ioCollector,
+                             const JPH::BroadPhaseLayerFilter &inBroadPhaseLayerFilter,
+                             const JPH::ObjectLayerFilter &inObjectLayerFilter) const {
+    _physics_system->GetBroadPhaseQuery().CastRay(inRay, ioCollector, inBroadPhaseLayerFilter, inObjectLayerFilter);
+}
+
+void PhysicsManager::collideAABox(const JPH::AABox &inBox,
+                                  JPH::CollideShapeBodyCollector &ioCollector,
+                                  const JPH::BroadPhaseLayerFilter &inBroadPhaseLayerFilter,
+                                  const JPH::ObjectLayerFilter &inObjectLayerFilter) const {
+    _physics_system->GetBroadPhaseQuery().CollideAABox(inBox, ioCollector, inBroadPhaseLayerFilter,
+                                                       inObjectLayerFilter);
+}
+
+void PhysicsManager::collideSphere(const Vector3F &inCenter,
+                                   float inRadius,
+                                   JPH::CollideShapeBodyCollector &ioCollector,
+                                   const JPH::BroadPhaseLayerFilter &inBroadPhaseLayerFilter,
+                                   const JPH::ObjectLayerFilter &inObjectLayerFilter) const {
+    _physics_system->GetBroadPhaseQuery().CollideSphere({inCenter.x, inCenter.y, inCenter.z}, inRadius, ioCollector,
+                                                        inBroadPhaseLayerFilter, inObjectLayerFilter);
+}
+
+void PhysicsManager::collidePoint(const Vector3F &inPoint,
+                                  JPH::CollideShapeBodyCollector &ioCollector,
+                                  const JPH::BroadPhaseLayerFilter &inBroadPhaseLayerFilter,
+                                  const JPH::ObjectLayerFilter &inObjectLayerFilter) const {
+    _physics_system->GetBroadPhaseQuery().CollidePoint({inPoint.x, inPoint.y, inPoint.z}, ioCollector,
+                                                       inBroadPhaseLayerFilter, inObjectLayerFilter);
+}
+
+void PhysicsManager::collideOrientedBox(const JPH::OrientedBox &inBox,
+                                        JPH::CollideShapeBodyCollector &ioCollector,
+                                        const JPH::BroadPhaseLayerFilter &inBroadPhaseLayerFilter,
+                                        const JPH::ObjectLayerFilter &inObjectLayerFilter) const {
+    _physics_system->GetBroadPhaseQuery().CollideOrientedBox(inBox, ioCollector, inBroadPhaseLayerFilter,
+                                                             inObjectLayerFilter);
+}
+
+void PhysicsManager::castAABox(const JPH::AABoxCast &inBox,
+                               JPH::CastShapeBodyCollector &ioCollector,
+                               const JPH::BroadPhaseLayerFilter &inBroadPhaseLayerFilter,
+                               const JPH::ObjectLayerFilter &inObjectLayerFilter) const {
+    _physics_system->GetBroadPhaseQuery().CastAABox(inBox, ioCollector, inBroadPhaseLayerFilter, inObjectLayerFilter);
+}
 
 }  // namespace vox

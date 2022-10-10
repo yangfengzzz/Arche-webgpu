@@ -20,3 +20,5 @@
 #include "apps/physics_samples/shapes/static_compound_shape_app.h"
 #include "apps/physics_samples/shapes/tapered_capsule_shape_app.h"
 #include "apps/physics_samples/shapes/triangle_shape_app.h"
+// water
+#include "apps/physics_samples/water/water_shape_app.h"

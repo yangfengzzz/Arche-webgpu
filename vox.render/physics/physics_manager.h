@@ -20,6 +20,17 @@ namespace vox {
 class Collider;
 class Script;
 
+// Each broadphase layer results in a separate bounding volume tree in the broad phase. You at least want to have
+// a layer for non-moving and moving objects to avoid having to update a tree full of static objects every frame.
+// You can have a 1-on-1 mapping between object layers and broadphase layers (like in this case) but if you have
+// many object layers you'll be creating many broad phase trees, which is not efficient. If you want to fine tune
+// your broadphase layers define JPH_TRACK_BROADPHASE_STATS and look at the stats reported on the TTY.
+namespace BroadPhaseLayers {
+constexpr JPH::BroadPhaseLayer NON_MOVING(0);
+constexpr JPH::BroadPhaseLayer MOVING(1);
+constexpr uint NUM_LAYERS(2);
+}  // namespace BroadPhaseLayers
+
 class PhysicsManager : public Singleton<PhysicsManager> {
 public:
     static PhysicsManager &GetSingleton();
@@ -109,6 +120,44 @@ public:
     /// Draw the constraint reference frames only (debugging purposes)
     void drawConstraintReferenceFrame(JPH::DebugRenderer *inRenderer);
 #endif  // JPH_DEBUG_RENDERER
+
+public:
+    /// Cast a ray and add any hits to ioCollector
+    void castRay(const JPH::RayCast &inRay,
+                 JPH::RayCastBodyCollector &ioCollector,
+                 const JPH::BroadPhaseLayerFilter &inBroadPhaseLayerFilter = {},
+                 const JPH::ObjectLayerFilter &inObjectLayerFilter = {}) const;
+
+    /// Get bodies intersecting with inBox and any hits to ioCollector
+    void collideAABox(const JPH::AABox &inBox,
+                      JPH::CollideShapeBodyCollector &ioCollector,
+                      const JPH::BroadPhaseLayerFilter &inBroadPhaseLayerFilter = {},
+                      const JPH::ObjectLayerFilter &inObjectLayerFilter = {}) const;
+
+    /// Get bodies intersecting with a sphere and any hits to ioCollector
+    void collideSphere(const Vector3F &inCenter,
+                       float inRadius,
+                       JPH::CollideShapeBodyCollector &ioCollector,
+                       const JPH::BroadPhaseLayerFilter &inBroadPhaseLayerFilter = {},
+                       const JPH::ObjectLayerFilter &inObjectLayerFilter = {}) const;
+
+    /// Get bodies intersecting with a point and any hits to ioCollector
+    void collidePoint(const Vector3F &inPoint,
+                      JPH::CollideShapeBodyCollector &ioCollector,
+                      const JPH::BroadPhaseLayerFilter &inBroadPhaseLayerFilter = {},
+                      const JPH::ObjectLayerFilter &inObjectLayerFilter = {}) const;
+
+    /// Get bodies intersecting with an oriented box and any hits to ioCollector
+    void collideOrientedBox(const JPH::OrientedBox &inBox,
+                            JPH::CollideShapeBodyCollector &ioCollector,
+                            const JPH::BroadPhaseLayerFilter &inBroadPhaseLayerFilter = {},
+                            const JPH::ObjectLayerFilter &inObjectLayerFilter = {}) const;
+
+    /// Cast a box and add any hits to ioCollector
+    void castAABox(const JPH::AABoxCast &inBox,
+                   JPH::CastShapeBodyCollector &ioCollector,
+                   const JPH::BroadPhaseLayerFilter &inBroadPhaseLayerFilter = {},
+                   const JPH::ObjectLayerFilter &inObjectLayerFilter = {}) const;
 
 public:
     /**
