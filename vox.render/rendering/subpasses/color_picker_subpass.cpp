@@ -20,7 +20,6 @@ ColorPickerSubpass::ColorPickerSubpass(RenderContext *renderContext,
     : GeometrySubpass(renderContext, depthStencilTextureFormat, scene, camera),
       _bufferPool(renderContext->device(), 16 * 1024, wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst) {
     _material = std::make_shared<UnlitMaterial>(renderContext->device());
-    _material->shaderData.clear();
 }
 
 void ColorPickerSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder, ShaderVariant &variant) {
