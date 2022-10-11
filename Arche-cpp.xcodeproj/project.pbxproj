@@ -972,6 +972,11 @@
 		047322A628F462DA00D04171 /* libvox.geometry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 047BB58A2800140A00CD5749 /* libvox.geometry.a */; };
 		047322A728F462DA00D04171 /* libvox.simd_math.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04731EAD28E6B02300D04171 /* libvox.simd_math.a */; };
 		047322A828F462DA00D04171 /* libvox.toolkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0473205628E8310300D04171 /* libvox.toolkit.a */; };
+		047322AE28F515EB00D04171 /* grid_control.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047322AA28F515EA00D04171 /* grid_control.cpp */; };
+		047322AF28F515EB00D04171 /* grid_material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047322AB28F515EA00D04171 /* grid_material.cpp */; };
+		047322B028F515EB00D04171 /* grid_material.h in Headers */ = {isa = PBXBuildFile; fileRef = 047322AC28F515EA00D04171 /* grid_material.h */; };
+		047322B128F515EB00D04171 /* grid_control.h in Headers */ = {isa = PBXBuildFile; fileRef = 047322AD28F515EB00D04171 /* grid_control.h */; };
+		047322B628F5160E00D04171 /* grid_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047322B428F5160E00D04171 /* grid_app.cpp */; };
 		047BB59B2800148600CD5749 /* libvox.math.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 041282EC279ECF3D0071BD86 /* libvox.math.a */; };
 		047BF0BC27AC086B003F3599 /* light.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF0BA27AC086B003F3599 /* light.cpp */; };
 		047BF0BD27AC086B003F3599 /* light.h in Headers */ = {isa = PBXBuildFile; fileRef = 047BF0BB27AC086B003F3599 /* light.h */; };
@@ -2591,6 +2596,13 @@
 		0473228428F461FC00D04171 /* imgui_canvas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imgui_canvas.h; sourceTree = "<group>"; };
 		0473228528F461FC00D04171 /* imgui_zmo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_zmo.cpp; sourceTree = "<group>"; };
 		0473228628F461FC00D04171 /* imgui_curve.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = imgui_curve.cpp; sourceTree = "<group>"; };
+		047322AA28F515EA00D04171 /* grid_control.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = grid_control.cpp; sourceTree = "<group>"; };
+		047322AB28F515EA00D04171 /* grid_material.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = grid_material.cpp; sourceTree = "<group>"; };
+		047322AC28F515EA00D04171 /* grid_material.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = grid_material.h; sourceTree = "<group>"; };
+		047322AD28F515EB00D04171 /* grid_control.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = grid_control.h; sourceTree = "<group>"; };
+		047322B328F5160E00D04171 /* toolkit_sample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = toolkit_sample.h; sourceTree = "<group>"; };
+		047322B428F5160E00D04171 /* grid_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = grid_app.cpp; sourceTree = "<group>"; };
+		047322B528F5160E00D04171 /* grid_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = grid_app.h; sourceTree = "<group>"; };
 		047BB58A2800140A00CD5749 /* libvox.geometry.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libvox.geometry.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		047BF0BA27AC086B003F3599 /* light.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = light.cpp; sourceTree = "<group>"; };
 		047BF0BB27AC086B003F3599 /* light.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = light.h; sourceTree = "<group>"; };
@@ -3334,6 +3346,7 @@
 				047320DD28F407E400D04171 /* rendering */,
 				047320C028F407B000D04171 /* animation */,
 				047320FD28F4081100D04171 /* physics_samples */,
+				047322B228F515FA00D04171 /* toolkit */,
 				0495475E27A294E600783C84 /* main.cpp */,
 				0473207C28E8868C00D04171 /* gui_app.h */,
 				0473207D28E8868C00D04171 /* gui_app.cpp */,
@@ -4275,6 +4288,7 @@
 		0473205728E8310300D04171 /* vox.toolkit */ = {
 			isa = PBXGroup;
 			children = (
+				047322A928F515DD00D04171 /* grid */,
 				047320A928F1C49300D04171 /* physics_debugger */,
 				0473206228E8312A00D04171 /* skeleton_view */,
 				0473206128E8312300D04171 /* controls */,
@@ -4682,6 +4696,27 @@
 				0473223628F461DF00D04171 /* view.h */,
 			);
 			path = view;
+			sourceTree = "<group>";
+		};
+		047322A928F515DD00D04171 /* grid */ = {
+			isa = PBXGroup;
+			children = (
+				047322AA28F515EA00D04171 /* grid_control.cpp */,
+				047322AD28F515EB00D04171 /* grid_control.h */,
+				047322AB28F515EA00D04171 /* grid_material.cpp */,
+				047322AC28F515EA00D04171 /* grid_material.h */,
+			);
+			path = grid;
+			sourceTree = "<group>";
+		};
+		047322B228F515FA00D04171 /* toolkit */ = {
+			isa = PBXGroup;
+			children = (
+				047322B328F5160E00D04171 /* toolkit_sample.h */,
+				047322B528F5160E00D04171 /* grid_app.h */,
+				047322B428F5160E00D04171 /* grid_app.cpp */,
+			);
+			path = toolkit;
 			sourceTree = "<group>";
 		};
 		047BB58B2800140A00CD5749 /* vox.geometry */ = {
@@ -5613,7 +5648,9 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				047322B128F515EB00D04171 /* grid_control.h in Headers */,
 				0473206F28E8314500D04171 /* orbit_control.h in Headers */,
+				047322B028F515EB00D04171 /* grid_material.h in Headers */,
 				047320B228F1C4A600D04171 /* render_primitive.h in Headers */,
 				047320B428F1C4A600D04171 /* physics_debug_subpass.h in Headers */,
 				0473206D28E8314500D04171 /* spherical.h in Headers */,
@@ -6456,6 +6493,7 @@
 				045A395E28C44F37003FEE10 /* benchmark_mode.cpp in Sources */,
 				0495475F27A294E600783C84 /* main.cpp in Sources */,
 				0473218228F4088200D04171 /* stack_app.cpp in Sources */,
+				047322B628F5160E00D04171 /* grid_app.cpp in Sources */,
 				0473215028F4086E00D04171 /* scaled_height_field_shape_app.cpp in Sources */,
 				047320DB28F407C800D04171 /* animation_attach_app.cpp in Sources */,
 				0473218B28F4088200D04171 /* active_edges_app.cpp in Sources */,
@@ -6786,6 +6824,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				047322AF28F515EB00D04171 /* grid_material.cpp in Sources */,
 				047320B028F1C4A600D04171 /* render_instances.cpp in Sources */,
 				047320B128F1C4A600D04171 /* render_primitive.cpp in Sources */,
 				0473206E28E8314500D04171 /* orbit_control.cpp in Sources */,
@@ -6793,6 +6832,7 @@
 				0473207128E8314500D04171 /* spherical.cpp in Sources */,
 				0473206528E8313D00D04171 /* skeleton_view.cpp in Sources */,
 				0473207228E8314500D04171 /* free_control.cpp in Sources */,
+				047322AE28F515EB00D04171 /* grid_control.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

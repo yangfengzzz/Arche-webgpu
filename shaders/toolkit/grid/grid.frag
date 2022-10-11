@@ -1,14 +1,23 @@
 #version 450
 
-#include "snippet/common_frag_define.h"
+#include "common.h"
+
+layout(set = 0, binding = Camera_Location) uniform u_cameraData {
+    mat4 u_viewMat;
+    mat4 u_projMat;
+    mat4 vp_mat;
+    mat4 view_inv_mat;
+    mat4 proj_inv_mat;
+    vec3 u_cameraPos;
+};
 
 layout(location = 1) in vec3 nearPoint;
 layout(location = 2) in vec3 farPoint;
 layout(location = 0) out vec4 outColor;
 
 layout(set = 0, binding = 20) uniform u_grid {
-    float u_farClip;
-    float u_nearClip;
+    float u_far;
+    float u_near;
     float u_primaryScale;
     float u_secondaryScale;
     float u_gridIntensity;

@@ -1,6 +1,15 @@
 #version 450
 
-#include "snippet/common_vert_define.h"
+#include "common.h"
+
+layout(set = 0, binding = Camera_Location) uniform u_cameraData {
+    mat4 u_viewMat;
+    mat4 u_projMat;
+    mat4 vp_mat;
+    mat4 view_inv_mat;
+    mat4 proj_inv_mat;
+    vec3 u_cameraPos;
+};
 
 layout (location = 1) out vec3 nearPoint;
 layout (location = 2) out vec3 farPoint;
