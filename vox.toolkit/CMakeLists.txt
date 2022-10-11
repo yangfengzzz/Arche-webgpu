@@ -17,10 +17,14 @@ file(GLOB SKELETON_VIEW_FILES
 file(GLOB PHYSICS_DEBUGGER_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/physics_debugger/*.cpp)
 
+file(GLOB GRID_FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/grid/*.cpp)
+
 set(PROJECT_FILES
         ${CONTROLS_FILES}
         ${SKELETON_VIEW_FILES}
         ${PHYSICS_DEBUGGER_FILES}
+        ${GRID_FILES}
         )
 
 # No need for explict casts from vk::HandleType to VkHandleType on ANDROID

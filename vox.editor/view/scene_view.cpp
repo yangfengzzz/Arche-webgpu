@@ -14,6 +14,7 @@
 #include "vox.render/mesh/mesh_renderer.h"
 #include "vox.render/mesh/primitive_mesh.h"
 #include "vox.render/rendering/subpasses/color_picker_subpass.h"
+#include "vox.toolkit/grid/grid_control.h"
 
 namespace vox::editor::ui {
 SceneView::SceneView(const std::string& p_title,
@@ -95,9 +96,7 @@ void SceneView::loadScene(Entity* rootEntity) {
     _mainCamera = cameraEntity->addComponent<Camera>();
     _cameraControl = cameraEntity->addComponent<control::OrbitControl>();
 
-    auto grid = rootEntity->addComponent<MeshRenderer>();
-    grid->setMesh(createPlane(_renderContext->device()));
-//    grid->setMaterial(std::make_shared<GridMaterial>(_renderContext->device()));
+    rootEntity->addComponent<grid::GridControl>();
 
     // init point light
     auto light = rootEntity->createChild("light");

@@ -54,23 +54,8 @@ public:
      */
     [[nodiscard]] std::pair<uint16_t, uint16_t> safeSize() const;
 
-public:
-    ModelMeshPtr createPlane(wgpu::Device& device);
-
-    /**
-     * Returns the grid color of the view
-     */
-    [[nodiscard]] const Vector3F& gridColor() const;
-
-    /**
-     * Defines the grid color of the view
-     * @param p_color p_color
-     */
-    void setGridColor(const Vector3F& p_color);
-
 protected:
     RenderContext* _renderContext{nullptr};
-    Vector3F _gridColor = {0.176f, 0.176f, 0.176f};
 
     std::unique_ptr<RenderPass> _renderPass{nullptr};
 
@@ -84,12 +69,6 @@ protected:
     wgpu::RenderPassDescriptor _renderPassDescriptor;
     wgpu::RenderPassColorAttachment _renderPassColorAttachments;
     wgpu::RenderPassDepthStencilAttachment _renderPassDepthStencilAttachment;
-};
-
-// MARK: - Grid
-class GridMaterial : public BaseMaterial {
-public:
-    explicit GridMaterial(wgpu::Device& device) : BaseMaterial(device) { setIsTransparent(true); }
 };
 
 }  // namespace editor::ui

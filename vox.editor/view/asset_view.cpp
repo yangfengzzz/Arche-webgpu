@@ -12,6 +12,7 @@
 #include "vox.render/mesh/mesh_renderer.h"
 #include "vox.render/mesh/primitive_mesh.h"
 #include "vox.render/shader/internal_variant_name.h"
+#include "vox.toolkit/grid/grid_control.h"
 
 namespace vox::editor::ui {
 AssetView::AssetView(const std::string& p_title,
@@ -63,11 +64,8 @@ void AssetView::loadScene(Entity* rootEntity) {
     _mainCamera = cameraEntity->addComponent<Camera>();
     _cameraControl = cameraEntity->addComponent<control::OrbitControl>();
 
-//    auto grid = rootEntity->addComponent<MeshRenderer>();
-//    grid->setMesh(createPlane(_renderContext->device()));
-//    grid->setMaterial(std::make_shared<GridMaterial>(_renderContext->device()));
-//    grid->setEnabled(false);
-//    _elements.emplace_back(grid, grid->mesh(), grid->mesh()->subMesh(), grid->getMaterial());
+    rootEntity->addComponent<grid::GridControl>();
+    //    _elements.emplace_back(grid, grid->mesh(), grid->mesh()->subMesh(), grid->getMaterial());
 
     // create box test entity
     float radius = 2.0;
@@ -107,4 +105,4 @@ void AssetView::render(wgpu::CommandEncoder& commandEncoder) {
     }
 }
 
-}  // namespace vox
+}  // namespace vox::editor::ui
