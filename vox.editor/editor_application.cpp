@@ -25,10 +25,10 @@ EditorApplication::EditorApplication(const std::string& projectPath, const std::
       projectPath(projectPath),
       projectName(projectName),
       projectFilePath(projectPath + projectName + ".project"),
-      engineAssetsPath(std::filesystem::canonical("./Data").string() + "/"),
-      projectAssetsPath(projectPath + "/Assets/"),
-      projectScriptsPath(projectPath + "/Scripts/"),
-      editorAssetsPath("/Data/Editor/"),
+      engineAssetsPath(std::filesystem::canonical("./assets").string() + "/"),
+      projectAssetsPath(projectPath + "./assets/"),
+      projectScriptsPath(projectPath + "./assets/Scripts/"),
+      editorAssetsPath("./assets/Editor/"),
       _panelsManager(_canvas) {}
 
 EditorApplication::~EditorApplication() {
@@ -80,7 +80,6 @@ bool EditorApplication::prepare(Platform& platform) {
         auto factor = platform.GetWindow().GetContentScaleFactor();
         _componentsManager->callScriptResize(extent.width, extent.height, factor * extent.width,
                                              factor * extent.height);
-        _mainCamera->resize(extent.width, extent.height, factor * extent.width, factor * extent.height);
     }
     _lightManager->setCamera(_mainCamera);
     _shadowManager = std::make_unique<ShadowManager>(scene, _mainCamera);
@@ -195,16 +194,14 @@ void EditorApplication::update(float deltaTime) {
 }
 
 void EditorApplication::updateGPUTask(wgpu::CommandEncoder& commandEncoder) {
-    _shadowManager->draw(commandEncoder);
+//    _shadowManager->draw(commandEncoder);
     _lightManager->draw(commandEncoder);
 //    _particleManager->draw(commandEncoder);
 }
 
 bool EditorApplication::resize(uint32_t win_width, uint32_t win_height, uint32_t fb_width, uint32_t fb_height) {
     GraphicsApplication::resize(win_width, win_height, fb_width, fb_height);
-
     _componentsManager->callScriptResize(win_width, win_height, fb_width, fb_height);
-    _mainCamera->resize(win_width, win_height, fb_width, fb_height);
     return true;
 }
 

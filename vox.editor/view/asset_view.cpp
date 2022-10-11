@@ -63,11 +63,11 @@ void AssetView::loadScene(Entity* rootEntity) {
     _mainCamera = cameraEntity->addComponent<Camera>();
     _cameraControl = cameraEntity->addComponent<control::OrbitControl>();
 
-    auto grid = rootEntity->addComponent<MeshRenderer>();
-    grid->setMesh(createPlane(_renderContext->device()));
+//    auto grid = rootEntity->addComponent<MeshRenderer>();
+//    grid->setMesh(createPlane(_renderContext->device()));
 //    grid->setMaterial(std::make_shared<GridMaterial>(_renderContext->device()));
-    grid->setEnabled(false);
-    _elements.emplace_back(grid, grid->mesh(), grid->mesh()->subMesh(), grid->getMaterial());
+//    grid->setEnabled(false);
+//    _elements.emplace_back(grid, grid->mesh(), grid->mesh()->subMesh(), grid->getMaterial());
 
     // create box test entity
     float radius = 2.0;
