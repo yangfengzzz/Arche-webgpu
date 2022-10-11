@@ -20,8 +20,6 @@ set(SRC
         options.cpp
         ${IMPORTER_FILES}
         ${FBX_FILES}
-        dump2ozz.cpp
-        gltf2ozz.cpp
         )
 
 source_group("\\" FILES ${SRC})
