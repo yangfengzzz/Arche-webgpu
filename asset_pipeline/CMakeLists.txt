@@ -13,17 +13,15 @@ project(asset_pipeline LANGUAGES C CXX)
 file(GLOB IMPORTER_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/importer/*.cpp)
 
+file(GLOB FBX_FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/fbx/*.cpp)
+
 set(SRC
         options.cpp
-        fbx.cpp
-        fbx_animation.cpp
-        fbx_skeleton.cpp
-        fbx2ozz_anim.cpp
-        fbx2ozz_skel.cpp
-        fbx2ozz.cpp
-        gltf2ozz.cpp
         ${IMPORTER_FILES}
-        fbx2mesh.cc
+        ${FBX_FILES}
+        dump2ozz.cpp
+        gltf2ozz.cpp
         )
 
 source_group("\\" FILES ${SRC})

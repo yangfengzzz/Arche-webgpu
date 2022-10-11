@@ -4,9 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "asset_pipeline/fbx.h"
-#include "asset_pipeline/fbx2ozz.h"
-#include "asset_pipeline/fbx_skeleton.h"
+#include "asset_pipeline/fbx/fbx.h"
+#include "asset_pipeline/fbx/fbx2ozz.h"
+#include "asset_pipeline/fbx/fbx_skeleton.h"
 #include "vox.base/logging.h"
 
 bool Fbx2OzzImporter::Import(vox::animation::offline::RawSkeleton* _skeleton, const NodeType& _types) {

@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "asset_pipeline/fbx_animation.h"
+#include "asset_pipeline/fbx/fbx_animation.h"
 
 #include "vox.animation/offline/raw_animation_utils.h"
 #include "vox.animation/runtime/skeleton.h"

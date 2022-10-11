@@ -7,7 +7,7 @@
 #pragma once
 
 #include "asset_pipeline/export.h"
-#include "asset_pipeline/fbx.h"
+#include "asset_pipeline/fbx/fbx.h"
 #include "asset_pipeline/importer/import2ozz.h"
 #include "vox.base/containers/string.h"
 #include "vox.base/containers/vector.h"

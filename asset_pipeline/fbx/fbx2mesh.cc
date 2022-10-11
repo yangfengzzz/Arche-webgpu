@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <limits>
 
-#include "asset_pipeline/fbx.h"
+#include "asset_pipeline/fbx/fbx.h"
 #include "asset_pipeline/options.h"
 #include "vox.animation/runtime/skeleton.h"
 #include "vox.base/containers/map.h"

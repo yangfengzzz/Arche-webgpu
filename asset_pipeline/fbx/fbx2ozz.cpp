@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "asset_pipeline/fbx2ozz.h"
+#include "asset_pipeline/fbx/fbx2ozz.h"
 
 #include "vox.base/logging.h"
 

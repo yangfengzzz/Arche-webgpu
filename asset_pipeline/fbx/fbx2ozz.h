@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "asset_pipeline/fbx.h"
+#include "asset_pipeline/fbx/fbx.h"
 #include "asset_pipeline/importer/import2ozz.h"
 
 // fbx2ozz is a command line tool that converts an animation imported from a

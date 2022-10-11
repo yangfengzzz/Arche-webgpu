@@ -8,7 +8,7 @@
 
 #include <fbxsdk.h>
 
-#include "asset_pipeline//export.h"
+#include "asset_pipeline/export.h"
 #include "vox.math/scalable_transform.h"
 #include "vox.simd_math/simd_math.h"
 
