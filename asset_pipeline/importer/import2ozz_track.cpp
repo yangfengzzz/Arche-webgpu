@@ -4,15 +4,17 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
+#include "asset_pipeline/importer/import2ozz_track.h"
+
 #include <json/json.h>
 
 #include <cstdlib>
 #include <cstring>
 
+#include "asset_pipeline/importer/import2ozz.h"
+#include "asset_pipeline/importer/import2ozz_config.h"
+#include "asset_pipeline/options.h"
 #include "vox.animation/offline/raw_track.h"
-#include "vox.animation/offline/tools/import2vox.h"
-#include "vox.animation/offline/tools/import2vox_config.h"
-#include "vox.animation/offline/tools/import2vox_track.h"
 #include "vox.animation/offline/track_builder.h"
 #include "vox.animation/offline/track_optimizer.h"
 #include "vox.animation/runtime/skeleton.h"
@@ -21,7 +23,6 @@
 #include "vox.base/io/stream.h"
 #include "vox.base/logging.h"
 #include "vox.base/memory/unique_ptr.h"
-#include "vox/options/options.h"
 
 namespace vox {
 namespace animation {

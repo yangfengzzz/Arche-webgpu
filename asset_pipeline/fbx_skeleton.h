@@ -6,23 +6,16 @@
 
 #pragma once
 
-#include "vox.animation/offline/fbx/export.h"
-#include "vox.animation/offline/fbx/fbx.h"
-#include "vox.animation/offline/tools/import2vox.h"
+#include "asset_pipeline/export.h"
+#include "asset_pipeline/fbx.h"
+#include "asset_pipeline/importer/import2ozz.h"
 
-namespace vox {
-namespace animation {
-namespace offline {
-
+namespace vox::animation::offline {
 struct RawSkeleton;
-
 namespace fbx {
-
-VOX_ANIMFBX_DLL bool ExtractSkeleton(FbxSceneLoader& _loader,
-                                     const OzzImporter::NodeType& _types,
-                                     RawSkeleton* _skeleton);
+VOX_ASSET_DLL bool ExtractSkeleton(FbxSceneLoader& _loader,
+                                   const OzzImporter::NodeType& _types,
+                                   RawSkeleton* _skeleton);
 
 }  // namespace fbx
-}  // namespace offline
-}  // namespace animation
-}  // namespace vox
+}  // namespace vox::animation::offline

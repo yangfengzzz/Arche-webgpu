@@ -8,13 +8,13 @@
 
 #if defined(_MSC_VER) && defined(VOX_USE_DYNAMIC_LINKING)
 
-#ifdef VOX_BUILD_ANIMATIONFBX_LIB
+#ifdef VOX_BUILD_ASSET_LIB
 // Import/Export for dynamic linking while building vox
-#define VOX_ANIMFBX_DLL __declspec(dllexport)
+#define VOX_ASSET_DLL __declspec(dllexport)
 #else
-#define VOX_ANIMFBX_DLL __declspec(dllimport)
+#define VOX_ASSET_DLL __declspec(dllimport)
 #endif
 #else  // defined(_MSC_VER) && defined(VOX_USE_DYNAMIC_LINKING)
 // Static or non msvc linking
-#define VOX_ANIMFBX_DLL
+#define VOX_ASSET_DLL
 #endif  // defined(_MSC_VER) && defined(VOX_USE_DYNAMIC_LINKING)

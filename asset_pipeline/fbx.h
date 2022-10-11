@@ -8,7 +8,7 @@
 
 #include <fbxsdk.h>
 
-#include "converter/export.h"
+#include "asset_pipeline//export.h"
 #include "vox.math/scalable_transform.h"
 #include "vox.simd_math/simd_math.h"
 
@@ -17,7 +17,7 @@ struct ScalableTransform;
 namespace animation::offline::fbx {
 
 // Manages FbxManager instance.
-class VOX_ANIMFBX_DLL FbxManagerInstance {
+class VOX_ASSET_DLL FbxManagerInstance {
 public:
     // Instantiates FbxManager.
     FbxManagerInstance();
@@ -33,7 +33,7 @@ private:
 };
 
 // Default io settings used to import a scene.
-class VOX_ANIMFBX_DLL FbxDefaultIOSettings {
+class VOX_ASSET_DLL FbxDefaultIOSettings {
 public:
     // Instantiates default settings.
     explicit FbxDefaultIOSettings(const FbxManagerInstance& _manager);
@@ -52,13 +52,13 @@ private:
 };
 
 // Io's settings used to import an animation from a scene.
-class VOX_ANIMFBX_DLL FbxAnimationIOSettings : public FbxDefaultIOSettings {
+class VOX_ASSET_DLL FbxAnimationIOSettings : public FbxDefaultIOSettings {
 public:
     FbxAnimationIOSettings(const FbxManagerInstance& _manager);
 };
 
 // Io's settings used to import a skeleton from a scene.
-class VOX_ANIMFBX_DLL FbxSkeletonIOSettings : public FbxDefaultIOSettings {
+class VOX_ASSET_DLL FbxSkeletonIOSettings : public FbxDefaultIOSettings {
 public:
     FbxSkeletonIOSettings(const FbxManagerInstance& _manager);
 };
@@ -69,7 +69,7 @@ public:
 // While Fbx sdk FbxAxisSystem::ConvertScene and FbxSystem::ConvertScene only
 // affect scene root, this class functions can be used to bake nodes, vertices,
 // animations transformations...
-class VOX_ANIMFBX_DLL FbxSystemConverter {
+class VOX_ASSET_DLL FbxSystemConverter {
 public:
     // Initialize asset_pipeline with fbx scene systems.
     FbxSystemConverter(const FbxAxisSystem& _from_axis, const FbxSystemUnit& _from_unit);
@@ -106,7 +106,7 @@ private:
 };
 
 // Loads a scene from a Fbx file.
-class VOX_ANIMFBX_DLL FbxSceneLoader {
+class VOX_ASSET_DLL FbxSceneLoader {
 public:
     // Loads the scene that can then be obtained with scene() function.
     FbxSceneLoader(const char* _filename,

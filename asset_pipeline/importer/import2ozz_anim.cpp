@@ -4,29 +4,30 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
+#include "asset_pipeline/importer/import2ozz_anim.h"
+
 #include <json/json.h>
 
 #include <cstdlib>
 #include <cstring>
 
+#include "asset_pipeline/importer/import2ozz.h"
+#include "asset_pipeline/importer/import2ozz_config.h"
+#include "asset_pipeline/importer/import2ozz_track.h"
+#include "asset_pipeline/options.h"
 #include "vox.animation/offline/additive_animation_builder.h"
 #include "vox.animation/offline/animation_builder.h"
 #include "vox.animation/offline/animation_optimizer.h"
 #include "vox.animation/offline/raw_animation.h"
 #include "vox.animation/offline/raw_skeleton.h"
 #include "vox.animation/offline/skeleton_builder.h"
-#include "vox.animation/offline/tools/import2vox.h"
-#include "vox.animation/offline/tools/import2vox_anim.h"
-#include "vox.animation/offline/tools/import2vox_config.h"
-#include "vox.animation/offline/tools/import2vox_track.h"
 #include "vox.animation/runtime/animation.h"
 #include "vox.animation/runtime/skeleton.h"
 #include "vox.base/io/archive.h"
 #include "vox.base/io/stream.h"
 #include "vox.base/logging.h"
 #include "vox.base/memory/unique_ptr.h"
-#include "vox.math/soa_transform.h"
-#include "vox/options/options.h"
+#include "vox.simd_math/soa_transform.h"
 
 namespace vox {
 namespace animation {
@@ -107,22 +108,22 @@ unique_ptr<vox::animation::Skeleton> LoadSkeleton(const char* _path) {
     return skeleton;
 }
 
-vector<math::Transform> SkeletonRestPoseSoAToAoS(const Skeleton& _skeleton) {
+vector<ScalableTransform> SkeletonRestPoseSoAToAoS(const Skeleton& _skeleton) {
     // Copy skeleton rest pose to AoS form.
-    vector<math::Transform> transforms(_skeleton.num_joints());
+    vector<ScalableTransform> transforms(_skeleton.num_joints());
     for (int i = 0; i < _skeleton.num_soa_joints(); ++i) {
-        const math::SoaTransform& soa_transform = _skeleton.joint_rest_poses()[i];
-        math::SimdFloat4 translation[4];
-        math::SimdFloat4 rotation[4];
-        math::SimdFloat4 scale[4];
-        math::Transpose3x4(&soa_transform.translation.x, translation);
-        math::Transpose4x4(&soa_transform.rotation.x, rotation);
-        math::Transpose3x4(&soa_transform.scale.x, scale);
+        const simd_math::SoaTransform& soa_transform = _skeleton.joint_rest_poses()[i];
+        simd_math::SimdFloat4 translation[4];
+        simd_math::SimdFloat4 rotation[4];
+        simd_math::SimdFloat4 scale[4];
+        simd_math::Transpose3x4(&soa_transform.translation.x, translation);
+        simd_math::Transpose4x4(&soa_transform.rotation.x, rotation);
+        simd_math::Transpose3x4(&soa_transform.scale.x, scale);
         for (int j = 0; j < 4 && i * 4 + j < _skeleton.num_joints(); ++j) {
-            math::Transform& out = transforms[i * 4 + j];
-            math::Store3PtrU(translation[j], &out.translation.x);
-            math::StorePtrU(rotation[j], &out.rotation.x);
-            math::Store3PtrU(scale[j], &out.scale.x);
+            ScalableTransform& out = transforms[i * 4 + j];
+            simd_math::Store3PtrU(translation[j], &out.translation.x);
+            simd_math::StorePtrU(rotation[j], &out.rotation.x);
+            simd_math::Store3PtrU(scale[j], &out.scale.x);
         }
     }
     return transforms;
@@ -213,7 +214,7 @@ bool Export(OzzImporter& _importer,
 
         bool succeeded = false;
         if (enum_found && reference == AdditiveReferenceEnum::kSkeleton) {
-            const vector<math::Transform> transforms = SkeletonRestPoseSoAToAoS(_skeleton);
+            const vector<ScalableTransform> transforms = SkeletonRestPoseSoAToAoS(_skeleton);
             succeeded = additive_builder(raw_animation, make_span(transforms), &raw_additive);
         } else {
             succeeded = additive_builder(raw_animation, &raw_additive);

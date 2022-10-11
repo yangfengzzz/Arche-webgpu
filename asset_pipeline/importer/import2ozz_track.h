@@ -6,9 +6,9 @@
 
 #pragma once
 
-#include "vox.animation/offline/tools/export.h"
-#include "vox.animation/offline/tools/import2vox.h"
-#include "vox.animation/offline/tools/import2vox_config.h"
+#include "asset_pipeline/export.h"
+#include "asset_pipeline/importer/import2ozz.h"
+#include "asset_pipeline/importer/import2ozz_config.h"
 #include "vox.base/endianness.h"
 #include "vox.base/macros.h"
 
@@ -16,22 +16,20 @@ namespace Json {
 class Value;
 }
 
-namespace vox {
-namespace animation {
+namespace vox::animation {
 class Skeleton;
 namespace offline {
 
 class OzzImporter;
-VOX_ANIMTOOLS_DLL bool ProcessTracks(OzzImporter& _importer,
-                                     const char* _animation_name,
-                                     const Skeleton& _skeleton,
-                                     const Json::Value& _config,
-                                     const vox::Endianness _endianness);
+VOX_ASSET_DLL bool ProcessTracks(OzzImporter& _importer,
+                                 const char* _animation_name,
+                                 const Skeleton& _skeleton,
+                                 const Json::Value& _config,
+                                 vox::Endianness _endianness);
 
 // Property type enum to config string conversions.
-struct VOX_ANIMTOOLS_DLL PropertyTypeConfig : JsonEnum<PropertyTypeConfig, OzzImporter::NodeProperty::Type> {
+struct VOX_ASSET_DLL PropertyTypeConfig : JsonEnum<PropertyTypeConfig, OzzImporter::NodeProperty::Type> {
     static EnumNames GetNames();
 };
 }  // namespace offline
-}  // namespace animation
-}  // namespace vox
+}  // namespace vox::animation

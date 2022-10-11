@@ -4,10 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.animation/offline/fbx/fbx.h"
-#include "vox.animation/offline/fbx/fbx2vox.h"
-#include "vox.animation/offline/fbx/fbx_skeleton.h"
-#include "vox.animation/offline/raw_skeleton.h"
+#include "asset_pipeline/fbx.h"
+#include "asset_pipeline/fbx2ozz.h"
+#include "asset_pipeline/fbx_skeleton.h"
 #include "vox.base/logging.h"
 
 bool Fbx2OzzImporter::Import(vox::animation::offline::RawSkeleton* _skeleton, const NodeType& _types) {
@@ -23,7 +22,7 @@ bool Fbx2OzzImporter::Import(vox::animation::offline::RawSkeleton* _skeleton, co
     }
 
     if (!vox::animation::offline::fbx::ExtractSkeleton(*scene_loader_, _types, _skeleton)) {
-        vox::log::Err() << "Fbx skeleton extraction failed." << std::endl;
+        LOGE("Fbx skeleton extraction failed.")
         return false;
     }
 

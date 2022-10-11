@@ -4,9 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.animation/offline/fbx/fbx_animation.h"
+#include "asset_pipeline/fbx_animation.h"
 
-#include "vox.animation/offline/fbx/fbx.h"
+#include "asset_pipeline/fbx.h"
 #include "vox.animation/offline/raw_animation.h"
 #include "vox.animation/offline/raw_animation_utils.h"
 #include "vox.animation/offline/raw_track.h"
@@ -14,12 +14,8 @@
 #include "vox.animation/runtime/skeleton_utils.h"
 #include "vox.base/logging.h"
 #include "vox.math/math_utils.h"
-#include "vox.math/transform.h"
 
-namespace vox {
-namespace animation {
-namespace offline {
-namespace fbx {
+namespace vox::animation::offline::fbx {
 
 namespace {
 struct SamplingInfo {
@@ -182,7 +178,7 @@ bool ExtractAnimation(FbxSceneLoader& _scene_loader,
 
         for (size_t n = 0; n < fixed_it.num_keys(); ++n) {
             // Builds local matrix;
-            math::Float4x4 local_matrix;
+            simd_math::Float4x4 local_matrix;
             if (parent != Skeleton::kNoParent) {
                 local_matrix = node_world_inv_matrices[n] * node_world_matrices[n];
             } else {
@@ -190,17 +186,17 @@ bool ExtractAnimation(FbxSceneLoader& _scene_loader,
             }
 
             // Convert to transform structure.
-            math::SimdFloat4 t, q, s;
+            simd_math::SimdFloat4 t, q, s;
             if (!ToAffine(local_matrix, &t, &q, &s)) {
                 vox::log::Err() << "Failed to extract animation transform for joint\"" << _skeleton.joint_names()[i]
                                 << "\" at t = " << times[n] << "s." << std::endl;
                 return false;
             }
 
-            vox::simd_math::Transform transform;
-            math::Store3PtrU(t, &transform.translation.x);
-            math::StorePtrU(math::Normalize4(q), &transform.rotation.x);
-            math::Store3PtrU(s, &transform.scale.x);
+            vox::ScalableTransform transform;
+            simd_math::Store3PtrU(t, &transform.translation.x);
+            simd_math::StorePtrU(simd_math::Normalize4(q), &transform.rotation.x);
+            simd_math::Store3PtrU(s, &transform.scale.x);
 
             // Fills corresponding track.
             const float time = times[n];
@@ -215,10 +211,10 @@ bool ExtractAnimation(FbxSceneLoader& _scene_loader,
     return _animation->Validate();
 }
 
-template <typename _Type>
+template <typename Type>
 bool PropertyGetValueAsFloat(FbxPropertyValue& _property_value, EFbxType _fbx_type, float* _value) {
-    _Type value;
-    assert(_property_value.GetSizeOf() == sizeof(_Type));
+    Type value;
+    assert(_property_value.GetSizeOf() == sizeof(Type));
     bool success = _property_value.Get(&value, _fbx_type);
     *_value = static_cast<float>(value);
     return success;
@@ -722,7 +718,4 @@ bool ExtractTrack(const char* _animation_name,
                   RawFloat4Track* _track) {
     return ExtractTrackImpl(_animation_name, _node_name, _track_name, _type, _scene_loader, _sampling_rate, _track);
 }
-}  // namespace fbx
-}  // namespace offline
-}  // namespace animation
 }  // namespace vox

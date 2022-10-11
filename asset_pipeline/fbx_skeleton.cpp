@@ -4,15 +4,11 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.animation/offline/fbx/fbx_skeleton.h"
+#include "asset_pipeline/fbx_skeleton.h"
 
-#include "vox.animation/offline/raw_skeleton.h"
 #include "vox.base/logging.h"
 
-namespace vox {
-namespace animation {
-namespace offline {
-namespace fbx {
+namespace vox::animation::offline::fbx {
 
 namespace {
 
@@ -102,8 +98,7 @@ RecurseReturn RecurseNode(FbxNode* _node,
         const FbxAMatrix node_local = _parent_global_inv * node_global;
 
         if (!_converter->ConvertTransform(node_local, &this_joint->transform)) {
-            vox::log::Err() << "Failed to extract skeleton transform for joint \"" << this_joint->name << "\"."
-                            << std::endl;
+            LOGE("Failed to extract skeleton transform for joint {}.", this_joint->name)
             return kError;
         }
 
@@ -130,15 +125,12 @@ bool ExtractSkeleton(FbxSceneLoader& _loader, const OzzImporter::NodeType& _type
     RecurseReturn ret =
             RecurseNode(_loader.scene()->GetRootNode(), _loader.converter(), _types, _skeleton, nullptr, FbxAMatrix());
     if (ret == kNoSkeleton) {
-        vox::log::Err() << "No skeleton found in Fbx scene." << std::endl;
+        LOGE("No skeleton found in Fbx scene.")
         return false;
     } else if (ret == kError) {
-        vox::log::Err() << "Failed to extract skeleton." << std::endl;
+        LOGE("Failed to extract skeleton.")
         return false;
     }
     return true;
 }
-}  // namespace fbx
-}  // namespace offline
-}  // namespace animation
-}  // namespace vox
+}  // namespace vox::animation::offline::fbx

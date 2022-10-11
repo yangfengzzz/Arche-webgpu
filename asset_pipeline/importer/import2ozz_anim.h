@@ -6,9 +6,9 @@
 
 #pragma once
 
-#include "vox.animation/offline/tools/export.h"
-#include "vox.animation/offline/tools/import2vox.h"
-#include "vox.animation/offline/tools/import2vox_config.h"
+#include "asset_pipeline/export.h"
+#include "asset_pipeline/importer/import2ozz.h"
+#include "asset_pipeline/importer/import2ozz_config.h"
 #include "vox.base/endianness.h"
 #include "vox.base/macros.h"
 
@@ -16,22 +16,18 @@ namespace Json {
 class Value;
 }
 
-namespace vox {
-namespace animation {
-namespace offline {
+namespace vox::animation::offline {
 
 class OzzImporter;
-VOX_ANIMTOOLS_DLL bool ImportAnimations(const Json::Value& _config,
-                                        OzzImporter* _importer,
-                                        const vox::Endianness _endianness);
+VOX_ASSET_DLL bool ImportAnimations(const Json::Value& _config,
+                                    OzzImporter* _importer,
+                                    vox::Endianness _endianness);
 
 // Additive reference enum to config string conversions.
 struct AdditiveReferenceEnum {
     enum Value { kAnimation, kSkeleton };
 };
-struct VOX_ANIMTOOLS_DLL AdditiveReference : JsonEnum<AdditiveReference, AdditiveReferenceEnum::Value> {
+struct VOX_ASSET_DLL AdditiveReference : JsonEnum<AdditiveReference, AdditiveReferenceEnum::Value> {
     static EnumNames GetNames();
 };
-}  // namespace offline
-}  // namespace animation
-}  // namespace vox
+}  // namespace vox::animation::offline

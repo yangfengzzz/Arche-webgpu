@@ -6,16 +6,15 @@
 
 #pragma once
 
+#include "asset_pipeline/export.h"
 #include "vox.animation/offline/raw_animation.h"
 #include "vox.animation/offline/raw_skeleton.h"
 #include "vox.animation/offline/raw_track.h"
-#include "vox.animation/offline/importer/export.h"
 #include "vox.base/containers/string.h"
 #include "vox.base/containers/vector.h"
 #include "vox.base/macros.h"
 
-namespace vox {
-namespace animation {
+namespace vox::animation {
 
 class Skeleton;
 
@@ -30,9 +29,9 @@ namespace offline {
 // To import a new source data format, one will implement the pure virtual
 // functions of this interface. All the conversions end error processing are
 // done by the tool.
-class VOX_ANIMTOOLS_DLL OzzImporter {
+class VOX_ASSET_DLL OzzImporter {
 public:
-    virtual ~OzzImporter() {}
+    virtual ~OzzImporter() = default;
 
     // Function operator that must be called with main() arguments to start import
     // process.
@@ -123,5 +122,4 @@ public:
     vox::string BuildFilename(const char* _filename, const char* _data_name) const;
 };
 }  // namespace offline
-}  // namespace animation
-}  // namespace vox
+}  // namespace vox::animation

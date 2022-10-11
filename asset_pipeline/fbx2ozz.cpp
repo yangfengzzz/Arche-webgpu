@@ -4,7 +4,8 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.animation/offline/fbx/fbx2vox.h"
+#include "asset_pipeline/fbx2ozz.h"
+
 #include "vox.base/logging.h"
 
 int main(int _argc, const char** _argv) {
@@ -21,7 +22,7 @@ bool Fbx2OzzImporter::Load(const char* _filename) {
     scene_loader_ = vox::New<vox::animation::offline::fbx::FbxSceneLoader>(_filename, "", fbx_manager_, settings_);
 
     if (!scene_loader_->scene()) {
-        vox::log::Err() << "Failed to import file " << _filename << "." << std::endl;
+        LOGE("Failed to import file {}.", _filename)
         vox::Delete(scene_loader_);
         scene_loader_ = nullptr;
         return false;

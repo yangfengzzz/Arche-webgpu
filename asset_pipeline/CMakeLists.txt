@@ -10,8 +10,20 @@ include(android_package)
 # create sample app project
 project(asset_pipeline LANGUAGES C CXX)
 
+file(GLOB IMPORTER_FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/importer/*.cpp)
+
 set(SRC
+        options.cpp
         fbx.cpp
+        fbx_animation.cpp
+        fbx_skeleton.cpp
+        fbx2ozz_anim.cpp
+        fbx2ozz_skel.cpp
+        fbx2ozz.cpp
+        gltf2ozz.cpp
+        ${IMPORTER_FILES}
+        fbx2mesh.cc
         )
 
 source_group("\\" FILES ${SRC})
@@ -34,6 +46,8 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         ../third_party/dawn/include
         ../third_party/dawn
         /Applications/Autodesk/FBX\ SDK/2016.1/include
+        ${CMAKE_SOURCE_DIR}/third_party/jsoncpp/include
+        ${CMAKE_SOURCE_DIR}/third_party/tinygltf
         ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC DAWN_ENABLE_BACKEND_METAL DAWN_ENABLE_BACKEND_NULL TINT_BUILD_SPV_READER JPH_PROFILE_ENABLED JPH_DEBUG_RENDERER)

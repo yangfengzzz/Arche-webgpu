@@ -6,14 +6,13 @@
 
 #pragma once
 
-#include "vox.animation/offline/fbx/export.h"
-#include "vox.animation/offline/fbx/fbx.h"
-#include "vox.animation/offline/tools/import2vox.h"
+#include "asset_pipeline/export.h"
+#include "asset_pipeline/fbx.h"
+#include "asset_pipeline/importer/import2ozz.h"
 #include "vox.base/containers/string.h"
 #include "vox.base/containers/vector.h"
 
-namespace vox {
-namespace animation {
+namespace vox::animation {
 
 class Skeleton;
 
@@ -28,48 +27,47 @@ struct RawquaternionTrack;
 
 namespace fbx {
 
-VOX_ANIMFBX_DLL OzzImporter::AnimationNames GetAnimationNames(FbxSceneLoader& _scene_loader);
+VOX_ASSET_DLL OzzImporter::AnimationNames GetAnimationNames(FbxSceneLoader& _scene_loader);
 
-VOX_ANIMFBX_DLL bool ExtractAnimation(const char* _animation_name,
-                                      FbxSceneLoader& _scene_loader,
-                                      const Skeleton& _skeleton,
-                                      float _sampling_rate,
-                                      RawAnimation* _animation);
+VOX_ASSET_DLL bool ExtractAnimation(const char* _animation_name,
+                                    FbxSceneLoader& _scene_loader,
+                                    const Skeleton& _skeleton,
+                                    float _sampling_rate,
+                                    RawAnimation* _animation);
 
-VOX_ANIMFBX_DLL OzzImporter::NodeProperties GetNodeProperties(FbxSceneLoader& _scene_loader, const char* _node_name);
+VOX_ASSET_DLL OzzImporter::NodeProperties GetNodeProperties(FbxSceneLoader& _scene_loader, const char* _node_name);
 
-VOX_ANIMFBX_DLL bool ExtractTrack(const char* _animation_name,
-                                  const char* _node_name,
-                                  const char* _track_name,
-                                  OzzImporter::NodeProperty::Type _type,
-                                  FbxSceneLoader& _scene_loader,
-                                  float _sampling_rate,
-                                  RawFloatTrack* _track);
+VOX_ASSET_DLL bool ExtractTrack(const char* _animation_name,
+                                const char* _node_name,
+                                const char* _track_name,
+                                OzzImporter::NodeProperty::Type _type,
+                                FbxSceneLoader& _scene_loader,
+                                float _sampling_rate,
+                                RawFloatTrack* _track);
 
-VOX_ANIMFBX_DLL bool ExtractTrack(const char* _animation_name,
-                                  const char* _node_name,
-                                  const char* _track_name,
-                                  OzzImporter::NodeProperty::Type _type,
-                                  FbxSceneLoader& _scene_loader,
-                                  float _sampling_rate,
-                                  RawFloat2Track* _track);
+VOX_ASSET_DLL bool ExtractTrack(const char* _animation_name,
+                                const char* _node_name,
+                                const char* _track_name,
+                                OzzImporter::NodeProperty::Type _type,
+                                FbxSceneLoader& _scene_loader,
+                                float _sampling_rate,
+                                RawFloat2Track* _track);
 
-VOX_ANIMFBX_DLL bool ExtractTrack(const char* _animation_name,
-                                  const char* _node_name,
-                                  const char* _track_name,
-                                  OzzImporter::NodeProperty::Type _type,
-                                  FbxSceneLoader& _scene_loader,
-                                  float _sampling_rate,
-                                  RawFloat3Track* _track);
+VOX_ASSET_DLL bool ExtractTrack(const char* _animation_name,
+                                const char* _node_name,
+                                const char* _track_name,
+                                OzzImporter::NodeProperty::Type _type,
+                                FbxSceneLoader& _scene_loader,
+                                float _sampling_rate,
+                                RawFloat3Track* _track);
 
-VOX_ANIMFBX_DLL bool ExtractTrack(const char* _animation_name,
-                                  const char* _node_name,
-                                  const char* _track_name,
-                                  OzzImporter::NodeProperty::Type _type,
-                                  FbxSceneLoader& _scene_loader,
-                                  float _sampling_rate,
-                                  RawFloat4Track* _track);
+VOX_ASSET_DLL bool ExtractTrack(const char* _animation_name,
+                                const char* _node_name,
+                                const char* _track_name,
+                                OzzImporter::NodeProperty::Type _type,
+                                FbxSceneLoader& _scene_loader,
+                                float _sampling_rate,
+                                RawFloat4Track* _track);
 }  // namespace fbx
 }  // namespace offline
-}  // namespace animation
-}  // namespace vox
+}  // namespace vox::animation

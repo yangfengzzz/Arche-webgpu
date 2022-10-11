@@ -4,14 +4,12 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.animation/offline/fbx/fbx2vox.h"
-#include "vox.animation/offline/fbx/fbx_animation.h"
-#include "vox.animation/offline/raw_animation.h"
-#include "vox.base/logging.h"
+#include "asset_pipeline/fbx2ozz.h"
+#include "asset_pipeline/fbx_animation.h"
 
 Fbx2OzzImporter::AnimationNames Fbx2OzzImporter::GetAnimationNames() {
     if (!scene_loader_) {
-        return AnimationNames();
+        return {};
     }
     return vox::animation::offline::fbx::GetAnimationNames(*scene_loader_);
 }
@@ -36,20 +34,20 @@ bool Fbx2OzzImporter::Import(const char* _animation_name,
 
 Fbx2OzzImporter::NodeProperties Fbx2OzzImporter::GetNodeProperties(const char* _node_name) {
     if (!scene_loader_) {
-        return NodeProperties();
+        return {};
     }
 
     return vox::animation::offline::fbx::GetNodeProperties(*scene_loader_, _node_name);
 }
 
-template <typename _RawTrack>
+template <typename RawTrack>
 bool ImportImpl(vox::animation::offline::fbx::FbxSceneLoader* _scene_loader,
                 const char* _animation_name,
                 const char* _node_name,
                 const char* _track_name,
                 Fbx2OzzImporter::NodeProperty::Type _type,
                 float _sampling_rate,
-                _RawTrack* _track) {
+                RawTrack* _track) {
     if (!_scene_loader) {
         return false;
     }

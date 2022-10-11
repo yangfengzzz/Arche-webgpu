@@ -6,69 +6,69 @@
 
 #pragma once
 
-#include "vox.animation/offline/fbx/fbx.h"
-#include "vox.animation/offline/tools/import2vox.h"
+#include "asset_pipeline/fbx.h"
+#include "asset_pipeline/importer/import2ozz.h"
 
-// fbx2vox is a command line tool that converts an animation imported from a
+// fbx2ozz is a command line tool that converts an animation imported from a
 // fbx document to vox runtime format.
 //
-// fbx2vox extracts animated joints from a fbx document. Only the animated
+// fbx2ozz extracts animated joints from a fbx document. Only the animated
 // joints whose names match those of the vox runtime skeleton given as argument
 // are selected. Keyframes are then optimized, based on command line settings,
-// and serialized as a runtime animation to an vox binary archive.
+// and serialized as a runtime animation to a vox binary archive.
 //
-// Use fbx2vox integrated help command (fbx2vox --help) for more details
+// Use fbx2ozz integrated help command (fbx2ozz --help) for more details
 // about available arguments.
 
 class Fbx2OzzImporter : public vox::animation::offline::OzzImporter {
 public:
     Fbx2OzzImporter();
-    ~Fbx2OzzImporter();
+    ~Fbx2OzzImporter() override;
 
 private:
-    virtual bool Load(const char* _filename);
+    bool Load(const char* _filename) override;
 
     // Skeleton management
-    virtual bool Import(vox::animation::offline::RawSkeleton* _skeleton, const NodeType& _types);
+    bool Import(vox::animation::offline::RawSkeleton* _skeleton, const NodeType& _types) override;
 
     // Animation management
-    virtual AnimationNames GetAnimationNames();
+    AnimationNames GetAnimationNames() override;
 
-    virtual bool Import(const char* _animation_name,
-                        const vox::animation::Skeleton& _skeleton,
-                        float _sampling_rate,
-                        vox::animation::offline::RawAnimation* _animation);
+    bool Import(const char* _animation_name,
+                const vox::animation::Skeleton& _skeleton,
+                float _sampling_rate,
+                vox::animation::offline::RawAnimation* _animation) override;
 
     // Track management
-    virtual NodeProperties GetNodeProperties(const char* _node_name);
+    NodeProperties GetNodeProperties(const char* _node_name) override;
 
-    virtual bool Import(const char* _animation_name,
-                        const char* _node_name,
-                        const char* _track_name,
-                        NodeProperty::Type _expected_type,
-                        float _sampling_rate,
-                        vox::animation::offline::RawFloatTrack* _track);
+    bool Import(const char* _animation_name,
+                const char* _node_name,
+                const char* _track_name,
+                NodeProperty::Type _expected_type,
+                float _sampling_rate,
+                vox::animation::offline::RawFloatTrack* _track) override;
 
-    virtual bool Import(const char* _animation_name,
-                        const char* _node_name,
-                        const char* _track_name,
-                        NodeProperty::Type _expected_type,
-                        float _sampling_rate,
-                        vox::animation::offline::RawFloat2Track* _track);
+    bool Import(const char* _animation_name,
+                const char* _node_name,
+                const char* _track_name,
+                NodeProperty::Type _expected_type,
+                float _sampling_rate,
+                vox::animation::offline::RawFloat2Track* _track) override;
 
-    virtual bool Import(const char* _animation_name,
-                        const char* _node_name,
-                        const char* _track_name,
-                        NodeProperty::Type _expected_type,
-                        float _sampling_rate,
-                        vox::animation::offline::RawFloat3Track* _track);
+    bool Import(const char* _animation_name,
+                const char* _node_name,
+                const char* _track_name,
+                NodeProperty::Type _expected_type,
+                float _sampling_rate,
+                vox::animation::offline::RawFloat3Track* _track) override;
 
-    virtual bool Import(const char* _animation_name,
-                        const char* _node_name,
-                        const char* _track_name,
-                        NodeProperty::Type _expected_type,
-                        float _sampling_rate,
-                        vox::animation::offline::RawFloat4Track* _track);
+    bool Import(const char* _animation_name,
+                const char* _node_name,
+                const char* _track_name,
+                NodeProperty::Type _expected_type,
+                float _sampling_rate,
+                vox::animation::offline::RawFloat4Track* _track) override;
 
     // Fbx internal helpers
     vox::animation::offline::fbx::FbxManagerInstance fbx_manager_;

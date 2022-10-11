@@ -8,14 +8,14 @@
 #include <cstring>
 
 #include "vox.animation/offline/raw_animation_utils.h"
-#include "vox.animation/offline/tools/import2vox.h"
+#include "asset_pipeline/importer/import2ozz.h"
 #include "vox.animation/runtime/skeleton.h"
 #include "vox.base/containers/map.h"
 #include "vox.base/containers/set.h"
 #include "vox.base/containers/vector.h"
 #include "vox.base/logging.h"
 #include "vox.math/math_utils.h"
-#include "vox.math/simd_math.h"
+#include "vox.simd_math/simd_math.h"
 
 #define TINYGLTF_IMPLEMENTATION
 
@@ -30,7 +30,7 @@
 #pragma warning(disable : 4267)  // conversion from 'size_t' to 'type'
 #endif                           // _MSC_VER
 
-#include "extern/tiny_gltf.h"
+#include <tiny_gltf.h>
 
 #ifdef _MSC_VER
 #pragma warning(pop)

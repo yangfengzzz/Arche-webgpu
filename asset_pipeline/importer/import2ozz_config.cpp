@@ -11,14 +11,14 @@
 #include <sstream>
 
 #include "vox.animation/offline/animation_optimizer.h"
-#include "vox.animation/offline/tools/import2vox.h"
-#include "vox.animation/offline/tools/import2vox_anim.h"
-#include "vox.animation/offline/tools/import2vox_config.h"
-#include "vox.animation/offline/tools/import2vox_track.h"
+#include "asset_pipeline/importer/import2ozz.h"
+#include "asset_pipeline/importer/import2ozz_anim.h"
+#include "asset_pipeline/importer/import2ozz_config.h"
+#include "asset_pipeline/importer/import2ozz_track.h"
 #include "vox.animation/offline/track_optimizer.h"
 #include "vox.base/containers/string.h"
 #include "vox.base/logging.h"
-#include "vox/options/options.h"
+#include "asset_pipeline/options.h"
 
 bool ValidateExclusiveConfigOption(const vox::options::Option& _option, int _argc);
 VOX_OPTIONS_DECLARE_STRING_FN(
@@ -32,7 +32,7 @@ bool ValidateExclusiveConfigOption(const vox::options::Option& _option, int _arg
     (void)_argc;
     bool not_exclusive = OPTIONS_config_file.value()[0] != 0 && OPTIONS_config.value()[0] != 0;
     if (not_exclusive) {
-        vox::log::Err() << "--config and --config_file are exclusive options." << std::endl;
+        LOGE("--config and --config_file are exclusive options.")
     }
     return !not_exclusive;
 }

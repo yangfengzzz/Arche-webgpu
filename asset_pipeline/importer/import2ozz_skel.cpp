@@ -4,17 +4,18 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
+#include "asset_pipeline/importer/import2ozz_skel.h"
+
 #include <json/json.h>
 
 #include <cstdlib>
 #include <cstring>
 #include <iomanip>
 
+#include "asset_pipeline/importer/import2ozz.h"
+#include "asset_pipeline/importer/import2ozz_config.h"
 #include "vox.animation/offline/raw_skeleton.h"
 #include "vox.animation/offline/skeleton_builder.h"
-#include "vox.animation/offline/tools/import2vox.h"
-#include "vox.animation/offline/tools/import2vox_config.h"
-#include "vox.animation/offline/tools/import2vox_skel.h"
 #include "vox.animation/runtime/skeleton.h"
 #include "vox.base/containers/map.h"
 #include "vox.base/containers/set.h"
@@ -23,9 +24,7 @@
 #include "vox.base/logging.h"
 #include "vox.base/memory/unique_ptr.h"
 
-namespace vox {
-namespace animation {
-namespace offline {
+namespace vox::animation::offline {
 namespace {
 
 // Uses a set to detect names uniqueness.
@@ -152,6 +151,4 @@ bool ImportSkeleton(const Json::Value& _config, OzzImporter* _importer, const vo
 
     return true;
 }
-}  // namespace offline
-}  // namespace animation
-}  // namespace vox
+}  // namespace vox::animation::offline

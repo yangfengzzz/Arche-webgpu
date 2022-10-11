@@ -4,29 +4,29 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
+#include "asset_pipeline/importer/import2ozz.h"
+
 #include <json/json.h>
 
 #include <algorithm>
 #include <cstdlib>
 #include <cstring>
 
-#include "vox.animation/offline/importer/import2ozz.h"
-#include "vox.animation/offline/importer/import2ozz_anim.h"
-#include "vox.animation/offline/importer/import2ozz_config.h"
-#include "vox.animation/offline/importer/import2ozz_skel.h"
+#include "asset_pipeline/importer/import2ozz_anim.h"
+#include "asset_pipeline/importer/import2ozz_skel.h"
+#include "asset_pipeline/options.h"
 #include "vox.base/io/stream.h"
 #include "vox.base/logging.h"
-#include "vox/options/options.h"
 
 // Declares command line options.
 VOX_OPTIONS_DECLARE_STRING(file, "Specifies input file", "", true)
 
 static bool ValidateEndianness(const vox::options::Option& _option, int /*_argc*/) {
-    const vox::options::StringOption& option = static_cast<const vox::options::StringOption&>(_option);
+    const auto& option = static_cast<const vox::options::StringOption&>(_option);
     bool valid = std::strcmp(option.value(), "native") == 0 || std::strcmp(option.value(), "little") == 0 ||
                  std::strcmp(option.value(), "big") == 0;
     if (!valid) {
-        vox::log::Err() << "Invalid endianness option \"" << option << "\"" << std::endl;
+        LOGE("Invalid endianness option \"{}\"", option)
     }
     return valid;
 }
@@ -40,23 +40,22 @@ VOX_OPTIONS_DECLARE_STRING_FN(endian,
 
 vox::Endianness InitializeEndianness() {
     // Initializes output endianness from options.
-    vox::Endianness endianness = vox::GetNativeEndianness();
+    vox::Endianness endianness = vox::getNativeEndianness();
     if (std::strcmp(OPTIONS_endian, "little") == 0) {
         endianness = vox::kLittleEndian;
     } else if (std::strcmp(OPTIONS_endian, "big") == 0) {
         endianness = vox::kBigEndian;
     }
-    vox::log::LogV() << (endianness == vox::kLittleEndian ? "Little" : "Big")
-                     << " endian output binary format selected." << std::endl;
+    LOGI("{} endian output binary format selected.", (endianness == vox::kLittleEndian ? "Little" : "Big"))
     return endianness;
 }
 
 static bool ValidateLogLevel(const vox::options::Option& _option, int /*_argc*/) {
-    const vox::options::StringOption& option = static_cast<const vox::options::StringOption&>(_option);
+    const auto& option = static_cast<const vox::options::StringOption&>(_option);
     bool valid = std::strcmp(option.value(), "verbose") == 0 || std::strcmp(option.value(), "standard") == 0 ||
                  std::strcmp(option.value(), "silent") == 0;
     if (!valid) {
-        vox::log::Err() << "Invalid log level option \"" << option << "\"" << std::endl;
+        LOGE("Invalid log level option {}", option)
     }
     return valid;
 }
@@ -68,21 +67,10 @@ VOX_OPTIONS_DECLARE_STRING_FN(log_level,
                               &ValidateLogLevel)
 
 void InitializeLogLevel() {
-    vox::log::Level log_level = vox::log::GetLevel();
-    if (std::strcmp(OPTIONS_log_level, "silent") == 0) {
-        log_level = vox::log::kSilent;
-    } else if (std::strcmp(OPTIONS_log_level, "standard") == 0) {
-        log_level = vox::log::kStandard;
-    } else if (std::strcmp(OPTIONS_log_level, "verbose") == 0) {
-        log_level = vox::log::kVerbose;
-    }
-    vox::log::SetLevel(log_level);
-    vox::log::LogV() << "Verbose log level activated." << std::endl;
+    // todo
 }
 
-namespace vox {
-namespace animation {
-namespace offline {
+namespace vox::animation::offline {
 
 int OzzImporter::operator()(int _argc, const char** _argv) {
     // Parses arguments.
@@ -106,14 +94,14 @@ int OzzImporter::operator()(int _argc, const char** _argv) {
 
     // Ensures file to import actually exist.
     if (!vox::io::File::Exist(OPTIONS_file)) {
-        vox::log::Err() << "File \"" << OPTIONS_file << "\" doesn't exist." << std::endl;
+        LOGE("File {}  doesn't exist.", OPTIONS_file)
         return EXIT_FAILURE;
     }
 
     // Imports animations from the document.
-    vox::log::Log() << "Importing file \"" << OPTIONS_file << "\"" << std::endl;
+    LOGI("Importing file {}", OPTIONS_file)
     if (!Load(OPTIONS_file)) {
-        vox::log::Err() << "Failed to import file \"" << OPTIONS_file << "\"." << std::endl;
+        LOGE("Failed to import file {}", OPTIONS_file)
         return EXIT_FAILURE;
     }
 
@@ -146,11 +134,8 @@ vox::string OzzImporter::BuildFilename(const char* _filename, const char* _data_
 
     // Displays a log only if data name was renamed and used as a filename.
     if (used && data_name != _data_name) {
-        vox::log::Log() << "Resource name \"" << _data_name << "\" was changed to \"" << data_name
-                        << "\" in order to be used as a valid filename." << std::endl;
+        LOGI("Resource name {} was changed to {} in order to be used as a valid filename.", _data_name, data_name)
     }
     return output;
 }
-}  // namespace offline
-}  // namespace animation
-}  // namespace vox
+}  // namespace vox::animation::offline

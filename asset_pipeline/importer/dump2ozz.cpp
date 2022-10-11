@@ -4,56 +4,60 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.animation/offline/importer/import2vox.h"
+#include "asset_pipeline/importer/import2ozz.h"
 
-// Mocks OzzImporter so it can be used to dump default and reference
+// Mocks OzzImporter, so it can be used to dump default and reference
 // configurations.
 class DumpConverter : public vox::animation::offline::OzzImporter {
 public:
-    DumpConverter() {}
-    ~DumpConverter() {}
+    DumpConverter() = default;
+    ~DumpConverter() override = default;
 
 private:
-    virtual bool Load(const char*) { return true; }
+    bool Load(const char*) override { return true; }
 
-    virtual bool Import(vox::animation::offline::RawSkeleton*, const NodeType&) { return true; }
+    bool Import(vox::animation::offline::RawSkeleton*, const NodeType&) override { return true; }
 
-    virtual AnimationNames GetAnimationNames() { return AnimationNames(); }
+    AnimationNames GetAnimationNames() override { return {}; }
 
-    virtual bool Import(const char*, const vox::animation::Skeleton&, float, vox::animation::offline::RawAnimation*) {
+    bool Import(const char*, const vox::animation::Skeleton&, float, vox::animation::offline::RawAnimation*) override {
         return true;
     }
 
-    virtual NodeProperties GetNodeProperties(const char*) { return NodeProperties(); }
+    NodeProperties GetNodeProperties(const char*) override { return {}; }
 
-    virtual bool Import(
-            const char*, const char*, const char*, NodeProperty::Type, float, vox::animation::offline::RawFloatTrack*) {
+    bool Import(const char*,
+                const char*,
+                const char*,
+                NodeProperty::Type,
+                float,
+                vox::animation::offline::RawFloatTrack*) override {
         return true;
     }
 
-    virtual bool Import(const char*,
-                        const char*,
-                        const char*,
-                        NodeProperty::Type,
-                        float,
-                        vox::animation::offline::RawFloat2Track*) {
+    bool Import(const char*,
+                const char*,
+                const char*,
+                NodeProperty::Type,
+                float,
+                vox::animation::offline::RawFloat2Track*) override {
         return true;
     }
 
-    virtual bool Import(const char*,
-                        const char*,
-                        const char*,
-                        NodeProperty::Type,
-                        float,
-                        vox::animation::offline::RawFloat3Track*) {
+    bool Import(const char*,
+                const char*,
+                const char*,
+                NodeProperty::Type,
+                float,
+                vox::animation::offline::RawFloat3Track*) override {
         return true;
     }
-    virtual bool Import(const char*,
-                        const char*,
-                        const char*,
-                        NodeProperty::Type,
-                        float,
-                        vox::animation::offline::RawFloat4Track*) {
+    bool Import(const char*,
+                const char*,
+                const char*,
+                NodeProperty::Type,
+                float,
+                vox::animation::offline::RawFloat4Track*) override {
         return true;
     }
 };

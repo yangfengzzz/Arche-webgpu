@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "vox.animation/offline/tools/export.h"
+#include "asset_pipeline/export.h"
 #include "vox.base/endianness.h"
 #include "vox.base/macros.h"
 
@@ -14,16 +14,12 @@ namespace Json {
 class Value;
 }
 
-namespace vox {
-namespace animation {
-namespace offline {
+namespace vox::animation::offline {
 
 class OzzImporter;
 
-VOX_ANIMTOOLS_DLL bool ImportSkeleton(const Json::Value& _config,
-                                      OzzImporter* _importer,
-                                      const vox::Endianness _endianness);
+VOX_ASSET_DLL bool ImportSkeleton(const Json::Value& _config,
+                                  OzzImporter* _importer,
+                                  vox::Endianness _endianness);
 
-}  // namespace offline
-}  // namespace animation
 }  // namespace vox
