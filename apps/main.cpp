@@ -14,6 +14,7 @@
 #include "apps/primitive_app.h"
 #include "apps/rendering/rendering_sample.h"
 #include "apps/scoped_autorelease_pool.h"
+#include "apps/toolkit/toolkit_sample.h"
 #include "vox.render/platform/platform.h"
 
 // MARK: - Entry
@@ -43,7 +44,7 @@ int main(int argc, char* argv[]) {
 
     auto code = platform.Initialize(plugins::GetAll());
     if (code == vox::ExitCode::SUCCESS) {
-        platform.SetApp(std::make_unique<vox::PhysicsStackApp>());
+        platform.SetApp(std::make_unique<vox::GridApp>());
         code = platform.MainLoop();
     }
     platform.Terminate(code);

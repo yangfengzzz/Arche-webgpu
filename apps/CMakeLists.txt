@@ -26,6 +26,9 @@ file(GLOB ANIMATION_FILES
 file(GLOB RENDERING_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/rendering/*.cpp)
 
+file(GLOB TOOLKIT_FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/toolkit/*.cpp)
+
 set(SRC
         main.cpp
         atomic_compute_app.cpp
@@ -35,6 +38,7 @@ set(SRC
         physics_collision_app.cpp
         ${PHYSICS_DEBUGGER_FILES}
         ${RENDERING_FILES}
+        ${TOOLKIT_FILES}
         gui_app.cpp
         )
 

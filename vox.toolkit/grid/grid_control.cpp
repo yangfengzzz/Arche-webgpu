@@ -14,24 +14,6 @@
 namespace vox::grid {
 ModelMeshPtr GridControl::createGridPlane() {
     auto mesh = MeshManager::GetSingleton().LoadModelMesh();
-
-    auto positions = std::vector<Vector3F>(4);
-    positions[0] = Vector3F(-1, -1, 0);
-    positions[1] = Vector3F(1, -1, 0);
-    positions[2] = Vector3F(-1, 1, 0);
-    positions[3] = Vector3F(1, 1, 0);
-
-    auto indices = std::vector<uint32_t>(6);
-    indices[0] = 1;
-    indices[1] = 2;
-    indices[2] = 0;
-    indices[3] = 1;
-    indices[4] = 3;
-    indices[5] = 2;
-
-    mesh->setPositions(positions);
-    mesh->setIndices(indices);
-    mesh->uploadData(true);
     mesh->addSubMesh(0, 6, wgpu::PrimitiveTopology::TriangleList);
     return mesh;
 }
