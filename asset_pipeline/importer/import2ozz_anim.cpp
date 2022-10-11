@@ -8,43 +8,30 @@
 
 #include <json/json.h>
 
-#include <cstdlib>
-#include <cstring>
-
-#include "asset_pipeline/importer/import2ozz.h"
-#include "asset_pipeline/importer/import2ozz_config.h"
 #include "asset_pipeline/importer/import2ozz_track.h"
-#include "asset_pipeline/options.h"
 #include "vox.animation/offline/additive_animation_builder.h"
 #include "vox.animation/offline/animation_builder.h"
 #include "vox.animation/offline/animation_optimizer.h"
-#include "vox.animation/offline/raw_animation.h"
-#include "vox.animation/offline/raw_skeleton.h"
 #include "vox.animation/offline/skeleton_builder.h"
 #include "vox.animation/runtime/animation.h"
 #include "vox.animation/runtime/skeleton.h"
 #include "vox.base/io/archive.h"
-#include "vox.base/io/stream.h"
 #include "vox.base/logging.h"
-#include "vox.base/memory/unique_ptr.h"
+#include "vox.base/string_utils.h"
 #include "vox.simd_math/soa_transform.h"
 
-namespace vox {
-namespace animation {
-namespace offline {
+namespace vox::animation::offline {
 namespace {
 
-void DisplaysOptimizationstatistics(const RawAnimation& _non_optimized, const RawAnimation& _optimized) {
+void DisplaysOptimizationStatistics(const RawAnimation& _non_optimized, const RawAnimation& _optimized) {
     size_t opt_translations = 0, opt_rotations = 0, opt_scales = 0;
-    for (size_t i = 0; i < _optimized.tracks.size(); ++i) {
-        const RawAnimation::JointTrack& track = _optimized.tracks[i];
+    for (const auto& track : _optimized.tracks) {
         opt_translations += track.translations.size();
         opt_rotations += track.rotations.size();
         opt_scales += track.scales.size();
     }
     size_t non_opt_translations = 0, non_opt_rotations = 0, non_opt_scales = 0;
-    for (size_t i = 0; i < _non_optimized.tracks.size(); ++i) {
-        const RawAnimation::JointTrack& track = _non_optimized.tracks[i];
+    for (const auto& track : _non_optimized.tracks) {
         non_opt_translations += track.translations.size();
         non_opt_rotations += track.rotations.size();
         non_opt_scales += track.scales.size();
@@ -55,12 +42,10 @@ void DisplaysOptimizationstatistics(const RawAnimation& _non_optimized, const Ra
     float rotation_ratio = opt_rotations != 0 ? 1.f * non_opt_rotations / opt_rotations : 0.f;
     float scale_ratio = opt_scales != 0 ? 1.f * non_opt_scales / opt_scales : 0.f;
 
-    vox::log::LogV log;
-    vox::log::FloatPrecision precision_scope(log, 1);
-    log << "Optimization stage results:" << std::endl;
-    log << " - Translations: " << translation_ratio << ":1" << std::endl;
-    log << " - Rotations: " << rotation_ratio << ":1" << std::endl;
-    log << " - Scales: " << scale_ratio << ":1" << std::endl;
+    LOGI("Optimization stage results:")
+    LOGI(" - Translations: {}:1", translation_ratio)
+    LOGI(" - Rotations: {}:1", rotation_ratio)
+    LOGI(" - Scales: {}:1", scale_ratio)
 }
 
 unique_ptr<vox::animation::Skeleton> LoadSkeleton(const char* _path) {
@@ -68,31 +53,31 @@ unique_ptr<vox::animation::Skeleton> LoadSkeleton(const char* _path) {
     unique_ptr<vox::animation::Skeleton> skeleton;
     {
         if (*_path == 0) {
-            vox::log::Err() << "Missing input skeleton file from json config." << std::endl;
+            LOGE("Missing input skeleton file from json config.")
             return nullptr;
         }
-        vox::log::LogV() << "Opens input skeleton vox binary file: " << _path << std::endl;
+        LOGI("Opens input skeleton vox binary file: {}", _path)
         vox::io::File file(_path, "rb");
         if (!file.opened()) {
-            vox::log::Err() << "Failed to open input skeleton vox binary file: \"" << _path << "\"" << std::endl;
+            LOGE("Failed to open input skeleton vox binary file: {}", _path)
             return nullptr;
         }
         vox::io::IArchive archive(&file);
 
         // File could contain a RawSkeleton or a Skeleton.
         if (archive.TestTag<RawSkeleton>()) {
-            vox::log::LogV() << "Reading RawSkeleton from file." << std::endl;
+            LOGI("Reading RawSkeleton from file.")
 
             // Reading the skeleton cannot file.
             RawSkeleton raw_skeleton;
             archive >> raw_skeleton;
 
             // Builds runtime skeleton.
-            vox::log::LogV() << "Builds runtime skeleton." << std::endl;
+            LOGI("Builds runtime skeleton.")
             SkeletonBuilder builder;
             skeleton = builder(raw_skeleton);
             if (!skeleton) {
-                vox::log::Err() << "Failed to build runtime skeleton." << std::endl;
+                LOGE("Failed to build runtime skeleton.")
                 return nullptr;
             }
         } else if (archive.TestTag<Skeleton>()) {
@@ -101,7 +86,7 @@ unique_ptr<vox::animation::Skeleton> LoadSkeleton(const char* _path) {
             skeleton = make_unique<Skeleton>();
             archive >> *skeleton;
         } else {
-            vox::log::Err() << "Failed to read input skeleton from binary file: " << _path << std::endl;
+            LOGE("Failed to read input skeleton from binary file: {}.", _path)
             return nullptr;
         }
     }
@@ -141,7 +126,7 @@ bool Export(OzzImporter& _importer,
     // Must be done before converting to additive, to be sure hierarchy length is
     // valid when optimizing.
     if (_config["optimize"].asBool()) {
-        vox::log::Log() << "Optimizing animation." << std::endl;
+        LOGI("Optimizing animation.")
         AnimationOptimizer optimizer;
 
         // Setup optimizer from config parameters.
@@ -151,9 +136,7 @@ bool Export(OzzImporter& _importer,
 
         // Builds per joint settings.
         const Json::Value& joints_config = tolerances["override"];
-        for (Json::ArrayIndex i = 0; i < joints_config.size(); ++i) {
-            const Json::Value& joint_config = joints_config[i];
-
+        for (const auto& joint_config : joints_config) {
             // Prepares setting.
             AnimationOptimizer::Setting setting;
             setting.tolerance = joint_config["tolerance"].asFloat();
@@ -167,43 +150,39 @@ bool Export(OzzImporter& _importer,
                 const char* joint_name = _skeleton.joint_names()[j];
                 if (strmatch(joint_name, name_pattern)) {
                     found = true;
-
-                    vox::log::LogV() << "Found joint \"" << joint_name << "\" matching pattern \"" << name_pattern
-                                     << "\" for joint optimization setting override." << std::endl;
-
+                    LOGI("Found joint {} matching pattern {} for joint optimization setting override.", joint_name,
+                         name_pattern)
                     const AnimationOptimizer::JointsSetting::value_type entry(j, setting);
                     const bool newly = optimizer.joints_setting_override.insert(entry).second;
                     if (!newly) {
-                        vox::log::Log() << "Redundant optimization setting for pattern \"" << name_pattern << "\""
-                                        << std::endl;
+                        LOGI("Redundant optimization setting for pattern {}", name_pattern)
                     }
                 }
             }
 
             if (!found) {
-                vox::log::Log() << "No joint found for optimization setting for pattern \"" << name_pattern << "\""
-                                << std::endl;
+                LOGI("No joint found for optimization setting for pattern {}", name_pattern)
             }
         }
 
         RawAnimation raw_optimized_animation;
         if (!optimizer(raw_animation, _skeleton, &raw_optimized_animation)) {
-            vox::log::Err() << "Failed to optimize animation." << std::endl;
+            LOGE("Failed to optimize animation.")
             return false;
         }
 
         // Displays optimization statistics.
-        DisplaysOptimizationstatistics(raw_animation, raw_optimized_animation);
+        DisplaysOptimizationStatistics(raw_animation, raw_optimized_animation);
 
         // Brings data back to the raw animation.
         raw_animation = raw_optimized_animation;
     } else {
-        vox::log::LogV() << "Optimization for animation \"" << _input_animation.name << "\" is disabled." << std::endl;
+        LOGI("Optimization for animation {} is disabled.", _input_animation.name)
     }
 
     // Make delta animation if requested.
     if (_config["additive"].asBool()) {
-        vox::log::Log() << "Makes additive animation." << std::endl;
+        LOGI("Makes additive animation.")
 
         AdditiveAnimationBuilder additive_builder;
         RawAnimation raw_additive;
@@ -221,7 +200,7 @@ bool Export(OzzImporter& _importer,
         }
 
         if (!succeeded) {
-            vox::log::Err() << "Failed to make additive animation." << std::endl;
+            LOGE("Failed to make additive animation.")
             return false;
         }
 
@@ -232,27 +211,27 @@ bool Export(OzzImporter& _importer,
     // Builds runtime animation.
     unique_ptr<Animation> animation;
     if (!_config["raw"].asBool()) {
-        vox::log::Log() << "Builds runtime animation." << std::endl;
+        LOGI("Builds runtime animation.")
         AnimationBuilder builder;
         animation = builder(raw_animation);
         if (!animation) {
-            vox::log::Err() << "Failed to build runtime animation." << std::endl;
+            LOGE("Failed to build runtime animation.")
             return false;
         }
     }
 
     {
-        // Prepares output stream. File is a RAII so it will close automatically
+        // Prepares output stream. File is a RAII, so it will close automatically
         // at the end of this scope. Once the file is opened, nothing should fail
         // as it would leave an invalid file on the disk.
 
         // Builds output filename.
         vox::string filename = _importer.BuildFilename(_config["filename"].asCString(), raw_animation.name.c_str());
 
-        vox::log::LogV() << "Opens output file: \"" << filename << "\"" << std::endl;
+        LOGI("Opens output file: {}", filename)
         vox::io::File file(filename.c_str(), "wb");
         if (!file.opened()) {
-            vox::log::Err() << "Failed to open output file: \"" << filename << "\"" << std::endl;
+            LOGE("Failed to open output file: {}", filename)
             return false;
         }
 
@@ -261,15 +240,15 @@ bool Export(OzzImporter& _importer,
 
         // Fills output archive with the animation.
         if (_config["raw"].asBool()) {
-            vox::log::Log() << "Outputs RawAnimation to binary archive." << std::endl;
+            LOGI("Outputs RawAnimation to binary archive.")
             archive << raw_animation;
         } else {
-            vox::log::Log() << "Outputs Animation to binary archive." << std::endl;
+            LOGI("Outputs Animation to binary archive.")
             archive << *animation;
         }
     }
 
-    vox::log::LogV() << "Animation binary archive successfully outputted." << std::endl;
+    LOGI("Animation binary archive successfully outputted.")
 
     return true;
 }  // namespace
@@ -281,10 +260,10 @@ bool ProcessAnimation(OzzImporter& _importer,
                       const vox::Endianness _endianness) {
     RawAnimation animation;
 
-    vox::log::Log() << "Extracting animation \"" << _animation_name << "\"" << std::endl;
+    LOGI("Extracting animation {}", _animation_name)
 
     if (!_importer.Import(_animation_name, _skeleton, _config["sampling_rate"].asFloat(), &animation)) {
-        vox::log::Err() << "Failed to import animation \"" << _animation_name << "\"" << std::endl;
+        LOGE("Failed to import animation {}", _animation_name)
         return false;
     } else {
         // Give animation a name
@@ -305,19 +284,17 @@ bool ImportAnimations(const Json::Value& _config, OzzImporter* _importer, const 
     const Json::Value& skeleton_config = _config["skeleton"];
     const Json::Value& animations_config = _config["animations"];
 
-    if (animations_config.size() == 0) {
-        vox::log::Log() << "Configuration contains no animation import "
-                           "definition, animations import will be skipped."
-                        << std::endl;
+    if (animations_config.empty()) {
+        LOGI("Configuration contains no animation import definition, animations import will be skipped.")
         return true;
     }
 
     // Get all available animation names.
     const OzzImporter::AnimationNames& import_animation_names = _importer->GetAnimationNames();
 
-    // Are there animations available
+    // Are their animations available
     if (import_animation_names.empty()) {
-        vox::log::Err() << "No animation found." << std::endl;
+        LOGE("No animation found.")
         return true;
     }
 
@@ -330,22 +307,20 @@ bool ImportAnimations(const Json::Value& _config, OzzImporter* _importer, const 
 
     if (!success) return false;
 
-    // Loop though all existing animations, and export those who match
+    // Loop thought all existing animations, and export those who match
     // configuration.
     for (Json::ArrayIndex i = 0; i < animations_config.size(); ++i) {
         const Json::Value& animation_config = animations_config[i];
         const char* clip_match = animation_config["clip"].asCString();
 
         if (*clip_match == 0) {
-            vox::log::Log() << "No clip name provided. Animation import "
-                               "will be skipped."
-                            << std::endl;
+            LOGI("No clip name provided. Animation import will be skipped.")
             continue;
         }
 
         size_t num_not_clip_animation = 0, num_valid_animation = 0;
-        for (size_t j = 0; j < import_animation_names.size(); ++j) {
-            const char* animation_name = import_animation_names[j].c_str();
+        for (const auto& import_animation_name : import_animation_names) {
+            const char* animation_name = import_animation_name.c_str();
             if (!strmatch(animation_name, clip_match)) {
                 continue;
             }
@@ -358,30 +333,28 @@ bool ImportAnimations(const Json::Value& _config, OzzImporter* _importer, const 
 
             size_t num_valid_track = 0;
             const Json::Value& tracks_config = animation_config["tracks"];
-            for (Json::ArrayIndex t = 0; t < tracks_config.size(); ++t) {
-                if (ProcessTracks(*_importer, animation_name, *skeleton, tracks_config[t], _endianness)) {
+            for (const auto& t : tracks_config) {
+                if (ProcessTracks(*_importer, animation_name, *skeleton, t, _endianness)) {
                     ++num_valid_track;
                 }
             }
 
             if (num_valid_track != tracks_config.size()) {
-                vox::log::Log() << "One of track failed when import: \"" << animation_name << "\"" << std::endl;
+                LOGI("One of track failed when import: {}", animation_name)
                 success = false;
             }
         }
         // Don't display any message if no animation is supposed to be imported.
         if (0 == num_not_clip_animation && *clip_match != 0) {
-            vox::log::Log() << "No matching animation found for \"" << clip_match << "\"." << std::endl;
+            LOGI("No matching animation found for {}", clip_match)
         }
 
         if (num_valid_animation != num_not_clip_animation) {
-            vox::log::Log() << "One of animation failed when import, animation index: \"" << i << "\"" << std::endl;
+            LOGI("One of animation failed when import, animation index: {}", i)
             success = false;
         }
     }
 
     return success;
 }
-}  // namespace offline
-}  // namespace animation
-}  // namespace vox
+}  // namespace vox::animation::offline

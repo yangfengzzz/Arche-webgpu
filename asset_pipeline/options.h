@@ -179,7 +179,7 @@ protected:
     // *_exit can be set to true to require application to exit. This flag is
     // relevant only if the function does not return false. Application will
     // exit anyway if false is returned.
-    typedef bool (*ValidateFn)(const Option& _option, int _argc);
+    typedef bool (*ValidateFn)(const Option& option, int argc);
 
     // Construct an option.
     // _name and _help are set to an empty c string if nullptr.
@@ -212,16 +212,16 @@ private:
 };
 
 // Defines a strongly typed option class
-template <typename _Type>
+template <typename TypeType>
 class VOX_ASSET_DLL TypedOption : public Option {
 public:
     // Lets the type be known.
-    typedef _Type Type;
+    typedef TypeType Type;
 
     // Defines an option.
     TypedOption(const char* _name,
                 const char* _help,
-                _Type _default,
+                Type _default,
                 bool _required,
                 Option::ValidateFn _validate = nullptr)
         : Option(_name, _help, _required, _validate), default_(_default), value_(_default) {}
@@ -229,13 +229,13 @@ public:
     ~TypedOption() override = default;
 
     // Implicit conversion to the option type.
-    operator _Type() const { return value_; }
+    operator Type() const { return value_; }
 
     // Explicit getter.
-    [[nodiscard]] const _Type& value() const { return value_; }
+    [[nodiscard]] const Type& value() const { return value_; }
 
     // Get the default value.
-    [[nodiscard]] const _Type& default_value() const { return default_; }
+    [[nodiscard]] const Type& default_value() const { return default_; }
 
 private:
     // Parse the command line and set the option value.
@@ -251,10 +251,10 @@ private:
     [[nodiscard]] const char* FormatType() const override;
 
     // Default option's value.
-    _Type default_;
+    Type default_;
 
     // Current option's value.
-    _Type value_;
+    Type value_;
 };
 
 // Declares all available option types.
@@ -362,14 +362,14 @@ private:
 
 namespace internal {
 // Automatically registers itself to the global parser.
-template <typename _Option>
-class Registrer : public _Option {
+template <typename Option>
+class Registrer : public Option {
 public:
     Registrer(const char* _name,
               const char* _help,
-              typename _Option::Type _default,
+              typename Option::Type _default,
               bool _required,
-              typename _Option::ValidateFn _fn = nullptr);
+              typename Option::ValidateFn _fn = nullptr);
     virtual ~Registrer();
 };
 }  // namespace internal

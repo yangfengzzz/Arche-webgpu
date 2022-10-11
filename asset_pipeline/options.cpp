@@ -15,8 +15,7 @@
 #include <new>
 #include <sstream>
 
-namespace vox {
-namespace options {
+namespace vox::options {
 
 namespace internal {
 
@@ -66,20 +65,20 @@ void* GlobalRegistrer::placeholder_[kParserPlaceholerSize];
 }  // namespace
 
 // Implements Registrer constructor and destructor.
-template <typename _Option>
-Registrer<_Option>::Registrer(const char* _name,
-                              const char* _help,
-                              typename _Option::Type _default,
-                              bool _required,
-                              typename _Option::ValidateFn _fn)
-    : _Option(_name, _help, _default, _required, _fn) {
+template <typename Option>
+Registrer<Option>::Registrer(const char* _name,
+                             const char* _help,
+                             typename Option::Type _default,
+                             bool _required,
+                             typename Option::ValidateFn _fn)
+    : Option(_name, _help, _default, _required, _fn) {
     if (!internal::g_global_registrer.Construct()->RegisterOption(this)) {
         std::cerr << "Failed to register option " << _name << std::endl;
     }
 }
 
-template <typename _Option>
-Registrer<_Option>::~Registrer() {
+template <typename Option>
+Registrer<Option>::~Registrer() {
     Parser* parser = internal::g_global_registrer.parser();
     if (parser) {
         parser->UnregisterOption(this);
@@ -87,10 +86,10 @@ Registrer<_Option>::~Registrer() {
 }
 
 // Explicit instantiation of all supported types of Registrer.
-template class VOX_OPTIONS_DLL Registrer<TypedOption<bool>>;
-template class VOX_OPTIONS_DLL Registrer<TypedOption<int>>;
-template class VOX_OPTIONS_DLL Registrer<TypedOption<float>>;
-template class VOX_OPTIONS_DLL Registrer<TypedOption<const char*>>;
+template class VOX_ASSET_DLL Registrer<TypedOption<bool>>;
+template class VOX_ASSET_DLL Registrer<TypedOption<int>>;
+template class VOX_ASSET_DLL Registrer<TypedOption<float>>;
+template class VOX_ASSET_DLL Registrer<TypedOption<const char*>>;
 }  // namespace internal
 
 // Construct the parser if no option is registered.
@@ -202,15 +201,15 @@ bool Parse(const char* _argv, const char* _option, bool* _value) {
         for (++option_end; std::isspace(*option_end); ++option_end) {  // Trims spaces.
         }
         const char* true_options[] = {"yes", "true", "1", "t", "y"};
-        for (size_t i = 0; i < sizeof(true_options) / sizeof(true_options[0]); i++) {
-            if (!StrICmp(option_end, true_options[i])) {
+        for (auto& true_option : true_options) {
+            if (!StrICmp(option_end, true_option)) {
                 *_value = true;
                 return true;
             }
         }
         const char* false_options[] = {"no", "false", "0", "f", "n"};
-        for (size_t i = 0; i < sizeof(false_options) / sizeof(false_options[0]); ++i) {
-            if (!StrICmp(option_end, false_options[i])) {
+        for (auto& false_option : false_options) {
+            if (!StrICmp(option_end, false_option)) {
                 *_value = false;
                 return true;
             }
@@ -269,7 +268,7 @@ bool Parse(const char* _argv, const char* _option, const char** _value) {
 }
 
 // Format option type using template specialization.
-template <typename _Type>
+template <typename Type>
 const char* FormatOptionType();
 
 // Specialization of FormatOptionType for all supported types.
@@ -311,7 +310,7 @@ Option::Option(const char* _name, const char* _help, bool _required, ValidateFn 
       parsed_(false),
       validate_(_validate) {}
 
-Option::~Option() {}
+Option::~Option() = default;
 
 bool Option::Validate(int _argc) {
     if (validate_) {
@@ -333,21 +332,21 @@ void Option::RestoreDefault() {
     RestoreDefaultImpl();  // Restores actual value.
 }
 
-template <typename _Type>
-bool TypedOption<_Type>::ParseImpl(const char* _argv) {
+template <typename Type>
+bool TypedOption<Type>::ParseImpl(const char* _argv) {
     return vox::options::Parse(_argv, name(), &value_);
 }
 
-template <typename _Type>
-vox::string TypedOption<_Type>::FormatDefault() const {
+template <typename Type>
+vox::string TypedOption<Type>::FormatDefault() const {
     std::stringstream str;
     str << "\"" << std::boolalpha << default_ << "\"";
     return str.str().c_str();
 }
 
-template <typename _Type>
-const char* TypedOption<_Type>::FormatType() const {
-    return vox::options::FormatOptionType<_Type>();
+template <typename Type>
+const char* TypedOption<Type>::FormatType() const {
+    return vox::options::FormatOptionType<Type>();
 }
 
 // Explicit instantiation of all supported types of TypedOption.
@@ -606,5 +605,4 @@ const char* Parser::version() const { return version_; }
 vox::string Parser::executable_path() const { return vox::string(executable_path_begin_, executable_path_end_); }
 
 const char* Parser::executable_name() const { return executable_name_; }
-}  // namespace options
-}  // namespace vox
+}  // namespace vox::options

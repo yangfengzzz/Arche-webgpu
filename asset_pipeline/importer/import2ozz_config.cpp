@@ -4,21 +4,21 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
+#include "asset_pipeline/importer/import2ozz_config.h"
+
 #include <json/json.h>
 
 #include <cstring>
 #include <fstream>
 #include <sstream>
 
-#include "vox.animation/offline/animation_optimizer.h"
 #include "asset_pipeline/importer/import2ozz.h"
 #include "asset_pipeline/importer/import2ozz_anim.h"
-#include "asset_pipeline/importer/import2ozz_config.h"
 #include "asset_pipeline/importer/import2ozz_track.h"
-#include "vox.animation/offline/track_optimizer.h"
-#include "vox.base/containers/string.h"
-#include "vox.base/logging.h"
 #include "asset_pipeline/options.h"
+#include "vox.animation/offline/animation_optimizer.h"
+#include "vox.animation/offline/track_optimizer.h"
+#include "vox.base/logging.h"
 
 bool ValidateExclusiveConfigOption(const vox::options::Option& _option, int _argc);
 VOX_OPTIONS_DECLARE_STRING_FN(
@@ -39,12 +39,10 @@ bool ValidateExclusiveConfigOption(const vox::options::Option& _option, int _arg
 
 VOX_OPTIONS_DECLARE_STRING(config_dump_reference, "Dumps reference json configuration to specified file.", "", false)
 
-namespace vox {
-namespace animation {
-namespace offline {
+namespace vox::animation::offline {
 namespace {
 
-template <typename _Type>
+template <typename Type>
 struct ToJsonType;
 
 template <>
@@ -152,15 +150,15 @@ bool MakeDefaultObject(Json::Value& _parent, const char* _name, const char* _com
     return existed;
 }
 
-template <typename _Type>
-bool MakeDefault(Json::Value& _parent, const char* _name, _Type _value, const char* _comment) {
+template <typename Type>
+bool MakeDefault(Json::Value& _parent, const char* _name, Type _value, const char* _comment) {
     // Check if exists first.
     const bool existed = _parent.isMember(_name);
     // Create in any case
     Json::Value* member = &_parent[_name];
     if (!existed) {
         *member = _value;
-        assert(IsCompatibleType(member->type(), ToJsonType<_Type>::type()));
+        assert(IsCompatibleType(member->type(), ToJsonType<Type>::type()));
     }
 
     // Pushes comment if there's not one already.
@@ -226,8 +224,8 @@ bool SanitizeOptimizationSettings(Json::Value& _root, bool _all_options) {
 
     MakeDefaultArray(_root, "override", "Per joint optimization setting override", !_all_options);
     Json::Value& joints = _root["override"];
-    for (Json::ArrayIndex i = 0; i < joints.size(); ++i) {
-        if (!SanitizeJointsSetting(joints[i])) {
+    for (auto& joint : joints) {
+        if (!SanitizeJointsSetting(joint)) {
             return false;
         }
     }
@@ -251,11 +249,10 @@ bool SanitizeTrackImport(Json::Value& _root) {
                 "(aka float3 with scene unit and axis conversion).");
     const char* type_name = _root["type"].asCString();
     if (!PropertyTypeConfig::IsValidEnumName(type_name)) {
-        vox::log::Err() << "Invalid value \"" << type_name
-                        << "\" for import track type property. Type can be float1 "
-                           "to float4, point and vector (aka float3 with scene "
-                           "unit and axis conversion)."
-                        << std::endl;
+        LOGE("Invalid value {} for import track type property. Type can be float1 "
+             "to float4, point and vector (aka float3 with scene "
+             "unit and axis conversion).",
+             type_name)
         return false;
     }
 
@@ -283,8 +280,8 @@ bool SanitizeTrackMotion(Json::Value& _root) {
 bool SanitizeTrack(Json::Value& _root, bool _all_options) {
     MakeDefaultArray(_root, "properties", "Properties to import.", !_all_options);
     Json::Value& imports = _root["properties"];
-    for (Json::ArrayIndex i = 0; i < imports.size(); ++i) {
-        if (!SanitizeTrackImport(imports[i])) {
+    for (auto& import : imports) {
+        if (!SanitizeTrackImport(import)) {
             return false;
         }
     }
@@ -319,11 +316,10 @@ bool SanitizeAnimation(Json::Value& _root, bool _all_options) {
                 "reference, or \"skeleton\" to use skeleton rest pose.");
 
     if (!AdditiveReference::IsValidEnumName(_root["additive_reference"].asCString())) {
-        vox::log::Err() << "Invalid additive reference pose \"" << _root["additive_reference"].asCString() << "\". \""
-                        << "Can be \"animation\" to use the 1st animation keyframe "
-                           "as reference, or \"skeleton\" to use skeleton rest "
-                           "pose."
-                        << std::endl;
+        LOGE("Invalid additive reference pose {} Can be \"animation\" to use the 1st animation keyframe "
+             "as reference, or \"skeleton\" to use skeleton rest "
+             "pose.",
+             _root["additive_reference"].asCString())
         return false;
     }
 
@@ -337,8 +333,8 @@ bool SanitizeAnimation(Json::Value& _root, bool _all_options) {
 
     MakeDefaultArray(_root, "tracks", "Tracks to build.", !_all_options);
     Json::Value& tracks = _root["tracks"];
-    for (Json::ArrayIndex i = 0; i < tracks.size(); ++i) {
-        if (!SanitizeTrack(tracks[i], _all_options)) {
+    for (auto& track : tracks) {
+        if (!SanitizeTrack(track, _all_options)) {
             return false;
         }
     }
@@ -355,8 +351,8 @@ bool SanitizeRoot(Json::Value& _root, bool _all_options) {
     // Forces array creation as it's expected for the defaultconfiguration.
     MakeDefaultArray(_root, "animations", "Animations to import.", false);
     Json::Value& animations = _root["animations"];
-    for (Json::ArrayIndex i = 0; i < animations.size(); ++i) {
-        if (!SanitizeAnimation(animations[i], _all_options)) {
+    for (auto& animation : animations) {
+        if (!SanitizeAnimation(animation, _all_options)) {
             return false;
         }
     }
@@ -364,11 +360,11 @@ bool SanitizeRoot(Json::Value& _root, bool _all_options) {
     return true;
 }
 
-bool RecursiveCheck(const Json::Value& _root, const Json::Value& _expected, vox::string _name) {
+bool RecursiveCheck(const Json::Value& _root, const Json::Value& _expected, const vox::string& _name) {
     if (!IsCompatibleType(_root.type(), _expected.type())) {
         // It's a failure to have a wrong member type.
-        vox::log::Err() << "Invalid type \"" << JsonTypeToString(_root.type()) << "\" for json member \"" << _name
-                        << "\". \"" << JsonTypeToString(_expected.type()) << "\" expected." << std::endl;
+        LOGE("Invalid type {} for json member {}. {} expected.", JsonTypeToString(_root.type()), _name,
+             JsonTypeToString(_expected.type()))
         return false;
     }
 
@@ -383,10 +379,10 @@ bool RecursiveCheck(const Json::Value& _root, const Json::Value& _expected, vox:
         }
     } else if (_root.isObject()) {
         assert(_expected.isObject());
-        for (Json::Value::iterator it = _root.begin(); it != _root.end(); it++) {
+        for (auto it = _root.begin(); it != _root.end(); it++) {
             const std::string& name = it.name();
             if (!_expected.isMember(name)) {
-                vox::log::Err() << "Invalid json member \"" << _name + "." + name.c_str() << "\"." << std::endl;
+                LOGE("Invalid json member {}.{}", _name, name.c_str())
                 return false;
             }
             const Json::Value& expected_member = _expected[name];
@@ -408,10 +404,10 @@ std::string ToString(const Json::Value& _value) {
 
 bool DumpConfig(const char* _path, const Json::Value& _config) {
     if (_path[0] != 0) {
-        vox::log::LogV() << "Opens config file to dump: " << _path << std::endl;
+        LOGI("Opens config file to dump: {}", _path)
         std::ofstream file(_path);
         if (!file.is_open()) {
-            vox::log::Err() << "Failed to open config file to dump: \"" << _path << "\"" << std::endl;
+            LOGE("Failed to open config file to dump: {}", _path)
             return false;
         }
         const std::string& document = ToString(_config);
@@ -434,22 +430,21 @@ bool ProcessConfiguration(Json::Value* _config) {
     if (OPTIONS_config.value()[0] != 0) {
         config_string = OPTIONS_config.value();
     } else if (OPTIONS_config_file.value()[0] != 0) {
-        vox::log::LogV() << "Opens config file: \"" << OPTIONS_config_file << "\"." << std::endl;
+        LOGI("Opens config file: {}.", OPTIONS_config_file)
 
         std::ifstream file(OPTIONS_config_file.value());
         if (!file.is_open()) {
-            vox::log::Err() << "Failed to open config file: \"" << OPTIONS_config_file << "\"." << std::endl;
+            LOGE("Failed to open config file: {}.", OPTIONS_config_file)
             return false;
         }
         config_string.assign(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
     } else {
-        vox::log::Log() << "No configuration provided, using default configuration." << std::endl;
+        LOGI("No configuration provided, using default configuration.")
     }
 
     Json::Reader json_builder;
     if (!json_builder.parse(config_string, *_config, true)) {
-        vox::log::Err() << "Error while parsing configuration string: " << json_builder.getFormattedErrorMessages()
-                        << std::endl;
+        LOGE("Error while parsing configuration string: {}", json_builder.getFormattedErrorMessages())
         return false;
     }
 
@@ -470,12 +465,6 @@ bool ProcessConfiguration(Json::Value* _config) {
         return false;
     }
 
-    // Dumps the config to LogV now it's sanitized.
-    if (vox::log::GetLevel() >= vox::log::kVerbose) {
-        const std::string& document = ToString(*_config);
-        vox::log::LogV() << "Sanitized configuration:" << std::endl << document << std::endl;
-    }
-
     // Dumps reference config to file.
     if (!DumpConfig(OPTIONS_config_dump_reference.value(), ref_config)) {
         return false;
@@ -483,6 +472,4 @@ bool ProcessConfiguration(Json::Value* _config) {
 
     return true;
 }
-}  // namespace offline
-}  // namespace animation
-}  // namespace vox
+}  // namespace vox::animation::offline

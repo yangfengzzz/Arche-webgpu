@@ -8,38 +8,26 @@
 
 #include <json/json.h>
 
-#include <cstdlib>
-#include <cstring>
-
-#include "asset_pipeline/importer/import2ozz.h"
-#include "asset_pipeline/importer/import2ozz_config.h"
-#include "asset_pipeline/options.h"
-#include "vox.animation/offline/raw_track.h"
 #include "vox.animation/offline/track_builder.h"
 #include "vox.animation/offline/track_optimizer.h"
 #include "vox.animation/runtime/skeleton.h"
 #include "vox.animation/runtime/track.h"
 #include "vox.base/io/archive.h"
-#include "vox.base/io/stream.h"
 #include "vox.base/logging.h"
-#include "vox.base/memory/unique_ptr.h"
+#include "vox.base/string_utils.h"
 
-namespace vox {
-namespace animation {
-namespace offline {
+namespace vox::animation::offline {
 namespace {
 
-template <typename _Track>
-void DisplaysOptimizationstatistics(const _Track& _non_optimized, const _Track& _optimized) {
+template <typename Track>
+void DisplaysOptimizationStatistics(const Track& _non_optimized, const Track& _optimized) {
     const size_t opt = _optimized.keyframes.size();
     const size_t non_opt = _non_optimized.keyframes.size();
 
     // Computes optimization ratios.
     float ratio = opt != 0 ? 1.f * non_opt / opt : 0.f;
 
-    vox::log::LogV log;
-    vox::log::FloatPrecision precision_scope(log, 1);
-    log << "Optimization stage results: " << ratio << ":1" << std::endl;
+    LOGI("Optimization stage results: {}:1", ratio)
 }
 
 bool IsCompatiblePropertyType(OzzImporter::NodeProperty::Type _src, OzzImporter::NodeProperty::Type _dest) {
@@ -57,7 +45,7 @@ bool IsCompatiblePropertyType(OzzImporter::NodeProperty::Type _src, OzzImporter:
     }
 }
 
-template <typename _RawTrack>
+template <typename RawTrack>
 struct RawTrackToTrack;
 
 template <>
@@ -77,42 +65,42 @@ struct RawTrackToTrack<RawFloat4Track> {
     typedef Float4Track Track;
 };
 
-template <typename _RawTrack>
+template <typename RawTrack>
 bool Export(OzzImporter& _importer,
-            const _RawTrack& _raw_track,
+            const RawTrack& _raw_track,
             const Json::Value& _config,
             const vox::Endianness _endianness) {
     // Raw track to build and output.
-    _RawTrack raw_track;
+    RawTrack raw_track;
 
     // Optimizes track if option is enabled.
     if (_config["optimize"].asBool()) {
-        vox::log::LogV() << "Optimizing track." << std::endl;
+        LOGI("Optimizing track.")
         TrackOptimizer optimizer;
         optimizer.tolerance = _config["optimization_tolerance"].asFloat();
-        _RawTrack raw_optimized_track;
+        RawTrack raw_optimized_track;
         if (!optimizer(_raw_track, &raw_optimized_track)) {
-            vox::log::Err() << "Failed to optimize track." << std::endl;
+            LOGE("Failed to optimize track.")
             return false;
         }
 
         // Displays optimization statistics.
-        DisplaysOptimizationstatistics(_raw_track, raw_optimized_track);
+        DisplaysOptimizationStatistics(_raw_track, raw_optimized_track);
 
         // Brings data back to the raw track.
         raw_track = raw_optimized_track;
     } else {
-        vox::log::LogV() << "Optimization for track \"" << _raw_track.name << "\" is disabled." << std::endl;
+        LOGI("Optimization for track {} is disabled.", _raw_track.name)
     }
 
     // Builds runtime track.
-    unique_ptr<typename RawTrackToTrack<_RawTrack>::Track> track;
+    unique_ptr<typename RawTrackToTrack<RawTrack>::Track> track;
     if (!_config["raw"].asBool()) {
-        vox::log::LogV() << "Builds runtime track." << std::endl;
+        LOGI("Builds runtime track.")
         TrackBuilder builder;
         track = builder(raw_track);
         if (!track) {
-            vox::log::Err() << "Failed to build runtime track." << std::endl;
+            LOGE("Failed to build runtime track.")
             return false;
         }
     }
@@ -124,10 +112,10 @@ bool Export(OzzImporter& _importer,
         // Builds output filename.
         const vox::string filename = _importer.BuildFilename(_config["filename"].asCString(), _raw_track.name.c_str());
 
-        vox::log::LogV() << "Opens output file: " << filename << std::endl;
+        LOGI("Opens output file: {}", filename)
         vox::io::File file(filename.c_str(), "wb");
         if (!file.opened()) {
-            vox::log::Err() << "Failed to open output file: " << filename << std::endl;
+            LOGE("Failed to open output file: {}", filename)
             return false;
         }
 
@@ -136,20 +124,20 @@ bool Export(OzzImporter& _importer,
 
         // Fills output archive with the track.
         if (_config["raw"].asBool()) {
-            vox::log::LogV() << "Outputs RawTrack to binary archive." << std::endl;
+            LOGI("Outputs RawTrack to binary archive.")
             archive << raw_track;
         } else {
-            vox::log::LogV() << "Outputs Track to binary archive." << std::endl;
+            LOGI("Outputs Track to binary archive.")
             archive << *track;
         }
     }
 
-    vox::log::LogV() << "Track binary archive successfully outputted." << std::endl;
+    LOGI("Track binary archive successfully outputted.")
 
     return true;
 }
 
-template <typename _TrackType>
+template <typename TrackType>
 bool ProcessImportTrackType(OzzImporter& _importer,
                             const char* _animation_name,
                             const char* _joint_name,
@@ -159,21 +147,20 @@ bool ProcessImportTrackType(OzzImporter& _importer,
                             const vox::Endianness _endianness) {
     bool success = true;
 
-    vox::log::Log() << "Extracting animation track \"" << _joint_name << ":" << _property.name.c_str()
-                    << "\" from animation \"" << _animation_name << "\"." << std::endl;
+    LOGI("Extracting animation track {}:{} from animation {}", _joint_name, _property.name.c_str(), _animation_name)
 
-    _TrackType track;
+    TrackType track;
     success &= _importer.Import(_animation_name, _joint_name, _property.name.c_str(), _expected_type, 0, &track);
 
     if (success) {
         // Give the track a name
         track.name = _joint_name;
         track.name += '-';
-        track.name += _property.name.c_str();
+        track.name += _property.name;
 
         success &= Export(_importer, track, _import_config, _endianness);
     } else {
-        vox::log::Err() << "Failed to import track \"" << _joint_name << ":" << _property.name << "\"" << std::endl;
+        LOGE("Failed to import track {}:{}", _joint_name, _property.name)
     }
 
     return success;
@@ -201,11 +188,10 @@ bool ProcessImportTrack(OzzImporter& _importer,
         // Node found, need to find matching properties now.
         bool ppt_found = false;
         const OzzImporter::NodeProperties properties = _importer.GetNodeProperties(joint_name);
-        for (size_t p = 0; p < properties.size(); ++p) {
-            const OzzImporter::NodeProperty& property = properties[p];
+        for (const auto& property : properties) {
             // Checks property name matches
             const char* property_name = property.name.c_str();
-            vox::log::LogV() << "Inspecting property " << joint_name << ":" << property_name << "\"." << std::endl;
+            LOGI("Inspecting property {}:{}.", joint_name, property_name)
             if (!strmatch(property_name, ppt_name_match)) {
                 continue;
             }
@@ -218,14 +204,13 @@ bool ProcessImportTrack(OzzImporter& _importer,
             bool compatible_type = IsCompatiblePropertyType(property.type, expected_type);
 
             if (!compatible_type) {
-                vox::log::Log() << "Incompatible type \"" << expected_type_name << "\" for matching property \""
-                                << joint_name << ":" << property_name << "\" of type \""
-                                << PropertyTypeConfig::GetEnumName(property.type) << "\"." << std::endl;
+                LOGI("Incompatible type {} for matching property {}:{} of type {}.", expected_type_name, joint_name,
+                     property_name, PropertyTypeConfig::GetEnumName(property.type))
                 continue;
             }
 
-            vox::log::LogV() << "Found matching property \"" << joint_name << ":" << property_name << "\" of type \""
-                             << PropertyTypeConfig::GetEnumName(property.type) << "\"." << std::endl;
+            LOGI("Found matching property {}:{} of type {}.", joint_name, property_name,
+                 PropertyTypeConfig::GetEnumName(property.type))
 
             // A property has been found.
             ppt_found = true;
@@ -263,13 +248,12 @@ bool ProcessImportTrack(OzzImporter& _importer,
         }
 
         if (!ppt_found) {
-            vox::log::Log() << "No property found for track import definition \"" << joint_name_match << ":"
-                            << ppt_name_match << "\"." << std::endl;
+            LOGI("No property found for track import definition {}:{}", joint_name_match, ppt_name_match)
         }
     }
 
     if (!joint_found) {
-        vox::log::Log() << "No joint found for track import definition \"" << joint_name_match << "\"." << std::endl;
+        LOGI("No joint found for track import definition {}.", joint_name_match)
     }
 
     return success;
@@ -310,6 +294,4 @@ PropertyTypeConfig::EnumNames PropertyTypeConfig::GetNames() {
     const EnumNames enum_names = {VOX_ARRAY_SIZE(kNames), kNames};
     return enum_names;
 }
-}  // namespace offline
-}  // namespace animation
-}  // namespace vox
+}  // namespace vox::animation::offline

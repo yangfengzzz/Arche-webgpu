@@ -58,7 +58,7 @@ find_library(IOKit_LIBRARY IOKit)
 find_library(IOSurface_LIBRARY IOSurface)
 find_library(QuartzCore_LIBRARY QuartzCore)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE vox.render vox.math vox.base vox.simd_math vox.animation vox.toolkit spdlog fbxsdk
+target_link_libraries(${PROJECT_NAME} PRIVATE vox.render vox.math vox.base vox.simd_math vox.animation vox.toolkit spdlog fbxsdk jsoncpp
         absl_str_format_internal
         absl_strings_internal
         absl_strings -labsl_base
@@ -100,6 +100,7 @@ if (CMAKE_BUILD_TYPE MATCHES "Release")
             ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-release/third_party/abseil/absl/numeric
             ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-release/third_party/glfw/src
             ${CMAKE_SOURCE_DIR}/third_party/jolt/Build/build_release
+            ${CMAKE_SOURCE_DIR}/third_party/jsoncpp/build/lib
             /Applications/Autodesk/FBX\ SDK/2016.1/lib/clang/release)
 ELSEIF (CMAKE_BUILD_TYPE MATCHES "Debug")
     target_link_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/third_party/assimp/build_release/bin
@@ -116,6 +117,7 @@ ELSEIF (CMAKE_BUILD_TYPE MATCHES "Debug")
             ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-debug/third_party/abseil/absl/numeric
             ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-debug/third_party/glfw/src
             ${CMAKE_SOURCE_DIR}/third_party/jolt/Build/build_release
+            ${CMAKE_SOURCE_DIR}/third_party/jsoncpp/build/lib
             /Applications/Autodesk/FBX\ SDK/2016.1/lib/clang/release)
 endif ()
 
