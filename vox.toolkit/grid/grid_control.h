@@ -39,11 +39,14 @@ public:
 
     void setIs2DGrid(bool value);
 
-    void onAwake() override;
-
     void onUpdate(float deltaTime) override;
 
+    void onEnable() override;
+
+    void onDisable() override;
+
 private:
+    MeshRenderer* _renderer{nullptr};
     std::shared_ptr<GridMaterial> _material{nullptr};
     float _progress = 0;
     bool _is2DGrid = false;

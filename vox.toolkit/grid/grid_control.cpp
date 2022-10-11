@@ -18,7 +18,12 @@ ModelMeshPtr GridControl::createGridPlane() {
     return mesh;
 }
 
-GridControl::GridControl(Entity* entity) : Script(entity) {}
+GridControl::GridControl(Entity* entity) : Script(entity) {
+    _renderer = entity->addComponent<MeshRenderer>();
+    _renderer->setMesh(GridControl::createGridPlane());
+    _material = std::make_shared<GridMaterial>(scene()->device());
+    _renderer->setMaterial(_material);
+}
 
 std::shared_ptr<GridMaterial> GridControl::getMaterial() { return _material; }
 
@@ -28,13 +33,6 @@ void GridControl::setIs2DGrid(bool value) {
     _is2DGrid = value;
     _progress = 0;
     _flipGrid = true;
-}
-
-void GridControl::onAwake() {
-    auto gridRenderer = entity()->addComponent<MeshRenderer>();
-    gridRenderer->setMesh(GridControl::createGridPlane());
-    _material = std::make_shared<GridMaterial>(scene()->device());
-    gridRenderer->setMaterial(_material);
 }
 
 void GridControl::onUpdate(float deltaTime) {
@@ -56,5 +54,9 @@ void GridControl::onUpdate(float deltaTime) {
         _material->setFlipProgress(percent);
     }
 }
+
+void GridControl::onEnable() { _renderer->setEnabled(true); }
+
+void GridControl::onDisable() { _renderer->setEnabled(false); }
 
 }  // namespace vox::grid
