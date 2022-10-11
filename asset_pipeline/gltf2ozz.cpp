@@ -7,14 +7,12 @@
 #include <cassert>
 #include <cstring>
 
-#include "vox.animation/offline/raw_animation_utils.h"
 #include "asset_pipeline/importer/import2ozz.h"
+#include "vox.animation/offline/raw_animation_utils.h"
 #include "vox.animation/runtime/skeleton.h"
 #include "vox.base/containers/map.h"
 #include "vox.base/containers/set.h"
-#include "vox.base/containers/vector.h"
 #include "vox.base/logging.h"
-#include "vox.math/math_utils.h"
 #include "vox.simd_math/simd_math.h"
 
 #define TINYGLTF_IMPLEMENTATION
@@ -38,14 +36,14 @@
 
 namespace {
 
-template <typename _VectorType>
-bool FixupNames(_VectorType& _data, const char* _pretty_name, const char* _prefix_name) {
+template <typename VectorType>
+bool FixupNames(VectorType& _data, const char* _pretty_name, const char* _prefix_name) {
     vox::set<std::string> names;
     for (size_t i = 0; i < _data.size(); ++i) {
         bool renamed = false;
-        typename _VectorType::const_reference data = _data[i];
+        typename VectorType::const_reference data = _data[i];
 
-        std::string name(data.name.c_str());
+        std::string name(data.name);
 
         // Fixes unnamed animations.
         if (name.length() == 0) {
@@ -67,8 +65,7 @@ bool FixupNames(_VectorType& _data, const char* _pretty_name, const char* _prefi
         }
 
         if (renamed) {
-            vox::log::LogV() << _pretty_name << " #" << i << " with name \"" << data.name << "\" was renamed to \""
-                             << name << "\" in order to avoid duplicates." << std::endl;
+            LOGI("{}#{} with name {} was renamed to {} in order to avoid duplicates.", _pretty_name, i, data.name, name)
 
             // Actually renames tinygltf data.
             _data[i].name = name;
@@ -83,10 +80,9 @@ bool FixupNames(_VectorType& _data, const char* _pretty_name, const char* _prefi
 template <typename T>
 vox::span<const T> BufferView(const tinygltf::Model& _model, const tinygltf::Accessor& _accessor) {
     const int32_t component_size = tinygltf::GetComponentSizeInBytes(_accessor.componentType);
-    const int32_t element_size = component_size * tinygltf::GetTypeSizeInBytes(_accessor.type);
+    const int32_t element_size = component_size * tinygltf::GetNumComponentsInType(_accessor.type);
     if (element_size != sizeof(T)) {
-        vox::log::Err() << "Invalid buffer view access. Expected element size '" << sizeof(T) << " got " << element_size
-                        << " instead." << std::endl;
+        LOGE("Invalid buffer view access. Expected element size '{} got {} instead.", sizeof(T), element_size)
         return vox::span<const T>();
     }
 
@@ -97,13 +93,13 @@ vox::span<const T> BufferView(const tinygltf::Model& _model, const tinygltf::Acc
 }
 
 // Samples a linear animation channel
-// There is an exact mapping between gltf and vox keyframes so we just copy
+// There is an exact mapping between gltf and vox keyframes, so we just copy
 // everything over.
-template <typename _KeyframesType>
+template <typename KeyframesType>
 bool SampleLinearChannel(const tinygltf::Model& _model,
                          const tinygltf::Accessor& _output,
                          const vox::span<const float>& _timestamps,
-                         _KeyframesType* _keyframes) {
+                         KeyframesType* _keyframes) {
     const size_t gltf_keys_count = _output.count;
 
     if (gltf_keys_count == 0) {
@@ -111,16 +107,16 @@ bool SampleLinearChannel(const tinygltf::Model& _model,
         return true;
     }
 
-    typedef typename _KeyframesType::value_type::Value ValueType;
+    typedef typename KeyframesType::value_type::Value ValueType;
     const vox::span<const ValueType> values = BufferView<ValueType>(_model, _output);
     if (values.size_bytes() / sizeof(ValueType) != gltf_keys_count || _timestamps.size() != gltf_keys_count) {
-        vox::log::Err() << "gltf format error, inconsistent number of keys." << std::endl;
+        LOGE("gltf format error, inconsistent number of keys.")
         return false;
     }
 
     _keyframes->reserve(_output.count);
     for (size_t i = 0; i < _output.count; ++i) {
-        const typename _KeyframesType::value_type key{_timestamps[i], values[i]};
+        const typename KeyframesType::value_type key{_timestamps[i], values[i]};
         _keyframes->push_back(key);
     }
 
@@ -129,11 +125,11 @@ bool SampleLinearChannel(const tinygltf::Model& _model,
 
 // Samples a step animation channel
 // There are twice-1 as many vox keyframes as gltf keyframes
-template <typename _KeyframesType>
+template <typename KeyframesType>
 bool SampleStepChannel(const tinygltf::Model& _model,
                        const tinygltf::Accessor& _output,
                        const vox::span<const float>& _timestamps,
-                       _KeyframesType* _keyframes) {
+                       KeyframesType* _keyframes) {
     const size_t gltf_keys_count = _output.count;
 
     if (gltf_keys_count == 0) {
@@ -141,10 +137,10 @@ bool SampleStepChannel(const tinygltf::Model& _model,
         return true;
     }
 
-    typedef typename _KeyframesType::value_type::Value ValueType;
+    typedef typename KeyframesType::value_type::Value ValueType;
     const vox::span<const ValueType> values = BufferView<ValueType>(_model, _output);
     if (values.size_bytes() / sizeof(ValueType) != gltf_keys_count || _timestamps.size() != gltf_keys_count) {
-        vox::log::Err() << "gltf format error, inconsistent number of keys." << std::endl;
+        LOGE("gltf format error, inconsistent number of keys.")
         return false;
     }
 
@@ -153,12 +149,12 @@ bool SampleStepChannel(const tinygltf::Model& _model,
     _keyframes->resize(numKeyframes);
 
     for (size_t i = 0; i < _output.count; i++) {
-        typename _KeyframesType::reference key = _keyframes->at(i * 2);
+        typename KeyframesType::reference key = _keyframes->at(i * 2);
         key.time = _timestamps[i];
         key.value = values[i];
 
         if (i < _output.count - 1) {
-            typename _KeyframesType::reference next_key = _keyframes->at(i * 2 + 1);
+            typename KeyframesType::reference next_key = _keyframes->at(i * 2 + 1);
             next_key.time = nexttowardf(_timestamps[i + 1], 0.f);
             next_key.value = values[i];
         }
@@ -199,13 +195,13 @@ T SampleHermiteSpline(float _alpha, const T& p0, const T& m0, const T& p1, const
 // Samples a cubic-spline channel
 // the number of keyframes is determined from the animation duration and given
 // sample rate
-template <typename _KeyframesType>
+template <typename KeyframesType>
 bool SampleCubicSplineChannel(const tinygltf::Model& _model,
                               const tinygltf::Accessor& _output,
                               const vox::span<const float>& _timestamps,
                               float _sampling_rate,
                               float _duration,
-                              _KeyframesType* _keyframes) {
+                              KeyframesType* _keyframes) {
     (void)_duration;
 
     assert(_output.count % 3 == 0);
@@ -216,10 +212,10 @@ bool SampleCubicSplineChannel(const tinygltf::Model& _model,
         return true;
     }
 
-    typedef typename _KeyframesType::value_type::Value ValueType;
+    typedef typename KeyframesType::value_type::Value ValueType;
     const vox::span<const ValueType> values = BufferView<ValueType>(_model, _output);
     if (values.size_bytes() / (sizeof(ValueType) * 3) != gltf_keys_count || _timestamps.size() != gltf_keys_count) {
-        vox::log::Err() << "gltf format error, inconsistent number of keys." << std::endl;
+        LOGE("gltf format error, inconsistent number of keys.")
         return false;
     }
 
@@ -233,7 +229,7 @@ bool SampleCubicSplineChannel(const tinygltf::Model& _model,
         const float time = fixed_it.time(k) + _timestamps[0];
 
         // Creates output key.
-        typename _KeyframesType::value_type key;
+        typename KeyframesType::value_type key;
         key.time = time;
 
         // Makes sure time is in between the correct cubic keyframes.
@@ -259,14 +255,14 @@ bool SampleCubicSplineChannel(const tinygltf::Model& _model,
     return true;
 }
 
-template <typename _KeyframesType>
+template <typename KeyframesType>
 bool SampleChannel(const tinygltf::Model& _model,
                    const std::string& _interpolation,
                    const tinygltf::Accessor& _output,
                    const vox::span<const float>& _timestamps,
                    float _sampling_rate,
                    float _duration,
-                   _KeyframesType* _keyframes) {
+                   KeyframesType* _keyframes) {
     bool valid = false;
     if (_interpolation == "LINEAR") {
         valid = SampleLinearChannel(_model, _output, _timestamps, _keyframes);
@@ -275,32 +271,31 @@ bool SampleChannel(const tinygltf::Model& _model,
     } else if (_interpolation == "CUBICSPLINE") {
         valid = SampleCubicSplineChannel(_model, _output, _timestamps, _sampling_rate, _duration, _keyframes);
     } else {
-        vox::log::Err() << "Invalid or unknown interpolation type '" << _interpolation << "'." << std::endl;
+        LOGE("Invalid or unknown interpolation type {}.", _interpolation)
         valid = false;
     }
 
     // Check if sorted (increasing time, might not be stricly increasing).
     if (valid) {
         valid = std::is_sorted(_keyframes->begin(), _keyframes->end(),
-                               [](typename _KeyframesType::const_reference _a,
-                                  typename _KeyframesType::const_reference _b) { return _a.time < _b.time; });
+                               [](typename KeyframesType::const_reference _a,
+                                  typename KeyframesType::const_reference _b) { return _a.time < _b.time; });
         if (!valid) {
-            vox::log::Log() << "gltf format error, keyframes are not sorted in increasing order." << std::endl;
+            LOGI("gltf format error, keyframes are not sorted in increasing order.")
         }
     }
 
     // Remove keyframes with strictly equal times, keeping the first one.
     if (valid) {
         auto new_end = std::unique(_keyframes->begin(), _keyframes->end(),
-                                   [](typename _KeyframesType::const_reference _a,
-                                      typename _KeyframesType::const_reference _b) { return _a.time == _b.time; });
+                                   [](typename KeyframesType::const_reference _a,
+                                      typename KeyframesType::const_reference _b) { return _a.time == _b.time; });
         if (new_end != _keyframes->end()) {
             _keyframes->erase(new_end, _keyframes->end());
 
-            vox::log::Log() << "gltf format error, keyframe times are not unique. "
-                               "Imported data were modified to remove keyframes at "
-                               "consecutive equivalent times."
-                            << std::endl;
+            LOGI("gltf format error, keyframe times are not unique. "
+                 "Imported data were modified to remove keyframes at "
+                 "consecutive equivalent times.")
         }
     }
     return valid;
@@ -325,7 +320,7 @@ vox::animation::offline::RawAnimation::RotationKey CreateRotationRestPoseKey(con
     key.time = 0.0f;
 
     if (_node.rotation.empty()) {
-        key.value = vox::QuaternionF::identity();
+        key.value = vox::QuaternionF::makeIdentity();
     } else {
         key.value = vox::QuaternionF(static_cast<float>(_node.rotation[0]), static_cast<float>(_node.rotation[1]),
                                      static_cast<float>(_node.rotation[2]), static_cast<float>(_node.rotation[3]));
@@ -347,8 +342,8 @@ vox::animation::offline::RawAnimation::ScaleKey CreateScaleRestPoseKey(const tin
 }
 
 // Creates the default transform for a gltf node
-bool CreateNodeTransform(const tinygltf::Node& _node, vox::simd_math::Transform* _transform) {
-    *_transform = vox::simd_math::Transform::identity();
+bool CreateNodeTransform(const tinygltf::Node& _node, vox::ScalableTransform* _transform) {
+    *_transform = vox::ScalableTransform::identity();
 
     if (!_node.matrix.empty()) {
         const vox::simd_math::Float4x4 matrix = {
@@ -372,7 +367,7 @@ bool CreateNodeTransform(const tinygltf::Node& _node, vox::simd_math::Transform*
             return true;
         }
 
-        vox::log::Err() << "Failed to extract transformation from node \"" << _node.name << "\"." << std::endl;
+        LOGE("Failed to extract transformation from node {}.", _node.name)
         return false;
     }
 
@@ -398,11 +393,11 @@ bool CreateNodeTransform(const tinygltf::Node& _node, vox::simd_math::Transform*
 class GltfImporter : public vox::animation::offline::OzzImporter {
 public:
     GltfImporter() {
-        // We don't care about image data but we have to provide this callback
+        // We don't care about image data, but we have to provide this callback
         // because we're not loading the stb library
         auto image_loader = [](tinygltf::Image*, const int, std::string*, std::string*, int, int, const unsigned char*,
                                int, void*) { return true; };
-        m_loader.SetImageLoader(image_loader, NULL);
+        m_loader.SetImageLoader(image_loader, nullptr);
     }
 
 private:
@@ -413,7 +408,7 @@ private:
 
         // Finds file extension.
         const char* separator = std::strrchr(_filename, '.');
-        const char* ext = separator != NULL ? separator + 1 : "";
+        const char* ext = separator != nullptr ? separator + 1 : "";
 
         // Tries to guess whether the input is a gltf json or a glb binary based on
         // the file extension
@@ -421,8 +416,7 @@ private:
             success = m_loader.LoadBinaryFromFile(&m_model, &errors, &warnings, _filename);
         } else {
             if (std::strcmp(ext, "gltf") != 0) {
-                vox::log::Log() << "Unknown file extension '" << ext << "', assuming a JSON-formatted gltf."
-                                << std::endl;
+                LOGI("Unknown file extension {}, assuming a JSON-formatted gltf.", ext)
             }
 
             success = m_loader.LoadASCIIFromFile(&m_model, &errors, &warnings, _filename);
@@ -430,15 +424,15 @@ private:
 
         // Prints any errors or warnings emitted by the loader
         if (!warnings.empty()) {
-            vox::log::Log() << "glTF parsing warnings: " << warnings << std::endl;
+            LOGW("glTF parsing warnings: {}", warnings)
         }
 
         if (!errors.empty()) {
-            vox::log::Err() << "glTF parsing errors: " << errors << std::endl;
+            LOGE("glTF parsing errors: {}", errors)
         }
 
         if (success) {
-            vox::log::Log() << "glTF parsed successfully." << std::endl;
+            LOGI("glTF parsed successfully.")
         }
 
         if (success) {
@@ -487,12 +481,12 @@ private:
         (void)_types;
 
         if (m_model.scenes.empty()) {
-            vox::log::Err() << "No scenes found." << std::endl;
+            LOGE("No scenes found.")
             return false;
         }
 
         // If no default scene has been set then take the first one spec does not
-        // disallow gltfs without a default scene but it makes more sense to keep
+        // disallow gltfs without a default scene, but it makes more sense to keep
         // going instead of throwing an error here
         int defaultScene = m_model.defaultScene;
         if (defaultScene == -1) {
@@ -500,11 +494,10 @@ private:
         }
 
         tinygltf::Scene& scene = m_model.scenes[defaultScene];
-        vox::log::LogV() << "Importing from default scene #" << defaultScene << " with name \"" << scene.name << "\"."
-                         << std::endl;
+        LOGI("Importing from default scene #{} with name {}.", defaultScene, scene.name)
 
         if (scene.nodes.empty()) {
-            vox::log::Err() << "Scene has no node." << std::endl;
+            LOGE("Scene has no node.")
             return false;
         }
 
@@ -512,18 +505,16 @@ private:
         vox::vector<int> roots;
         vox::vector<tinygltf::Skin> skins = GetSkinsForScene(scene);
         if (skins.empty()) {
-            vox::log::Log() << "No skin exists in the scene, the whole scene graph "
-                               "will be considered as a skeleton."
-                            << std::endl;
+            LOGI("No skin exists in the scene, the whole scene graph "
+                 "will be considered as a skeleton.")
             // Uses all scene nodes.
             for (auto& node : scene.nodes) {
                 roots.push_back(node);
             }
         } else {
             if (skins.size() > 1) {
-                vox::log::Log() << "Multiple skins exist in the scene, they will all "
-                                   "be exported to a single skeleton."
-                                << std::endl;
+                LOGI("Multiple skins exist in the scene, they will all "
+                     "be exported to a single skeleton.")
             }
 
             // Uses all skins roots.
@@ -545,9 +536,7 @@ private:
         }
 
         if (!_skeleton->Validate()) {
-            vox::log::Err() << "Output skeleton failed validation. This is likely an "
-                               "implementation issue."
-                            << std::endl;
+            LOGE("Output skeleton failed validation. This is likely an implementation issue.")
             return false;
         }
 
@@ -557,7 +546,7 @@ private:
     // Recursively import a node's children
     bool ImportNode(const tinygltf::Node& _node, vox::animation::offline::RawSkeleton::Joint* _joint) {
         // Names joint.
-        _joint->name = _node.name.c_str();
+        _joint->name = _node.name;
 
         // Fills transform.
         if (!CreateNodeTransform(_node, &_joint->transform)) {
@@ -583,8 +572,7 @@ private:
     // Returns all animations in the gltf document.
     AnimationNames GetAnimationNames() override {
         AnimationNames animNames;
-        for (size_t i = 0; i < m_model.animations.size(); ++i) {
-            tinygltf::Animation& animation = m_model.animations[i];
+        for (auto& animation : m_model.animations) {
             assert(animation.name.length() != 0);
             animNames.push_back(animation.name.c_str());
         }
@@ -601,24 +589,23 @@ private:
 
             static bool samplingRateWarn = false;
             if (!samplingRateWarn) {
-                vox::log::LogV() << "The animation sampling rate is set to 0 "
-                                    "(automatic) but glTF does not carry scene frame "
-                                    "rate information. Assuming a sampling rate of "
-                                 << _sampling_rate << "hz." << std::endl;
+                LOGI("The animation sampling rate is set to 0 "
+                     "(automatic) but glTF does not carry scene frame "
+                     "rate information. Assuming a sampling rate of {} hz.",
+                     _sampling_rate)
 
                 samplingRateWarn = true;
             }
         }
 
         // Find the corresponding gltf animation
-        std::vector<tinygltf::Animation>::const_iterator gltf_animation =
-                std::find_if(begin(m_model.animations), end(m_model.animations),
-                             [_animation_name](const tinygltf::Animation& _animation) {
-                                 return _animation.name == _animation_name;
-                             });
+        auto gltf_animation = std::find_if(begin(m_model.animations), end(m_model.animations),
+                                           [_animation_name](const tinygltf::Animation& _animation) {
+                                               return _animation.name == _animation_name;
+                                           });
         assert(gltf_animation != end(m_model.animations));
 
-        _animation->name = gltf_animation->name.c_str();
+        _animation->name = gltf_animation->name;
 
         // Animation duration is determined during sampling from the duration of the
         // longest channel
@@ -629,7 +616,7 @@ private:
 
         // gltf stores animations by splitting them in channels
         // where each channel targets a node's property i.e. translation, rotation
-        // or scale. vox expects animations to be stored per joint so we create a
+        // or scale. vox expects animations to be stored per joint, so we create a
         // map where we record the associated channels for each joint
         vox::cstring_map<std::vector<const tinygltf::AnimationChannel*>> channels_per_joint;
 
@@ -683,11 +670,11 @@ private:
             }
         }
 
-        vox::log::LogV() << "Processed animation '" << _animation->name << "' (tracks: " << _animation->tracks.size()
-                         << ", duration: " << _animation->duration << "s)." << std::endl;
+        LOGI("Processed animation '{}' (tracks: {}, duration: {}s).", _animation->name, _animation->tracks.size(),
+             _animation->duration)
 
         if (!_animation->Validate()) {
-            vox::log::Err() << "Animation '" << _animation->name << "' failed validation." << std::endl;
+            LOGE("Animation '{}' failed validation.", _animation->name)
             return false;
         }
 
@@ -702,7 +689,7 @@ private:
                                 vox::animation::offline::RawAnimation::JointTrack* _track) {
         // Validate interpolation type.
         if (_sampler.interpolation.empty()) {
-            vox::log::Err() << "Invalid sampler interpolation." << std::endl;
+            LOGE("Invalid sampler interpolation.")
             return false;
         }
 
@@ -713,7 +700,7 @@ private:
         // this is required to be present by the spec:
         // "Animation Sampler's input accessor must have min and max properties
         // defined."
-        const float duration = static_cast<float>(input.maxValues[0]);
+        const auto duration = static_cast<float>(input.maxValues[0]);
 
         // If this channel's duration is larger than the animation's duration
         // then increase the animation duration to match.
@@ -741,7 +728,7 @@ private:
             if (valid) {
                 // Normalize quaternions.
                 for (auto& key : _track->rotations) {
-                    key.value = vox::simd_math::Normalize(key.value);
+                    key.value = key.value.normalized();
                 }
             }
         } else if (_target_path == "scale") {
@@ -755,7 +742,7 @@ private:
     }
 
     // Returns all skins belonging to a given gltf scene
-    vox::vector<tinygltf::Skin> GetSkinsForScene(const tinygltf::Scene& _scene) const {
+    [[nodiscard]] vox::vector<tinygltf::Skin> GetSkinsForScene(const tinygltf::Scene& _scene) const {
         vox::set<int> open;
         vox::set<int> found;
 
@@ -784,7 +771,7 @@ private:
         return skins;
     }
 
-    const tinygltf::Node* FindNodeByName(const std::string& _name) const {
+    [[nodiscard]] const tinygltf::Node* FindNodeByName(const std::string& _name) const {
         for (const tinygltf::Node& node : m_model.nodes) {
             if (node.name == _name) {
                 return &node;
@@ -795,7 +782,7 @@ private:
     }
 
     // no support for user-defined tracks
-    NodeProperties GetNodeProperties(const char*) override { return NodeProperties(); }
+    NodeProperties GetNodeProperties(const char*) override { return {}; }
     bool Import(const char*,
                 const char*,
                 const char*,
