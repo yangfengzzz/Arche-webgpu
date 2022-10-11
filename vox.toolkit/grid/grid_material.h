@@ -12,8 +12,8 @@ namespace vox::grid {
 class GridMaterial : public BaseMaterial {
 public:
     struct alignas(16) GridData {
-        float farClip = 0.1;
-        float nearClip = 100;
+        float farClip = 100;
+        float nearClip = 0.1;
         float primaryScale = 10;
         float secondaryScale = 1;
         float gridIntensity = 0.2;

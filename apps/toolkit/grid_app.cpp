@@ -36,13 +36,15 @@ void GridApp::loadScene() {
     auto scene = _sceneManager->currentScene();
     scene->ambientLight()->setDiffuseSolidColor(Color(1, 1, 1));
     auto rootEntity = scene->createRootEntity();
-    rootEntity->addComponent<grid::GridControl>();
 
     auto cameraEntity = rootEntity->createChild();
     cameraEntity->transform->setPosition(10, 10, 10);
     cameraEntity->transform->lookAt(Point3F(0, 0, 0));
     _mainCamera = cameraEntity->addComponent<Camera>();
     cameraEntity->addComponent<control::OrbitControl>();
+
+    auto gridControl = rootEntity->addComponent<grid::GridControl>();
+    gridControl->camera = _mainCamera;
 
     // init point light
     auto light = rootEntity->createChild("light");

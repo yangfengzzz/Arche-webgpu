@@ -16,8 +16,8 @@ layout (location = 2) out vec3 farPoint;
 
 // Grid position are in clipped space
 vec3 gridPlane[6] = vec3[] (
-    vec3(1, 1, 0), vec3(-1, -1, 0), vec3(-1, 1, 0),
-    vec3(-1, -1, 0), vec3(1, 1, 0), vec3(1, -1, 0)
+    vec3(1, 1, 0), vec3(-1, 1, 0), vec3(-1, -1, 0),
+    vec3(-1, -1, 0), vec3(1, -1, 0), vec3(1, 1, 0)
 );
 
 vec3 UnprojectPoint(float x, float y, float z) {
