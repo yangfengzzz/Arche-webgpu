@@ -64,8 +64,9 @@ void AssetView::loadScene(Entity* rootEntity) {
     _mainCamera = cameraEntity->addComponent<Camera>();
     _cameraControl = cameraEntity->addComponent<control::OrbitControl>();
 
-    rootEntity->addComponent<grid::GridControl>();
-    //    _elements.emplace_back(grid, grid->mesh(), grid->mesh()->subMesh(), grid->getMaterial());
+    auto gridControl = rootEntity->addComponent<grid::GridControl>();
+    gridControl->camera = _mainCamera;
+//    _elements.emplace_back(grid, grid->mesh(), grid->mesh()->subMesh(), grid->getMaterial());
 
     // create box test entity
     float radius = 2.0;

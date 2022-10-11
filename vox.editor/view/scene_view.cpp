@@ -72,6 +72,7 @@ SceneView::SceneView(const std::string& p_title,
                 std::make_unique<ColorPickerSubpass>(_renderContext, _depthStencilTextureFormat, scene, _mainCamera);
         _colorPickerSubpass = colorPickerSubpass.get();
         _colorPickerRenderPass->addSubpass(std::move(colorPickerSubpass));
+        _colorPickerSubpass->addExclusiveRenderer(editorRoot->getComponent<MeshRenderer>());
     }
 
     wgpu::BufferDescriptor bufferDesc;
@@ -96,7 +97,8 @@ void SceneView::loadScene(Entity* rootEntity) {
     _mainCamera = cameraEntity->addComponent<Camera>();
     _cameraControl = cameraEntity->addComponent<control::OrbitControl>();
 
-    rootEntity->addComponent<grid::GridControl>();
+    auto gridControl = rootEntity->addComponent<grid::GridControl>();
+    gridControl->camera = _mainCamera;
 
     // init point light
     auto light = rootEntity->createChild("light");

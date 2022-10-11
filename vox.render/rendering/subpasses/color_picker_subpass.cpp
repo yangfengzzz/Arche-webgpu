@@ -32,14 +32,29 @@ void ColorPickerSubpass::_drawElement(wgpu::RenderPassEncoder &passEncoder, Shad
     std::sort(transparentQueue.begin(), transparentQueue.end(), _compareFromFarToNear);
 
     for (auto &element : opaqueQueue) {
+        auto exclusive = std::find(_exclusive_list.begin(), _exclusive_list.end(), element.renderer);
+        if (exclusive != _exclusive_list.end()) {
+            continue;
+        }
+
         _uploadColor(element);
         ForwardSubpass::_drawElement(passEncoder, element, variant);
     }
     for (auto &element : alphaTestQueue) {
+        auto exclusive = std::find(_exclusive_list.begin(), _exclusive_list.end(), element.renderer);
+        if (exclusive != _exclusive_list.end()) {
+            continue;
+        }
+
         _uploadColor(element);
         ForwardSubpass::_drawElement(passEncoder, element, variant);
     }
     for (auto &element : transparentQueue) {
+        auto exclusive = std::find(_exclusive_list.begin(), _exclusive_list.end(), element.renderer);
+        if (exclusive != _exclusive_list.end()) {
+            continue;
+        }
+
         _uploadColor(element);
         ForwardSubpass::_drawElement(passEncoder, element, variant);
     }
@@ -82,5 +97,9 @@ std::pair<Renderer *, MeshPtr> ColorPickerSubpass::getObjectByColor(const std::a
         return std::make_pair(nullptr, nullptr);
     }
 }
+
+void ColorPickerSubpass::addExclusiveRenderer(Renderer *renderer) { _exclusive_list.emplace_back(renderer); }
+
+void ColorPickerSubpass::clearExclusiveList() { _exclusive_list.clear(); }
 
 }  // namespace vox

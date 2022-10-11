@@ -21,6 +21,11 @@ public:
     void _drawElement(wgpu::RenderPassEncoder& passEncoder, ShaderVariant& variant) override;
 
 public:
+    void addExclusiveRenderer(Renderer *renderer);
+
+    void clearExclusiveList();
+
+public:
     /**
      * Convert id to RGB color value, 0 and 0xffffff are illegal values.
      */
@@ -44,6 +49,8 @@ private:
     std::unordered_map<size_t, std::pair<Renderer*, MeshPtr>> _primitivesMap{};
     BufferPool _bufferPool;
     std::shared_ptr<UnlitMaterial> _material{nullptr};
+
+    std::vector<Renderer *> _exclusive_list{};
 };
 
 }  // namespace vox
