@@ -31,6 +31,25 @@ EditorApplication::EditorApplication(const std::string& projectPath, const std::
       editorAssetsPath("/Data/Editor/"),
       _panelsManager(_canvas) {}
 
+EditorApplication::~EditorApplication() {
+    // release first
+    _sceneManager.reset();
+
+    _componentsManager.reset();
+    _lightManager.reset();
+    _shadowManager.reset();
+    _physicsManager.reset();
+    //    _particleManager.reset();
+
+    shader_manager_->CollectGarbage();
+    shader_manager_.reset();
+    mesh_manager_->CollectGarbage();
+    mesh_manager_.reset();
+    image_manager_->collectGarbage();
+    image_manager_.reset();
+    resource_cache_.reset();
+}
+
 bool EditorApplication::prepare(Platform& platform) {
     GraphicsApplication::prepare(platform);
 

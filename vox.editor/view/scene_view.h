@@ -71,7 +71,7 @@ private:
     control::OrbitControl* _cameraControl{nullptr};
 
 private:
-    bool _needPick;
+    bool _needPick{};
     Vector2F _pickPos;
 
     wgpu::TextureDescriptor _colorPickerTextureDesc;

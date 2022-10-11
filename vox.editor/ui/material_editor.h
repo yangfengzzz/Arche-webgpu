@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include "vox.render/material/material.h"
 #include "vox.render/ui/widgets/layout/columns.h"
 #include "vox.render/ui/widgets/layout/group.h"
 #include "vox.render/ui/widgets/panel_transformables/panel_window.h"
@@ -14,8 +15,7 @@
 namespace vox {
 using namespace ui;
 
-namespace editor {
-namespace ui {
+namespace editor::ui {
 class MaterialEditor : public PanelWindow {
 public:
     /**
@@ -33,14 +33,13 @@ public:
 
     /**
      * Defines the target material of the material editor
-     * @param p_newTarget
      */
-    //    void setTarget(OvCore::Resources::Material& p_newTarget);
+    void setTarget(const std::shared_ptr<Material> &new_target);
 
     /**
      * Returns the target of the material editor
      */
-    //    OvCore::Resources::Material* GetTarget() const;
+    [[nodiscard]] std::shared_ptr<Material> getTarget() const;
 
     /**
      * Remove the target of the material editor (Clear the material editor)
@@ -77,8 +76,8 @@ private:
     void generateMaterialSettingsContent();
 
 private:
-    //    OvCore::Resources::Material* m_target        = nullptr;
-    //    OvRendering::Resources::Shader* m_shader    = nullptr;
+    std::shared_ptr<Material> target_{nullptr};
+    ShaderSource *shader_{nullptr};
 
     Text *_targetMaterialText{nullptr};
     Text *_shaderText{nullptr};
@@ -94,6 +93,5 @@ private:
     Columns<2> *_materialSettingsColumns{nullptr};
 };
 
-}  // namespace ui
-}  // namespace editor
+}  // namespace editor::ui
 }  // namespace vox

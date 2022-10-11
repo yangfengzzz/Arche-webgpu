@@ -14,7 +14,6 @@
 #include "vox.render/mesh/mesh_renderer.h"
 #include "vox.render/mesh/primitive_mesh.h"
 #include "vox.render/rendering/subpasses/color_picker_subpass.h"
-#include "vox.render/rendering/subpasses/geometry_subpass.h"
 
 namespace vox::editor::ui {
 SceneView::SceneView(const std::string& p_title,
@@ -33,7 +32,7 @@ SceneView::SceneView(const std::string& p_title,
     // scene render target
     {
         // Create a render pass descriptor for thelighting and composition pass
-        // Whatever rendered in the final pass needs to be stored so it can be displayed
+        // Whatever rendered in the final pass needs to be stored, so it can be displayed
         _renderPassDescriptor.colorAttachmentCount = 1;
         _renderPassDescriptor.colorAttachments = &_renderPassColorAttachments;
         _renderPassDescriptor.depthStencilAttachment = &_renderPassDepthStencilAttachment;
@@ -98,7 +97,7 @@ void SceneView::loadScene(Entity* rootEntity) {
 
     auto grid = rootEntity->addComponent<MeshRenderer>();
     grid->setMesh(createPlane(_renderContext->device()));
-    grid->setMaterial(std::make_shared<GridMaterial>(_renderContext->device()));
+//    grid->setMaterial(std::make_shared<GridMaterial>(_renderContext->device()));
 
     // init point light
     auto light = rootEntity->createChild("light");
@@ -244,7 +243,7 @@ void SceneView::_readColorFromRenderTarget() {
             wgpu::MapMode::Read, 0, 4,
             [](WGPUBufferMapAsyncStatus status, void* userdata) {
                 if (status == WGPUBufferMapAsyncStatus_Success) {
-                    SceneView* app = static_cast<SceneView*>(userdata);
+                    auto* app = static_cast<SceneView*>(userdata);
                     memcpy(app->_pixel.data(), app->_stageBuffer.GetConstMappedRange(0, 4), 4);
                     auto result = app->_colorPickerSubpass->getObjectByColor(app->_pixel);
                     if (result.first) {

@@ -26,6 +26,8 @@ class EditorApplication : public GraphicsApplication {
 public:
     EditorApplication(const std::string& projectPath, const std::string& projectName);
 
+    ~EditorApplication() override;
+
     /**
      * @brief Additional sample initialization
      */

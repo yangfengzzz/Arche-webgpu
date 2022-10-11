@@ -8,11 +8,7 @@
 
 #include "vox.render/ui/gui_drawer.h"
 #include "vox.render/ui/widgets/buttons/button_simple.h"
-#include "vox.render/ui/widgets/buttons/button_small.h"
-#include "vox.render/ui/widgets/layout/columns.h"
-#include "vox.render/ui/widgets/layout/group_collapsable.h"
 #include "vox.render/ui/widgets/selection/color_edit.h"
-#include "vox.render/ui/widgets/texts/text_colored.h"
 #include "vox.render/ui/widgets/visual/separator.h"
 
 namespace vox::editor::ui {
@@ -106,5 +102,35 @@ MaterialEditor::MaterialEditor(const std::string &p_title, bool p_opened, const 
     _materialDroppedEvent += std::bind(&MaterialEditor::onMaterialDropped, this);
     _shaderDroppedEvent += std::bind(&MaterialEditor::onShaderDropped, this);
 }
+
+void MaterialEditor::refresh() {}
+
+void MaterialEditor::setTarget(const std::shared_ptr<Material> &new_target) {}
+
+std::shared_ptr<Material> MaterialEditor::getTarget() const { return nullptr; }
+
+void MaterialEditor::removeTarget() {}
+
+void MaterialEditor::preview() {}
+
+void MaterialEditor::reset() {}
+
+void MaterialEditor::onMaterialDropped() {}
+
+void MaterialEditor::onShaderDropped() {}
+
+void MaterialEditor::createHeaderButtons() {}
+
+void MaterialEditor::createMaterialSelector() {}
+
+void MaterialEditor::createShaderSelector() {}
+
+void MaterialEditor::createMaterialSettings() {}
+
+void MaterialEditor::createShaderSettings() {}
+
+void MaterialEditor::generateShaderSettingsContent() {}
+
+void MaterialEditor::generateMaterialSettingsContent() {}
 
 }  // namespace vox::editor::ui

@@ -45,8 +45,8 @@ void ProfilerWindow::update(float p_deltaTime) {
         _fpsTimer -= 0.07f;
     }
 
-    if (_profiler.IsEnabled()) {
-        _profiler.Update(p_deltaTime);
+    if (vox::Profiler::IsEnabled()) {
+        vox::Profiler::Update(p_deltaTime);
 
         while (_timer >= _frequency) {
             if (_profilingMode == ProfilingMode::DEFAULT) {
@@ -82,11 +82,11 @@ void ProfilerWindow::enable(bool p_value, bool p_disableLog) {
     if (p_value) {
         if (!p_disableLog)
             // OVLOG_INFO("Profiling started!");
-            _profiler.Enable();
+            vox::Profiler::Enable();
     } else {
         if (!p_disableLog)
             // OVLOG_INFO("Profiling stoped!");
-            _profiler.Disable();
+            vox::Profiler::Disable();
         _profiler.ClearHistory();
         _actionList->RemoveAllWidgets();
     }

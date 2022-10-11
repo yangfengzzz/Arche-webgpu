@@ -65,7 +65,7 @@ void AssetView::loadScene(Entity* rootEntity) {
 
     auto grid = rootEntity->addComponent<MeshRenderer>();
     grid->setMesh(createPlane(_renderContext->device()));
-    grid->setMaterial(std::make_shared<GridMaterial>(_renderContext->device()));
+//    grid->setMaterial(std::make_shared<GridMaterial>(_renderContext->device()));
     grid->setEnabled(false);
     _elements.emplace_back(grid, grid->mesh(), grid->mesh()->subMesh(), grid->getMaterial());
 

@@ -10,9 +10,7 @@
 #include "vox.render/entity.h"
 #include "vox.render/rendering/subpasses/geometry_subpass.h"
 
-namespace vox {
-namespace editor {
-namespace ui {
+namespace vox::editor::ui {
 GameView::GameView(const std::string& p_title,
                    bool p_opened,
                    const PanelWindowSettings& p_windowSettings,
@@ -27,7 +25,7 @@ GameView::GameView(const std::string& p_title,
     loadScene(editorRoot);
 
     // Create a render pass descriptor for thelighting and composition pass
-    // Whatever rendered in the final pass needs to be stored so it can be displayed
+    // Whatever rendered in the final pass needs to be stored, so it can be displayed
     _renderPassDescriptor.colorAttachmentCount = 1;
     _renderPassDescriptor.colorAttachments = &_renderPassColorAttachments;
     _renderPassDescriptor.depthStencilAttachment = &_renderPassDepthStencilAttachment;
@@ -71,6 +69,4 @@ void GameView::loadScene(Entity* rootEntity) {
     _mainCamera = cameraEntity->addComponent<Camera>();
 }
 
-}  // namespace ui
-}  // namespace editor
-}  // namespace vox
+}  // namespace vox::editor::ui

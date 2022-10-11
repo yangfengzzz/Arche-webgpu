@@ -8,18 +8,9 @@
 
 #include "vox.editor/editor_actions.h"
 #include "vox.render/behaviour.h"
-#include "vox.render/entity.h"
 #include "vox.render/ui/gui_drawer.h"
-#include "vox.render/ui/plugins/drag_drop_target.h"
-#include "vox.render/ui/widgets/buttons/button_simple.h"
-#include "vox.render/ui/widgets/drags/drag_float.h"
-#include "vox.render/ui/widgets/drags/drag_multiple_floats.h"
 #include "vox.render/ui/widgets/input_fields/input_float.h"
 #include "vox.render/ui/widgets/layout/columns.h"
-#include "vox.render/ui/widgets/layout/spacing.h"
-#include "vox.render/ui/widgets/selection/color_edit.h"
-#include "vox.render/ui/widgets/texts/text.h"
-#include "vox.render/ui/widgets/visual/image.h"
 
 namespace vox::editor::ui {
 Inspector::Inspector(const std::string &p_title, bool p_opened, const PanelWindowSettings &p_windowSettings)
