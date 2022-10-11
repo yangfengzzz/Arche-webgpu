@@ -8,7 +8,7 @@ cmake_minimum_required(VERSION 3.12)
 include(android_package)
 
 # create sample app project
-project(converter LANGUAGES C CXX)
+project(asset_pipeline LANGUAGES C CXX)
 
 set(SRC
         fbx.cpp

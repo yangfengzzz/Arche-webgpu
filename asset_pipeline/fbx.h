@@ -71,7 +71,7 @@ public:
 // animations transformations...
 class VOX_ANIMFBX_DLL FbxSystemConverter {
 public:
-    // Initialize converter with fbx scene systems.
+    // Initialize asset_pipeline with fbx scene systems.
     FbxSystemConverter(const FbxAxisSystem& _from_axis, const FbxSystemUnit& _from_unit);
 
     // Converts a fbx matrix to a vox Float4x4 matrix, in vox axis and unit
@@ -124,7 +124,7 @@ public:
     // Returns a valid scene if fbx import was successful, nullptr otherwise.
     [[nodiscard]] FbxScene* scene() const { return scene_; }
 
-    // Returns a valid converter if fbx import was successful, nullptr otherwise.
+    // Returns a valid asset_pipeline if fbx import was successful, nullptr otherwise.
     FbxSystemConverter* converter() { return converter_; }
 
 private:

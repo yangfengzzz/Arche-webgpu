@@ -21,7 +21,7 @@ class Skeleton;
 
 namespace offline {
 
-// Defines vox converter/importer interface.
+// Defines vox asset_pipeline/importer interface.
 // OzzImporter implements a command line tool to convert any source data format
 // to vox skeletons and animations. The tool exposes a set of global options
 // through the command line, and a json configuration file to tune import

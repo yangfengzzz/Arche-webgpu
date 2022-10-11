@@ -65,13 +65,13 @@ add_subdirectory(test.geometry)
 # Add animation library
 add_subdirectory(vox.animation)
 add_subdirectory(test.animation)
-add_subdirectory(converter)
 
 # Add render framework
 add_subdirectory(vox.render)
 add_subdirectory(vox.toolkit)
 add_subdirectory(apps)
 add_subdirectory(navigation)
+add_subdirectory(asset_pipeline)
 
 # Add editor
 add_subdirectory(vox.editor)

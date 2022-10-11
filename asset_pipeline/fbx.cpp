@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "converter/fbx.h"
+#include "asset_pipeline/fbx.h"
 
 #include "vox.base/logging.h"
 #include "vox.base/memory/allocator.h"
@@ -117,7 +117,7 @@ void FbxSceneLoader::ImportScene(FbxImporter* _importer,
             }
         }
 
-        // Setup axis and system converter.
+        // Setup axis and system asset_pipeline.
         if (imported) {
             FbxGlobalSettings& settings = scene_->GetGlobalSettings();
             converter_ = New<FbxSystemConverter>(settings.GetAxisSystem(), settings.GetSystemUnit());
