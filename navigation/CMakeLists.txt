@@ -38,6 +38,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         ../third_party/dawn/cmake-release/gen/include
         ../third_party/dawn/include
         ../third_party/dawn
+        ../third_party/recastnavigation
         ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC DAWN_ENABLE_BACKEND_METAL DAWN_ENABLE_BACKEND_NULL TINT_BUILD_SPV_READER JPH_PROFILE_ENABLED JPH_DEBUG_RENDERER)
