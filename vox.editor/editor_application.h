@@ -24,7 +24,7 @@
 namespace vox::editor {
 class EditorApplication : public GraphicsApplication {
 public:
-    EditorApplication(const std::string& projectPath, const std::string& projectName);
+    explicit EditorApplication(std::string editorAssetsPath = "./assets/Editor/");
 
     ~EditorApplication() override;
 
@@ -47,27 +47,15 @@ public:
     /**
      * Handle panels creation and canvas binding
      */
-    void setupUI();
+    virtual void setupUI() = 0;
 
     /**
      * Render every views (Scene View, Game View, Asset View)
      */
-    void renderViews(float deltaTime, wgpu::CommandEncoder& commandEncoder);
+    virtual void updateViews(float deltaTime, wgpu::CommandEncoder& commandEncoder) {}
 
-    /**
-     * Update editor panels
-     * @param deltaTime deltaTime
-     */
-    void updateEditorPanels(float deltaTime);
-
-private:
+protected:
     friend class EditorActions;
-    const std::string projectPath;
-    const std::string projectName;
-    const std::string projectFilePath;
-    const std::string engineAssetsPath;
-    const std::string projectAssetsPath;
-    const std::string projectScriptsPath;
     const std::string editorAssetsPath;
 
     ::vox::ui::Canvas _canvas;
@@ -94,7 +82,7 @@ private:
     std::unique_ptr<SceneManager> _sceneManager{nullptr};
     std::unique_ptr<ShadowManager> _shadowManager{nullptr};
     std::unique_ptr<LightManager> _lightManager{nullptr};
-//    std::unique_ptr<ParticleManager> _particleManager{nullptr};
+    //    std::unique_ptr<ParticleManager> _particleManager{nullptr};
     std::unique_ptr<PhysicsManager> _physicsManager{nullptr};
 };
 

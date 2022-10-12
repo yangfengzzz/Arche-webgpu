@@ -207,10 +207,10 @@ std::string EditorActions::getRealPath(const std::string& path) {
 
     // The path is an engine path
     if (path[0] == ':') {
-        result = app_.engineAssetsPath + std::string(path.data() + 1, path.data() + path.size());
+        result = std::string(path.data() + 1, path.data() + path.size());
     } else {
         // The path is a project path
-        result = app_.projectAssetsPath + path;
+        result = path;
     }
 
     return result;
@@ -219,7 +219,7 @@ std::string EditorActions::getRealPath(const std::string& path) {
 std::string EditorActions::getResourcePath(const std::string& path, bool isFromEngine) {
     std::string result = path;
 
-    if (Replace(result, isFromEngine ? app_.engineAssetsPath : app_.projectAssetsPath, "")) {
+    if (Replace(result, "", "")) {
         if (isFromEngine) result = ':' + result;
     }
     return result;
@@ -227,7 +227,7 @@ std::string EditorActions::getResourcePath(const std::string& path, bool isFromE
 
 std::string EditorActions::getScriptPath(const std::string& path) {
     std::string result = path;
-    Replace(result, app_.projectScriptsPath, "");
+    Replace(result, "", "");
     Replace(result, ".lua", "");
     return result;
 }

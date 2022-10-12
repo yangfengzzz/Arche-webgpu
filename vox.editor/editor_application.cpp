@@ -6,30 +6,14 @@
 
 #include "vox.render/platform/platform.h"
 //
+#include <utility>
+
 #include "vox.editor/editor_application.h"
-#include "vox.editor/ui/console.h"
-#include "vox.editor/ui/hierarchy.h"
-#include "vox.editor/ui/inspector.h"
-#include "vox.editor/ui/menu_bar.h"
-#include "vox.editor/ui/profiler_window.h"
-#include "vox.editor/ui/project_settings.h"
-#include "vox.editor/ui/tool_bar.h"
-#include "vox.editor/view/asset_view.h"
-#include "vox.editor/view/game_view.h"
-#include "vox.editor/view/scene_view.h"
 #include "vox.render/camera.h"
 
 namespace vox::editor {
-EditorApplication::EditorApplication(const std::string& projectPath, const std::string& projectName)
-    : GraphicsApplication(),
-      projectPath(projectPath),
-      projectName(projectName),
-      projectFilePath(projectPath + projectName + ".project"),
-      engineAssetsPath(std::filesystem::canonical("./assets").string() + "/"),
-      projectAssetsPath(projectPath + "./assets/"),
-      projectScriptsPath(projectPath + "./assets/Scripts/"),
-      editorAssetsPath("./assets/Editor/"),
-      _panelsManager(_canvas) {}
+EditorApplication::EditorApplication(std::string editorAssetsPath)
+    : GraphicsApplication(), editorAssetsPath(std::move(editorAssetsPath)), _panelsManager(_canvas) {}
 
 EditorApplication::~EditorApplication() {
     // release first
@@ -74,7 +58,7 @@ bool EditorApplication::prepare(Platform& platform) {
     _sceneManager = std::make_unique<SceneManager>(_device);
     auto scene = _sceneManager->currentScene();
 
-//    _particleManager = std::make_unique<ParticleManager>(_device);
+    //    _particleManager = std::make_unique<ParticleManager>(_device);
     _lightManager = std::make_unique<LightManager>(scene);
     {
         auto extent = platform.GetWindow().GetExtent();
@@ -102,65 +86,6 @@ bool EditorApplication::prepare(Platform& platform) {
     return true;
 }
 
-void EditorApplication::setupUI() {
-    PanelWindowSettings settings;
-    settings.closable = true;
-    settings.collapsable = true;
-    settings.dockable = true;
-
-    _panelsManager.createPanel<ui::MenuBar>("Menu Bar");
-    _panelsManager.createPanel<ui::ProfilerWindow>("Profiler", true, settings, 0.25f);
-    _panelsManager.createPanel<ui::Console>("Console", true, settings);
-    _panelsManager.createPanel<ui::Hierarchy>("Hierarchy", true, settings);
-    _panelsManager.createPanel<ui::Inspector>("Inspector", true, settings);
-    _panelsManager.createPanel<ui::SceneView>("Scene View", true, settings, _renderContext.get(),
-                                              _sceneManager->currentScene());
-    _panelsManager.createPanel<ui::GameView>("Game View", true, settings, _renderContext.get(),
-                                             _sceneManager->currentScene());
-
-    _panelsManager.createPanel<ui::AssetView>("Asset View", true, settings, _renderContext.get(),
-                                              _sceneManager->currentScene());
-    _panelsManager.createPanel<ui::Toolbar>("Toolbar", true, settings, _editorResources.get());
-    _panelsManager.createPanel<ui::ProjectSettings>("Project Settings", false, settings, projectPath, projectName);
-
-    _canvas.MakeDockSpace(true);
-    _gui->SetCanvas(_canvas);
-    _sceneManager->currentScene()->play();
-}
-
-void EditorApplication::renderViews(float deltaTime, wgpu::CommandEncoder& commandEncoder) {
-    auto& gameView = _panelsManager.getPanelAs<ui::GameView>("Game View");
-    auto& sceneView = _panelsManager.getPanelAs<ui::SceneView>("Scene View");
-    auto& assetView = _panelsManager.getPanelAs<ui::AssetView>("Asset View");
-
-    {
-        // PROFILER_SPY("Editor Views Update");
-        assetView.update(deltaTime);
-        gameView.update(deltaTime);
-        sceneView.update(deltaTime);
-    }
-
-    if (assetView.IsOpened()) {
-        // PROFILER_SPY("Game View Rendering");
-        assetView.render(commandEncoder);
-    }
-
-    if (gameView.IsOpened()) {
-        // PROFILER_SPY("Game View Rendering");
-        gameView.render(commandEncoder);
-    }
-
-    if (sceneView.IsOpened()) {
-        // PROFILER_SPY("Scene View Rendering");
-        sceneView.render(commandEncoder);
-    }
-}
-
-void EditorApplication::updateEditorPanels(float deltaTime) {
-    auto& menuBar = _panelsManager.getPanelAs<ui::MenuBar>("Menu Bar");
-    menuBar.handleShortcuts(deltaTime);
-}
-
 void EditorApplication::update(float deltaTime) {
     GraphicsApplication::update(deltaTime);
     {
@@ -178,8 +103,7 @@ void EditorApplication::update(float deltaTime) {
 
     wgpu::CommandEncoder commandEncoder = _device.CreateCommandEncoder();
     updateGPUTask(commandEncoder);
-    updateEditorPanels(deltaTime);
-    renderViews(deltaTime, commandEncoder);
+    updateViews(deltaTime, commandEncoder);
 
     // Render the gui
     _colorAttachments.view = _renderContext->currentDrawableTexture();
@@ -196,9 +120,9 @@ void EditorApplication::update(float deltaTime) {
 }
 
 void EditorApplication::updateGPUTask(wgpu::CommandEncoder& commandEncoder) {
-//    _shadowManager->draw(commandEncoder);
+    //    _shadowManager->draw(commandEncoder);
     _lightManager->draw(commandEncoder);
-//    _particleManager->draw(commandEncoder);
+    //    _particleManager->draw(commandEncoder);
 }
 
 bool EditorApplication::resize(uint32_t win_width, uint32_t win_height, uint32_t fb_width, uint32_t fb_height) {
@@ -210,9 +134,6 @@ bool EditorApplication::resize(uint32_t win_width, uint32_t win_height, uint32_t
 void EditorApplication::inputEvent(const InputEvent& inputEvent) {
     GraphicsApplication::inputEvent(inputEvent);
     _componentsManager->callScriptInputEvent(inputEvent);
-
-    auto& sceneView = _panelsManager.getPanelAs<ui::SceneView>("Scene View");
-    sceneView.inputEvent(inputEvent);
 }
 
-}  // namespace vox
+}  // namespace vox::editor
