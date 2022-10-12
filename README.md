@@ -1,14 +1,10 @@
-# Arche-Cpp - WebGPU Graphics Engine
+# Arche-cpp - WebGPU Graphics Engine
 
-This project is a part of its WebGPU development, if you want to know about the implementation of web
-WebGPU ([WebGPU](https://github.com/gpuweb/types))
-Engine, please refer to [Arche.js](https://github.com/ArcheGraphics/Arche.js) and is currently mainly adapted to
-the [Canary version of Chrome](https://www.google.com/intl/zh-CN/chrome/canary/). This repository is about the
-implementation of Native WebGPU ([Dawn](https://dawn.googlesource.com/dawn)) Engine.
-
-Since the WGSL shading language cannot meet the needs of advanced features, a cross-platform engine [DigitalVox5](https://github.com/yangfengzzz/DigitalVox5) is re-implemented based on Vulkan. The engine is based on the capabilities provided by SPIRV as a shader for cross-platform compilation and reflection, and is built with Cmake, which truly enables cross-platform compilation and execution.
-
-**In the future, Vulkan will be used as the core bottom layer of the Native engine, and WebGPU will continue to be developed as the core bottom layer of the Web engine.**
+This repository is about the implementation of Native WebGPU ([Dawn](https://dawn.googlesource.com/dawn)) Engine.
+The goal of this project is not a general-purpose game engine, but to demonstrate engine technologies and tools that
+provide cross-platform based on WebGPU. Therefore, the development of the project is aimed at flattening and avoiding
+excessive encapsulation. You can refer to the internal technical implementation and apply it to your own project. For
+more thoughts on the project, visit [the project blog](https://arche.graphics/blog/).
 
 ## Motivation
 
@@ -16,16 +12,15 @@ This project is inspired by [Oasis](https://github.com/oasis-engine) which is an
 . Based on entity and component, it is easy to combine other open-source ability:
 
 1. [ImGui](https://github.com/ocornut/imgui): GUI system
-2. [OZZ-Animation](https://github.com/guillaumeblanc/ozz-animation): CPU Animation System
-3. [PhysX](https://github.com/NVIDIAGameWorks/PhysX): Physical System
+2. [OZZ-Animation](https://github.com/guillaumeblanc/ozz-animation): Animation System
+3. [JoltPhysics](https://github.com/jrouwe/JoltPhysics): Physical System
 
-Which can load a lot of model format including:
+The asset pipeline is based on ozz-animation and assimp:
 
-1. [FBX](https://www.autodesk.com/developer-network/platform-technologies/fbx-sdk-2016-1-2): FBX loader with Ozz
-   animation
-2. [GLTF](https://github.com/syoyo/tinygltf): GLTF Loader with GPU-based Skinning Animation
-3. [Other](https://developer.apple.com/documentation/modelio/mdlasset/1391813-canimportfileextension): OBJ and other
-   format loaded by ModelIO Framework
+1. All skeletal animation should use asset pipeline to generate OZZ files, which will compress raw-animation data and
+   make runtime more efficiently. Now the skin only support FBX format, we will support GLTF convert in the future.
+2. All static model is loaded by using [assimp](https://github.com/assimp/assimp) which support a lot of data format and
+   include geometry preprocessor.
 
 ## Cloning && Install
 
@@ -49,10 +44,14 @@ After clone all third-party dependencies, use the script in third_party folder t
 ./build.sh
 ```
 
+I recommend use Clion as main IDE(which can load cmake directly), but I also add xcode project which can capture metal
+frame when debug graphics feature.
+
 ## Feature
 
 You can read code in [apps](https://github.com/ArcheGraphics/Arche-cpp/tree/main/apps) to find the feature in this
-code, like physx and shadow(WIP):
+code, like physics and shadow(WIP):
+
 ![PhysX](https://github.com/yangfengzzz/DigitalVoxEffect/raw/main/doc/img/physx.gif "PhysX")
 
 You can also redirect to [repos](https://github.com/yangfengzzz/DigitalVoxEffect) to see more effects.
