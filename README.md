@@ -40,7 +40,8 @@ git submodule update
 ```
 
 Because this project uses the SPIRV toolchain to compile shaders and implement shader reflections, and the KTX texture
-format requires Vulkan support, be sure to install the Vulkan toolchain (even on a Mac). At the same time, since the
+format requires Vulkan support, be sure to install the [Vulkan toolchain](https://vulkan.lunarg.com/sdk/home) (even on a
+Mac). At the same time, since the
 interface for reading SPIRV by Tint requires Vulkan support, you need to open the switch on `CMakeLists.txt` of dawn
 before compiling Tint, and install [depot_tools](https://dawn.googlesource.com/dawn/+/HEAD/docs/building.md) at the same
 time.
