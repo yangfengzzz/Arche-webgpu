@@ -4,9 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.base/logging.h"
 #include "vox.render/platform/platform.h"
-
+//
+#include "editor/navigation_editor.h"
 #include "editor/simple_editor.h"
 
 // MARK: - Entry
@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
 
     auto code = platform.Initialize({});
     if (code == vox::ExitCode::SUCCESS) {
-        platform.SetApp(std::make_unique<vox::editor::SimpleEditor>());
+        platform.SetApp(std::make_unique<vox::editor::NavigationEditor>());
         code = platform.MainLoop();
     }
     platform.Terminate(code);

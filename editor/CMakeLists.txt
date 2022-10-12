@@ -13,6 +13,7 @@ project(editor LANGUAGES C CXX)
 set(SRC
         main.cpp
         simple_editor.cpp
+        navigation_editor.cpp
         )
 
 source_group("\\" FILES ${SRC})
