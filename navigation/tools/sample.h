@@ -13,6 +13,8 @@
 #include <Recast.h>
 #include <RecastDebugDraw.h>
 
+#include <memory>
+
 namespace vox {
 /// Tool types.
 enum SampleToolType {
@@ -107,6 +109,8 @@ protected:
     SampleTool* m_tool;
     SampleToolState* m_toolStates[MAX_TOOLS]{};
 
+    std::unique_ptr<duDebugDraw> m_dd{};
+
     dtNavMesh* loadAll(const char* path);
     void saveAll(const char* path, const dtNavMesh* mesh);
 
@@ -117,6 +121,8 @@ public:
     void setTool(SampleTool* tool);
     SampleToolState* getToolState(int type) { return m_toolStates[type]; }
     void setToolState(int type, SampleToolState* s) { m_toolStates[type] = s; }
+
+    duDebugDraw& getDebugDraw() { return *m_dd; }
 
     virtual void handleSettings();
     virtual void handleTools();
