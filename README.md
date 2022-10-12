@@ -8,12 +8,13 @@ more thoughts on the project, visit [the project blog](https://arche.graphics/bl
 
 ## Motivation
 
-This project is inspired by [Oasis](https://github.com/oasis-engine) which is an ECS-liked based engine(not very strict)
-. Based on entity and component, it is easy to combine other open-source ability:
+This project is very similar to Unity's component entity pattern (not ECS). Based on entity and component, it is easy to
+combine other open-source ability:
 
 1. [ImGui](https://github.com/ocornut/imgui): GUI system
-2. [OZZ-Animation](https://github.com/guillaumeblanc/ozz-animation): Animation System
-3. [JoltPhysics](https://github.com/jrouwe/JoltPhysics): Physical System
+2. [OZZ-Animation](https://github.com/guillaumeblanc/ozz-animation): Animation system
+3. [JoltPhysics](https://github.com/jrouwe/JoltPhysics): Physics system
+4. [recastnavigation](https://github.com/recastnavigation/recastnavigation): NavMesh and path-finding system
 
 The asset pipeline is based on ozz-animation and assimp:
 
