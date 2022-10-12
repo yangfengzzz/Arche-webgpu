@@ -38,7 +38,11 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         ../third_party/dawn/cmake-release/gen/include
         ../third_party/dawn/include
         ../third_party/dawn
-        ../third_party/recastnavigation
+        ../third_party/recastnavigation/DebugUtils/Include
+        ../third_party/recastnavigation/Recast/Include
+        ../third_party/recastnavigation/Detour/Include
+        ../third_party/recastnavigation/DetourCrowd/Include
+        ../third_party/recastnavigation/DetourTileCache/Include
         ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC DAWN_ENABLE_BACKEND_METAL DAWN_ENABLE_BACKEND_NULL TINT_BUILD_SPV_READER JPH_PROFILE_ENABLED JPH_DEBUG_RENDERER)
@@ -74,7 +78,12 @@ target_link_libraries(${PROJECT_NAME} PRIVATE vox.render vox.math vox.base vox.s
         ${Metal_LIBRARY}
         ${IOKit_LIBRARY}
         ${IOSurface_LIBRARY}
-        ${QuartzCore_LIBRARY})
+        ${QuartzCore_LIBRARY}
+        Detour
+        DebugUtils
+        DetourCrowd
+        DetourTileCache
+        Recast)
 
 if (CMAKE_BUILD_TYPE MATCHES "Release")
     target_link_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/third_party/assimp/build_release/bin
@@ -90,7 +99,12 @@ if (CMAKE_BUILD_TYPE MATCHES "Release")
             ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-release/third_party/abseil/absl/base
             ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-release/third_party/abseil/absl/numeric
             ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-release/third_party/glfw/src
-            ${CMAKE_SOURCE_DIR}/third_party/jolt/Build/build_release)
+            ${CMAKE_SOURCE_DIR}/third_party/jolt/Build/build_release
+            ${CMAKE_SOURCE_DIR}/third_party/recastnavigation/build/Detour
+            ${CMAKE_SOURCE_DIR}/third_party/recastnavigation/build/DebugUtils
+            ${CMAKE_SOURCE_DIR}/third_party/recastnavigation/build/DetourCrowd
+            ${CMAKE_SOURCE_DIR}/third_party/recastnavigation/build/DetourTileCache
+            ${CMAKE_SOURCE_DIR}/third_party/recastnavigation/build/Recast)
 ELSEIF (CMAKE_BUILD_TYPE MATCHES "Debug")
     target_link_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/third_party/assimp/build_release/bin
             ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-debug/src/dawn
@@ -105,7 +119,12 @@ ELSEIF (CMAKE_BUILD_TYPE MATCHES "Debug")
             ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-debug/third_party/abseil/absl/base
             ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-debug/third_party/abseil/absl/numeric
             ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-debug/third_party/glfw/src
-            ${CMAKE_SOURCE_DIR}/third_party/jolt/Build/build_release)
+            ${CMAKE_SOURCE_DIR}/third_party/jolt/Build/build_release
+            ${CMAKE_SOURCE_DIR}/third_party/recastnavigation/build/Detour
+            ${CMAKE_SOURCE_DIR}/third_party/recastnavigation/build/DebugUtils
+            ${CMAKE_SOURCE_DIR}/third_party/recastnavigation/build/DetourCrowd
+            ${CMAKE_SOURCE_DIR}/third_party/recastnavigation/build/DetourTileCache
+            ${CMAKE_SOURCE_DIR}/third_party/recastnavigation/build/Recast)
 endif ()
 
 target_link_libraries(${PROJECT_NAME} PUBLIC

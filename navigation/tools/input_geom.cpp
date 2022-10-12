@@ -6,8 +6,8 @@
 
 #include "navigation/tools/input_geom.h"
 
-#include <Detour/include/DetourNavMesh.h>
-#include <Recast/include/Recast.h>
+#include <DetourNavMesh.h>
+#include <Recast.h>
 
 #include <algorithm>
 #include <cctype>
