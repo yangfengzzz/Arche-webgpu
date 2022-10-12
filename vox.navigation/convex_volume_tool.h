@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "navigation/tools/sample.h"
+#include "vox.navigation/sample.h"
 
 namespace vox {
 // Tool to create convex volumes for InputGeom

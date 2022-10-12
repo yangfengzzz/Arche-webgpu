@@ -4,13 +4,13 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "navigation/tools/sample.h"
+#include "vox.navigation/sample.h"
 
 #include <imgui.h>
 
 #include <cstdio>
 
-#include "navigation/tools/input_geom.h"
+#include "vox.navigation/input_geom.h"
 
 #ifdef WIN32
 #define snprintf _snprintf
@@ -58,14 +58,15 @@ void Sample::handleDebugMode() {}
 void Sample::handleRender() {
     if (!m_geom) return;
 
-//    // Draw mesh
-//    duDebugDrawTriMesh(&m_dd, m_geom->getMesh()->getVerts(), m_geom->getMesh()->getVertCount(),
-//                       m_geom->getMesh()->getTris(), m_geom->getMesh()->getNormals(), m_geom->getMesh()->getTriCount(),
-//                       0, 1.0f);
-//    // Draw bounds
-//    const float* bmin = m_geom->getMeshBoundsMin();
-//    const float* bmax = m_geom->getMeshBoundsMax();
-//    duDebugDrawBoxWire(&m_dd, bmin[0], bmin[1], bmin[2], bmax[0], bmax[1], bmax[2], duRGBA(255, 255, 255, 128), 1.0f);
+    //    // Draw mesh
+    //    duDebugDrawTriMesh(&m_dd, m_geom->getMesh()->getVerts(), m_geom->getMesh()->getVertCount(),
+    //                       m_geom->getMesh()->getTris(), m_geom->getMesh()->getNormals(),
+    //                       m_geom->getMesh()->getTriCount(), 0, 1.0f);
+    //    // Draw bounds
+    //    const float* bmin = m_geom->getMeshBoundsMin();
+    //    const float* bmax = m_geom->getMeshBoundsMax();
+    //    duDebugDrawBoxWire(&m_dd, bmin[0], bmin[1], bmin[2], bmax[0], bmax[1], bmax[2], duRGBA(255, 255, 255,
+    //    128), 1.0f);
 }
 
 void Sample::handleRenderOverlay(double* /*proj*/, double* /*model*/, int* /*view*/) {}

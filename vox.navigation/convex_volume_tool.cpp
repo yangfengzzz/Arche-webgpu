@@ -4,12 +4,13 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "navigation/tools/convex_volume_tool.h"
+#include "vox.navigation/convex_volume_tool.h"
 
 #include <imgui.h>
-#include <navigation/tools/input_geom.h>
 
 #include <cfloat>
+
+#include "vox.navigation/input_geom.h"
 #ifdef WIN32
 #define snprintf _snprintf
 #endif

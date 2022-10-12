@@ -8,8 +8,8 @@
 
 #include <DebugDraw.h>
 
-#include "navigation/tools/chunky_tri_mesh.h"
-#include "navigation/tools/mesh_loader_obj.h"
+#include "vox.navigation/chunky_tri_mesh.h"
+#include "vox.navigation/mesh_loader_obj.h"
 
 namespace vox {
 static const int MAX_CONVEXVOL_PTS = 12;

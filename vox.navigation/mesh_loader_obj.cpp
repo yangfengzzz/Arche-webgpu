@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "navigation/tools/mesh_loader_obj.h"
+#include "vox.navigation/mesh_loader_obj.h"
 
 #include <cmath>
 #include <cstdio>
