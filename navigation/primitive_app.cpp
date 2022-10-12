@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "apps/primitive_app.h"
+#include "navigation/primitive_app.h"
 
 #include "vox.render/camera.h"
 #include "vox.render/entity.h"

@@ -10,9 +10,13 @@ include(android_package)
 # create sample app project
 project(navigation LANGUAGES C CXX)
 
+file(GLOB TOOLS_FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/tools/*.cpp)
+
 set(SRC
         main.cpp
         primitive_app.cpp
+        ${TOOLS_FILES}
         )
 
 source_group("\\" FILES ${SRC})
