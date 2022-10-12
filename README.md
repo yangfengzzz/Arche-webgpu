@@ -38,7 +38,18 @@ git submodule init
 git submodule update
 ```
 
-After clone all third-party dependencies, use the script in third_party folder to build them all:
+Because this project uses the SPIRV toolchain to compile shaders and implement shader reflections, and the KTX texture
+format requires Vulkan support, be sure to install the Vulkan toolchain (even on a Mac). At the same time, since the
+interface for reading SPIRV by Tint requires Vulkan support, you need to open the switch on `CMakeLists.txt` of dawn
+before compiling Tint, and install [depot_tools](https://dawn.googlesource.com/dawn/+/HEAD/docs/building.md) at the same
+time.
+
+```
+cd third_party/dawn && vim CMakeLists.txt
+set(ENABLE_VULKAN ON)
+```
+
+After all those work, use the script in third_party folder to build them all:
 
 ```
 ./build.sh
