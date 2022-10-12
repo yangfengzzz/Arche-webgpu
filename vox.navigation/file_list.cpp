@@ -15,7 +15,7 @@
 #include <cstring>
 #endif
 
-namespace vox {
+namespace vox::nav {
 
 void scanDirectoryAppend(const std::string& path, const std::string& ext, std::vector<std::string>& filelist) {
 #ifdef WIN32
@@ -57,4 +57,4 @@ void scanDirectory(const std::string& path, const std::string& ext, std::vector<
     scanDirectoryAppend(path, ext, filelist);
 }
 
-}  // namespace vox
+}  // namespace vox::nav

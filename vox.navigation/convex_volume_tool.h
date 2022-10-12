@@ -8,7 +8,7 @@
 
 #include "vox.navigation/sample.h"
 
-namespace vox {
+namespace vox::nav {
 // Tool to create convex volumes for InputGeom
 class ConvexVolumeTool : public SampleTool {
     Sample* m_sample;
@@ -37,4 +37,4 @@ public:
     void handleRender() override;
     void handleRenderOverlay(double* proj, double* model, int* view) override;
 };
-}  // namespace vox
+}  // namespace vox::nav

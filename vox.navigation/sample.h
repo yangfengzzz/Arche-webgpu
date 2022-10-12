@@ -15,7 +15,7 @@
 
 #include <memory>
 
-namespace vox {
+namespace vox::nav {
 /// Tool types.
 enum SampleToolType {
     TOOL_NONE = 0,
@@ -163,4 +163,4 @@ private:
     Sample& operator=(const Sample&);
 };
 
-}  // namespace vox
+}  // namespace vox::nav

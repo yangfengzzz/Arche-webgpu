@@ -8,10 +8,10 @@
 
 #include <cstdint>
 
-namespace vox {
+namespace vox::nav {
 typedef int64_t TimeVal;
 
 TimeVal getPerfTime();
 
 int getPerfTimeUsec(TimeVal duration);
-}  // namespace vox
+}  // namespace vox::nav

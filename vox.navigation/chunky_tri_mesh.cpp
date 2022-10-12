@@ -10,7 +10,7 @@
 #include <cstdio>
 #include <cstdlib>
 
-namespace vox {
+namespace vox::nav {
 namespace {
 struct BoundsItem {
     float bmin[2];
@@ -261,4 +261,4 @@ int rcGetChunksOverlappingSegment(const rcChunkyTriMesh* cm, float p[2], float q
     return n;
 }
 
-}  // namespace vox
+}  // namespace vox::nav

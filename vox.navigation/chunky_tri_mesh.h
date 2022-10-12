@@ -6,7 +6,7 @@
 
 #pragma once
 
-namespace vox {
+namespace vox::nav {
 struct rcChunkyTriMeshNode {
     float bmin[2];
     float bmax[2];
@@ -42,4 +42,4 @@ int rcGetChunksOverlappingRect(const rcChunkyTriMesh* cm, float bmin[2], float b
 /// Returns the chunk indices which overlap the input segment.
 int rcGetChunksOverlappingSegment(const rcChunkyTriMesh* cm, float p[2], float q[2], int* ids, int maxIds);
 
-}  // namespace vox
+}  // namespace vox::nav

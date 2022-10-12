@@ -8,7 +8,7 @@
 
 #include <string>
 
-namespace vox {
+namespace vox::nav {
 
 class rcMeshLoaderObj {
 public:
@@ -40,4 +40,4 @@ private:
     int m_vertCount;
     int m_triCount;
 };
-}  // namespace vox
+}  // namespace vox::nav

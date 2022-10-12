@@ -11,7 +11,7 @@
 #include "vox.navigation/chunky_tri_mesh.h"
 #include "vox.navigation/mesh_loader_obj.h"
 
-namespace vox {
+namespace vox::nav {
 static const int MAX_CONVEXVOL_PTS = 12;
 struct ConvexVolume {
     float verts[MAX_CONVEXVOL_PTS * 3];
@@ -142,4 +142,4 @@ private:
     InputGeom(const InputGeom&);
     InputGeom& operator=(const InputGeom&);
 };
-}  // namespace vox
+}  // namespace vox::nav

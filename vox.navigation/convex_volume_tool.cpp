@@ -15,7 +15,7 @@
 #define snprintf _snprintf
 #endif
 
-namespace vox {
+namespace vox::nav {
 // Quick and dirty convex hull.
 namespace {
 // Returns true if 'c' is left of line 'a'-'b'.
@@ -219,4 +219,4 @@ void ConvexVolumeTool::handleRenderOverlay(double* /*proj*/, double* /*model*/, 
         ImGui::TextColored(ImVec4(255, 255, 255, 192), "The shape will be convex hull of all added points.");
     }
 }
-}  // namespace vox
+}  // namespace vox::nav

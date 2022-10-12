@@ -16,7 +16,7 @@
 #define snprintf _snprintf
 #endif
 
-namespace vox {
+namespace vox::nav {
 
 Sample::Sample()
     : m_geom(nullptr),
@@ -343,4 +343,4 @@ void Sample::saveAll(const char* path, const dtNavMesh* mesh) {
 
     fclose(fp);
 }
-}  // namespace vox
+}  // namespace vox::nav

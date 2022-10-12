@@ -11,7 +11,7 @@
 #include <cstdlib>
 #include <cstring>
 
-namespace vox {
+namespace vox::nav {
 namespace {
 char* parseRow(char* buf, const char* bufEnd, char* row, int len) {
     bool start = true;
@@ -196,4 +196,4 @@ bool rcMeshLoaderObj::load(const std::string& filename) {
     m_filename = filename;
     return true;
 }
-}  // namespace vox
+}  // namespace vox::nav

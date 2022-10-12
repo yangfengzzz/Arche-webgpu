@@ -17,7 +17,7 @@
 
 #include "vox.base/logging.h"
 
-namespace vox {
+namespace vox::nav {
 namespace {
 bool intersectSegmentTriangle(
         const float* sp, const float* sq, const float* a, const float* b, const float* c, float& t) {
@@ -495,4 +495,4 @@ void InputGeom::drawConvexVolumes(struct duDebugDraw* dd, bool /*hilight*/) {
 
     dd->depthMask(true);
 }
-}  // namespace vox
+}  // namespace vox::nav

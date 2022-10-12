@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-namespace vox {
+namespace vox::nav {
 void scanDirectoryAppend(const std::string& path, const std::string& ext, std::vector<std::string>& fileList);
 void scanDirectory(const std::string& path, const std::string& ext, std::vector<std::string>& fileList);
-}  // namespace vox
+}  // namespace vox::nav

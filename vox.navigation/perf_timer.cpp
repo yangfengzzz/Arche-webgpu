@@ -9,7 +9,7 @@
 #if defined(WIN32)
 // Win32
 #include <windows.h>
-namespace vox {
+namespace vox::nav {
 TimeVal getPerfTime() {
     __int64 count;
     QueryPerformanceCounter((LARGE_INTEGER*)&count);
@@ -21,11 +21,11 @@ int getPerfTimeUsec(const TimeVal duration) {
     if (freq == 0) QueryPerformanceFrequency((LARGE_INTEGER*)&freq);
     return (int)(duration * 1000000 / freq);
 }
-}  // namespace vox
+}  // namespace vox::nav
 #else
 // Linux, BSD, OSX
 #include <sys/time.h>
-namespace vox {
+namespace vox::nav {
 TimeVal getPerfTime() {
     timeval now{};
     gettimeofday(&now, nullptr);
@@ -33,5 +33,5 @@ TimeVal getPerfTime() {
 }
 
 int getPerfTimeUsec(const TimeVal duration) { return (int)duration; }
-}  // namespace vox
+}  // namespace vox::nav
 #endif
