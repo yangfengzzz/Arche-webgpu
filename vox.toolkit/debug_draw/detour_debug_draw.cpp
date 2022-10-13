@@ -180,7 +180,7 @@ void drawMeshTile(DebugDraw* dd,
 
             // Connection arc.
             debugAppendArc(dd, con->pos[0], con->pos[1], con->pos[2], con->pos[3], con->pos[4], con->pos[5], 0.25f,
-                        (con->flags & 1) ? 0.6f : 0, 0.6f, col);
+                           (con->flags & 1) ? 0.6f : 0, 0.6f, col);
         }
         dd->end();
     }
@@ -205,8 +205,8 @@ void drawMeshTileBVTree(DebugDraw* dd, const dtMeshTile* tile) {
         if (n->i < 0)  // Leaf indices are positive.
             continue;
         debugAppendBoxWire(dd, tile->header->bmin[0] + n->bmin[0] * cs, tile->header->bmin[1] + n->bmin[1] * cs,
-                        tile->header->bmin[2] + n->bmin[2] * cs, tile->header->bmin[0] + n->bmax[0] * cs,
-                        tile->header->bmin[1] + n->bmax[1] * cs, tile->header->bmin[2] + n->bmax[2] * cs,
+                           tile->header->bmin[2] + n->bmin[2] * cs, tile->header->bmin[0] + n->bmax[0] * cs,
+                           tile->header->bmin[1] + n->bmax[1] * cs, tile->header->bmin[2] + n->bmax[2] * cs,
                            int2RGBA(255, 255, 255, 128));
     }
     dd->end();
@@ -275,7 +275,7 @@ void drawMeshTilePortal(DebugDraw* dd, const dtMeshTile* tile) {
     dd->end();
 }
 
-void debugDrawTileCachePortals(struct DebugDraw* dd, const dtTileCacheLayer& layer, const float cs, const float ch) {
+void debugDrawTileCachePortals(DebugDraw* dd, const dtTileCacheLayer& layer, const float cs, const float ch) {
     const int w = (int)layer.header->width;
     const int h = (int)layer.header->height;
     const float* bmin = layer.header->bmin;
@@ -323,7 +323,7 @@ void debugDrawNavMesh(DebugDraw* dd, const dtNavMesh& mesh, unsigned char flags)
     }
 }
 
-void debugDrawNavMeshWithClosedList(struct DebugDraw* dd,
+void debugDrawNavMeshWithClosedList(DebugDraw* dd,
                                     const dtNavMesh& mesh,
                                     const dtNavMeshQuery& query,
                                     unsigned char flags) {
@@ -338,7 +338,7 @@ void debugDrawNavMeshWithClosedList(struct DebugDraw* dd,
     }
 }
 
-void debugDrawNavMeshNodes(struct DebugDraw* dd, const dtNavMeshQuery& query) {
+void debugDrawNavMeshNodes(DebugDraw* dd, const dtNavMeshQuery& query) {
     if (!dd) return;
 
     const dtNodePool* pool = query.getNodePool();
@@ -390,7 +390,7 @@ void debugDrawNavMeshPortals(DebugDraw* dd, const dtNavMesh& mesh) {
     }
 }
 
-void debugDrawNavMeshPolysWithFlags(struct DebugDraw* dd,
+void debugDrawNavMeshPolysWithFlags(DebugDraw* dd,
                                     const dtNavMesh& mesh,
                                     const unsigned short polyFlags,
                                     const unsigned int col) {
@@ -428,7 +428,7 @@ void debugDrawNavMeshPoly(DebugDraw* dd, const dtNavMesh& mesh, dtPolyRef ref, c
 
         // Connection arc.
         debugAppendArc(dd, con->pos[0], con->pos[1], con->pos[2], con->pos[3], con->pos[4], con->pos[5], 0.25f,
-                    (con->flags & 1) ? 0.6f : 0.0f, 0.6f, c);
+                       (con->flags & 1) ? 0.6f : 0.0f, 0.6f, c);
 
         dd->end();
     } else {
@@ -450,7 +450,7 @@ void debugDrawNavMeshPoly(DebugDraw* dd, const dtNavMesh& mesh, dtPolyRef ref, c
     dd->depthMask(true);
 }
 
-void debugDrawTileCacheLayerAreas(struct DebugDraw* dd, const dtTileCacheLayer& layer, const float cs, const float ch) {
+void debugDrawTileCacheLayerAreas(DebugDraw* dd, const dtTileCacheLayer& layer, const float cs, const float ch) {
     const int w = (int)layer.header->width;
     const int h = (int)layer.header->height;
     const float* bmin = layer.header->bmin;
@@ -501,10 +501,7 @@ void debugDrawTileCacheLayerAreas(struct DebugDraw* dd, const dtTileCacheLayer& 
     debugDrawTileCachePortals(dd, layer, cs, ch);
 }
 
-void debugDrawTileCacheLayerRegions(struct DebugDraw* dd,
-                                    const dtTileCacheLayer& layer,
-                                    const float cs,
-                                    const float ch) {
+void debugDrawTileCacheLayerRegions(DebugDraw* dd, const dtTileCacheLayer& layer, const float cs, const float ch) {
     const int w = (int)layer.header->width;
     const int h = (int)layer.header->height;
     const float* bmin = layer.header->bmin;

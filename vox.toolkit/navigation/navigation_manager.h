@@ -49,10 +49,8 @@ struct NavigationTool {
     virtual int type() = 0;
     virtual void init(class NavigationManager* sample) = 0;
     virtual void reset() = 0;
-    virtual void handleMenu() = 0;
     virtual void handleClick(const float* s, const float* p, bool shift) = 0;
     virtual void handleRender() = 0;
-    virtual void handleRenderOverlay(double* proj, double* model, int* view) = 0;
     virtual void handleToggle() = 0;
     virtual void handleStep() = 0;
     virtual void handleUpdate(float dt) = 0;
@@ -63,7 +61,6 @@ struct NavigationToolState {
     virtual void init(class NavigationManager* sample) = 0;
     virtual void reset() = 0;
     virtual void handleRender() = 0;
-    virtual void handleRenderOverlay(double* proj, double* model, int* view) = 0;
     virtual void handleUpdate(float dt) = 0;
 };
 
@@ -87,7 +84,6 @@ public:
     virtual void handleToggle();
     virtual void handleStep();
     virtual void handleRender();
-    virtual void handleRenderOverlay(double* proj, double* model, int* view);
     virtual void handleMeshChanged(InputGeom* geom);
     virtual bool handleBuild();
     virtual void handleUpdate(float dt);
@@ -108,7 +104,6 @@ public:
     void initToolStates(NavigationManager* sample);
     void resetToolStates();
     void renderToolStates();
-    void renderOverlayToolStates(double* proj, double* model, int* view);
 
     void resetCommonSettings();
 

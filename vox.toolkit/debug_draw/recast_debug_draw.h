@@ -29,21 +29,21 @@ void debugDrawTriMeshSlope(DebugDraw* dd,
                            float walkableSlopeAngle,
                            float texScale);
 
-void debugDrawHeightfieldSolid(struct debugDraw* dd, const struct rcHeightfield& hf);
-void debugDrawHeightfieldWalkable(struct debugDraw* dd, const struct rcHeightfield& hf);
+void debugDrawHeightfieldSolid(DebugDraw* dd, const struct rcHeightfield& hf);
+void debugDrawHeightfieldWalkable(DebugDraw* dd, const struct rcHeightfield& hf);
 
-void debugDrawCompactHeightfieldSolid(struct debugDraw* dd, const struct rcCompactHeightfield& chf);
-void debugDrawCompactHeightfieldRegions(struct debugDraw* dd, const struct rcCompactHeightfield& chf);
-void debugDrawCompactHeightfieldDistance(struct debugDraw* dd, const struct rcCompactHeightfield& chf);
+void debugDrawCompactHeightfieldSolid(DebugDraw* dd, const struct rcCompactHeightfield& chf);
+void debugDrawCompactHeightfieldRegions(DebugDraw* dd, const struct rcCompactHeightfield& chf);
+void debugDrawCompactHeightfieldDistance(DebugDraw* dd, const struct rcCompactHeightfield& chf);
 
-void debugDrawHeightfieldLayer(debugDraw* dd, const struct rcHeightfieldLayer& layer, int idx);
-void debugDrawHeightfieldLayers(debugDraw* dd, const struct rcHeightfieldLayerSet& lset);
-void debugDrawHeightfieldLayersRegions(debugDraw* dd, const struct rcHeightfieldLayerSet& lset);
+void debugDrawHeightfieldLayer(DebugDraw* dd, const struct rcHeightfieldLayer& layer, int idx);
+void debugDrawHeightfieldLayers(DebugDraw* dd, const struct rcHeightfieldLayerSet& lset);
+void debugDrawHeightfieldLayersRegions(DebugDraw* dd, const struct rcHeightfieldLayerSet& lset);
 
-void debugDrawRegionConnections(struct debugDraw* dd, const struct rcContourSet& cset, float alpha = 1.0f);
-void debugDrawRawContours(struct debugDraw* dd, const struct rcContourSet& cset, float alpha = 1.0f);
-void debugDrawContours(struct debugDraw* dd, const struct rcContourSet& cset, float alpha = 1.0f);
-void debugDrawPolyMesh(struct debugDraw* dd, const struct rcPolyMesh& mesh);
-void debugDrawPolyMeshDetail(struct debugDraw* dd, const struct rcPolyMeshDetail& dmesh);
+void debugDrawRegionConnections(DebugDraw* dd, const struct rcContourSet& cset, float alpha = 1.0f);
+void debugDrawRawContours(DebugDraw* dd, const struct rcContourSet& cset, float alpha = 1.0f);
+void debugDrawContours(DebugDraw* dd, const struct rcContourSet& cset, float alpha = 1.0f);
+void debugDrawPolyMesh(DebugDraw* dd, const struct rcPolyMesh& mesh);
+void debugDrawPolyMeshDetail(DebugDraw* dd, const struct rcPolyMeshDetail& dmesh);
 
 }  // namespace vox::debug

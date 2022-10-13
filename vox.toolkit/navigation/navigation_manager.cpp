@@ -59,8 +59,6 @@ void NavigationManager::handleRender() {
                             debug::int2RGBA(255, 255, 255, 128), 1.0f);
 }
 
-void NavigationManager::handleRenderOverlay(double* /*proj*/, double* /*model*/, int* /*view*/) {}
-
 void NavigationManager::handleMeshChanged(InputGeom* geom) {
     m_geom = geom;
 
@@ -157,12 +155,6 @@ void NavigationManager::resetToolStates() {
 void NavigationManager::renderToolStates() {
     for (auto& m_toolState : m_toolStates) {
         if (m_toolState) m_toolState->handleRender();
-    }
-}
-
-void NavigationManager::renderOverlayToolStates(double* proj, double* model, int* view) {
-    for (auto& m_toolState : m_toolStates) {
-        if (m_toolState) m_toolState->handleRenderOverlay(proj, model, view);
     }
 }
 

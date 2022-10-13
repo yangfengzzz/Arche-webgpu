@@ -10,6 +10,8 @@
 #include <DetourNavMeshQuery.h>
 #include <DetourTileCacheBuilder.h>
 
+#include "vox.toolkit/debug_draw/debug_draw.h"
+
 namespace vox::debug {
 
 enum DrawNavMeshFlags {
@@ -18,25 +20,22 @@ enum DrawNavMeshFlags {
     DRAW_NAVMESH_COLOR_TILES = 0x04,
 };
 
-void debugDrawNavMesh(struct debugDraw* dd, const dtNavMesh& mesh, unsigned char flags);
-void debugDrawNavMeshWithClosedList(struct debugDraw* dd,
+void debugDrawNavMesh(DebugDraw* dd, const dtNavMesh& mesh, unsigned char flags);
+void debugDrawNavMeshWithClosedList(DebugDraw* dd,
                                     const dtNavMesh& mesh,
                                     const dtNavMeshQuery& query,
                                     unsigned char flags);
-void debugDrawNavMeshNodes(struct debugDraw* dd, const dtNavMeshQuery& query);
-void debugDrawNavMeshBVTree(struct debugDraw* dd, const dtNavMesh& mesh);
-void debugDrawNavMeshPortals(struct debugDraw* dd, const dtNavMesh& mesh);
-void debugDrawNavMeshPolysWithFlags(struct debugDraw* dd,
-                                    const dtNavMesh& mesh,
-                                    unsigned short polyFlags,
-                                    unsigned int col);
-void debugDrawNavMeshPoly(struct DebugDraw* dd, const dtNavMesh& mesh, dtPolyRef ref, unsigned int col);
+void debugDrawNavMeshNodes(DebugDraw* dd, const dtNavMeshQuery& query);
+void debugDrawNavMeshBVTree(DebugDraw* dd, const dtNavMesh& mesh);
+void debugDrawNavMeshPortals(DebugDraw* dd, const dtNavMesh& mesh);
+void debugDrawNavMeshPolysWithFlags(DebugDraw* dd, const dtNavMesh& mesh, unsigned short polyFlags, unsigned int col);
+void debugDrawNavMeshPoly(DebugDraw* dd, const dtNavMesh& mesh, dtPolyRef ref, unsigned int col);
 
-void debugDrawTileCacheLayerAreas(struct debugDraw* dd, const dtTileCacheLayer& layer, float cs, float ch);
-void debugDrawTileCacheLayerRegions(struct debugDraw* dd, const dtTileCacheLayer& layer, float cs, float ch);
+void debugDrawTileCacheLayerAreas(DebugDraw* dd, const dtTileCacheLayer& layer, float cs, float ch);
+void debugDrawTileCacheLayerRegions(DebugDraw* dd, const dtTileCacheLayer& layer, float cs, float ch);
 void debugDrawTileCacheContours(
-        debugDraw* dd, const struct dtTileCacheContourSet& lcset, const float* orig, float cs, float ch);
+        DebugDraw* dd, const struct dtTileCacheContourSet& lcset, const float* orig, float cs, float ch);
 void debugDrawTileCachePolyMesh(
-        debugDraw* dd, const struct dtTileCachePolyMesh& lmesh, const float* orig, float cs, float ch);
+        DebugDraw* dd, const struct dtTileCachePolyMesh& lmesh, const float* orig, float cs, float ch);
 
 }  // namespace vox::debug
