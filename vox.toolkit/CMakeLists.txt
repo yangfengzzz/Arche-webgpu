@@ -101,7 +101,6 @@ if (${VKB_WARNINGS_AS_ERRORS})
 endif ()
 
 set(NAVI_INCLUDE
-        ../third_party/recastnavigation/DebugUtils/Include
         ../third_party/recastnavigation/Recast/Include
         ../third_party/recastnavigation/Detour/Include
         ../third_party/recastnavigation/DetourCrowd/Include

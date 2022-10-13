@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <Recast.h>
+
 #include "vox.toolkit/debug_draw/debug_draw.h"
 #include "vox.toolkit/navigation/chunky_tri_mesh.h"
 #include "vox.toolkit/navigation/mesh_loader_obj.h"
@@ -82,14 +84,14 @@ class InputGeom {
     int m_volumeCount;
     ///@}
 
-    bool loadMesh(class rcContext* ctx, const std::string& filepath);
-    bool loadGeomSet(class rcContext* ctx, const std::string& filepath);
+    bool loadMesh(rcContext* ctx, const std::string& filepath);
+    bool loadGeomSet(rcContext* ctx, const std::string& filepath);
 
 public:
     InputGeom();
     ~InputGeom();
 
-    bool load(class rcContext* ctx, const std::string& filepath);
+    bool load(rcContext* ctx, const std::string& filepath);
     bool saveGeomSet(const BuildSettings* settings);
 
     /// Method to return static mesh data.

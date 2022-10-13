@@ -9,7 +9,6 @@
 #include <cmath>
 
 #include "vox.base/constants.h"
-#include "vox.toolkit/debug_draw/debug_draw.h"
 
 namespace vox::debug {
 namespace {

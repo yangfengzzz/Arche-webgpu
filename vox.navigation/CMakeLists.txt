@@ -87,7 +87,6 @@ target_include_directories(${PROJECT_NAME} PUBLIC ../
         ../third_party/dawn/include
         ../third_party/dawn
         ../third_party/jolt
-        ../third_party/recastnavigation/DebugUtils/Include
         ../third_party/recastnavigation/Recast/Include
         ../third_party/recastnavigation/Detour/Include
         ../third_party/recastnavigation/DetourCrowd/Include

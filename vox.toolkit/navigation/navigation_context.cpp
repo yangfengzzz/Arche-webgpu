@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.navigation/nav_context.h"
+#include "vox.toolkit/navigation/navigation_context.h"
 
 #include "vox.base/logging.h"
 

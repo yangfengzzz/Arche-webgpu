@@ -6,8 +6,6 @@
 
 #include "vox.toolkit/navigation/convex_volume_tool.h"
 
-#include <Recast.h>
-
 namespace vox::nav {
 namespace {
 // Quick and dirty convex hull.
@@ -63,7 +61,11 @@ int pointInPoly(int nvert, const float* verts, const float* p) {
 }
 }  // namespace
 
+void ConvexVolumeTool::init(NavigationManager* sample) { m_sample = sample; }
+
 void ConvexVolumeTool::handleClick(const float* s, const float* p, bool shift) {
+    if (!m_sample) return;
+    InputGeom* geom = m_sample->getInputGeom();
     if (!geom) return;
 
     if (shift) {
@@ -121,32 +123,34 @@ void ConvexVolumeTool::handleClick(const float* s, const float* p, bool shift) {
 }
 
 void ConvexVolumeTool::handleRender() {
+    debug::DebugDraw& dd = m_sample->getDebugDraw();
+
     // Find height extent of the shape.
     float minh = FLT_MAX, maxh = 0;
     for (int i = 0; i < m_npts; ++i) minh = rcMin(minh, m_pts[i * 3 + 1]);
     minh -= m_boxDescent;
     maxh = minh + m_boxHeight;
 
-    debugDraw->begin(wgpu::PrimitiveTopology::PointList, 4.0f);
+    dd.begin(wgpu::PrimitiveTopology::PointList, 4.0f);
     for (int i = 0; i < m_npts; ++i) {
         unsigned int col = debug::int2RGBA(255, 255, 255, 255);
         if (i == m_npts - 1) col = debug::int2RGBA(240, 32, 16, 255);
-        debugDraw->vertex(m_pts[i * 3 + 0], m_pts[i * 3 + 1] + 0.1f, m_pts[i * 3 + 2], col);
+        dd.vertex(m_pts[i * 3 + 0], m_pts[i * 3 + 1] + 0.1f, m_pts[i * 3 + 2], col);
     }
-    debugDraw->end();
+    dd.end();
 
-    debugDraw->begin(wgpu::PrimitiveTopology::LineList, 2.0f);
+    dd.begin(wgpu::PrimitiveTopology::LineList, 2.0f);
     for (int i = 0, j = m_nhull - 1; i < m_nhull; j = i++) {
         const float* vi = &m_pts[m_hull[j] * 3];
         const float* vj = &m_pts[m_hull[i] * 3];
-        debugDraw->vertex(vj[0], minh, vj[2], debug::int2RGBA(255, 255, 255, 64));
-        debugDraw->vertex(vi[0], minh, vi[2], debug::int2RGBA(255, 255, 255, 64));
-        debugDraw->vertex(vj[0], maxh, vj[2], debug::int2RGBA(255, 255, 255, 64));
-        debugDraw->vertex(vi[0], maxh, vi[2], debug::int2RGBA(255, 255, 255, 64));
-        debugDraw->vertex(vj[0], minh, vj[2], debug::int2RGBA(255, 255, 255, 64));
-        debugDraw->vertex(vj[0], maxh, vj[2], debug::int2RGBA(255, 255, 255, 64));
+        dd.vertex(vj[0], minh, vj[2], debug::int2RGBA(255, 255, 255, 64));
+        dd.vertex(vi[0], minh, vi[2], debug::int2RGBA(255, 255, 255, 64));
+        dd.vertex(vj[0], maxh, vj[2], debug::int2RGBA(255, 255, 255, 64));
+        dd.vertex(vi[0], maxh, vi[2], debug::int2RGBA(255, 255, 255, 64));
+        dd.vertex(vj[0], minh, vj[2], debug::int2RGBA(255, 255, 255, 64));
+        dd.vertex(vj[0], maxh, vj[2], debug::int2RGBA(255, 255, 255, 64));
     }
-    debugDraw->end();
+    dd.end();
 }
 
 }  // namespace vox::nav

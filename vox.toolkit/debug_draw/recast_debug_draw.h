@@ -8,9 +8,11 @@
 
 #include <Recast.h>
 
+#include "vox.toolkit/debug_draw/debug_draw.h"
+
 namespace vox::debug {
 
-void debugDrawTriMesh(struct debugDraw* dd,
+void debugDrawTriMesh(DebugDraw* dd,
                       const float* verts,
                       int nverts,
                       const int* tris,
@@ -18,7 +20,7 @@ void debugDrawTriMesh(struct debugDraw* dd,
                       int ntris,
                       const unsigned char* flags,
                       float texScale);
-void debugDrawTriMeshSlope(struct debugDraw* dd,
+void debugDrawTriMeshSlope(DebugDraw* dd,
                            const float* verts,
                            int nverts,
                            const int* tris,

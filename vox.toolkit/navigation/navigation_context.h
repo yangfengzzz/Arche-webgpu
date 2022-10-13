@@ -6,7 +6,6 @@
 
 #pragma once
 
-#include <DebugDraw.h>
 #include <Recast.h>
 
 #include "vox.navigation/perf_timer.h"

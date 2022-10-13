@@ -6,29 +6,30 @@
 
 #pragma once
 
-#include "vox.toolkit/navigation/base_tool.h"
 #include "vox.toolkit/navigation/input_geom.h"
+#include "vox.toolkit/navigation/navigation_manager.h"
 
 namespace vox::nav {
-class ConvexVolumeTool : public BaseTool {
+class ConvexVolumeTool : public NavigationTool {
 public:
     static constexpr int MAX_PTS = 12;
 
-    InputGeom* geom{nullptr};
+    void init(NavigationManager* sample) override;
 
     void handleClick(const float* s, const float* p, bool shift) override;
 
     void handleRender() override;
 
 private:
-    int m_areaType;
-    float m_polyOffset;
-    float m_boxHeight;
-    float m_boxDescent;
+    NavigationManager* m_sample;
+    PolyAreas m_areaType = PolyAreas::POLY_AREA_GRASS;
+    float m_polyOffset = 0.0f;
+    float m_boxHeight = 6.0f;
+    float m_boxDescent = 1.0f;
 
     float m_pts[MAX_PTS * 3];
-    int m_npts;
+    int m_npts = 0;
     int m_hull[MAX_PTS];
-    int m_nhull;
+    int m_nhull = 0;
 };
 }  // namespace vox::nav
