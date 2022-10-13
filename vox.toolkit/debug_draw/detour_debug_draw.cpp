@@ -50,11 +50,11 @@ void drawPolyBoundaries(DebugDraw* dd, const dtMeshTile* tile, const unsigned in
                         }
                     }
                     if (con)
-                        c = duRGBA(255, 255, 255, 48);
+                        c = int2RGBA(255, 255, 255, 48);
                     else
-                        c = duRGBA(0, 0, 0, 48);
+                        c = int2RGBA(0, 0, 0, 48);
                 } else
-                    c = duRGBA(0, 48, 64, 32);
+                    c = int2RGBA(0, 48, 64, 32);
             } else {
                 if (p->neis[j] != 0) continue;
             }
@@ -95,7 +95,7 @@ void drawMeshTile(DebugDraw* dd,
     dtPolyRef base = mesh.getPolyRefBase(tile);
 
     int tileNum = mesh.decodePolyIdTile(base);
-    const unsigned int tileColor = duIntToCol(tileNum, 128);
+    const unsigned int tileColor = intToCol(tileNum, 128);
 
     dd->depthMask(false);
 
@@ -109,12 +109,12 @@ void drawMeshTile(DebugDraw* dd,
 
         unsigned int col;
         if (query && query->isInClosedList(base | (dtPolyRef)i))
-            col = duRGBA(255, 196, 0, 64);
+            col = int2RGBA(255, 196, 0, 64);
         else {
-            if (flags & DU_DRAWNAVMESH_COLOR_TILES)
+            if (flags & DRAW_NAVMESH_COLOR_TILES)
                 col = tileColor;
             else
-                col = duTransCol(dd->areaToCol(p->getArea()), 64);
+                col = transCol(dd->areaToCol(p->getArea()), 64);
         }
 
         for (int j = 0; j < pd->triCount; ++j) {
@@ -130,12 +130,12 @@ void drawMeshTile(DebugDraw* dd,
     dd->end();
 
     // Draw inter poly boundaries
-    drawPolyBoundaries(dd, tile, duRGBA(0, 48, 64, 32), 1.5f, true);
+    drawPolyBoundaries(dd, tile, int2RGBA(0, 48, 64, 32), 1.5f, true);
 
     // Draw outer poly boundaries
-    drawPolyBoundaries(dd, tile, duRGBA(0, 48, 64, 220), 2.5f, false);
+    drawPolyBoundaries(dd, tile, int2RGBA(0, 48, 64, 220), 2.5f, false);
 
-    if (flags & DU_DRAWNAVMESH_OFFMESHCONS) {
+    if (flags & DRAW_NAVMESH_OFF_MESH_CONS) {
         dd->begin(wgpu::PrimitiveTopology::LineList, 2.0f);
         for (int i = 0; i < tile->header->polyCount; ++i) {
             const dtPoly* p = &tile->polys[i];
@@ -144,9 +144,9 @@ void drawMeshTile(DebugDraw* dd,
 
             unsigned int col, col2;
             if (query && query->isInClosedList(base | (dtPolyRef)i))
-                col = duRGBA(255, 196, 0, 220);
+                col = int2RGBA(255, 196, 0, 220);
             else
-                col = duDarkenCol(duTransCol(dd->areaToCol(p->getArea()), 220));
+                col = darkenCol(transCol(dd->areaToCol(p->getArea()), 220));
 
             const dtOffMeshConnection* con = &tile->offMeshCons[i - tile->header->offMeshBase];
             const float* va = &tile->verts[p->verts[0] * 3];
@@ -163,29 +163,29 @@ void drawMeshTile(DebugDraw* dd,
             // End points and their on-mesh locations.
             dd->vertex(va[0], va[1], va[2], col);
             dd->vertex(con->pos[0], con->pos[1], con->pos[2], col);
-            col2 = startSet ? col : duRGBA(220, 32, 16, 196);
-            duAppendCircle(dd, con->pos[0], con->pos[1] + 0.1f, con->pos[2], con->rad, col2);
+            col2 = startSet ? col : int2RGBA(220, 32, 16, 196);
+            debugAppendCircle(dd, con->pos[0], con->pos[1] + 0.1f, con->pos[2], con->rad, col2);
 
             dd->vertex(vb[0], vb[1], vb[2], col);
             dd->vertex(con->pos[3], con->pos[4], con->pos[5], col);
-            col2 = endSet ? col : duRGBA(220, 32, 16, 196);
-            duAppendCircle(dd, con->pos[3], con->pos[4] + 0.1f, con->pos[5], con->rad, col2);
+            col2 = endSet ? col : int2RGBA(220, 32, 16, 196);
+            debugAppendCircle(dd, con->pos[3], con->pos[4] + 0.1f, con->pos[5], con->rad, col2);
 
             // End point vertices.
-            dd->vertex(con->pos[0], con->pos[1], con->pos[2], duRGBA(0, 48, 64, 196));
-            dd->vertex(con->pos[0], con->pos[1] + 0.2f, con->pos[2], duRGBA(0, 48, 64, 196));
+            dd->vertex(con->pos[0], con->pos[1], con->pos[2], int2RGBA(0, 48, 64, 196));
+            dd->vertex(con->pos[0], con->pos[1] + 0.2f, con->pos[2], int2RGBA(0, 48, 64, 196));
 
-            dd->vertex(con->pos[3], con->pos[4], con->pos[5], duRGBA(0, 48, 64, 196));
-            dd->vertex(con->pos[3], con->pos[4] + 0.2f, con->pos[5], duRGBA(0, 48, 64, 196));
+            dd->vertex(con->pos[3], con->pos[4], con->pos[5], int2RGBA(0, 48, 64, 196));
+            dd->vertex(con->pos[3], con->pos[4] + 0.2f, con->pos[5], int2RGBA(0, 48, 64, 196));
 
             // Connection arc.
-            duAppendArc(dd, con->pos[0], con->pos[1], con->pos[2], con->pos[3], con->pos[4], con->pos[5], 0.25f,
+            debugAppendArc(dd, con->pos[0], con->pos[1], con->pos[2], con->pos[3], con->pos[4], con->pos[5], 0.25f,
                         (con->flags & 1) ? 0.6f : 0, 0.6f, col);
         }
         dd->end();
     }
 
-    const unsigned int vcol = duRGBA(0, 0, 0, 196);
+    const unsigned int vcol = int2RGBA(0, 0, 0, 196);
     dd->begin(wgpu::PrimitiveTopology::PointList, 3.0f);
     for (int i = 0; i < tile->header->vertCount; ++i) {
         const float* v = &tile->verts[i * 3];
@@ -204,10 +204,10 @@ void drawMeshTileBVTree(DebugDraw* dd, const dtMeshTile* tile) {
         const dtBVNode* n = &tile->bvTree[i];
         if (n->i < 0)  // Leaf indices are positive.
             continue;
-        duAppendBoxWire(dd, tile->header->bmin[0] + n->bmin[0] * cs, tile->header->bmin[1] + n->bmin[1] * cs,
+        debugAppendBoxWire(dd, tile->header->bmin[0] + n->bmin[0] * cs, tile->header->bmin[1] + n->bmin[1] * cs,
                         tile->header->bmin[2] + n->bmin[2] * cs, tile->header->bmin[0] + n->bmax[0] * cs,
                         tile->header->bmin[1] + n->bmax[1] * cs, tile->header->bmin[2] + n->bmax[2] * cs,
-                        duRGBA(255, 255, 255, 128));
+                           int2RGBA(255, 255, 255, 128));
     }
     dd->end();
 }
@@ -236,7 +236,7 @@ void drawMeshTilePortal(DebugDraw* dd, const dtMeshTile* tile) {
                 const float* vb = &tile->verts[poly->verts[(j + 1) % nv] * 3];
 
                 if (side == 0 || side == 4) {
-                    unsigned int col = side == 0 ? duRGBA(128, 0, 0, 128) : duRGBA(128, 0, 128, 128);
+                    unsigned int col = side == 0 ? int2RGBA(128, 0, 0, 128) : int2RGBA(128, 0, 128, 128);
 
                     const float x = va[0] + ((side == 0) ? -padx : padx);
 
@@ -252,7 +252,7 @@ void drawMeshTilePortal(DebugDraw* dd, const dtMeshTile* tile) {
                     dd->vertex(x, vb[1] - pady, vb[2], col);
                     dd->vertex(x, va[1] - pady, va[2], col);
                 } else if (side == 2 || side == 6) {
-                    unsigned int col = side == 2 ? duRGBA(0, 128, 0, 128) : duRGBA(0, 128, 128, 128);
+                    unsigned int col = side == 2 ? int2RGBA(0, 128, 0, 128) : int2RGBA(0, 128, 128, 128);
 
                     const float z = va[2] + ((side == 2) ? -padx : padx);
 
@@ -281,7 +281,7 @@ void debugDrawTileCachePortals(struct DebugDraw* dd, const dtTileCacheLayer& lay
     const float* bmin = layer.header->bmin;
 
     // Portals
-    unsigned int pcol = duRGBA(255, 255, 255, 255);
+    unsigned int pcol = int2RGBA(255, 255, 255, 255);
 
     const int segs[4 * 4] = {0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0};
 
@@ -329,7 +329,7 @@ void debugDrawNavMeshWithClosedList(struct DebugDraw* dd,
                                     unsigned char flags) {
     if (!dd) return;
 
-    const dtNavMeshQuery* q = (flags & DU_DRAWNAVMESH_CLOSEDLIST) ? &query : nullptr;
+    const dtNavMeshQuery* q = (flags & DRAW_NAVMESH_CLOSED_LIST) ? &query : nullptr;
 
     for (int i = 0; i < mesh.getMaxTiles(); ++i) {
         const dtMeshTile* tile = mesh.getTile(i);
@@ -349,7 +349,7 @@ void debugDrawNavMeshNodes(struct DebugDraw* dd, const dtNavMeshQuery& query) {
             for (dtNodeIndex j = pool->getFirst(i); j != DT_NULL_IDX; j = pool->getNext(j)) {
                 const dtNode* node = pool->getNodeAtIdx(j + 1);
                 if (!node) continue;
-                dd->vertex(node->pos[0], node->pos[1] + off, node->pos[2], duRGBA(255, 192, 0, 255));
+                dd->vertex(node->pos[0], node->pos[1] + off, node->pos[2], int2RGBA(255, 192, 0, 255));
             }
         }
         dd->end();
@@ -362,8 +362,8 @@ void debugDrawNavMeshNodes(struct DebugDraw* dd, const dtNavMeshQuery& query) {
                 if (!node->pidx) continue;
                 const dtNode* parent = pool->getNodeAtIdx(node->pidx);
                 if (!parent) continue;
-                dd->vertex(node->pos[0], node->pos[1] + off, node->pos[2], duRGBA(255, 192, 0, 128));
-                dd->vertex(parent->pos[0], parent->pos[1] + off, parent->pos[2], duRGBA(255, 192, 0, 128));
+                dd->vertex(node->pos[0], node->pos[1] + off, node->pos[2], int2RGBA(255, 192, 0, 128));
+                dd->vertex(parent->pos[0], parent->pos[1] + off, parent->pos[2], int2RGBA(255, 192, 0, 128));
             }
         }
         dd->end();
@@ -418,7 +418,7 @@ void debugDrawNavMeshPoly(DebugDraw* dd, const dtNavMesh& mesh, dtPolyRef ref, c
 
     dd->depthMask(false);
 
-    const unsigned int c = duTransCol(col, 64);
+    const unsigned int c = transCol(col, 64);
     const auto ip = (unsigned int)(poly - tile->polys);
 
     if (poly->getType() == DT_POLYTYPE_OFFMESH_CONNECTION) {
@@ -427,7 +427,7 @@ void debugDrawNavMeshPoly(DebugDraw* dd, const dtNavMesh& mesh, dtPolyRef ref, c
         dd->begin(wgpu::PrimitiveTopology::LineList, 2.0f);
 
         // Connection arc.
-        duAppendArc(dd, con->pos[0], con->pos[1], con->pos[2], con->pos[3], con->pos[4], con->pos[5], 0.25f,
+        debugAppendArc(dd, con->pos[0], con->pos[1], con->pos[2], con->pos[3], con->pos[4], con->pos[5], 0.25f,
                     (con->flags & 1) ? 0.6f : 0.0f, 0.6f, c);
 
         dd->end();
@@ -457,7 +457,7 @@ void debugDrawTileCacheLayerAreas(struct DebugDraw* dd, const dtTileCacheLayer& 
     const float* bmax = layer.header->bmax;
     const int idx = layer.header->tlayer;
 
-    unsigned int color = duIntToCol(idx + 1, 255);
+    unsigned int color = intToCol(idx + 1, 255);
 
     // Layer bounds
     float lbmin[3], lbmax[3];
@@ -467,7 +467,7 @@ void debugDrawTileCacheLayerAreas(struct DebugDraw* dd, const dtTileCacheLayer& 
     lbmax[0] = bmin[0] + (layer.header->maxx + 1) * cs;
     lbmax[1] = bmax[1];
     lbmax[2] = bmin[2] + (layer.header->maxy + 1) * cs;
-    debugDrawBoxWire(dd, lbmin[0], lbmin[1], lbmin[2], lbmax[0], lbmax[1], lbmax[2], duTransCol(color, 128), 2.0f);
+    debugDrawBoxWire(dd, lbmin[0], lbmin[1], lbmin[2], lbmax[0], lbmax[1], lbmax[2], transCol(color, 128), 2.0f);
 
     // Layer height
     dd->begin(wgpu::PrimitiveTopology::TriangleStrip);  // todo
@@ -480,11 +480,11 @@ void debugDrawTileCacheLayerAreas(struct DebugDraw* dd, const dtTileCacheLayer& 
             const unsigned char area = layer.areas[lidx];
             unsigned int col;
             if (area == 63)
-                col = duLerpCol(color, duRGBA(0, 192, 255, 64), 32);
+                col = lerpCol(color, int2RGBA(0, 192, 255, 64), 32);
             else if (area == 0)
-                col = duLerpCol(color, duRGBA(0, 0, 0, 64), 32);
+                col = lerpCol(color, int2RGBA(0, 0, 0, 64), 32);
             else
-                col = duLerpCol(color, dd->areaToCol(area), 32);
+                col = lerpCol(color, dd->areaToCol(area), 32);
 
             const float fx = bmin[0] + x * cs;
             const float fy = bmin[1] + (lh + 1) * ch;
@@ -511,7 +511,7 @@ void debugDrawTileCacheLayerRegions(struct DebugDraw* dd,
     const float* bmax = layer.header->bmax;
     const int idx = layer.header->tlayer;
 
-    unsigned int color = duIntToCol(idx + 1, 255);
+    unsigned int color = intToCol(idx + 1, 255);
 
     // Layer bounds
     float lbmin[3], lbmax[3];
@@ -521,7 +521,7 @@ void debugDrawTileCacheLayerRegions(struct DebugDraw* dd,
     lbmax[0] = bmin[0] + (layer.header->maxx + 1) * cs;
     lbmax[1] = bmax[1];
     lbmax[2] = bmin[2] + (layer.header->maxy + 1) * cs;
-    debugDrawBoxWire(dd, lbmin[0], lbmin[1], lbmin[2], lbmax[0], lbmax[1], lbmax[2], duTransCol(color, 128), 2.0f);
+    debugDrawBoxWire(dd, lbmin[0], lbmin[1], lbmin[2], lbmax[0], lbmax[1], lbmax[2], transCol(color, 128), 2.0f);
 
     // Layer height
     dd->begin(wgpu::PrimitiveTopology::TriangleStrip);  // todo
@@ -532,7 +532,7 @@ void debugDrawTileCacheLayerRegions(struct DebugDraw* dd,
             if (lh == 0xff) continue;
             const unsigned char reg = layer.regs[lidx];
 
-            unsigned int col = duLerpCol(color, duIntToCol(reg, 255), 192);
+            unsigned int col = lerpCol(color, intToCol(reg, 255), 192);
 
             const float fx = bmin[0] + x * cs;
             const float fy = bmin[1] + (lh + 1) * ch;
@@ -577,7 +577,7 @@ void debugDrawTileCacheContours(
         const dtTileCacheContour& c = lcset.conts[i];
         unsigned int color = 0;
 
-        color = duIntToCol(i, a);
+        color = intToCol(i, a);
 
         for (int j = 0; j < c.nverts; ++j) {
             const int k = (j + 1) % c.nverts;
@@ -592,7 +592,7 @@ void debugDrawTileCacheContours(
             unsigned int col = color;
             if ((va[3] & 0xf) != 0xf) {
                 // Portal segment
-                col = duRGBA(255, 255, 255, 128);
+                col = int2RGBA(255, 255, 255, 128);
                 int d = va[3] & 0xf;
 
                 const float cx = (ax + bx) * 0.5f;
@@ -603,11 +603,11 @@ void debugDrawTileCacheContours(
                 const float dy = cy;
                 const float dz = cz + offs[d * 2 + 1] * 2 * cs;
 
-                dd->vertex(cx, cy, cz, duRGBA(255, 0, 0, 255));
-                dd->vertex(dx, dy, dz, duRGBA(255, 0, 0, 255));
+                dd->vertex(cx, cy, cz, int2RGBA(255, 0, 0, 255));
+                dd->vertex(dx, dy, dz, int2RGBA(255, 0, 0, 255));
             }
 
-            duAppendArrow(dd, ax, ay, az, bx, by, bz, 0.0f, cs * 0.5f, col);
+            debugAppendArrow(dd, ax, ay, az, bx, by, bz, 0.0f, cs * 0.5f, col);
         }
     }
     dd->end();
@@ -621,10 +621,10 @@ void debugDrawTileCacheContours(
         for (int j = 0; j < c.nverts; ++j) {
             const unsigned char* va = &c.verts[j * 4];
 
-            color = duDarkenCol(duIntToCol(i, a));
+            color = darkenCol(intToCol(i, a));
             if (va[3] & 0x80) {
                 // Border vertex
-                color = duRGBA(255, 0, 0, 255);
+                color = int2RGBA(255, 0, 0, 255);
             }
 
             float fx = orig[0] + va[0] * cs;
@@ -652,9 +652,9 @@ void debugDrawTileCachePolyMesh(
 
         unsigned int color;
         if (area == DT_TILECACHE_WALKABLE_AREA)
-            color = duRGBA(0, 192, 255, 64);
+            color = int2RGBA(0, 192, 255, 64);
         else if (area == DT_TILECACHE_NULL_AREA)
-            color = duRGBA(0, 0, 0, 64);
+            color = int2RGBA(0, 0, 0, 64);
         else
             color = dd->areaToCol(area);
 
@@ -676,7 +676,7 @@ void debugDrawTileCachePolyMesh(
     dd->end();
 
     // Draw neighbours edges
-    const unsigned int coln = duRGBA(0, 48, 64, 32);
+    const unsigned int coln = int2RGBA(0, 48, 64, 32);
     dd->begin(wgpu::PrimitiveTopology::LineList, 1.5f);
     for (int i = 0; i < lmesh.npolys; ++i) {
         const unsigned short* p = &lmesh.polys[i * nvp * 2];
@@ -698,7 +698,7 @@ void debugDrawTileCachePolyMesh(
     dd->end();
 
     // Draw boundary edges
-    const unsigned int colb = duRGBA(0, 48, 64, 220);
+    const unsigned int colb = int2RGBA(0, 48, 64, 220);
     dd->begin(wgpu::PrimitiveTopology::LineList, 2.5f);
     for (int i = 0; i < lmesh.npolys; ++i) {
         const unsigned short* p = &lmesh.polys[i * nvp * 2];
@@ -730,10 +730,10 @@ void debugDrawTileCachePolyMesh(
                 const float dy = cy;
                 const float dz = cz + offs[d * 2 + 1] * 2 * cs;
 
-                dd->vertex(cx, cy, cz, duRGBA(255, 0, 0, 255));
-                dd->vertex(dx, dy, dz, duRGBA(255, 0, 0, 255));
+                dd->vertex(cx, cy, cz, int2RGBA(255, 0, 0, 255));
+                dd->vertex(dx, dy, dz, int2RGBA(255, 0, 0, 255));
 
-                col = duRGBA(255, 255, 255, 128);
+                col = int2RGBA(255, 255, 255, 128);
             }
 
             for (int k : vi) {
@@ -748,7 +748,7 @@ void debugDrawTileCachePolyMesh(
     dd->end();
 
     dd->begin(wgpu::PrimitiveTopology::PointList, 3.0f);
-    const unsigned int colv = duRGBA(0, 0, 0, 220);
+    const unsigned int colv = int2RGBA(0, 0, 0, 220);
     for (int i = 0; i < lmesh.nverts; ++i) {
         const unsigned short* v = &lmesh.verts[i * 3];
         const float x = orig[0] + v[0] * cs;

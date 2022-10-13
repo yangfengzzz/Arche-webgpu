@@ -50,32 +50,33 @@ struct DebugDraw {
     virtual unsigned int areaToCol(unsigned int area);
 };
 
-inline unsigned int duRGBA(int r, int g, int b, int a) {
+//----------------------------------------------------------------------------------------------------------------------
+inline unsigned int int2RGBA(int r, int g, int b, int a) {
     return ((unsigned int)r) | ((unsigned int)g << 8) | ((unsigned int)b << 16) | ((unsigned int)a << 24);
 }
 
-inline unsigned int duRGBAf(float fr, float fg, float fb, float fa) {
+inline unsigned int float2RGBAf(float fr, float fg, float fb, float fa) {
     auto r = (unsigned char)(fr * 255.0f);
     auto g = (unsigned char)(fg * 255.0f);
     auto b = (unsigned char)(fb * 255.0f);
     auto a = (unsigned char)(fa * 255.0f);
-    return duRGBA(r, g, b, a);
+    return int2RGBA(r, g, b, a);
 }
 
-unsigned int duIntToCol(int i, int a);
-void duIntToCol(int i, float* col);
+unsigned int intToCol(int i, int a);
+void intToCol(int i, float* col);
 
-inline unsigned int duMultCol(const unsigned int col, const unsigned int d) {
+inline unsigned int multCol(const unsigned int col, const unsigned int d) {
     const unsigned int r = col & 0xff;
     const unsigned int g = (col >> 8) & 0xff;
     const unsigned int b = (col >> 16) & 0xff;
     const unsigned int a = (col >> 24) & 0xff;
-    return duRGBA((r * d) >> 8, (g * d) >> 8, (b * d) >> 8, a);
+    return int2RGBA((r * d) >> 8, (g * d) >> 8, (b * d) >> 8, a);
 }
 
-inline unsigned int duDarkenCol(unsigned int col) { return ((col >> 1) & 0x007f7f7f) | (col & 0xff000000); }
+inline unsigned int darkenCol(unsigned int col) { return ((col >> 1) & 0x007f7f7f) | (col & 0xff000000); }
 
-inline unsigned int duLerpCol(unsigned int ca, unsigned int cb, unsigned int u) {
+inline unsigned int lerpCol(unsigned int ca, unsigned int cb, unsigned int u) {
     const unsigned int ra = ca & 0xff;
     const unsigned int ga = (ca >> 8) & 0xff;
     const unsigned int ba = (ca >> 16) & 0xff;
@@ -89,13 +90,14 @@ inline unsigned int duLerpCol(unsigned int ca, unsigned int cb, unsigned int u) 
     unsigned int g = (ga * (255 - u) + gb * u) / 255;
     unsigned int b = (ba * (255 - u) + bb * u) / 255;
     unsigned int a = (aa * (255 - u) + ab * u) / 255;
-    return duRGBA(r, g, b, a);
+    return int2RGBA(r, g, b, a);
 }
 
-inline unsigned int duTransCol(unsigned int c, unsigned int a) { return (a << 24) | (c & 0x00ffffff); }
+inline unsigned int transCol(unsigned int c, unsigned int a) { return (a << 24) | (c & 0x00ffffff); }
 
-void duCalcBoxColors(unsigned int* colors, unsigned int colTop, unsigned int colSide);
+void calcBoxColors(unsigned int* colors, unsigned int colTop, unsigned int colSide);
 
+//----------------------------------------------------------------------------------------------------------------------
 void debugDrawCylinderWire(struct DebugDraw* dd,
                            float minx,
                            float miny,
@@ -168,55 +170,56 @@ void debugDrawGridXZ(struct DebugDraw* dd,
                      float lineWidth);
 
 // Versions without begin/end, can be used to draw multiple primitives.
-void duAppendCylinderWire(
+void debugAppendCylinderWire(
         struct DebugDraw* dd, float minx, float miny, float minz, float maxx, float maxy, float maxz, unsigned int col);
 
-void duAppendBoxWire(
+void debugAppendBoxWire(
         struct DebugDraw* dd, float minx, float miny, float minz, float maxx, float maxy, float maxz, unsigned int col);
 
-void duAppendBoxPoints(
+void debugAppendBoxPoints(
         struct DebugDraw* dd, float minx, float miny, float minz, float maxx, float maxy, float maxz, unsigned int col);
 
-void duAppendArc(struct DebugDraw* dd,
-                 float x0,
-                 float y0,
-                 float z0,
-                 float x1,
-                 float y1,
-                 float z1,
-                 float h,
-                 float as0,
-                 float as1,
-                 unsigned int col);
+void debugAppendArc(struct DebugDraw* dd,
+                    float x0,
+                    float y0,
+                    float z0,
+                    float x1,
+                    float y1,
+                    float z1,
+                    float h,
+                    float as0,
+                    float as1,
+                    unsigned int col);
 
-void duAppendArrow(struct DebugDraw* dd,
-                   float x0,
-                   float y0,
-                   float z0,
-                   float x1,
-                   float y1,
-                   float z1,
-                   float as0,
-                   float as1,
-                   unsigned int col);
+void debugAppendArrow(struct DebugDraw* dd,
+                      float x0,
+                      float y0,
+                      float z0,
+                      float x1,
+                      float y1,
+                      float z1,
+                      float as0,
+                      float as1,
+                      unsigned int col);
 
-void duAppendCircle(struct DebugDraw* dd, float x, float y, float z, float r, unsigned int col);
+void debugAppendCircle(struct DebugDraw* dd, float x, float y, float z, float r, unsigned int col);
 
-void duAppendCross(struct DebugDraw* dd, float x, float y, float z, float size, unsigned int col);
+void debugAppendCross(struct DebugDraw* dd, float x, float y, float z, float size, unsigned int col);
 
-void duAppendBox(struct DebugDraw* dd,
-                 float minx,
-                 float miny,
-                 float minz,
-                 float maxx,
-                 float maxy,
-                 float maxz,
-                 const unsigned int* fcol);
+void debugAppendBox(struct DebugDraw* dd,
+                    float minx,
+                    float miny,
+                    float minz,
+                    float maxx,
+                    float maxy,
+                    float maxz,
+                    const unsigned int* fcol);
 
-void duAppendCylinder(
+void debugAppendCylinder(
         struct DebugDraw* dd, float minx, float miny, float minz, float maxx, float maxy, float maxz, unsigned int col);
 
-class duDisplayList : public DebugDraw {
+//----------------------------------------------------------------------------------------------------------------------
+class DisplayList : public DebugDraw {
     float* m_pos;
     unsigned int* m_color;
     int m_size;
@@ -229,8 +232,8 @@ class duDisplayList : public DebugDraw {
     void resize(int cap);
 
 public:
-    duDisplayList(int cap = 512);
-    ~duDisplayList() override;
+    DisplayList(int cap = 512);
+    ~DisplayList() override;
     void depthMask(bool state) override;
     void begin(wgpu::PrimitiveTopology prim, float size = 1.0f) override;
     void vertex(float x, float y, float z, unsigned int color) override;
@@ -241,8 +244,8 @@ public:
 
 private:
     // Explicitly disabled copy constructor and copy assignment operator.
-    duDisplayList(const duDisplayList&);
-    duDisplayList& operator=(const duDisplayList&);
+    DisplayList(const DisplayList&);
+    DisplayList& operator=(const DisplayList&);
 };
 
 }  // namespace vox::debug

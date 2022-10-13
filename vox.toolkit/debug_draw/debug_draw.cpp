@@ -18,22 +18,23 @@ DebugDraw::~DebugDraw() = default;
 unsigned int DebugDraw::areaToCol(unsigned int area) {
     if (area == 0) {
         // Treat zero area type as default.
-        return duRGBA(0, 192, 255, 255);
+        return int2RGBA(0, 192, 255, 255);
     } else {
-        return duIntToCol(area, 255);
+        return intToCol(area, 255);
     }
 }
 
+//----------------------------------------------------------------------------------------------------------------------
 inline int bit(int a, int b) { return (a & (1 << b)) >> b; }
 
-unsigned int duIntToCol(int i, int a) {
+unsigned int intToCol(int i, int a) {
     int r = bit(i, 1) + bit(i, 3) * 2 + 1;
     int g = bit(i, 2) + bit(i, 4) * 2 + 1;
     int b = bit(i, 0) + bit(i, 5) * 2 + 1;
-    return duRGBA(r * 63, g * 63, b * 63, a);
+    return int2RGBA(r * 63, g * 63, b * 63, a);
 }
 
-void duIntToCol(int i, float* col) {
+void intToCol(int i, float* col) {
     int r = bit(i, 0) + bit(i, 3) * 2 + 1;
     int g = bit(i, 1) + bit(i, 4) * 2 + 1;
     int b = bit(i, 2) + bit(i, 5) * 2 + 1;
@@ -42,17 +43,18 @@ void duIntToCol(int i, float* col) {
     col[2] = 1 - b * 63.0f / 255.0f;
 }
 
-void duCalcBoxColors(unsigned int* colors, unsigned int colTop, unsigned int colSide) {
+void calcBoxColors(unsigned int* colors, unsigned int colTop, unsigned int colSide) {
     if (!colors) return;
 
-    colors[0] = duMultCol(colTop, 250);
-    colors[1] = duMultCol(colSide, 140);
-    colors[2] = duMultCol(colSide, 165);
-    colors[3] = duMultCol(colSide, 217);
-    colors[4] = duMultCol(colSide, 165);
-    colors[5] = duMultCol(colSide, 217);
+    colors[0] = multCol(colTop, 250);
+    colors[1] = multCol(colSide, 140);
+    colors[2] = multCol(colSide, 165);
+    colors[3] = multCol(colSide, 217);
+    colors[4] = multCol(colSide, 165);
+    colors[5] = multCol(colSide, 217);
 }
 
+//----------------------------------------------------------------------------------------------------------------------
 void debugDrawCylinderWire(struct DebugDraw* dd,
                            float minx,
                            float miny,
@@ -65,7 +67,7 @@ void debugDrawCylinderWire(struct DebugDraw* dd,
     if (!dd) return;
 
     dd->begin(wgpu::PrimitiveTopology::LineList, lineWidth);
-    duAppendCylinderWire(dd, minx, miny, minz, maxx, maxy, maxz, col);
+    debugAppendCylinderWire(dd, minx, miny, minz, maxx, maxy, maxz, col);
     dd->end();
 }
 
@@ -81,7 +83,7 @@ void debugDrawBoxWire(struct DebugDraw* dd,
     if (!dd) return;
 
     dd->begin(wgpu::PrimitiveTopology::LineList, lineWidth);
-    duAppendBoxWire(dd, minx, miny, minz, maxx, maxy, maxz, col);
+    debugAppendBoxWire(dd, minx, miny, minz, maxx, maxy, maxz, col);
     dd->end();
 }
 
@@ -100,7 +102,7 @@ void debugDrawArc(struct DebugDraw* dd,
     if (!dd) return;
 
     dd->begin(wgpu::PrimitiveTopology::LineList, lineWidth);
-    duAppendArc(dd, x0, y0, z0, x1, y1, z1, h, as0, as1, col);
+    debugAppendArc(dd, x0, y0, z0, x1, y1, z1, h, as0, as1, col);
     dd->end();
 }
 
@@ -118,7 +120,7 @@ void debugDrawArrow(struct DebugDraw* dd,
     if (!dd) return;
 
     dd->begin(wgpu::PrimitiveTopology::LineList, lineWidth);
-    duAppendArrow(dd, x0, y0, z0, x1, y1, z1, as0, as1, col);
+    debugAppendArrow(dd, x0, y0, z0, x1, y1, z1, as0, as1, col);
     dd->end();
 }
 
@@ -132,7 +134,7 @@ void debugDrawCircle(struct DebugDraw* dd,
     if (!dd) return;
 
     dd->begin(wgpu::PrimitiveTopology::LineList, lineWidth);
-    duAppendCircle(dd, x, y, z, r, col);
+    debugAppendCircle(dd, x, y, z, r, col);
     dd->end();
 }
 
@@ -146,7 +148,7 @@ void debugDrawCross(struct DebugDraw* dd,
     if (!dd) return;
 
     dd->begin(wgpu::PrimitiveTopology::LineList, lineWidth);
-    duAppendCross(dd, x, y, z, size, col);
+    debugAppendCross(dd, x, y, z, size, col);
     dd->end();
 }
 
@@ -161,7 +163,7 @@ void debugDrawBox(struct DebugDraw* dd,
     if (!dd) return;
 
     dd->begin(wgpu::PrimitiveTopology::TriangleStrip);  // todo
-    duAppendBox(dd, minx, miny, minz, maxx, maxy, maxz, fcol);
+    debugAppendBox(dd, minx, miny, minz, maxx, maxy, maxz, fcol);
     dd->end();
 }
 
@@ -176,7 +178,7 @@ void debugDrawCylinder(struct DebugDraw* dd,
     if (!dd) return;
 
     dd->begin(wgpu::PrimitiveTopology::TriangleList);
-    duAppendCylinder(dd, minx, miny, minz, maxx, maxy, maxz, col);
+    debugAppendCylinder(dd, minx, miny, minz, maxx, maxy, maxz, col);
     dd->end();
 }
 
@@ -203,7 +205,7 @@ void debugDrawGridXZ(struct DebugDraw* dd,
     dd->end();
 }
 
-void duAppendCylinderWire(struct DebugDraw* dd,
+void debugAppendCylinderWire(struct DebugDraw* dd,
                           float minx,
                           float miny,
                           float minz,
@@ -242,7 +244,7 @@ void duAppendCylinderWire(struct DebugDraw* dd,
     }
 }
 
-void duAppendBoxWire(struct DebugDraw* dd,
+void debugAppendBoxWire(struct DebugDraw* dd,
                      float minx,
                      float miny,
                      float minz,
@@ -282,7 +284,7 @@ void duAppendBoxWire(struct DebugDraw* dd,
     dd->vertex(minx, maxy, maxz, col);
 }
 
-void duAppendBoxPoints(struct DebugDraw* dd,
+void debugAppendBoxPoints(struct DebugDraw* dd,
                        float minx,
                        float miny,
                        float minz,
@@ -312,7 +314,7 @@ void duAppendBoxPoints(struct DebugDraw* dd,
     dd->vertex(minx, maxy, minz, col);
 }
 
-void duAppendBox(struct DebugDraw* dd,
+void debugAppendBox(struct DebugDraw* dd,
                  float minx,
                  float miny,
                  float minz,
@@ -342,7 +344,7 @@ void duAppendBox(struct DebugDraw* dd,
     }
 }
 
-void duAppendCylinder(struct DebugDraw* dd,
+void debugAppendCylinder(struct DebugDraw* dd,
                       float minx,
                       float miny,
                       float minz,
@@ -364,7 +366,7 @@ void duAppendCylinder(struct DebugDraw* dd,
         }
     }
 
-    unsigned int col2 = duMultCol(col, 160);
+    unsigned int col2 = multCol(col, 160);
 
     const float cx = (maxx + minx) / 2;
     const float cz = (maxz + minz) / 2;
@@ -456,7 +458,7 @@ void appendArrowHead(struct DebugDraw* dd, const float* p, const float* q, const
                col);
 }
 
-void duAppendArc(struct DebugDraw* dd,
+void debugAppendArc(struct DebugDraw* dd,
                  const float x0,
                  const float y0,
                  const float z0,
@@ -504,7 +506,7 @@ void duAppendArc(struct DebugDraw* dd,
     }
 }
 
-void duAppendArrow(struct DebugDraw* dd,
+void debugAppendArrow(struct DebugDraw* dd,
                    const float x0,
                    const float y0,
                    const float z0,
@@ -525,7 +527,7 @@ void duAppendArrow(struct DebugDraw* dd,
     if (as1 > 0.001f) appendArrowHead(dd, q, p, as1, col);
 }
 
-void duAppendCircle(
+void debugAppendCircle(
         struct DebugDraw* dd, const float x, const float y, const float z, const float r, unsigned int col) {
     if (!dd) return;
     static const int NUM_SEG = 40;
@@ -546,7 +548,7 @@ void duAppendCircle(
     }
 }
 
-void duAppendCross(struct DebugDraw* dd, const float x, const float y, const float z, const float s, unsigned int col) {
+void debugAppendCross(struct DebugDraw* dd, const float x, const float y, const float z, const float s, unsigned int col) {
     if (!dd) return;
     dd->vertex(x - s, y, z, col);
     dd->vertex(x + s, y, z, col);
@@ -556,7 +558,8 @@ void duAppendCross(struct DebugDraw* dd, const float x, const float y, const flo
     dd->vertex(x, y, z + s, col);
 }
 
-duDisplayList::duDisplayList(int cap)
+//----------------------------------------------------------------------------------------------------------------------
+DisplayList::DisplayList(int cap)
     : m_pos(nullptr),
       m_color(nullptr),
       m_size(0),
@@ -568,12 +571,12 @@ duDisplayList::duDisplayList(int cap)
     resize(cap);
 }
 
-duDisplayList::~duDisplayList() {
+DisplayList::~DisplayList() {
     delete[] m_pos;
     delete[] m_color;
 }
 
-void duDisplayList::resize(int cap) {
+void DisplayList::resize(int cap) {
     auto* newPos = new float[cap * 3];
     if (m_size) memcpy(newPos, m_pos, sizeof(float) * 3 * m_size);
     delete[] m_pos;
@@ -587,17 +590,17 @@ void duDisplayList::resize(int cap) {
     m_cap = cap;
 }
 
-void duDisplayList::clear() { m_size = 0; }
+void DisplayList::clear() { m_size = 0; }
 
-void duDisplayList::depthMask(bool state) { m_depthMask = state; }
+void DisplayList::depthMask(bool state) { m_depthMask = state; }
 
-void duDisplayList::begin(wgpu::PrimitiveTopology prim, float size) {
+void DisplayList::begin(wgpu::PrimitiveTopology prim, float size) {
     clear();
     m_prim = prim;
     m_primSize = size;
 }
 
-void duDisplayList::vertex(const float x, const float y, const float z, unsigned int color) {
+void DisplayList::vertex(const float x, const float y, const float z, unsigned int color) {
     if (m_size + 1 >= m_cap) resize(m_cap * 2);
     float* p = &m_pos[m_size * 3];
     p[0] = x;
@@ -607,11 +610,11 @@ void duDisplayList::vertex(const float x, const float y, const float z, unsigned
     m_size++;
 }
 
-void duDisplayList::vertex(const float* pos, unsigned int color) { vertex(pos[0], pos[1], pos[2], color); }
+void DisplayList::vertex(const float* pos, unsigned int color) { vertex(pos[0], pos[1], pos[2], color); }
 
-void duDisplayList::end() {}
+void DisplayList::end() {}
 
-void duDisplayList::draw(struct DebugDraw* dd) {
+void DisplayList::draw(struct DebugDraw* dd) {
     if (!dd) return;
     if (!m_size) return;
     dd->depthMask(m_depthMask);
