@@ -21,7 +21,9 @@ file(GLOB DEBUG_DRAW_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/debug_draw/*.cpp)
 
 file(GLOB NAVIGATION_FILES
-        ${CMAKE_CURRENT_SOURCE_DIR}/navigation/*.cpp)
+        ${CMAKE_CURRENT_SOURCE_DIR}/navigation/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/navigation/tools/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/navigation/geometry/*.cpp)
 
 file(GLOB GRID_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/grid/*.cpp)

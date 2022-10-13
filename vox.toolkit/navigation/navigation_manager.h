@@ -15,7 +15,7 @@
 #include "vox.toolkit/debug_draw/debug_draw.h"
 #include "vox.toolkit/debug_draw/detour_debug_draw.h"
 #include "vox.toolkit/debug_draw/recast_debug_draw.h"
-#include "vox.toolkit/navigation/input_geom.h"
+#include "vox.toolkit/navigation/geometry/input_geometry.h"
 #include "vox.toolkit/navigation/navigation_context.h"
 
 namespace vox::nav {
@@ -68,11 +68,55 @@ struct NavigationToolState {
 };
 
 class NavigationManager : public Script {
+public:
+    explicit NavigationManager(Entity* entity);
+    ~NavigationManager() override;
+
+    void setContext(NavContext* ctx) { m_ctx = ctx; }
+
+    void setTool(NavigationTool* tool);
+    NavigationToolState& getToolState(int type) { return *m_toolStates[type]; }
+    void setToolState(int type, std::unique_ptr<NavigationToolState>&& s) { m_toolStates[type] = std::move(s); }
+
+    debug::DebugDraw& getDebugDraw() { return *m_dd; }
+
+    virtual void handleSettings();
+    virtual void handleTools();
+    virtual void handleDebugMode();
+    virtual void handleClick(const float* s, const float* p, bool shift);
+    virtual void handleToggle();
+    virtual void handleStep();
+    virtual void handleRender();
+    virtual void handleRenderOverlay(double* proj, double* model, int* view);
+    virtual void handleMeshChanged(InputGeom* geom);
+    virtual bool handleBuild();
+    virtual void handleUpdate(float dt);
+    virtual void collectSettings(struct BuildSettings& settings);
+
+    virtual InputGeom* getInputGeom() { return m_geom; }
+    virtual dtNavMesh* getNavMesh() { return m_navMesh; }
+    virtual dtNavMeshQuery* getNavMeshQuery() { return m_navQuery; }
+    virtual dtCrowd* getCrowd() { return m_crowd; }
+    virtual float getAgentRadius() { return m_agentRadius; }
+    virtual float getAgentHeight() { return m_agentHeight; }
+    virtual float getAgentClimb() { return m_agentMaxClimb; }
+
+    [[nodiscard]] unsigned char getNavMeshDrawFlags() const { return m_navMeshDrawFlags; }
+    void setNavMeshDrawFlags(unsigned char flags) { m_navMeshDrawFlags = flags; }
+
+    void updateToolStates(float dt);
+    void initToolStates(NavigationManager* sample);
+    void resetToolStates();
+    void renderToolStates();
+    void renderOverlayToolStates(double* proj, double* model, int* view);
+
+    void resetCommonSettings();
+
 protected:
-    class InputGeom* m_geom;
-    class dtNavMesh* m_navMesh;
-    class dtNavMeshQuery* m_navQuery;
-    class dtCrowd* m_crowd;
+    InputGeom* m_geom;
+    dtNavMesh* m_navMesh;
+    dtNavMeshQuery* m_navQuery;
+    dtCrowd* m_crowd;
 
     unsigned char m_navMeshDrawFlags;
 
@@ -104,50 +148,6 @@ protected:
 
     static dtNavMesh* loadAll(const char* path);
     static void saveAll(const char* path, const dtNavMesh* mesh);
-
-public:
-    explicit NavigationManager(Entity* entity);
-    ~NavigationManager() override;
-
-    void setContext(NavContext* ctx) { m_ctx = ctx; }
-
-    void setTool(NavigationTool* tool);
-    NavigationToolState& getToolState(int type) { return *m_toolStates[type]; }
-    void setToolState(int type, std::unique_ptr<NavigationToolState>&& s) { m_toolStates[type] = std::move(s); }
-
-    debug::DebugDraw& getDebugDraw() { return *m_dd; }
-
-    virtual void handleSettings();
-    virtual void handleTools();
-    virtual void handleDebugMode();
-    virtual void handleClick(const float* s, const float* p, bool shift);
-    virtual void handleToggle();
-    virtual void handleStep();
-    virtual void handleRender();
-    virtual void handleRenderOverlay(double* proj, double* model, int* view);
-    virtual void handleMeshChanged(class InputGeom* geom);
-    virtual bool handleBuild();
-    virtual void handleUpdate(float dt);
-    virtual void collectSettings(struct BuildSettings& settings);
-
-    virtual class InputGeom* getInputGeom() { return m_geom; }
-    virtual class dtNavMesh* getNavMesh() { return m_navMesh; }
-    virtual class dtNavMeshQuery* getNavMeshQuery() { return m_navQuery; }
-    virtual class dtCrowd* getCrowd() { return m_crowd; }
-    virtual float getAgentRadius() { return m_agentRadius; }
-    virtual float getAgentHeight() { return m_agentHeight; }
-    virtual float getAgentClimb() { return m_agentMaxClimb; }
-
-    [[nodiscard]] unsigned char getNavMeshDrawFlags() const { return m_navMeshDrawFlags; }
-    void setNavMeshDrawFlags(unsigned char flags) { m_navMeshDrawFlags = flags; }
-
-    void updateToolStates(float dt);
-    void initToolStates(NavigationManager* sample);
-    void resetToolStates();
-    void renderToolStates();
-    void renderOverlayToolStates(double* proj, double* model, int* view);
-
-    void resetCommonSettings();
 
 private:
     // Explicitly disabled copy constructor and copy assignment operator.

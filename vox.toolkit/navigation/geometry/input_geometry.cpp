@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.toolkit/navigation/input_geom.h"
+#include "vox.toolkit/navigation/geometry/input_geometry.h"
 
 #include <DetourNavMesh.h>
 #include <Recast.h>

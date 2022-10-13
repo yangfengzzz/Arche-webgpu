@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.toolkit/navigation/convex_volume_tool.h"
+#include "vox.toolkit/navigation/tools/convex_volume_tool.h"
 
 namespace vox::nav {
 namespace {

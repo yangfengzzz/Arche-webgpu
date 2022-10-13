@@ -6,7 +6,6 @@
 
 #pragma once
 
-#include "vox.toolkit/navigation/input_geom.h"
 #include "vox.toolkit/navigation/navigation_manager.h"
 
 namespace vox::nav {

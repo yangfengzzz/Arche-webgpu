@@ -8,7 +8,7 @@
 
 #include <Recast.h>
 
-#include "vox.navigation/perf_timer.h"
+#include "vox.toolkit/navigation/perf_timer.h"
 
 namespace vox::nav {
 /// Recast nav context.

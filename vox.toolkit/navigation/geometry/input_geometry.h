@@ -9,8 +9,8 @@
 #include <Recast.h>
 
 #include "vox.toolkit/debug_draw/debug_draw.h"
-#include "vox.toolkit/navigation/chunky_tri_mesh.h"
-#include "vox.toolkit/navigation/mesh_loader_obj.h"
+#include "vox.toolkit/navigation/geometry/chunky_tri_mesh.h"
+#include "vox.toolkit/navigation/geometry/mesh_loader_obj.h"
 
 namespace vox::nav {
 static const int MAX_CONVEXVOL_PTS = 12;

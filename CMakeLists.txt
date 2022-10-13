@@ -74,5 +74,4 @@ add_subdirectory(asset_pipeline)
 
 # Add editor
 add_subdirectory(vox.editor)
-add_subdirectory(vox.navigation)
 add_subdirectory(editor)
