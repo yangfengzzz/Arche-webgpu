@@ -40,6 +40,7 @@ set(SRC
         ${RENDERING_FILES}
         ${TOOLKIT_FILES}
         gui_app.cpp
+        navigation_app.cpp
         )
 
 source_group("\\" FILES ${SRC})
