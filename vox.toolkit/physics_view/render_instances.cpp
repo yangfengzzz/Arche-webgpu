@@ -4,9 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.toolkit/physics_debugger/render_instances.h"
+#include "vox.toolkit/physics_view/render_instances.h"
 
-namespace vox::physics_debugger {
+namespace vox::physics_view {
 void RenderInstances::Clear() {
     mInstanceBuffer.Release();
     mInstanceBuffer = nullptr;
@@ -58,4 +58,4 @@ void RenderInstances::Draw(wgpu::RenderPassEncoder& passEncoder,
     }
 }
 
-}  // namespace vox::physics_debugger
+}  // namespace vox::physics_view

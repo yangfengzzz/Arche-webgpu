@@ -23,18 +23,18 @@
 
 #include "vox.render/material/base_material.h"
 #include "vox.render/rendering/subpass.h"
-#include "vox.toolkit/physics_debugger/render_instances.h"
+#include "vox.toolkit/physics_view/render_instances.h"
 
 using namespace JPH;
 
-namespace vox::physics_debugger {
+namespace vox::physics_view {
 
-class PhysicsDebugSubpass final : public DebugRenderer, public Subpass {
+class PhysicsViewSubpass final : public DebugRenderer, public Subpass {
 public:
-    PhysicsDebugSubpass(RenderContext *renderContext,
-                        wgpu::TextureFormat depthStencilTextureFormat,
-                        Scene *scene,
-                        Camera *camera);
+    PhysicsViewSubpass(RenderContext *renderContext,
+                       wgpu::TextureFormat depthStencilTextureFormat,
+                       Scene *scene,
+                       Camera *camera);
 
     /// Implementation of DebugRenderer interface
     void DrawLine(const Float3 &inFrom, const Float3 &inTo, ColorArg inColor) override;
@@ -219,4 +219,4 @@ private:
     wgpu::RenderPipeline _trianglePipeline;
     int _currentFrameIndex = 0;
 };
-}  // namespace vox::physics_debugger
+}  // namespace vox::physics_view

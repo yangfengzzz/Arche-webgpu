@@ -13,14 +13,14 @@
 #include "vox.render/camera.h"
 #include "vox.render/entity.h"
 #include "vox.toolkit/controls/orbit_control.h"
-#include "vox.toolkit/physics_debugger/physics_debug_subpass.h"
+#include "vox.toolkit/physics_view/physics_view_subpass.h"
 
 namespace vox {
 namespace {
 class ShowScript : public Script {
 public:
     JPH::BodyID sphere_id;
-    physics_debugger::PhysicsDebugSubpass* _debugger{nullptr};
+    physics_view::PhysicsViewSubpass* _debugger{nullptr};
     JPH::BodyManager::DrawSettings inSettings;
 
     explicit ShowScript(Entity* entity) : Script(entity) { inSettings.mDrawShape = true; }
@@ -54,7 +54,7 @@ bool PhysicsDebugApp::prepare(Platform& platform) {
     auto showScript = rootEntity->addComponent<ShowScript>();
     showScript->sphere_id = sphere_id;
 
-    auto debugger = std::make_unique<physics_debugger::PhysicsDebugSubpass>(
+    auto debugger = std::make_unique<physics_view::PhysicsViewSubpass>(
             _renderContext.get(), _depthStencilTextureFormat, scene, _mainCamera);
     showScript->_debugger = debugger.get();
     _renderPass->addSubpass(std::move(debugger));

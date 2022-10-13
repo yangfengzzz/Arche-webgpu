@@ -4,9 +4,9 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.toolkit/physics_debugger/render_primitive.h"
+#include "vox.toolkit/physics_view/render_primitive.h"
 
-namespace vox::physics_debugger {
+namespace vox::physics_view {
 void RenderPrimitive::Clear() {
     ReleaseVertexBuffer();
     ReleaseIndexBuffer();
@@ -79,4 +79,4 @@ void RenderPrimitive::Draw(wgpu::RenderPassEncoder& passEncoder) const {
     }
 }
 
-}  // namespace vox::physics_debugger
+}  // namespace vox::physics_view

@@ -14,8 +14,8 @@ file(GLOB CONTROLS_FILES
 file(GLOB SKELETON_VIEW_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/skeleton_view/*.cpp)
 
-file(GLOB PHYSICS_DEBUGGER_FILES
-        ${CMAKE_CURRENT_SOURCE_DIR}/physics_debugger/*.cpp)
+file(GLOB PHYSICS_VIEW_FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/physics_view/*.cpp)
 
 file(GLOB GRID_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/grid/*.cpp)
@@ -23,7 +23,7 @@ file(GLOB GRID_FILES
 set(PROJECT_FILES
         ${CONTROLS_FILES}
         ${SKELETON_VIEW_FILES}
-        ${PHYSICS_DEBUGGER_FILES}
+        ${PHYSICS_VIEW_FILES}
         ${GRID_FILES}
         )
 

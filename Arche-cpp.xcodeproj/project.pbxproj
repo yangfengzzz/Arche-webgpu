@@ -794,8 +794,8 @@
 		047320B028F1C4A600D04171 /* render_instances.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047320AA28F1C4A500D04171 /* render_instances.cpp */; };
 		047320B128F1C4A600D04171 /* render_primitive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047320AB28F1C4A500D04171 /* render_primitive.cpp */; };
 		047320B228F1C4A600D04171 /* render_primitive.h in Headers */ = {isa = PBXBuildFile; fileRef = 047320AC28F1C4A500D04171 /* render_primitive.h */; };
-		047320B328F1C4A600D04171 /* physics_debug_subpass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047320AD28F1C4A500D04171 /* physics_debug_subpass.cpp */; };
-		047320B428F1C4A600D04171 /* physics_debug_subpass.h in Headers */ = {isa = PBXBuildFile; fileRef = 047320AE28F1C4A600D04171 /* physics_debug_subpass.h */; };
+		047320B328F1C4A600D04171 /* physics_view_subpass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047320AD28F1C4A500D04171 /* physics_view_subpass.cpp */; };
+		047320B428F1C4A600D04171 /* physics_view_subpass.h in Headers */ = {isa = PBXBuildFile; fileRef = 047320AE28F1C4A600D04171 /* physics_view_subpass.h */; };
 		047320B528F1C4A600D04171 /* render_instances.h in Headers */ = {isa = PBXBuildFile; fileRef = 047320AF28F1C4A600D04171 /* render_instances.h */; };
 		047320D428F407C800D04171 /* animation_blend_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047320C128F407C600D04171 /* animation_blend_app.cpp */; };
 		047320D528F407C800D04171 /* animation_additive_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047320C328F407C600D04171 /* animation_additive_app.cpp */; };
@@ -2396,8 +2396,8 @@
 		047320AA28F1C4A500D04171 /* render_instances.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = render_instances.cpp; sourceTree = "<group>"; };
 		047320AB28F1C4A500D04171 /* render_primitive.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = render_primitive.cpp; sourceTree = "<group>"; };
 		047320AC28F1C4A500D04171 /* render_primitive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render_primitive.h; sourceTree = "<group>"; };
-		047320AD28F1C4A500D04171 /* physics_debug_subpass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = physics_debug_subpass.cpp; sourceTree = "<group>"; };
-		047320AE28F1C4A600D04171 /* physics_debug_subpass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = physics_debug_subpass.h; sourceTree = "<group>"; };
+		047320AD28F1C4A500D04171 /* physics_view_subpass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = physics_view_subpass.cpp; sourceTree = "<group>"; };
+		047320AE28F1C4A600D04171 /* physics_view_subpass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = physics_view_subpass.h; sourceTree = "<group>"; };
 		047320AF28F1C4A600D04171 /* render_instances.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render_instances.h; sourceTree = "<group>"; };
 		047320C128F407C600D04171 /* animation_blend_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = animation_blend_app.cpp; sourceTree = "<group>"; };
 		047320C228F407C600D04171 /* animation_ik_hand_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = animation_ik_hand_app.h; sourceTree = "<group>"; };
@@ -4387,7 +4387,7 @@
 			isa = PBXGroup;
 			children = (
 				047322A928F515DD00D04171 /* grid */,
-				047320A928F1C49300D04171 /* physics_debugger */,
+				047320A928F1C49300D04171 /* physics_view */,
 				0473206228E8312A00D04171 /* skeleton_view */,
 				0473206128E8312300D04171 /* controls */,
 			);
@@ -4427,17 +4427,17 @@
 			path = physics;
 			sourceTree = "<group>";
 		};
-		047320A928F1C49300D04171 /* physics_debugger */ = {
+		047320A928F1C49300D04171 /* physics_view */ = {
 			isa = PBXGroup;
 			children = (
-				047320AE28F1C4A600D04171 /* physics_debug_subpass.h */,
-				047320AD28F1C4A500D04171 /* physics_debug_subpass.cpp */,
+				047320AE28F1C4A600D04171 /* physics_view_subpass.h */,
+				047320AD28F1C4A500D04171 /* physics_view_subpass.cpp */,
 				047320AF28F1C4A600D04171 /* render_instances.h */,
 				047320AA28F1C4A500D04171 /* render_instances.cpp */,
 				047320AC28F1C4A500D04171 /* render_primitive.h */,
 				047320AB28F1C4A500D04171 /* render_primitive.cpp */,
 			);
-			path = physics_debugger;
+			path = physics_view;
 			sourceTree = "<group>";
 		};
 		047320C028F407B000D04171 /* animation */ = {
@@ -5800,7 +5800,7 @@
 				0473206F28E8314500D04171 /* orbit_control.h in Headers */,
 				047322B028F515EB00D04171 /* grid_material.h in Headers */,
 				047320B228F1C4A600D04171 /* render_primitive.h in Headers */,
-				047320B428F1C4A600D04171 /* physics_debug_subpass.h in Headers */,
+				047320B428F1C4A600D04171 /* physics_view_subpass.h in Headers */,
 				0473206D28E8314500D04171 /* spherical.h in Headers */,
 				047320B528F1C4A600D04171 /* render_instances.h in Headers */,
 				0473207028E8314500D04171 /* free_control.h in Headers */,
@@ -7001,7 +7001,7 @@
 				047320B028F1C4A600D04171 /* render_instances.cpp in Sources */,
 				047320B128F1C4A600D04171 /* render_primitive.cpp in Sources */,
 				0473206E28E8314500D04171 /* orbit_control.cpp in Sources */,
-				047320B328F1C4A600D04171 /* physics_debug_subpass.cpp in Sources */,
+				047320B328F1C4A600D04171 /* physics_view_subpass.cpp in Sources */,
 				0473207128E8314500D04171 /* spherical.cpp in Sources */,
 				0473206528E8313D00D04171 /* skeleton_view.cpp in Sources */,
 				0473207228E8314500D04171 /* free_control.cpp in Sources */,

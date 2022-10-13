@@ -12,9 +12,9 @@
 
 #include <vector>
 
-#include "vox.toolkit/physics_debugger/render_primitive.h"
+#include "vox.toolkit/physics_view/render_primitive.h"
 
-namespace vox::physics_debugger {
+namespace vox::physics_view {
 
 using namespace JPH;
 
@@ -60,4 +60,4 @@ private:
     int mInstanceBufferSize = 0;
     int mInstanceSize = 0;
 };
-}  // namespace vox::physics_debugger
+}  // namespace vox::physics_view

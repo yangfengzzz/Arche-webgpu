@@ -18,7 +18,7 @@
 #include "vox.render/mesh/primitive_mesh.h"
 #include "vox.render/physics/collider.h"
 #include "vox.toolkit/controls/orbit_control.h"
-#include "vox.toolkit/physics_debugger/physics_debug_subpass.h"
+#include "vox.toolkit/physics_view/physics_view_subpass.h"
 
 namespace vox {
 namespace {
@@ -68,7 +68,7 @@ public:
 
 class ShowScript : public Script {
 public:
-    physics_debugger::PhysicsDebugSubpass *_debugger{nullptr};
+    physics_view::PhysicsViewSubpass *_debugger{nullptr};
     JPH::BodyManager::DrawSettings inSettings;
 
     explicit ShowScript(Entity *entity) : Script(entity) { inSettings.mDrawShape = true; }
@@ -86,7 +86,7 @@ bool PhysicsCollisionApp::prepare(Platform &platform) {
     auto scene = _sceneManager->currentScene();
     auto rootEntity = scene->getRootEntity();
 
-    auto debugger = std::make_unique<physics_debugger::PhysicsDebugSubpass>(
+    auto debugger = std::make_unique<physics_view::PhysicsViewSubpass>(
             _renderContext.get(), _depthStencilTextureFormat, scene, _mainCamera);
     //    auto showScript = rootEntity->addComponent<ShowScript>();
     //    showScript->_debugger = debugger.get();

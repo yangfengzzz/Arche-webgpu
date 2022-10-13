@@ -16,7 +16,7 @@
 
 using namespace JPH;
 
-namespace vox::physics_debugger {
+namespace vox::physics_view {
 /// Simple wrapper around vertex and index buffers
 class RenderPrimitive : public RefTarget<RenderPrimitive> {
 public:
@@ -66,4 +66,4 @@ private:
     int mNumIdx = 0;
     int mNumIdxToDraw = 0;
 };
-}  // namespace vox::physics_debugger
+}  // namespace vox::physics_view
