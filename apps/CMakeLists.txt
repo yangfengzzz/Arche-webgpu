@@ -56,12 +56,20 @@ else ()
     add_executable(${PROJECT_NAME} WIN32 ${SRC})
 endif ()
 
+set(NAVI_INCLUDE
+        ../third_party/recastnavigation/DebugUtils/Include
+        ../third_party/recastnavigation/Recast/Include
+        ../third_party/recastnavigation/Detour/Include
+        ../third_party/recastnavigation/DetourCrowd/Include
+        ../third_party/recastnavigation/DetourTileCache/Include)
+
 target_include_directories(${PROJECT_NAME} PUBLIC
         ../
         ../third_party/nlohmann/include
         ../third_party/dawn/cmake-release/gen/include
         ../third_party/dawn/include
         ../third_party/dawn
+        ${NAVI_INCLUDE}
         ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC DAWN_ENABLE_BACKEND_METAL DAWN_ENABLE_BACKEND_NULL TINT_BUILD_SPV_READER JPH_PROFILE_ENABLED JPH_DEBUG_RENDERER)

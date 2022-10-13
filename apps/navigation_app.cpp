@@ -6,6 +6,7 @@
 
 #include "apps/navigation_app.h"
 
+#include "vox.navigation/file_list.h"
 #include "vox.render/camera.h"
 #include "vox.render/entity.h"
 #include "vox.render/material/blinn_phong_material.h"
@@ -18,7 +19,7 @@ namespace vox {
 namespace {
 class MoveScript : public Script {
 public:
-    explicit MoveScript(Entity* entity) : Script(entity) {}
+    explicit MoveScript(Entity *entity) : Script(entity) {}
 
     void onUpdate(float deltaTime) override {
         _rTri += 90 * deltaTime;
@@ -66,6 +67,26 @@ void NavigationApp::loadScene() {
     texturedMaterial->setBaseTexture(ImageManager::GetSingleton().loadTexture("Textures/wood.png"));
 
     scene->play();
+}
+
+void NavigationApp::inputEvent(const vox::InputEvent &inputEvent) {
+    if (inputEvent.GetSource() == EventSource::KEYBOARD) {
+        const auto &key_event = static_cast<const KeyInputEvent &>(inputEvent);
+        if (key_event.GetCode() == KeyCode::ESCAPE) {
+            done = true;
+        } else if (key_event.GetCode() == KeyCode::T) {
+            showLevels = false;
+            showSample = false;
+            showTestCases = true;
+            nav::scanDirectory(testCasesFolder, ".txt", files);
+        } else if (key_event.GetCode() == KeyCode::TAB) {
+            showMenu = !showMenu;
+        } else if (key_event.GetCode() == KeyCode::SPACE) {
+            if (sample) sample->handleToggle();
+        } else if (key_event.GetCode() == KeyCode::_1) {
+            if (sample) sample->handleStep();
+        }
+    }
 }
 
 }  // namespace vox
