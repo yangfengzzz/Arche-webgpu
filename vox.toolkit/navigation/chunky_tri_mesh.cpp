@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.navigation/chunky_tri_mesh.h"
+#include "vox.toolkit/navigation/chunky_tri_mesh.h"
 
 #include <cmath>
 #include <cstdio>

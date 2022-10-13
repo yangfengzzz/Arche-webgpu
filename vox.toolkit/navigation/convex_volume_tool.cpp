@@ -4,20 +4,14 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.navigation/convex_volume_tool.h"
+#include "vox.toolkit/navigation/convex_volume_tool.h"
 
-#include <imgui.h>
-
-#include <cfloat>
-
-#include "vox.navigation/input_geom.h"
-#ifdef WIN32
-#define snprintf _snprintf
-#endif
+#include <Recast.h>
 
 namespace vox::nav {
-// Quick and dirty convex hull.
 namespace {
+// Quick and dirty convex hull.
+
 // Returns true if 'c' is left of line 'a'-'b'.
 inline bool left(const float* a, const float* b, const float* c) {
     const float u1 = b[0] - a[0];
@@ -35,7 +29,6 @@ inline bool cmppt(const float* a, const float* b) {
     if (a[2] > b[2]) return false;
     return false;
 }
-
 // Calculates convex hull on xz-plane of points on 'pts',
 // stores the indices of the resulting hull in 'out' and
 // returns number of points on hull.
@@ -70,50 +63,7 @@ int pointInPoly(int nvert, const float* verts, const float* p) {
 }
 }  // namespace
 
-ConvexVolumeTool::ConvexVolumeTool()
-    : m_sample(nullptr),
-      m_areaType(SAMPLE_POLYAREA_GRASS),
-      m_polyOffset(0.0f),
-      m_boxHeight(6.0f),
-      m_boxDescent(1.0f),
-      m_npts(0),
-      m_nhull(0) {}
-
-void ConvexVolumeTool::init(Sample* sample) { m_sample = sample; }
-
-void ConvexVolumeTool::reset() {
-    m_npts = 0;
-    m_nhull = 0;
-}
-
-void ConvexVolumeTool::handleMenu() {
-    ImGui::SliderFloat("Shape Height", &m_boxHeight, 0.1f, 20.0f);
-    ImGui::SliderFloat("Shape Descent", &m_boxDescent, 0.1f, 20.0f);
-    ImGui::SliderFloat("Poly Offset", &m_polyOffset, 0.0f, 10.0f);
-
-    ImGui::Separator();
-
-    ImGui::Text("Area Type");
-    ImGui::Indent();
-    if (ImGui::CheckboxFlags("Ground", &m_areaType, SAMPLE_POLYAREA_GROUND)) m_areaType = SAMPLE_POLYAREA_GROUND;
-    if (ImGui::CheckboxFlags("Water", &m_areaType, SAMPLE_POLYAREA_WATER)) m_areaType = SAMPLE_POLYAREA_WATER;
-    if (ImGui::CheckboxFlags("Road", &m_areaType, SAMPLE_POLYAREA_ROAD)) m_areaType = SAMPLE_POLYAREA_ROAD;
-    if (ImGui::CheckboxFlags("Door", &m_areaType, SAMPLE_POLYAREA_DOOR)) m_areaType = SAMPLE_POLYAREA_DOOR;
-    if (ImGui::CheckboxFlags("Grass", &m_areaType, SAMPLE_POLYAREA_GRASS)) m_areaType = SAMPLE_POLYAREA_GRASS;
-    if (ImGui::CheckboxFlags("Jump", &m_areaType, SAMPLE_POLYAREA_JUMP)) m_areaType = SAMPLE_POLYAREA_JUMP;
-    ImGui::Unindent();
-
-    ImGui::Separator();
-
-    if (ImGui::Button("Clear Shape")) {
-        m_npts = 0;
-        m_nhull = 0;
-    }
-}
-
-void ConvexVolumeTool::handleClick(const float* /*s*/, const float* p, bool shift) {
-    if (!m_sample) return;
-    InputGeom* geom = m_sample->getInputGeom();
+void ConvexVolumeTool::handleClick(const float* s, const float* p, bool shift) {
     if (!geom) return;
 
     if (shift) {
@@ -170,53 +120,33 @@ void ConvexVolumeTool::handleClick(const float* /*s*/, const float* p, bool shif
     }
 }
 
-void ConvexVolumeTool::handleToggle() {}
-
-void ConvexVolumeTool::handleStep() {}
-
-void ConvexVolumeTool::handleUpdate(const float /*dt*/) {}
-
 void ConvexVolumeTool::handleRender() {
-    duDebugDraw& dd = m_sample->getDebugDraw();
-
     // Find height extent of the shape.
     float minh = FLT_MAX, maxh = 0;
     for (int i = 0; i < m_npts; ++i) minh = rcMin(minh, m_pts[i * 3 + 1]);
     minh -= m_boxDescent;
     maxh = minh + m_boxHeight;
 
-    dd.begin(DU_DRAW_POINTS, 4.0f);
+    debugDraw->begin(wgpu::PrimitiveTopology::PointList, 4.0f);
     for (int i = 0; i < m_npts; ++i) {
-        unsigned int col = duRGBA(255, 255, 255, 255);
-        if (i == m_npts - 1) col = duRGBA(240, 32, 16, 255);
-        dd.vertex(m_pts[i * 3 + 0], m_pts[i * 3 + 1] + 0.1f, m_pts[i * 3 + 2], col);
+        unsigned int col = debug::int2RGBA(255, 255, 255, 255);
+        if (i == m_npts - 1) col = debug::int2RGBA(240, 32, 16, 255);
+        debugDraw->vertex(m_pts[i * 3 + 0], m_pts[i * 3 + 1] + 0.1f, m_pts[i * 3 + 2], col);
     }
-    dd.end();
+    debugDraw->end();
 
-    dd.begin(DU_DRAW_LINES, 2.0f);
+    debugDraw->begin(wgpu::PrimitiveTopology::LineList, 2.0f);
     for (int i = 0, j = m_nhull - 1; i < m_nhull; j = i++) {
         const float* vi = &m_pts[m_hull[j] * 3];
         const float* vj = &m_pts[m_hull[i] * 3];
-        dd.vertex(vj[0], minh, vj[2], duRGBA(255, 255, 255, 64));
-        dd.vertex(vi[0], minh, vi[2], duRGBA(255, 255, 255, 64));
-        dd.vertex(vj[0], maxh, vj[2], duRGBA(255, 255, 255, 64));
-        dd.vertex(vi[0], maxh, vi[2], duRGBA(255, 255, 255, 64));
-        dd.vertex(vj[0], minh, vj[2], duRGBA(255, 255, 255, 64));
-        dd.vertex(vj[0], maxh, vj[2], duRGBA(255, 255, 255, 64));
+        debugDraw->vertex(vj[0], minh, vj[2], debug::int2RGBA(255, 255, 255, 64));
+        debugDraw->vertex(vi[0], minh, vi[2], debug::int2RGBA(255, 255, 255, 64));
+        debugDraw->vertex(vj[0], maxh, vj[2], debug::int2RGBA(255, 255, 255, 64));
+        debugDraw->vertex(vi[0], maxh, vi[2], debug::int2RGBA(255, 255, 255, 64));
+        debugDraw->vertex(vj[0], minh, vj[2], debug::int2RGBA(255, 255, 255, 64));
+        debugDraw->vertex(vj[0], maxh, vj[2], debug::int2RGBA(255, 255, 255, 64));
     }
-    dd.end();
+    debugDraw->end();
 }
 
-void ConvexVolumeTool::handleRenderOverlay(double* /*proj*/, double* /*model*/, int* view) {
-    // Tool help
-    const int h = view[3];
-    if (!m_npts) {
-        ImGui::TextColored(ImVec4(255, 255, 255, 192),
-                           "LMB: Create new shape.  SHIFT+LMB: Delete existing shape (click inside a shape).");
-    } else {
-        ImGui::TextColored(ImVec4(255, 255, 255, 192),
-                           "Click LMB to add new points. Click on the red point to finish the shape.");
-        ImGui::TextColored(ImVec4(255, 255, 255, 192), "The shape will be convex hull of all added points.");
-    }
-}
 }  // namespace vox::nav

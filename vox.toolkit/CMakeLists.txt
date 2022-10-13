@@ -20,6 +20,9 @@ file(GLOB PHYSICS_VIEW_FILES
 file(GLOB DEBUG_DRAW_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/debug_draw/*.cpp)
 
+file(GLOB NAVIGATION_FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/navigation/*.cpp)
+
 file(GLOB GRID_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/grid/*.cpp)
 
@@ -28,6 +31,7 @@ set(PROJECT_FILES
         ${SKELETON_VIEW_FILES}
         ${PHYSICS_VIEW_FILES}
         ${DEBUG_DRAW_FILES}
+        ${NAVIGATION_FILES}
         ${GRID_FILES}
         )
 

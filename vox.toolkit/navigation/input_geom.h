@@ -6,10 +6,9 @@
 
 #pragma once
 
-#include <DebugDraw.h>
-
-#include "vox.navigation/chunky_tri_mesh.h"
-#include "vox.navigation/mesh_loader_obj.h"
+#include "vox.toolkit/debug_draw/debug_draw.h"
+#include "vox.toolkit/navigation/chunky_tri_mesh.h"
+#include "vox.toolkit/navigation/mesh_loader_obj.h"
 
 namespace vox::nav {
 static const int MAX_CONVEXVOL_PTS = 12;
@@ -125,7 +124,7 @@ public:
                               unsigned char area,
                               unsigned short flags);
     void deleteOffMeshConnection(int i);
-    void drawOffMeshConnections(struct duDebugDraw* dd, bool hilight = false);
+    void drawOffMeshConnections(debug::DebugDraw* dd, bool hilight = false);
     ///@}
 
     /// @name Box Volumes.
@@ -134,7 +133,7 @@ public:
     [[nodiscard]] const ConvexVolume* getConvexVolumes() const { return m_volumes; }
     void addConvexVolume(const float* verts, int nverts, float minh, float maxh, unsigned char area);
     void deleteConvexVolume(int i);
-    void drawConvexVolumes(struct duDebugDraw* dd, bool hilight = false);
+    void drawConvexVolumes(debug::DebugDraw* dd, bool hilight = false);
     ///@}
 
 private:

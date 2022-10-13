@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "vox.navigation/input_geom.h"
+#include "vox.toolkit/navigation/input_geom.h"
 
 #include <DetourNavMesh.h>
 #include <Recast.h>
@@ -391,12 +391,12 @@ void InputGeom::deleteOffMeshConnection(int i) {
     m_offMeshConFlags[i] = m_offMeshConFlags[m_offMeshConCount];
 }
 
-void InputGeom::drawOffMeshConnections(duDebugDraw* dd, bool hilight) {
-    unsigned int conColor = duRGBA(192, 0, 128, 192);
-    unsigned int baseColor = duRGBA(0, 0, 0, 64);
+void InputGeom::drawOffMeshConnections(debug::DebugDraw* dd, bool hilight) {
+    unsigned int conColor = debug::int2RGBA(192, 0, 128, 192);
+    unsigned int baseColor = debug::int2RGBA(0, 0, 0, 64);
     dd->depthMask(false);
 
-    dd->begin(DU_DRAW_LINES, 2.0f);
+    dd->begin(wgpu::PrimitiveTopology::LineList, 2.0f);
     for (int i = 0; i < m_offMeshConCount; ++i) {
         float* v = &m_offMeshConVerts[i * 3 * 2];
 
@@ -406,12 +406,12 @@ void InputGeom::drawOffMeshConnections(duDebugDraw* dd, bool hilight) {
         dd->vertex(v[3], v[4], v[5], baseColor);
         dd->vertex(v[3], v[4] + 0.2f, v[5], baseColor);
 
-        duAppendCircle(dd, v[0], v[1] + 0.1f, v[2], m_offMeshConRads[i], baseColor);
-        duAppendCircle(dd, v[3], v[4] + 0.1f, v[5], m_offMeshConRads[i], baseColor);
+        debugAppendCircle(dd, v[0], v[1] + 0.1f, v[2], m_offMeshConRads[i], baseColor);
+        debugAppendCircle(dd, v[3], v[4] + 0.1f, v[5], m_offMeshConRads[i], baseColor);
 
         if (hilight) {
-            duAppendArc(dd, v[0], v[1], v[2], v[3], v[4], v[5], 0.25f, (m_offMeshConDirs[i] & 1) ? 0.6f : 0.0f, 0.6f,
-                        conColor);
+            debugAppendArc(dd, v[0], v[1], v[2], v[3], v[4], v[5], 0.25f, (m_offMeshConDirs[i] & 1) ? 0.6f : 0.0f, 0.6f,
+                           conColor);
         }
     }
     dd->end();
@@ -436,14 +436,14 @@ void InputGeom::deleteConvexVolume(int i) {
     m_volumes[i] = m_volumes[m_volumeCount];
 }
 
-void InputGeom::drawConvexVolumes(struct duDebugDraw* dd, bool /*hilight*/) {
+void InputGeom::drawConvexVolumes(struct debug::DebugDraw* dd, bool /*hilight*/) {
     dd->depthMask(false);
 
-    dd->begin(DU_DRAW_TRIS);
+    dd->begin(wgpu::PrimitiveTopology::TriangleList);
 
     for (int i = 0; i < m_volumeCount; ++i) {
         const ConvexVolume* vol = &m_volumes[i];
-        unsigned int col = duTransCol(dd->areaToCol(vol->area), 32);
+        unsigned int col = debug::transCol(dd->areaToCol(vol->area), 32);
         for (int j = 0, k = vol->nverts - 1; j < vol->nverts; k = j++) {
             const float* va = &vol->verts[k * 3];
             const float* vb = &vol->verts[j * 3];
@@ -452,39 +452,39 @@ void InputGeom::drawConvexVolumes(struct duDebugDraw* dd, bool /*hilight*/) {
             dd->vertex(vb[0], vol->hmax, vb[2], col);
             dd->vertex(va[0], vol->hmax, va[2], col);
 
-            dd->vertex(va[0], vol->hmin, va[2], duDarkenCol(col));
+            dd->vertex(va[0], vol->hmin, va[2], debug::darkenCol(col));
             dd->vertex(va[0], vol->hmax, va[2], col);
             dd->vertex(vb[0], vol->hmax, vb[2], col);
 
-            dd->vertex(va[0], vol->hmin, va[2], duDarkenCol(col));
+            dd->vertex(va[0], vol->hmin, va[2], debug::darkenCol(col));
             dd->vertex(vb[0], vol->hmax, vb[2], col);
-            dd->vertex(vb[0], vol->hmin, vb[2], duDarkenCol(col));
+            dd->vertex(vb[0], vol->hmin, vb[2], debug::darkenCol(col));
         }
     }
 
     dd->end();
 
-    dd->begin(DU_DRAW_LINES, 2.0f);
+    dd->begin(wgpu::PrimitiveTopology::LineList, 2.0f);
     for (int i = 0; i < m_volumeCount; ++i) {
         const ConvexVolume* vol = &m_volumes[i];
-        unsigned int col = duTransCol(dd->areaToCol(vol->area), 220);
+        unsigned int col = debug::transCol(dd->areaToCol(vol->area), 220);
         for (int j = 0, k = vol->nverts - 1; j < vol->nverts; k = j++) {
             const float* va = &vol->verts[k * 3];
             const float* vb = &vol->verts[j * 3];
-            dd->vertex(va[0], vol->hmin, va[2], duDarkenCol(col));
-            dd->vertex(vb[0], vol->hmin, vb[2], duDarkenCol(col));
+            dd->vertex(va[0], vol->hmin, va[2], debug::darkenCol(col));
+            dd->vertex(vb[0], vol->hmin, vb[2], debug::darkenCol(col));
             dd->vertex(va[0], vol->hmax, va[2], col);
             dd->vertex(vb[0], vol->hmax, vb[2], col);
-            dd->vertex(va[0], vol->hmin, va[2], duDarkenCol(col));
+            dd->vertex(va[0], vol->hmin, va[2], debug::darkenCol(col));
             dd->vertex(va[0], vol->hmax, va[2], col);
         }
     }
     dd->end();
 
-    dd->begin(DU_DRAW_POINTS, 3.0f);
+    dd->begin(wgpu::PrimitiveTopology::PointList, 3.0f);
     for (int i = 0; i < m_volumeCount; ++i) {
         const ConvexVolume* vol = &m_volumes[i];
-        unsigned int col = duDarkenCol(duTransCol(dd->areaToCol(vol->area), 220));
+        unsigned int col = debug::darkenCol(debug::transCol(dd->areaToCol(vol->area), 220));
         for (int j = 0; j < vol->nverts; ++j) {
             dd->vertex(vol->verts[j * 3 + 0], vol->verts[j * 3 + 1] + 0.1f, vol->verts[j * 3 + 2], col);
             dd->vertex(vol->verts[j * 3 + 0], vol->hmin, vol->verts[j * 3 + 2], col);
