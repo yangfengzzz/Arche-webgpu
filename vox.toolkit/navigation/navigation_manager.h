@@ -72,7 +72,7 @@ public:
     void setContext(NavContext* ctx) { m_ctx = ctx; }
 
     void setTool(NavigationTool* tool);
-    NavigationToolState& getToolState(int type) { return *m_toolStates[type]; }
+    NavigationToolState* getToolState(int type) { return m_toolStates[type].get(); }
     void setToolState(int type, std::unique_ptr<NavigationToolState>&& s) { m_toolStates[type] = std::move(s); }
 
     debug::DebugDraw& getDebugDraw() { return *m_dd; }

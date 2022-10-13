@@ -14,9 +14,8 @@
 #include <cstring>
 
 namespace vox::nav {
-
-static bool isectSegAABB(
-        const float* sp, const float* sq, const float* amin, const float* amax, float& tmin, float& tmax) {
+namespace {
+bool isectSegAABB(const float* sp, const float* sq, const float* amin, const float* amax, float& tmin, float& tmax) {
     static const float EPS = 1e-6f;
 
     float d[3];
@@ -47,7 +46,7 @@ static bool isectSegAABB(
     return true;
 }
 
-static void getAgentBounds(const dtCrowdAgent* ag, float* bmin, float* bmax) {
+void getAgentBounds(const dtCrowdAgent* ag, float* bmin, float* bmax) {
     const float* p = ag->npos;
     const float r = ag->params.radius;
     const float h = ag->params.height;
@@ -58,6 +57,14 @@ static void getAgentBounds(const dtCrowdAgent* ag, float* bmin, float* bmax) {
     bmax[1] = p[1] + h;
     bmax[2] = p[2] + r;
 }
+
+void calcVel(float* vel, const float* pos, const float* tgt, const float speed) {
+    dtVsub(vel, tgt, pos);
+    vel[1] = 0.0;
+    dtVnormalize(vel);
+    dtVscale(vel, vel, speed);
+}
+}  // namespace
 
 CrowdToolState::CrowdToolState() : m_sample(nullptr), m_nav(nullptr), m_crowd(nullptr), m_targetRef(0), m_run(true) {
     m_toolParams.m_expandSelectedDebugDraw = true;
@@ -480,13 +487,6 @@ void CrowdToolState::removeAgent(const int idx) {
 
 void CrowdToolState::hilightAgent(const int idx) { m_agentDebug.idx = idx; }
 
-static void calcVel(float* vel, const float* pos, const float* tgt, const float speed) {
-    dtVsub(vel, tgt, pos);
-    vel[1] = 0.0;
-    dtVnormalize(vel);
-    dtVscale(vel, vel, speed);
-}
-
 void CrowdToolState::setMoveTarget(const float* p, bool adjust) {
     if (!m_sample) return;
 
@@ -611,7 +611,7 @@ void CrowdToolState::updateTick(const float dt) {
     m_crowdTotalTime.addSample(getPerfTimeUsec(endTime - startTime) / 1000.0f);
 }
 
-CrowdTool::CrowdTool() : m_sample(nullptr), m_state(nullptr), m_mode(TOOLMODE_CREATE) {}
+CrowdTool::CrowdTool() : m_sample(nullptr), m_state(nullptr), m_mode(TOOL_MODE_CREATE) {}
 
 void CrowdTool::init(NavigationManager* sample) {
     if (m_sample != sample) {
@@ -620,7 +620,7 @@ void CrowdTool::init(NavigationManager* sample) {
 
     if (!sample) return;
 
-    m_state = (CrowdToolState*)&sample->getToolState(type());
+    m_state = static_cast<CrowdToolState*>(sample->getToolState(type()));
     if (!m_state) {
         auto state = std::make_unique<CrowdToolState>();
         m_state = state.get();
@@ -639,7 +639,7 @@ void CrowdTool::handleClick(const float* s, const float* p, bool shift) {
     dtCrowd* crowd = m_sample->getCrowd();
     if (!crowd) return;
 
-    if (m_mode == TOOLMODE_CREATE) {
+    if (m_mode == TOOL_MODE_CREATE) {
         if (shift) {
             // Delete
             int ahit = m_state->hitTestAgents(s, p);
@@ -648,13 +648,13 @@ void CrowdTool::handleClick(const float* s, const float* p, bool shift) {
             // Add
             m_state->addAgent(p);
         }
-    } else if (m_mode == TOOLMODE_MOVE_TARGET) {
+    } else if (m_mode == TOOL_MODE_MOVE_TARGET) {
         m_state->setMoveTarget(p, shift);
-    } else if (m_mode == TOOLMODE_SELECT) {
+    } else if (m_mode == TOOL_MODE_SELECT) {
         // Highlight
         int ahit = m_state->hitTestAgents(s, p);
         m_state->hilightAgent(ahit);
-    } else if (m_mode == TOOLMODE_TOGGLE_POLYS) {
+    } else if (m_mode == TOOL_MODE_TOGGLE_POLYS) {
         dtNavMesh* nav = m_sample->getNavMesh();
         dtNavMeshQuery* navquery = m_sample->getNavMeshQuery();
         if (nav && navquery) {

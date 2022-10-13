@@ -100,10 +100,10 @@ class CrowdTool : public NavigationTool {
     CrowdToolState* m_state;
 
     enum ToolMode {
-        TOOLMODE_CREATE,
-        TOOLMODE_MOVE_TARGET,
-        TOOLMODE_SELECT,
-        TOOLMODE_TOGGLE_POLYS,
+        TOOL_MODE_CREATE,
+        TOOL_MODE_MOVE_TARGET,
+        TOOL_MODE_SELECT,
+        TOOL_MODE_TOGGLE_POLYS,
     };
     ToolMode m_mode;
 
