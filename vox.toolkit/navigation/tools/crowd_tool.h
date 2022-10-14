@@ -42,6 +42,33 @@ struct CrowdToolParams {
 };
 
 class CrowdToolState : public NavigationToolState {
+public:
+    CrowdToolState();
+    ~CrowdToolState() override;
+
+    // Explicitly disabled copy constructor and copy assignment operator.
+    CrowdToolState(const CrowdToolState&) = delete;
+    CrowdToolState& operator=(const CrowdToolState&) = delete;
+
+    void init(NavigationManager* sample) override;
+    void reset() override;
+    void handleRender() override;
+    void handleUpdate(float dt) override;
+
+    [[nodiscard]] inline bool isRunning() const { return m_run; }
+    inline void setRunning(const bool s) { m_run = s; }
+
+    void addAgent(const float* pos);
+    void removeAgent(int idx);
+    void hilightAgent(int idx);
+    void updateAgentParams();
+    int hitTestAgents(const float* s, const float* p);
+    void setMoveTarget(const float* p, bool adjust);
+    void updateTick(float dt);
+
+    inline CrowdToolParams* getToolParams() { return &m_toolParams; }
+
+private:
     NavigationManager* m_sample;
     dtNavMesh* m_nav;
     dtCrowd* m_crowd;
@@ -66,47 +93,9 @@ class CrowdToolState : public NavigationToolState {
     CrowdToolParams m_toolParams{};
 
     bool m_run;
-
-public:
-    CrowdToolState();
-    ~CrowdToolState() override;
-
-    void init(NavigationManager* sample) override;
-    void reset() override;
-    void handleRender() override;
-    void handleUpdate(float dt) override;
-
-    [[nodiscard]] inline bool isRunning() const { return m_run; }
-    inline void setRunning(const bool s) { m_run = s; }
-
-    void addAgent(const float* pos);
-    void removeAgent(int idx);
-    void hilightAgent(int idx);
-    void updateAgentParams();
-    int hitTestAgents(const float* s, const float* p);
-    void setMoveTarget(const float* p, bool adjust);
-    void updateTick(float dt);
-
-    inline CrowdToolParams* getToolParams() { return &m_toolParams; }
-
-private:
-    // Explicitly disabled copy constructor and copy assignment operator.
-    CrowdToolState(const CrowdToolState&);
-    CrowdToolState& operator=(const CrowdToolState&);
 };
 
 class CrowdTool : public NavigationTool {
-    NavigationManager* m_sample;
-    CrowdToolState* m_state;
-
-    enum ToolMode {
-        TOOL_MODE_CREATE,
-        TOOL_MODE_MOVE_TARGET,
-        TOOL_MODE_SELECT,
-        TOOL_MODE_TOGGLE_POLYS,
-    };
-    ToolMode m_mode;
-
 public:
     CrowdTool();
 
@@ -117,6 +106,18 @@ public:
     void handleStep() override;
     void handleUpdate(float dt) override;
     void handleRender() override;
+
+private:
+    NavigationManager* m_sample;
+    CrowdToolState* m_state;
+
+    enum ToolMode {
+        TOOL_MODE_CREATE,
+        TOOL_MODE_MOVE_TARGET,
+        TOOL_MODE_SELECT,
+        TOOL_MODE_TOGGLE_POLYS,
+    };
+    ToolMode m_mode;
 };
 
 }  // namespace vox::nav
