@@ -46,7 +46,6 @@ enum PartitionType {
 
 struct NavigationTool {
     virtual ~NavigationTool() = default;
-    virtual int type() = 0;
     virtual void init(class NavigationManager* sample) = 0;
     virtual void reset() {}
     virtual void handleClick(const float* s, const float* p, bool shift) {}

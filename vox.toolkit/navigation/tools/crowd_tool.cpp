@@ -619,13 +619,14 @@ void CrowdTool::init(NavigationManager* sample) {
 
     if (!sample) return;
 
-    m_state = static_cast<CrowdToolState*>(sample->getToolState(type()));
-    if (!m_state) {
-        auto state = std::make_unique<CrowdToolState>();
-        m_state = state.get();
-        sample->setToolState(type(), std::move(state));
-    }
-    m_state->init(sample);
+    // todo
+//    m_state = static_cast<CrowdToolState*>(sample->getToolState(type()));
+//    if (!m_state) {
+//        auto state = std::make_unique<CrowdToolState>();
+//        m_state = state.get();
+//        sample->setToolState(type(), std::move(state));
+//    }
+//    m_state->init(sample);
 }
 
 void CrowdTool::handleClick(const float* s, const float* p, bool shift) {

@@ -23,7 +23,8 @@ file(GLOB DEBUG_DRAW_FILES
 file(GLOB NAVIGATION_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/navigation/*.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/navigation/tools/*.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/navigation/geometry/*.cpp)
+        ${CMAKE_CURRENT_SOURCE_DIR}/navigation/geometry/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/navigation/managers/*.cpp)
 
 file(GLOB GRID_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/grid/*.cpp)
