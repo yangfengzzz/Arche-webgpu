@@ -63,12 +63,6 @@ void OffMeshConnectionTool::handleClick(const float* /*s*/, const float* p, bool
     }
 }
 
-void OffMeshConnectionTool::handleToggle() {}
-
-void OffMeshConnectionTool::handleStep() {}
-
-void OffMeshConnectionTool::handleUpdate(const float /*dt*/) {}
-
 void OffMeshConnectionTool::handleRender() {
     debug::DebugDraw& dd = m_sample->getDebugDraw();
     const float s = m_sample->getAgentRadius();

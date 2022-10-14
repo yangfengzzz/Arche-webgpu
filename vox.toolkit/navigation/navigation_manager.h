@@ -48,20 +48,20 @@ struct NavigationTool {
     virtual ~NavigationTool() = default;
     virtual int type() = 0;
     virtual void init(class NavigationManager* sample) = 0;
-    virtual void reset() = 0;
-    virtual void handleClick(const float* s, const float* p, bool shift) = 0;
-    virtual void handleRender() = 0;
-    virtual void handleToggle() = 0;
-    virtual void handleStep() = 0;
-    virtual void handleUpdate(float dt) = 0;
+    virtual void reset() {}
+    virtual void handleClick(const float* s, const float* p, bool shift) {}
+    virtual void handleRender() {}
+    virtual void handleToggle() {}
+    virtual void handleStep() {}
+    virtual void handleUpdate(float dt) {}
 };
 
 struct NavigationToolState {
     virtual ~NavigationToolState() = default;
     virtual void init(class NavigationManager* sample) = 0;
-    virtual void reset() = 0;
-    virtual void handleRender() = 0;
-    virtual void handleUpdate(float dt) = 0;
+    virtual void reset() {}
+    virtual void handleRender() {}
+    virtual void handleUpdate(float dt) {}
 };
 
 class NavigationManager : public Script {

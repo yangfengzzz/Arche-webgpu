@@ -178,12 +178,6 @@ void NavMeshPruneTool::handleClick(const float* s, const float* p, bool shift) {
     floodNavmesh(nav, m_flags, ref, 1);
 }
 
-void NavMeshPruneTool::handleToggle() {}
-
-void NavMeshPruneTool::handleStep() {}
-
-void NavMeshPruneTool::handleUpdate(const float /*dt*/) {}
-
 void NavMeshPruneTool::handleRender() {
     debug::DebugDraw& dd = m_sample->getDebugDraw();
 

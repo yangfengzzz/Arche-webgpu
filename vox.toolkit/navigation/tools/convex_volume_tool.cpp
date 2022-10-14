@@ -63,6 +63,11 @@ int pointInPoly(int nvert, const float* verts, const float* p) {
 
 void ConvexVolumeTool::init(NavigationManager* sample) { m_sample = sample; }
 
+void ConvexVolumeTool::reset() {
+    m_npts = 0;
+    m_nhull = 0;
+}
+
 void ConvexVolumeTool::handleClick(const float* s, const float* p, bool shift) {
     if (!m_sample) return;
     InputGeom* geom = m_sample->getInputGeom();

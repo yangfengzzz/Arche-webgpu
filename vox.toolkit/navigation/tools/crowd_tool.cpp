@@ -154,8 +154,6 @@ void CrowdToolState::init(NavigationManager* sample) {
     }
 }
 
-void CrowdToolState::reset() {}
-
 void CrowdToolState::handleRender() {
     debug::DebugDraw& dd = m_sample->getDebugDraw();
     const float rad = m_sample->getAgentRadius();
@@ -611,6 +609,7 @@ void CrowdToolState::updateTick(const float dt) {
     m_crowdTotalTime.addSample(getPerfTimeUsec(endTime - startTime) / 1000.0f);
 }
 
+//----------------------------------------------------------------------------------------------------------------------
 CrowdTool::CrowdTool() : m_sample(nullptr), m_state(nullptr), m_mode(TOOL_MODE_CREATE) {}
 
 void CrowdTool::init(NavigationManager* sample) {
@@ -628,8 +627,6 @@ void CrowdTool::init(NavigationManager* sample) {
     }
     m_state->init(sample);
 }
-
-void CrowdTool::reset() {}
 
 void CrowdTool::handleClick(const float* s, const float* p, bool shift) {
     if (!m_sample) return;
@@ -689,7 +686,5 @@ void CrowdTool::handleToggle() {
 }
 
 void CrowdTool::handleUpdate(const float dt) { rcIgnoreUnused(dt); }
-
-void CrowdTool::handleRender() {}
 
 }  // namespace vox::nav

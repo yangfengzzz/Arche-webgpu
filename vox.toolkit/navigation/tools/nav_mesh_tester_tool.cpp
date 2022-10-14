@@ -12,9 +12,9 @@
 #define DUMP_REQS
 
 namespace vox::nav {
-
+namespace {
 // Returns a random number [0..1]
-static float frand() {
+float frand() {
     //	return ((float)(rand() & 0xffff)/(float)0xffff);
     return (float)rand() / (float)RAND_MAX;
 }
@@ -26,8 +26,7 @@ inline bool inRange(const float* v1, const float* v2, const float r, const float
     return (dx * dx + dz * dz) < r * r && fabsf(dy) < h;
 }
 
-static int fixupCorridor(
-        dtPolyRef* path, const int npath, const int maxPath, const dtPolyRef* visited, const int nvisited) {
+int fixupCorridor(dtPolyRef* path, const int npath, const int maxPath, const dtPolyRef* visited, const int nvisited) {
     int furthestPath = -1;
     int furthestVisited = -1;
 
@@ -73,7 +72,7 @@ static int fixupCorridor(
 //  +-S-+-T-+
 //  |:::|   | <-- the step can end up in here, resulting U-turn path.
 //  +---+---+
-static int fixupShortcuts(dtPolyRef* path, int npath, dtNavMeshQuery* navQuery) {
+int fixupShortcuts(dtPolyRef* path, int npath, dtNavMeshQuery* navQuery) {
     if (npath < 3) return npath;
 
     // Get connected polygons
@@ -113,17 +112,17 @@ static int fixupShortcuts(dtPolyRef* path, int npath, dtNavMeshQuery* navQuery) 
     return npath;
 }
 
-static bool getSteerTarget(dtNavMeshQuery* navQuery,
-                           const float* startPos,
-                           const float* endPos,
-                           const float minTargetDist,
-                           const dtPolyRef* path,
-                           const int pathSize,
-                           float* steerPos,
-                           unsigned char& steerPosFlag,
-                           dtPolyRef& steerPosRef,
-                           float* outPoints = nullptr,
-                           int* outPointCount = nullptr) {
+bool getSteerTarget(dtNavMeshQuery* navQuery,
+                    const float* startPos,
+                    const float* endPos,
+                    const float minTargetDist,
+                    const dtPolyRef* path,
+                    const int pathSize,
+                    float* steerPos,
+                    unsigned char& steerPosFlag,
+                    dtPolyRef& steerPosRef,
+                    float* outPoints = nullptr,
+                    int* outPointCount = nullptr) {
     // Find steer target.
     static const int MAX_STEER_POINTS = 3;
     float steerPath[MAX_STEER_POINTS * 3];
@@ -158,6 +157,29 @@ static bool getSteerTarget(dtNavMeshQuery* navQuery,
 
     return true;
 }
+
+void getPolyCenter(dtNavMesh* navMesh, dtPolyRef ref, float* center) {
+    center[0] = 0;
+    center[1] = 0;
+    center[2] = 0;
+
+    const dtMeshTile* tile = nullptr;
+    const dtPoly* poly = nullptr;
+    dtStatus status = navMesh->getTileAndPolyByRef(ref, &tile, &poly);
+    if (dtStatusFailed(status)) return;
+
+    for (int i = 0; i < (int)poly->vertCount; ++i) {
+        const float* v = &tile->verts[poly->verts[i] * 3];
+        center[0] += v[0];
+        center[1] += v[1];
+        center[2] += v[2];
+    }
+    const float s = 1.0f / poly->vertCount;
+    center[0] *= s;
+    center[1] *= s;
+    center[2] *= s;
+}
+}  // namespace
 
 NavMeshTesterTool::NavMeshTesterTool()
     : m_sample(nullptr),
@@ -221,8 +243,6 @@ void NavMeshTesterTool::handleClick(const float* /*s*/, const float* p, bool shi
     }
     recalc();
 }
-
-void NavMeshTesterTool::handleStep() {}
 
 void NavMeshTesterTool::handleToggle() {
     // TODO: merge separate to a path iterator. Use same code in recalc() too.
@@ -664,28 +684,6 @@ void NavMeshTesterTool::recalc() {
                                                &m_npolys, MAX_POLYS);
         }
     }
-}
-
-static void getPolyCenter(dtNavMesh* navMesh, dtPolyRef ref, float* center) {
-    center[0] = 0;
-    center[1] = 0;
-    center[2] = 0;
-
-    const dtMeshTile* tile = nullptr;
-    const dtPoly* poly = nullptr;
-    dtStatus status = navMesh->getTileAndPolyByRef(ref, &tile, &poly);
-    if (dtStatusFailed(status)) return;
-
-    for (int i = 0; i < (int)poly->vertCount; ++i) {
-        const float* v = &tile->verts[poly->verts[i] * 3];
-        center[0] += v[0];
-        center[1] += v[1];
-        center[2] += v[2];
-    }
-    const float s = 1.0f / poly->vertCount;
-    center[0] *= s;
-    center[1] *= s;
-    center[2] *= s;
 }
 
 void NavMeshTesterTool::handleRender() {

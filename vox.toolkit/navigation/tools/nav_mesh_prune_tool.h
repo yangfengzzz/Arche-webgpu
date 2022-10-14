@@ -22,9 +22,6 @@ public:
     void init(NavigationManager* sample) override;
     void reset() override;
     void handleClick(const float* s, const float* p, bool shift) override;
-    void handleToggle() override;
-    void handleStep() override;
-    void handleUpdate(float dt) override;
     void handleRender() override;
 
 private:

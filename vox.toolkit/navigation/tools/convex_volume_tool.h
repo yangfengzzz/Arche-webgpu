@@ -14,9 +14,8 @@ public:
     static constexpr int MAX_PTS = 12;
 
     void init(NavigationManager* sample) override;
-
+    void reset() override;
     void handleClick(const float* s, const float* p, bool shift) override;
-
     void handleRender() override;
 
 private:
