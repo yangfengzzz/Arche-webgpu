@@ -1139,8 +1139,8 @@ VOX_INLINE SimdInt4 Load3PtrU(const int* _i) {
 }
 
 VOX_INLINE SimdInt4 FromFloatRound(_SimdFloat4 _f) {
-    const SimdInt4 ret = {static_cast<int>(floor(_f.x + .5f)), static_cast<int>(floor(_f.y + .5f)),
-                          static_cast<int>(floor(_f.z + .5f)), static_cast<int>(floor(_f.w + .5f))};
+    const SimdInt4 ret = {static_cast<int>(std::floor(_f.x + .5f)), static_cast<int>(std::floor(_f.y + .5f)),
+                          static_cast<int>(std::floor(_f.z + .5f)), static_cast<int>(std::floor(_f.w + .5f))};
     return ret;
 }
 
