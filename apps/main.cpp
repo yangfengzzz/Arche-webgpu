@@ -8,7 +8,6 @@
 #include "apps/assimp_app.h"
 #include "apps/atomic_compute_app.h"
 #include "apps/gui_app.h"
-#include "apps/navigation_app.h"
 #include "apps/physics_collision_app.h"
 #include "apps/physics_samples/physics_samples.h"
 #include "apps/plugins/plugins.h"

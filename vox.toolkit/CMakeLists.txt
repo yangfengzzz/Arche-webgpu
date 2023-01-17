@@ -20,12 +20,6 @@ file(GLOB PHYSICS_VIEW_FILES
 file(GLOB DEBUG_DRAW_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/debug_draw/*.cpp)
 
-file(GLOB NAVIGATION_FILES
-        ${CMAKE_CURRENT_SOURCE_DIR}/navigation/*.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/navigation/tools/*.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/navigation/geometry/*.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/navigation/managers/*.cpp)
-
 file(GLOB GRID_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/grid/*.cpp)
 
@@ -34,7 +28,6 @@ set(PROJECT_FILES
         ${SKELETON_VIEW_FILES}
         ${PHYSICS_VIEW_FILES}
         ${DEBUG_DRAW_FILES}
-        ${NAVIGATION_FILES}
         ${GRID_FILES}
         )
 
@@ -103,20 +96,13 @@ if (${VKB_WARNINGS_AS_ERRORS})
     endif ()
 endif ()
 
-set(NAVI_INCLUDE
-        ../third_party/recastnavigation/Recast/Include
-        ../third_party/recastnavigation/Detour/Include
-        ../third_party/recastnavigation/DetourCrowd/Include
-        ../third_party/recastnavigation/DetourTileCache/Include)
-
 target_include_directories(${PROJECT_NAME} PUBLIC ../
         ${CMAKE_CURRENT_SOURCE_DIR} ${LOADER_SOURCE} ${LUA_SOURCE}
         ../third_party/nlohmann/include
         ../third_party/dawn/cmake-release/gen/include
         ../third_party/dawn/include
         ../third_party/dawn
-        ../third_party/jolt
-        ${NAVI_INCLUDE})
+        ../third_party/jolt)
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC DAWN_ENABLE_BACKEND_METAL DAWN_ENABLE_BACKEND_NULL TINT_BUILD_SPV_READER)
 

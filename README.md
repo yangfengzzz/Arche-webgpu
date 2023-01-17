@@ -14,7 +14,6 @@ combine other open-source ability:
 1. [ImGui](https://github.com/ocornut/imgui): GUI system
 2. [OZZ-Animation](https://github.com/guillaumeblanc/ozz-animation): Animation system
 3. [JoltPhysics](https://github.com/jrouwe/JoltPhysics): Physics system
-4. [recastnavigation](https://github.com/recastnavigation/recastnavigation): NavMesh and path-finding system
 
 The asset pipeline is based on ozz-animation and assimp:
 

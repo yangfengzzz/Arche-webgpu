@@ -54,14 +54,6 @@ cmake ..
 make -j5
 cd ../..
 
-# recastnavigation  ##################################
-cd recastnavigation
-mkdir build_release
-cd build_release
-cmake -DCMAKE_BUILD_TYPE=Release ..
-make -j5
-cd ../..
-
 # jsoncpp  ##################################
 cd jsoncpp
 mkdir build_release

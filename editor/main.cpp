@@ -6,7 +6,6 @@
 
 #include "vox.render/platform/platform.h"
 //
-#include "editor/navigation_editor.h"
 #include "editor/simple_editor.h"
 
 // MARK: - Entry
@@ -36,7 +35,7 @@ int main(int argc, char *argv[]) {
 
     auto code = platform.Initialize({});
     if (code == vox::ExitCode::SUCCESS) {
-        platform.SetApp(std::make_unique<vox::editor::NavigationEditor>());
+        platform.SetApp(std::make_unique<vox::editor::SimpleEditor>());
         code = platform.MainLoop();
     }
     platform.Terminate(code);
