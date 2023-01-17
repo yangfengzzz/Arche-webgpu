@@ -6351,7 +6351,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastUpgradeCheck = 1400;
+				LastUpgradeCheck = 1420;
 				TargetAttributes = {
 					041282EB279ECF3D0071BD86 = {
 						CreatedOnToolsVersion = 13.2.1;
@@ -7378,7 +7378,10 @@
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
 				GCC_ENABLE_CPP_RTTI = YES;
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -7394,7 +7397,10 @@
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
 				GCC_ENABLE_CPP_RTTI = YES;
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -7429,7 +7435,10 @@
 					JPH_PROFILE_ENABLED,
 					JPH_DEBUG_RENDERER,
 				);
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SYSTEM_HEADER_SEARCH_PATHS = (
@@ -7493,7 +7502,10 @@
 					JPH_PROFILE_ENABLED,
 					JPH_DEBUG_RENDERER,
 				);
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SYSTEM_HEADER_SEARCH_PATHS = (
@@ -7581,7 +7593,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -7637,7 +7653,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -7676,7 +7696,10 @@
 					JPH_DEBUG_RENDERER,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				LD_RUNPATH_SEARCH_PATHS = (
 					./third_party/assimp/build_debug/bin,
 					./third_party/ktx/build,
@@ -7810,7 +7833,10 @@
 					JPH_DEBUG_RENDERER,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				LD_RUNPATH_SEARCH_PATHS = (
 					./third_party/assimp/build_release/bin,
 					./third_party/ktx/build,
@@ -7926,7 +7952,10 @@
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
 				GCC_ENABLE_CPP_RTTI = YES;
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SYSTEM_HEADER_SEARCH_PATHS = ./third_party/spdlog/include;
@@ -7946,7 +7975,10 @@
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
 				GCC_ENABLE_CPP_RTTI = YES;
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SYSTEM_HEADER_SEARCH_PATHS = ./third_party/spdlog/include;
@@ -7965,7 +7997,10 @@
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
 				EXCLUDED_ARCHS = arm64;
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				LIBRARY_SEARCH_PATHS = ./third_party/googletest/build/lib;
 				OTHER_LDFLAGS = (
 					"-lgtest",
@@ -7992,7 +8027,10 @@
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
 				EXCLUDED_ARCHS = arm64;
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				LIBRARY_SEARCH_PATHS = ./third_party/googletest/build/lib;
 				OTHER_LDFLAGS = (
 					"-lgtest",
@@ -8018,7 +8056,10 @@
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
 				EXCLUDED_ARCHS = arm64;
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				LIBRARY_SEARCH_PATHS = ./third_party/googletest/build/lib;
 				OTHER_LDFLAGS = (
 					"-lgtest",
@@ -8043,7 +8084,10 @@
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
 				EXCLUDED_ARCHS = arm64;
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				LIBRARY_SEARCH_PATHS = ./third_party/googletest/build/lib;
 				OTHER_LDFLAGS = (
 					"-lgtest",
@@ -8068,7 +8112,10 @@
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
 				EXCLUDED_ARCHS = arm64;
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				LIBRARY_SEARCH_PATHS = ./third_party/googletest/build/lib;
 				OTHER_LDFLAGS = (
 					"-lgtest",
@@ -8093,7 +8140,10 @@
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
 				EXCLUDED_ARCHS = arm64;
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				LIBRARY_SEARCH_PATHS = ./third_party/googletest/build/lib;
 				OTHER_LDFLAGS = (
 					"-lgtest",
@@ -8119,7 +8169,10 @@
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
 				GCC_ENABLE_CPP_RTTI = YES;
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -8136,7 +8189,10 @@
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
 				GCC_ENABLE_CPP_RTTI = YES;
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -8148,11 +8204,15 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = test.simd_math/test.simd_math.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
 				EXCLUDED_ARCHS = arm64;
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				LIBRARY_SEARCH_PATHS = ./third_party/googletest/build/lib;
 				OTHER_LDFLAGS = (
 					"-lgtest",
@@ -8173,11 +8233,15 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = test.simd_math/test.simd_math.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
 				EXCLUDED_ARCHS = arm64;
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				LIBRARY_SEARCH_PATHS = ./third_party/googletest/build/lib;
 				OTHER_LDFLAGS = (
 					"-lgtest",
@@ -8202,7 +8266,10 @@
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
 				GCC_ENABLE_CPP_RTTI = YES;
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SYSTEM_HEADER_SEARCH_PATHS = ./third_party/spdlog/include;
@@ -8219,7 +8286,10 @@
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
 				GCC_ENABLE_CPP_RTTI = YES;
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SYSTEM_HEADER_SEARCH_PATHS = ./third_party/spdlog/include;
@@ -8232,11 +8302,15 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = test.animation/test.animation.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				LIBRARY_SEARCH_PATHS = ./third_party/googletest/build/lib;
 				OTHER_LDFLAGS = (
 					"-lgtest",
@@ -8257,11 +8331,15 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = test.animation/test.animation.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				LIBRARY_SEARCH_PATHS = ./third_party/googletest/build/lib;
 				OTHER_LDFLAGS = (
 					"-lgtest",
@@ -8304,7 +8382,10 @@
 					JPH_PROFILE_ENABLED,
 					JPH_DEBUG_RENDERER,
 				);
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SYSTEM_HEADER_SEARCH_PATHS = (
@@ -8366,7 +8447,10 @@
 					JPH_PROFILE_ENABLED,
 					JPH_DEBUG_RENDERER,
 				);
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SYSTEM_HEADER_SEARCH_PATHS = (
@@ -8406,6 +8490,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = navigation/navigation.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -8427,7 +8512,10 @@
 					JPH_PROFILE_ENABLED,
 					JPH_DEBUG_RENDERER,
 				);
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				LD_RUNPATH_SEARCH_PATHS = (
 					./third_party/assimp/build_debug/bin,
 					./third_party/ktx/build,
@@ -8536,6 +8624,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = navigation/navigation.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -8556,7 +8645,10 @@
 					JPH_PROFILE_ENABLED,
 					JPH_DEBUG_RENDERER,
 				);
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				LD_RUNPATH_SEARCH_PATHS = (
 					./third_party/assimp/build_release/bin,
 					./third_party/ktx/build,
@@ -8687,7 +8779,10 @@
 					JPH_PROFILE_ENABLED,
 					JPH_DEBUG_RENDERER,
 				);
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SYSTEM_HEADER_SEARCH_PATHS = (
@@ -8749,7 +8844,10 @@
 					JPH_PROFILE_ENABLED,
 					JPH_DEBUG_RENDERER,
 				);
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SYSTEM_HEADER_SEARCH_PATHS = (
@@ -8789,10 +8887,14 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = asset_pipeline/asset_pipeline.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				LD_RUNPATH_SEARCH_PATHS = "";
 				LIBRARY_SEARCH_PATHS = (
 					./third_party/jsoncpp/build/lib,
@@ -8818,10 +8920,14 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = asset_pipeline/asset_pipeline.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				LD_RUNPATH_SEARCH_PATHS = "";
 				LIBRARY_SEARCH_PATHS = (
 					./third_party/jsoncpp/build/lib,
@@ -8852,7 +8958,10 @@
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
 				GCC_ENABLE_CPP_RTTI = YES;
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SYSTEM_HEADER_SEARCH_PATHS = (
@@ -8873,7 +8982,10 @@
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_CPP_EXCEPTIONS = YES;
 				GCC_ENABLE_CPP_RTTI = YES;
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SYSTEM_HEADER_SEARCH_PATHS = (
@@ -8913,7 +9025,10 @@
 					JPH_DEBUG_RENDERER,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				LD_RUNPATH_SEARCH_PATHS = (
 					./third_party/assimp/build_debug/bin,
 					./third_party/ktx/build,
@@ -9047,7 +9162,10 @@
 					JPH_DEBUG_RENDERER,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = "/Users/yangfeng/Desktop/Arche-cpp";
+				HEADER_SEARCH_PATHS = (
+					"/Users/yangfeng/Desktop/Arche-cpp",
+					"/Users/yangfengzz/Desktop/Arche-cpp",
+				);
 				LD_RUNPATH_SEARCH_PATHS = (
 					./third_party/assimp/build_release/bin,
 					./third_party/ktx/build,
