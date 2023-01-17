@@ -298,12 +298,6 @@ endif ()
 add_subdirectory(spdlog)
 #set_property(TARGET spdlog_headers_for_ide PROPERTY FOLDER "ThirdParty")
 
-# ctpl
-add_library(ctpl INTERFACE)
-set(CTPL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/CTPL)
-target_sources(ctpl INTERFACE ${CTPL_DIR}/ctpl_stl.h)
-target_include_directories(ctpl INTERFACE ${CTPL_DIR})
-
 # cli11
 set(CLI11_SANITIZERS OFF)
 set(CLI11_BUILD_DOCS OFF)
@@ -316,9 +310,3 @@ set(CLI11_FORCE_LIBCXX OFF)
 set(CLI11_CUDA_TESTS OFF)
 set(CLI11_CLANG_TIDY OFF)
 add_subdirectory(cli11)
-
-# OpenCL
-add_library(opencl INTERFACE)
-set(OPENCL_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/opencl)
-target_sources(opencl INTERFACE ${OPENCL_INCLUDE_DIR}/CL/opencl.h)
-target_include_directories(opencl INTERFACE ${OPENCL_INCLUDE_DIR})

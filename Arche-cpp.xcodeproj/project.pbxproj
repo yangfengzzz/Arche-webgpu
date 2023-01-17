@@ -1211,21 +1211,7 @@
 		04FDF0D427E953E900BBE8E4 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047BF1D627AFAF4B003F3599 /* main.cpp */; };
 		04FE6BC427EAE99300D7DB2D /* contextual_menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FE6BC227EAE99300D7DB2D /* contextual_menu.cpp */; };
 		04FE6BC527EAE99300D7DB2D /* contextual_menu.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FE6BC327EAE99300D7DB2D /* contextual_menu.h */; };
-		04FE6BC927EB04B300D7DB2D /* behaviour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FE6BC727EB04B300D7DB2D /* behaviour.cpp */; };
-		04FE6BCA27EB04B400D7DB2D /* behaviour.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FE6BC827EB04B300D7DB2D /* behaviour.h */; };
-		04FE6BD527EBE7AA00D7DB2D /* lua_math_binder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FE6BD327EBE7AA00D7DB2D /* lua_math_binder.cpp */; };
-		04FE6BD627EBE7AA00D7DB2D /* lua_math_binder.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FE6BD427EBE7AA00D7DB2D /* lua_math_binder.h */; };
-		04FE6BD927EC79B900D7DB2D /* lua_binder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FE6BD727EC79B900D7DB2D /* lua_binder.cpp */; };
-		04FE6BDA27EC79B900D7DB2D /* lua_binder.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FE6BD827EC79B900D7DB2D /* lua_binder.h */; };
-		04FE6BDD27EC7AD500D7DB2D /* script_interpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FE6BDB27EC7AD500D7DB2D /* script_interpreter.cpp */; };
-		04FE6BDE27EC7AD500D7DB2D /* script_interpreter.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FE6BDC27EC7AD500D7DB2D /* script_interpreter.h */; };
 		04FE6BE127EC9E5E00D7DB2D /* color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FE6BE027EC9E5D00D7DB2D /* color.cpp */; };
-		04FE6BE427ECA22700D7DB2D /* lua_entity_binder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FE6BE227ECA22700D7DB2D /* lua_entity_binder.cpp */; };
-		04FE6BE527ECA22700D7DB2D /* lua_entity_binder.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FE6BE327ECA22700D7DB2D /* lua_entity_binder.h */; };
-		04FE6BE827ECA2B000D7DB2D /* lua_component_binder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FE6BE627ECA2B000D7DB2D /* lua_component_binder.cpp */; };
-		04FE6BE927ECA2B000D7DB2D /* lua_component_binder.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FE6BE727ECA2B000D7DB2D /* lua_component_binder.h */; };
-		04FE6BEC27ECA32700D7DB2D /* lua_global_binder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04FE6BEA27ECA32700D7DB2D /* lua_global_binder.cpp */; };
-		04FE6BED27ECA32700D7DB2D /* lua_global_binder.h in Headers */ = {isa = PBXBuildFile; fileRef = 04FE6BEB27ECA32700D7DB2D /* lua_global_binder.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -2963,22 +2949,7 @@
 		04FDF0D027E8C73A00BBE8E4 /* scene_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = scene_manager.h; sourceTree = "<group>"; };
 		04FE6BC227EAE99300D7DB2D /* contextual_menu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = contextual_menu.cpp; sourceTree = "<group>"; };
 		04FE6BC327EAE99300D7DB2D /* contextual_menu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = contextual_menu.h; sourceTree = "<group>"; };
-		04FE6BC727EB04B300D7DB2D /* behaviour.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = behaviour.cpp; sourceTree = "<group>"; };
-		04FE6BC827EB04B300D7DB2D /* behaviour.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = behaviour.h; sourceTree = "<group>"; };
-		04FE6BD327EBE7AA00D7DB2D /* lua_math_binder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lua_math_binder.cpp; sourceTree = "<group>"; };
-		04FE6BD427EBE7AA00D7DB2D /* lua_math_binder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = lua_math_binder.h; sourceTree = "<group>"; };
-		04FE6BD727EC79B900D7DB2D /* lua_binder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lua_binder.cpp; sourceTree = "<group>"; };
-		04FE6BD827EC79B900D7DB2D /* lua_binder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = lua_binder.h; sourceTree = "<group>"; };
-		04FE6BDB27EC7AD500D7DB2D /* script_interpreter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = script_interpreter.cpp; sourceTree = "<group>"; };
-		04FE6BDC27EC7AD500D7DB2D /* script_interpreter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = script_interpreter.h; sourceTree = "<group>"; };
-		04FE6BDF27EC99BE00D7DB2D /* behaviour-inl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "behaviour-inl.h"; sourceTree = "<group>"; };
 		04FE6BE027EC9E5D00D7DB2D /* color.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = color.cpp; sourceTree = "<group>"; };
-		04FE6BE227ECA22700D7DB2D /* lua_entity_binder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lua_entity_binder.cpp; sourceTree = "<group>"; };
-		04FE6BE327ECA22700D7DB2D /* lua_entity_binder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = lua_entity_binder.h; sourceTree = "<group>"; };
-		04FE6BE627ECA2B000D7DB2D /* lua_component_binder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lua_component_binder.cpp; sourceTree = "<group>"; };
-		04FE6BE727ECA2B000D7DB2D /* lua_component_binder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = lua_component_binder.h; sourceTree = "<group>"; };
-		04FE6BEA27ECA32700D7DB2D /* lua_global_binder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lua_global_binder.cpp; sourceTree = "<group>"; };
-		04FE6BEB27ECA32700D7DB2D /* lua_global_binder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = lua_global_binder.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3320,10 +3291,6 @@
 				0495466C279F8CD500783C84 /* renderer.cpp */,
 				04954674279F8CD600783C84 /* script.h */,
 				0495466B279F8CD500783C84 /* script.cpp */,
-				04FE6BC827EB04B300D7DB2D /* behaviour.h */,
-				04FE6BDF27EC99BE00D7DB2D /* behaviour-inl.h */,
-				04FE6BC727EB04B300D7DB2D /* behaviour.cpp */,
-				04FE6BD227EBE78000D7DB2D /* lua */,
 				049546F9279FC9B400783C84 /* graphics_application.h */,
 				049546F8279FC9B400783C84 /* graphics_application.cpp */,
 				049546FE279FCD1100783C84 /* forward_application.h */,
@@ -5391,25 +5358,6 @@
 			path = visual;
 			sourceTree = "<group>";
 		};
-		04FE6BD227EBE78000D7DB2D /* lua */ = {
-			isa = PBXGroup;
-			children = (
-				04FE6BD827EC79B900D7DB2D /* lua_binder.h */,
-				04FE6BD727EC79B900D7DB2D /* lua_binder.cpp */,
-				04FE6BD427EBE7AA00D7DB2D /* lua_math_binder.h */,
-				04FE6BD327EBE7AA00D7DB2D /* lua_math_binder.cpp */,
-				04FE6BE327ECA22700D7DB2D /* lua_entity_binder.h */,
-				04FE6BE227ECA22700D7DB2D /* lua_entity_binder.cpp */,
-				04FE6BE727ECA2B000D7DB2D /* lua_component_binder.h */,
-				04FE6BE627ECA2B000D7DB2D /* lua_component_binder.cpp */,
-				04FE6BEB27ECA32700D7DB2D /* lua_global_binder.h */,
-				04FE6BEA27ECA32700D7DB2D /* lua_global_binder.cpp */,
-				04FE6BDC27EC7AD500D7DB2D /* script_interpreter.h */,
-				04FE6BDB27EC7AD500D7DB2D /* script_interpreter.cpp */,
-			);
-			path = lua;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -5503,7 +5451,6 @@
 				04FDF07727E8069700BBE8E4 /* text_disabled.h in Headers */,
 				04FDF05027E7FB1500BBE8E4 /* radio_button.h in Headers */,
 				047320A728F1C3EB00D04171 /* physics_manager.h in Headers */,
-				04FE6BE927ECA2B000D7DB2D /* lua_component_binder.h in Headers */,
 				04954700279FCD1100783C84 /* forward_application.h in Headers */,
 				04FDEFE527E757D200BBE8E4 /* drag_double.h in Headers */,
 				047BF0CC27AC0D59003F3599 /* spot_light.h in Headers */,
@@ -5524,7 +5471,6 @@
 				047BF0CF27AC0D59003F3599 /* direct_light.h in Headers */,
 				04FDF01D27E7714B00BBE8E4 /* new_line.h in Headers */,
 				0495472D27A2480000783C84 /* blinn_phong_material.h in Headers */,
-				04FE6BCA27EB04B400D7DB2D /* behaviour.h in Headers */,
 				045A393528C44C40003FEE10 /* shader_manager.h in Headers */,
 				047BF1B327AFA079003F3599 /* color_picker_subpass.h in Headers */,
 				045A392728C44BCF003FEE10 /* stats.h in Headers */,
@@ -5560,22 +5506,18 @@
 				040C551E28CF57E9001BF0FF /* linear_fog.h in Headers */,
 				045A391F28C44BCF003FEE10 /* frame_time_stats_provider.h in Headers */,
 				045A397228C45118003FEE10 /* index_buffer_binding.h in Headers */,
-				04FE6BE527ECA22700D7DB2D /* lua_entity_binder.h in Headers */,
 				049546EE279FC74800783C84 /* render_pass.h in Headers */,
-				04FE6BDE27EC7AD500D7DB2D /* script_interpreter.h in Headers */,
 				04FDF07B27E8072000BBE8E4 /* text_labelled.h in Headers */,
 				0495473A27A2564500783C84 /* pbr_specular_material.h in Headers */,
 				049546DB279FA0F200783C84 /* render_context.h in Headers */,
 				0495476D27A2C6C500783C84 /* resource_cache.h in Headers */,
 				045A394828C44C6D003FEE10 /* imgui_impl_glfw.h in Headers */,
-				04FE6BED27ECA32700D7DB2D /* lua_global_binder.h in Headers */,
 				047BF0CB27AC0D59003F3599 /* ambient_light.h in Headers */,
 				045A398128C4AE15003FEE10 /* cluster_debug_material.h in Headers */,
 				047320A628F1C3EB00D04171 /* collider.h in Headers */,
 				040C552228CF57E9001BF0FF /* exp2_fog.h in Headers */,
 				04FDF08827E808E600BBE8E4 /* bullet.h in Headers */,
 				04FDEFFB27E762C100BBE8E4 /* input_float.h in Headers */,
-				04FE6BD627EBE7AA00D7DB2D /* lua_math_binder.h in Headers */,
 				045B391F28D703AF00DA1D32 /* internal_variant_name.h in Headers */,
 				04954654279F8AE900783C84 /* base_material.h in Headers */,
 				04128472279EED090071BD86 /* stencil_state.h in Headers */,
@@ -5660,7 +5602,6 @@
 				04954685279F8CD600783C84 /* scene.h in Headers */,
 				04FDEFA427E71E3200BBE8E4 /* inspector_item.h in Headers */,
 				04FDEF9F27E719E100BBE8E4 /* widget_container.h in Headers */,
-				04FE6BDA27EC79B900D7DB2D /* lua_binder.h in Headers */,
 				04FDF04027E7F8F800BBE8E4 /* check_box.h in Headers */,
 				045B390428D4B68500DA1D32 /* stb_img.h in Headers */,
 				0495468B279F8CD600783C84 /* std_helpers.h in Headers */,
@@ -6463,7 +6404,6 @@
 				04FDF07227E8061600BBE8E4 /* text_colored.cpp in Sources */,
 				04FDEFAD27E720D500BBE8E4 /* converter.cpp in Sources */,
 				045A397B28C45118003FEE10 /* sub_mesh.cpp in Sources */,
-				04FE6BE827ECA2B000D7DB2D /* lua_component_binder.cpp in Sources */,
 				045A38B728C4479A003FEE10 /* debug_info.cpp in Sources */,
 				0495474F27A2714200783C84 /* buffer_mesh.cpp in Sources */,
 				04954691279F8D5E00783C84 /* render_element.cpp in Sources */,
@@ -6487,7 +6427,6 @@
 				0473203628E6B42500D04171 /* skin.cpp in Sources */,
 				045B392F28D897FE00DA1D32 /* shadow_material.cpp in Sources */,
 				047BF0BC27AC086B003F3599 /* light.cpp in Sources */,
-				04FE6BEC27ECA32700D7DB2D /* lua_global_binder.cpp in Sources */,
 				04FDF04B27E7FAA200BBE8E4 /* combo_box.cpp in Sources */,
 				04FDF08227E8080400BBE8E4 /* text_wrapped.cpp in Sources */,
 				040C552028CF57E9001BF0FF /* exp2_fog.cpp in Sources */,
@@ -6495,7 +6434,6 @@
 				04FDF07A27E8072000BBE8E4 /* text_labelled.cpp in Sources */,
 				04FDF05927E801AD00BBE8E4 /* slider_int.cpp in Sources */,
 				049546E4279FA7D800783C84 /* backend_binding.cpp in Sources */,
-				04FE6BC927EB04B300D7DB2D /* behaviour.cpp in Sources */,
 				04FDF0D127E8C73A00BBE8E4 /* scene_manager.cpp in Sources */,
 				04FE6BC427EAE99300D7DB2D /* contextual_menu.cpp in Sources */,
 				0495467B279F8CD600783C84 /* entity.cpp in Sources */,
@@ -6515,11 +6453,9 @@
 				049546E6279FA7D800783C84 /* null_binding.cpp in Sources */,
 				04FDEFA927E71F8500BBE8E4 /* button_simple.cpp in Sources */,
 				045A391328C44BA6003FEE10 /* force_close.cpp in Sources */,
-				04FE6BD927EC79B900D7DB2D /* lua_binder.cpp in Sources */,
 				045A392228C44BCF003FEE10 /* frame_time_stats_provider.cpp in Sources */,
 				045A393928C44C40003FEE10 /* shader_manager.cpp in Sources */,
 				045A392428C44BCF003FEE10 /* stats_provider.cpp in Sources */,
-				04FE6BE427ECA22700D7DB2D /* lua_entity_binder.cpp in Sources */,
 				045A38BC28C4479A003FEE10 /* utils.cpp in Sources */,
 				045B391128D4B69400DA1D32 /* image_view.cpp in Sources */,
 				04FDF04327E7F98F00BBE8E4 /* color_edit.cpp in Sources */,
@@ -6622,7 +6558,6 @@
 				0495473927A2564500783C84 /* pbr_specular_material.cpp in Sources */,
 				0495467D279F8CD600783C84 /* update_flag_manager.cpp in Sources */,
 				045A393D28C44C40003FEE10 /* shader_variant.cpp in Sources */,
-				04FE6BD527EBE7AA00D7DB2D /* lua_math_binder.cpp in Sources */,
 				04FDF06A27E8050A00BBE8E4 /* text.cpp in Sources */,
 				04FDF03227E781D800BBE8E4 /* plot.cpp in Sources */,
 				04FDF04F27E7FB1500BBE8E4 /* radio_button.cpp in Sources */,
@@ -6631,7 +6566,6 @@
 				04954687279F8CD600783C84 /* camera.cpp in Sources */,
 				045B392B28D897C100DA1D32 /* shadow_utils.cpp in Sources */,
 				04FDEFD927E7544400BBE8E4 /* button_image.cpp in Sources */,
-				04FE6BDD27EC7AD500D7DB2D /* script_interpreter.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7444,7 +7378,6 @@
 				SYSTEM_HEADER_SEARCH_PATHS = (
 					./third_party/vulkan/include,
 					./third_party/spdlog/include,
-					./third_party/glm,
 					./third_party/glslang,
 					./third_party/tinygltf,
 					./third_party/cli11/include,
@@ -7455,13 +7388,9 @@
 					./third_party/astc/Source,
 					./third_party/stb,
 					./third_party/ktx/include,
-					./third_party/CTPL,
 					./third_party/assimp/include,
 					./third_party/assimp/build_debug/include,
 					./third_party/nlohmann/include,
-					./third_party/sol2/include,
-					/opt/homebrew/include/lua,
-					/usr/local/include/lua,
 					./third_party/dawn,
 					./third_party/dawn/include,
 					"./third_party/dawn/cmake-debug/gen/include",
@@ -7511,7 +7440,6 @@
 				SYSTEM_HEADER_SEARCH_PATHS = (
 					./third_party/vulkan/include,
 					./third_party/spdlog/include,
-					./third_party/glm,
 					./third_party/glslang,
 					./third_party/tinygltf,
 					./third_party/cli11/include,
@@ -7522,13 +7450,9 @@
 					./third_party/astc/Source,
 					./third_party/stb,
 					./third_party/ktx/include,
-					./third_party/CTPL,
 					./third_party/assimp/include,
 					./third_party/assimp/build_release/include,
 					./third_party/nlohmann/include,
-					./third_party/sol2/include,
-					/opt/homebrew/include/lua,
-					/usr/local/include/lua,
 					./third_party/dawn,
 					./third_party/dawn/include,
 					"./third_party/dawn/cmake-release/gen/include",
@@ -7774,7 +7698,6 @@
 				SYSTEM_HEADER_SEARCH_PATHS = (
 					./third_party/vulkan/include,
 					./third_party/spdlog/include,
-					./third_party/glm,
 					./third_party/glslang,
 					./third_party/tinygltf,
 					./third_party/cli11/include,
@@ -7785,13 +7708,9 @@
 					./third_party/astc/Source,
 					./third_party/stb,
 					./third_party/ktx/include,
-					./third_party/CTPL,
 					./third_party/assimp/include,
 					./third_party/assimp/build_debug/include,
 					./third_party/nlohmann/include,
-					./third_party/sol2/include,
-					/opt/homebrew/include/lua,
-					/usr/local/include/lua,
 					./third_party/dawn,
 					./third_party/dawn/include,
 					"./third_party/dawn/cmake-debug/gen/include",
@@ -7911,7 +7830,6 @@
 				SYSTEM_HEADER_SEARCH_PATHS = (
 					./third_party/vulkan/include,
 					./third_party/spdlog/include,
-					./third_party/glm,
 					./third_party/glslang,
 					./third_party/tinygltf,
 					./third_party/cli11/include,
@@ -7922,13 +7840,9 @@
 					./third_party/astc/Source,
 					./third_party/stb,
 					./third_party/ktx/include,
-					./third_party/CTPL,
 					./third_party/assimp/include,
 					./third_party/assimp/build_release/include,
 					./third_party/nlohmann/include,
-					./third_party/sol2/include,
-					/opt/homebrew/include/lua,
-					/usr/local/include/lua,
 					./third_party/dawn,
 					./third_party/dawn/include,
 					"./third_party/dawn/cmake-release/gen/include",
@@ -8391,7 +8305,6 @@
 				SYSTEM_HEADER_SEARCH_PATHS = (
 					./third_party/vulkan/include,
 					./third_party/spdlog/include,
-					./third_party/glm,
 					./third_party/glslang,
 					./third_party/tinygltf,
 					./third_party/cli11/include,
@@ -8402,13 +8315,9 @@
 					./third_party/astc/Source,
 					./third_party/stb,
 					./third_party/ktx/include,
-					./third_party/CTPL,
 					./third_party/assimp/include,
 					./third_party/assimp/build_debug/include,
 					./third_party/nlohmann/include,
-					./third_party/sol2/include,
-					/opt/homebrew/include/lua,
-					/usr/local/include/lua,
 					./third_party/dawn,
 					./third_party/dawn/include,
 					"./third_party/dawn/cmake-debug/gen/include",
@@ -8456,7 +8365,6 @@
 				SYSTEM_HEADER_SEARCH_PATHS = (
 					./third_party/vulkan/include,
 					./third_party/spdlog/include,
-					./third_party/glm,
 					./third_party/glslang,
 					./third_party/tinygltf,
 					./third_party/cli11/include,
@@ -8467,13 +8375,9 @@
 					./third_party/astc/Source,
 					./third_party/stb,
 					./third_party/ktx/include,
-					./third_party/CTPL,
 					./third_party/assimp/include,
 					./third_party/assimp/build_release/include,
 					./third_party/nlohmann/include,
-					./third_party/sol2/include,
-					/opt/homebrew/include/lua,
-					/usr/local/include/lua,
 					./third_party/dawn,
 					./third_party/dawn/include,
 					"./third_party/dawn/cmake-release/gen/include",
@@ -8590,7 +8494,6 @@
 				SYSTEM_HEADER_SEARCH_PATHS = (
 					./third_party/vulkan/include,
 					./third_party/spdlog/include,
-					./third_party/glm,
 					./third_party/glslang,
 					./third_party/tinygltf,
 					./third_party/cli11/include,
@@ -8601,13 +8504,9 @@
 					./third_party/astc/Source,
 					./third_party/stb,
 					./third_party/ktx/include,
-					./third_party/CTPL,
 					./third_party/assimp/include,
 					./third_party/assimp/build_debug/include,
 					./third_party/nlohmann/include,
-					./third_party/sol2/include,
-					/opt/homebrew/include/lua,
-					/usr/local/include/lua,
 					./third_party/dawn,
 					./third_party/dawn/include,
 					"./third_party/dawn/cmake-debug/gen/include",
@@ -8734,13 +8633,9 @@
 					./third_party/astc/Source,
 					./third_party/stb,
 					./third_party/ktx/include,
-					./third_party/CTPL,
 					./third_party/assimp/include,
 					./third_party/assimp/build_release/include,
 					./third_party/nlohmann/include,
-					./third_party/sol2/include,
-					/opt/homebrew/include/lua,
-					/usr/local/include/lua,
 					./third_party/dawn,
 					./third_party/dawn/include,
 					"./third_party/dawn/cmake-release/gen/include",
@@ -8788,7 +8683,6 @@
 				SYSTEM_HEADER_SEARCH_PATHS = (
 					./third_party/vulkan/include,
 					./third_party/spdlog/include,
-					./third_party/glm,
 					./third_party/glslang,
 					./third_party/tinygltf,
 					./third_party/cli11/include,
@@ -8799,13 +8693,9 @@
 					./third_party/astc/Source,
 					./third_party/stb,
 					./third_party/ktx/include,
-					./third_party/CTPL,
 					./third_party/assimp/include,
 					./third_party/assimp/build_debug/include,
 					./third_party/nlohmann/include,
-					./third_party/sol2/include,
-					/opt/homebrew/include/lua,
-					/usr/local/include/lua,
 					./third_party/dawn,
 					./third_party/dawn/include,
 					"./third_party/dawn/cmake-debug/gen/include",
@@ -8853,7 +8743,6 @@
 				SYSTEM_HEADER_SEARCH_PATHS = (
 					./third_party/vulkan/include,
 					./third_party/spdlog/include,
-					./third_party/glm,
 					./third_party/glslang,
 					./third_party/tinygltf,
 					./third_party/cli11/include,
@@ -8864,13 +8753,9 @@
 					./third_party/astc/Source,
 					./third_party/stb,
 					./third_party/ktx/include,
-					./third_party/CTPL,
 					./third_party/assimp/include,
 					./third_party/assimp/build_release/include,
 					./third_party/nlohmann/include,
-					./third_party/sol2/include,
-					/opt/homebrew/include/lua,
-					/usr/local/include/lua,
 					./third_party/dawn,
 					./third_party/dawn/include,
 					"./third_party/dawn/cmake-release/gen/include",
@@ -8896,18 +8781,11 @@
 					"/Users/yangfengzz/Desktop/Arche-cpp",
 				);
 				LD_RUNPATH_SEARCH_PATHS = "";
-				LIBRARY_SEARCH_PATHS = (
-					./third_party/jsoncpp/build/lib,
-					"/Applications/Autodesk/FBX\\ SDK/2016.1/lib/clang/release",
-				);
-				OTHER_LDFLAGS = (
-					"/Applications/Autodesk/FBX\\ SDK/2016.1/lib/clang/release/libfbxsdk.a",
-					"-ljsoncpp",
-				);
+				LIBRARY_SEARCH_PATHS = "/Applications/Autodesk/FBX\\ SDK/2016.1/lib/clang/release";
+				OTHER_LDFLAGS = "/Applications/Autodesk/FBX\\ SDK/2016.1/lib/clang/release/libfbxsdk.a";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SYSTEM_HEADER_SEARCH_PATHS = (
 					"/Applications/Autodesk/FBX\\ SDK/2016.1/include",
-					./third_party/jsoncpp/include,
 					./third_party/tinygltf,
 					./third_party/spdlog/include,
 				);
@@ -8929,18 +8807,11 @@
 					"/Users/yangfengzz/Desktop/Arche-cpp",
 				);
 				LD_RUNPATH_SEARCH_PATHS = "";
-				LIBRARY_SEARCH_PATHS = (
-					./third_party/jsoncpp/build/lib,
-					"/Applications/Autodesk/FBX\\ SDK/2016.1/lib/clang/release",
-				);
-				OTHER_LDFLAGS = (
-					"/Applications/Autodesk/FBX\\ SDK/2016.1/lib/clang/release/libfbxsdk.a",
-					"-ljsoncpp",
-				);
+				LIBRARY_SEARCH_PATHS = "/Applications/Autodesk/FBX\\ SDK/2016.1/lib/clang/release";
+				OTHER_LDFLAGS = "/Applications/Autodesk/FBX\\ SDK/2016.1/lib/clang/release/libfbxsdk.a";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SYSTEM_HEADER_SEARCH_PATHS = (
 					"/Applications/Autodesk/FBX\\ SDK/2016.1/include",
-					./third_party/jsoncpp/include,
 					./third_party/tinygltf,
 					./third_party/spdlog/include,
 				);
@@ -9105,7 +8976,6 @@
 				SYSTEM_HEADER_SEARCH_PATHS = (
 					./third_party/vulkan/include,
 					./third_party/spdlog/include,
-					./third_party/glm,
 					./third_party/glslang,
 					./third_party/tinygltf,
 					./third_party/cli11/include,
@@ -9116,13 +8986,9 @@
 					./third_party/astc/Source,
 					./third_party/stb,
 					./third_party/ktx/include,
-					./third_party/CTPL,
 					./third_party/assimp/include,
 					./third_party/assimp/build_debug/include,
 					./third_party/nlohmann/include,
-					./third_party/sol2/include,
-					/opt/homebrew/include/lua,
-					/usr/local/include/lua,
 					./third_party/dawn,
 					./third_party/dawn/include,
 					"./third_party/dawn/cmake-debug/gen/include",
@@ -9242,7 +9108,6 @@
 				SYSTEM_HEADER_SEARCH_PATHS = (
 					./third_party/vulkan/include,
 					./third_party/spdlog/include,
-					./third_party/glm,
 					./third_party/glslang,
 					./third_party/tinygltf,
 					./third_party/cli11/include,
@@ -9253,13 +9118,9 @@
 					./third_party/astc/Source,
 					./third_party/stb,
 					./third_party/ktx/include,
-					./third_party/CTPL,
 					./third_party/assimp/include,
 					./third_party/assimp/build_release/include,
 					./third_party/nlohmann/include,
-					./third_party/sol2/include,
-					/opt/homebrew/include/lua,
-					/usr/local/include/lua,
 					./third_party/dawn,
 					./third_party/dawn/include,
 					"./third_party/dawn/cmake-release/gen/include",

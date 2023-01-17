@@ -40,12 +40,6 @@ set(FRAMEWORK_FILES
         ${PROFILING}
         )
 
-set(LUA_SOURCE
-        ../third_party/sol2/include
-        /usr/local/include/lua
-        /opt/homebrew/include/lua
-        )
-
 set(LOADER_SOURCE ../third_party/assimp/include
         ../third_party/assimp/build_release/include)
 
@@ -119,7 +113,7 @@ if (${VKB_WARNINGS_AS_ERRORS})
 endif ()
 
 target_include_directories(${PROJECT_NAME} PUBLIC ../
-        ${CMAKE_CURRENT_SOURCE_DIR} ${LOADER_SOURCE} ${LUA_SOURCE}
+        ${CMAKE_CURRENT_SOURCE_DIR} ${LOADER_SOURCE}
         ../third_party/nlohmann/include
         ../third_party/dawn/cmake-release/gen/include
         ../third_party/dawn/include
@@ -140,7 +134,6 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
         spirv-cross-glsl
         glslang-default-resource-limits
         spdlog
-        ctpl
         CLI11::CLI11)
 
 if (${NEED_LINK_ATOMIC})

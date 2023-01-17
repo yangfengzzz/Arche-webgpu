@@ -118,7 +118,6 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
         spirv-cross-glsl
         glslang-default-resource-limits
         spdlog
-        ctpl
         CLI11::CLI11)
 
 if (${NEED_LINK_ATOMIC})

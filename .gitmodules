@@ -25,27 +25,12 @@
 [submodule "third_party/ktx"]
 	path = third_party/ktx
 	url = https://github.com/KhronosGroup/KTX-Software
-[submodule "third_party/rttr"]
-	path = third_party/rttr
-	url = https://github.com/rttrorg/rttr.git
-[submodule "third_party/fastnoise2"]
-	path = third_party/fastnoise2
-	url = https://github.com/Auburn/FastNoise2
-[submodule "third_party/fastnoiselite"]
-	path = third_party/fastnoiselite
-	url = https://github.com/Auburn/FastNoiseLite.git
-[submodule "third_party/muparser"]
-	path = third_party/muparser
-	url = https://github.com/beltoforion/muparser.git
 [submodule "third_party/implot"]
 	path = third_party/implot
 	url = https://github.com/epezent/implot.git
 [submodule "third_party/nlohmann"]
 	path = third_party/nlohmann
 	url = https://github.com/nlohmann/json.git
-[submodule "third_party/sol2"]
-	path = third_party/sol2
-	url = https://github.com/ThePhD/sol2.git
 [submodule "third_party/glslang"]
 	path = third_party/glslang
 	url = https://github.com/KhronosGroup/glslang
@@ -58,9 +43,6 @@
 [submodule "third_party/spdlog"]
 	path = third_party/spdlog
 	url = https://github.com/gabime/spdlog
-[submodule "third_party/CTPL"]
-	path = third_party/CTPL
-	url = https://github.com/vit-vit/CTPL
 [submodule "third_party/cli11"]
 	path = third_party/cli11
 	url = https://github.com/CLIUtils/CLI11.git
@@ -79,9 +61,6 @@
 [submodule "third_party/jolt"]
 	path = third_party/jolt
 	url = https://github.com/jrouwe/JoltPhysics.git
-[submodule "third_party/jsoncpp"]
-	path = third_party/jsoncpp
-	url = https://github.com/open-source-parsers/jsoncpp.git
 [submodule "third_party/tinygltf"]
 	path = third_party/tinygltf
 	url = https://github.com/syoyo/tinygltf.git

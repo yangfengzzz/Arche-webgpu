@@ -7,7 +7,6 @@
 #include "vox.editor/ui/inspector.h"
 
 #include "vox.editor/editor_actions.h"
-#include "vox.render/behaviour.h"
 #include "vox.render/ui/gui_drawer.h"
 #include "vox.render/ui/widgets/input_fields/input_float.h"
 #include "vox.render/ui/widgets/layout/columns.h"

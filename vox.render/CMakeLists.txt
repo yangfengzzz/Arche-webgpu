@@ -278,35 +278,12 @@ set(SCENE_FILES
         renderer.cpp
         script.h
         script.cpp
-        behaviour.h
-        behaviour-inl.h
-        behaviour.cpp
         debug_info.h
         debug_info.cpp
         forward_application.h
         forward_application.cpp
         graphics_application.h
         graphics_application.cpp
-        )
-
-set(LUA_FILES
-        lua/lua_binder.cpp
-        lua/lua_binder.h
-        lua/lua_component_binder.cpp
-        lua/lua_component_binder.h
-        lua/lua_entity_binder.cpp
-        lua/lua_entity_binder.h
-        lua/lua_global_binder.cpp
-        lua/lua_global_binder.h
-        lua/lua_math_binder.cpp
-        lua/lua_math_binder.h
-        lua/script_interpreter.cpp
-        lua/script_interpreter.h)
-
-set(LUA_SOURCE
-        ../third_party/sol2/include
-        /usr/local/include/lua
-        /opt/homebrew/include/lua
         )
 
 file(GLOB ANIMATION_FILES
@@ -407,7 +384,6 @@ set(PROJECT_FILES
         ${SKY_FILES}
         ${LOADER_FILES}
         ${PLUGINS_FILE}
-        ${LUA_FILES}
         )
 
 # No need for explict casts from vk::HandleType to VkHandleType on ANDROID
@@ -476,7 +452,7 @@ if (${VKB_WARNINGS_AS_ERRORS})
 endif ()
 
 target_include_directories(${PROJECT_NAME} PUBLIC ../
-        ${CMAKE_CURRENT_SOURCE_DIR} ${LOADER_SOURCE} ${LUA_SOURCE}
+        ${CMAKE_CURRENT_SOURCE_DIR} ${LOADER_SOURCE}
         ../third_party/nlohmann/include
         ../third_party/dawn/cmake-release/gen/include
         ../third_party/dawn/include
@@ -497,7 +473,6 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
         spirv-cross-glsl
         glslang-default-resource-limits
         spdlog
-        ctpl
         CLI11::CLI11)
 
 if (${NEED_LINK_ATOMIC})
