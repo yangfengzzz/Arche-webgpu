@@ -79,9 +79,6 @@
 [submodule "third_party/jolt"]
 	path = third_party/jolt
 	url = https://github.com/jrouwe/JoltPhysics.git
-[submodule "third_party/recastnavigation"]
-	path = third_party/recastnavigation
-	url = https://github.com/recastnavigation/recastnavigation.git
 [submodule "third_party/jsoncpp"]
 	path = third_party/jsoncpp
 	url = https://github.com/open-source-parsers/jsoncpp.git

@@ -882,8 +882,6 @@
 		047321C728F4088C00D04171 /* six_dof_constraint_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047321B228F4088B00D04171 /* six_dof_constraint_app.cpp */; };
 		047321C828F4088C00D04171 /* point_constraint_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047321B428F4088B00D04171 /* point_constraint_app.cpp */; };
 		047321C928F4088C00D04171 /* slider_constraint_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047321B528F4088C00D04171 /* slider_constraint_app.cpp */; };
-		047321D728F40ABC00D04171 /* primitive_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047321D628F40ABC00D04171 /* primitive_app.cpp */; };
-		047321D928F40AEA00D04171 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 047321D828F40AE900D04171 /* main.cpp */; };
 		047321E928F40B7000D04171 /* libvox.animation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04731F6728E6B25600D04171 /* libvox.animation.a */; };
 		047321EA28F40B7000D04171 /* libvox.base.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 045A352A28C442FD003FEE10 /* libvox.base.a */; };
 		047321EB28F40B7000D04171 /* libvox.geometry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 047BB58A2800140A00CD5749 /* libvox.geometry.a */; };
@@ -2573,10 +2571,6 @@
 		047321B628F4088C00D04171 /* swing_twist_constraint_friction_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = swing_twist_constraint_friction_app.h; sourceTree = "<group>"; };
 		047321B728F4088C00D04171 /* path_constraint_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = path_constraint_app.h; sourceTree = "<group>"; };
 		047321CE28F40AA900D04171 /* navigation */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = navigation; sourceTree = BUILT_PRODUCTS_DIR; };
-		047321D528F40ABC00D04171 /* primitive_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = primitive_app.h; sourceTree = "<group>"; };
-		047321D628F40ABC00D04171 /* primitive_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = primitive_app.cpp; sourceTree = "<group>"; };
-		047321D828F40AE900D04171 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		047321DA28F40B4800D04171 /* navigation.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = navigation.entitlements; sourceTree = "<group>"; };
 		047321FA28F4618200D04171 /* libvox.editor.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libvox.editor.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		0473220928F461D000D04171 /* ini_file-inl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ini_file-inl.h"; sourceTree = "<group>"; };
 		0473220A28F461D100D04171 /* editor_resources.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = editor_resources.cpp; sourceTree = "<group>"; };
@@ -3402,7 +3396,6 @@
 				043B7B5C278C4C5A00D5648F /* apps */,
 				047321FB28F4618200D04171 /* vox.editor */,
 				047BF1BF27AFAE81003F3599 /* editor */,
-				047321CF28F40AAA00D04171 /* navigation */,
 				043B7B5B278C4C5A00D5648F /* Products */,
 				043B7B67278C797600D5648F /* Frameworks */,
 			);
@@ -4672,17 +4665,6 @@
 				0473210B28F4085A00D04171 /* water_shape_app.h */,
 			);
 			path = water;
-			sourceTree = "<group>";
-		};
-		047321CF28F40AAA00D04171 /* navigation */ = {
-			isa = PBXGroup;
-			children = (
-				047321DA28F40B4800D04171 /* navigation.entitlements */,
-				047321D828F40AE900D04171 /* main.cpp */,
-				047321D528F40ABC00D04171 /* primitive_app.h */,
-				047321D628F40ABC00D04171 /* primitive_app.cpp */,
-			);
-			path = navigation;
 			sourceTree = "<group>";
 		};
 		047321FB28F4618200D04171 /* vox.editor */ = {
@@ -7013,8 +6995,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				047321D928F40AEA00D04171 /* main.cpp in Sources */,
-				047321D728F40ABC00D04171 /* primitive_app.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
