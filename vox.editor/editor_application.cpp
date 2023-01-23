@@ -50,7 +50,6 @@ bool EditorApplication::prepare(Platform& platform) {
     mesh_manager_ = std::make_unique<MeshManager>(_device);
     image_manager_ = std::make_unique<ImageManager>(_device);
     resource_cache_ = std::make_unique<ResourceCache>(_device);
-    script_interpreter_ = std::make_unique<ScriptInterpreter>("");
 
     // logic system
     _componentsManager = std::make_unique<ComponentsManager>();

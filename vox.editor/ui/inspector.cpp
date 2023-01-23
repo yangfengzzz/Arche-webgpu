@@ -100,11 +100,6 @@ void Inspector::createEntityInspector(Entity *&p_target) {
     if (transform) drawComponent(transform);
 
     for (auto &[name, instance] : components) drawComponent(instance);
-
-    //    auto &behaviours = p_target.GetBehaviours();
-    //
-    //    for (auto&[name, behaviour]: behaviours)
-    //        DrawBehaviour(behaviour);
 }
 
 void Inspector::drawComponent(Component *p_component) {
@@ -115,20 +110,6 @@ void Inspector::drawComponent(Component *p_component) {
             //            if (p_component->entity()->_removeComponent(p_component))
             //                _componentSelectorWidget->value_changed_event_.invoke(_componentSelectorWidget->currentChoice);
         };
-        auto &columns = header.CreateWidget<Columns<2>>();
-        columns.widths_[0] = 200;
-        inspectorItem->onInspector(columns);
-    }
-}
-
-void Inspector::drawBehaviour(Behaviour *p_behaviour) {
-    if (auto inspectorItem = dynamic_cast<InspectorItem *>(p_behaviour); inspectorItem) {
-        auto &header = _entityInfo->CreateWidget<GroupCollapsable>(p_behaviour->name());
-        header.closable_ = true;
-        header.close_event_ += [this, &header, &p_behaviour] {
-            //            p_behaviour->entity()->removeBehaviour(p_behaviour);
-        };
-
         auto &columns = header.CreateWidget<Columns<2>>();
         columns.widths_[0] = 200;
         inspectorItem->onInspector(columns);

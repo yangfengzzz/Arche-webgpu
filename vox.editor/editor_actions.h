@@ -288,13 +288,6 @@ public:
      */
     void saveAs();
 
-    // MARK: - SCRIPTING
-public:
-    /**
-     * Refresh every scripts (Re-interpret)
-     */
-    void refreshScripts();
-
     // MARK: - BUILDING
 public:
     /**

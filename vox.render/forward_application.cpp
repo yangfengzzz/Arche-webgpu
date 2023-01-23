@@ -22,6 +22,7 @@ ForwardApplication::~ForwardApplication() {
     _lightManager.reset();
     _shadowManager.reset();
     _physicsManager.reset();
+    _physxManager.reset();
 //    _particleManager.reset();
 
     shader_manager_->CollectGarbage();
@@ -45,6 +46,7 @@ bool ForwardApplication::prepare(Platform& platform) {
     // logic system
     _componentsManager = std::make_unique<ComponentsManager>();
     _physicsManager = std::make_unique<PhysicsManager>();
+    _physxManager = std::make_unique<PhysxManager>();
     _sceneManager = std::make_unique<SceneManager>(_device);
     auto scene = _sceneManager->currentScene();
 
@@ -95,6 +97,7 @@ void ForwardApplication::update(float deltaTime) {
         _componentsManager->callScriptOnStart();
 
         _physicsManager->update(deltaTime);
+        _physxManager->update(deltaTime);
 
         _componentsManager->callScriptOnUpdate(deltaTime);
         _componentsManager->callAnimatorUpdate(deltaTime);

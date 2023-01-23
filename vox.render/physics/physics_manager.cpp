@@ -61,7 +61,7 @@ public:
     [[nodiscard]] uint GetNumBroadPhaseLayers() const override { return BroadPhaseLayers::NUM_LAYERS; }
 
     [[nodiscard]] BroadPhaseLayer GetBroadPhaseLayer(ObjectLayer inLayer) const override {
-        JPH_ASSERT(inLayer < Layers::NUM_LAYERS);
+//        JPH_ASSERT(inLayer < Layers::NUM_LAYERS);
         return mObjectToBroadPhase[inLayer];
     }
 

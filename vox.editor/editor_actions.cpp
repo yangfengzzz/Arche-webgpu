@@ -12,6 +12,7 @@
 #include "vox.editor/view/game_view.h"
 #include "vox.editor/view/scene_view.h"
 #include "vox.render/strings.h"
+#include "vox.base/logging.h"
 
 namespace vox {
 editor::EditorActions* editor::EditorActions::getSingletonPtr() { return ms_singleton; }
@@ -81,10 +82,8 @@ void EditorActions::setEditorMode(EditorMode newEditorMode) {
 
 void EditorActions::startPlaying() {
     if (_editorMode == EditorMode::EDIT) {
-        ScriptInterpreter::GetSingleton().refreshAll();
         app_._panelsManager.getPanelAs<ui::Inspector>("Inspector").refresh();
 
-        if (ScriptInterpreter::GetSingleton().isOk()) {
             playEvent.Invoke();
             scene_backup_.clear();
 
@@ -95,7 +94,6 @@ void EditorActions::startPlaying() {
             app_._panelsManager.getPanelAs<ui::GameView>("Game View").Focus();
             SceneManager::GetSingleton().currentScene()->play();
             setEditorMode(EditorMode::PLAY);
-        }
     } else {
         // m_context.audioEngine->Unsuspend();
         setEditorMode(EditorMode::PLAY);
@@ -286,15 +284,6 @@ void EditorActions::saveSceneChanges() {
 
 void EditorActions::saveAs() {
     // todo
-}
-
-// MARK: - SCRIPTING
-void EditorActions::refreshScripts() {
-    ScriptInterpreter::GetSingleton().refreshAll();
-    app_._panelsManager.getPanelAs<ui::Inspector>("Inspector").refresh();
-    if (ScriptInterpreter::GetSingleton().isOk()) {
-        LOGI("Scripts interpretation succeeded!")
-    }
 }
 
 // MARK: - BUILDING

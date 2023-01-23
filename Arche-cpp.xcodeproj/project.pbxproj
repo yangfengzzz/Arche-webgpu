@@ -1077,6 +1077,8 @@
 		0495476D27A2C6C500783C84 /* resource_cache.h in Headers */ = {isa = PBXBuildFile; fileRef = 0495476B27A2C6C500783C84 /* resource_cache.h */; };
 		049D2FF127DC856A0037DC6A /* wireframe_primitive_mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049D2FEF27DC856A0037DC6A /* wireframe_primitive_mesh.cpp */; };
 		049D2FF227DC856A0037DC6A /* wireframe_primitive_mesh.h in Headers */ = {isa = PBXBuildFile; fileRef = 049D2FF027DC856A0037DC6A /* wireframe_primitive_mesh.h */; };
+		04DF6BDA2977F73100515F87 /* physx_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04DF6BD82977F73100515F87 /* physx_manager.cpp */; };
+		04DF6BDB2977F73100515F87 /* physx_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = 04DF6BD92977F73100515F87 /* physx_manager.h */; };
 		04F9E8FC27D2067400BD291B /* subpass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E8FA27D2067400BD291B /* subpass.cpp */; };
 		04F9E8FD27D2067400BD291B /* subpass.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F9E8FB27D2067400BD291B /* subpass.h */; };
 		04F9E90027D2095100BD291B /* compute_pass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04F9E8FE27D2095100BD291B /* compute_pass.cpp */; };
@@ -2720,6 +2722,8 @@
 		0495476B27A2C6C500783C84 /* resource_cache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = resource_cache.h; sourceTree = "<group>"; };
 		049D2FEF27DC856A0037DC6A /* wireframe_primitive_mesh.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wireframe_primitive_mesh.cpp; sourceTree = "<group>"; };
 		049D2FF027DC856A0037DC6A /* wireframe_primitive_mesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wireframe_primitive_mesh.h; sourceTree = "<group>"; };
+		04DF6BD82977F73100515F87 /* physx_manager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = physx_manager.cpp; sourceTree = "<group>"; };
+		04DF6BD92977F73100515F87 /* physx_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = physx_manager.h; sourceTree = "<group>"; };
 		04E859EE28C4DB3900A9C0E0 /* shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; path = shaders; sourceTree = "<group>"; };
 		04F9E8FA27D2067400BD291B /* subpass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = subpass.cpp; sourceTree = "<group>"; };
 		04F9E8FB27D2067400BD291B /* subpass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = subpass.h; sourceTree = "<group>"; };
@@ -3134,6 +3138,7 @@
 		04128425279ED3510071BD86 /* vox.render */ = {
 			isa = PBXGroup;
 			children = (
+				04DF6BD72977F70A00515F87 /* physx */,
 				047320A028F1C3DC00D04171 /* physics */,
 				0473202D28E6B3FD00D04171 /* animation */,
 				04F9E91827D481A000BD291B /* singleton.h */,
@@ -4992,6 +4997,15 @@
 			path = example;
 			sourceTree = "<group>";
 		};
+		04DF6BD72977F70A00515F87 /* physx */ = {
+			isa = PBXGroup;
+			children = (
+				04DF6BD92977F73100515F87 /* physx_manager.h */,
+				04DF6BD82977F73100515F87 /* physx_manager.cpp */,
+			);
+			path = physx;
+			sourceTree = "<group>";
+		};
 		04F9E90727D4655F00BD291B /* particle */ = {
 			isa = PBXGroup;
 			children = (
@@ -5476,6 +5490,7 @@
 				045A393B28C44C40003FEE10 /* shader_source.h in Headers */,
 				045A397928C45118003FEE10 /* sub_mesh.h in Headers */,
 				04FDEFCA27E7477500BBE8E4 /* canvas.h in Headers */,
+				04DF6BDB2977F73100515F87 /* physx_manager.h in Headers */,
 				04FDF01027E7670E00BBE8E4 /* dummy.h in Headers */,
 				045A392128C44BCF003FEE10 /* hwcpipe_stats_provider.h in Headers */,
 				045B390928D4B68500DA1D32 /* astc_img.h in Headers */,
@@ -6294,6 +6309,7 @@
 				04FDF04727E7FA2000BBE8E4 /* color_picker.cpp in Sources */,
 				04128479279EEEEC0071BD86 /* render_state.cpp in Sources */,
 				049546FF279FCD1100783C84 /* forward_application.cpp in Sources */,
+				04DF6BDA2977F73100515F87 /* physx_manager.cpp in Sources */,
 				045A393628C44C40003FEE10 /* shader_module.cpp in Sources */,
 				04FDF06E27E8059300BBE8E4 /* text_clickable.cpp in Sources */,
 				045A38F028C44B25003FEE10 /* headless_window.cpp in Sources */,
@@ -7205,11 +7221,19 @@
 					TINT_BUILD_SPV_READER,
 					JPH_PROFILE_ENABLED,
 					JPH_DEBUG_RENDERER,
+					DISABLE_CUDA_PHYSX,
+					PX_PHYSX_CORE_EXPORTS,
+					_DEBUG,
+					"'PX_DEBUG=1'",
+					"'PX_CHECKED=1'",
+					"'PX_NVTX=0'",
+					"'PX_SUPPORT_PVD=1'",
 				);
 				HEADER_SEARCH_PATHS = (
 					"/Users/yangfeng/Desktop/Arche-cpp",
 					"/Users/yangfengzz/Desktop/Arche-cpp",
 				);
+				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SYSTEM_HEADER_SEARCH_PATHS = (
@@ -7234,6 +7258,26 @@
 					./third_party/dawn/third_party/glfw/include,
 					./third_party/tinyobj,
 					./third_party/jolt,
+					./third_party/physx/physx/source/common/src/mac,
+					./third_party/physx/physx/include,
+					./third_party/physx/physx/source/common/include,
+					./third_party/physx/physx/source/common/src,
+					./third_party/physx/physx/source/geomutils/include,
+					./third_party/physx/physx/source/geomutils/src,
+					./third_party/physx/physx/source/geomutils/src/contact,
+					./third_party/physx/physx/source/geomutils/src/common,
+					./third_party/physx/physx/source/geomutils/src/convex,
+					./third_party/physx/physx/source/geomutils/src/distance,
+					./third_party/physx/physx/source/geomutils/src/sweep,
+					./third_party/physx/physx/source/geomutils/src/gjk,
+					./third_party/physx/physx/source/geomutils/src/intersection,
+					./third_party/physx/physx/source/geomutils/src/mesh,
+					./third_party/physx/physx/source/geomutils/src/hf,
+					./third_party/physx/physx/source/geomutils/src/pcm,
+					./third_party/physx/physx/source/geomutils/src/ccd,
+					./third_party/physx/physx/source/physxgpu/include,
+					./third_party/physx/physx/../pxshared/include,
+					./third_party/physx/physx/source/foundation/include,
 				);
 				USE_HEADERMAP = NO;
 			};
@@ -7267,11 +7311,16 @@
 					TINT_BUILD_SPV_READER,
 					JPH_PROFILE_ENABLED,
 					JPH_DEBUG_RENDERER,
+					DISABLE_CUDA_PHYSX,
+					PX_PHYSX_CORE_EXPORTS,
+					NDEBUG,
+					"'PX_SUPPORT_PVD=0'",
 				);
 				HEADER_SEARCH_PATHS = (
 					"/Users/yangfeng/Desktop/Arche-cpp",
 					"/Users/yangfengzz/Desktop/Arche-cpp",
 				);
+				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SYSTEM_HEADER_SEARCH_PATHS = (
@@ -7296,6 +7345,26 @@
 					./third_party/dawn/third_party/glfw/include,
 					./third_party/tinyobj,
 					./third_party/jolt,
+					./third_party/physx/physx/source/common/src/mac,
+					./third_party/physx/physx/include,
+					./third_party/physx/physx/source/common/include,
+					./third_party/physx/physx/source/common/src,
+					./third_party/physx/physx/source/geomutils/include,
+					./third_party/physx/physx/source/geomutils/src,
+					./third_party/physx/physx/source/geomutils/src/contact,
+					./third_party/physx/physx/source/geomutils/src/common,
+					./third_party/physx/physx/source/geomutils/src/convex,
+					./third_party/physx/physx/source/geomutils/src/distance,
+					./third_party/physx/physx/source/geomutils/src/sweep,
+					./third_party/physx/physx/source/geomutils/src/gjk,
+					./third_party/physx/physx/source/geomutils/src/intersection,
+					./third_party/physx/physx/source/geomutils/src/mesh,
+					./third_party/physx/physx/source/geomutils/src/hf,
+					./third_party/physx/physx/source/geomutils/src/pcm,
+					./third_party/physx/physx/source/geomutils/src/ccd,
+					./third_party/physx/physx/source/physxgpu/include,
+					./third_party/physx/physx/../pxshared/include,
+					./third_party/physx/physx/source/foundation/include,
 				);
 				USE_HEADERMAP = NO;
 			};
@@ -7438,6 +7507,7 @@
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
 				EXCLUDED_ARCHS = arm64;
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"'ROOT_PATH_SIZE=39'",
 					VKB_VULKAN_DEBUG,
@@ -7455,6 +7525,13 @@
 					TINT_BUILD_SPV_READER,
 					JPH_PROFILE_ENABLED,
 					JPH_DEBUG_RENDERER,
+					DISABLE_CUDA_PHYSX,
+					PX_PHYSX_CORE_EXPORTS,
+					_DEBUG,
+					"'PX_DEBUG=1'",
+					"'PX_CHECKED=1'",
+					"'PX_NVTX=0'",
+					"'PX_SUPPORT_PVD=1'",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
@@ -7487,6 +7564,7 @@
 					"./cmake-build-debug/third_party/spirv-cross/lib/Debug/x86_64",
 					"./cmake-build-debug/third_party/hwcpipe/lib/Debug/x86_64",
 					"./cmake-build-debug/third_party/glslang/OGLCompilersDLL/lib/Debug/x86_64",
+					./third_party/physX/physx/bin/linux.clang/debug,
 					./third_party/assimp/build_debug/bin,
 					./third_party/jolt/Build/build_release,
 				);
@@ -7530,6 +7608,12 @@
 					"-lSPIRV-Tools",
 					"-lSPIRV-Tools-opt",
 					"-lJolt",
+					"-lPhysX_static_64",
+					"-lPhysXCommon_static_64",
+					"-lPhysXFoundation_static_64",
+					"-lPhysXPvdSDK_static_64",
+					"-lPhysXExtensions_static_64",
+					"-lPhysXCharacterKinematic_static_64",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SYSTEM_HEADER_SEARCH_PATHS = (
@@ -7554,6 +7638,26 @@
 					./third_party/dawn/third_party/glfw/include,
 					./third_party/tinyobj,
 					./third_party/jolt,
+					./third_party/physx/physx/source/common/src/mac,
+					./third_party/physx/physx/include,
+					./third_party/physx/physx/source/common/include,
+					./third_party/physx/physx/source/common/src,
+					./third_party/physx/physx/source/geomutils/include,
+					./third_party/physx/physx/source/geomutils/src,
+					./third_party/physx/physx/source/geomutils/src/contact,
+					./third_party/physx/physx/source/geomutils/src/common,
+					./third_party/physx/physx/source/geomutils/src/convex,
+					./third_party/physx/physx/source/geomutils/src/distance,
+					./third_party/physx/physx/source/geomutils/src/sweep,
+					./third_party/physx/physx/source/geomutils/src/gjk,
+					./third_party/physx/physx/source/geomutils/src/intersection,
+					./third_party/physx/physx/source/geomutils/src/mesh,
+					./third_party/physx/physx/source/geomutils/src/hf,
+					./third_party/physx/physx/source/geomutils/src/pcm,
+					./third_party/physx/physx/source/geomutils/src/ccd,
+					./third_party/physx/physx/source/physxgpu/include,
+					./third_party/physx/physx/../pxshared/include,
+					./third_party/physx/physx/source/foundation/include,
 				);
 				USE_HEADERMAP = NO;
 			};
@@ -7571,6 +7675,7 @@
 				DEVELOPMENT_TEAM = 4SL5L673UU;
 				ENABLE_HARDENED_RUNTIME = YES;
 				EXCLUDED_ARCHS = arm64;
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"'ROOT_PATH_SIZE=39'",
 					VKB_VULKAN_DEBUG,
@@ -7587,6 +7692,10 @@
 					TINT_BUILD_SPV_READER,
 					JPH_PROFILE_ENABLED,
 					JPH_DEBUG_RENDERER,
+					DISABLE_CUDA_PHYSX,
+					PX_PHYSX_CORE_EXPORTS,
+					NDEBUG,
+					"'PX_SUPPORT_PVD=0'",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
@@ -7621,6 +7730,7 @@
 					"./cmake-build-release/third_party/glslang/OGLCompilersDLL/lib/Release/x86_64",
 					./third_party/assimp/build_release/bin,
 					./third_party/jolt/Build/build_release,
+					./third_party/physX/physx/bin/linux.clang/release,
 				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
@@ -7662,6 +7772,12 @@
 					"-lSPIRV-Tools",
 					"-lSPIRV-Tools-opt",
 					"-lJolt",
+					"-lPhysX_static_64",
+					"-lPhysXCommon_static_64",
+					"-lPhysXFoundation_static_64",
+					"-lPhysXPvdSDK_static_64",
+					"-lPhysXExtensions_static_64",
+					"-lPhysXCharacterKinematic_static_64",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SYSTEM_HEADER_SEARCH_PATHS = (
@@ -7686,6 +7802,26 @@
 					./third_party/dawn/third_party/glfw/include,
 					./third_party/tinyobj,
 					./third_party/jolt,
+					./third_party/physx/physx/source/common/src/mac,
+					./third_party/physx/physx/include,
+					./third_party/physx/physx/source/common/include,
+					./third_party/physx/physx/source/common/src,
+					./third_party/physx/physx/source/geomutils/include,
+					./third_party/physx/physx/source/geomutils/src,
+					./third_party/physx/physx/source/geomutils/src/contact,
+					./third_party/physx/physx/source/geomutils/src/common,
+					./third_party/physx/physx/source/geomutils/src/convex,
+					./third_party/physx/physx/source/geomutils/src/distance,
+					./third_party/physx/physx/source/geomutils/src/sweep,
+					./third_party/physx/physx/source/geomutils/src/gjk,
+					./third_party/physx/physx/source/geomutils/src/intersection,
+					./third_party/physx/physx/source/geomutils/src/mesh,
+					./third_party/physx/physx/source/geomutils/src/hf,
+					./third_party/physx/physx/source/geomutils/src/pcm,
+					./third_party/physx/physx/source/geomutils/src/ccd,
+					./third_party/physx/physx/source/physxgpu/include,
+					./third_party/physx/physx/../pxshared/include,
+					./third_party/physx/physx/source/foundation/include,
 				);
 				USE_HEADERMAP = NO;
 			};

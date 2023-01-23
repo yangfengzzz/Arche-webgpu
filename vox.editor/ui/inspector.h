@@ -67,11 +67,6 @@ public:
     void drawComponent(Component *p_component);
 
     /**
-     * Draw the given behaviour in inspector
-     */
-    void drawBehaviour(Behaviour *p_behaviour);
-
-    /**
      * Refresh the inspector
      */
     void refresh();

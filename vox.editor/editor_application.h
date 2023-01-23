@@ -13,7 +13,6 @@
 #include "vox.render/graphics_application.h"
 #include "vox.render/image_manager.h"
 #include "vox.render/lighting/light_manager.h"
-#include "vox.render/lua/script_interpreter.h"
 #include "vox.render/mesh/mesh_manager.h"
 #include "vox.render/particle/particle_manager.h"
 #include "vox.render/physics/physics_manager.h"
@@ -75,7 +74,6 @@ protected:
     std::unique_ptr<ImageManager> image_manager_{nullptr};
     std::unique_ptr<ShaderManager> shader_manager_{nullptr};
     std::unique_ptr<MeshManager> mesh_manager_{nullptr};
-    std::unique_ptr<ScriptInterpreter> script_interpreter_{nullptr};
     std::unique_ptr<ResourceCache> resource_cache_{nullptr};
 
     std::unique_ptr<ComponentsManager> _componentsManager{nullptr};

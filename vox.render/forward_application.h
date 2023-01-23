@@ -13,6 +13,7 @@
 #include "vox.render/mesh/mesh_manager.h"
 #include "vox.render/particle/particle_manager.h"
 #include "vox.render/physics/physics_manager.h"
+#include "vox.render/physx/physx_manager.h"
 #include "vox.render/rendering/resource_cache.h"
 #include "vox.render/scene_manager.h"
 #include "vox.render/shader/shader_manager.h"
@@ -74,6 +75,7 @@ protected:
     std::unique_ptr<LightManager> _lightManager{nullptr};
     std::unique_ptr<ParticleManager> _particleManager{nullptr};
     std::unique_ptr<PhysicsManager> _physicsManager{nullptr};
+    std::unique_ptr<PhysxManager> _physxManager{nullptr};
 
 protected:
     wgpu::TextureView _depthStencilTexture;

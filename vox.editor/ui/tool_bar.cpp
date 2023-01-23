@@ -41,8 +41,6 @@ Toolbar::Toolbar(const std::string &p_title,
 
     _nextButton->clicked_event_ += std::bind(&EditorActions::nextFrame, EditorActions::getSingletonPtr());
 
-    refreshButton.clicked_event_ += std::bind(&EditorActions::refreshScripts, EditorActions::getSingletonPtr());
-
     EditorActions::getSingleton().editorModeChangedEvent += [this](EditorActions::EditorMode p_newMode) {
         auto enable = [](ButtonImage *p_button, bool p_enable) {
             p_button->disabled_ = !p_enable;
