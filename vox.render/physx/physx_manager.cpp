@@ -5,6 +5,7 @@
 //  property of any third parties.
 
 #include "vox.render/physx/physx_manager.h"
+
 #include <algorithm>
 #include <cmath>
 namespace vox {
@@ -20,7 +21,7 @@ PhysxManager &PhysxManager::GetSingleton() {
 PhysxManager::PhysxManager() {
     PxFoundation *g_foundation = PxCreateFoundation(PX_PHYSICS_VERSION, g_allocator_, g_error_callback_);
     physics = PxCreatePhysics(PX_PHYSICS_VERSION, *g_foundation, PxTolerancesScale(), false, nullptr);
-    
+
     PxSceneDesc scene_desc(physics->getTolerancesScale());
     scene_desc.gravity = PxVec3(0.0f, -9.81f, 0.0f);
     scene_desc.cpuDispatcher = PxDefaultCpuDispatcherCreate(1);

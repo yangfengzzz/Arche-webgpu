@@ -6,8 +6,9 @@
 
 #pragma once
 
-#include "vox.render/singleton.h"
 #include <PxPhysicsAPI.h>
+
+#include "vox.render/singleton.h"
 
 namespace vox {
 class PhysxManager : public Singleton<PhysxManager> {
@@ -17,7 +18,7 @@ public:
 
     /** The max sum of time step in seconds one frame. */
     static constexpr float max_sum_time_step_ = 1.f / 3;
-    
+
     static PhysxManager &GetSingleton();
 
     static PhysxManager *GetSingletonPtr();
@@ -29,7 +30,7 @@ public:
     physx::PxPhysics *physics;
 
     physx::PxScene *physics_manager;
-    
+
 public:
     /**
      * Call on every frame to update pose of objects.
@@ -39,7 +40,7 @@ public:
 private:
     physx::PxDefaultAllocator g_allocator_;
     physx::PxDefaultErrorCallback g_error_callback_;
-    
+
     float rest_time_ = 0;
 };
 template <>
