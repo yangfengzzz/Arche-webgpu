@@ -8,6 +8,9 @@
 
 #include <algorithm>
 #include <cmath>
+
+#include "vox.render/physx/physx_collider.h"
+
 namespace vox {
 using namespace physx;
 
@@ -40,9 +43,37 @@ void PhysxManager::update(float delta_time) {
     auto step = static_cast<uint32_t>(std::floor(std::min(max_sum_time_step_, simulate_time) / fixed_time_step_));
     rest_time_ = simulate_time - static_cast<float>(step) * fixed_time_step_;
     for (uint32_t i = 0; i < step; i++) {
+        callColliderOnUpdate();
         physics_manager->simulate(fixed_time_step_);
         physics_manager->fetchResults(true);
+        callColliderOnLateUpdate();
     }
+}
+
+void PhysxManager::callColliderOnUpdate() {
+    for (auto &collider : colliders_) {
+        collider->OnUpdate();
+    }
+}
+
+void PhysxManager::callColliderOnLateUpdate() {
+    for (auto &collider : colliders_) {
+        collider->OnLateUpdate();
+    }
+}
+
+void PhysxManager::addCollider(PhysxCollider *collider) {
+    colliders_.push_back(collider);
+    physics_manager->addActor(*collider->native_actor_);
+}
+
+void PhysxManager::removeCollider(PhysxCollider *collider) {
+    auto iter = std::find(colliders_.begin(), colliders_.end(), collider);
+    if (iter != colliders_.end()) {
+        colliders_.erase(iter);
+    }
+
+    physics_manager->removeActor(*collider->native_actor_);
 }
 
 }  // namespace vox

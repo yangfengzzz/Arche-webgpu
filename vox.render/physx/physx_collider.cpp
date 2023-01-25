@@ -7,6 +7,7 @@
 #include "vox.render/physx/physx_collider.h"
 
 #include "vox.render/entity.h"
+#include "vox.render/physx/physx_manager.h"
 
 namespace vox {
 using namespace physx;
@@ -25,9 +26,14 @@ void PhysxCollider::OnUpdate() {
         update_flag_->flag = false;
 
         const auto kWorldScale = transform->lossyWorldScale();
-        for (auto &shape : shapes_) {
-            shape->SetWorldScale(kWorldScale);
-        }
+//        for (auto &shape : shapes_) {
+//            shape->SetWorldScale(kWorldScale);
+//        }
     }
 }
+
+void PhysxCollider::_onEnable() { PhysxManager::GetSingleton().addCollider(this); }
+
+void PhysxCollider::_onDisable() { PhysxManager::GetSingleton().removeCollider(this); }
+
 }  // namespace vox

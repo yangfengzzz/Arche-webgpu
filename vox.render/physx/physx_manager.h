@@ -8,9 +8,13 @@
 
 #include <PxPhysicsAPI.h>
 
+#include <vector>
+
 #include "vox.render/singleton.h"
 
 namespace vox {
+class PhysxCollider;
+
 class PhysxManager : public Singleton<PhysxManager> {
 public:
     /** The fixed time step in seconds at which physics are performed. */
@@ -37,9 +41,26 @@ public:
      */
     void update(float delta_time);
 
+    void callColliderOnUpdate();
+
+    void callColliderOnLateUpdate();
+
+    /**
+     * Add collider into the manager.
+     * @param collider - StaticCollider or DynamicCollider.
+     */
+    void addCollider(PhysxCollider *collider);
+
+    /**
+     * Remove collider.
+     * @param collider - StaticCollider or DynamicCollider.
+     */
+    void removeCollider(PhysxCollider *collider);
+
 private:
     physx::PxDefaultAllocator g_allocator_;
     physx::PxDefaultErrorCallback g_error_callback_;
+    std::vector<PhysxCollider *> colliders_;
 
     float rest_time_ = 0;
 };

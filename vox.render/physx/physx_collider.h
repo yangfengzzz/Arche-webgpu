@@ -22,6 +22,10 @@ public:
 
     physx::PxRigidActor *native_actor_{};
 
+    void _onEnable() override;
+
+    void _onDisable() override;
+
 protected:
     std::unique_ptr<UpdateFlag> update_flag_;
 };

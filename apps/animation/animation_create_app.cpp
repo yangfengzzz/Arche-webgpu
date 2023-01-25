@@ -141,7 +141,7 @@ void AnimationCreateApp::_createSkeleton(animation::offline::RawSkeleton* _skele
     char buf[16];
     for (int i = 0; i < slice_count_; ++i) {
         // Format joint number.
-        std::sprintf(buf, "%d", i);
+        std::snprintf(buf, sizeof(char), "%d", i);
 
         root->children.resize(3);
 
