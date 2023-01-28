@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
 
     auto code = platform.Initialize(plugins::GetAll());
     if (code == vox::ExitCode::SUCCESS) {
-        platform.SetApp(std::make_unique<vox::PhysicsWaterShapeApp>());
+        platform.SetApp(std::make_unique<vox::CollisionGroupsApp>());
         code = platform.MainLoop();
     }
     platform.Terminate(code);

@@ -15,15 +15,24 @@
 #include "vox.toolkit/controls/orbit_control.h"
 
 namespace vox {
+using namespace physx;
 namespace {
 class PhysicsScript : public Script {
 public:
     PhysxDynamicCollider* collider{ nullptr};
+    PxMaterial* native_material_{ nullptr};
+    std::shared_ptr<PxBoxGeometry> native_geometry_{ nullptr};
+    PxShape* native_shape_{ nullptr};
 
     explicit PhysicsScript(Entity* entity) : Script(entity) {
+        native_material_ = PhysxManager::GetSingleton().physics->createMaterial(0, 0, 0);
+        native_geometry_ = std::make_shared<PxBoxGeometry>(1.5f, 0.5f, 1.0f);
+        native_shape_ = PhysxManager::GetSingleton().physics->createShape(*native_geometry_, *native_material_, true);
+
         collider = entity->addComponent<PhysxDynamicCollider>();
-        static_cast<physx::PxRigidDynamic*>(collider->native_actor_)->setMass(1);
-        static_cast<physx::PxRigidDynamic*>(collider->native_actor_)->setCMassLocalPose(physx::PxTransform());
+        collider->native_actor_->attachShape(*native_shape_);
+        static_cast<PxRigidDynamic*>(collider->native_actor_)->setMass(1);
+        static_cast<PxRigidDynamic*>(collider->native_actor_)->setCMassLocalPose(PxTransform(PxVec3(0.0f, 0.0f, 1.5f)));
     }
 
     void onPhysicsUpdate() override {}
@@ -35,6 +44,8 @@ void CollisionGroupsApp::loadScene() {
     auto scene = _sceneManager->currentScene();
     scene->ambientLight()->setDiffuseSolidColor(Color(1, 1, 1));
     auto rootEntity = scene->createRootEntity();
+
+    _physxManager->physics_manager->setGravity(PxVec3(0, 0, 0));
 
     auto cameraEntity = rootEntity->createChild();
     cameraEntity->transform->setPosition(10, 10, 10);

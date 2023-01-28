@@ -11,6 +11,11 @@
 namespace vox {
 class CollisionGroupsApp : public ForwardApplication {
 public:
+    const std::string desc =
+            "Tests that the center-of-mass (COM) local offset is properly taken into account. "
+            "The box should rotate on its own if the test succeeds. "
+            "The rendered RGB frame indicates the location of the COM.";
+
     void loadScene() override;
 };
 }  // namespace vox
