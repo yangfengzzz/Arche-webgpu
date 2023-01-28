@@ -53,6 +53,7 @@ void PhysxManager::update(float delta_time) {
     }
 }
 
+//MARK: - Sync Transform
 void PhysxManager::callColliderOnUpdate() {
     for (auto &collider : colliders_) {
         collider->OnUpdate();
@@ -62,15 +63,6 @@ void PhysxManager::callColliderOnUpdate() {
 void PhysxManager::callColliderOnLateUpdate() {
     for (auto &collider : colliders_) {
         collider->OnLateUpdate();
-    }
-}
-
-void PhysxManager::addOnPhysicsUpdateScript(Script *script) { on_physics_update_scripts_.emplace_back(script); }
-
-void PhysxManager::removeOnPhysicsUpdateScript(Script *script) {
-    auto iter = std::find(on_physics_update_scripts_.begin(), on_physics_update_scripts_.end(), script);
-    if (iter != on_physics_update_scripts_.end()) {
-        on_physics_update_scripts_.erase(iter);
     }
 }
 
@@ -87,5 +79,16 @@ void PhysxManager::removeCollider(PhysxCollider *collider) {
 
     physics_manager->removeActor(*collider->native_actor_);
 }
+
+//MARK:- Update in fixed time
+void PhysxManager::addOnPhysicsUpdateScript(Script *script) { on_physics_update_scripts_.emplace_back(script); }
+
+void PhysxManager::removeOnPhysicsUpdateScript(Script *script) {
+    auto iter = std::find(on_physics_update_scripts_.begin(), on_physics_update_scripts_.end(), script);
+    if (iter != on_physics_update_scripts_.end()) {
+        on_physics_update_scripts_.erase(iter);
+    }
+}
+
 
 }  // namespace vox

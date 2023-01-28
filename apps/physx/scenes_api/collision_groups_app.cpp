@@ -1,0 +1,62 @@
+//  Copyright (c) 2022 Feng Yang
+//
+//  I am making my contributions/submissions to this project solely in my
+//  personal capacity and am not conveying any rights to any intellectual
+//  property of any third parties.
+
+#include "apps/physx/scenes_api/collision_groups_app.h"
+
+#include "vox.render/entity.h"
+#include "vox.render/camera.h"
+#include "vox.render/material/blinn_phong_material.h"
+#include "vox.render/physx/physx_dynamic_collider.h"
+#include "vox.render/mesh/mesh_renderer.h"
+#include "vox.render/mesh/primitive_mesh.h"
+#include "vox.toolkit/controls/orbit_control.h"
+
+namespace vox {
+namespace {
+class PhysicsScript : public Script {
+public:
+    PhysxDynamicCollider* collider{ nullptr};
+
+    explicit PhysicsScript(Entity* entity) : Script(entity) {
+        collider = entity->addComponent<PhysxDynamicCollider>();
+        static_cast<physx::PxRigidDynamic*>(collider->native_actor_)->setMass(1);
+        static_cast<physx::PxRigidDynamic*>(collider->native_actor_)->setCMassLocalPose(physx::PxTransform());
+    }
+
+    void onPhysicsUpdate() override {}
+};
+
+}  // namespace
+
+void CollisionGroupsApp::loadScene() {
+    auto scene = _sceneManager->currentScene();
+    scene->ambientLight()->setDiffuseSolidColor(Color(1, 1, 1));
+    auto rootEntity = scene->createRootEntity();
+
+    auto cameraEntity = rootEntity->createChild();
+    cameraEntity->transform->setPosition(10, 10, 10);
+    cameraEntity->transform->lookAt(Point3F(0, 0, 0));
+    _mainCamera = cameraEntity->addComponent<Camera>();
+    cameraEntity->addComponent<control::OrbitControl>();
+
+    // init point light
+    auto light = rootEntity->createChild("light");
+    light->transform->setPosition(0, 3, 0);
+    auto pointLight = light->addComponent<PointLight>();
+    pointLight->intensity = 0.3;
+
+    auto cubeEntity = rootEntity->createChild();
+    cubeEntity->addComponent<PhysicsScript>();
+    auto renderer = cubeEntity->addComponent<MeshRenderer>();
+    renderer->setMesh(PrimitiveMesh::createCuboid(_device, 1));
+    auto material = std::make_shared<BlinnPhongMaterial>(_device);
+    material->setBaseColor(Color(0.4, 0.6, 0.6));
+    renderer->setMaterial(material);
+
+    scene->play();
+}
+
+}  // namespace vox

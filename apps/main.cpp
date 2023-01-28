@@ -10,6 +10,7 @@
 #include "apps/gui_app.h"
 #include "apps/physics_collision_app.h"
 #include "apps/physics_samples/physics_samples.h"
+#include "apps/physx/physx_samples.h"
 #include "apps/plugins/plugins.h"
 #include "apps/primitive_app.h"
 #include "apps/rendering/rendering_sample.h"

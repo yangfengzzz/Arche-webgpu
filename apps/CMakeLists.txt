@@ -20,6 +20,10 @@ file(GLOB PHYSICS_DEBUGGER_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/physics_samples/constraints/*.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/physics_samples/general/*.cpp)
 
+file(GLOB PHYSX_DEBUGGER_FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/physx/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/physx/scenes_api/*.cpp)
+
 file(GLOB ANIMATION_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/animation/*.cpp)
 
@@ -37,6 +41,7 @@ set(SRC
         ${ANIMATION_FILES}
         physics_collision_app.cpp
         ${PHYSICS_DEBUGGER_FILES}
+        ${PHYSX_DEBUGGER_FILES}
         ${RENDERING_FILES}
         ${TOOLKIT_FILES}
         gui_app.cpp

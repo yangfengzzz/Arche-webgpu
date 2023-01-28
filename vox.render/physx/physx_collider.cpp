@@ -12,6 +12,8 @@
 namespace vox {
 using namespace physx;
 
+std::string PhysxCollider::name() { return "PhysxCollider"; }
+
 PhysxCollider::PhysxCollider(Entity *entity) : Component(entity) {
     update_flag_ = entity->transform->registerWorldChangeFlag();
 }
@@ -35,5 +37,12 @@ void PhysxCollider::OnUpdate() {
 void PhysxCollider::_onEnable() { PhysxManager::GetSingleton().addCollider(this); }
 
 void PhysxCollider::_onDisable() { PhysxManager::GetSingleton().removeCollider(this); }
+
+// MARK: - Reflection
+void PhysxCollider::onSerialize(nlohmann::json &data) {}
+
+void PhysxCollider::onDeserialize(nlohmann::json &data) {}
+
+void PhysxCollider::onInspector(ui::WidgetContainer &p_root) {}
 
 }  // namespace vox

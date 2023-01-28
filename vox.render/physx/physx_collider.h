@@ -14,6 +14,11 @@
 namespace vox {
 class PhysxCollider : public Component {
 public:
+    /**
+     * Returns the name of the component
+     */
+    std::string name() override;
+
     explicit PhysxCollider(Entity *entity);
 
     void OnUpdate();
@@ -25,6 +30,22 @@ public:
     void _onEnable() override;
 
     void _onDisable() override;
+
+public:
+    /**
+     * Serialize the component
+     */
+    void onSerialize(nlohmann::json &data) override;
+
+    /**
+     * Deserialize the component
+     */
+    void onDeserialize(nlohmann::json &data) override;
+
+    /**
+     * Defines how the component should be drawn in the inspector
+     */
+    void onInspector(ui::WidgetContainer &p_root) override;
 
 protected:
     std::unique_ptr<UpdateFlag> update_flag_;
