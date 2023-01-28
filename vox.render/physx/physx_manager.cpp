@@ -43,6 +43,9 @@ void PhysxManager::update(float delta_time) {
     auto step = static_cast<uint32_t>(std::floor(std::min(max_sum_time_step_, simulate_time) / fixed_time_step_));
     rest_time_ = simulate_time - static_cast<float>(step) * fixed_time_step_;
     for (uint32_t i = 0; i < step; i++) {
+        for (auto &script : on_physics_update_scripts_) {
+            script->onPhysicsUpdate();
+        }
         callColliderOnUpdate();
         physics_manager->simulate(fixed_time_step_);
         physics_manager->fetchResults(true);
@@ -59,6 +62,15 @@ void PhysxManager::callColliderOnUpdate() {
 void PhysxManager::callColliderOnLateUpdate() {
     for (auto &collider : colliders_) {
         collider->OnLateUpdate();
+    }
+}
+
+void PhysxManager::addOnPhysicsUpdateScript(Script *script) { on_physics_update_scripts_.emplace_back(script); }
+
+void PhysxManager::removeOnPhysicsUpdateScript(Script *script) {
+    auto iter = std::find(on_physics_update_scripts_.begin(), on_physics_update_scripts_.end(), script);
+    if (iter != on_physics_update_scripts_.end()) {
+        on_physics_update_scripts_.erase(iter);
     }
 }
 

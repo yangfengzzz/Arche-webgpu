@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "vox.render/singleton.h"
+#include "vox.render/script.h"
 
 namespace vox {
 class PhysxCollider;
@@ -57,11 +58,15 @@ public:
      */
     void removeCollider(PhysxCollider *collider);
 
+    void addOnPhysicsUpdateScript(Script *script);
+
+    void removeOnPhysicsUpdateScript(Script *script);
+
 private:
     physx::PxDefaultAllocator g_allocator_;
     physx::PxDefaultErrorCallback g_error_callback_;
     std::vector<PhysxCollider *> colliders_;
-
+    std::vector<Script *> on_physics_update_scripts_;
     float rest_time_ = 0;
 };
 template <>
