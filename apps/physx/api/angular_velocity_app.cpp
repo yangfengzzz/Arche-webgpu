@@ -4,7 +4,7 @@
 //  personal capacity and am not conveying any rights to any intellectual
 //  property of any third parties.
 
-#include "apps/physx/scenes_api/collision_groups_app.h"
+#include "apps/physx/api/angular_velocity_app.h"
 
 #include "vox.render/entity.h"
 #include "vox.render/camera.h"
@@ -25,14 +25,17 @@ public:
     PxShape* native_shape_{ nullptr};
 
     explicit PhysicsScript(Entity* entity) : Script(entity) {
-        native_material_ = PhysxManager::GetSingleton().physics->createMaterial(0, 0, 0);
+        native_material_ = PhysxManager::GetSingleton().physics->createMaterial(0.5, 0.5, 0);
         native_geometry_ = std::make_shared<PxBoxGeometry>(1.5f, 0.5f, 1.0f);
         native_shape_ = PhysxManager::GetSingleton().physics->createShape(*native_geometry_, *native_material_, true);
 
         collider = entity->addComponent<PhysxDynamicCollider>();
         collider->native_actor_->attachShape(*native_shape_);
+        collider->native_actor_->setGlobalPose(PxTransform(PxVec3(0.0f, 0.5f, 0.0f)));
         static_cast<PxRigidDynamic*>(collider->native_actor_)->setMass(1);
-        static_cast<PxRigidDynamic*>(collider->native_actor_)->setCMassLocalPose(PxTransform(PxVec3(0.0f, 0.0f, 1.5f)));
+        PxRigidBodyExt::setMassAndUpdateInertia(*static_cast<PxRigidDynamic*>(collider->native_actor_), 1);
+
+        static_cast<PxRigidDynamic*>(collider->native_actor_)->setAngularVelocity(PxVec3(0.0f, 0.0f, 10.0f));
     }
 
     void onPhysicsUpdate() override {}
@@ -40,7 +43,7 @@ public:
 
 }  // namespace
 
-void CollisionGroupsApp::loadScene() {
+void AngularVelocityApp::loadScene() {
     auto scene = _sceneManager->currentScene();
     scene->ambientLight()->setDiffuseSolidColor(Color(1, 1, 1));
     auto rootEntity = scene->createRootEntity();
@@ -59,15 +62,15 @@ void CollisionGroupsApp::loadScene() {
     auto pointLight = light->addComponent<PointLight>();
     pointLight->intensity = 0.3;
 
+    scene->play();
+
     auto cubeEntity = rootEntity->createChild();
     cubeEntity->addComponent<PhysicsScript>();
     auto renderer = cubeEntity->addComponent<MeshRenderer>();
-    renderer->setMesh(PrimitiveMesh::createCuboid(_device, 1));
+    renderer->setMesh(PrimitiveMesh::createCuboid(_device, 1.5f, 0.5f, 1.0f));
     auto material = std::make_shared<BlinnPhongMaterial>(_device);
     material->setBaseColor(Color(0.4, 0.6, 0.6));
     renderer->setMaterial(material);
-
-    scene->play();
 }
 
 }  // namespace vox

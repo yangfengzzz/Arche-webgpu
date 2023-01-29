@@ -7,4 +7,4 @@
 #pragma once
 
 // scenes api
-#include "apps/physx/scenes_api/collision_groups_app.h"
+#include "apps/physx/api/angular_velocity_app.h"

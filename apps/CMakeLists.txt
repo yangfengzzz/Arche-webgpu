@@ -22,7 +22,7 @@ file(GLOB PHYSICS_DEBUGGER_FILES
 
 file(GLOB PHYSX_DEBUGGER_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/physx/*.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/physx/scenes_api/*.cpp)
+        ${CMAKE_CURRENT_SOURCE_DIR}/physx/api/*.cpp)
 
 file(GLOB ANIMATION_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/animation/*.cpp)
@@ -151,7 +151,7 @@ ELSEIF (CMAKE_BUILD_TYPE MATCHES "Debug")
             ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-debug/third_party/abseil/absl/base
             ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-debug/third_party/abseil/absl/numeric
             ${CMAKE_SOURCE_DIR}/third_party/dawn/cmake-debug/third_party/glfw/src
-            ${CMAKE_SOURCE_DIR}/third_party/jolt/Build/build_release)
+            ${CMAKE_SOURCE_DIR}/third_party/jolt/Build/build_debug)
 endif ()
 
 target_link_libraries(${PROJECT_NAME} PUBLIC
