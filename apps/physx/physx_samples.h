@@ -7,4 +7,5 @@
 #pragma once
 
 // scenes api
+#include "apps/physx/api/mass_local_offset_app.h"
 #include "apps/physx/api/angular_velocity_app.h"
