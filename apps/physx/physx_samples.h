@@ -10,3 +10,4 @@
 #include "apps/physx/api/mass_local_offset_app.h"
 #include "apps/physx/api/angular_velocity_app.h"
 #include "apps/physx/api/local_torque_app.h"
+#include "apps/physx/api/collision_groups_app.h"
